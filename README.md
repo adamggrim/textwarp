@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a lightweight Python package for manipulating clipboard text from the console. It can convert to camel case, capitalize, convert between straight and curly quotes, convert between hyphens and dashes, convert to kebab case, convert to lowercase, convert to Pascal case, rearrange punctuation and quotation marks, convert to snake case and convert to uppercase.
+`textwarp` is a lightweight Python package that modifies clipboard text from the console. For a given clipboard text string, `textwarp` applies a conversion function and copies the modified string to the clipboard.
 
 ## Requirements
 
@@ -19,33 +19,33 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 1. **Copy text to the clipboard**
 
-    In this example, `textwarp` will manipulate the following clipboard text: `The mind is its own place`
+    In this example, `textwarp` will modify the following clipboard text: `The mind is its own place`
 
 2. **Run the command**
 
-    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard manipulation: `textwarp --camel-case`
+    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --camel-case`
 
-    For a list of `textwarp` arguments, type `textwarp -h`:
+    For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
-    -h, --help          show this help message and exit
-    --camel-case        convert to camel case
-    --capitalize        capitalize the first character of each word
-    --curly-to-straight convert curly quotes to straight quotes
-    --hyphens-to-em     convert hyphens to em dashes
-    --hyphen-to-en      convert hyphens to en dashes
-    --kebab-case        convert to kebab case
-    --lowercase         convert to lowercase
-    --pascal-case       convert to pascal case
-    --punct-to-inside   move punctuation inside quotation marks
-    --punct-to-outside  move punctuation outside quotation marks
-    --snake-case        convert to snake case
-    --straight-to-curly convert straight quotes to curly quotes
-    --uppercase         convert to uppercase
+    -h, --help           show this help message and exit
+    --camel-case         convert to camel case
+    --capitalize         capitalize the first character of each word
+    --curly-to-straight  convert curly quotes to straight quotes
+    --hyphens-to-em      convert consecutive hyphens to em dashes
+    --hyphen-to-en       convert hyphens to en dashes
+    --kebab-case         convert to kebab case
+    --lowercase          convert to lowercase
+    --pascal-case        convert to Pascal case
+    --punct-to-inside    move punctuation inside quotation marks
+    --punct-to-outside   move punctuation outside quotation marks
+    --snake-case         convert to snake case
+    --straight-to-curly  convert straight quotes to curly quotes
+    --uppercase          convert to uppercase
     ```
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the manipulated text to the clipboard: `theMindIsItsOwnPlace`
+    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`
 
 4. **Continue or exit**
 
@@ -70,7 +70,7 @@ textwarp/
 ├── parsing.py: Parses command-line arguments
 ├── regexes.py: Defines regular expressions for text parsing
 ├── validation.py: Defines functions for input validation
-└── warping.py: Defines functions for manipulating text
+└── warping.py: Defines functions for modifying text
 ```
 
 ## Usage
@@ -102,7 +102,7 @@ Follow these steps to run `textwarp`:
     pip3 install git+https://github.com/adamggrim/textwarp.git
     ```
 
-4. **Make sure the `textwarp` command is on your system PATH**: Try to run `textwarp` from the command line. If the console does not recognize the command, it was not installed on your system PATH.
+4. **Make sure the `textwarp` command is on your system PATH**: Try to run `textwarp` from the command line. If the console cannot find the command, it was not installed on your system PATH.
 
     To resolve this, follow these steps:
 
