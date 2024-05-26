@@ -104,7 +104,7 @@ def capitalize(string: str) -> str:
         capitalized_str (str): The capitalized string.
     """
     capitalized_str = re.sub(WarpingRegexes.WORD_WITH_APOS, 
-        lambda m: m.group(1).capitalize(), string)
+        lambda m: m.group(0).capitalize(), string)
     return capitalized_str
 
 
