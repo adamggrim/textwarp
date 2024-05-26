@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a lightweight Python package that modifies clipboard text from the console. For a given clipboard text string, `textwarp` applies a conversion function and copies the modified string to the clipboard.
+`textwarp` is a lightweight Python package that modifies clipboard text from the console. For the given clipboard text, `textwarp` applies a conversion function and copies the modified text to the clipboard.
 
 ## Requirements
 
@@ -69,7 +69,6 @@ textwarp/
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
 ├── regexes.py: Defines regular expressions for text parsing
-├── validation.py: Defines functions for input validation
 └── warping.py: Defines functions for modifying text
 ```
 
