@@ -5,7 +5,8 @@ from typing import Callable
 import pyperclip
 
 from textwarp.constants import (ANY_OTHER_TEXT_STR, ENTER_VALID_RESPONSE_STR, 
-                                EXIT_STR, NO_STRS, QUIT_STRS, YES_STRS)
+                                EXIT_STR, MODIFED_TEXT_STR, NO_STRS, 
+                                QUIT_STRS, YES_STRS)
 
 
 def print_padding() -> None:
@@ -50,6 +51,7 @@ def convert_text(conversion_function: Callable[[str], str]) -> None:
         clipboard = pyperclip.paste()
         converted_clipboard = conversion_function(clipboard)
         pyperclip.copy(converted_clipboard)
+        print_wrapped(MODIFED_TEXT_STR)
         print_wrapped(ANY_OTHER_TEXT_STR)
         response = input().strip()
         while True:

@@ -49,6 +49,9 @@ ENTER_VALID_RESPONSE_STR = 'Please enter a valid response.'
 # String printed when the user exits the program
 EXIT_STR = 'Exiting the program...'
 
+# String printed when the program copies modified text to the clipboard
+MODIFED_TEXT_STR = 'Modified text copied to the clipboard.'
+
 # Set of strings for indicating a negative response
 NO_STRS = {'no', 'n'}
 
