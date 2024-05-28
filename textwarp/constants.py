@@ -41,16 +41,16 @@ class HelpMessages:
     UPPERCASE = 'convert to uppercase'
 
 # String printed to prompt the user for any other text
-ANY_OTHER_TEXT_STR = 'Any other text? (y/n) (Copy text to clipboard):'
+ANY_OTHER_TEXT_STR = 'Any other text? (Copy text to clipboard):'
 
 # String printed when the previous response was invalid
-ENTER_VALID_RESPONSE_STR = 'Please enter a valid response.'
+ENTER_VALID_RESPONSE_STR = 'Please enter a valid response. (y/n)'
 
 # String printed when the user exits the program
 EXIT_STR = 'Exiting the program...'
 
 # String printed when the program copies modified text to the clipboard
-MODIFED_TEXT_STR = 'Modified text copied to the clipboard.'
+MODIFED_TEXT_STR = 'Modified text copied to clipboard.'
 
 # Set of strings for indicating a negative response
 NO_STRS = {'no', 'n'}
