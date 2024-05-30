@@ -21,6 +21,7 @@ class HelpMessages:
         SNAKE_CASE (STR): Help message for --snake-case argument
         STRAIGHT_TO_CURLY (STR): Help message for --straight-to-curly 
             argument
+        TITLE_CASE (STR): Help message for --title-case argument
         UPPERCASE (STR): Help message for --uppercase argument
     """
     DESCRIPTION = ('Specify the text warping function to apply to the '
@@ -38,6 +39,7 @@ class HelpMessages:
     PUNCT_TO_OUTSIDE = 'move punctuation outside quotation marks'
     SNAKE_CASE = 'convert to snake case'
     STRAIGHT_TO_CURLY = 'convert straight quotes to curly quotes'
+    TITLE_CASE = 'convert to title case'
     UPPERCASE = 'convert to uppercase'
 
 # String printed to prompt the user for any other text

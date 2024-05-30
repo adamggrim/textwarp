@@ -1,26 +1,54 @@
 import re
+from typing import Optional
+
+from nltk import pos_tag
 
 from textwarp.enums import SeparatorCase
 from textwarp.regexes import WarpingRegexes
 
 
 class HelperFunctions:
+    def capitalize_words(string: str, word_count: Optional[int] = None) -> str:
+            """
+            Capitalizes the first letter of each in a specified number 
+                of words and converts all other letters in each word to 
+                lowercase.
 
-    def capitalize_first_word(string) -> str:
+            Args:
+                string (str): The string to capitalize.
+                count (int): The number of matches to replace.
+
+            Returns:
+                capitalized_str (str): The capitalized string.
+            """
+            # Capitalize the first letter of every word.
+            if word_count is None:
+                capitalized_str = re.sub(WarpingRegexes.LETTER_WORD, 
+                                         lambda match: 
+                                         match.group(0).capitalize(), string)
+            # Capitalize the first letter of a specified number of words.
+            else:
+                capitalized_str = re.sub(WarpingRegexes.LETTER_WORD, 
+                                         lambda match: 
+                                         match.group(0).capitalize(), string, 
+                                         count=word_count)
+            return capitalized_str
+    
+    def remove_apostrophes(string) -> str:
         """
-        Capitalizes the first letter of the first word of a string and 
-            converts all other letters in the word to lowercase.
+        Removes apostrophes from a string without removing single 
+            quotes.
 
         Args:
-            string (str): The string to capitalize.
+            string (str): The string to convert.
 
         Returns:
-            capitalized_str (str): The capitalized string.
+            removed_apostrophes_str (str): The converted string.
         """
-        capitalized_str = re.sub(WarpingRegexes.LETTER_WORD, lambda match: 
-                                 match.group(0).capitalize(), string, count=1)
-        return capitalized_str
-
+        no_apostrophes_str = re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', 
+                                    string)
+        return no_apostrophes_str
+    
     def to_separator_case(string, separator_case: SeparatorCase) -> str:
         """
         Converts a string to kebab case or snake case.
@@ -49,7 +77,8 @@ class HelperFunctions:
             return separator_mapping.get(separator_case)
         other_separator = _get_other_separator()
         separator_sub = re.compile(rf'{other_separator}| ')
-        substrings = re.split(WarpingRegexes.SEPARATOR_SPLIT, string)
+        no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
+        substrings = re.split(WarpingRegexes.SEPARATOR_SPLIT, no_apostrophes_str)
         separator_substrings = []
         for substring in substrings:
             # Substring is already in a separator case.
@@ -91,6 +120,21 @@ class HelperFunctions:
             separator_substrings.append(separator_substring)
         separator_str = ''.join(separator_substrings)
         return separator_str
+    def uppercase_first_letter(string) -> str:
+        """
+        Converts the first letter of the string to uppercase without 
+            modifying any other letters.
+
+        Args:
+            string (str): The string to convert.
+
+        Returns:
+            upper_first_letter_str (str): The converted string.
+        """
+        upper_first_letter_str = re.sub(WarpingRegexes.FIRST_LETTER, 
+                                        lambda match: match.group(0).upper(), 
+                                        string, count=1)
+        return upper_first_letter_str
 
 
 def capitalize(string: str) -> str:
@@ -103,8 +147,7 @@ def capitalize(string: str) -> str:
     Return:
         capitalized_str (str): The capitalized string.
     """
-    capitalized_str = re.sub(WarpingRegexes.WORD_WITH_APOS, 
-        lambda m: m.group(0).capitalize(), string)
+    capitalized_str = HelperFunctions.capitalize_words(string)
     return capitalized_str
 
 
@@ -312,23 +355,8 @@ def to_pascal_case(string: str) -> str:
     Returns:
         pascal_str (str): The converted string.
     """
-    def _capitalize_first_letter(string) -> str:
-        """
-        Capitalizes the first letter of the string without modifying 
-            any other letters.
-
-        Args:
-            string (str): The string to convert.
-
-        Returns:
-            capitalized_first_letter_str (str): The converted string.
-        """
-        capitalized_first_letter_str = re.sub(WarpingRegexes.FIRST_LETTER, 
-                                              lambda match: 
-                                              match.group(0).upper(), string, 
-                                              count=1)
-        return capitalized_first_letter_str
-    words = re.split(WarpingRegexes.PASCAL_SPLIT, string)
+    no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
+    words = re.split(WarpingRegexes.PASCAL_SPLIT, no_apostrophes_str)
     pascal_words = []
     for word in words:
         # Word is already in Pascal case.
@@ -339,10 +367,10 @@ def to_pascal_case(string: str) -> str:
             pascal_word = word
         # Word is in camel case.
         elif WarpingRegexes.CAMEL_CASE.match(word):
-            pascal_word = _capitalize_first_letter(word)
+            pascal_word = HelperFunctions.uppercase_first_letter(word)
         # Word is not in Pascal case or camel case.
         else:
-            pascal_word = HelperFunctions.capitalize_first_word(word)
+            pascal_word = HelperFunctions.capitalize_words(word, word_count=1)
         pascal_words.append(pascal_word)
     pascal_str = ''.join(pascal_words)
     return pascal_str
@@ -359,6 +387,53 @@ def to_snake_case(string: str) -> str:
         snake_str (str): The converted string.
     """
     return HelperFunctions.to_separator_case(string, SeparatorCase.SNAKE)
+
+
+def to_title_case(string: str) -> str:
+    """
+    Converts a string to title case.
+
+    Args:
+        string (str): The string to convert.
+
+    Returns:
+        title_str (str): The converted string.
+    """
+    def should_capitalize(tag: str) -> bool:
+        """
+        Determines whether a word should be capitalized based on its 
+            part of speech.
+
+        Args:
+            tag (str): The NLTK POS tag to check.
+
+        Returns:
+            capitalize (bool): True if the tag should be capitalized, 
+                otherwise False.
+        """
+        capitalize = tag not in ['CC', 'DT', 'IN', 'RP', 'TO', 'WDT']
+        return capitalize
+    substrings = re.split(WarpingRegexes.TITLE_SUBSTRING_SPLIT, string)
+    title_substrings = []
+    for substring in substrings:
+        # Capitalize the first character of the substring.
+        title_substring = HelperFunctions.uppercase_first_letter(substring)
+        # Split the substring into words.
+        words = re.split(WarpingRegexes.TITLE_WORD_SPLIT, title_substring)
+        all_words = []
+        # For loop to break camel and Pascal case into constituent words
+        for word in words:
+            broken_words = re.split(WarpingRegexes.CAMEL_PASCAL_SPLIT, word)
+            all_words.extend([broken_word for broken_word in broken_words])
+        all_words_tags = pos_tag(all_words)
+        # Capitalize words based on their part of speech.
+        title_words = [HelperFunctions.capitalize_words(word, word_count=1) if 
+                       should_capitalize(tag) else word for word, tag in 
+                       all_words_tags]
+        title_substring = ' '.join(title_words)
+        title_substrings.append(title_substring)
+    title_str = ''.join(title_substrings)
+    return title_str
 
 
 def to_uppercase(string: str) -> str:

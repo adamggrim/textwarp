@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a lightweight Python package that modifies clipboard text from the console. For the given clipboard text, `textwarp` applies a conversion function and copies the modified text to the clipboard.
+`textwarp` is a Python package for modifying clipboard text from the console. For the given clipboard text, `textwarp` applies a conversion function and copies the modified text to the clipboard.
 
 ## Requirements
 
@@ -10,6 +10,7 @@
 
 `textwarp` requires the following Python libraries:
 
+- `nltk`: For identifying parts of speech to capitalize for title case
 - `pyperclip`: For accessing and copying to the clipboard
 - `setuptools`: For building and installing the `textwarp` package, and for implementing command-line functionality using entry points
 
@@ -40,12 +41,13 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --punct-to-outside   move punctuation outside quotation marks
     --snake-case         convert to snake case
     --straight-to-curly  convert straight quotes to curly quotes
+    --title-case         convert to title case
     --uppercase          convert to uppercase
     ```
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`
+    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to your desired location.
 
 4. **Continue or exit**
 
@@ -77,7 +79,7 @@ textwarp/
 Follow these steps to run `textwarp`:
 
 1. **Install Python**: Verify that you have Python 3.6 or later. You can install Python at `https://www.python.org/downloads/`.
-2. **Review dependencies**: Make sure the required Python packages are installed: `pyperclip` and `setuptools`.
+2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip` and `setuptools`.
 
     You can check whether these packages are installed using pip's `show` command on each package.
 

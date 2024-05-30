@@ -6,7 +6,7 @@ from textwarp.warping import (capitalize, curly_to_straight, hyphens_to_em,
                               hyphen_to_en, punct_to_inside, punct_to_outside, 
                               straight_to_curly, to_camel_case, to_kebab_case, 
                               to_lowercase, to_pascal_case, to_snake_case, 
-                              to_uppercase)
+                              to_title_case, to_uppercase)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -44,6 +44,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.SNAKE_CASE)
     group.add_argument('--straight-to-curly', action='store_true', 
                        help=HelpMessages.STRAIGHT_TO_CURLY)
+    group.add_argument('--title-case', action='store_true', 
+                       help=HelpMessages.TITLE_CASE)
     group.add_argument('--uppercase', action='store_true', 
                        help=HelpMessages.UPPERCASE)
     args = parser.parse_args()
@@ -62,6 +64,7 @@ def parse_args() -> Callable[[str], str]:
         'punct_to_outside': punct_to_outside,
         'snake_case': to_snake_case,
         'straight_to_curly': straight_to_curly,
+        'title_case': to_title_case,
         'uppercase': to_uppercase
     }
 

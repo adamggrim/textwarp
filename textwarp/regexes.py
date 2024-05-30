@@ -3,7 +3,8 @@ import re
 
 class WarpingRegexes:
     """
-    Compiled regular expressions and strings for parsing text.
+    Compiled regular expressions and strings for parsing and warping 
+        text.
 
     Attributes:
         _CLOSING_LOOKAHEAD_STR (str): Regular expression pattern for 
@@ -14,7 +15,7 @@ class WarpingRegexes:
         CAMEL_CASE (Pattern): Compiled regular expression object that 
             captures a camel case string.
         CAMEL_PASCAL_SPLIT (Pattern): Compiled regular expression 
-            object for substituting the boundary between words in camel 
+            object for splitting on the boundary between words in camel 
             case and Pascal case.
         CAMEL_SPLIT (Pattern): Compiled regular expression object for 
             splitting strings before converting substrings to camel 
@@ -31,9 +32,13 @@ class WarpingRegexes:
             that captures hyphens and underscores.
         KEBAB_CASE (Pattern): Compiled regular expression object that 
             captures a kebab case string.
+        LETTER_APOSTROPHE (Pattern): Compiled regular expression object 
+            that captures an apostrophe character surrounded by 
+            alphabetical letter characters
         LETTER_WORD (Pattern): Compiled regular expression object that 
             captures a sequence of word characters that begin with an 
-            alphabetical letter.
+            alphabetical letter. Captures words with apostrophes as a 
+            single word.
         OPENING_STRAIGHT_DOUBLE (Pattern): Compiled regular expression 
             object that captures opening straight double quotes.
         OPENING_STRAIGHT_SINGLE (Pattern): Compiled regular expression 
@@ -56,14 +61,27 @@ class WarpingRegexes:
             that captures a two-character acronym or initialism.
         SNAKE_CASE (Pattern): Compiled regular expression object that 
             captures a snake case string.
-        WORD_WITH_APOS (Pattern): Compiled regular expression object 
-            that captures words with apostrophes as a single word.
+        TITLE_SUBSTRING_SPLIT (Pattern): Compiled regular expression 
+            object for splitting strings into substrings before 
+            capitalizing the first character.
+        TITLE_WORD_SPLIT (Pattern): Compiled regular expression object 
+            for splitting substrings into words before capitalizing 
+            title case words.
     """
     _CLOSING_LOOKAHEAD_STR = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'
     _OPENING_LOOKBEHIND_STR = r'(?<=\s|\(|\[|\{)'
 
     CAMEL_CASE = re.compile(r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+')
-    CAMEL_PASCAL_SPLIT = re.compile(r'(?<=[a-z0-9])(?=[A-Z])')
+    CAMEL_PASCAL_SPLIT = re.compile(r'''
+        (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase 
+                            # letter or digit
+        (?=[A-Z])       # Positive lookahead to split before an uppercase 
+                            # letter
+        |               # OR
+        (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or 
+                            # uppercase letter
+        (?=[0-9])       # Positive lookahead to split before a digit
+        ''', re.VERBOSE)
     CAMEL_SPLIT = re.compile(r'(?<=[\s—–\-])')
     CLOSING_STRAIGHT_DOUBLE = re.compile(rf'"$|"{_CLOSING_LOOKAHEAD_STR}')
     CLOSING_STRAIGHT_SINGLE = re.compile(rf"'$|'{_CLOSING_LOOKAHEAD_STR}")
@@ -71,7 +89,8 @@ class WarpingRegexes:
     HYPHENS = re.compile(r'\s?--?\s?')
     HYPHEN_UNDERSCORE = re.compile(r'\-|_')
     KEBAB_CASE = re.compile(r'([A-Za-z0-9]+\-[A-Za-z0-9]\-?)+')
-    LETTER_WORD = re.compile(r'([A-Za-z]\w*)')
+    LETTER_APOSTROPHE = re.compile(r'(?<=[A-Za-z])[\'’](?=[A-Za-z])')
+    LETTER_WORD = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
     OPENING_STRAIGHT_DOUBLE = re.compile(rf'(^|{_OPENING_LOOKBEHIND_STR})"')
     OPENING_STRAIGHT_SINGLE = re.compile(rf"(^|{_OPENING_LOOKBEHIND_STR})'")
     PASCAL_CASE = re.compile(r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+')
@@ -89,8 +108,9 @@ class WarpingRegexes:
         _                       # Split on an underscore to convert from snake 
                                     # case
         |                       # OR
-        \b                      # Split to ensure word character substrings 
-                                    # begin and end with word characters
+        \b                      # Split on a word boundary character to ensure 
+                                    # substrings begin and end with a word 
+                                    # character.
         ''', re.VERBOSE)
     PUNCT_INSIDE = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE = re.compile(r'(["”\'’]?["”\'’])([.,])')
@@ -128,4 +148,5 @@ class WarpingRegexes:
         ''', re.VERBOSE)
     SHORT_ACRONYM = re.compile(r'[A-Z]{2}\b')
     SNAKE_CASE = re.compile(r'([A-Za-z0-9]+_[A-Za-z0-9]+_?)+')
-    WORD_WITH_APOS = re.compile(r'\w+([\'’]\w+)?')
+    TITLE_SUBSTRING_SPLIT = re.compile(r'(?<=[\n\.:])')
+    TITLE_WORD_SPLIT = re.compile(r' |-|_')
