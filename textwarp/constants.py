@@ -43,10 +43,10 @@ class HelpMessages:
     UPPERCASE = 'convert to uppercase'
 
 # String printed to prompt the user for any other text
-ANY_OTHER_TEXT_STR = 'Any other text? (Copy text to clipboard):'
+ANY_OTHER_TEXT_STR = 'Any other text? (y/n) (Copy text to clipboard):'
 
 # String printed when the previous response was invalid
-ENTER_VALID_RESPONSE_STR = 'Please enter a valid response. (y/n)'
+ENTER_VALID_RESPONSE_STR = 'Please enter a valid response.'
 
 # String printed when the user exits the program
 EXIT_STR = 'Exiting the program...'
