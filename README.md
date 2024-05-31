@@ -103,40 +103,42 @@ Follow these steps to run `textwarp`:
     pip3 install git+https://github.com/adamggrim/textwarp.git
     ```
 
-4. **Make sure the `textwarp` command is on your system PATH**: Try to run `textwarp` from the command line. If the console cannot find the command, it was not installed on your system PATH.
+4. **Run the program**: Execute the program by calling `textwarp` from the command line with a required argument. For example: `textwarp --camel-case`
 
-    To resolve this, follow these steps:
+## Troubleshooting
 
-    1. Find the installed location of the `textwarp` package using pip's `show` command.
+If the console cannot find the `textwarp` command when you try to run it from the command line, it was not installed on your system PATH.
 
-        On macOS:
-        ```
-        pip3 show textwarp
-        ```
+To resolve this, follow these steps:
 
-        The location of `textwarp` will be listed in the command's output. For example:
-        ```
-        Location: /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages
-        ```
+1. Find the installed location of the `textwarp` package using pip's `show` command.
 
-    2. Once you have determined the location of `textwarp`, find the installed location of the `textwarp` command file in your parent Python folder.
+    On macOS:
+    ```
+    pip3 show textwarp
+    ```
 
-        On macOS:
-        ```
-        find /Library/Frameworks/Python.framework/Versions/3.12/ -name textwarp
-        ```
+    The location of `textwarp` will be listed in the command's output. For example:
+    ```
+    Location: /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages
+    ```
 
-    3. Create a symbolic link to the underlying `textwarp` command file and place it in the local directory on your system PATH.
+2. Once you have determined the location of `textwarp`, find the installed location of the `textwarp` command file in your parent Python folder.
 
-        On macOS:
+    On macOS:
+    ```
+    find /Library/Frameworks/Python.framework/Versions/3.12/ -name textwarp
+    ```
 
-        ```
-        sudo ln -s /Library/Frameworks/Python.framework/Versions/3.12/bin/textwarp /usr/local/bin/
-        ```
+3. Create a symbolic link to the underlying `textwarp` command file and place it in the local directory on your system PATH.
 
-        To find the system PATH, you can type `echo $PATH` into the console (macOS).
+    On macOS:
 
-5. **Run the program**: Execute the program by calling `textwarp` from the command line with a required argument. For example: `textwarp --camel-case`
+    ```
+    sudo ln -s /Library/Frameworks/Python.framework/Versions/3.12/bin/textwarp /usr/local/bin/
+    ```
+
+    To find the system PATH, you can type `echo $PATH` into the console (macOS).
 
 ## License
 
