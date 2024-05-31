@@ -85,14 +85,14 @@ Follow these steps to run `textwarp`:
 
     On macOS:
     ```
-    pip3 show pyperclip
+    pip3 show nltk
     ```
 
     If the package is not installed, you will receive the warning, `WARNING: Package(s) not found`. You can install a missing package using pip.
 
     On macOS:
     ```
-    pip3 install pyperclip
+    pip3 install nltk
     ```
 
 3. **Install the package**: Install `textwarp` using pip.
