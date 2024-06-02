@@ -47,7 +47,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to your desired location.
+    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to view the mosified text.
 
 4. **Continue or exit**
 
@@ -66,7 +66,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 textwarp/
 └── __init__.py: File for recognizing textwarp as a package
 ├── __main__.py: File for running the textwarp command
-├── constants.py: Defines constants used throughout the program
+├── constants.py: Defines constants used throughout the package
 ├── enums.py: Defines enum for separator cases
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
