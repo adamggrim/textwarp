@@ -8,6 +8,8 @@ from textwarp.regexes import WarpingRegexes
 
 
 class HelperFunctions:
+    """Helper functions for text warping."""
+
     def capitalize_words(string: str, word_count: Optional[int] = None) -> str:
             """
             Capitalizes the first letter of each in a specified number 
