@@ -70,9 +70,10 @@ This example demonstrates how to print a parts-of-speech count using `textcount`
 textcount/
 └── __init__.py: File for recognizing textcount as a package
 ├── __main__.py: File for running the textcount command
-├── analysis.py: Defines functions for text analysis
+├── analyzing.py: Defines functions for text analysis
 ├── constants.py: Defines constants used throughout the package
 ├── data_structures.py: Defines data structures used throughout the package
+├── formatting.py: Defines functions for formatting text analysis
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
 └── regexes.py: Defines regular expressions for text cleaning
