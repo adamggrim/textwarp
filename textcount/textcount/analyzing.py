@@ -7,67 +7,93 @@ from textcount.constants import POS_KNOWN_TAGS, POS_TAGS
 from textcount.data_structures import POSCounts
 
 
-def get_char_count(string) -> str:
+def get_char_count(string) -> int:
     """
-    Returns a string indicating the number of characters in a given 
+    Returns an int indicating the number of characters in a given 
         string.
 
     Args:
         string (str): The string to analyze.
+
+    Returns:
+        int: A formatted string indicating character count.
     """
-    char_count = len(string)
-    return char_count
+    return len(string)
+
+
+def get_mfws(string, mfw_count) -> list[tuple]:
+    """
+    Returns a list of tuples indicating the most frequent words in a 
+        given string.
+
+    Args:
+        string (str): The string to analyze.
+        mfw_count (int): The number of most frequent words to return.
+
+    Returns:
+        list[tuple]: A list of tuples with each tuple containing a word 
+            (str) and its count (int).
+    """
+    words = word_tokenize(string)
+    counts = Counter(words)
+    return counts.most_common(mfw_count)
 
 
 def get_pos_count(string) -> POSCounts:
     """
-    Returns a POSCount object containing the parts of speech counts 
+    Returns a POSCounts object containing the parts of speech counts 
         for a given string.
 
     Args:
         string (str): The string to analyze.
 
     Returns:
-        POSCount: The parts of speech counts for the string.
+        POSCounts: The parts of speech counts for the string.
     """
     words = word_tokenize(string)
     word_tags = pos_tag(words, tagset='universal')
     counts = Counter(tag for _, tag in word_tags)
-    pos_counts = {
-        'word_count': sum(counts.get(tag, 0) for tag in POS_TAGS),
-    }
+    pos_counts = POSCounts()
+    setattr(pos_counts, 'word_count', sum(counts.get(tag, 0) for tag in 
+                                          POS_TAGS))
     for tag in POS_KNOWN_TAGS:
-        pos_counts[f'{tag.lower()}_count'] = counts.get(tag, 0)
+        count = counts.get(tag, 0)
+        setattr(pos_counts, f'{tag.lower()}_count', count)
     return pos_counts
 
 
-def get_time_to_read(string, wpm) -> str:
+def get_time_to_read(string, wpm) -> int:
     """
-    Returns a string representing the minutes to read a given string.
+    Returns an integer representing the minutes to read a given string.
 
     Args:
         string (str): The string to analyze.
         wpm (int): The number of words per minute.
 
     Returns:
-        str: The minutes to read the given string, rounded up if greater than 
-            one.
+        int: The minutes to read the given string. Rounded up if more 
+            than one minute, zero if less than one minute.
     """
     word_count = get_word_count(string)
     minutes_to_read = word_count / wpm
-    return ceil(minutes_to_read) if minutes_to_read > 1 else minutes_to_read
+    return ceil(minutes_to_read) if minutes_to_read > 1 else 0
 
 
-def get_word_count(string) -> str:
+def get_word_count(string) -> int:
     """
-    Returns the number of words in a given string.
+    Returns an integer representing the number of words in a given 
+        string.
 
     Args:
         string (str): The string to analyze.
+
+    Returns:
+        word_count (int): The number of words in the string.
     """
     words = word_tokenize(string)
     word_tags = pos_tag(words, tagset='universal')
     counts = Counter(tag for _, tag in word_tags)
+    word_count = 0
     for tag in POS_TAGS:
         word_count += counts[tag] 
     return word_count
