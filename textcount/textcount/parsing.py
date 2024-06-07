@@ -2,8 +2,9 @@ import argparse
 from typing import Callable
 
 from textcount.constants import HelpMessages
-from textcount.analysis import (get_char_count, get_mfws, get_pos_count, 
-                                get_time_to_read)
+from textcount.processing import (process_char_count, process_mfws, 
+                                  process_pos_count, process_time_to_read, 
+                                  process_word_count)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -25,14 +26,17 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.POS_COUNT)
     group.add_argument('--time-to-read', action='store_true', 
                        help=HelpMessages.TIME_TO_READ)
+    group.add_argument('--word-count', action='store_true', 
+                       help=HelpMessages.WORD_COUNT)
     args = parser.parse_args()
 
-    # Dictionary mapping argument names to text analysis functions
+    # Dictionary mapping argument names to text counting functions
     arg_func_dict = {
-        'char_count': get_char_count,
-        'mfws': get_mfws,
-        'pos_count': get_pos_count,
-        'time_to_read': get_time_to_read,
+        'char_count': process_char_count,
+        'mfws': process_mfws,
+        'pos_count': process_pos_count,
+        'time_to_read': process_time_to_read,
+        'word_count': process_word_count
     }
 
     for arg_str, func in arg_func_dict.items():
