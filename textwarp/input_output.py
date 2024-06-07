@@ -41,7 +41,7 @@ def program_exit() -> None:
 def convert_text(conversion_function: Callable[[str], str]) -> None:
     """
     Applies the selected conversion function and prompts the user for 
-        other clipboard input.
+        any other clipboard input.
 
     Args:
         conversion_function (Callable[[str], str]): A function that 
