@@ -1,14 +1,20 @@
-class POSCount:
-    word_count: int
-    adj_count: int
-    adp_count: int
-    adv_count: int
-    conj_count: int
-    det_count: int
-    noun_count: int
-    prt_count: int
-    pron_count: int
-    verb_count: int
+class POSCounts:
+    """
+    A class representing the counts for each part of speech in a given text.
+    """
+    def __init__(self, word_count=0, adj_count=0, adp_count=0, adv_count=0, 
+                 conj_count=0, det_count=0, noun_count=0, prt_count=0, 
+                 pron_count=0, verb_count=0):
+        self.word_count = word_count
+        self.adj_count = adj_count
+        self.adp_count = adp_count
+        self.adv_count = adv_count
+        self.conj_count = conj_count
+        self.det_count = det_count
+        self.noun_count = noun_count
+        self.prt_count = prt_count
+        self.pron_count = pron_count
+        self.verb_count = verb_count
 
     @property
     def adj_ratio(self) -> float:
