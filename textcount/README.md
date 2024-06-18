@@ -20,7 +20,7 @@ This example demonstrates how to print a parts-of-speech count using `textcount`
 
 1. **Copy text to the clipboard**
 
-    In this example, `textcount` will count parts of speech for the following clipboard text: `The apparition of these faces in the crowd: Petals on a wet, black bough.`
+    In this example, `textcount` will count parts of speech for the following clipboard text: `The apparition of these faces in the crowd`
 
 2. **Run the command**
 
