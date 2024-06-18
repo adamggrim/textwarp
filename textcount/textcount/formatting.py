@@ -88,7 +88,7 @@ def format_time_to_read(minutes_to_read: int) -> str:
         return 'Less than 1 minute'
 
 
-def format_word_count(string) -> str:
+def format_word_count(word_count: int) -> str:
     """
     Returns a string indicating the number of words in a given string.
 
@@ -98,5 +98,4 @@ def format_word_count(string) -> str:
     Returns:
         str: The formatted string indicating word count.
     """
-    word_count = get_word_count(string)
     return f'Word count: {word_count}'
