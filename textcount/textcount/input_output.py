@@ -79,18 +79,18 @@ def program_exit() -> None:
     exit()
 
 
-def process_text(processing_function: Callable[[str], str]) -> None:
+def print_analysis(printing_function: Callable[[str], str]) -> None:
     """
-    Applies the selected text counting function and prompts the user 
-        for any other clipboard input.
+    Prints the text analysis and prompts the user for any other 
+        clipboard input.
 
     Args:
-        analysis_function (Callable[[str], str]): A function that 
+        printing_function (Callable[[str], str]): A function that 
             takes a string as input and prints the selected analysis.
     """
     while True:
         clipboard = pyperclip.paste()
-        processing_function(clipboard)
+        printing_function(clipboard)
         print_wrapped(ANY_OTHER_TEXT_STR)
         response = input().strip()
         while True:
