@@ -68,7 +68,7 @@ def get_time_to_read(string, wpm) -> int:
 
     Args:
         string (str): The string to analyze.
-        wpm (int): The number of words per minute.
+        wpm (int): The number of words per minute to return.
 
     Returns:
         int: The minutes to read the given string. Rounded up if more 
