@@ -16,15 +16,15 @@
 
 ## Examples
 
-This example demonstrates how to print a parts-of-speech count using `textcount`.
+This example demonstrates how to print a word count using `textcount`.
 
 1. **Copy text to the clipboard**
 
-    In this example, `textcount` will count parts of speech for the following clipboard text: `The apparition of these faces in the crowd`
+    In this example, `textcount` will count the number of words in the following clipboard text: `The apparition of these faces in the crowd: Petals on a wet, black bough.`
 
 2. **Run the command**
 
-    Once the text is copied to the clipboard, call `textcount` from the command line. Enter a required argument for the desired clipboard analysis: `textcount --pos-count`
+    Once the text is copied to the clipboard, call `textcount` from the command line. Enter a required argument for the desired clipboard analysis: `textcount --word-count`
 
     For a list of `textcount` arguments, type `textcount -h` or `textcount --help`:
     ```
@@ -41,16 +41,7 @@ This example demonstrates how to print a parts-of-speech count using `textcount`
     `textcount` will print the selected analysis to the clipboard:
 
     ```
-    Adjectives:    2 (14.29%)
-    Adpositions:   3 (21.43%)
-    Adverbs:         0 (0.0%)
-    Conjunctions:    0 (0.0%)
-    Determiners:   4 (28.57%)
-    Nouns:         5 (35.71%)
-    Particles:       0 (0.0%)
-    Pronouns:        0 (0.0%)
-    Verbs:           0 (0.0%)
-    Other:           0 (0.0%)
+    Word count: 14
     ```
 
 4. **Continue or exit**
@@ -76,7 +67,7 @@ textcount/
 ├── formatting.py: Defines functions for formatting text analysis
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
-└── regexes.py: Defines regular expressions for text cleaning
+└── printing.py: Deploys functions to analyze input and print output
 ```
 
 ## Usage
