@@ -1,5 +1,3 @@
-from collections import Counter
-
 from textcount.data_structures import POSCounts
 
 
