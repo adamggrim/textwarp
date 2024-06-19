@@ -4,7 +4,7 @@ class POSCounts:
     """
     def __init__(self, word_count=0, adj_count=0, adp_count=0, adv_count=0, 
                  conj_count=0, det_count=0, noun_count=0, prt_count=0, 
-                 pron_count=0, verb_count=0):
+                 pron_count=0, verb_count=0, other_count=0):
         self.word_count = word_count
         self.adj_count = adj_count
         self.adp_count = adp_count
@@ -15,6 +15,7 @@ class POSCounts:
         self.prt_count = prt_count
         self.pron_count = pron_count
         self.verb_count = verb_count
+        self.other_count = other_count
 
     @property
     def adj_ratio(self) -> float:
@@ -108,3 +109,16 @@ class POSCounts:
             float: The ratio of verbs to total word count.
         """
         return self.verb_count / self.word_count * 100 if self.word_count else 0
+
+    @property
+    def other_ratio(self) -> float:
+        """
+        Calculates the ratio of other parts of speech tags to total 
+            word count.
+
+        Returns:
+            float: The ratio of other parts of speech tags to total 
+                word count.
+        """
+        return (self.other_count / self.word_count * 100 if self.word_count 
+                else 0)
