@@ -21,20 +21,17 @@ class HelperFunctions:
                 count (int): The number of matches to replace.
 
             Returns:
-                capitalized_str (str): The capitalized string.
+                str: The capitalized string.
             """
             # Capitalize the first letter of every word.
             if word_count is None:
-                capitalized_str = re.sub(WarpingRegexes.LETTER_WORD, 
-                                         lambda match: 
-                                         match.group(0).capitalize(), string)
+                return re.sub(WarpingRegexes.LETTER_WORD, lambda match: 
+                              match.group(0).capitalize(), string)
             # Capitalize the first letter of a specified number of words.
             else:
-                capitalized_str = re.sub(WarpingRegexes.LETTER_WORD, 
-                                         lambda match: 
-                                         match.group(0).capitalize(), string, 
-                                         count=word_count)
-            return capitalized_str
+                return re.sub(WarpingRegexes.LETTER_WORD, lambda match: 
+                              match.group(0).capitalize(), string, 
+                              count=word_count)
 
     def remove_apostrophes(string) -> str:
         """
