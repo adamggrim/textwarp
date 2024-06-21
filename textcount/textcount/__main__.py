@@ -1,6 +1,6 @@
-from textcount.input_output import (print_analysis, print_padding, 
-                                   program_exit)
+from textcount.input_output import (print_analysis, program_exit)
 from textcount.parsing import parse_args
+from textcount.printing import FormatPrinting
 
 
 def main() -> None:
@@ -11,5 +11,5 @@ def main() -> None:
         try:
             print_analysis(printing_function)
         except KeyboardInterrupt:
-            print_padding()
+            FormatPrinting.print_padding()
             program_exit()
