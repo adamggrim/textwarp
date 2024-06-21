@@ -1,6 +1,6 @@
+from textcount.formatting import FormatPrinting
 from textcount.input_output import (print_analysis, program_exit)
 from textcount.parsing import parse_args
-from textcount.printing import FormatPrinting
 
 
 def main() -> None:

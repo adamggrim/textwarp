@@ -5,7 +5,7 @@ import pyperclip
 from textcount.constants import (ANY_OTHER_TEXT_STR, ENTER_NUMBER_STR, 
                                  ENTER_VALID_RESPONSE_STR, EXIT_STR, NO_STRS, 
                                  QUIT_STRS, WPM_STR, YES_STRS)
-from textcount.printing import FormatPrinting
+from textcount.formatting import FormatPrinting
 
 
 class ParameterInput:
