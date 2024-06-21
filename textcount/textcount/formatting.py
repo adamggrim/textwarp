@@ -22,7 +22,10 @@ class FormatPrinting:
         """
         terminal_size = os.get_terminal_size()[0]
         print_size = terminal_size - 1
-        wrapped_str = textwrap.fill(string, width=print_size)
+        lines = string.splitlines()
+        wrapped_lines = [textwrap.fill(line, width=print_size) for line in 
+                         lines]
+        wrapped_str = '\n'.join(wrapped_lines)
         print('\n' + wrapped_str)
 
 
