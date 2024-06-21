@@ -33,7 +33,7 @@ class HelperFunctions:
                               match.group(0).capitalize(), string, 
                               count=word_count)
 
-    def remove_apostrophes(string) -> str:
+    def remove_apostrophes(string: str) -> str:
         """
         Removes apostrophes from a string without removing single 
             quotes.
@@ -46,7 +46,7 @@ class HelperFunctions:
         """
         return re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', string)
 
-    def to_separator_case(string, separator_case: SeparatorCase) -> str:
+    def to_separator_case(string: str, separator_case: SeparatorCase) -> str:
         """
         Converts a string to kebab case or snake case.
 
@@ -116,7 +116,7 @@ class HelperFunctions:
             separator_substrings.append(separator_substring)
         return ''.join(separator_substrings)
 
-    def uppercase_first_letter(string) -> str:
+    def uppercase_first_letter(string: str) -> str:
         """
         Converts the first letter of the string to uppercase without 
             modifying any other letters.
