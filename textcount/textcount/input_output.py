@@ -30,6 +30,7 @@ class ParameterInput:
                 mfw_count = input().strip()
                 continue
         return int(mfw_count)
+
     def get_wpm() -> int:
         """
         Prompts the user for the number of words per minute.
