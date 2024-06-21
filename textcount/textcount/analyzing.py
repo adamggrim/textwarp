@@ -9,8 +9,7 @@ from textcount.data_structures import POSCounts
 
 def get_char_count(string) -> int:
     """
-    Returns an int indicating the number of characters in a given 
-        string.
+    Gets an int indicating the number of characters in a given string.
 
     Args:
         string (str): The string to analyze.
@@ -23,8 +22,8 @@ def get_char_count(string) -> int:
 
 def get_mfws(string, mfw_count) -> list[tuple]:
     """
-    Returns a list of tuples indicating the most frequent words in a 
-        given string.
+    Gets a list of tuples indicating the most frequent words in a given 
+        string.
 
     Args:
         string (str): The string to analyze.
@@ -41,8 +40,8 @@ def get_mfws(string, mfw_count) -> list[tuple]:
 
 def get_pos_count(string) -> POSCounts:
     """
-    Returns a POSCounts object containing the parts of speech counts 
-        for a given string.
+    Gets a POSCounts object containing the parts of speech counts for a 
+        given string.
 
     Args:
         string (str): The string to analyze.
@@ -64,7 +63,7 @@ def get_pos_count(string) -> POSCounts:
 
 def get_time_to_read(string, wpm) -> int:
     """
-    Returns an integer representing the minutes to read a given string.
+    Gets an integer representing the minutes to read a given string.
 
     Args:
         string (str): The string to analyze.
@@ -81,8 +80,7 @@ def get_time_to_read(string, wpm) -> int:
 
 def get_word_count(string) -> int:
     """
-    Returns an integer representing the number of words in a given 
-        string.
+    Gets an integer representing the number of words in a given string.
 
     Args:
         string (str): The string to analyze.
