@@ -32,6 +32,9 @@ ENTER_NUMBER_STR = 'Please enter a number.'
 # String printed when the previous response was invalid
 ENTER_VALID_RESPONSE_STR = 'Please enter a valid response.'
 
+# String printed to prompt the user for words per minute
+ENTER_WPM_STR = 'How many words per minute?'
+
 # String printed when the user exits the program
 EXIT_STR = 'Exiting the program...'
 
@@ -48,9 +51,6 @@ POS_KNOWN_TAGS = ('ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'PRT', 'PRON',
 
 # Set of strings for exiting the program
 QUIT_STRS = {'quit', 'q', 'exit', 'e'}
-
-# String printed to prompt the user for words per minute
-WPM_STR = 'How many words per minute?'
 
 # Set of strings for indicating an affirmative response
 YES_STRS = {'yes', 'y'}
