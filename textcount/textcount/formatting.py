@@ -69,21 +69,22 @@ def format_pos_count(pos_counts: POSCounts) -> str:
         str: A formatted string indicating parts of speech counts.
     """
     pos_str_counts = (
-        ('Adjectives', pos_counts.adj_count, pos_counts.adj_ratio),
-        ('Adpositions', pos_counts.adp_count, pos_counts.adp_ratio),
-        ('Adverbs', pos_counts.adv_count, pos_counts.adv_ratio),
-        ('Conjunctions', pos_counts.conj_count, pos_counts.conj_ratio),
-        ('Determiners', pos_counts.det_count, pos_counts.det_ratio),
-        ('Nouns', pos_counts.noun_count, pos_counts.noun_ratio),
-        ('Particles', pos_counts.prt_count, pos_counts.prt_ratio),
-        ('Pronouns', pos_counts.pron_count, pos_counts.pron_ratio),
-        ('Verbs', pos_counts.verb_count, pos_counts.verb_ratio),
-        ('Other', pos_counts.other_count, pos_counts.other_ratio)
+        ('Adjectives:', pos_counts.adj_count, pos_counts.adj_ratio),
+        ('Adpositions:', pos_counts.adp_count, pos_counts.adp_ratio),
+        ('Adverbs:', pos_counts.adv_count, pos_counts.adv_ratio),
+        ('Conjunctions:', pos_counts.conj_count, pos_counts.conj_ratio),
+        ('Determiners:', pos_counts.det_count, pos_counts.det_ratio),
+        ('Nouns:', pos_counts.noun_count, pos_counts.noun_ratio),
+        ('Particles:', pos_counts.prt_count, pos_counts.prt_ratio),
+        ('Pronouns:', pos_counts.pron_count, pos_counts.pron_ratio),
+        ('Verbs:', pos_counts.verb_count, pos_counts.verb_ratio),
+        ('Other:', pos_counts.other_count, pos_counts.other_ratio)
     )
-    results = [
-        f'{pos:12}: {count:4} ({ratio:6.2f}%)'
-        for pos, count, ratio in pos_str_counts
-    ]
+    results = []
+    for pos, count, ratio in pos_str_counts:
+        formatted_ratio = f'({ratio:.2f}%)'
+        formatted_line = f'{pos:13}{count:4} {formatted_ratio:>8}'
+        results.append(formatted_line)
     return '\n'.join(results)
 
 
