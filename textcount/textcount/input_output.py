@@ -60,18 +60,19 @@ def program_exit() -> None:
     exit()
 
 
-def print_analysis(printing_function: Callable[[str], str]) -> None:
+def process_analysis(processing_function: Callable[[str], str]) -> None:
     """
     Prints the text analysis and prompts the user for any other 
         clipboard input.
 
     Args:
-        printing_function (Callable[[str], str]): A function that 
-            takes a string as input and prints the selected analysis.
+        processing_function (Callable[[str], str]): A function that 
+            takes a string as input and deploys functions to print 
+            the selected analysis.
     """
     while True:
         clipboard = pyperclip.paste()
-        printing_function(clipboard)
+        processing_function(clipboard)
         FormatPrinting.print_wrapped(ANY_OTHER_TEXT_STR)
         response = input().strip()
         while True:

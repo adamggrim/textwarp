@@ -67,7 +67,7 @@ textcount/
 ├── formatting.py: Defines functions for formatting text analysis
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
-└── printing.py: Deploys functions to analyze input and print output
+└── processing.py: Deploys functions to analyze input and print output
 ```
 
 ## Usage

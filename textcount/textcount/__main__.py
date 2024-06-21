@@ -1,15 +1,15 @@
 from textcount.formatting import FormatPrinting
-from textcount.input_output import (print_analysis, program_exit)
+from textcount.input_output import process_analysis, program_exit
 from textcount.parsing import parse_args
 
 
 def main() -> None:
     """Initiates an instance of a text analysis function."""
-    printing_function = parse_args()
+    processing_function = parse_args()
 
     while True:
         try:
-            print_analysis(printing_function)
+            process_analysis(processing_function)
         except KeyboardInterrupt:
             FormatPrinting.print_padding()
             program_exit()
