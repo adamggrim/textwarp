@@ -5,7 +5,7 @@ from textcount.formatting import (FormatPrinting, format_char_count,
                                   format_time_to_read, format_word_count)
 
 
-def print_char_count(string) -> None:
+def print_char_count(string: str) -> None:
     """
     Deploys functions to analyze, format and print character count 
         output.
@@ -19,7 +19,7 @@ def print_char_count(string) -> None:
     FormatPrinting.print_wrapped(char_count_str)
 
 
-def print_mfws(string, mfw_count) -> None:
+def print_mfws(string: str, mfw_count: int) -> None:
     """
     Deploys functions to analyze, format and print most frequent words 
         output.
@@ -33,7 +33,7 @@ def print_mfws(string, mfw_count) -> None:
     FormatPrinting.print_wrapped(mfws_str)
 
 
-def print_pos_count(string) -> None:
+def print_pos_count(string: str) -> None:
     """
     Deploys functions to analyze, format and print parts of speech 
         count output.
@@ -46,7 +46,7 @@ def print_pos_count(string) -> None:
     FormatPrinting.print_wrapped(pos_count_str)
 
 
-def print_time_to_read(string, wpm) -> None:
+def print_time_to_read(string: str, wpm: int) -> None:
     """
     Deploys functions to analyze, format and print time to read output.
 
@@ -59,7 +59,7 @@ def print_time_to_read(string, wpm) -> None:
     FormatPrinting.print_wrapped(time_to_read_str)
 
 
-def print_word_count(string) -> None:
+def print_word_count(string: str) -> None:
     """
     Deploys functions to analyze, format and print word count output. 
 

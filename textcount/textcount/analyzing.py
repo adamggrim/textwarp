@@ -7,7 +7,7 @@ from textcount.constants import POS_KNOWN_TAGS, POS_TAGS
 from textcount.data_structures import POSCounts
 
 
-def get_char_count(string) -> int:
+def get_char_count(string: str) -> int:
     """
     Gets an int indicating the number of characters in a given string.
 
@@ -20,7 +20,7 @@ def get_char_count(string) -> int:
     return len(string)
 
 
-def get_mfws(string, mfw_count) -> list[tuple]:
+def get_mfws(string: str, mfw_count: int) -> list[tuple]:
     """
     Gets a list of tuples indicating the most frequent words in a given 
         string.
@@ -38,7 +38,7 @@ def get_mfws(string, mfw_count) -> list[tuple]:
     return counts.most_common(mfw_count)
 
 
-def get_pos_count(string) -> POSCounts:
+def get_pos_count(string: str) -> POSCounts:
     """
     Gets a POSCounts object containing the parts of speech counts for a 
         given string.
@@ -61,7 +61,7 @@ def get_pos_count(string) -> POSCounts:
     return pos_counts
 
 
-def get_time_to_read(string, wpm) -> int:
+def get_time_to_read(string: str, wpm: int) -> int:
     """
     Gets an integer representing the minutes to read a given string.
 
@@ -78,7 +78,7 @@ def get_time_to_read(string, wpm) -> int:
     return ceil(minutes_to_read) if minutes_to_read > 1 else 0
 
 
-def get_word_count(string) -> int:
+def get_word_count(string: str) -> int:
     """
     Gets an integer representing the number of words in a given string.
 
