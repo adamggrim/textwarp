@@ -2,52 +2,9 @@ from typing import Callable
 
 import pyperclip
 
-from textcount.constants import (ANY_OTHER_TEXT_STR, ENTER_NUMBER_STR, 
-                                 ENTER_VALID_RESPONSE_STR, EXIT_STR, NO_STRS, 
-                                 QUIT_STRS, WPM_STR, YES_STRS)
+from textcount.constants import (ANY_OTHER_TEXT_STR, ENTER_VALID_RESPONSE_STR, 
+                                 EXIT_STR, NO_STRS, QUIT_STRS, YES_STRS)
 from textcount.formatting import FormatPrinting
-
-
-class ParameterInput:
-    """
-    Class for getting function parameter input from the user.
-    """
-    def get_mfw_count() -> int:
-        """
-        Prompts the user for the number of most frequent words to 
-            display.
-
-        Returns:
-            int: The number of most frequent words to display.
-        """
-        print('How many most frequent words?')
-        mfw_count = input().strip()
-        while True:
-            if mfw_count.isdigit() == True:
-                break
-            else:
-                print(ENTER_NUMBER_STR)
-                mfw_count = input().strip()
-                continue
-        return int(mfw_count)
-
-    def get_wpm() -> int:
-        """
-        Prompts the user for the number of words per minute.
-
-        Returns:
-            int: The number of words per minute.
-        """
-        print(WPM_STR)
-        wpm = input().strip()
-        while True:
-            if wpm.isdigit() == True:
-                break
-            else:
-                print(ENTER_NUMBER_STR)
-                wpm = input().strip()
-                continue
-        return int(wpm)
 
 
 def program_exit() -> None:
