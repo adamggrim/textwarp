@@ -3,7 +3,7 @@ from math import ceil
 
 from nltk import pos_tag, word_tokenize
 
-from textcount.constants import POS_KNOWN_TAGS, POS_TAGS
+from textcount.constants import POS_TAGS, POS_WORD_TAGS
 from textcount.data_structures import POSCounts
 
 
@@ -53,11 +53,13 @@ def get_pos_count(string: str) -> POSCounts:
     word_tags = pos_tag(words, tagset='universal')
     counts = Counter(tag for _, tag in word_tags)
     pos_counts = POSCounts()
+    # Set total word count for POSCounts object
     setattr(pos_counts, 'word_count', sum(counts.get(tag, 0) for tag in 
-                                          POS_TAGS))
-    for tag in POS_KNOWN_TAGS:
-        count = counts.get(tag, 0)
-        setattr(pos_counts, f'{tag.lower()}_count', count)
+                                          POS_WORD_TAGS))
+    # Set parts of speech counts for POSCounts object
+    for tag_pair in POS_TAGS:
+        count = counts.get(tag_pair[0], 0)
+        setattr(pos_counts, f'{tag_pair[0].lower()}_count', count)
     return pos_counts
 
 
@@ -92,6 +94,6 @@ def get_word_count(string: str) -> int:
     word_tags = pos_tag(words, tagset='universal')
     counts = Counter(tag for _, tag in word_tags)
     word_count = 0
-    for tag in POS_TAGS:
+    for tag in POS_WORD_TAGS:
         word_count += counts[tag] 
     return word_count

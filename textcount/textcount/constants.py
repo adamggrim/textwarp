@@ -41,13 +41,15 @@ EXIT_STR = 'Exiting the program...'
 # Set of strings for indicating a negative response
 NO_STRS = {'no', 'n'}
 
-# Tuple of strings for POS tags
-POS_TAGS = ('ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM', 'PRT', 'PRON', 
-            'VERB', 'X')
+# Tuple of tuples for parts of speech tags and their names
+POS_TAGS = (('ADJ', 'Adjectives'), ('ADP', 'Adpositions'), ('ADV', 'Adverbs'), 
+            ('CONJ', 'Conjunctions'), ('DET', 'Determiners'), 
+            ('NOUN', 'Nouns'), ('NUM', 'Numbers'), ('PRT', 'Particles'), 
+            ('PRON', 'Pronouns'), ('VERB', 'Verbs'), ('X', 'Other'))
 
 # Tuple of strings for POS tags representing words
-POS_KNOWN_TAGS = ('ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'PRT', 'PRON', 
-                 'VERB')
+POS_WORD_TAGS = ('ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM', 'PRT', 
+                 'PRON', 'VERB')
 
 # Set of strings for exiting the program
 QUIT_STRS = {'quit', 'q', 'exit', 'e'}
