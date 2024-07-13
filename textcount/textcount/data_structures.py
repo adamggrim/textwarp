@@ -2,9 +2,10 @@ class POSCounts:
     """
     A class representing the counts for each part of speech in a given text.
     """
+
     def __init__(self, word_count=0, adj_count=0, adp_count=0, adv_count=0, 
-                 conj_count=0, det_count=0, noun_count=0, prt_count=0, 
-                 pron_count=0, verb_count=0, other_count=0):
+                 conj_count=0, det_count=0, noun_count=0, num_count=0, 
+                 prt_count=0, pron_count=0, verb_count=0, x_count=0):
         self.word_count = word_count
         self.adj_count = adj_count
         self.adp_count = adp_count
@@ -12,10 +13,11 @@ class POSCounts:
         self.conj_count = conj_count
         self.det_count = det_count
         self.noun_count = noun_count
+        self.num_count = num_count
         self.prt_count = prt_count
         self.pron_count = pron_count
         self.verb_count = verb_count
-        self.other_count = other_count
+        self.x_count = x_count
 
     @property
     def adj_ratio(self) -> float:
@@ -80,6 +82,16 @@ class POSCounts:
                 else 0)
 
     @property
+    def num_ratio(self) -> float:
+        """
+        Calculates the ratio of numbers to total word count.
+
+        Returns:
+            float: The ratio of numbers to total word count.
+        """
+        return self.num_count / self.word_count * 100 if self.word_count else 0
+
+    @property
     def prt_ratio(self) -> float:
         """
         Calculates the ratio of particles to total word count.
@@ -111,7 +123,7 @@ class POSCounts:
         return self.verb_count / self.word_count * 100 if self.word_count else 0
 
     @property
-    def other_ratio(self) -> float:
+    def x_ratio(self) -> float:
         """
         Calculates the ratio of other parts of speech tags to total 
             word count.
@@ -120,5 +132,4 @@ class POSCounts:
             float: The ratio of other parts of speech tags to total 
                 word count.
         """
-        return (self.other_count / self.word_count * 100 if self.word_count 
-                else 0)
+        return self.x_count / self.word_count * 100 if self.word_count else 0
