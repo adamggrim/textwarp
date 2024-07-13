@@ -1,6 +1,7 @@
 import os
 import textwrap
 
+from textcount.constants import POS_TAGS
 from textcount.data_structures import POSCounts
 
 
@@ -61,33 +62,33 @@ def format_mfws(mfws: list[tuple]) -> str:
 
 def format_pos_count(pos_counts: POSCounts) -> str:
     """
-    Returns a string indicating the parts of speech counts for a given 
-        string.
+    Returns a dynamically formatted string indicating parts of speech 
+        counts for a given POSCounts object.
 
     Args:
-        pos_counts (POSCounts): The parts of speech counts for the 
-            string.
+        pos_counts (POSCounts): The parts of speech counts.
 
     Returns:
         str: A formatted string indicating parts of speech counts.
     """
-    pos_str_counts = (
-        ('Adjectives:', pos_counts.adj_count, pos_counts.adj_ratio),
-        ('Adpositions:', pos_counts.adp_count, pos_counts.adp_ratio),
-        ('Adverbs:', pos_counts.adv_count, pos_counts.adv_ratio),
-        ('Conjunctions:', pos_counts.conj_count, pos_counts.conj_ratio),
-        ('Determiners:', pos_counts.det_count, pos_counts.det_ratio),
-        ('Nouns:', pos_counts.noun_count, pos_counts.noun_ratio),
-        ('Particles:', pos_counts.prt_count, pos_counts.prt_ratio),
-        ('Pronouns:', pos_counts.pron_count, pos_counts.pron_ratio),
-        ('Verbs:', pos_counts.verb_count, pos_counts.verb_ratio),
-        ('Other:', pos_counts.other_count, pos_counts.other_ratio)
-    )
+    pos_tuples = []
+    for tag_pair in POS_TAGS:
+        pos = tag_pair[1]
+        count = getattr(pos_counts, f'{tag_pair[0].lower()}_count')
+        ratio = getattr(pos_counts, f'{tag_pair[0].lower()}_ratio')
+        pos_tuples.append((pos, count, ratio))
+    max_pos_length = max(len(tag_pair[1]) for tag_pair in POS_TAGS)
+    max_count_length = max(len(f'{count}') for _, count, _ in pos_tuples)
+    max_ratio_length = max(len(f'({ratio:.2f}%)') for _, _, ratio in 
+                           pos_tuples)
+    padding = 2
     results = []
-    for pos, count, ratio in pos_str_counts:
+    for pos, count, ratio in pos_tuples:
         formatted_ratio = f'({ratio:.2f}%)'
-        formatted_line = f'{pos:13}{count:4} {formatted_ratio:>8}'
-        results.append(formatted_line)
+        # Dynamic spacing based on POS, count and ratio length
+        results.append(f'{pos:{max_pos_length + padding}}'
+                       f'{count:<{max_count_length + padding}}'
+                       f'{formatted_ratio:>{max_ratio_length}}')
     return '\n'.join(results)
 
 
