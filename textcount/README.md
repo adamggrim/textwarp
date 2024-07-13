@@ -14,7 +14,7 @@
 - `pyperclip`: For accessing clipboard text
 - `setuptools`: For building and installing the `textcount` package, and for implementing command-line functionality using entry points
 
-## Examples
+## Example
 
 This example demonstrates how to print a word count using `textcount`.
 
