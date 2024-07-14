@@ -14,7 +14,7 @@
 - `pyperclip`: For accessing and copying to the clipboard
 - `setuptools`: For building and installing the `textwarp` package, and for implementing command-line functionality using entry points
 
-## Examples
+## Example
 
 This example demonstrates how to convert text to camel case using `textwarp`.
 
