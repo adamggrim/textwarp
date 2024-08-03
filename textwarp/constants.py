@@ -5,6 +5,8 @@ class HelpMessages:
     Attributes:
         DESCRIPTION (STR): Description for textwarp arguments
 
+        ALTERNATING_CAPS (STR): Help message for --alternating-caps 
+            argument
         CAMEL_CASE (STR): Help message for --camel-case argument
         CAPITALIZE (STR): Help message for --capitalize argument
         CURLY_TO_STRAIGHT (STR): Help message for --curly-to-straight 
@@ -27,6 +29,7 @@ class HelpMessages:
     DESCRIPTION = ('Specify the text warping function to apply to the '
                    'clipboard.')
 
+    ALTERNATING_CAPS = 'convert to alternating caps'
     CAMEL_CASE = 'convert to camel case'
     CAPITALIZE = 'capitalize the first character of each word'
     CURLY_TO_STRAIGHT = 'convert curly quotes to straight quotes'

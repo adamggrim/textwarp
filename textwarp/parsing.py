@@ -4,9 +4,10 @@ from typing import Callable
 from textwarp.constants import HelpMessages
 from textwarp.warping import (capitalize, curly_to_straight, hyphens_to_em, 
                               hyphen_to_en, punct_to_inside, punct_to_outside, 
-                              straight_to_curly, to_camel_case, to_kebab_case, 
-                              to_lowercase, to_pascal_case, to_snake_case, 
-                              to_title_case, to_uppercase)
+                              straight_to_curly, to_alternating_caps, 
+                              to_camel_case, to_kebab_case, to_lowercase, 
+                              to_pascal_case, to_snake_case, to_title_case, 
+                              to_uppercase)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -20,6 +21,8 @@ def parse_args() -> Callable[[str], str]:
     """
     parser = argparse.ArgumentParser(description=HelpMessages.DESCRIPTION)
     group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--alternating-caps', action='store_true', 
+                       help=HelpMessages.ALTERNATING_CAPS)
     group.add_argument('--camel-case', action='store_true', 
                        help=HelpMessages.CAMEL_CASE)
     group.add_argument('--capitalize', action='store_true', 
@@ -52,6 +55,7 @@ def parse_args() -> Callable[[str], str]:
 
     # Dictionary mapping argument names to text warping functions
     arg_func_dict = {
+        'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
         'curly_to_straight': curly_to_straight,

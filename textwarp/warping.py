@@ -267,6 +267,30 @@ def straight_to_curly(string: str) -> str:
     return curly_str
 
 
+def to_alternating_caps(string: str) -> str:
+    """
+    Converts a string to alternating caps.
+
+    Args:
+        string (str): The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    result = []
+    upper = False
+    for char in string:
+        if char.isalpha():
+            if upper:
+                result.append(char.upper())
+            else:
+                result.append(char.lower())
+            upper = not upper
+        else:
+            result.append(char)
+    return ''.join(result)
+
+
 def to_camel_case(string: str) -> str:
     """
     Converts a string to camel case.
