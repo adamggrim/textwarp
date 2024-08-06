@@ -2,9 +2,9 @@ import argparse
 from typing import Callable
 
 from textcount.constants import HelpMessages
-from textcount.processing import (process_char_count, process_mfws, 
-                                  process_pos_count, process_time_to_read, 
-                                  process_word_count)
+from textcount.processing import (process_char_count, process_line_count, 
+                                  process_mfws, process_pos_count, 
+                                  process_time_to_read, process_word_count)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -20,6 +20,8 @@ def parse_args() -> Callable[[str], str]:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--char-count', action='store_true', 
                        help=HelpMessages.CHAR_COUNT)
+    group.add_argument('--line-count', action='store_true', 
+                       help=HelpMessages.LINE_COUNT)
     group.add_argument('--mfws', action='store_true', 
                        help=HelpMessages.MFWS)
     group.add_argument('--pos-count', action='store_true', 
@@ -33,6 +35,7 @@ def parse_args() -> Callable[[str], str]:
     # Dictionary mapping argument names to text counting functions
     arg_func_dict = {
         'char_count': process_char_count,
+        'line_count': process_line_count,
         'mfws': process_mfws,
         'pos_count': process_pos_count,
         'time_to_read': process_time_to_read,

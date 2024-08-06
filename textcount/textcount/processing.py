@@ -1,10 +1,12 @@
-from textcount.analyzing import (get_char_count, get_mfws, get_pos_count, 
-                                 get_time_to_read, get_word_count)
+from textcount.analyzing import (get_char_count, get_line_count, get_mfws, 
+                                 get_pos_count, get_time_to_read, 
+                                 get_word_count)
 from textcount.constants import (ENTER_MFW_COUNT_STR, ENTER_NUMBER_STR, 
                                  ENTER_WPM_STR)
 from textcount.formatting import (FormatPrinting, format_char_count, 
-                                  format_mfws, format_pos_count, 
-                                  format_time_to_read, format_word_count)
+                                  format_line_count, format_mfws, 
+                                  format_pos_count, format_time_to_read, 
+                                  format_word_count)
 
 
 def process_char_count(string: str) -> None:
@@ -19,6 +21,18 @@ def process_char_count(string: str) -> None:
     char_count = get_char_count(string)
     char_count_str = format_char_count(char_count)
     FormatPrinting.print_wrapped(char_count_str)
+
+
+def process_line_count(string: str) -> None:
+    """
+    Deploys functions to analyze, format and print line count output.
+
+    Args:
+        string (str): The string to analyze.
+    """
+    line_count = get_line_count(string)
+    line_count_str = format_line_count(line_count)
+    FormatPrinting.print_wrapped(line_count_str)
 
 
 def process_mfws(string: str) -> None:

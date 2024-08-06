@@ -44,6 +44,19 @@ def format_char_count(char_count: int) -> str:
     return f'Character count: {char_count}'
 
 
+def format_line_count(line_count: int) -> str:
+    """
+    Returns a string indicating the number of lines in a given string.
+
+    Args:
+        line_count (int): The string to analyze.
+
+    Returns:
+        str: A formatted string indicating character count.
+    """
+    return f'Line count: {line_count}'
+
+
 def format_mfws(mfws: list[tuple]) -> str:
     """
     Returns a string indicating the most frequent words in a given 

@@ -6,6 +6,7 @@ class HelpMessages:
         DESCRIPTION (STR): Description for textwarp arguments
 
         CHAR_COUNT (STR): Help message for --char-count argument
+        LINE_COUNT (STR): Help message for --line-count argument
         MFWS (STR): Help message for --mfws argument
         POS_COUNT (STR): Help message for --pos-count argument
         TIME_TO_READ (STR): Help message for --time-to-read argument
@@ -15,6 +16,7 @@ class HelpMessages:
                    'clipboard.')
 
     CHAR_COUNT = 'count characters'
+    LINE_COUNT = 'count lines'
     MFWS = 'get most frequent words'
     POS_COUNT = 'count parts of speech'
     TIME_TO_READ = 'calculate time to read'

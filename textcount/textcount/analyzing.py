@@ -9,7 +9,8 @@ from textcount.data_structures import POSCounts
 
 def get_char_count(string: str) -> int:
     """
-    Gets an int indicating the number of characters in a given string.
+    Returns an integer representing the number of characters in a given 
+        string.
 
     Args:
         string (str): The string to analyze.
@@ -20,10 +21,24 @@ def get_char_count(string: str) -> int:
     return len(string)
 
 
+def get_line_count(string: str) -> int:
+    """
+    Returns an integer representing the number of lines in a given 
+        string.
+
+    Args:
+        string (str): The string to analyze.
+
+    Returns:
+        int: The number of lines in the string.
+    """
+    return len(string.splitlines()) 
+
+
 def get_mfws(string: str, mfw_count: int) -> list[tuple]:
     """
-    Gets a list of tuples indicating the most frequent words in a given 
-        string.
+    Returns a list of tuples indicating the most frequent words in a 
+        given string.
 
     Args:
         string (str): The string to analyze.
@@ -40,8 +55,8 @@ def get_mfws(string: str, mfw_count: int) -> list[tuple]:
 
 def get_pos_count(string: str) -> POSCounts:
     """
-    Gets a POSCounts object containing the parts of speech counts for a 
-        given string.
+    Returns a POSCounts object containing the parts of speech counts 
+        for a given string.
 
     Args:
         string (str): The string to analyze.
@@ -65,7 +80,7 @@ def get_pos_count(string: str) -> POSCounts:
 
 def get_time_to_read(string: str, wpm: int) -> int:
     """
-    Gets an integer representing the minutes to read a given string.
+    Returns an integer representing the minutes to read a given string.
 
     Args:
         string (str): The string to analyze.
@@ -82,7 +97,8 @@ def get_time_to_read(string: str, wpm: int) -> int:
 
 def get_word_count(string: str) -> int:
     """
-    Gets an integer representing the number of words in a given string.
+    Returns an integer representing the number of words in a given 
+        string.
 
     Args:
         string (str): The string to analyze.
