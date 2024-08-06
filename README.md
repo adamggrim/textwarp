@@ -48,7 +48,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to view the mosified text.
+    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to view the modified text.
 
 4. **Continue or exit**
 
