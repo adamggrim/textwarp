@@ -29,6 +29,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
     -h, --help           show this help message and exit
+    --alternating-caps   convert to alternating caps
     --camel-case         convert to camel case
     --capitalize         capitalize the first character of each word
     --curly-to-straight  convert curly quotes to straight quotes
