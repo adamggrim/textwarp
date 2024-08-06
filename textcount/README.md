@@ -28,12 +28,13 @@ This example demonstrates how to print a word count using `textcount`.
 
     For a list of `textcount` arguments, type `textcount -h` or `textcount --help`:
     ```
-    -h, --help           show this help message and exit
-    --char-count         print the number of characters
-    --mfws               print the most frequent words
-    --pos-count          print the count for each part of speech
-    --time-to-read       print the time to read at a given reading speed
-    --word-count         print the word count
+    -h, --help      show this help message and exit
+    --char-count    count characters
+    --line-count    count lines
+    --mfws          get most frequent words
+    --pos-count     count parts of speech
+    --time-to-read  calculate time to read
+    --word-count    count words
     ```
 
 3. **Print the analysis**
