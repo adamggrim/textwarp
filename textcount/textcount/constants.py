@@ -49,6 +49,9 @@ POS_TAGS = (('ADJ', 'Adjectives'), ('ADP', 'Adpositions'), ('ADV', 'Adverbs'),
             ('NOUN', 'Nouns'), ('NUM', 'Numbers'), ('PRT', 'Particles'), 
             ('PRON', 'Pronouns'), ('VERB', 'Verbs'), ('X', 'Other'))
 
+# Integer representing the length of the longest tag name in POS_TAGS
+MAX_POS_LENGTH = max(len(tag_pair[1]) for tag_pair in POS_TAGS)
+
 # Tuple of strings for POS tags representing words
 POS_WORD_TAGS = ('ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM', 'PRT', 
                  'PRON', 'VERB')

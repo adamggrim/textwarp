@@ -1,7 +1,7 @@
 import os
 import textwrap
 
-from textcount.constants import POS_TAGS
+from textcount.constants import POS_TAGS, MAX_POS_LENGTH
 from textcount.data_structures import POSCounts
 
 
@@ -90,7 +90,6 @@ def format_pos_count(pos_counts: POSCounts) -> str:
         count = getattr(pos_counts, f'{tag_pair[0].lower()}_count')
         ratio = getattr(pos_counts, f'{tag_pair[0].lower()}_ratio')
         pos_tuples.append((pos, count, ratio))
-    max_pos_length = max(len(tag_pair[1]) for tag_pair in POS_TAGS)
     max_count_length = max(len(f'{count}') for _, count, _ in pos_tuples)
     max_ratio_length = max(len(f'({ratio:.2f}%)') for _, _, ratio in 
                            pos_tuples)
@@ -99,7 +98,7 @@ def format_pos_count(pos_counts: POSCounts) -> str:
     for pos, count, ratio in pos_tuples:
         formatted_ratio = f'({ratio:.2f}%)'
         # Dynamic spacing based on POS, count and ratio length
-        results.append(f'{pos:{max_pos_length + padding}}'
+        results.append(f'{pos:{MAX_POS_LENGTH + padding}}'
                        f'{count:<{max_count_length + padding}}'
                        f'{formatted_ratio:>{max_ratio_length}}')
     return '\n'.join(results)
