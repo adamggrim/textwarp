@@ -1,3 +1,17 @@
+class FormatCountStrings:
+    """
+    Custom strings for count string formatting.
+
+    Attributes:
+        CHAR_STR: String specifying character count
+        LINE_STR: String specifying line count
+        WORD_STR: String specifying word count
+    """
+    CHAR_STR = 'Character'
+    LINE_STR = 'Line'
+    WORD_STR = 'Word'
+
+
 class HelpMessages:
     """
     Help message strings for command-line arguments.

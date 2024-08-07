@@ -1,7 +1,7 @@
 from textcount.analyzing import (get_char_count, get_line_count, get_mfws, 
                                  get_pos_count, get_time_to_read, 
                                  get_word_count)
-from textcount.constants import (ENTER_MFW_COUNT_STR, ENTER_NUMBER_STR, 
+from textcount.constants import (FormatCountStrings, ENTER_MFW_COUNT_STR, ENTER_NUMBER_STR, 
                                  ENTER_WPM_STR)
 from textcount.formatting import (FormatPrinting, format_count, 
                                   format_mfws, format_pos_count, 
@@ -18,7 +18,7 @@ def process_char_count(string: str) -> None:
 
     """
     char_count = get_char_count(string)
-    char_count_str = format_count('Character', char_count)
+    char_count_str = format_count(FormatCountStrings.CHAR_STR, char_count)
     FormatPrinting.print_wrapped(char_count_str)
 
 
@@ -30,7 +30,7 @@ def process_line_count(string: str) -> None:
         string (str): The string to analyze.
     """
     line_count = get_line_count(string)
-    line_count_str = format_count('Line', line_count)
+    line_count_str = format_count(FormatCountStrings.LINE_STR, line_count)
     FormatPrinting.print_wrapped(line_count_str)
 
 
@@ -117,5 +117,5 @@ def process_word_count(string: str) -> None:
         string (str): The string to analyze.
     """
     word_count = get_word_count(string)
-    word_count_str = format_count('Word', word_count)
+    word_count_str = format_count(FormatCountStrings.WORD_STR, word_count)
     FormatPrinting.print_wrapped(word_count_str)
