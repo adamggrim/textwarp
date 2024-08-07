@@ -23,16 +23,18 @@ def get_char_count(string: str) -> int:
 
 def get_line_count(string: str) -> int:
     """
-    Returns an integer representing the number of lines in a given 
-        string.
+    Returns an integer representing the number of non-whitespace lines 
+        in a given string.
 
     Args:
         string (str): The string to analyze.
 
     Returns:
-        int: The number of lines in the string.
+        int: The number of non-whitespace lines in the string.
     """
-    return len(string.splitlines()) 
+    lines = string.splitlines()
+    text_lines = [line for line in lines if line.strip()]
+    return len(text_lines)
 
 
 def get_mfws(string: str, mfw_count: int) -> list[tuple]:
