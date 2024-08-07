@@ -30,31 +30,18 @@ class FormatPrinting:
         print('\n' + wrapped_str)
 
 
-def format_char_count(char_count: int) -> str:
+def format_count(name: str, count: int) -> str:
     """
-    Returns a string indicating the number of characters in a given 
-        string.
+    Returns a string indicating the count of a specific analysis.
 
     Args:
-        char_count (int): The string to analyze.
+        name (str): The name of the count.
+        count (int): The count to display.
 
     Returns:
-        str: A formatted string indicating character count.
+        str: A formatted string indicating the name and count.
     """
-    return f'Character count: {char_count}'
-
-
-def format_line_count(line_count: int) -> str:
-    """
-    Returns a string indicating the number of lines in a given string.
-
-    Args:
-        line_count (int): The string to analyze.
-
-    Returns:
-        str: A formatted string indicating character count.
-    """
-    return f'Line count: {line_count}'
+    return f'{name} count: {count}'
 
 
 def format_mfws(mfws: list[tuple]) -> str:
@@ -126,16 +113,3 @@ def format_time_to_read(minutes_to_read: int) -> str:
         return f'{minutes} minutes' if minutes != 1 else '1 minute'
     else:
         return 'Less than 1 minute'
-
-
-def format_word_count(word_count: int) -> str:
-    """
-    Returns a string indicating the number of words in a given string.
-
-    Args:
-        string (str): The string to analyze.
-
-    Returns:
-        str: The formatted string indicating word count.
-    """
-    return f'Word count: {word_count}'
