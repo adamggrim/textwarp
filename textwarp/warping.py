@@ -138,10 +138,41 @@ def capitalize(string: str) -> str:
     Args:
         string (str): The string to capitalize.
 
-    Return:
+    Returns:
         str: The capitalized string.
     """
     return HelperFunctions.capitalize_words(string)
+
+
+def cardinal_to_ordinal(string: str) -> str:
+    """
+    Converts cardinal numbers to ordinal numbers in a given string.
+
+    Args:
+        string (str): The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    def replace_cardinal(match):
+        """
+        Helper function to replace a matched cardinal number with an 
+            ordinal.
+
+        Args:
+            match (re.Match): A match object representing a cardinal 
+                number found in the string.
+
+        Returns:
+            str: The ordinal version of the matched cardinal.
+        """
+        number = int(match.group(0))
+        if 10 <= number % 100 <= 20:
+            suffix = 'th'
+        else:
+            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
+        return f'{number}{suffix}'
+    return re.sub(WarpingRegexes.CARDINAL, replace_cardinal, string)
 
 
 def curly_to_straight(string: str) -> str:

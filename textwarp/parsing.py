@@ -2,8 +2,9 @@ import argparse
 from typing import Callable
 
 from textwarp.constants import HelpMessages
-from textwarp.warping import (capitalize, curly_to_straight, hyphens_to_em, 
-                              hyphen_to_en, punct_to_inside, punct_to_outside, 
+from textwarp.warping import (capitalize, cardinal_to_ordinal, 
+                              curly_to_straight, hyphens_to_em, hyphen_to_en,
+                              punct_to_inside, punct_to_outside, 
                               straight_to_curly, to_alternating_caps, 
                               to_camel_case, to_kebab_case, to_lowercase, 
                               to_pascal_case, to_snake_case, to_title_case, 
@@ -27,6 +28,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.CAMEL_CASE)
     group.add_argument('--capitalize', action='store_true', 
                        help=HelpMessages.CAPITALIZE)
+    group.add_argument('--cardinal-to-ordinal', action='store_true', 
+                       help=HelpMessages.CARDINAL_TO_ORDINAL)
     group.add_argument('--curly-to-straight', action='store_true', 
                        help=HelpMessages.CURLY_TO_STRAIGHT)
     group.add_argument('--hyphens-to-em', action='store_true', 
@@ -58,6 +61,7 @@ def parse_args() -> Callable[[str], str]:
         'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
+        'cardinal_to_ordinal': cardinal_to_ordinal,
         'curly_to_straight': curly_to_straight,
         'hyphens_to_em': hyphens_to_em,
         'hyphen_to_en': hyphen_to_en,

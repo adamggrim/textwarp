@@ -9,6 +9,8 @@ class HelpMessages:
             argument
         CAMEL_CASE (STR): Help message for --camel-case argument
         CAPITALIZE (STR): Help message for --capitalize argument
+        CARDINAL_TO_ORDINAL: Help message for --cardinal-to-ordinal 
+            argument
         CURLY_TO_STRAIGHT (STR): Help message for --curly-to-straight 
             argument
         HYPHENS_TO_EM (STR): Help message for --hyphens-to-em argument
@@ -32,6 +34,7 @@ class HelpMessages:
     ALTERNATING_CAPS = 'convert to alternating caps'
     CAMEL_CASE = 'convert to camel case'
     CAPITALIZE = 'capitalize the first character of each word'
+    CARDINAL_TO_ORDINAL = 'convert cardinal numbers to ordinal numbers'
     CURLY_TO_STRAIGHT = 'convert curly quotes to straight quotes'
     HYPHENS_TO_EM = 'convert consecutive hyphens to em dashes'
     HYPHEN_TO_EN = 'convert hyphens to en dashes'

@@ -20,6 +20,8 @@ class WarpingRegexes:
         CAMEL_SPLIT (Pattern): Compiled regular expression object for 
             splitting strings before converting substrings to camel 
             case.
+        CARDINAL (Pattern): Compiled regular expression object that 
+            captures a cardinal number.
         CLOSING_STRAIGHT_DOUBLE (Pattern): Compiled regular expression 
             object that captures closing straight double quotes.
         CLOSING_STRAIGHT_SINGLE (Pattern): Compiled regular expression 
@@ -83,6 +85,7 @@ class WarpingRegexes:
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
     CAMEL_SPLIT = re.compile(r'(?<=[\s—–\-])')
+    CARDINAL = re.compile(r'\b\d+\b')
     CLOSING_STRAIGHT_DOUBLE = re.compile(rf'"$|"{_CLOSING_LOOKAHEAD_STR}')
     CLOSING_STRAIGHT_SINGLE = re.compile(rf"'$|'{_CLOSING_LOOKAHEAD_STR}")
     FIRST_LETTER = re.compile(r'([A-Za-z])')
