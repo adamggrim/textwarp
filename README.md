@@ -28,22 +28,23 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
     For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
-    -h, --help           show this help message and exit
-    --alternating-caps   convert to alternating caps
-    --camel-case         convert to camel case
-    --capitalize         capitalize the first character of each word
-    --curly-to-straight  convert curly quotes to straight quotes
-    --hyphens-to-em      convert consecutive hyphens to em dashes
-    --hyphen-to-en       convert hyphens to en dashes
-    --kebab-case         convert to kebab case
-    --lowercase          convert to lowercase
-    --pascal-case        convert to Pascal case
-    --punct-to-inside    move punctuation inside quotation marks
-    --punct-to-outside   move punctuation outside quotation marks
-    --snake-case         convert to snake case
-    --straight-to-curly  convert straight quotes to curly quotes
-    --title-case         convert to title case
-    --uppercase          convert to uppercase
+    -h, --help          show this help message and exit
+    --alternating-caps  convert to alternating caps
+    --camel-case        convert to camel case
+    --capitalize        capitalize the first character of each word
+    --cardinals         convert cardinal numbers to ordinal numbers
+    --curly             convert curly quotes to straight quotes
+    --hyphens-to-em     convert consecutive hyphens to em dashes
+    --hyphen-to-en      convert hyphens to en dashes
+    --kebab-case        convert to kebab case
+    --lowercase         convert to lowercase
+    --pascal-case       convert to Pascal case
+    --punct-to-inside   move punctuation inside quotation marks
+    --punct-to-outside  move punctuation outside quotation marks
+    --snake-case        convert to snake case
+    --straight          convert straight quotes to curly quotes
+    --title-case        convert to title case
+    --uppercase         convert to uppercase
     ```
 
 3. **Paste text from the clipboard**
