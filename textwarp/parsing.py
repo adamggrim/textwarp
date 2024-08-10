@@ -4,11 +4,11 @@ from typing import Callable
 from textwarp.constants import HelpMessages
 from textwarp.warping import (capitalize, cardinal_to_ordinal, 
                               curly_to_straight, hyphens_to_em, hyphen_to_en,
-                              punct_to_inside, punct_to_outside, 
-                              straight_to_curly, to_alternating_caps, 
-                              to_camel_case, to_kebab_case, to_lowercase, 
-                              to_pascal_case, to_snake_case, to_title_case, 
-                              to_uppercase)
+                              punct_to_inside, ordinal_to_cardinal, 
+                              punct_to_outside, straight_to_curly, 
+                              to_alternating_caps, to_camel_case, 
+                              to_kebab_case, to_lowercase, to_pascal_case, 
+                              to_snake_case, to_title_case, to_uppercase)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -29,9 +29,8 @@ def parse_args() -> Callable[[str], str]:
     group.add_argument('--capitalize', action='store_true', 
                        help=HelpMessages.CAPITALIZE)
     group.add_argument('--cardinals', action='store_true', 
-                       help=HelpMessages.CARDINAL_TO_ORDINAL)
-    group.add_argument('--curly', action='store_true', 
                        help=HelpMessages.CURLY_TO_STRAIGHT)
+                       help=HelpMessages.CARDINALS)
     group.add_argument('--hyphens-to-em', action='store_true', 
                        help=HelpMessages.HYPHENS_TO_EM)
     group.add_argument('--hyphen-to-en', action='store_true', 
@@ -40,6 +39,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.KEBAB_CASE)
     group.add_argument('--lowercase', action='store_true', 
                        help=HelpMessages.LOWERCASE)
+    group.add_argument('--ordinals', action='store_true', 
+                       help=HelpMessages.ORDINALS)
     group.add_argument('--pascal-case', action='store_true', 
                        help=HelpMessages.PASCAL_CASE)
     group.add_argument('--punct-to-inside', action='store_true', 
@@ -61,12 +62,13 @@ def parse_args() -> Callable[[str], str]:
         'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
-        'cardinals': cardinal_to_ordinal,
-        'curly': curly_to_straight,
+        'cardinals': ordinal_to_cardinal,
+        'curly_quotes': straight_to_curly,
         'hyphens_to_em': hyphens_to_em,
         'hyphen_to_en': hyphen_to_en,
         'kebab_case': to_kebab_case,
         'lowercase': to_lowercase,
+        'ordinals': cardinal_to_ordinal,
         'pascal_case': to_pascal_case,
         'punct_to_inside': punct_to_inside,
         'punct_to_outside': punct_to_outside,

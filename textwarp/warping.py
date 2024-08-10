@@ -381,6 +381,35 @@ def to_lowercase(string: str) -> str:
     return string.lower()
 
 
+def ordinal_to_cardinal(string: str) -> str:
+    """
+    Converts ordinal numbers to cardinal numbers in a given string.
+
+    Args:
+        string (str): The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    def replace_ordinal(match):
+        """
+        Helper function to replace a matched ordinal number with its 
+            cardinal equivalent.
+
+        Args:
+            match (re.Match): A match object representing an ordinal 
+                number found in the string.
+
+        Returns:
+            str: The cardinal version of the matched ordinal.
+        """
+        ordinal = match.group(0)
+        number_str = ordinal[:-2]
+        return number_str
+
+    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, string)
+
+
 def to_pascal_case(string: str) -> str:
     """
     Converts a string to Pascal case.

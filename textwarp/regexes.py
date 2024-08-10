@@ -45,6 +45,8 @@ class WarpingRegexes:
             object that captures opening straight double quotes.
         OPENING_STRAIGHT_SINGLE (Pattern): Compiled regular expression 
             object that captures opening straight single quotes.
+        ORDINAL (Pattern): Compiled regular expression object that 
+            captures an ordinal number.
         PASCAL_CASE (Pattern): Compiled regular expression object that 
             captures a Pascal case string.
         PASCAL_SPLIT (Pattern): Compiled regular expression object for 
@@ -96,6 +98,7 @@ class WarpingRegexes:
     LETTER_WORD = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
     OPENING_STRAIGHT_DOUBLE = re.compile(rf'(^|{_OPENING_LOOKBEHIND_STR})"')
     OPENING_STRAIGHT_SINGLE = re.compile(rf"(^|{_OPENING_LOOKBEHIND_STR})'")
+    ORDINAL = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     PASCAL_CASE = re.compile(r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+')
     PASCAL_SPLIT = re.compile(r'''
         (?<![ .!?—–\-,:;"”\'’]) # Negative lookbehind to preserve spacing 
