@@ -29,8 +29,9 @@ def parse_args() -> Callable[[str], str]:
     group.add_argument('--capitalize', action='store_true', 
                        help=HelpMessages.CAPITALIZE)
     group.add_argument('--cardinals', action='store_true', 
-                       help=HelpMessages.CURLY_TO_STRAIGHT)
                        help=HelpMessages.CARDINALS)
+    group.add_argument('--curly-quotes', action='store_true', 
+                       help=HelpMessages.CURLY_QUOTES)
     group.add_argument('--hyphens-to-em', action='store_true', 
                        help=HelpMessages.HYPHENS_TO_EM)
     group.add_argument('--hyphen-to-en', action='store_true', 
@@ -49,8 +50,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.PUNCT_TO_OUTSIDE)
     group.add_argument('--snake-case', action='store_true', 
                        help=HelpMessages.SNAKE_CASE)
-    group.add_argument('--straight', action='store_true', 
-                       help=HelpMessages.STRAIGHT_TO_CURLY)
+    group.add_argument('--straight-quotes', action='store_true', 
+                       help=HelpMessages.STRAIGHT_QUOTES)
     group.add_argument('--title-case', action='store_true', 
                        help=HelpMessages.TITLE_CASE)
     group.add_argument('--uppercase', action='store_true', 
@@ -73,7 +74,7 @@ def parse_args() -> Callable[[str], str]:
         'punct_to_inside': punct_to_inside,
         'punct_to_outside': punct_to_outside,
         'snake_case': to_snake_case,
-        'straight': straight_to_curly,
+        'straight_quotes': curly_to_straight,
         'title_case': to_title_case,
         'uppercase': to_uppercase
     }
