@@ -28,9 +28,9 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.CAMEL_CASE)
     group.add_argument('--capitalize', action='store_true', 
                        help=HelpMessages.CAPITALIZE)
-    group.add_argument('--cardinal-to-ordinal', action='store_true', 
+    group.add_argument('--cardinals', action='store_true', 
                        help=HelpMessages.CARDINAL_TO_ORDINAL)
-    group.add_argument('--curly-to-straight', action='store_true', 
+    group.add_argument('--curly', action='store_true', 
                        help=HelpMessages.CURLY_TO_STRAIGHT)
     group.add_argument('--hyphens-to-em', action='store_true', 
                        help=HelpMessages.HYPHENS_TO_EM)
@@ -48,7 +48,7 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.PUNCT_TO_OUTSIDE)
     group.add_argument('--snake-case', action='store_true', 
                        help=HelpMessages.SNAKE_CASE)
-    group.add_argument('--straight-to-curly', action='store_true', 
+    group.add_argument('--straight', action='store_true', 
                        help=HelpMessages.STRAIGHT_TO_CURLY)
     group.add_argument('--title-case', action='store_true', 
                        help=HelpMessages.TITLE_CASE)
@@ -61,8 +61,8 @@ def parse_args() -> Callable[[str], str]:
         'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
-        'cardinal_to_ordinal': cardinal_to_ordinal,
-        'curly_to_straight': curly_to_straight,
+        'cardinals': cardinal_to_ordinal,
+        'curly': curly_to_straight,
         'hyphens_to_em': hyphens_to_em,
         'hyphen_to_en': hyphen_to_en,
         'kebab_case': to_kebab_case,
@@ -71,7 +71,7 @@ def parse_args() -> Callable[[str], str]:
         'punct_to_inside': punct_to_inside,
         'punct_to_outside': punct_to_outside,
         'snake_case': to_snake_case,
-        'straight_to_curly': straight_to_curly,
+        'straight': straight_to_curly,
         'title_case': to_title_case,
         'uppercase': to_uppercase
     }
