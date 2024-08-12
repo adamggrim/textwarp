@@ -166,12 +166,14 @@ def cardinal_to_ordinal(string: str) -> str:
         Returns:
             str: The ordinal version of the matched cardinal.
         """
-        number = int(match.group(0))
+        number_str = match.group(0)
+        number = int(number_str.replace(',', ''))
         if 10 <= number % 100 <= 20:
             suffix = 'th'
         else:
             suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
-        return f'{number}{suffix}'
+        formatted_number = f'{number:,}' if ',' in number_str else str(number)
+        return f'{formatted_number}{suffix}'
     return re.sub(WarpingRegexes.CARDINAL, replace_cardinal, string)
 
 
@@ -406,7 +408,6 @@ def ordinal_to_cardinal(string: str) -> str:
         ordinal = match.group(0)
         number_str = ordinal[:-2]
         return number_str
-
     return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, string)
 
 

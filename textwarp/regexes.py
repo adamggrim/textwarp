@@ -87,7 +87,7 @@ class WarpingRegexes:
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
     CAMEL_SPLIT = re.compile(r'(?<=[\s—–\-])')
-    CARDINAL = re.compile(r'\b\d+\b')
+    CARDINAL = re.compile(r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)')
     CLOSING_STRAIGHT_DOUBLE = re.compile(rf'"$|"{_CLOSING_LOOKAHEAD_STR}')
     CLOSING_STRAIGHT_SINGLE = re.compile(rf"'$|'{_CLOSING_LOOKAHEAD_STR}")
     FIRST_LETTER = re.compile(r'([A-Za-z])')
