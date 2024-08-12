@@ -28,8 +28,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.CAMEL_CASE)
     group.add_argument('--capitalize', action='store_true', 
                        help=HelpMessages.CAPITALIZE)
-    group.add_argument('--cardinals', action='store_true', 
-                       help=HelpMessages.CARDINALS)
+    group.add_argument('--cardinal', action='store_true', 
+                       help=HelpMessages.CARDINAL)
     group.add_argument('--curly-quotes', action='store_true', 
                        help=HelpMessages.CURLY_QUOTES)
     group.add_argument('--hyphens-to-em', action='store_true', 
@@ -40,8 +40,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.KEBAB_CASE)
     group.add_argument('--lowercase', action='store_true', 
                        help=HelpMessages.LOWERCASE)
-    group.add_argument('--ordinals', action='store_true', 
-                       help=HelpMessages.ORDINALS)
+    group.add_argument('--ordinal', action='store_true', 
+                       help=HelpMessages.ORDINAL)
     group.add_argument('--pascal-case', action='store_true', 
                        help=HelpMessages.PASCAL_CASE)
     group.add_argument('--punct-to-inside', action='store_true', 
@@ -63,13 +63,13 @@ def parse_args() -> Callable[[str], str]:
         'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
-        'cardinals': ordinal_to_cardinal,
+        'cardinal': ordinal_to_cardinal,
         'curly_quotes': straight_to_curly,
         'hyphens_to_em': hyphens_to_em,
         'hyphen_to_en': hyphen_to_en,
         'kebab_case': to_kebab_case,
         'lowercase': to_lowercase,
-        'ordinals': cardinal_to_ordinal,
+        'ordinal': cardinal_to_ordinal,
         'pascal_case': to_pascal_case,
         'punct_to_inside': punct_to_inside,
         'punct_to_outside': punct_to_outside,

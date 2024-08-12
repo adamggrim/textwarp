@@ -9,13 +9,13 @@ class HelpMessages:
             argument
         CAMEL_CASE (STR): Help message for --camel-case argument
         CAPITALIZE (STR): Help message for --capitalize argument
-        CARDINALS (STR): Help message for --cardinals argument
+        CARDINAL (STR): Help message for --cardinals argument
         CURLY_QUOTES (STR): Help message for --curly argument
         HYPHENS_TO_EM (STR): Help message for --hyphens-to-em argument
         HYPHENS_TO_EN (STR): Help message for --hyphens-to-en argument
         KEBAB_CASE (STR): Help message for --kebab-case argument
         LOWERCASE (STR): Help message for --lowercase argument
-        ORDINALS (STR): Help message for --ordinals argument
+        ORDINAL (STR): Help message for --ordinals argument
         PASCAL_CASE (STR): Help message for --pascal-case argument
         PUNCT_TO_INSIDE (STR): Help message for --punct-to-inside 
             argument
@@ -32,13 +32,13 @@ class HelpMessages:
     ALTERNATING_CAPS = 'convert to alternating caps'
     CAMEL_CASE = 'convert to camel case'
     CAPITALIZE = 'capitalize the first character of each word'
-    CARDINALS = 'convert ordinal numbers to cardinal numbers'
+    CARDINAL = 'convert ordinal numbers to cardinal numbers'
     CURLY_QUOTES = 'convert straight quotes to curly quotes'
     HYPHENS_TO_EM = 'convert consecutive hyphens to em dashes'
     HYPHEN_TO_EN = 'convert hyphens to en dashes'
     KEBAB_CASE = 'convert to kebab case'
     LOWERCASE = 'convert to lowercase'
-    ORDINALS = 'convert cardinal numbers to ordinal numbers'
+    ORDINAL = 'convert cardinal numbers to ordinal numbers'
     PASCAL_CASE = 'convert to Pascal case'
     PUNCT_TO_INSIDE = 'move punctuation inside quotation marks'
     PUNCT_TO_OUTSIDE = 'move punctuation outside quotation marks'

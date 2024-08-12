@@ -32,13 +32,13 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --alternating-caps  convert to alternating caps
     --camel-case        convert to camel case
     --capitalize        capitalize the first character of each word
-    --cardinals         convert ordinal numbers to cardinal numbers
+    --cardinal          convert ordinal numbers to cardinal numbers
     --curly-quotes      convert straight quotes to curly quotes
     --hyphens-to-em     convert consecutive hyphens to em dashes
     --hyphen-to-en      convert hyphens to en dashes
     --kebab-case        convert to kebab case
     --lowercase         convert to lowercase
-    --ordinals          convert cardinal numbers to ordinal numbers
+    --ordinal           convert cardinal numbers to ordinal numbers
     --pascal-case       convert to Pascal case
     --punct-to-inside   move punctuation inside quotation marks
     --punct-to-outside  move punctuation outside quotation marks
