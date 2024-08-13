@@ -189,13 +189,13 @@ def curly_to_straight(string: str) -> str:
         str: The converted string.
     """
     translation_table = str.maketrans({
-        # Opening curly double quotes to straight double quotes
+        # Curly opening double quotes to straight double quotes
         '”': '"', 
-        # Closing curly double quotes to straight double quotes
+        # Curly closing double quotes to straight double quotes
         '“': '"', 
-        # Opening curly single quotes to straight single quotes
+        # Curly opening single quotes to straight single quotes
         '’': "'", 
-        # Closing curly single quotes to straight single quotes
+        # Curly closing single quotes to straight single quotes
         '‘': "'"
     })
     return string.translate(translation_table)
