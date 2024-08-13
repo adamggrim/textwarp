@@ -4,7 +4,7 @@ from typing import Optional
 from nltk import pos_tag
 
 from textwarp.enums import SeparatorCase
-from textwarp.regexes import WarpingRegexes
+from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
 
 
 class HelperFunctions:
@@ -74,12 +74,13 @@ class HelperFunctions:
         other_separator = _get_other_separator()
         separator_sub = re.compile(rf'{other_separator}| ')
         no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
-        substrings = re.split(WarpingRegexes.SEPARATOR_SPLIT, no_apostrophes_str)
+        substrings = re.split(SeparatorCaseRegexes.SEPARATOR_SPLIT, 
+                              no_apostrophes_str)
         separator_substrings = []
         for substring in substrings:
             # Substring is already in a separator case.
-            if (WarpingRegexes.KEBAB_CASE.match(substring) or
-                WarpingRegexes.SNAKE_CASE.match(substring)):
+            if (SeparatorCaseRegexes.KEBAB_CASE.match(substring) or
+                SeparatorCaseRegexes.SNAKE_CASE.match(substring)):
                 if substring.isupper():
                     separator_substring = re.sub(separator_sub, 
                                                  separator_case.value, 
@@ -89,11 +90,11 @@ class HelperFunctions:
                                                  separator_case.value, 
                                                  substring.lower())
             # Substring is in camel case or Pascal case.
-            elif (WarpingRegexes.CAMEL_CASE.match(substring) or 
-                WarpingRegexes.PASCAL_CASE.match(substring)):
+            elif (SeparatorCaseRegexes.CAMEL_CASE.match(substring) or 
+                SeparatorCaseRegexes.PASCAL_CASE.match(substring)):
                 # Break camel case and Pascal case into constituent words.
-                broken_words = re.split(WarpingRegexes.CAMEL_PASCAL_SPLIT, 
-                                        substring)
+                broken_words = re.split(
+                    SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, substring)
                 converted_words = []
                 for word in broken_words:
                     converted_word = word.lower()
@@ -349,7 +350,7 @@ def to_camel_case(string: str) -> str:
                       match.group(0).lower(), string, count=1)
     pascal_str = to_pascal_case(string)
     # Split between each instance of Pascal case in the string.
-    pascal_words = re.split(WarpingRegexes.CAMEL_SPLIT, pascal_str)
+    pascal_words = re.split(SeparatorCaseRegexes.CAMEL_SPLIT, pascal_str)
     camel_words = []
     for word in pascal_words:
         camel_word = _lowercase_first_letter(word)
@@ -422,17 +423,17 @@ def to_pascal_case(string: str) -> str:
         str: The converted string.
     """
     no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
-    words = re.split(WarpingRegexes.PASCAL_SPLIT, no_apostrophes_str)
+    words = re.split(SeparatorCaseRegexes.PASCAL_SPLIT, no_apostrophes_str)
     pascal_words = []
     for word in words:
         # Word is already in Pascal case.
-        if WarpingRegexes.PASCAL_CASE.match(word):
+        if SeparatorCaseRegexes.PASCAL_CASE.match(word):
             pascal_word = word
         # Word is an acronym of two characters.
-        elif WarpingRegexes.SHORT_ACRONYM.match(word):
+        elif SeparatorCaseRegexes.SHORT_ACRONYM.match(word):
             pascal_word = word
         # Word is in camel case.
-        elif WarpingRegexes.CAMEL_CASE.match(word):
+        elif SeparatorCaseRegexes.CAMEL_CASE.match(word):
             pascal_word = HelperFunctions.uppercase_first_letter(word)
         # Word is not in Pascal case or camel case.
         else:
