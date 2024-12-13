@@ -488,7 +488,8 @@ def to_title_case(string: str) -> str:
         all_words = []
         # For loop to break camel and Pascal case into constituent words
         for word in words:
-            broken_words = re.split(WarpingRegexes.CAMEL_PASCAL_SPLIT, word)
+            broken_words = re.split(SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, 
+                                    word)
             all_words.extend([broken_word for broken_word in broken_words])
         all_words_tags = pos_tag(all_words)
         # Capitalize words based on their part of speech.
