@@ -7,28 +7,30 @@ class SeparatorCaseRegexes:
         conversion to kebab case or snake case.
 
     Attributes:
-        CAMEL_CASE (Pattern): Compiled regular expression object that 
-            captures a camel case string.
-        CAMEL_PASCAL_SPLIT (Pattern): Compiled regular expression 
-            object for splitting on the boundary between words in camel 
-            case and Pascal case.
-        KEBAB_CASE (Pattern): Compiled regular expression object that 
-            captures a kebab case string.
-        PASCAL_CASE (Pattern): Compiled regular expression object that 
-            captures a Pascal case string.
-        PASCAL_SPLIT (Pattern): Compiled regular expression object for 
-            splitting strings before converting substrings to camel 
-            case or Pascal case.
-        SEPARATOR_SPLIT (Pattern): Compiled regular expression object 
-            for splitting strings before converting substrings to kebab 
+        CAMEL_CASE: Compiled regular expression object that captures a 
+            camel case string.
+        CAMEL_PASCAL_SPLIT: Compiled regular expression object for 
+            splitting on the boundary between words in camel case and 
+            Pascal case.
+        KEBAB_CASE: Compiled regular expression object that captures a 
+            kebab case string.
+        PASCAL_CASE: Compiled regular expression object that captures a 
+            Pascal case string.
+        PASCAL_SPLIT: Compiled regular expression object for splitting 
+            strings before converting substrings to camel case or 
+            Pascal case.
+        SEPARATOR_SPLIT: Compiled regular expression object for 
+            splitting strings before converting substrings to kebab 
             case or snake case.
-        SHORT_ACRONYM (Pattern): Compiled regular expression object 
-            that captures a two-character acronym or initialism.
-        SNAKE_CASE (Pattern): Compiled regular expression object that 
-            captures a snake case string.
+        SHORT_ACRONYM: Compiled regular expression object that captures 
+            a two-character acronym or initialism.
+        SNAKE_CASE: Compiled regular expression object that captures a 
+            snake case string.
     """
-    CAMEL_CASE = re.compile(r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+')
-    CAMEL_PASCAL_SPLIT = re.compile(r'''
+    CAMEL_CASE: re.Pattern = re.compile(
+        r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+'
+    )
+    CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase 
                             # letter or digit
         (?=[A-Z])       # Positive lookahead to split before an uppercase 
@@ -38,9 +40,13 @@ class SeparatorCaseRegexes:
                             # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
-    KEBAB_CASE = re.compile(r'([A-Za-z0-9]+\-[A-Za-z0-9]\-?)+')
-    PASCAL_CASE = re.compile(r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+')
-    PASCAL_SPLIT = re.compile(r'''
+    KEBAB_CASE: re.Pattern[str] = re.compile(
+        r'([A-Za-z0-9]+\-[A-Za-z0-9]\-?)+'
+    )
+    PASCAL_CASE: re.Pattern[str] = re.compile(
+        r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+'
+    )
+    PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<![ .!?—–\-,:;"”\'’]) # Negative lookbehind to preserve spacing 
                                     # after spaces, punctuation and dashes
         [ ]                     # Character class to split on a single space
@@ -57,8 +63,9 @@ class SeparatorCaseRegexes:
         \b                      # Split on a word boundary character to ensure 
                                     # substrings begin and end with a word 
                                     # character.
-        ''', re.VERBOSE)
-    SEPARATOR_SPLIT = re.compile(r'''
+        ''', re.VERBOSE
+    )
+    SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a 
                                     # non-word character followed by a space 
                                     # character
@@ -89,9 +96,10 @@ class SeparatorCaseRegexes:
         |                       # OR
         (?=\t)                  # Positive lookahead to split on a tab 
                                     # character
-        ''', re.VERBOSE)
-    SHORT_ACRONYM = re.compile(r'[A-Z]{2}\b')
-    SNAKE_CASE = re.compile(r'([A-Za-z0-9]+_[A-Za-z0-9]+_?)+')
+        ''', re.VERBOSE
+    )
+    SHORT_ACRONYM: re.Pattern[str] = re.compile(r'[A-Z]{2}\b')
+    SNAKE_CASE: re.Pattern[str] = re.compile(r'([A-Za-z0-9]+_[A-Za-z0-9]+_?)+')
 
 
 class WarpingRegexes:
@@ -100,68 +108,75 @@ class WarpingRegexes:
         text.
 
     Attributes:
-        __CLOSING_LOOKAHEAD_STR (str): Regular expression pattern for 
+        __CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for 
             identifying when a quote is closing.
-        __OPENING_LOOKBEHIND_STR (str): Regular expression pattern for 
+        __OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for 
             identifying when a quote is opening.
 
-        CAMEL_SPLIT (Pattern): Compiled regular expression object for 
-            splitting strings before converting substrings to camel 
-            case.
-        CARDINAL (Pattern): Compiled regular expression object that 
-            captures a cardinal number.
-        CLOSING_STRAIGHT_DOUBLE (Pattern): Compiled regular expression 
-            object that captures closing straight double quotes.
-        CLOSING_STRAIGHT_SINGLE (Pattern): Compiled regular expression 
-            object that captures closing straight single quotes.
-        FIRST_LETTER (Pattern): Compiled regular expression object that 
-            captures the first alphabetical letter of a string.
-        HYPHENS (Pattern): Compiled regular expression object that 
+        CAMEL_SPLIT: Compiled regular expression object for splitting 
+            strings before converting substrings to camel case.
+        CARDINAL: Compiled regular expression object that captures a 
+            cardinal number.
+        CLOSING_STRAIGHT_DOUBLE: Compiled regular expression object 
+            that captures closing straight double quotes.
+        CLOSING_STRAIGHT_SINGLE: Compiled regular expression object 
+            that captures closing straight single quotes.
+        DOUBLE_HYPHENS: Compiled regular expression object that 
             captures double hyphens that function as an em dash.
-        HYPHEN_UNDERSCORE (Pattern): Compiled regular expression object 
-            that captures hyphens and underscores.
-        LETTER_APOSTROPHE (Pattern): Compiled regular expression object 
-            that captures an apostrophe character surrounded by 
-            alphabetical letter characters
-        LETTER_WORD (Pattern): Compiled regular expression object that 
-            captures a sequence of word characters that begin with an 
-            alphabetical letter. Captures words with apostrophes as a 
-            single word.
-        OPENING_STRAIGHT_DOUBLE (Pattern): Compiled regular expression 
-            object that captures opening straight double quotes.
-        OPENING_STRAIGHT_SINGLE (Pattern): Compiled regular expression 
-            object that captures opening straight single quotes.
-        ORDINAL (Pattern): Compiled regular expression object that 
-            captures an ordinal number.
-        PUNCT_INSIDE (Pattern): Compiled regular expression object with 
-            capturing groups for punctuation inside quotes and quotes 
-            outside punctuation.
-        PUNCT_OUTSIDE (Pattern): Compiled regular expression object 
-            with capturing groups for quotes inside punctuation and 
-            punctuation outside quotes.
-        TITLE_SUBSTRING_SPLIT (Pattern): Compiled regular expression 
-            object for splitting strings into substrings before 
-            capitalizing the first character.
-        TITLE_WORD_SPLIT (Pattern): Compiled regular expression object 
-            for splitting substrings into words before capitalizing 
-            title case words.
+        FIRST_LETTER: Compiled regular expression object that captures 
+            the first alphabetical letter of a string.
+        LETTER_APOSTROPHE: Compiled regular expression object that 
+            captures an apostrophe character surrounded by alphabetical 
+            letter characters
+        LETTER_WORD: Compiled regular expression object that captures a 
+            sequence of word characters that begin with an alphabetical 
+            letter. Captures words with apostrophes as a single word.
+        OPENING_STRAIGHT_DOUBLE: Compiled regular expression object 
+            that captures opening straight double quotes.
+        OPENING_STRAIGHT_SINGLE: Compiled regular expression object 
+            that captures opening straight single quotes.
+        ORDINAL: Compiled regular expression object that captures an 
+            ordinal number.
+        PUNCT_INSIDE: Compiled regular expression object with capturing 
+            groups for punctuation inside quotes and quotes outside 
+            punctuation.
+        PUNCT_OUTSIDE: Compiled regular expression object with capturing 
+            groups for quotes inside punctuation and punctuation 
+            outside quotes.
+        TITLE_SUBSTRING_SPLIT: Compiled regular expression object for 
+            splitting strings into substrings before capitalizing the 
+            first character.
+        TITLE_WORD_SPLIT: Compiled regular expression object for 
+            splitting substrings into words before capitalizing title 
+            case words.
     """
-    __CLOSING_LOOKAHEAD_STR = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'
-    __OPENING_LOOKBEHIND_STR = r'(?<=\s|\(|\[|\{)'
+    _CLOSING_QUOTE_LOOKAHEAD: str = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'
+    _OPENING_QUOTE_LOOKBEHIND: str = r'(?<=\s|\(|\[|\{)'
 
-    CAMEL_SPLIT = re.compile(r'(?<=[\s—–\-])')
-    CARDINAL = re.compile(r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)')
-    CLOSING_STRAIGHT_DOUBLE = re.compile(rf'"$|"{__CLOSING_LOOKAHEAD_STR}')
-    CLOSING_STRAIGHT_SINGLE = re.compile(rf"'$|'{__CLOSING_LOOKAHEAD_STR}")
-    FIRST_LETTER = re.compile(r'([A-Za-z])')
-    HYPHENS = re.compile(r'\s?--?\s?')
-    HYPHEN_UNDERSCORE = re.compile(r'\-|_')
-    LETTER_APOSTROPHE = re.compile(r'(?<=[A-Za-z])[\'’](?=[A-Za-z])')
-    LETTER_WORD = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
-    OPENING_STRAIGHT_DOUBLE = re.compile(rf'(^|{__OPENING_LOOKBEHIND_STR})"')
-    OPENING_STRAIGHT_SINGLE = re.compile(rf"(^|{__OPENING_LOOKBEHIND_STR})'")
-    ORDINAL = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
-    PUNCT_INSIDE = re.compile(r'([.,])(["”\'’]?["”\'’])')
-    PUNCT_OUTSIDE = re.compile(r'(["”\'’]?["”\'’])([.,])')
-    TITLE_SUBSTRING_SPLIT = re.compile(r'(?<=[\n\.:])')
-    TITLE_WORD_SPLIT = re.compile(r' |-|_')
+    CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–\-])')
+    CARDINAL: re.Pattern[str] = re.compile(
+        r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
+    )
+    CLOSING_STRAIGHT_DOUBLE: re.Pattern[str] = re.compile(
+        rf'"$|"{_CLOSING_QUOTE_LOOKAHEAD}'
+    )
+    CLOSING_STRAIGHT_SINGLE: re.Pattern[str] = re.compile(
+        rf"'$|'{_CLOSING_QUOTE_LOOKAHEAD}"
+    )
+    DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
+    FIRST_LETTER: re.Pattern[str] = re.compile(r'([A-Za-z])')
+    LETTER_APOSTROPHE: re.Pattern[str] = re.compile(
+        r'(?<=[A-Za-z])[\'’](?=[A-Za-z])'
+    )
+    LETTER_WORD: re.Pattern[str] = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
+    OPENING_STRAIGHT_DOUBLE: re.Pattern[str] = re.compile(
+        rf'(^|{_OPENING_QUOTE_LOOKBEHIND})"'
+    )
+    OPENING_STRAIGHT_SINGLE: re.Pattern[str] = re.compile(
+        rf"(^|{_OPENING_QUOTE_LOOKBEHIND})'"
+    )
+    ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
+    PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
+    PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
+    TITLE_SUBSTRING_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\n\.:])')
+    TITLE_WORD_SPLIT: re.Pattern[str] = re.compile(r' |-|_')

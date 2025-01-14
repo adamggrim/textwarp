@@ -1,5 +1,4 @@
 import re
-from typing import Optional
 
 from nltk import pos_tag
 
@@ -10,15 +9,15 @@ from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
 class HelperFunctions:
     """Helper functions for text warping."""
 
-    def capitalize_words(string: str, word_count: Optional[int] = None) -> str:
+    def capitalize_words(string: str, word_count: int | None = None) -> str:
             """
             Capitalizes the first letter of each in a specified number 
                 of words and converts all other letters in each word to 
                 lowercase.
 
             Args:
-                string (str): The string to capitalize.
-                count (int): The number of matches to replace.
+                string: The string to capitalize.
+                count: The number of matches to replace.
 
             Returns:
                 str: The capitalized string.
@@ -39,7 +38,7 @@ class HelperFunctions:
             quotes.
 
         Args:
-            string (str): The string to convert.
+            string: The string to convert.
 
         Returns:
             str: The converted string.
@@ -51,8 +50,8 @@ class HelperFunctions:
         Converts a string to kebab case or snake case.
 
         Args:
-            string (str): The string to convert.
-            separator (SeparatorCase): The separator for the converted 
+            string: The string to convert.
+            separator: The separator for the converted 
                 string.
 
         Returns:
@@ -123,7 +122,7 @@ class HelperFunctions:
             modifying any other letters.
 
         Args:
-            string (str): The string to convert.
+            string: The string to convert.
 
         Returns:
             str: The converted string.
@@ -137,7 +136,7 @@ def capitalize(string: str) -> str:
     Capitalizes the first character of each word in a given string.
 
     Args:
-        string (str): The string to capitalize.
+        string: The string to capitalize.
 
     Returns:
         str: The capitalized string.
@@ -150,7 +149,7 @@ def cardinal_to_ordinal(string: str) -> str:
     Converts cardinal numbers to ordinal numbers in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -161,7 +160,7 @@ def cardinal_to_ordinal(string: str) -> str:
             ordinal.
 
         Args:
-            match (re.Match): A match object representing a cardinal 
+            match: A match object representing a cardinal 
                 number found in the string.
 
         Returns:
@@ -183,7 +182,7 @@ def curly_to_straight(string: str) -> str:
     Converts curly quotes to straight quotes in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -206,12 +205,12 @@ def hyphens_to_em(string: str) -> str:
     Converts consecutive hyphens to em dashes in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return re.sub(WarpingRegexes.HYPHENS, '—', string)
+    return re.sub(WarpingRegexes.DOUBLE_HYPHENS, '—', string)
 
 
 def hyphen_to_en(string: str) -> str:
@@ -219,7 +218,7 @@ def hyphen_to_en(string: str) -> str:
     Converts hyphens to en dashes in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -233,7 +232,7 @@ def punct_to_inside(string: str) -> str:
         marks.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -243,7 +242,7 @@ def punct_to_inside(string: str) -> str:
         Reorders periods and commas to move them inside quotation marks.
 
         Args:
-            match (re.Match): A regular expression match object.
+            match: A regular expression match object.
 
         Returns:
             str: The reordered string.
@@ -259,7 +258,7 @@ def punct_to_outside(string: str) -> str:
         quotation marks.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -270,7 +269,7 @@ def punct_to_outside(string: str) -> str:
             marks.
 
         Args:
-            match (re.Match): A regular expression match object.
+            match: A regular expression match object.
 
         Returns:
             str: The reordered string.
@@ -285,10 +284,10 @@ def straight_to_curly(string: str) -> str:
     Convert straight quotes to curly quotes in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
-        curly_str (str): The converted string.
+        curly_str: The converted string.
     """
     # Replace straight double quotes with opening curly double quotes.
     curly_str = re.sub(WarpingRegexes.OPENING_STRAIGHT_DOUBLE, '“', string)
@@ -306,7 +305,7 @@ def to_alternating_caps(string: str) -> str:
     Converts a string to alternating caps.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -330,18 +329,18 @@ def to_camel_case(string: str) -> str:
     Converts a string to camel case.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
     """
     def _lowercase_first_letter(string) -> str:
         """
-        Lowercases the first letter of the string without modifying 
-            any other letters.
+        Lowercases the first letter of the string without modifying any 
+            other letters.
 
         Args:
-            string (str): The string to convert.
+            string: The string to convert.
 
         Returns:
             str: The converted string.
@@ -363,7 +362,7 @@ def to_kebab_case(string: str) -> str:
     Converts a string to kebab case.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -376,7 +375,7 @@ def to_lowercase(string: str) -> str:
     Converts a string to lowercase.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -389,7 +388,7 @@ def ordinal_to_cardinal(string: str) -> str:
     Converts ordinal numbers to cardinal numbers in a given string.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -400,8 +399,8 @@ def ordinal_to_cardinal(string: str) -> str:
             cardinal equivalent.
 
         Args:
-            match (re.Match): A match object representing an ordinal 
-                number found in the string.
+            match: A match object representing an ordinal number found 
+                in the string.
 
         Returns:
             str: The cardinal version of the matched ordinal.
@@ -417,7 +416,7 @@ def to_pascal_case(string: str) -> str:
     Converts a string to Pascal case.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -447,7 +446,7 @@ def to_snake_case(string: str) -> str:
     Converts a string to snake case.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -460,7 +459,7 @@ def to_title_case(string: str) -> str:
     Converts a string to title case.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.
@@ -471,7 +470,7 @@ def to_title_case(string: str) -> str:
             part of speech.
 
         Args:
-            tag (str): The NLTK POS tag to check.
+            tag: The NLTK POS tag to check.
 
         Returns:
             bool: True if the tag should be capitalized, otherwise 
@@ -506,7 +505,7 @@ def to_uppercase(string: str) -> str:
     Converts a string to uppercase.
 
     Args:
-        string (str): The string to convert.
+        string: The string to convert.
 
     Returns:
         str: The converted string.

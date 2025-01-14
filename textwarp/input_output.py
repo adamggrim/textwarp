@@ -14,18 +14,18 @@ def print_padding() -> None:
     print('')
 
 
-def print_wrapped(string: str) -> None:
+def print_wrapped(text: str) -> None:
     """
     Wraps printing based on the width of the terminal and adds a 
         newline character to the start of the string.
-
+    
     Args:
-        text (str): The string to print.
+        text: The string to print.
     """
-    terminal_size = os.get_terminal_size()[0]
-    print_size = terminal_size - 1
-    wrapped_str = textwrap.fill(string, width=print_size)
-    print('\n' + wrapped_str)
+    terminal_size: int = os.get_terminal_size()[0]
+    print_size: int = terminal_size - 1
+    wrapped_text: str = textwrap.fill(text, width=print_size)
+    print('\n' + wrapped_text)
 
 
 def program_exit() -> None:
@@ -33,7 +33,7 @@ def program_exit() -> None:
     Prints a message that the program is exiting, then exits the 
         program.
     """
-    print_wrapped(EXIT_STR)
+    print_wrapped(EXIT_MESSAGE)
     print_padding()
     exit()
 
@@ -48,18 +48,18 @@ def convert_text(conversion_function: Callable[[str], str]) -> None:
             takes a string as input and returns the transformed string.
     """
     while True:
-        clipboard = pyperclip.paste()
-        converted_clipboard = conversion_function(clipboard)
+        clipboard: str = pyperclip.paste()
+        converted_clipboard: str = conversion_function(clipboard)
         pyperclip.copy(converted_clipboard)
-        print_wrapped(MODIFED_TEXT_STR)
-        print_wrapped(ANY_OTHER_TEXT_STR)
-        response = input().strip()
+        print_wrapped(MODIFED_TEXT_MESSAGE)
+        print_wrapped(ANY_OTHER_TEXT_PROMPT)
+        response: str = input().strip()
         while True:
-            if response.lower() in (NO_STRS | QUIT_STRS | YES_STRS):
+            if response.lower() in (NO_INPUTS | EXIT_INPUTS | YES_INPUTS):
                 break
             else:
-                print_wrapped(ENTER_VALID_RESPONSE_STR)
+                print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
                 response = input().strip()
                 continue
-        if response.lower() in (NO_STRS | QUIT_STRS):
+        if response.lower() in (NO_INPUTS | EXIT_INPUTS):
             program_exit()
