@@ -4,9 +4,15 @@ from typing import Callable
 
 import pyperclip
 
-from textwarp.constants import (ANY_OTHER_TEXT_STR, ENTER_VALID_RESPONSE_STR, 
-                                EXIT_STR, MODIFED_TEXT_STR, NO_STRS, 
-                                QUIT_STRS, YES_STRS)
+from textwarp.constants import (
+    ANY_OTHER_TEXT_PROMPT, 
+    ENTER_VALID_RESPONSE_PROMPT, 
+    EXIT_MESSAGE, 
+    MODIFED_TEXT_MESSAGE, 
+    NO_INPUTS, 
+    EXIT_INPUTS, 
+    YES_INPUTS
+)
 
 
 def print_padding() -> None:
