@@ -1,14 +1,28 @@
-from textcount.analyzing import (get_char_count, get_line_count, get_mfws, 
-                                 get_pos_count, get_time_to_read, 
-                                 get_word_count)
-from textcount.constants import (FormatCountStrings, ENTER_MFW_COUNT_STR, ENTER_NUMBER_STR, 
-                                 ENTER_WPM_STR)
-from textcount.formatting import (FormatPrinting, format_count, 
-                                  format_mfws, format_pos_count, 
-                                  format_time_to_read)
+from textcount.counting import (
+    count_chars, 
+    count_lines, 
+    count_mfws, 
+    count_pos, 
+    count_time_to_read, 
+    count_words
+)
+from textcount.constants import (
+    FormatCountLabels, 
+    ENTER_MFW_COUNT_PROMPT, 
+    ENTER_NUMBER_PROMPT, 
+    ENTER_WPM_PROMPT
+)
+from textcount.data_structures import POSCounts
+from textcount.formatting import (
+    FormatPrinting, 
+    format_count, 
+    format_mfws, 
+    format_pos_count, 
+    format_time_to_read
+)
 
 
-def process_char_count(string: str) -> None:
+def process_char_count(text: str) -> None:
     """
     Deploys functions to analyze, format and print character count 
         output.
