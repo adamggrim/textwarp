@@ -23,8 +23,9 @@ class HelpMessages:
         TITLE_CASE: Help message for --title-case argument
         UPPERCASE: Help message for --uppercase argument
     """
-    DESCRIPTION: str = ('Specify the text warping function to apply to the '
-                        'clipboard.')
+    DESCRIPTION: str = (
+        'Specify the text warping function to apply to the clipboard.'
+    )
 
     ALTERNATING_CAPS: str = 'convert to alternating caps'
     CAMEL_CASE: str = 'convert to camel case'
