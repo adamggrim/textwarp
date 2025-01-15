@@ -33,7 +33,7 @@ def parse_args() -> Callable[[str], str]:
     args = parser.parse_args()
 
     # Dictionary mapping argument names to text counting functions
-    arg_func_dict = {
+    arg_func_dict: dict[str, Callable[[str], str]] = {
         'char_count': process_char_count,
         'line_count': process_line_count,
         'mfws': process_mfws,
@@ -42,6 +42,6 @@ def parse_args() -> Callable[[str], str]:
         'word_count': process_word_count
     }
 
-    for arg_str, func in arg_func_dict.items():
-        if getattr(args, arg_str):
+    for arg_label, func in arg_func_dict.items():
+        if getattr(args, arg_label):
             return func

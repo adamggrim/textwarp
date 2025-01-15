@@ -14,35 +14,34 @@ def process_char_count(string: str) -> None:
         output.
 
     Args:
-        string (str): The string to analyze.
-
+        text: The string to process.
     """
-    char_count = get_char_count(string)
-    char_count_str = format_count(FormatCountStrings.CHAR_STR, char_count)
-    FormatPrinting.print_wrapped(char_count_str)
+    char_count: int = count_chars(text)
+    formatted_char_count: str = format_count(FormatCountLabels.CHAR, char_count)
+    FormatPrinting.print_wrapped(formatted_char_count)
 
 
-def process_line_count(string: str) -> None:
+def process_line_count(text: str) -> None:
     """
     Deploys functions to analyze, format and print line count output.
 
     Args:
-        string (str): The string to analyze.
+        text: The string to process.
     """
-    line_count = get_line_count(string)
-    line_count_str = format_count(FormatCountStrings.LINE_STR, line_count)
-    FormatPrinting.print_wrapped(line_count_str)
+    line_count: int = count_lines(text)
+    formatted_line_count: str = format_count(FormatCountLabels.LINE, line_count)
+    FormatPrinting.print_wrapped(formatted_line_count)
 
 
-def process_mfws(string: str) -> None:
+def process_mfws(text: str) -> None:
     """
     Deploys functions to analyze, format and print most frequent words 
         output.
 
     Args:
-        string (str): The string to analyze.
+        text: The string to process.
     """
-    def get_mfw_count() -> int:
+    def prompt_for_mfw_count() -> int:
         """
         Prompts the user for the number of most frequent words to 
             display.
@@ -50,72 +49,72 @@ def process_mfws(string: str) -> None:
         Returns:
             int: The number of most frequent words to display.
         """
-        FormatPrinting.print_wrapped(ENTER_MFW_COUNT_STR)
-        mfw_count = input().strip()
+        FormatPrinting.print_wrapped(ENTER_MFW_COUNT_PROMPT)
+        mfw_count_input: str = input().strip()
         while True:
-            if mfw_count.isdigit() == True:
+            if mfw_count_input.isdigit() == True:
                 break
             else:
-                print(ENTER_NUMBER_STR)
-                mfw_count = input().strip()
+                print(ENTER_NUMBER_PROMPT)
+                mfw_count_input = input().strip()
                 continue
-        return int(mfw_count)
-    mfw_count = get_mfw_count()
-    mfws = get_mfws(string, mfw_count)
-    mfws_str = format_mfws(mfws)
-    FormatPrinting.print_wrapped(mfws_str)
+        return int(mfw_count_input)
+    mfw_count: int = prompt_for_mfw_count()
+    mfws: list[tuple] = count_mfws(text, mfw_count)
+    formatted_mfws: str = format_mfws(mfws)
+    FormatPrinting.print_wrapped(formatted_mfws)
 
 
-def process_pos_count(string: str) -> None:
+def process_pos_count(text: str) -> None:
     """
     Deploys functions to analyze, format and print parts of speech 
         count output.
 
     Args:
-        string (str): The string to analyze.
+        text: The string to process.
     """
-    pos_count = get_pos_count(string)
-    pos_count_str = format_pos_count(pos_count)
-    FormatPrinting.print_wrapped(pos_count_str)
+    pos_count: POSCounts = count_pos(text)
+    formatted_pos_count: str = format_pos_count(pos_count)
+    FormatPrinting.print_wrapped(formatted_pos_count)
 
 
-def process_time_to_read(string: str) -> None:
+def process_time_to_read(text: str) -> None:
     """
     Deploys functions to analyze, format and print time to read output.
 
     Args:
-        string (str): The string to analyze.
+        text: The string to process.
     """
-    def get_wpm() -> int:
+    def prompt_for_wpm() -> int:
         """
         Prompts the user for the number of words per minute.
 
         Returns:
             int: The number of words per minute.
         """
-        FormatPrinting.print_wrapped(ENTER_WPM_STR)
-        wpm = input().strip()
+        FormatPrinting.print_wrapped(ENTER_WPM_PROMPT)
+        wpm_input: str = input().strip()
         while True:
-            if wpm.isdigit() == True:
+            if wpm_input.isdigit() == True:
                 break
             else:
-                print(ENTER_NUMBER_STR)
-                wpm = input().strip()
+                print(ENTER_NUMBER_PROMPT)
+                wpm_input = input().strip()
                 continue
-        return int(wpm)
-    wpm = get_wpm()
-    time_to_read = get_time_to_read(string, wpm)
-    time_to_read_str = format_time_to_read(time_to_read)
-    FormatPrinting.print_wrapped(time_to_read_str)
+        return int(wpm_input)
+    wpm: int = prompt_for_wpm()
+    time_to_read: int = count_time_to_read(text, wpm)
+    formatted_time_to_read: str = format_time_to_read(time_to_read)
+    FormatPrinting.print_wrapped(formatted_time_to_read)
 
 
-def process_word_count(string: str) -> None:
+def process_word_count(text: str) -> None:
     """
     Deploys functions to analyze, format and print word count output. 
 
     Args:
-        string (str): The string to analyze.
+        text: The string to process.
     """
-    word_count = get_word_count(string)
-    word_count_str = format_count(FormatCountStrings.WORD_STR, word_count)
-    FormatPrinting.print_wrapped(word_count_str)
+    word_count: int = count_words(text)
+    formatted_word_count: str = format_count(FormatCountLabels.WORD, word_count)
+    FormatPrinting.print_wrapped(formatted_word_count)

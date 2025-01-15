@@ -1,3 +1,5 @@
+from typing import Callable
+
 from textcount.formatting import FormatPrinting
 from textcount.input_output import process_analysis, program_exit
 from textcount.parsing import parse_args
@@ -5,7 +7,7 @@ from textcount.parsing import parse_args
 
 def main() -> None:
     """Initiates an instance of a text analysis function."""
-    processing_function = parse_args()
+    processing_function: Callable[[str], str] = parse_args()
 
     while True:
         try:
