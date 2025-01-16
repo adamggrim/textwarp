@@ -24,7 +24,7 @@ class HelpMessages:
         UPPERCASE: Help message for --uppercase argument
     """
     DESCRIPTION: str = (
-        'Specify the text warping function to apply to the clipboard.'
+        'Specify which text warping function to apply to the clipboard.'
     )
 
     ALTERNATING_CAPS: str = 'convert to alternating caps'

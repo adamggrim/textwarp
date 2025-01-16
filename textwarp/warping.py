@@ -9,14 +9,17 @@ from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
 class HelperFunctions:
     """Helper functions for text warping."""
 
-    def capitalize_words(string: str, word_count: int | None = None) -> str:
+    def capitalize_words(
+            text: str, 
+            word_count: int | None = None
+        ) -> str:
             """
             Capitalizes the first letter of each in a specified number 
                 of words and converts all other letters in each word to 
                 lowercase.
 
             Args:
-                string: The string to capitalize.
+                text: The string to capitalize.
                 count: The number of matches to replace.
 
             Returns:
@@ -24,35 +27,39 @@ class HelperFunctions:
             """
             # Capitalize the first letter of every word.
             if word_count is None:
-                return re.sub(WarpingRegexes.LETTER_WORD, lambda match: 
-                              match.group(0).capitalize(), string)
+                return re.sub(
+                    WarpingRegexes.LETTER_WORD, lambda match: 
+                    match.group(0).capitalize(), text)
             # Capitalize the first letter of a specified number of words.
             else:
-                return re.sub(WarpingRegexes.LETTER_WORD, lambda match: 
-                              match.group(0).capitalize(), string, 
-                              count=word_count)
+                return re.sub(
+                    WarpingRegexes.LETTER_WORD, lambda match: 
+                    match.group(0).capitalize(), text, count=word_count
+                )
 
-    def remove_apostrophes(string: str) -> str:
+    def remove_apostrophes(text: str) -> str:
         """
         Removes apostrophes from a string without removing single 
             quotes.
 
         Args:
-            string: The string to convert.
+            text: The string to convert.
 
         Returns:
             str: The converted string.
         """
-        return re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', string)
+        return re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', text)
 
-    def to_separator_case(string: str, separator_case: SeparatorCase) -> str:
+    def to_separator_case(
+            text: str, 
+            separator_case: SeparatorCase
+        ) -> str:
         """
         Converts a string to kebab case or snake case.
 
         Args:
-            string: The string to convert.
-            separator: The separator for the converted 
-                string.
+            text: The string to convert.
+            separator: The separator for the converted string.
 
         Returns:
             str: The converted string.
@@ -65,41 +72,49 @@ class HelperFunctions:
             Returns:
                 str: The other separator character.
             """
-            separator_mapping = {
+            separator_mapping: dict[SeparatorCase, str] = {
                 SeparatorCase.KEBAB: "_",
                 SeparatorCase.SNAKE: "-",
             }
             return separator_mapping.get(separator_case)
-        other_separator = _get_other_separator()
-        separator_sub = re.compile(rf'{other_separator}| ')
-        no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
-        substrings = re.split(SeparatorCaseRegexes.SEPARATOR_SPLIT, 
-                              no_apostrophes_str)
-        separator_substrings = []
+        other_separator: str | None = _get_other_separator()
+        no_apostrophes_text: str = HelperFunctions.remove_apostrophes(text)
+        substrings: list[str] = re.split(
+            SeparatorCaseRegexes.SEPARATOR_SPLIT, 
+            no_apostrophes_text
+        )
+        separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
+        separator_substrings: list[str] = []
         for substring in substrings:
+            separator_substring: str
             # Substring is already in a separator case.
             if (SeparatorCaseRegexes.KEBAB_CASE.match(substring) or
                 SeparatorCaseRegexes.SNAKE_CASE.match(substring)):
                 if substring.isupper():
-                    separator_substring = re.sub(separator_sub, 
-                                                 separator_case.value, 
-                                                 substring)
+                    separator_substring = re.sub(
+                        separator_sub, 
+                        separator_case.value, 
+                        substring
+                    )
                 else:
-                    separator_substring = re.sub(separator_sub, 
-                                                 separator_case.value, 
-                                                 substring.lower())
+                    separator_substring = re.sub(
+                        separator_sub, 
+                        separator_case.value, 
+                        substring.lower()
+                    )
             # Substring is in camel case or Pascal case.
             elif (SeparatorCaseRegexes.CAMEL_CASE.match(substring) or 
                 SeparatorCaseRegexes.PASCAL_CASE.match(substring)):
                 # Break camel case and Pascal case into constituent words.
-                broken_words = re.split(
+                broken_words: list[str] = re.split(
                     SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, substring)
-                converted_words = []
+                converted_words: list[str] = []
                 for word in broken_words:
                     converted_word = word.lower()
                     converted_words.append(converted_word)
                 separator_substring = separator_case.value.join(
-                    converted_words)
+                    converted_words
+                )
             # Substring is not in any of the above cases.
             else:
                 # Substring is in all caps.
@@ -108,53 +123,54 @@ class HelperFunctions:
                                                         separator_case.value)
                 # Substring begins with an alphabebtical letter.
                 elif re.match(WarpingRegexes.FIRST_LETTER, substring):
-                    separator_substring = substring.lower().replace(' ', 
-                                                        separator_case.value)
+                    separator_substring = substring.lower().replace(
+                        ' ', separator_case.value
+                    )
                 # Substring does not meet either of the above conditions.
                 else:
                     separator_substring = substring
             separator_substrings.append(separator_substring)
         return ''.join(separator_substrings)
 
-    def uppercase_first_letter(string: str) -> str:
+    def uppercase_first_letter(text: str) -> str:
         """
         Converts the first letter of the string to uppercase without 
             modifying any other letters.
 
         Args:
-            string: The string to convert.
+            text: The string to convert.
 
         Returns:
-            str: The converted string.
+            str: The converted text.
         """
         return re.sub(WarpingRegexes.FIRST_LETTER, lambda match: 
-                      match.group(0).upper(), string, count=1)
+                      match.group(0).upper(), text, count=1)
 
 
-def capitalize(string: str) -> str:
+def capitalize(text: str) -> str:
     """
     Capitalizes the first character of each word in a given string.
 
     Args:
-        string: The string to capitalize.
+        text: The string to capitalize.
 
     Returns:
         str: The capitalized string.
     """
-    return HelperFunctions.capitalize_words(string)
+    return HelperFunctions.capitalize_words(text)
 
 
-def cardinal_to_ordinal(string: str) -> str:
+def cardinal_to_ordinal(text: str) -> str:
     """
     Converts cardinal numbers to ordinal numbers in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    def replace_cardinal(match):
+    def replace_cardinal(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched cardinal number with an 
             ordinal.
@@ -166,28 +182,31 @@ def cardinal_to_ordinal(string: str) -> str:
         Returns:
             str: The ordinal version of the matched cardinal.
         """
-        number_str = match.group(0)
-        number = int(number_str.replace(',', ''))
+        number_str: str = match.group(0)
+        number: int = int(number_str.replace(',', ''))
+        suffix: str
         if 10 <= number % 100 <= 20:
             suffix = 'th'
         else:
             suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
-        formatted_number = f'{number:,}' if ',' in number_str else str(number)
+        formatted_number: str = (
+            f'{number:,}' if ',' in number_str else str(number)
+        )
         return f'{formatted_number}{suffix}'
-    return re.sub(WarpingRegexes.CARDINAL, replace_cardinal, string)
+    return re.sub(WarpingRegexes.CARDINAL, replace_cardinal, text)
 
 
-def curly_to_straight(string: str) -> str:
+def curly_to_straight(text: str) -> str:
     """
     Converts curly quotes to straight quotes in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    translation_table = str.maketrans({
+    translation_table: dict[int, str] = str.maketrans({
         # Curly opening double quotes to straight double quotes
         '”': '"', 
         # Curly closing double quotes to straight double quotes
@@ -197,42 +216,42 @@ def curly_to_straight(string: str) -> str:
         # Curly closing single quotes to straight single quotes
         '‘': "'"
     })
-    return string.translate(translation_table)
+    return text.translate(translation_table)
 
 
-def hyphens_to_em(string: str) -> str:
+def hyphens_to_em(text: str) -> str:
     """
     Converts consecutive hyphens to em dashes in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return re.sub(WarpingRegexes.DOUBLE_HYPHENS, '—', string)
+    return re.sub(WarpingRegexes.DOUBLE_HYPHENS, '—', text)
 
 
-def hyphen_to_en(string: str) -> str:
+def hyphen_to_en(text: str) -> str:
     """
     Converts hyphens to en dashes in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return string.replace('-', '–')
+    return text.replace('-', '–')
 
 
-def punct_to_inside(string: str) -> str:
+def punct_to_inside(text: str) -> str:
     """
     Moves periods and commas at the end of quotes inside the quotation 
         marks.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
@@ -247,18 +266,20 @@ def punct_to_inside(string: str) -> str:
         Returns:
             str: The reordered string.
         """
+        punct: str
+        quote: str
         punct, quote = match.groups()
         return quote + punct
-    return re.sub(WarpingRegexes.PUNCT_OUTSIDE, _repl, string)
+    return re.sub(WarpingRegexes.PUNCT_OUTSIDE, _repl, text)
 
 
-def punct_to_outside(string: str) -> str:
+def punct_to_outside(text: str) -> str:
     """
     Moves periods and commas at the end of quotes to outside the 
         quotation marks.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
@@ -274,45 +295,56 @@ def punct_to_outside(string: str) -> str:
         Returns:
             str: The reordered string.
         """
+        quote: str
+        punct: str
         quote, punct = match.groups()
         return punct + quote
-    return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, string)
+    return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, text)
 
 
-def straight_to_curly(string: str) -> str:
+def straight_to_curly(text: str) -> str:
     """
     Convert straight quotes to curly quotes in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
-        curly_str: The converted string.
+        curly_text: The converted string.
     """
+    curly_text: str
+
     # Replace straight double quotes with opening curly double quotes.
-    curly_str = re.sub(WarpingRegexes.OPENING_STRAIGHT_DOUBLE, '“', string)
+    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_DOUBLE, '“', text)
+
     # Replace straight double quotes with closing curly double quotes.
-    curly_str = re.sub(WarpingRegexes.CLOSING_STRAIGHT_DOUBLE, '”', curly_str)
+    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_DOUBLE, '”', 
+                        curly_text)
+    
     # Replace straight single quotes with opening curly single quotes.
-    curly_str = re.sub(WarpingRegexes.OPENING_STRAIGHT_SINGLE, '‘', curly_str)
+    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_SINGLE, '‘', 
+                        curly_text)
+    
     # Replace straight single quotes with closing curly single quotes.
-    curly_str = re.sub(WarpingRegexes.CLOSING_STRAIGHT_SINGLE, '’', curly_str)
-    return curly_str
+    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_SINGLE, '’', 
+                        curly_text)
+    
+    return curly_text
 
 
-def to_alternating_caps(string: str) -> str:
+def to_alternating_caps(text: str) -> str:
     """
     Converts a string to alternating caps.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    result = []
-    upper = False
-    for char in string:
+    result: list[str] = []
+    upper: bool = False
+    for char in text:
         if char.isalpha():
             if upper:
                 result.append(char.upper())
@@ -324,71 +356,75 @@ def to_alternating_caps(string: str) -> str:
     return ''.join(result)
 
 
-def to_camel_case(string: str) -> str:
+def to_camel_case(text: str) -> str:
     """
     Converts a string to camel case.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    def _lowercase_first_letter(string) -> str:
+    def _lowercase_first_letter(text) -> str:
         """
         Lowercases the first letter of the string without modifying any 
             other letters.
 
         Args:
-            string: The string to convert.
+            text: The string to convert.
 
         Returns:
             str: The converted string.
         """
-        return re.sub(WarpingRegexes.FIRST_LETTER, lambda match: 
-                      match.group(0).lower(), string, count=1)
-    pascal_str = to_pascal_case(string)
+        return re.sub(
+            WarpingRegexes.FIRST_LETTER, lambda match: 
+            match.group(0).lower(), text, count=1
+        )
+    pascal_text: str = to_pascal_case(text)
     # Split between each instance of Pascal case in the string.
-    pascal_words = re.split(SeparatorCaseRegexes.CAMEL_SPLIT, pascal_str)
-    camel_words = []
+    pascal_words: list[str] = re.split(
+        SeparatorCaseRegexes.CAMEL_SPLIT, pascal_text
+    )
+    camel_words: list[str] = []
     for word in pascal_words:
-        camel_word = _lowercase_first_letter(word)
+        camel_word: str = _lowercase_first_letter(word)
         camel_words.append(camel_word)
     return ''.join(camel_words)
 
 
-def to_kebab_case(string: str) -> str:
+def to_kebab_case(text: str) -> str:
     """
     Converts a string to kebab case.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(string, SeparatorCase.KEBAB)
+    return HelperFunctions.to_separator_case(text, SeparatorCase.KEBAB)
 
 
-def to_lowercase(string: str) -> str:
+def to_lowercase(text: str) -> str:
     """
     Converts a string to lowercase.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return string.lower()
+    return text.lower()
 
 
-def ordinal_to_cardinal(string: str) -> str:
+def ordinal_to_cardinal(text: str) -> str:
     """
     Converts ordinal numbers to cardinal numbers in a given string.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
@@ -405,26 +441,26 @@ def ordinal_to_cardinal(string: str) -> str:
         Returns:
             str: The cardinal version of the matched ordinal.
         """
-        ordinal = match.group(0)
-        number_str = ordinal[:-2]
-        return number_str
-    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, string)
+        ordinal: str = match.group(0)
+        return ordinal[:-2]
+    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, text)
 
 
-def to_pascal_case(string: str) -> str:
+def to_pascal_case(text: str) -> str:
     """
     Converts a string to Pascal case.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    no_apostrophes_str = HelperFunctions.remove_apostrophes(string)
-    words = re.split(SeparatorCaseRegexes.PASCAL_SPLIT, no_apostrophes_str)
-    pascal_words = []
+    no_apostrophes_text: str = HelperFunctions.remove_apostrophes(text)
+    words: list[str] = re.split(SeparatorCaseRegexes.PASCAL_SPLIT, no_apostrophes_text)
+    pascal_words: list[str] = []
     for word in words:
+        pascal_word: str
         # Word is already in Pascal case.
         if SeparatorCaseRegexes.PASCAL_CASE.match(word):
             pascal_word = word
@@ -441,25 +477,25 @@ def to_pascal_case(string: str) -> str:
     return ''.join(pascal_words)
 
 
-def to_snake_case(string: str) -> str:
+def to_snake_case(text: str) -> str:
     """
     Converts a string to snake case.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(string, SeparatorCase.SNAKE)
+    return HelperFunctions.to_separator_case(text, SeparatorCase.SNAKE)
 
 
-def to_title_case(string: str) -> str:
+def to_title_case(text: str) -> str:
     """
     Converts a string to title case.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
@@ -477,37 +513,42 @@ def to_title_case(string: str) -> str:
                 False.
         """
         return tag not in ['CC', 'DT', 'IN', 'RP', 'TO', 'WDT']
-    substrings = re.split(WarpingRegexes.TITLE_SUBSTRING_SPLIT, string)
-    title_substrings = []
+    substrings: list[str] = re.split(
+        WarpingRegexes.TITLE_SUBSTRING_SPLIT, text
+    )
+    title_substrings: list[str] = []
     for substring in substrings:
         # Capitalize the first character of the substring.
-        title_substring = HelperFunctions.uppercase_first_letter(substring)
+        title_substring: str = HelperFunctions.uppercase_first_letter(substring)
         # Split the substring into words.
-        words = re.split(WarpingRegexes.TITLE_WORD_SPLIT, title_substring)
-        all_words = []
+        words: list[str] = re.split(
+            WarpingRegexes.TITLE_WORD_SPLIT, title_substring
+        )
+        all_words: list[str] = []
         # For loop to break camel and Pascal case into constituent words
         for word in words:
-            broken_words = re.split(SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, 
-                                    word)
+            broken_words: list[str] = re.split(
+                SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, word)
             all_words.extend([broken_word for broken_word in broken_words])
-        all_words_tags = pos_tag(all_words)
+        all_words_tags: list[tuple[str, str]] = pos_tag(all_words)
         # Capitalize words based on their part of speech.
-        title_words = [HelperFunctions.capitalize_words(word, word_count=1) if 
-                       should_capitalize(tag) else word for word, tag in 
-                       all_words_tags]
+        title_words = [
+            HelperFunctions.capitalize_words(word, word_count=1) if 
+            should_capitalize(tag) else word for word, tag in all_words_tags
+        ]
         title_substring = ' '.join(title_words)
         title_substrings.append(title_substring)
     return ''.join(title_substrings)
 
 
-def to_uppercase(string: str) -> str:
+def to_uppercase(text: str) -> str:
     """
     Converts a string to uppercase.
 
     Args:
-        string: The string to convert.
+        text: The string to convert.
 
     Returns:
         str: The converted string.
     """
-    return string.upper()
+    return text.upper()

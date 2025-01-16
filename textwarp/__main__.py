@@ -8,7 +8,7 @@ from textwarp.parsing import parse_args
 
 def main() -> None:
     """Initiates an instance of a text warping function."""
-    conversion_function = parse_args()
+    conversion_function: str = parse_args()
 
     while True:
         try:

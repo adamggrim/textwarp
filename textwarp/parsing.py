@@ -30,8 +30,12 @@ def parse_args() -> Callable[[str], str]:
         Callable[[str], str]: The text warping function corresponding 
             to the specified command-line argument.
     """
-    parser = argparse.ArgumentParser(description=HelpMessages.DESCRIPTION)
-    group = parser.add_mutually_exclusive_group(required=True)
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+        description=HelpMessages.DESCRIPTION
+    )
+    group: argparse._MutuallyExclusiveGroup = (
+        parser.add_mutually_exclusive_group(required=True)
+    )
     group.add_argument('--alternating-caps', action='store_true', 
                        help=HelpMessages.ALTERNATING_CAPS)
     group.add_argument('--camel-case', action='store_true', 
@@ -66,10 +70,10 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.TITLE_CASE)
     group.add_argument('--uppercase', action='store_true', 
                        help=HelpMessages.UPPERCASE)
-    args = parser.parse_args()
+    args: argparse.Namespace = parser.parse_args()
 
     # Dictionary mapping argument names to text warping functions
-    arg_func_dict = {
+    arg_func_map: dict[str, Callable[[str], str]] = {
         'alternating_caps': to_alternating_caps,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
@@ -89,6 +93,6 @@ def parse_args() -> Callable[[str], str]:
         'uppercase': to_uppercase
     }
 
-    for arg_label, func in arg_func_dict.items():
+    for arg_label, func in arg_func_map.items():
         if getattr(args, arg_label):
             return func
