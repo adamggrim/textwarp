@@ -2,23 +2,25 @@ import argparse
 from typing import Callable
 
 from textwarp.constants import HelpMessages
-from textwarp.warping import (capitalize, 
-                              cardinal_to_ordinal, 
-                              curly_to_straight, 
-                              hyphens_to_em, 
-                              hyphen_to_en,
-                              punct_to_inside, 
-                              ordinal_to_cardinal, 
-                              punct_to_outside, 
-                              straight_to_curly, 
-                              to_alternating_caps, 
-                              to_camel_case, 
-                              to_kebab_case, 
-                              to_lowercase, 
-                              to_pascal_case, 
-                              to_snake_case, 
-                              to_title_case, 
-                              to_uppercase)
+from textwarp.warping import (
+    capitalize, 
+    cardinal_to_ordinal, 
+    curly_to_straight, 
+    hyphens_to_em, 
+    hyphen_to_en, 
+    punct_to_inside, 
+    ordinal_to_cardinal, 
+    punct_to_outside, 
+    straight_to_curly, 
+    to_alternating_caps, 
+    to_camel_case, 
+    to_kebab_case, 
+    to_lowercase, 
+    to_pascal_case, 
+    to_snake_case, 
+    to_title_case, 
+    to_uppercase
+)
 
 
 def parse_args() -> Callable[[str], str]:
