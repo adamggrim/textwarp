@@ -2,9 +2,14 @@ import argparse
 from typing import Callable
 
 from textcount.constants import HelpMessages
-from textcount.processing import (process_char_count, process_line_count, 
-                                  process_mfws, process_pos_count, 
-                                  process_time_to_read, process_word_count)
+from textcount.processing import (
+    process_char_count, 
+    process_line_count, 
+    process_mfws, 
+    process_pos_count, 
+    process_time_to_read, 
+    process_word_count
+)
 
 
 def parse_args() -> Callable[[str], str]:
@@ -16,8 +21,12 @@ def parse_args() -> Callable[[str], str]:
         Callable[[str], str]: The text analysis function corresponding 
             to the specified command-line argument.
     """
-    parser = argparse.ArgumentParser(description=HelpMessages.DESCRIPTION)
-    group = parser.add_mutually_exclusive_group(required=True)
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+        description=HelpMessages.DESCRIPTION
+    )
+    group: argparse._MutuallyExclusiveGroup = (
+        parser.add_mutually_exclusive_group(required=True)
+    )
     group.add_argument('--char-count', action='store_true', 
                        help=HelpMessages.CHAR_COUNT)
     group.add_argument('--line-count', action='store_true', 
@@ -30,10 +39,10 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.TIME_TO_READ)
     group.add_argument('--word-count', action='store_true', 
                        help=HelpMessages.WORD_COUNT)
-    args = parser.parse_args()
+    args: argparse.Namespace = parser.parse_args()
 
     # Dictionary mapping argument names to text counting functions
-    arg_func_dict: dict[str, Callable[[str], str]] = {
+    arg_func_map: dict[str, Callable[[str], None]] = {
         'char_count': process_char_count,
         'line_count': process_line_count,
         'mfws': process_mfws,
@@ -42,6 +51,6 @@ def parse_args() -> Callable[[str], str]:
         'word_count': process_word_count
     }
 
-    for arg_label, func in arg_func_dict.items():
+    for arg_label, func in arg_func_map.items():
         if getattr(args, arg_label):
             return func

@@ -29,8 +29,9 @@ class HelpMessages:
         TIME_TO_READ: Help message for --time-to-read argument
         WORD_COUNT: Help message for --word-count argument
     """
-    DESCRIPTION: str = ('Specify the text analysis function to apply to the '
-                   'clipboard.')
+    DESCRIPTION: str = (
+        'Specify which text analysis function to apply to the clipboard.'
+    )
 
     CHAR_COUNT: str = 'count characters'
     LINE_COUNT: str = 'count lines'

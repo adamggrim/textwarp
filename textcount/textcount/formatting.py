@@ -69,7 +69,7 @@ def format_pos_count(pos_counts: POSCounts) -> str:
     Returns:
         str: A formatted string indicating parts of speech counts.
     """
-    pos_tuples: list = []
+    pos_tuples: list[tuple[str, int, float]] = []
     for tag_pair in POS_TAGS:
         pos: str = tag_pair[1]
         count: int = getattr(pos_counts, f'{tag_pair[0].lower()}_count')
@@ -79,7 +79,7 @@ def format_pos_count(pos_counts: POSCounts) -> str:
     max_ratio_length: int = max(len(f'({ratio:.2f}%)') for _, _, ratio in 
                            pos_tuples)
     padding: int = 2
-    results: list = []
+    results: list[str] = []
     for pos, count, ratio in pos_tuples:
         formatted_ratio: str = f'({ratio:.2f}%)'
         # Dynamic spacing based on POS, count and ratio length
