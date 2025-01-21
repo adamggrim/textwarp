@@ -108,9 +108,9 @@ class WarpingRegexes:
         text.
 
     Attributes:
-        __CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for 
+        _CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for 
             identifying when a quote is closing.
-        __OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for 
+        _OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for 
             identifying when a quote is opening.
 
         CAMEL_SPLIT: Compiled regular expression object for splitting 
