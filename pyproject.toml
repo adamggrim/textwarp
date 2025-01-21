@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "textwarp"
+version = "0.6"
+description = "Package for modifying clipboard text"
+readme = "README.md"
+keywords = ["text", "clipboard"]
+license = {text = "MIT"}
+authors = [
+  { name = "Adam Grim" }
+]
+dependencies = [
+    "nltk",
+    "pyperclip",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+
+[project.urls]
+"Source" = "https://github.com/adamggrim/textwarp"
+
+[project.scripts]
+textwarp = "textwarp.__main__:main"
+
+[tool.setuptools]
+packages = ["textwarp"]
