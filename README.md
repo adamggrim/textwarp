@@ -50,7 +50,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. Paste to view the modified text.
+    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. To view the modified text, paste from the clipboard.
 
 4. **Continue or exit**
 
@@ -81,7 +81,7 @@ textwarp/
 
 Follow these steps to run `textwarp`:
 
-1. **Install Python**: Verify that you have Python 3.6 or later. You can install Python at `https://www.python.org/downloads/`.
+1. **Install Python**: Verify that you have Python 3.9 or later. You can install Python at `https://www.python.org/downloads/`.
 2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip` and `setuptools`.
 
     You can check whether these packages are installed using pip's `show` command on each package.
@@ -91,7 +91,7 @@ Follow these steps to run `textwarp`:
     pip3 show nltk
     ```
 
-    If the package is not installed, you will receive the warning, `WARNING: Package(s) not found`. You can install a missing package using pip.
+    If the package is not installed, you will receive a warning: `WARNING: Package(s) not found`. You can install a missing package using pip.
 
     On macOS:
     ```
