@@ -75,7 +75,7 @@ textcount/
 
 Follow these steps to run `textcount`:
 
-1. **Install Python**: Verify that you have Python 3.6 or later. You can install Python at `https://www.python.org/downloads/`.
+1. **Install Python**: Verify that you have Python 3.9 or later. You can install Python at `https://www.python.org/downloads/`.
 2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip` and `setuptools`.
 
     You can check whether these packages are installed using pip's `show` command on each package.
@@ -85,7 +85,7 @@ Follow these steps to run `textcount`:
     pip3 show nltk
     ```
 
-    If the package is not installed, you will receive the warning, `WARNING: Package(s) not found`. You can install a missing package using pip.
+    If the package is not installed, you will receive a warning: `WARNING: Package(s) not found`. You can install a missing package using pip.
 
     On macOS:
     ```
