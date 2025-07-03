@@ -14,8 +14,7 @@ from textcount.processing import (
 
 def parse_args() -> Callable[[str], str]:
     """
-    Parses command-line arguments for a text analysis function 
-        specification.
+    Parses command-line arguments for a text analysis function.
 
     Returns:
         Callable[[str], str]: The text analysis function corresponding 
@@ -43,11 +42,11 @@ def parse_args() -> Callable[[str], str]:
 
     # Dictionary mapping argument names to text counting functions
     arg_func_map: dict[str, Callable[[str], None]] = {
-        'char_count': process_char_count,
-        'line_count': process_line_count,
-        'mfws': process_mfws,
-        'pos_count': process_pos_count,
-        'time_to_read': process_time_to_read,
+        'char_count': process_char_count, 
+        'line_count': process_line_count, 
+        'mfws': process_mfws, 
+        'pos_count': process_pos_count, 
+        'time_to_read': process_time_to_read, 
         'word_count': process_word_count
     }
 
