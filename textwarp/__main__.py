@@ -1,6 +1,6 @@
 from textwarp.input_output import (
-    convert_text, 
-    print_padding, 
+    convert_text,
+    print_padding,
     program_exit
 )
 from textwarp.parsing import parse_args

@@ -5,12 +5,12 @@ from typing import Callable
 import pyperclip
 
 from textwarp.constants import (
-    ANY_OTHER_TEXT_PROMPT, 
-    ENTER_VALID_RESPONSE_PROMPT, 
-    EXIT_MESSAGE, 
-    MODIFED_TEXT_MESSAGE, 
-    NO_INPUTS, 
-    EXIT_INPUTS, 
+    ANY_OTHER_TEXT_PROMPT,
+    ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_MESSAGE,
+    MODIFED_TEXT_MESSAGE,
+    NO_INPUTS,
+    EXIT_INPUTS,
     YES_INPUTS
 )
 
@@ -22,9 +22,9 @@ def print_padding() -> None:
 
 def print_wrapped(text: str) -> None:
     """
-    Wraps printing based on the width of the terminal and adds a 
+    Wraps printing based on the width of the terminal and adds a
         newline character to the start of the string.
-    
+
     Args:
         text: The string to print.
     """
@@ -36,7 +36,7 @@ def print_wrapped(text: str) -> None:
 
 def program_exit() -> None:
     """
-    Prints a message that the program is exiting, then exits the 
+    Prints a message that the program is exiting, then exits the
         program.
     """
     print_wrapped(EXIT_MESSAGE)
@@ -46,11 +46,11 @@ def program_exit() -> None:
 
 def convert_text(conversion_function: Callable[[str], str]) -> None:
     """
-    Applies the selected conversion function and prompts the user for 
+    Applies the selected conversion function and prompts the user for
         any other clipboard input.
 
     Args:
-        conversion_function (Callable[[str], str]): A function that 
+        conversion_function (Callable[[str], str]): A function that
             takes a string as input and returns the transformed string.
     """
     while True:

@@ -3,40 +3,40 @@ import re
 
 class SeparatorCaseRegexes:
     """
-    Compiled regular expressions for parsing and warping text before 
+    Compiled regular expressions for parsing and warping text before
         conversion to kebab case or snake case.
 
     Attributes:
-        CAMEL_CASE: Compiled regular expression object that captures a 
+        CAMEL_CASE: Compiled regular expression object that captures a
             camel case string.
-        CAMEL_PASCAL_SPLIT: Compiled regular expression object for 
-            splitting on the boundary between words in camel case and 
+        CAMEL_PASCAL_SPLIT: Compiled regular expression object for
+            splitting on the boundary between words in camel case and
             Pascal case.
-        KEBAB_CASE: Compiled regular expression object that captures a 
+        KEBAB_CASE: Compiled regular expression object that captures a
             kebab case string.
-        PASCAL_CASE: Compiled regular expression object that captures a 
+        PASCAL_CASE: Compiled regular expression object that captures a
             Pascal case string.
-        PASCAL_SPLIT: Compiled regular expression object for splitting 
-            strings before converting substrings to camel case or 
+        PASCAL_SPLIT: Compiled regular expression object for splitting
+            strings before converting substrings to camel case or
             Pascal case.
-        SEPARATOR_SPLIT: Compiled regular expression object for 
-            splitting strings before converting substrings to kebab 
+        SEPARATOR_SPLIT: Compiled regular expression object for
+            splitting strings before converting substrings to kebab
             case or snake case.
-        SHORT_ACRONYM: Compiled regular expression object that captures 
+        SHORT_ACRONYM: Compiled regular expression object that captures
             a two-character acronym or initialism.
-        SNAKE_CASE: Compiled regular expression object that captures a 
+        SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
     CAMEL_CASE: re.Pattern = re.compile(
         r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+'
     )
     CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase 
+        (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
                             # letter or digit
-        (?=[A-Z])       # Positive lookahead to split before an uppercase 
+        (?=[A-Z])       # Positive lookahead to split before an uppercase
                             # letter
         |               # OR
-        (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or 
+        (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or
                             # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
@@ -47,54 +47,54 @@ class SeparatorCaseRegexes:
         r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+'
     )
     PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<![ .!?—–\-,:;"”\'’]) # Negative lookbehind to preserve spacing 
+        (?<![ .!?—–\-,:;"”\'’]) # Negative lookbehind to preserve spacing
                                     # after spaces, punctuation and dashes
         [ ]                     # Character class to split on a single space
-        (?![ —–\-"“\'‘\(\[{])   # Negative lookahead to preserve spacing 
+        (?![ —–\-"“\'‘\(\[{])   # Negative lookahead to preserve spacing
                                     # before dashes, quotes and brackets
         |                       # OR
-        (?<=\w)-(?=\w)          # Positive lookbehind to split on a hyphen 
-                                    # between word characters and convert from 
+        (?<=\w)-(?=\w)          # Positive lookbehind to split on a hyphen
+                                    # between word characters and convert from
                                     # kebab case
         |                       # OR
-        _                       # Split on an underscore to convert from snake 
+        _                       # Split on an underscore to convert from snake
                                     # case
         |                       # OR
-        \b                      # Split on a word boundary character to ensure 
-                                    # substrings begin and end with a word 
+        \b                      # Split on a word boundary character to ensure
+                                    # substrings begin and end with a word
                                     # character.
         ''', re.VERBOSE
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<=\W\s)               # Positive lookbehind to split after a 
-                                    # non-word character followed by a space 
+        (?<=\W\s)               # Positive lookbehind to split after a
+                                    # non-word character followed by a space
                                     # character
         |                       # OR
-        (?<=["“\'‘(\[{])        # Positive lookbehind to split after opening 
+        (?<=["“\'‘(\[{])        # Positive lookbehind to split after opening
                                     # quotes and brackets
         |                       # OR
-        (?<=—\b)                # Postive lookbehind to split after an em dash 
+        (?<=—\b)                # Postive lookbehind to split after an em dash
                                     # followed by a word boundary character
         |                       # OR
-        (?<=\t)                 # Positive lookbehind to split after a tab 
+        (?<=\t)                 # Positive lookbehind to split after a tab
                                     # character
         |                       # OR
-        (?=[.!?—,:;"”\'’)\]}])  # Positive lookahead to split before 
+        (?=[.!?—,:;"”\'’)\]}])  # Positive lookahead to split before
                                     # punctuation or an em dash or bracket
         |                       # OR
-        (?=\s+[–"”(\[{])        # Positive lookahead to split before spacing 
+        (?=\s+[–"”(\[{])        # Positive lookahead to split before spacing
                                     # followed by an en dash, quote or bracket
         |                       # OR
-        (?=--)                  # Positive lookahead to split before two 
+        (?=--)                  # Positive lookahead to split before two
                                     # consecutive hyphens
         |                       # OR
-        (?=-\s+)                # Positive lookahead to split before a hyphen 
+        (?=-\s+)                # Positive lookahead to split before a hyphen
                                     # followed by one or more space characters
         |                       # OR
-        (?=\s{2,})              # Positive lookahead to split before 
+        (?=\s{2,})              # Positive lookahead to split before
                                     # consecutive spaces
         |                       # OR
-        (?=\t)                  # Positive lookahead to split on a tab 
+        (?=\t)                  # Positive lookahead to split on a tab
                                     # character
         ''', re.VERBOSE
     )
@@ -104,50 +104,50 @@ class SeparatorCaseRegexes:
 
 class WarpingRegexes:
     """
-    Compiled regular expressions and strings for parsing and warping 
+    Compiled regular expressions and strings for parsing and warping
         text.
 
     Attributes:
-        _CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for 
+        _CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for
             identifying when a quote is closing.
-        _OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for 
+        _OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for
             identifying when a quote is opening.
 
-        CAMEL_SPLIT: Compiled regular expression object for splitting 
+        CAMEL_SPLIT: Compiled regular expression object for splitting
             strings before converting substrings to camel case.
-        CARDINAL: Compiled regular expression object that captures a 
+        CARDINAL: Compiled regular expression object that captures a
             cardinal number.
-        CLOSING_STRAIGHT_DOUBLE: Compiled regular expression object 
+        CLOSING_STRAIGHT_DOUBLE: Compiled regular expression object
             that captures closing straight double quotes.
-        CLOSING_STRAIGHT_SINGLE: Compiled regular expression object 
+        CLOSING_STRAIGHT_SINGLE: Compiled regular expression object
             that captures closing straight single quotes.
-        DOUBLE_HYPHENS: Compiled regular expression object that 
+        DOUBLE_HYPHENS: Compiled regular expression object that
             captures double hyphens that function as an em dash.
-        FIRST_LETTER: Compiled regular expression object that captures 
+        FIRST_LETTER: Compiled regular expression object that captures
             the first alphabetical letter of a string.
-        LETTER_APOSTROPHE: Compiled regular expression object that 
-            captures an apostrophe character surrounded by alphabetical 
+        LETTER_APOSTROPHE: Compiled regular expression object that
+            captures an apostrophe character surrounded by alphabetical
             letter characters
-        LETTER_WORD: Compiled regular expression object that captures a 
-            sequence of word characters that begin with an alphabetical 
+        LETTER_WORD: Compiled regular expression object that captures a
+            sequence of word characters that begin with an alphabetical
             letter. Captures words with apostrophes as a single word.
-        OPENING_STRAIGHT_DOUBLE: Compiled regular expression object 
+        OPENING_STRAIGHT_DOUBLE: Compiled regular expression object
             that captures opening straight double quotes.
-        OPENING_STRAIGHT_SINGLE: Compiled regular expression object 
+        OPENING_STRAIGHT_SINGLE: Compiled regular expression object
             that captures opening straight single quotes.
-        ORDINAL: Compiled regular expression object that captures an 
+        ORDINAL: Compiled regular expression object that captures an
             ordinal number.
-        PUNCT_INSIDE: Compiled regular expression object with capturing 
-            groups for punctuation inside quotes and quotes outside 
+        PUNCT_INSIDE: Compiled regular expression object with capturing
+            groups for punctuation inside quotes and quotes outside
             punctuation.
-        PUNCT_OUTSIDE: Compiled regular expression object with capturing 
-            groups for quotes inside punctuation and punctuation 
+        PUNCT_OUTSIDE: Compiled regular expression object with capturing
+            groups for quotes inside punctuation and punctuation
             outside quotes.
-        TITLE_SUBSTRING_SPLIT: Compiled regular expression object for 
-            splitting strings into substrings before capitalizing the 
+        TITLE_SUBSTRING_SPLIT: Compiled regular expression object for
+            splitting strings into substrings before capitalizing the
             first character.
-        TITLE_WORD_SPLIT: Compiled regular expression object for 
-            splitting substrings into words before capitalizing title 
+        TITLE_WORD_SPLIT: Compiled regular expression object for
+            splitting substrings into words before capitalizing title
             case words.
     """
     _CLOSING_QUOTE_LOOKAHEAD: str = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'

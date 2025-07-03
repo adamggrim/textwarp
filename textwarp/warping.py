@@ -10,12 +10,12 @@ class HelperFunctions:
     """Helper functions for text warping."""
 
     def capitalize_words(
-            text: str, 
+            text: str,
             word_count: int | None = None
         ) -> str:
             """
-            Capitalizes the first letter of each in a specified number 
-                of words and converts all other letters in each word to 
+            Capitalizes the first letter of each in a specified number
+                of words and converts all other letters in each word to
                 lowercase.
 
             Args:
@@ -28,18 +28,18 @@ class HelperFunctions:
             # Capitalize the first letter of every word.
             if word_count is None:
                 return re.sub(
-                    WarpingRegexes.LETTER_WORD, lambda match: 
+                    WarpingRegexes.LETTER_WORD, lambda match:
                     match.group(0).capitalize(), text)
             # Capitalize the first letter of a specified number of words.
             else:
                 return re.sub(
-                    WarpingRegexes.LETTER_WORD, lambda match: 
+                    WarpingRegexes.LETTER_WORD, lambda match:
                     match.group(0).capitalize(), text, count=word_count
                 )
 
     def remove_apostrophes(text: str) -> str:
         """
-        Removes apostrophes from a string without removing single 
+        Removes apostrophes from a string without removing single
             quotes.
 
         Args:
@@ -51,7 +51,7 @@ class HelperFunctions:
         return re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', text)
 
     def to_separator_case(
-            text: str, 
+            text: str,
             separator_case: SeparatorCase
         ) -> str:
         """
@@ -66,7 +66,7 @@ class HelperFunctions:
         """
         def _get_other_separator():
             """
-            For a given a separator case, returns the other separator 
+            For a given a separator case, returns the other separator
                 character.
 
             Returns:
@@ -80,7 +80,7 @@ class HelperFunctions:
         other_separator: str | None = _get_other_separator()
         no_apostrophes_text: str = HelperFunctions.remove_apostrophes(text)
         substrings: list[str] = re.split(
-            SeparatorCaseRegexes.SEPARATOR_SPLIT, 
+            SeparatorCaseRegexes.SEPARATOR_SPLIT,
             no_apostrophes_text
         )
         separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
@@ -92,18 +92,18 @@ class HelperFunctions:
                 SeparatorCaseRegexes.SNAKE_CASE.match(substring)):
                 if substring.isupper():
                     separator_substring = re.sub(
-                        separator_sub, 
-                        separator_case.value, 
+                        separator_sub,
+                        separator_case.value,
                         substring
                     )
                 else:
                     separator_substring = re.sub(
-                        separator_sub, 
-                        separator_case.value, 
+                        separator_sub,
+                        separator_case.value,
                         substring.lower()
                     )
             # Substring is in camel case or Pascal case.
-            elif (SeparatorCaseRegexes.CAMEL_CASE.match(substring) or 
+            elif (SeparatorCaseRegexes.CAMEL_CASE.match(substring) or
                 SeparatorCaseRegexes.PASCAL_CASE.match(substring)):
                 # Break camel case and Pascal case into constituent words.
                 broken_words: list[str] = re.split(
@@ -119,7 +119,7 @@ class HelperFunctions:
             else:
                 # Substring is in all caps.
                 if substring.isupper():
-                    separator_substring = substring.replace(' ', 
+                    separator_substring = substring.replace(' ',
                                                         separator_case.value)
                 # Substring begins with an alphabebtical letter.
                 elif re.match(WarpingRegexes.FIRST_LETTER, substring):
@@ -134,7 +134,7 @@ class HelperFunctions:
 
     def uppercase_first_letter(text: str) -> str:
         """
-        Converts the first letter of the string to uppercase without 
+        Converts the first letter of the string to uppercase without
             modifying any other letters.
 
         Args:
@@ -143,7 +143,7 @@ class HelperFunctions:
         Returns:
             str: The converted text.
         """
-        return re.sub(WarpingRegexes.FIRST_LETTER, lambda match: 
+        return re.sub(WarpingRegexes.FIRST_LETTER, lambda match:
                       match.group(0).upper(), text, count=1)
 
 
@@ -172,11 +172,11 @@ def cardinal_to_ordinal(text: str) -> str:
     """
     def replace_cardinal(match: re.Match[str]) -> str:
         """
-        Helper function to replace a matched cardinal number with an 
+        Helper function to replace a matched cardinal number with an
             ordinal.
 
         Args:
-            match: A match object representing a cardinal 
+            match: A match object representing a cardinal
                 number found in the string.
 
         Returns:
@@ -208,11 +208,11 @@ def curly_to_straight(text: str) -> str:
     """
     translation_table: dict[int, str] = str.maketrans({
         # Curly opening double quotes to straight double quotes
-        '”': '"', 
+        '”': '"',
         # Curly closing double quotes to straight double quotes
-        '“': '"', 
+        '“': '"',
         # Curly opening single quotes to straight single quotes
-        '’': "'", 
+        '’': "'",
         # Curly closing single quotes to straight single quotes
         '‘': "'"
     })
@@ -247,7 +247,7 @@ def hyphen_to_en(text: str) -> str:
 
 def punct_to_inside(text: str) -> str:
     """
-    Moves periods and commas at the end of quotes inside the quotation 
+    Moves periods and commas at the end of quotes inside the quotation
         marks.
 
     Args:
@@ -275,7 +275,7 @@ def punct_to_inside(text: str) -> str:
 
 def punct_to_outside(text: str) -> str:
     """
-    Moves periods and commas at the end of quotes to outside the 
+    Moves periods and commas at the end of quotes to outside the
         quotation marks.
 
     Args:
@@ -286,7 +286,7 @@ def punct_to_outside(text: str) -> str:
     """
     def _repl(match: re.Match) -> str:
         """
-        Reorders periods and commas to move them outside quotation 
+        Reorders periods and commas to move them outside quotation
             marks.
 
         Args:
@@ -318,17 +318,17 @@ def straight_to_curly(text: str) -> str:
     curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_DOUBLE, '“', text)
 
     # Replace straight double quotes with closing curly double quotes.
-    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_DOUBLE, '”', 
+    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_DOUBLE, '”',
                         curly_text)
-    
+
     # Replace straight single quotes with opening curly single quotes.
-    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_SINGLE, '‘', 
+    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_SINGLE, '‘',
                         curly_text)
-    
+
     # Replace straight single quotes with closing curly single quotes.
-    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_SINGLE, '’', 
+    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_SINGLE, '’',
                         curly_text)
-    
+
     return curly_text
 
 
@@ -368,7 +368,7 @@ def to_camel_case(text: str) -> str:
     """
     def _lowercase_first_letter(text) -> str:
         """
-        Lowercases the first letter of the string without modifying any 
+        Lowercases the first letter of the string without modifying any
             other letters.
 
         Args:
@@ -378,7 +378,7 @@ def to_camel_case(text: str) -> str:
             str: The converted string.
         """
         return re.sub(
-            WarpingRegexes.FIRST_LETTER, lambda match: 
+            WarpingRegexes.FIRST_LETTER, lambda match:
             match.group(0).lower(), text, count=1
         )
     pascal_text: str = to_pascal_case(text)
@@ -431,11 +431,11 @@ def ordinal_to_cardinal(text: str) -> str:
     """
     def replace_ordinal(match):
         """
-        Helper function to replace a matched ordinal number with its 
+        Helper function to replace a matched ordinal number with its
             cardinal equivalent.
 
         Args:
-            match: A match object representing an ordinal number found 
+            match: A match object representing an ordinal number found
                 in the string.
 
         Returns:
@@ -502,14 +502,14 @@ def to_title_case(text: str) -> str:
     """
     def should_capitalize(tag: str) -> bool:
         """
-        Determines whether a word should be capitalized based on its 
+        Determines whether a word should be capitalized based on its
             part of speech.
 
         Args:
             tag: The NLTK POS tag to check.
 
         Returns:
-            bool: True if the tag should be capitalized, otherwise 
+            bool: True if the tag should be capitalized, otherwise
                 False.
         """
         return tag not in ['CC', 'DT', 'IN', 'RP', 'TO', 'WDT']
@@ -533,7 +533,7 @@ def to_title_case(text: str) -> str:
         all_words_tags: list[tuple[str, str]] = pos_tag(all_words)
         # Capitalize words based on their part of speech.
         title_words = [
-            HelperFunctions.capitalize_words(word, word_count=1) if 
+            HelperFunctions.capitalize_words(word, word_count=1) if
             should_capitalize(tag) else word for word, tag in all_words_tags
         ]
         title_substring = ' '.join(title_words)
