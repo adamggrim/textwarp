@@ -25,8 +25,7 @@ from textwarp.warping import (
 
 def parse_args() -> Callable[[str], str]:
     """
-    Parses command-line arguments for a text warping function 
-        specification.
+    Parses command-line arguments for a text warping function.
 
     Returns:
         Callable[[str], str]: The text warping function corresponding 
@@ -76,22 +75,22 @@ def parse_args() -> Callable[[str], str]:
 
     # Dictionary mapping argument names to text warping functions
     arg_func_map: dict[str, Callable[[str], str]] = {
-        'alternating_caps': to_alternating_caps,
-        'camel_case': to_camel_case,
-        'capitalize': capitalize,
-        'cardinal': ordinal_to_cardinal,
-        'curly_quotes': straight_to_curly,
-        'hyphens_to_em': hyphens_to_em,
-        'hyphen_to_en': hyphen_to_en,
-        'kebab_case': to_kebab_case,
-        'lowercase': to_lowercase,
-        'ordinal': cardinal_to_ordinal,
-        'pascal_case': to_pascal_case,
-        'punct_to_inside': punct_to_inside,
-        'punct_to_outside': punct_to_outside,
-        'snake_case': to_snake_case,
-        'straight_quotes': curly_to_straight,
-        'title_case': to_title_case,
+        'alternating_caps': to_alternating_caps, 
+        'camel_case': to_camel_case, 
+        'capitalize': capitalize, 
+        'cardinal': ordinal_to_cardinal, 
+        'curly_quotes': straight_to_curly, 
+        'hyphens_to_em': hyphens_to_em, 
+        'hyphen_to_en': hyphen_to_en, 
+        'kebab_case': to_kebab_case, 
+        'lowercase': to_lowercase, 
+        'ordinal': cardinal_to_ordinal, 
+        'pascal_case': to_pascal_case, 
+        'punct_to_inside': punct_to_inside, 
+        'punct_to_outside': punct_to_outside, 
+        'snake_case': to_snake_case, 
+        'straight_quotes': curly_to_straight, 
+        'title_case': to_title_case, 
         'uppercase': to_uppercase
     }
 
