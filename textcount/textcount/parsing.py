@@ -1,4 +1,5 @@
 import argparse
+import sys
 from typing import Callable
 
 from textcount.constants import HelpMessages
@@ -21,7 +22,9 @@ def parse_args() -> Callable[[str], str]:
             to the specified command-line argument.
     """
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        description=HelpMessages.DESCRIPTION
+        prog='textcount',
+        description=HelpMessages.DESCRIPTION,
+        usage='%(prog)s [command]'
     )
     group: argparse._MutuallyExclusiveGroup = (
         parser.add_mutually_exclusive_group(required=True)
@@ -38,6 +41,13 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.TIME_TO_READ)
     group.add_argument('--word-count', action='store_true',
                        help=HelpMessages.WORD_COUNT)
+
+    # If the user enters the command name with no arguments, print help
+    # messages and exit.
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
     args: argparse.Namespace = parser.parse_args()
 
     # Dictionary mapping argument names to text counting functions
