@@ -384,7 +384,7 @@ def to_camel_case(text: str) -> str:
     pascal_text: str = to_pascal_case(text)
     # Split between each instance of Pascal case in the string.
     pascal_words: list[str] = re.split(
-        SeparatorCaseRegexes.CAMEL_SPLIT, pascal_text
+        WarpingRegexes.CAMEL_SPLIT, pascal_text
     )
     camel_words: list[str] = []
     for word in pascal_words:
