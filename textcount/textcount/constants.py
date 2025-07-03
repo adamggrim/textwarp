@@ -66,16 +66,16 @@ NO_INPUTS: set[str] = {'no', 'n'}
 
 # Tuple of tuples for parts of speech tags and their names
 POS_TAGS: Tuple[Tuple[str, str], ...] = (
-    ('ADJ', 'Adjectives'), 
-    ('ADP', 'Adpositions'), 
-    ('ADV', 'Adverbs'), 
-    ('CONJ', 'Conjunctions'), 
-    ('DET', 'Determiners'), 
-    ('NOUN', 'Nouns'), 
-    ('NUM', 'Numbers'), 
-    ('PRT', 'Particles'), 
-    ('PRON', 'Pronouns'), 
-    ('VERB', 'Verbs'), 
+    ('ADJ', 'Adjectives'),
+    ('ADP', 'Adpositions'),
+    ('ADV', 'Adverbs'),
+    ('CONJ', 'Conjunctions'),
+    ('DET', 'Determiners'),
+    ('NOUN', 'Nouns'),
+    ('NUM', 'Numbers'),
+    ('PRT', 'Particles'),
+    ('PRON', 'Pronouns'),
+    ('VERB', 'Verbs'),
     ('X', 'Other')
 )
 

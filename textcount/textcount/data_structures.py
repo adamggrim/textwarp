@@ -4,18 +4,18 @@ class POSCounts:
     """
 
     def __init__(
-            self, 
+            self,
             word_count: int = 0,
-            adj_count: int = 0, 
-            adp_count: int = 0, 
-            adv_count: int = 0, 
-            conj_count: int = 0, 
-            det_count: int =0, 
-            noun_count: int = 0, 
-            num_count: int = 0, 
-            prt_count: int =0, 
-            pron_count: int = 0, 
-            verb_count: int = 0, 
+            adj_count: int = 0,
+            adp_count: int = 0,
+            adv_count: int = 0,
+            conj_count: int = 0,
+            det_count: int =0,
+            noun_count: int = 0,
+            num_count: int = 0,
+            prt_count: int =0,
+            pron_count: int = 0,
+            verb_count: int = 0,
             x_count: int = 0
     ):
         self.word_count: int = word_count
@@ -65,18 +65,18 @@ class POSCounts:
     def conj_ratio(self) -> float:
         """
         Calculates the ratio of conjunctions to total word count.
-        
+
         Returns:
             float: The ratio of conjunctions to total word count.
         """
-        return (self.conj_count / self.word_count * 100 if self.word_count 
+        return (self.conj_count / self.word_count * 100 if self.word_count
                 else 0)
 
     @property
     def det_ratio(self) -> float:
         """
         Calculates the ratio of determiners to total word count.
-        
+
         Returns:
             float: The ratio of determiners to total word count.
         """
@@ -90,7 +90,7 @@ class POSCounts:
         Returns:
             float: The ratio of nouns to total word count.
         """
-        return (self.noun_count / self.word_count * 100 if self.word_count 
+        return (self.noun_count / self.word_count * 100 if self.word_count
                 else 0)
 
     @property
@@ -121,7 +121,7 @@ class POSCounts:
         Returns:
             float: The ratio of pronouns to total word count.
         """
-        return (self.pron_count / self.word_count * 100 if self.word_count 
+        return (self.pron_count / self.word_count * 100 if self.word_count
                 else 0)
 
     @property
@@ -137,11 +137,11 @@ class POSCounts:
     @property
     def x_ratio(self) -> float:
         """
-        Calculates the ratio of other parts of speech tags to total 
+        Calculates the ratio of other parts of speech tags to total
             word count.
 
         Returns:
-            float: The ratio of other parts of speech tags to total 
+            float: The ratio of other parts of speech tags to total
                 word count.
         """
         return self.x_count / self.word_count * 100 if self.word_count else 0

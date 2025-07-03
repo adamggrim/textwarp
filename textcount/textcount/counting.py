@@ -9,7 +9,7 @@ from textcount.data_structures import POSCounts
 
 def count_chars(text: str) -> int:
     """
-    Returns an integer representing the number of characters in a given 
+    Returns an integer representing the number of characters in a given
         string.
 
     Args:
@@ -23,7 +23,7 @@ def count_chars(text: str) -> int:
 
 def count_lines(text: str) -> int:
     """
-    Returns an integer representing the number of non-whitespace lines 
+    Returns an integer representing the number of non-whitespace lines
         in a given string.
 
     Args:
@@ -39,7 +39,7 @@ def count_lines(text: str) -> int:
 
 def count_mfws(text: str, mfw_count: int) -> list[tuple]:
     """
-    Returns a list of tuples indicating the most frequent words in a 
+    Returns a list of tuples indicating the most frequent words in a
         given string.
 
     Args:
@@ -47,7 +47,7 @@ def count_mfws(text: str, mfw_count: int) -> list[tuple]:
         mfw_count: The number of most frequent words to return.
 
     Returns:
-        list[tuple]: A list of tuples with each tuple containing a word 
+        list[tuple]: A list of tuples with each tuple containing a word
             and its count.
     """
     words: list[str] = word_tokenize(text)
@@ -57,7 +57,7 @@ def count_mfws(text: str, mfw_count: int) -> list[tuple]:
 
 def count_pos(text: str) -> POSCounts:
     """
-    Returns a POSCounts object containing the parts of speech counts 
+    Returns a POSCounts object containing the parts of speech counts
         for a given string.
 
     Args:
@@ -71,7 +71,7 @@ def count_pos(text: str) -> POSCounts:
     counts: Counter[str] = Counter(tag for _, tag in word_tags)
     pos_counts: POSCounts = POSCounts()
     # Set total word count for POSCounts object
-    setattr(pos_counts, 'word_count', sum(counts.get(tag, 0) for tag in 
+    setattr(pos_counts, 'word_count', sum(counts.get(tag, 0) for tag in
                                           POS_WORD_TAGS))
     # Set parts of speech counts for POSCounts object
     for tag_pair in POS_TAGS:
@@ -89,7 +89,7 @@ def count_time_to_read(text: str, wpm: int) -> int:
         wpm: The number of words per minute to return.
 
     Returns:
-        int: The minutes to read the given string. Rounded up if more 
+        int: The minutes to read the given string. Rounded up if more
             than one minute, zero if less than one minute.
     """
     word_count: int = count_words(text)
@@ -99,7 +99,7 @@ def count_time_to_read(text: str, wpm: int) -> int:
 
 def count_words(text: str) -> int:
     """
-    Returns an integer representing the number of words in a given 
+    Returns an integer representing the number of words in a given
         string.
 
     Args:
@@ -113,5 +113,5 @@ def count_words(text: str) -> int:
     counts: Counter[str] = Counter(tag for _, tag in word_tags)
     word_count: int = 0
     for tag in POS_WORD_TAGS:
-        word_count += counts[tag] 
+        word_count += counts[tag]
     return word_count

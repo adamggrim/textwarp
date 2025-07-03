@@ -1,30 +1,30 @@
 from textcount.counting import (
-    count_chars, 
-    count_lines, 
-    count_mfws, 
-    count_pos, 
-    count_time_to_read, 
+    count_chars,
+    count_lines,
+    count_mfws,
+    count_pos,
+    count_time_to_read,
     count_words
 )
 from textcount.constants import (
-    FormatCountLabels, 
-    ENTER_MFW_COUNT_PROMPT, 
-    ENTER_NUMBER_PROMPT, 
+    FormatCountLabels,
+    ENTER_MFW_COUNT_PROMPT,
+    ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
 from textcount.data_structures import POSCounts
 from textcount.formatting import (
-    FormatPrinting, 
-    format_count, 
-    format_mfws, 
-    format_pos_count, 
+    FormatPrinting,
+    format_count,
+    format_mfws,
+    format_pos_count,
     format_time_to_read
 )
 
 
 def process_char_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print character count 
+    Deploys functions to analyze, format and print character count
         output.
 
     Args:
@@ -49,7 +49,7 @@ def process_line_count(text: str) -> None:
 
 def process_mfws(text: str) -> None:
     """
-    Deploys functions to analyze, format and print most frequent words 
+    Deploys functions to analyze, format and print most frequent words
         output.
 
     Args:
@@ -57,7 +57,7 @@ def process_mfws(text: str) -> None:
     """
     def prompt_for_mfw_count() -> int:
         """
-        Prompts the user for the number of most frequent words to 
+        Prompts the user for the number of most frequent words to
             display.
 
         Returns:
@@ -81,7 +81,7 @@ def process_mfws(text: str) -> None:
 
 def process_pos_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print parts of speech 
+    Deploys functions to analyze, format and print parts of speech
         count output.
 
     Args:
@@ -124,7 +124,7 @@ def process_time_to_read(text: str) -> None:
 
 def process_word_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print word count output. 
+    Deploys functions to analyze, format and print word count output.
 
     Args:
         text: The string to process.

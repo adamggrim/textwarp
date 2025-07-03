@@ -16,9 +16,9 @@ class FormatPrinting:
 
     def print_wrapped(text: str) -> None:
         """
-        Wraps printing based on the width of the terminal and adds a 
+        Wraps printing based on the width of the terminal and adds a
             newline character to the start of the string.
-        
+
         Args:
             text: The string to print.
         """
@@ -44,11 +44,11 @@ def format_count(name: str, count: int) -> str:
 
 def format_mfws(mfws: list[tuple]) -> str:
     """
-    Returns a string indicating the most frequent words in a given 
+    Returns a string indicating the most frequent words in a given
         string.
 
     Args:
-        mfws: A list of tuples with each tuple containing a word and its 
+        mfws: A list of tuples with each tuple containing a word and its
             count.
 
     Returns:
@@ -60,7 +60,7 @@ def format_mfws(mfws: list[tuple]) -> str:
 
 def format_pos_count(pos_counts: POSCounts) -> str:
     """
-    Returns a dynamically formatted string indicating parts of speech 
+    Returns a dynamically formatted string indicating parts of speech
         counts for a given POSCounts object.
 
     Args:
@@ -76,7 +76,7 @@ def format_pos_count(pos_counts: POSCounts) -> str:
         ratio: float = getattr(pos_counts, f'{tag_pair[0].lower()}_ratio')
         pos_tuples.append((pos, count, ratio))
     max_count_length: int = max(len(f'{count}') for _, count, _ in pos_tuples)
-    max_ratio_length: int = max(len(f'({ratio:.2f}%)') for _, _, ratio in 
+    max_ratio_length: int = max(len(f'({ratio:.2f}%)') for _, _, ratio in
                            pos_tuples)
     padding: int = 2
     results: list[str] = []
