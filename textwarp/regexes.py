@@ -108,11 +108,10 @@ class WarpingRegexes:
         text.
 
     Attributes:
-        _CLOSING_QUOTE_LOOKAHEAD: Regular expression pattern for
-            identifying when a quote is closing.
-        _OPENING_QUOTE_LOOKBEHIND: Regular expression pattern for
-            identifying when a quote is opening.
-
+        APOSTROPHE: Compiled regular expression object that captures a
+            straight apostrophe surrounded by alphabetical letter
+            characters. Also captures a straight apostrophe that is
+            part of an elision.
         CAMEL_SPLIT: Compiled regular expression object for splitting
             strings before converting substrings to camel case.
         CARDINAL: Compiled regular expression object that captures a
@@ -122,27 +121,23 @@ class WarpingRegexes:
         CLOSING_STRAIGHT_SINGLE: Compiled regular expression object
             that captures closing straight single quotes.
         DOUBLE_HYPHENS: Compiled regular expression object that
-            captures double hyphens that function as an em dash.
-        FIRST_LETTER: Compiled regular expression object that captures
-            the first alphabetical letter of a string.
-        LETTER_APOSTROPHE: Compiled regular expression object that
-            captures an apostrophe character surrounded by alphabetical
-            letter characters
+            captures hyphens that function as an em dash.
+        LETTER_GROUP: Compiled regular expression object that captures
+            any alphabetical letter of a string, encased in a capturing
+            group.
         LETTER_WORD: Compiled regular expression object that captures a
             sequence of word characters that begin with an alphabetical
             letter. Captures words with apostrophes as a single word.
-        OPENING_STRAIGHT_DOUBLE: Compiled regular expression object
-            that captures opening straight double quotes.
-        OPENING_STRAIGHT_SINGLE: Compiled regular expression object
-            that captures opening straight single quotes.
+        OPENING_STRAIGHT_QUOTES: Compiled regular expression object
+            that captures opening straight quotes.
         ORDINAL: Compiled regular expression object that captures an
             ordinal number.
         PUNCT_INSIDE: Compiled regular expression object with capturing
             groups for punctuation inside quotes and quotes outside
             punctuation.
-        PUNCT_OUTSIDE: Compiled regular expression object with capturing
-            groups for quotes inside punctuation and punctuation
-            outside quotes.
+        PUNCT_OUTSIDE: Compiled regular expression object with
+            capturing groups for quotes inside punctuation and
+            punctuation outside quotes.
         TITLE_SUBSTRING_SPLIT: Compiled regular expression object for
             splitting strings into substrings before capitalizing the
             first character.
