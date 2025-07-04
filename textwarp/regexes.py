@@ -150,6 +150,9 @@ class WarpingRegexes:
             splitting substrings into words before capitalizing title
             case words.
     """
+    ELISION_WORDS: str = [
+        'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
+    ]
 
     APOSTROPHE: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])        # A straight apostrophe inside a
