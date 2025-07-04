@@ -185,6 +185,22 @@ class WarpingRegexes:
     )
     OPENING_STRAIGHT_SINGLE: re.Pattern[str] = re.compile(
         rf"(^|{_OPENING_QUOTE_LOOKBEHIND})'"
+    OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
+        (?:                     # OPENING CONTEXT
+            ^                   # The beginning of a string.
+            |                   # OR
+            (?<=[\s\(\[\{])     # Preceded by a space character or
+                                # opening parenthesis, square bracket
+                                # or curly brace.
+        )
+        (                       # GROUP 1
+        '+                      # One or more straight single quote.
+        |                       # OR
+        (?<!'\s)                # Not preceded by a single straight
+                                # apostrophe followed by a space.
+        "+                      # One or more straight double quote.
+        )
+        """, re.VERBOSE
     )
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
