@@ -552,3 +552,23 @@ def to_uppercase(text: str) -> str:
         str: The converted string.
     """
     return text.upper()
+
+
+def _replace_opening_quote(match: re.Match[str]) -> str:
+    """
+    Converts a sequence of straight quotes to opening curly quotes in a
+        given match.
+
+    Args:
+        match: A regular expression match object where the first
+            captured group is a string of one or more consecutive
+            straight quote characters.
+
+    Returns:
+        str: A string of opening curly quotes.
+    """
+    quote_chars = match.group(1)
+    if quote_chars.startswith("'"):
+        return '‘' * len(quote_chars)
+    else:
+        return '“' * len(quote_chars)
