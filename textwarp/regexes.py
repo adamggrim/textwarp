@@ -150,8 +150,6 @@ class WarpingRegexes:
             splitting substrings into words before capitalizing title
             case words.
     """
-    _CLOSING_QUOTE_LOOKAHEAD: str = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'
-    _OPENING_QUOTE_LOOKBEHIND: str = r'(?<=\s|\(|\[|\{)'
 
     APOSTROPHE: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])        # A straight apostrophe inside a
@@ -168,23 +166,9 @@ class WarpingRegexes:
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
-    CLOSING_STRAIGHT_DOUBLE: re.Pattern[str] = re.compile(
-        rf'"$|"{_CLOSING_QUOTE_LOOKAHEAD}'
-    )
-    CLOSING_STRAIGHT_SINGLE: re.Pattern[str] = re.compile(
-        rf"'$|'{_CLOSING_QUOTE_LOOKAHEAD}"
-    )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
-    FIRST_LETTER: re.Pattern[str] = re.compile(r'([A-Za-z])')
-    LETTER_APOSTROPHE: re.Pattern[str] = re.compile(
-        r'(?<=[A-Za-z])[\'’](?=[A-Za-z])'
-    )
+    LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
     LETTER_WORD: re.Pattern[str] = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
-    OPENING_STRAIGHT_DOUBLE: re.Pattern[str] = re.compile(
-        rf'(^|{_OPENING_QUOTE_LOOKBEHIND})"'
-    )
-    OPENING_STRAIGHT_SINGLE: re.Pattern[str] = re.compile(
-        rf"(^|{_OPENING_QUOTE_LOOKBEHIND})'"
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         (?:                     # OPENING CONTEXT
             ^                   # The beginning of a string.
