@@ -153,6 +153,17 @@ class WarpingRegexes:
     _CLOSING_QUOTE_LOOKAHEAD: str = r'(?=\w|\s|\.|\!|\?|:|;|,|\)|\]|\})'
     _OPENING_QUOTE_LOOKBEHIND: str = r'(?<=\s|\(|\[|\{)'
 
+    APOSTROPHE: re.Pattern = re.compile(rf"""
+        (?<=[a-z])'(?=[a-z])        # A straight apostrophe inside a
+                                    # word.
+        |                           # OR
+        '(?=                        # A straight apostrophe followed
+                                    # by...
+        {'|'.join(ELISION_WORDS)}\b # An elision.
+        |                           # OR
+        \d{{2}}s\b)                 # An abbreviation for a decade.
+        """, re.VERBOSE | re.IGNORECASE
+    )
     CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–\-])')
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
