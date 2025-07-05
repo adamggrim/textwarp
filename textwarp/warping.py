@@ -568,7 +568,7 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
     Returns:
         str: A string of opening curly quotes.
     """
-    quote_chars = match.group(1)
+    quote_chars = match.group(1) or match.group(2)
     if quote_chars.startswith("'"):
         return '‘' * len(quote_chars)
     else:
