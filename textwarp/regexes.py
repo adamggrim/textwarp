@@ -168,19 +168,34 @@ class WarpingRegexes:
     LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
     LETTER_WORD: re.Pattern[str] = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
-        (?:                     # OPENING CONTEXT
+        # OPENING SINGLE QUOTE
+        (?:                     # OPENING CONTEXT (SINGLE QUOTES)
             ^                   # The beginning of a string.
             |                   # OR
-            (?<=[\s\(\[\{])     # Preceded by a space character or
-                                # opening parenthesis, square bracket
-                                # or curly brace.
+            (?<=[\s\(\[\{"“])   # Preceded by a space character,
+                                # opening parenthesis, opening square
+                                # bracket, opening curly brace or
+                                # straight or opening double quote.
+        |                       # OR
+        (?<=["“]\s)             # Preceded by a straight or opening
+                                # double quote followed by a space.
         )
         (                       # GROUP 1
-        '+                      # One or more straight single quote.
+        '+                      # One or more straight single quotes.
+        )
         |                       # OR
-        (?<!'\s)                # Not preceded by a single straight
-                                # apostrophe followed by a space.
-        "+                      # One or more straight double quote.
+        # OPENING DOUBLE QUOTE
+        (?:                     # OPENING CONTEXT (DOUBLE QUOTES)
+            ^                   # The beginning of a string.
+            |                   # OR
+            (?<=[\s\(\[\{])     # Preceded by a space character,
+                                # opening parenthesis, opening square
+                                # bracket or opening curly brace.
+        )
+        (                       # GROUP 2
+        (?<!['’]\s)             # Not preceded by a straight or closing
+                                # single quote followed by a space.
+        "+                      # One or more straight double quotes.
         )
         """, re.VERBOSE
     )
