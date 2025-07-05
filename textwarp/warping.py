@@ -304,7 +304,7 @@ def punct_to_outside(text: str) -> str:
 
 def straight_to_curly(text: str) -> str:
     """
-    Convert straight quotes to curly quotes in a given string.
+    Converts straight quotes to curly quotes in a given string.
 
     Args:
         text: The string to convert.
@@ -314,20 +314,21 @@ def straight_to_curly(text: str) -> str:
     """
     curly_text: str
 
-    # Replace straight double quotes with opening curly double quotes.
-    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_DOUBLE, '“', text)
+    # Replace intra-word apostrophes and apostrophes in elisions.
+    curly_text = re.sub(WarpingRegexes.APOSTROPHE, "’", text)
 
-    # Replace straight double quotes with closing curly double quotes.
-    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_DOUBLE, '”',
-                        curly_text)
+    # Replace opening straight quotes with opening curly quotes.
+    curly_text = WarpingRegexes.OPENING_STRAIGHT_QUOTES.sub(
+        _replace_opening_quote, curly_text
+    )
 
-    # Replace straight single quotes with opening curly single quotes.
-    curly_text = re.sub(WarpingRegexes.OPENING_STRAIGHT_SINGLE, '‘',
-                        curly_text)
+    # Replace remaining straight single quotes with closing curly
+    # single quotes.
+    curly_text = curly_text.replace("'", "’")
 
-    # Replace straight single quotes with closing curly single quotes.
-    curly_text = re.sub(WarpingRegexes.CLOSING_STRAIGHT_SINGLE, '’',
-                        curly_text)
+    # Replace remaining straight double quotes with closing curly
+    # double quotes.
+    curly_text = curly_text.replace('"', '”')
 
     return curly_text
 
