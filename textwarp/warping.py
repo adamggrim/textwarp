@@ -322,11 +322,11 @@ def straight_to_curly(text: str) -> str:
         _replace_opening_quote, curly_text
     )
 
-    # Replace remaining straight single quotes with closing curly
+    # Replace any remaining straight single quotes with closing curly
     # single quotes.
     curly_text = curly_text.replace("'", "’")
 
-    # Replace remaining straight double quotes with closing curly
+    # Replace any remaining straight double quotes with closing curly
     # double quotes.
     curly_text = curly_text.replace('"', '”')
 
