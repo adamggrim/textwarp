@@ -122,7 +122,7 @@ class HelperFunctions:
                     separator_substring = substring.replace(' ',
                                                         separator_case.value)
                 # Substring begins with an alphabebtical letter.
-                elif re.match(WarpingRegexes.FIRST_LETTER, substring):
+                elif re.match(WarpingRegexes.LETTER_GROUP, substring):
                     separator_substring = substring.lower().replace(
                         ' ', separator_case.value
                     )
@@ -143,7 +143,7 @@ class HelperFunctions:
         Returns:
             str: The converted text.
         """
-        return re.sub(WarpingRegexes.FIRST_LETTER, lambda match:
+        return re.sub(WarpingRegexes.LETTER_GROUP, lambda match:
                       match.group(0).upper(), text, count=1)
 
 
