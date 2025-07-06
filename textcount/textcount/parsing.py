@@ -15,7 +15,7 @@ from textcount.processing import (
 
 def parse_args() -> Callable[[str], str]:
     """
-    Parses command-line arguments for a text analysis function.
+    Parse command-line arguments for a text analysis function.
 
     Returns:
         Callable[[str], str]: The text analysis function corresponding

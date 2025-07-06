@@ -24,7 +24,7 @@ from textcount.formatting import (
 
 def process_char_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print character count
+    Deploy functions to analyze, format and print character count
         output.
 
     Args:
@@ -37,7 +37,7 @@ def process_char_count(text: str) -> None:
 
 def process_line_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print line count output.
+    Deploy functions to analyze, format and print line count output.
 
     Args:
         text: The string to process.
@@ -49,7 +49,7 @@ def process_line_count(text: str) -> None:
 
 def process_mfws(text: str) -> None:
     """
-    Deploys functions to analyze, format and print most frequent words
+    Deploy functions to analyze, format and print most frequent words
     output.
 
     Args:
@@ -57,7 +57,7 @@ def process_mfws(text: str) -> None:
     """
     def prompt_for_mfw_count() -> int:
         """
-        Prompts the user for the number of most frequent words to
+        Prompt the user for the number of most frequent words to
             display.
 
         Returns:
@@ -81,8 +81,8 @@ def process_mfws(text: str) -> None:
 
 def process_pos_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print parts of speech
-    count output.
+    Deploy functions to analyze, format and print parts of speech count
+    output.
 
     Args:
         text: The string to process.
@@ -94,7 +94,7 @@ def process_pos_count(text: str) -> None:
 
 def process_time_to_read(text: str) -> None:
     """
-    Deploys functions to analyze, format and print time to read output.
+    Deploy functions to analyze, format and print time to read output.
 
     Args:
         text: The string to process.
@@ -124,7 +124,7 @@ def process_time_to_read(text: str) -> None:
 
 def process_word_count(text: str) -> None:
     """
-    Deploys functions to analyze, format and print word count output.
+    Deploy functions to analyze, format and print word count output.
 
     Args:
         text: The string to process.
