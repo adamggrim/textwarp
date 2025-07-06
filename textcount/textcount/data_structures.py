@@ -138,7 +138,7 @@ class POSCounts:
     def x_ratio(self) -> float:
         """
         Calculates the ratio of other parts of speech tags to total
-            word count.
+        word count.
 
         Returns:
             float: The ratio of other parts of speech tags to total

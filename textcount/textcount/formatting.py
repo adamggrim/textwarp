@@ -17,7 +17,7 @@ class FormatPrinting:
     def print_wrapped(text: str) -> None:
         """
         Wraps printing based on the width of the terminal and adds a
-            newline character to the start of the string.
+        newline character to the start of the string.
 
         Args:
             text: The string to print.
@@ -45,7 +45,7 @@ def format_count(name: str, count: int) -> str:
 def format_mfws(mfws: list[tuple]) -> str:
     """
     Returns a string indicating the most frequent words in a given
-        string.
+    string.
 
     Args:
         mfws: A list of tuples with each tuple containing a word and its
@@ -61,7 +61,7 @@ def format_mfws(mfws: list[tuple]) -> str:
 def format_pos_count(pos_counts: POSCounts) -> str:
     """
     Returns a dynamically formatted string indicating parts of speech
-        counts for a given POSCounts object.
+    counts for a given POSCounts object.
 
     Args:
         pos_counts: The parts of speech counts.

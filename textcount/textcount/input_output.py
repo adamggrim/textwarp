@@ -16,7 +16,7 @@ from textcount.formatting import FormatPrinting
 def program_exit() -> None:
     """
     Prints a message that the program is exiting, then exits the
-        program.
+    program.
     """
     FormatPrinting.print_wrapped(EXIT_MESSAGE)
     FormatPrinting.print_padding()
@@ -26,7 +26,7 @@ def program_exit() -> None:
 def process_analysis(processing_function: Callable[[str], str]) -> None:
     """
     Prints the text analysis and prompts the user for any other
-        clipboard input.
+    clipboard input.
 
     Args:
         processing_function (Callable[[str], str]): A function that

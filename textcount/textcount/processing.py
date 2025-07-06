@@ -50,7 +50,7 @@ def process_line_count(text: str) -> None:
 def process_mfws(text: str) -> None:
     """
     Deploys functions to analyze, format and print most frequent words
-        output.
+    output.
 
     Args:
         text: The string to process.
@@ -82,7 +82,7 @@ def process_mfws(text: str) -> None:
 def process_pos_count(text: str) -> None:
     """
     Deploys functions to analyze, format and print parts of speech
-        count output.
+    count output.
 
     Args:
         text: The string to process.
