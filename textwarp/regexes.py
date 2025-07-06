@@ -4,7 +4,7 @@ import re
 class SeparatorCaseRegexes:
     """
     Compiled regular expressions for parsing and warping text before
-        conversion to kebab case or snake case.
+    conversion to kebab case or snake case.
 
     Attributes:
         CAMEL_CASE: Compiled regular expression object that captures a
@@ -105,7 +105,7 @@ class SeparatorCaseRegexes:
 class WarpingRegexes:
     """
     Compiled regular expressions and strings for parsing and warping
-        text.
+    text.
 
     Attributes:
         APOSTROPHE: Compiled regular expression object that captures a

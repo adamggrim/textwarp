@@ -40,7 +40,7 @@ class HelperFunctions:
     def remove_apostrophes(text: str) -> str:
         """
         Removes apostrophes from a string without removing single
-            quotes.
+        quotes.
 
         Args:
             text: The string to convert.
@@ -135,7 +135,7 @@ class HelperFunctions:
     def uppercase_first_letter(text: str) -> str:
         """
         Converts the first letter of the string to uppercase without
-            modifying any other letters.
+        modifying any other letters.
 
         Args:
             text: The string to convert.
@@ -248,7 +248,7 @@ def hyphen_to_en(text: str) -> str:
 def punct_to_inside(text: str) -> str:
     """
     Moves periods and commas at the end of quotes inside the quotation
-        marks.
+    marks.
 
     Args:
         text: The string to convert.
@@ -276,7 +276,7 @@ def punct_to_inside(text: str) -> str:
 def punct_to_outside(text: str) -> str:
     """
     Moves periods and commas at the end of quotes to outside the
-        quotation marks.
+    quotation marks.
 
     Args:
         text: The string to convert.
@@ -504,7 +504,7 @@ def to_title_case(text: str) -> str:
     def should_capitalize(tag: str) -> bool:
         """
         Determines whether a word should be capitalized based on its
-            part of speech.
+        part of speech.
 
         Args:
             tag: The NLTK POS tag to check.
@@ -558,7 +558,7 @@ def to_uppercase(text: str) -> str:
 def _replace_opening_quote(match: re.Match[str]) -> str:
     """
     Converts a sequence of straight quotes to opening curly quotes in a
-        given match.
+    given match.
 
     Args:
         match: A regular expression match object where the first

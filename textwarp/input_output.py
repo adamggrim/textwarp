@@ -23,7 +23,7 @@ def print_padding() -> None:
 def print_wrapped(text: str) -> None:
     """
     Wraps printing based on the width of the terminal and adds a
-        newline character to the start of the string.
+    newline character to the start of the string.
 
     Args:
         text: The string to print.
@@ -37,7 +37,7 @@ def print_wrapped(text: str) -> None:
 def program_exit() -> None:
     """
     Prints a message that the program is exiting, then exits the
-        program.
+    program.
     """
     print_wrapped(EXIT_MESSAGE)
     print_padding()
@@ -47,7 +47,7 @@ def program_exit() -> None:
 def convert_text(conversion_function: Callable[[str], str]) -> None:
     """
     Applies the selected conversion function and prompts the user for
-        any other clipboard input.
+    any other clipboard input.
 
     Args:
         conversion_function (Callable[[str], str]): A function that
