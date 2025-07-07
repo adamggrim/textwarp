@@ -573,3 +573,42 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
         return '‘' * len(quote_chars)
     else:
         return '“' * len(quote_chars)
+
+
+def _capitalize_with_exceptions(match: re.Match) -> str:
+    """
+    Capitalizes the first letter of a word while handling special
+    name prefixes and preserving other mid-word capitalizations.
+
+    Args:
+        match: A regular expression match object representing a word.
+
+    Returns:
+        str: The capitalized word.
+    """
+    word = match.group(0)
+    lower_word = word.lower()
+
+    # Handle al- and el- prefixes, keeping them lowercase.
+    if lower_word.startswith(('al-', 'el-')):
+        return lower_word[:3] + word[3:].capitalize()
+
+    # Handle Mac prefix.
+    if lower_word.startswith('mac'):
+        return word[:3].capitalize() + word[3:].capitalize()
+
+    # Handle O', M', L' and Mc prefixes.
+    if lower_word.startswith(("o'", "m'", "l'", 'mc')):
+        return word[:2].capitalize() + word[2:].capitalize()
+
+    # Handle d' prefix.
+    if lower_word.startswith("d'"):
+        return lower_word[:2] + word[2:].capitalize()
+
+    # Preserve existing capitalization for words that contain another
+    # mid-word capitalization.
+    if any(c.isupper() for c in word[1:]):
+        return word
+
+    # Default capitalization for all other words.
+    return word.capitalize()
