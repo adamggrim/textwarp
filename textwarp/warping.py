@@ -9,34 +9,6 @@ from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
 class HelperFunctions:
     """Helper functions for text warping."""
 
-    def capitalize_words(
-            text: str,
-            word_count: int | None = None
-        ) -> str:
-            """
-            Capitalizes the first letter of each in a specified number
-                of words and converts all other letters in each word to
-                lowercase.
-
-            Args:
-                text: The string to capitalize.
-                count: The number of matches to replace.
-
-            Returns:
-                str: The capitalized string.
-            """
-            # Capitalize the first letter of every word.
-            if word_count is None:
-                return re.sub(
-                    WarpingRegexes.LETTER_WORD, lambda match:
-                    match.group(0).capitalize(), text)
-            # Capitalize the first letter of a specified number of words.
-            else:
-                return re.sub(
-                    WarpingRegexes.LETTER_WORD, lambda match:
-                    match.group(0).capitalize(), text, count=word_count
-                )
-
     def remove_apostrophes(text: str) -> str:
         """
         Removes apostrophes from a string without removing single
@@ -473,7 +445,7 @@ def to_pascal_case(text: str) -> str:
             pascal_word = HelperFunctions.uppercase_first_letter(word)
         # Word is not in Pascal case or camel case.
         else:
-            pascal_word = HelperFunctions.capitalize_words(word, word_count=1)
+            pascal_word = capitalize(word)
         pascal_words.append(pascal_word)
     return ''.join(pascal_words)
 
@@ -534,7 +506,7 @@ def to_title_case(text: str) -> str:
         all_words_tags: list[tuple[str, str]] = pos_tag(all_words)
         # Capitalize words based on their part of speech.
         title_words = [
-            HelperFunctions.capitalize_words(word, word_count=1) if
+            capitalize(word) if
             should_capitalize(tag) else word for word, tag in all_words_tags
         ]
         title_substring = ' '.join(title_words)
