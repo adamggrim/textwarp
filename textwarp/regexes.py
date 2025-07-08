@@ -125,9 +125,6 @@ class WarpingRegexes:
         LETTER_GROUP: Compiled regular expression object that captures
             any alphabetical letter of a string, encased in a capturing
             group.
-        LETTER_WORD: Compiled regular expression object that captures a
-            sequence of word characters that begin with an alphabetical
-            letter. Captures words with apostrophes as a single word.
         OPENING_STRAIGHT_QUOTES: Compiled regular expression object
             that captures opening straight quotes.
         ORDINAL: Compiled regular expression object that captures an
@@ -144,6 +141,9 @@ class WarpingRegexes:
         TITLE_WORD_SPLIT: Compiled regular expression object for
             splitting substrings into words before capitalizing title
             case words.
+        WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
+            that captures a sequence of word characters, apostrophes or
+            hyphens.
     """
     ELISION_WORDS: str = [
         'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
@@ -166,7 +166,6 @@ class WarpingRegexes:
     )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
-    LETTER_WORD: re.Pattern[str] = re.compile(r'([A-Za-z]\w*)([\'’]\w+)?')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         # OPENING SINGLE QUOTE
         (?:                     # OPENING CONTEXT (SINGLE QUOTES)
@@ -204,3 +203,4 @@ class WarpingRegexes:
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
     TITLE_SUBSTRING_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\n\.:])')
     TITLE_WORD_SPLIT: re.Pattern[str] = re.compile(r' |-|_')
+    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"[\w'’‘-]+")
