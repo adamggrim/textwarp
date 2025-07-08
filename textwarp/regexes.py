@@ -203,4 +203,4 @@ class WarpingRegexes:
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
     TITLE_SUBSTRING_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\n\.:])')
     TITLE_WORD_SPLIT: re.Pattern[str] = re.compile(r' |-|_')
-    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"[\w'’‘-]+")
+    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"[\w'‘’-]+")
