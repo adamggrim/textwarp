@@ -610,5 +610,10 @@ def _capitalize_with_exceptions(match: re.Match) -> str:
     if any(c.isupper() for c in word[1:]):
         return word
 
-    # Default capitalization for all other words.
-    return word.capitalize()
+    # Capitalize the first letter if there is an alphanumeric character
+    # in the word.
+    for index, char in enumerate(word):
+        if char.isalnum():
+            return word[:index] + char.upper() + word[index+1:]
+
+    # If there is no letter, return the original word.
