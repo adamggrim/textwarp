@@ -588,6 +588,9 @@ def _capitalize_with_exceptions(word: str) -> str:
     """
     lower_word = word.lower()
 
+    if not word or not word[0].isalpha():
+        return word
+
     # Handle al- and el- prefixes, keeping them lowercase.
     if lower_word.startswith(('al-', 'el-')):
         return lower_word[:3] + word[3:].capitalize()
@@ -610,11 +613,5 @@ def _capitalize_with_exceptions(word: str) -> str:
     if any(char.isupper() for char in word[1:]):
         return word
 
-    # Capitalize the first letter if there is an alphanumeric character
-    # in the word.
-    for index, char in enumerate(word):
-        if char.isalnum():
-            return word[:index] + char.upper() + word[index+1:]
-
-    # If there is no letter, return the original word.
-    return word
+    # Otherwise, apply default capitalization.
+    return word[0].upper() + word[1:]
