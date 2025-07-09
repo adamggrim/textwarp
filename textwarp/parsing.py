@@ -76,6 +76,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.SNAKE_CASE)
     group.add_argument('--straight-quotes', action='store_true',
                        help=HelpMessages.STRAIGHT_QUOTES)
+    group.add_argument('--strip', action='store_true',
+                       help=HelpMessages.STRIP)
     group.add_argument('--title-case', action='store_true',
                        help=HelpMessages.TITLE_CASE)
     group.add_argument('--uppercase', action='store_true',
@@ -108,6 +110,7 @@ def parse_args() -> Callable[[str], str]:
         'punct_to_outside': punct_to_outside,
         'snake_case': to_snake_case,
         'straight_quotes': curly_to_straight,
+        'strip': lambda text: text.strip(),
         'title_case': to_title_case,
         'uppercase': to_uppercase
     }

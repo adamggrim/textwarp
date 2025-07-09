@@ -46,6 +46,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --punct-to-outside  "move punctuation outside quotation marks".
     --snake-case        convert_to_snake_case
     --straight-quotes   convert “curly quotes” to "straight quotes"
+    --strip             strip leading and trailing whitespace
     --title-case        Convert to Title Case
     --uppercase         CONVERT TO UPPERCASE
     ```

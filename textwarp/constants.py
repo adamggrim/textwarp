@@ -6,10 +6,12 @@ class HelpMessages:
         DESCRIPTION: Description for textwarp arguments
 
         ALTERNATING_CAPS: Help message for --alternating-caps argument
+        BINARY: Help message for --binary argument
         CAMEL_CASE: Help message for --camel-case argument
         CAPITALIZE: Help message for --capitalize argument
         CARDINAL: Help message for --cardinals argument
         CURLY_QUOTES: Help message for --curly argument
+        HEXADECIMAL: Help message for --hexadecimal argument
         HYPHENS_TO_EM: Help message for --hyphens-to-em argument
         HYPHENS_TO_EN: Help message for --hyphens-to-en argument
         KEBAB_CASE: Help message for --kebab-case argument
@@ -20,6 +22,7 @@ class HelpMessages:
         PUNCT_TO_OUTSIDE: Help message for --punct-to-outside argument
         SNAKE_CASE: Help message for --snake-case argument
         STRAIGHT_QUOTES: Help message for --straight argument
+        STRIP: Help message for --strip argument
         TITLE_CASE: Help message for --title-case argument
         UPPERCASE: Help message for --uppercase argument
     """
@@ -44,6 +47,7 @@ class HelpMessages:
     PUNCT_TO_OUTSIDE: str = '"move punctuation outside quotation marks".'
     SNAKE_CASE: str = 'convert_to_snake_case'
     STRAIGHT_QUOTES: str = 'convert “curly quotes” to "straight quotes"'
+    STRIP: str = 'remove leading and trailing whitespace'
     TITLE_CASE: str = 'Convert to Title Case'
     UPPERCASE: str = 'CONVERT TO UPPERCASE'
 
