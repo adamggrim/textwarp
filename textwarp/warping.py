@@ -381,6 +381,21 @@ def to_camel_case(text: str) -> str:
     return ''.join(camel_words)
 
 
+def to_hexadecimal(text: str) -> str:
+    """
+    Converts a string to hexadecimal.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string in hexadecimal, with each character's
+            hex value separated by a space.
+    """
+    hex_chars = [format(ord(char), '02x') for char in text]
+    return ' '.join(hex_chars)
+
+
 def to_kebab_case(text: str) -> str:
     """
     Converts a string to kebab case.

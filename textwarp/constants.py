@@ -33,6 +33,7 @@ class HelpMessages:
     CAPITALIZE: str = 'Capitalize The First Character Of Each Word'
     CARDINAL: str = 'convert ordinal numbers to cardinal numbers'
     CURLY_QUOTES: str = 'convert "straight quotes" to “curly quotes”'
+    HEXADECIMAL: str = 'convert to hexadecimal'
     HYPHENS_TO_EM: str = 'convert consecutive hyphens to em dashes'
     HYPHEN_TO_EN: str = 'convert hyphens to en dashes'
     KEBAB_CASE: str = 'convert-to-kebab-case'
