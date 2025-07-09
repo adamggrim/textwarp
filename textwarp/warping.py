@@ -329,6 +329,20 @@ def to_alternating_caps(text: str) -> str:
     return ''.join(result)
 
 
+def to_binary(text: str) -> str:
+    """
+    Converts a string to binary.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string in binary, with each character's
+            binary value (byte) separated by a space.
+    """
+    return ' '.join(format(ord(char), '08b') for char in text)
+
+
 def to_camel_case(text: str) -> str:
     """
     Converts a string to camel case.

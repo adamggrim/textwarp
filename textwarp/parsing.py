@@ -14,6 +14,7 @@ from textwarp.warping import (
     punct_to_outside,
     straight_to_curly,
     to_alternating_caps,
+    to_binary,
     to_camel_case,
     to_kebab_case,
     to_lowercase,
@@ -42,6 +43,8 @@ def parse_args() -> Callable[[str], str]:
     )
     group.add_argument('--alternating-caps', action='store_true',
                        help=HelpMessages.ALTERNATING_CAPS)
+    group.add_argument('--binary', action='store_true',
+                       help=HelpMessages.BINARY)
     group.add_argument('--camel-case', action='store_true',
                        help=HelpMessages.CAMEL_CASE)
     group.add_argument('--capitalize', action='store_true',
@@ -75,8 +78,8 @@ def parse_args() -> Callable[[str], str]:
     group.add_argument('--uppercase', action='store_true',
                        help=HelpMessages.UPPERCASE)
 
-    # If the user enters the command name with no arguments, print help
-    # messages and exit.
+    # If the user enters the command name with no arguments, print the
+    # help messages and exit.
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -86,6 +89,7 @@ def parse_args() -> Callable[[str], str]:
     # Dictionary mapping argument names to text warping functions
     arg_func_map: dict[str, Callable[[str], str]] = {
         'alternating_caps': to_alternating_caps,
+        'binary': to_binary,
         'camel_case': to_camel_case,
         'capitalize': capitalize,
         'cardinal': ordinal_to_cardinal,

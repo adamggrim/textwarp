@@ -28,6 +28,7 @@ class HelpMessages:
     )
 
     ALTERNATING_CAPS: str = 'cOnVeRt To AlTeRnAtInG cApS'
+    BINARY: str = 'convert to binary'
     CAMEL_CASE: str = 'convertToCamelCase'
     CAPITALIZE: str = 'Capitalize The First Character Of Each Word'
     CARDINAL: str = 'convert ordinal numbers to cardinal numbers'
