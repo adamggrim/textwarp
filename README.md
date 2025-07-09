@@ -20,7 +20,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 1. **Copy text to the clipboard**
 
-    In this example, `textwarp` will modify the following clipboard text: `The mind is its own place`
+    In this example, `textwarp` will modify the following clipboard text: `The mind is its own place`.
 
 2. **Run the command**
 
@@ -29,23 +29,24 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
     -h, --help          show this help message and exit
-    --alternating-caps  convert to alternating caps
-    --camel-case        convert to camel case
-    --capitalize        capitalize the first character of each word
+    --alternating-caps  cOnVeRt To AlTeRnAtInG cApS
+    --binary            convert to binary
+    --camel-case        convertToCamelCase
+    --capitalize        Capitalize The First Character Of Each Word
     --cardinal          convert ordinal numbers to cardinal numbers
-    --curly-quotes      convert straight quotes to curly quotes
+    --curly-quotes      convert "straight quotes" to “curly quotes”
     --hyphens-to-em     convert consecutive hyphens to em dashes
     --hyphen-to-en      convert hyphens to en dashes
-    --kebab-case        convert to kebab case
+    --kebab-case        convert-to-kebab-case
     --lowercase         convert to lowercase
     --ordinal           convert cardinal numbers to ordinal numbers
-    --pascal-case       convert to Pascal case
-    --punct-to-inside   move punctuation inside quotation marks
-    --punct-to-outside  move punctuation outside quotation marks
-    --snake-case        convert to snake case
-    --straight-quotes   convert curly quotes to straight quotes
-    --title-case        convert to title case
-    --uppercase         convert to uppercase
+    --pascal-case       ConvertToPascalCase
+    --punct-to-inside   "move punctuation inside quotation marks."
+    --punct-to-outside  "move punctuation outside quotation marks".
+    --snake-case        convert_to_snake_case
+    --straight-quotes   convert “curly quotes” to "straight quotes"
+    --title-case        Convert to Title Case
+    --uppercase         CONVERT TO UPPERCASE
     ```
 
 3. **Paste text from the clipboard**
