@@ -35,6 +35,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --capitalize        Capitalize The First Character Of Each Word
     --cardinal          convert ordinal numbers to cardinal numbers
     --curly-quotes      convert "straight quotes" to “curly quotes”
+    --hexadecimal       convert to hexadecimal
     --hyphens-to-em     convert consecutive hyphens to em dashes
     --hyphen-to-en      convert hyphens to en dashes
     --kebab-case        convert-to-kebab-case
