@@ -21,6 +21,7 @@ from textwarp.warping import (
     to_kebab_case,
     to_lowercase,
     to_pascal_case,
+    to_sentence_case,
     to_snake_case,
     to_title_case,
     to_uppercase
@@ -73,6 +74,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.PUNCT_TO_INSIDE)
     group.add_argument('--punct-to-outside', action='store_true',
                        help=HelpMessages.PUNCT_TO_OUTSIDE)
+    group.add_argument('--sentence-case', action='store_true',
+                       help=HelpMessages.SENTENCE_CASE)
     group.add_argument('--snake-case', action='store_true',
                        help=HelpMessages.SNAKE_CASE)
     group.add_argument('--straight-quotes', action='store_true',
@@ -111,6 +114,7 @@ def parse_args() -> Callable[[str], str]:
         'pascal_case': to_pascal_case,
         'punct_to_inside': punct_to_inside,
         'punct_to_outside': punct_to_outside,
+        'sentence_case': to_sentence_case,
         'snake_case': to_snake_case,
         'straight_quotes': curly_to_straight,
         'strikethrough': strikethrough,

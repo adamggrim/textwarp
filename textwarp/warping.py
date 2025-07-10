@@ -496,6 +496,22 @@ def to_pascal_case(text: str) -> str:
     return ''.join(pascal_words)
 
 
+def to_sentence_case(text: str) -> str:
+    """
+    Converts a string to sentence case.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return re.sub(
+        WarpingRegexes.SENTENCE_START,
+        lambda match: match.group(1) + match.group(2).upper(), text
+    )
+
+
 def to_snake_case(text: str) -> str:
     """
     Converts a string to snake case.
