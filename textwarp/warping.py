@@ -338,10 +338,10 @@ def to_binary(text: str) -> str:
 
     Returns:
         str: The converted string in binary, with each character's
-            binary value (byte) separated by a space.
+            binary value separated by a space.
     """
-    binary_chars = [bin(ord(char))[2:].zfill(8) for char in text]
-    return ' '.join(format(ord(char), '08b') for char in binary_chars)
+    binary_chars = [format(ord(char), '08b') for char in text]
+    return ' '.join(binary_chars)
 
 
 def to_camel_case(text: str) -> str:
