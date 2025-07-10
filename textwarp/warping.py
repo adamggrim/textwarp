@@ -217,6 +217,33 @@ def hyphen_to_en(text: str) -> str:
     return text.replace('-', '–')
 
 
+def ordinal_to_cardinal(text: str) -> str:
+    """
+    Converts ordinal numbers to cardinal numbers in a given string.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    def replace_ordinal(match):
+        """
+        Helper function to replace a matched ordinal number with its
+            cardinal equivalent.
+
+        Args:
+            match: A match object representing an ordinal number found
+                in the string.
+
+        Returns:
+            str: The cardinal version of the matched ordinal.
+        """
+        ordinal: str = match.group(0)
+        return ordinal[:-2]
+    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, text)
+
+
 def punct_to_inside(text: str) -> str:
     """
     Moves periods and commas at the end of quotes inside the quotation
@@ -436,33 +463,6 @@ def to_lowercase(text: str) -> str:
         str: The converted string.
     """
     return text.lower()
-
-
-def ordinal_to_cardinal(text: str) -> str:
-    """
-    Converts ordinal numbers to cardinal numbers in a given string.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    def replace_ordinal(match):
-        """
-        Helper function to replace a matched ordinal number with its
-            cardinal equivalent.
-
-        Args:
-            match: A match object representing an ordinal number found
-                in the string.
-
-        Returns:
-            str: The cardinal version of the matched ordinal.
-        """
-        ordinal: str = match.group(0)
-        return ordinal[:-2]
-    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, text)
 
 
 def to_pascal_case(text: str) -> str:
