@@ -22,6 +22,7 @@ class HelpMessages:
         PUNCT_TO_OUTSIDE: Help message for --punct-to-outside argument
         SNAKE_CASE: Help message for --snake-case argument
         STRAIGHT_QUOTES: Help message for --straight argument
+        STRIKETHROUGH: Help message for --strikethrough argument
         STRIP: Help message for --strip argument
         TITLE_CASE: Help message for --title-case argument
         UPPERCASE: Help message for --uppercase argument
@@ -47,6 +48,7 @@ class HelpMessages:
     PUNCT_TO_OUTSIDE: str = '"move punctuation outside quotation marks".'
     SNAKE_CASE: str = 'convert_to_snake_case'
     STRAIGHT_QUOTES: str = 'convert “curly quotes” to "straight quotes"'
+    STRIKETHROUGH: str = 's̶t̶r̶i̶k̶e̶ t̶h̶r̶o̶u̶g̶h̶ a̶ s̶t̶r̶i̶n̶g̶'
     STRIP: str = 'remove leading and trailing whitespace'
     TITLE_CASE: str = 'Convert to Title Case'
     UPPERCASE: str = 'CONVERT TO UPPERCASE'
