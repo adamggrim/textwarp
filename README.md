@@ -46,6 +46,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --punct-to-outside  "move punctuation outside quotation marks".
     --snake-case        convert_to_snake_case
     --straight-quotes   convert “curly quotes” to "straight quotes"
+    --strikethrough     s̶t̶r̶i̶k̶e̶ t̶h̶r̶o̶u̶g̶h̶ a̶ s̶t̶r̶i̶n̶g̶
     --strip             remove leading and trailing whitespace
     --title-case        Convert to Title Case
     --uppercase         CONVERT TO UPPERCASE
@@ -77,6 +78,7 @@ textwarp/
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
 ├── regexes.py: Defines regular expressions for text parsing
+├── validation.py: Defines functions for clipboard validation
 └── warping.py: Defines functions for modifying text
 ```
 
