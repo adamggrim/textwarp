@@ -512,6 +512,21 @@ def to_sentence_case(text: str) -> str:
     )
 
 
+def to_single_spaces(text: str) -> str:
+    """
+    Converts consecutive spaces to a single space.
+
+    This function preserves leading spaces and tabs.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return re.sub(WarpingRegexes.MULTIPLE_SPACES, ' ', text)
+
+
 def to_snake_case(text: str) -> str:
     """
     Converts a string to snake case.

@@ -47,6 +47,7 @@ class HelpMessages:
     PUNCT_TO_INSIDE: str = '"move punctuation inside quotation marks."'
     PUNCT_TO_OUTSIDE: str = '"move punctuation outside quotation marks".'
     SENTENCE_CASE: str = 'Convert to sentence case.'
+    SINGLE_SPACES: str = 'convert consecutive spaces to a single space'
     SNAKE_CASE: str = 'convert_to_snake_case'
     STRAIGHT_QUOTES: str = 'convert “curly quotes” to "straight quotes"'
     STRIKETHROUGH: str = 's̶t̶r̶i̶k̶e̶ t̶h̶r̶o̶u̶g̶h̶ a̶ s̶t̶r̶i̶n̶g̶'

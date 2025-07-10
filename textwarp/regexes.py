@@ -166,6 +166,7 @@ class WarpingRegexes:
     )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
+    MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         # OPENING SINGLE QUOTE
         (?:                     # OPENING CONTEXT (SINGLE QUOTES)
