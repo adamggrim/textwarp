@@ -1,15 +1,5 @@
-class ClipboardError(Exception):
-    """Base class for clipboard exceptions."""
-    pass
-
-
-class EmptyClipboardError(ClipboardError):
+class EmptyClipboardError(Exception):
     """Exception raised when the clipboard is empty."""
-
-
-class NonTextClipboardError(ClipboardError):
-    """Exception raised when the clipboard content is not text."""
-    pass
 
 
 def validate_clipboard(clipboard: str) -> None:
@@ -28,6 +18,3 @@ def validate_clipboard(clipboard: str) -> None:
     """
     if clipboard == '':
         raise EmptyClipboardError('Clipboard is empty.')
-
-    if not isinstance(clipboard, str):
-        raise NonTextClipboardError('Clipboard content is not text.')

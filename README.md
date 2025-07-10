@@ -78,7 +78,7 @@ textwarp/
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
 ├── regexes.py: Defines regular expressions for text parsing
-├── validation.py: Defines functions for clipboard validation
+├── validation.py: Defines class and function for clipboard validation
 └── warping.py: Defines functions for modifying text
 ```
 
