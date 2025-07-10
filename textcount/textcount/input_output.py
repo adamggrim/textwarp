@@ -14,10 +14,8 @@ from textcount.formatting import FormatPrinting
 
 
 def program_exit() -> None:
-    """
-    Prints a message that the program is exiting, then exits the
-    program.
-    """
+    """Prints a message that the program is exiting, then exits the
+    program."""
     FormatPrinting.print_wrapped(EXIT_MESSAGE)
     FormatPrinting.print_padding()
     exit()

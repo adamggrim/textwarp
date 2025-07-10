@@ -1,7 +1,6 @@
 class POSCounts:
-    """
-    A class representing the counts for each part of speech in a given text.
-    """
+    """A class representing the counts for each part of speech in a 
+    given text."""
 
     def __init__(
             self,

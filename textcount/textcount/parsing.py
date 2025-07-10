@@ -42,8 +42,8 @@ def parse_args() -> Callable[[str], str]:
     group.add_argument('--word-count', action='store_true',
                        help=HelpMessages.WORD_COUNT)
 
-    # If the user enters the command name with no arguments, print help
-    # messages and exit.
+    # If the user enters the command name with no arguments, print the
+    # help messages and exit.
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
