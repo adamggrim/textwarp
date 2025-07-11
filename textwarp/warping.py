@@ -121,7 +121,11 @@ class HelperFunctions:
 
 def capitalize(text: str) -> str:
     """
-    Capitalizes the first character of each word in a given string.
+    Capitalizes the first letter of each word, with exceptions for
+    certain prefixes and mid-word capitalizations.
+
+    This function considers apostrophes as part of the word. Hyphenated
+    words are capitalized after each hyphen.
 
     Args:
         text: The string to capitalize.

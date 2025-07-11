@@ -135,6 +135,9 @@ class WarpingRegexes:
         PUNCT_OUTSIDE: Compiled regular expression object with
             capturing groups for quotes inside punctuation and
             punctuation outside quotes.
+        SENTENCE_START: Compiled regular expression object for
+            capturing the first letter of a string or the first letter
+            after a sentence-ending punctuation character.
         TITLE_SUBSTRING_SPLIT: Compiled regular expression object for
             splitting strings into substrings before capitalizing the
             first character.
@@ -170,7 +173,7 @@ class WarpingRegexes:
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         # OPENING SINGLE QUOTE
         (?:                     # OPENING CONTEXT (SINGLE QUOTES)
-            ^                   # The beginning of a string.
+            ^                   # The start of a string.
             |                   # OR
             (?<=[\s\(\[\{"“])   # Preceded by a space character,
                                 # opening parenthesis, opening square
@@ -186,7 +189,7 @@ class WarpingRegexes:
         |                       # OR
         # OPENING DOUBLE QUOTE
         (?:                     # OPENING CONTEXT (DOUBLE QUOTES)
-            ^                   # The beginning of a string.
+            ^                   # The start of a string.
             |                   # OR
             (?<=[\s\(\[\{])     # Preceded by a space character,
                                 # opening parenthesis, opening square
