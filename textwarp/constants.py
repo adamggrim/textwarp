@@ -68,7 +68,7 @@ EXIT_INPUTS: str = {'quit', 'q', 'exit', 'e'}
 EXIT_MESSAGE: str = 'Exiting the program...'
 
 # String printed when the program copies modified text to the clipboard
-MODIFED_TEXT_MESSAGE: str = 'Modified text copied to clipboard.'
+MODIFIED_TEXT_COPIED: str = 'Modified text copied to clipboard.'
 
 # Set of strings for indicating a negative response
 NO_INPUTS: str = {'no', 'n'}
