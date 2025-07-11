@@ -1,4 +1,4 @@
-import re
+import regex as re
 
 from nltk import pos_tag
 
