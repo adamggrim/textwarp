@@ -173,23 +173,23 @@ class WarpingRegexes:
     LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
-        # OPENING SINGLE QUOTE
         (?:                     # OPENING CONTEXT (SINGLE QUOTES)
             ^                   # The start of a string.
             |                   # OR
-            (?<=[\s\(\[\{"“])   # Preceded by a space character,
+            (?<=                # Positive lookbehind for...
+                [\s\(\[\{"“]    # Preceded by a space character,
                                 # opening parenthesis, opening square
                                 # bracket, opening curly brace or
                                 # straight or opening double quote.
-        |                       # OR
-        (?<=["“]\s)             # Preceded by a straight or opening
+                |               # OR
+                ["“]\s          # Preceded by a straight or opening
                                 # double quote followed by a space.
+            )
         )
-        (                       # GROUP 1
+        (                       # GROUP 1 (SINGLE QUOTES)
         '+                      # One or more straight single quotes.
         )
         |                       # OR
-        # OPENING DOUBLE QUOTE
         (?:                     # OPENING CONTEXT (DOUBLE QUOTES)
             ^                   # The start of a string.
             |                   # OR
@@ -197,7 +197,7 @@ class WarpingRegexes:
                                 # opening parenthesis, opening square
                                 # bracket or opening curly brace.
         )
-        (                       # GROUP 2
+        (                       # GROUP 2 (DOUBLE QUOTES)
         (?<!['’]\s)             # Not preceded by a straight or closing
                                 # single quote followed by a space.
         "+                      # One or more straight double quotes.
