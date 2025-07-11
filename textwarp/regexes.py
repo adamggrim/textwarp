@@ -108,6 +108,8 @@ class WarpingRegexes:
     text.
 
     Attributes:
+        _ELISION_WORDS: List of strings containing common elision words.
+
         APOSTROPHE: Compiled regular expression object that captures a
             straight apostrophe surrounded by alphabetical letter
             characters. Also captures a straight apostrophe that is
@@ -148,9 +150,9 @@ class WarpingRegexes:
             that captures a sequence of word characters, apostrophes or
             hyphens.
     """
-    ELISION_WORDS: str = [
+    _ELISION_WORDS: str = (
         'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
-    ]
+    )
 
     APOSTROPHE: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])        # A straight apostrophe inside a
