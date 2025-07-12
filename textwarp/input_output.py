@@ -54,27 +54,27 @@ def convert_text(conversion_function: Callable[[str], str]) -> None:
         conversion_function (Callable[[str], str]): A function that
             takes a string as input and returns the transformed string.
     """
-    try:
-        clipboard: str = pyperclip.paste()
-        validate_clipboard(clipboard)
-        converted_clipboard: str = conversion_function(clipboard)
-        pyperclip.copy(converted_clipboard)
-        print_wrapped(MODIFIED_TEXT_COPIED)
-    except EmptyClipboardError as e:
-        print_wrapped(str(e))
-    except pyperclip.PyperclipException as e:
-        print_wrapped(f'Error accessing clipboard: {e}')
-    except Exception as e:
-        print_wrapped(f'An unexpected error occurred: {e}')
-    print_wrapped(ANY_OTHER_TEXT_PROMPT)
-    response: str = input().strip()
     while True:
-        if response.lower() in (NO_INPUTS | EXIT_INPUTS | YES_INPUTS):
+        try:
+            clipboard: str = pyperclip.paste()
+            validate_clipboard(clipboard)
+            converted_clipboard: str = conversion_function(clipboard)
+            pyperclip.copy(converted_clipboard)
+            print_wrapped(MODIFIED_TEXT_COPIED)
+        except EmptyClipboardError as e:
+            print_wrapped(str(e))
+        except pyperclip.PyperclipException as e:
+            print_wrapped(f'Error accessing clipboard: {e}')
+        except Exception as e:
+            print_wrapped(f'An unexpected error occurred: {e}')
+        print_wrapped(ANY_OTHER_TEXT_PROMPT)
+        response: str = input().strip()
+        while True:
+            if response.lower() in (NO_INPUTS | EXIT_INPUTS | YES_INPUTS):
+                break
+            else:
+                print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
+                response = input().strip()
+                continue
+        if response.lower() in (NO_INPUTS | EXIT_INPUTS):
             break
-        else:
-            print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
-            response = input().strip()
-            continue
-    if response.lower() in (NO_INPUTS | EXIT_INPUTS):
-        program_exit()
-        return
