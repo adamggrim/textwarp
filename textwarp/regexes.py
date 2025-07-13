@@ -89,7 +89,7 @@ class SeparatorCaseRegexes:
                                     # consecutive hyphens
         |                       # OR
         (?=-\s+)                # Positive lookahead to split before a hyphen
-                                    # followed by one or more space characters
+                                    # followed by one or more whitespace characters
         |                       # OR
         (?=\s{2,})              # Positive lookahead to split before
                                     # consecutive spaces
@@ -177,7 +177,7 @@ class WarpingRegexes:
             ^                   # The start of a string.
             |                   # OR
             (?<=                # Positive lookbehind for...
-                [\s\(\[\{"“]    # Preceded by a space character,
+                [\s\(\[\{"“]    # Preceded by a whitespace character,
                                 # opening parenthesis, opening square
                                 # bracket, opening curly brace or
                                 # straight or opening double quote.
@@ -193,7 +193,7 @@ class WarpingRegexes:
         (?:                     # OPENING CONTEXT (DOUBLE QUOTES)
             ^                   # The start of a string.
             |                   # OR
-            (?<=[\s\(\[\{])     # Preceded by a space character,
+            (?<=[\s\(\[\{])     # Preceded by a whitespace character,
                                 # opening parenthesis, opening square
                                 # bracket or opening curly brace.
         )
