@@ -8,10 +8,10 @@ from textwarp.parsing import parse_args
 
 def main() -> None:
     """Runs the main loop for text conversion."""
-    conversion_function: str = parse_args()
+    warping_function: str = parse_args()
 
     try:
-        convert_text(conversion_function)
+        convert_text(warping_function)
         program_exit()
     except KeyboardInterrupt:
         print_padding()

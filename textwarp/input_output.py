@@ -45,14 +45,14 @@ def program_exit() -> None:
     exit()
 
 
-def convert_text(conversion_function: Callable[[str], str]) -> None:
+def convert_text(warping_function: Callable[[str], str]) -> None:
     """
     Applies the selected conversion function and prompts the user for
     any other clipboard input.
 
     Args:
-        conversion_function (Callable[[str], str]): A function that
-            takes a string as input and returns the transformed string.
+        warping_function (Callable[[str], str]): A function that
+            takes a string as input and returns the converted string.
     """
     while True:
         try:
