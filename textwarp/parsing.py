@@ -31,7 +31,7 @@ from textwarp.warping import (
 
 def parse_args() -> Callable[[str], str]:
     """
-    Parses command-line arguments for a text warping function.
+    Parse command-line arguments for a text warping function.
 
     Returns:
         Callable[[str], str]: The text warping function corresponding

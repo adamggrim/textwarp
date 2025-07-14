@@ -11,7 +11,7 @@ class HelperFunctions:
 
     def remove_apostrophes(text: str) -> str:
         """
-        Removes apostrophes from a string without removing single
+        Remove apostrophes from a string without removing single
         quotes.
 
         Args:
@@ -27,7 +27,7 @@ class HelperFunctions:
             separator_case: SeparatorCase
         ) -> str:
         """
-        Converts a string to kebab case or snake case.
+        Convert a string to kebab case or snake case.
 
         Args:
             text: The string to convert.
@@ -38,7 +38,7 @@ class HelperFunctions:
         """
         def _get_other_separator():
             """
-            For a given a separator case, returns the other separator
+            For a given a separator case, return the other separator
                 character.
 
             Returns:
@@ -106,7 +106,7 @@ class HelperFunctions:
 
     def uppercase_first_letter(text: str) -> str:
         """
-        Converts the first letter of the string to uppercase without
+        Convert the first letter of the string to uppercase without
         modifying any other letters.
 
         Args:
@@ -121,7 +121,7 @@ class HelperFunctions:
 
 def capitalize(text: str) -> str:
     """
-    Capitalizes the first letter of each word, with exceptions for
+    Capitalize the first letter of each word, with exceptions for
     certain prefixes and mid-word capitalizations.
 
     This function considers apostrophes as part of the word. Hyphenated
@@ -138,7 +138,7 @@ def capitalize(text: str) -> str:
 
 def cardinal_to_ordinal(text: str) -> str:
     """
-    Converts cardinal numbers to ordinal numbers in a given string.
+    Convert cardinal numbers to ordinal numbers in a given string.
 
     Args:
         text: The string to convert.
@@ -174,7 +174,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
 def curly_to_straight(text: str) -> str:
     """
-    Converts curly quotes to straight quotes in a given string.
+    Convert curly quotes to straight quotes in a given string.
 
     Args:
         text: The string to convert.
@@ -197,7 +197,7 @@ def curly_to_straight(text: str) -> str:
 
 def hyphens_to_em(text: str) -> str:
     """
-    Converts consecutive hyphens to em dashes in a given string.
+    Convert consecutive hyphens to em dashes in a given string.
 
     Args:
         text: The string to convert.
@@ -210,7 +210,7 @@ def hyphens_to_em(text: str) -> str:
 
 def hyphen_to_en(text: str) -> str:
     """
-    Converts hyphens to en dashes in a given string.
+    Convert hyphens to en dashes in a given string.
 
     Args:
         text: The string to convert.
@@ -223,7 +223,7 @@ def hyphen_to_en(text: str) -> str:
 
 def ordinal_to_cardinal(text: str) -> str:
     """
-    Converts ordinal numbers to cardinal numbers in a given string.
+    Convert ordinal numbers to cardinal numbers in a given string.
 
     Args:
         text: The string to convert.
@@ -250,7 +250,7 @@ def ordinal_to_cardinal(text: str) -> str:
 
 def punct_to_inside(text: str) -> str:
     """
-    Moves periods and commas at the end of quotes inside the quotation
+    Move periods and commas at the end of quotes inside the quotation
     marks.
 
     Args:
@@ -261,7 +261,7 @@ def punct_to_inside(text: str) -> str:
     """
     def _repl(match: re.Match) -> str:
         """
-        Reorders periods and commas to move them inside quotation marks.
+        Reorder periods and commas to move them inside quotation marks.
 
         Args:
             match: A regular expression match object.
@@ -278,7 +278,7 @@ def punct_to_inside(text: str) -> str:
 
 def punct_to_outside(text: str) -> str:
     """
-    Moves periods and commas at the end of quotes to outside the
+    Move periods and commas at the end of quotes to outside the
     quotation marks.
 
     Args:
@@ -289,7 +289,7 @@ def punct_to_outside(text: str) -> str:
     """
     def _repl(match: re.Match) -> str:
         """
-        Reorders periods and commas to move them outside quotation
+        Reorder periods and commas to move them outside quotation
             marks.
 
         Args:
@@ -307,7 +307,7 @@ def punct_to_outside(text: str) -> str:
 
 def straight_to_curly(text: str) -> str:
     """
-    Converts straight quotes to curly quotes in a given string.
+    Convert straight quotes to curly quotes in a given string.
 
     Args:
         text: The string to convert.
@@ -338,7 +338,7 @@ def straight_to_curly(text: str) -> str:
 
 def strikethrough(text: str) -> str:
     """
-    Converts a string to the struck-through version.
+    Convert a string to the struck-through version.
 
     Args:
         text: The string to convert.
@@ -354,7 +354,7 @@ def strikethrough(text: str) -> str:
 
 def to_alternating_caps(text: str) -> str:
     """
-    Converts a string to alternating caps.
+    Convert a string to alternating caps.
 
     Args:
         text: The string to convert.
@@ -378,7 +378,7 @@ def to_alternating_caps(text: str) -> str:
 
 def to_binary(text: str) -> str:
     """
-    Converts a string to binary.
+    Convert a string to binary.
 
     Args:
         text: The string to convert.
@@ -393,7 +393,7 @@ def to_binary(text: str) -> str:
 
 def to_camel_case(text: str) -> str:
     """
-    Converts a string to camel case.
+    Convert a string to camel case.
 
     Args:
         text: The string to convert.
@@ -403,8 +403,8 @@ def to_camel_case(text: str) -> str:
     """
     def _lowercase_first_letter(text) -> str:
         """
-        Lowercases the first letter of the string without modifying any
-            other letters.
+        Lowercase the first letter of the string without modifying any
+        other letters.
 
         Args:
             text: The string to convert.
@@ -430,7 +430,7 @@ def to_camel_case(text: str) -> str:
 
 def to_hexadecimal(text: str) -> str:
     """
-    Converts a string to hexadecimal.
+    Convert a string to hexadecimal.
 
     Args:
         text: The string to convert.
@@ -445,7 +445,7 @@ def to_hexadecimal(text: str) -> str:
 
 def to_kebab_case(text: str) -> str:
     """
-    Converts a string to kebab case.
+    Convert a string to kebab case.
 
     Args:
         text: The string to convert.
@@ -458,7 +458,7 @@ def to_kebab_case(text: str) -> str:
 
 def to_lowercase(text: str) -> str:
     """
-    Converts a string to lowercase.
+    Convert a string to lowercase.
 
     Args:
         text: The string to convert.
@@ -471,7 +471,7 @@ def to_lowercase(text: str) -> str:
 
 def to_pascal_case(text: str) -> str:
     """
-    Converts a string to Pascal case.
+    Convert a string to Pascal case.
 
     Args:
         text: The string to convert.
@@ -502,7 +502,7 @@ def to_pascal_case(text: str) -> str:
 
 def to_sentence_case(text: str) -> str:
     """
-    Converts a string to sentence case.
+    Convert a string to sentence case.
 
     Args:
         text: The string to convert.
@@ -518,7 +518,7 @@ def to_sentence_case(text: str) -> str:
 
 def to_single_spaces(text: str) -> str:
     """
-    Converts consecutive spaces to a single space.
+    Convert consecutive spaces to a single space.
 
     This function preserves leading spaces and tabs.
 
@@ -533,7 +533,7 @@ def to_single_spaces(text: str) -> str:
 
 def to_snake_case(text: str) -> str:
     """
-    Converts a string to snake case.
+    Convert a string to snake case.
 
     Args:
         text: The string to convert.
@@ -546,7 +546,7 @@ def to_snake_case(text: str) -> str:
 
 def to_title_case(text: str) -> str:
     """
-    Converts a string to title case.
+    Convert a string to title case.
 
     Args:
         text: The string to convert.
@@ -556,7 +556,7 @@ def to_title_case(text: str) -> str:
     """
     def should_capitalize(tag: str) -> bool:
         """
-        Determines whether a word should be capitalized based on its
+        Determine whether a word should be capitalized based on its
         part of speech.
 
         Args:
@@ -597,7 +597,7 @@ def to_title_case(text: str) -> str:
 
 def to_uppercase(text: str) -> str:
     """
-    Converts a string to uppercase.
+    Convert a string to uppercase.
 
     Args:
         text: The string to convert.
@@ -610,7 +610,7 @@ def to_uppercase(text: str) -> str:
 
 def _replace_opening_quote(match: re.Match[str]) -> str:
     """
-    Converts a sequence of straight quotes to opening curly quotes in a
+    Convert a sequence of straight quotes to opening curly quotes in a
     given match.
 
     Args:
@@ -630,7 +630,7 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
 
 def _capitalize_with_exceptions(word: str) -> str:
     """
-    Capitalizes the first letter of a word, handling special name
+    Capitalize the first letter of a word, handling special name
     prefixes and preserving other mid-word capitalizations.
 
     Args:

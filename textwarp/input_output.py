@@ -17,14 +17,14 @@ from textwarp.validation import EmptyClipboardError, validate_clipboard
 
 
 def print_padding() -> None:
-    """Prints a blank line for padding."""
+    """Print a blank line for padding."""
     print('')
 
 
 def print_wrapped(text: str) -> None:
     """
-    Wraps printing based on the width of the terminal and adds a
-    newline character to the start of the string.
+    Wrap printing based on the width of the terminal and add a newline
+    character to the start of the string.
 
     Args:
         text: The string to print.
@@ -36,10 +36,8 @@ def print_wrapped(text: str) -> None:
 
 
 def program_exit() -> None:
-    """
-    Prints a message that the program is exiting, then exits the
-    program.
-    """
+    """Print a message that the program is exiting, then exit the
+    program."""
     print_wrapped(EXIT_MESSAGE)
     print_padding()
     exit()
@@ -47,8 +45,8 @@ def program_exit() -> None:
 
 def warp_text(warping_function: Callable[[str], str]) -> None:
     """
-    Applies the selected conversion function and prompts the user for
-    any other clipboard input.
+    Apply the selected warping function within a loop and prompt the
+    user for any other clipboard input.
 
     Args:
         warping_function (Callable[[str], str]): A function that
@@ -62,7 +60,7 @@ def warp_text(warping_function: Callable[[str], str]) -> None:
 
 def _get_input() -> bool:
     """
-    Prompts the user whether to process the clipboard and returns a
+    Prompt the user whether to process the clipboard and return a
     Boolean representing whether to continue.
 
     Returns:
@@ -80,7 +78,7 @@ def _get_input() -> bool:
 
 def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     """
-    Processes the clipboard using a given text warping function.
+    Process the clipboard using a given text warping function.
 
     Args:
         warping_function (Callable[[str], str]): A function that
