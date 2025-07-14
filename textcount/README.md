@@ -61,7 +61,7 @@ This example demonstrates how to print a word count using `textcount`.
 ```
 textcount/
 └── __init__.py: File for recognizing textcount as a package
-├── __main__.py: File for running the textcount command
+├── __main__.py: Runs the textcount command
 ├── counting.py: Defines functions for text analysis
 ├── constants.py: Defines constants used throughout the package
 ├── data_structures.py: Defines data structures used throughout the package
