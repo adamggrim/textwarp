@@ -621,7 +621,7 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
     Returns:
         str: A string of opening curly quotes.
     """
-    quote_chars = match.group(1) or match.group(2)
+    quote_chars: str | None = match.group(1) or match.group(2)
     if quote_chars.startswith("'"):
         return '‘' * len(quote_chars)
     else:
@@ -639,7 +639,7 @@ def _capitalize_with_exceptions(word: str) -> str:
     Returns:
         str: The capitalized word.
     """
-    lower_word = word.lower()
+    lower_word: str = word.lower()
 
     if not word or not word[0].isalpha():
         return word
