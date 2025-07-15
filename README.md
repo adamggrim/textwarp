@@ -48,7 +48,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 	--single-spaces     convert consecutive spaces to a single space
 	--snake-case        convert_to_snake_case
 	--straight-quotes   convert “curly quotes” to "straight quotes"
-	--strikethrough     s̶t̶r̶i̶k̶e̶ t̶h̶r̶o̶u̶g̶h̶ a̶ s̶t̶r̶i̶n̶g̶
+    --strikethrough     s̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶
 	--strip             remove leading and trailing whitespace
 	--title-case        Convert to Title Case
 	--uppercase         CONVERT TO UPPERCASE

@@ -50,7 +50,7 @@ class HelpMessages:
     SINGLE_SPACES: str = 'convert consecutive spaces to a single space'
     SNAKE_CASE: str = 'convert_to_snake_case'
     STRAIGHT_QUOTES: str = 'convert “curly quotes” to "straight quotes"'
-    STRIKETHROUGH: str = 's̶t̶r̶i̶k̶e̶ t̶h̶r̶o̶u̶g̶h̶ a̶ s̶t̶r̶i̶n̶g̶'
+    STRIKETHROUGH: str = 's̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶'
     STRIP: str = 'remove leading and trailing whitespace'
     TITLE_CASE: str = 'Convert to Title Case'
     UPPERCASE: str = 'CONVERT TO UPPERCASE'
