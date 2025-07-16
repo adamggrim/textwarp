@@ -338,7 +338,7 @@ def straight_to_curly(text: str) -> str:
 
 def strikethrough(text: str) -> str:
     """
-    Convert a string to the struck-through version.
+    Convert a string to a struck-through version.
 
     Args:
         text: The string to convert.
@@ -348,7 +348,6 @@ def strikethrough(text: str) -> str:
             by the Unicode strikethrough character (U+0336).
     """
     strikethrough_char: str = '\u0336'
-
     return ''.join(char + strikethrough_char for char in text)
 
 
