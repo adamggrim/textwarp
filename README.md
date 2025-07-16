@@ -74,9 +74,9 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 └── data/
-|   └──contractions_map.json: Maps contractions to their expanded counterparts
+|   └──contractions_map.json: Maps contractions to their expanded versions
 └── __init__.py: File for recognizing textwarp as a package
-├── __main__.py: File for running the textwarp command
+├── __main__.py: Runs the textwarp command
 ├── constants.py: Defines constants used throughout the package
 ├── enums.py: Defines enum for separator cases
 ├── input_output.py: Handles user input and console output
