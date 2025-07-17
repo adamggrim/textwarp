@@ -8,20 +8,6 @@ from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
 
 class HelperFunctions:
     """Helper functions for text warping."""
-
-    def remove_apostrophes(text: str) -> str:
-        """
-        Remove apostrophes from a string without removing single
-        quotes.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
-        return re.sub(WarpingRegexes.LETTER_APOSTROPHE, '', text)
-
     def to_separator_case(
             text: str,
             separator_case: SeparatorCase
@@ -667,3 +653,18 @@ def _capitalize_with_exceptions(word: str) -> str:
 
     # Otherwise, apply default capitalization.
     return word[0].upper() + word[1:]
+
+
+def _remove_apostrophes(text: str) -> str:
+    """
+    Remove apostrophes from a string without removing single
+    quotes.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, '', text)
+
