@@ -110,8 +110,8 @@ def capitalize(text: str) -> str:
     Capitalize the first letter of each word, with exceptions for
     certain prefixes and mid-word capitalizations.
 
-    This function considers apostrophes as part of the word. Hyphenated
-    words are capitalized after each hyphen.
+    This function considers mid-word apostrophes as part of the word.
+    Hyphenated words are capitalized after each hyphen.
 
     Args:
         text: The string to capitalize.
@@ -119,7 +119,33 @@ def capitalize(text: str) -> str:
     Returns:
         str: The capitalized string.
     """
-    return HelperFunctions.capitalize_words(text)
+    def replacer(match: re.Match) -> str:
+        """
+        Helper function to capitalize a matched word, handling special
+        name prefixes and preserving other mid-word capitalizations.
+
+        Args:
+            match: A match object representing a word found in the
+                string.
+
+        Returns:
+            str: The capitalized word.
+        """
+        word = match.group(0)
+        parts = word.split('-')
+
+        capitalized_parts = []
+
+        for part in parts:
+            if part: # Ensure the part is not an empty string
+                capitalized_part = _capitalize_with_exceptions(part)
+                capitalized_parts.append(capitalized_part)
+            else:
+                capitalized_parts.append('') # Handle multiple hyphens
+
+        return '-'.join(capitalized_parts)
+
+    return WarpingRegexes.WORD_INCLUDING_PUNCTUATION.sub(replacer, text)
 
 
 def cardinal_to_ordinal(text: str) -> str:
