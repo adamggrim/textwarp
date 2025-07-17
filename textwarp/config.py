@@ -12,4 +12,4 @@ json_file_path: str = os.path.join(
 # Load the JSON data, which pairs a contraction with its expanded
 # version.
 with open(json_file_path, 'r') as json_file:
-    contractions_dict: dict[str, str] = json.load(json_file)
+    contractions_map: dict[str, str] = json.load(json_file)
