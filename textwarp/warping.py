@@ -533,19 +533,6 @@ def to_kebab_case(text: str) -> str:
     return HelperFunctions.to_separator_case(text, SeparatorCase.KEBAB)
 
 
-def to_lowercase(text: str) -> str:
-    """
-    Convert a string to lowercase.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    return text.lower()
-
-
 def to_pascal_case(text: str) -> str:
     """
     Convert a string to Pascal case.
@@ -670,19 +657,6 @@ def to_title_case(text: str) -> str:
         title_substring = ' '.join(title_words)
         title_substrings.append(title_substring)
     return ''.join(title_substrings)
-
-
-def to_uppercase(text: str) -> str:
-    """
-    Convert a string to uppercase.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    return text.upper()
 
 
 def _capitalize_with_exceptions(word: str) -> str:
