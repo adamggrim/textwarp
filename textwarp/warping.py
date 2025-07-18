@@ -90,20 +90,6 @@ class HelperFunctions:
             separator_substrings.append(separator_substring)
         return ''.join(separator_substrings)
 
-    def uppercase_first_letter(text: str) -> str:
-        """
-        Convert the first letter of the string to uppercase without
-        modifying any other letters.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted text.
-        """
-        return re.sub(WarpingRegexes.LETTER_GROUP, lambda match:
-                      match.group(0).upper(), text, count=1)
-
 
 def capitalize(text: str) -> str:
     """
@@ -721,3 +707,18 @@ def _remove_apostrophes(text: str) -> str:
     """
     return re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, '', text)
 
+
+
+def _uppercase_first_letter(text: str) -> str:
+    """
+    Convert the first letter of the string to uppercase without
+    modifying any other letters.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted text.
+    """
+    return re.sub(WarpingRegexes.LETTER_GROUP, lambda match:
+                    match.group(0).upper(), text, count=1)
