@@ -330,6 +330,20 @@ def punct_to_outside(text: str) -> str:
     return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, text)
 
 
+def redact(text: str) -> str:
+    """
+    Redact a string by replacing each non-whitespace character with a
+    black square.
+
+    Args:
+        text: The string to redact.
+
+    Returns:
+        str: The redacted string.
+    """
+    return re.sub(r'\w', '█', text)
+
+
 def reverse(text):
     """
     Reverses the characters of a given string.
