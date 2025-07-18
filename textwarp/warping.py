@@ -632,26 +632,6 @@ def to_uppercase(text: str) -> str:
     return text.upper()
 
 
-def _replace_opening_quote(match: re.Match[str]) -> str:
-    """
-    Convert a sequence of straight quotes to opening curly quotes in a
-    given match.
-
-    Args:
-        match: A regular expression match object where the first
-            captured group is a string of one or more consecutive
-            straight quote characters.
-
-    Returns:
-        str: A string of opening curly quotes.
-    """
-    quote_chars: str | None = match.group(1) or match.group(2)
-    if quote_chars.startswith("'"):
-        return '‘' * len(quote_chars)
-    else:
-        return '“' * len(quote_chars)
-
-
 def _capitalize_with_exceptions(word: str) -> str:
     """
     Capitalize the first letter of a word, handling special name
@@ -707,6 +687,25 @@ def _remove_apostrophes(text: str) -> str:
     """
     return re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, '', text)
 
+
+def _replace_opening_quote(match: re.Match[str]) -> str:
+    """
+    Convert a sequence of straight quotes to opening curly quotes in a
+    given match.
+
+    Args:
+        match: A match object where the first captured group is a
+            string of one or more consecutive straight quote
+            characters.
+
+    Returns:
+        str: A string of opening curly quotes.
+    """
+    quote_chars: str | None = match.group(1) or match.group(2)
+    if quote_chars.startswith("'"):
+        return '‘' * len(quote_chars)
+    else:
+        return '“' * len(quote_chars)
 
 
 def _uppercase_first_letter(text: str) -> str:
