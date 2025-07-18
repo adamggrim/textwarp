@@ -37,11 +37,19 @@ def parse_args() -> Callable[[str], str]:
         Callable[[str], str]: The text warping function corresponding
             to the specified command-line argument.
     """
+    # A custom help formatter to align help messages neatly based on
+    # the maximum argument length.
+    formatter: Callable[[str], argparse.HelpFormatter] = (
+        lambda prog: argparse.HelpFormatter(prog, max_help_position=25)
+    )
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         prog='textwarp',
+        formatter_class=formatter,
         description=HelpMessages.DESCRIPTION,
         usage='%(prog)s [command]'
     )
+
     group: argparse._MutuallyExclusiveGroup = (
         parser.add_mutually_exclusive_group(required=True)
     )
