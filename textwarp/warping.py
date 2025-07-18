@@ -358,8 +358,8 @@ def randomize(text: str) -> str:
 
 def redact(text: str) -> str:
     """
-    Redact a string by replacing each non-whitespace character with a
-    black square.
+    Redact a string by replacing each word character with a black
+    square.
 
     Args:
         text: The string to redact.
