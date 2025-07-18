@@ -119,7 +119,7 @@ def capitalize(text: str) -> str:
     Returns:
         str: The capitalized string.
     """
-    def replacer(match: re.Match) -> str:
+    def _repl(match: re.Match) -> str:
         """
         Helper function to capitalize a matched word, handling special
         name prefixes and preserving other mid-word capitalizations.
@@ -134,20 +134,9 @@ def capitalize(text: str) -> str:
         word = match.group(0)
         parts = word.split('-')
 
-        capitalized_parts = []
+        return '-'.join(_capitalize_with_exceptions(part) for part in parts)
 
-        for part in parts:
-            if part: # Ensure the part is not an empty string
-                capitalized_part = _capitalize_with_exceptions(part)
-                capitalized_parts.append(capitalized_part)
-            else:
-                # If there are multiple consecutive hyphens, part is an
-                # empty string.
-                capitalized_parts.append('')
-
-        return '-'.join(capitalized_parts)
-
-    return WarpingRegexes.WORD_INCLUDING_PUNCTUATION.sub(replacer, text)
+    return WarpingRegexes.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
 
 
 def cardinal_to_ordinal(text: str) -> str:
