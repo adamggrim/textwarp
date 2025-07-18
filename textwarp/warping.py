@@ -289,7 +289,7 @@ def punct_to_inside(text: str) -> str:
         Reorder periods and commas to move them inside quotation marks.
 
         Args:
-            match: A regular expression match object.
+            match: A match object.
 
         Returns:
             str: The reordered string.
@@ -318,7 +318,7 @@ def punct_to_outside(text: str) -> str:
             marks.
 
         Args:
-            match: A regular expression match object.
+            match: A match object.
 
         Returns:
             str: The reordered string.
