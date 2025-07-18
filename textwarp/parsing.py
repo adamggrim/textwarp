@@ -142,3 +142,19 @@ def parse_args() -> Callable[[str], str]:
     for arg_label, func in arg_func_map.items():
         if getattr(args, arg_label):
             return func
+
+
+def _calculate_max_arg_width(commands: dict) -> int:
+    """
+    Calculate the length of the longest command string.
+
+    Args:
+        commands (dict): A dictionary mapping command names to their
+            corresponding functions and help messages.
+
+    Returns:
+        int: The length of the longest command string, adjusted for
+            formatting.
+    """
+    adjustment: int = 6 # Account for the '--' prefix and whitespace.
+    return max(len(key) + adjustment for key in commands.keys())
