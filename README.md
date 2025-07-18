@@ -29,30 +29,35 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
     For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
-	-h, --help          show this help message and exit
-	--alternating-caps  cOnVeRt To AlTeRnAtInG cApS
-	--binary            convert to binary
-	--camel-case        convertToCamelCase
-	--capitalize        Capitalize The First Character Of Each Word
-	--cardinal          convert ordinal numbers to cardinal numbers
-	--curly-quotes      convert "straight quotes" to “curly quotes”
-	--hexadecimal       convert to hexadecimal
-	--hyphens-to-em     convert consecutive hyphens to em dashes
-	--hyphen-to-en      convert hyphens to en dashes
-	--kebab-case        convert-to-kebab-case
-	--lowercase         convert to lowercase
-	--ordinal           convert cardinal numbers to ordinal numbers
-	--pascal-case       ConvertToPascalCase
-	--punct-to-inside   "move punctuation inside quotation marks."
-	--punct-to-outside  "move punctuation outside quotation marks".
-	--sentence-case     Convert to sentence case.
-	--single-spaces     convert consecutive spaces to a single space
-	--snake-case        convert_to_snake_case
-	--straight-quotes   convert “curly quotes” to "straight quotes"
-    --strikethrough     s̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶
-	--strip             remove leading and trailing whitespace
-	--title-case        Convert to Title Case
-	--uppercase         CONVERT TO UPPERCASE
+    -h, --help             show this help message and exit
+    --alternating-caps     cOnVeRt To AlTeRnAtInG cApS
+    --binary               convert to binary
+    --camel-case           convertToCamelCase
+    --capitalize           Capitalize The First Character Of Each Word
+    --cardinal             convert ordinal numbers to cardinal numbers
+    --curly-quotes         convert "straight quotes" to “curly quotes”
+    --expand-contractions  expand contractions
+    --hexadecimal          convert to hexadecimal
+    --hyphens-to-em        convert consecutive hyphens to em dashes
+    --hyphen-to-en         convert hyphens to en dashes
+    --kebab-case           convert-to-kebab-case
+    --lowercase            convert to lowercase
+    --ordinal              convert cardinal numbers to ordinal numbers
+    --pascal-case          ConvertToPascalCase
+    --punct-to-inside      "move punctuation inside quotation marks."
+    --punct-to-outside     "move punctuation outside quotation marks".
+    --randomize            randomize the characters in each word
+    --redact               redact text
+    --reverse              reverse text
+    --sentence-case        Convert to sentence case.
+    --single-spaces        convert consecutive spaces to a single space
+    --snake-case           convert_to_snake_case
+    --straight-quotes      convert “curly quotes” to "straight quotes"
+    --strikethrough        s̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶
+    --strip                remove leading and trailing whitespace
+    --swapcase             convert lowercase to UPPERCASE and vice versa
+    --title-case           Convert to Title Case
+    --uppercase            CONVERT TO UPPERCASE
     ```
 
 3. **Paste text from the clipboard**
@@ -76,8 +81,11 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 textwarp/
 └── data/
 |   └──contractions_map.json: Maps contractions to their expanded versions
+|   └──morse_map.json: Maps characters to their Morse code equivalents
 └── __init__.py: File for recognizing textwarp as a package
 ├── __main__.py: Runs the textwarp command
+├── args.py: Maps command-line arguments to functions and help messages
+├── config.py: Loads JSON files for use in the package
 ├── constants.py: Defines constants used throughout the package
 ├── enums.py: Defines enum for separator cases
 ├── input_output.py: Handles user input and console output
