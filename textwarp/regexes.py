@@ -1,4 +1,5 @@
 import regex as re
+from textwarp.config import contractions_map
 
 
 class SeparatorCaseRegexes:
@@ -198,6 +199,7 @@ class WarpingRegexes:
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
+    CONTRACTION: re.Pattern[str] = _create_contractions_regex(contractions_map)
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
