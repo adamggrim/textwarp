@@ -198,6 +198,42 @@ def curly_to_straight(text: str) -> str:
     return text.translate(translation_table)
 
 
+def expand_contractions(text: str) -> str:
+    """
+    Expand contractions in a given string.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    from textwarp.config import contractions_map
+
+    def _repl(match: re.Match[str]) -> str:
+        """
+        Helper function to replace a matched contraction with its
+            expanded version.
+
+        Args:
+            match: A match object representing a contraction.
+
+        Returns:
+            str: The expanded version of the matched contraction.
+        """
+        print(match.group(0))
+        contraction: str = match.group(0)
+        lower_contraction: str = contraction.lower()
+        expanded_contraction: str = contractions_map.get(
+            lower_contraction, contraction
+        )
+        # Preserve the original capitalization of the contraction.
+        if contraction[0].isupper():
+            expanded_contraction = capitalize(expanded_contraction)
+        return expanded_contraction
+    return re.sub(WarpingRegexes.CONTRACTION, _repl, text)
+
+
 def hyphens_to_em(text: str) -> str:
     """
     Convert consecutive hyphens to em dashes in a given string.
