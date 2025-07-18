@@ -150,6 +150,35 @@ class WarpingRegexes:
             that captures a sequence of word characters, apostrophes or
             hyphens.
     """
+
+    def _create_contractions_regex(contractions_map: dict) -> re.Pattern:
+        """
+        Create a compiled regular expression object that matches any
+        contractions in the given contractions map.
+
+        Args:
+            contractions_map: A dictionary mapping contractions to their
+                expanded versions.
+
+        Returns:
+            A compiled regular expression object matching any contractions
+            in the contractions map.
+        """
+        escaped_contractions = [
+            re.escape(key) for key in contractions_map.keys()
+        ]
+
+        # Sort the contractions by length in descending order, so that
+        # longer contractions containing contraction substrings are
+        # matched first (e.g., "can't've" before "can't").
+        sorted_contractions = sorted(
+            escaped_contractions, key=len, reverse=True
+        )
+        pattern_string = '|'.join(sorted_contractions)
+        final_pattern = r'\b(' + pattern_string + r')\b'
+        compiled_regex = re.compile(final_pattern, re.IGNORECASE)
+        return compiled_regex
+
     _ELISION_WORDS: str = (
         'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
     )
