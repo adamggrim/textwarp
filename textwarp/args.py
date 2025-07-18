@@ -76,7 +76,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         'convert-to-kebab-case'
     ),
     'lowercase': (
-        str.lower(),
+        str.lower,
         'convert to lowercase'
     ),
     'ordinal': (
@@ -128,11 +128,11 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         's̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶'
     ),
     'strip': (
-        str.strip(),
+        str.strip,
         'remove leading and trailing whitespace'
     ),
     'swapcase': (
-        str.swapcase(),
+        str.swapcase,
         'convert lowercase to UPPERCASE and UPPERCASE to lowercase'
     ),
     'title-case': (
@@ -140,7 +140,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         'Convert to Title Case'
     ),
     'uppercase': (
-        str.upper(),
+        str.upper,
         'CONVERT TO UPPERCASE'
     )
 }
