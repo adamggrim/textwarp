@@ -1,6 +1,6 @@
 class HelpMessages:
     """
-    Help message strings for command-line arguments.
+    Help messages for command-line arguments.
 
     Attributes:
         DESCRIPTION: Description for textwarp arguments
@@ -11,7 +11,8 @@ class HelpMessages:
         CAPITALIZE: Help message for --capitalize argument
         CARDINAL: Help message for --cardinals argument
         CURLY_QUOTES: Help message for --curly argument
-        EXPAND_CONTRACTIONS: Help message for --expand-contractions argument
+        EXPAND_CONTRACTIONS: Help message for --expand-contractions
+            argument
         HEXADECIMAL: Help message for --hexadecimal argument
         HYPHENS_TO_EM: Help message for --hyphens-to-em argument
         HYPHENS_TO_EN: Help message for --hyphens-to-en argument
@@ -57,23 +58,23 @@ class HelpMessages:
     TITLE_CASE: str = 'Convert to Title Case'
     UPPERCASE: str = 'CONVERT TO UPPERCASE'
 
-# String printed to prompt the user for any other text
+# Prompt for the user to enter any other text.
 ANY_OTHER_TEXT_PROMPT: str = 'Any other text? (y/n) (Copy text to clipboard):'
 
-# String printed when the previous response was invalid
+# Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: str = 'Please enter a valid response.'
 
-# Set of strings for exiting the program
+# Inputs for exiting the program.
 EXIT_INPUTS: str = {'quit', 'q', 'exit', 'e'}
 
-# String printed when the user exits the program
+# Message for when the user exits the program.
 EXIT_MESSAGE: str = 'Exiting the program...'
 
-# String printed when the program copies modified text to the clipboard
+# Message for when the program copies modified text to the clipboard.
 MODIFIED_TEXT_COPIED: str = 'Modified text copied to clipboard.'
 
-# Set of strings for indicating a negative response
+# Inputs for indicating a negative response.
 NO_INPUTS: str = {'no', 'n'}
 
-# Set of strings for indicating an affirmative response
+# Inputs for indicating an affirmative response.
 YES_INPUTS: str = {'yes', 'y'}
