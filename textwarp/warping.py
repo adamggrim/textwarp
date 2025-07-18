@@ -141,7 +141,9 @@ def capitalize(text: str) -> str:
                 capitalized_part = _capitalize_with_exceptions(part)
                 capitalized_parts.append(capitalized_part)
             else:
-                capitalized_parts.append('') # Handle multiple hyphens
+                # If there are multiple consecutive hyphens, part is an
+                # empty string.
+                capitalized_parts.append('')
 
         return '-'.join(capitalized_parts)
 
