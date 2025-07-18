@@ -133,6 +133,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         lambda text: text.strip(),
         'remove leading and trailing whitespace'
     ),
+    'swapcase': (
+        str.swapcase(),
+        'convert lowercase to UPPERCASE and UPPERCASE to lowercase'
+    ),
     'title-case': (
         to_title_case,
         'Convert to Title Case'
