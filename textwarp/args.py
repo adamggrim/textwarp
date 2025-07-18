@@ -27,9 +27,9 @@ from textwarp.warping import (
 )
 
 
-# A dictionary mapping command-line arguments to the corresponding
-# function and help message string.
-COMMANDS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
+# A dictionary mapping command-line arguments to their corresponding
+# functions and help messages.
+ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'alternating-caps': (
         to_alternating_caps,
         'cOnVeRt To AlTeRnAtInG cApS'
