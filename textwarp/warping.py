@@ -36,7 +36,7 @@ class HelperFunctions:
             }
             return separator_mapping.get(separator_case)
         other_separator: str | None = _get_other_separator()
-        no_apostrophes_text: str = HelperFunctions.remove_apostrophes(text)
+        no_apostrophes_text: str = _remove_apostrophes(text)
         substrings: list[str] = re.split(
             SeparatorCaseRegexes.SEPARATOR_SPLIT,
             no_apostrophes_text
@@ -503,7 +503,7 @@ def to_pascal_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    no_apostrophes_text: str = HelperFunctions.remove_apostrophes(text)
+    no_apostrophes_text: str = _remove_apostrophes(text)
     words: list[str] = re.split(SeparatorCaseRegexes.PASCAL_SPLIT, no_apostrophes_text)
     pascal_words: list[str] = []
     for word in words:
@@ -516,7 +516,7 @@ def to_pascal_case(text: str) -> str:
             pascal_word = word
         # Word is in camel case.
         elif SeparatorCaseRegexes.CAMEL_CASE.match(word):
-            pascal_word = HelperFunctions.uppercase_first_letter(word)
+            pascal_word = _uppercase_first_letter(word)
         # Word is not in Pascal case or camel case.
         else:
             pascal_word = capitalize(word)
@@ -597,7 +597,7 @@ def to_title_case(text: str) -> str:
     title_substrings: list[str] = []
     for substring in substrings:
         # Capitalize the first character of the substring.
-        title_substring: str = HelperFunctions.uppercase_first_letter(substring)
+        title_substring: str = _uppercase_first_letter(substring)
         # Split the substring into words.
         words: list[str] = re.split(
             WarpingRegexes.TITLE_WORD_SPLIT, title_substring
