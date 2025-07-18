@@ -11,6 +11,7 @@ class HelpMessages:
         CAPITALIZE: Help message for --capitalize argument
         CARDINAL: Help message for --cardinals argument
         CURLY_QUOTES: Help message for --curly argument
+        EXPAND_CONTRACTIONS: Help message for --expand-contractions argument
         HEXADECIMAL: Help message for --hexadecimal argument
         HYPHENS_TO_EM: Help message for --hyphens-to-em argument
         HYPHENS_TO_EN: Help message for --hyphens-to-en argument
@@ -37,6 +38,7 @@ class HelpMessages:
     CAPITALIZE: str = 'Capitalize The First Character Of Each Word'
     CARDINAL: str = 'convert ordinal numbers to cardinal numbers'
     CURLY_QUOTES: str = 'convert "straight quotes" to “curly quotes”'
+    EXPAND_CONTRACTIONS: str = 'expand contractions'
     HEXADECIMAL: str = 'convert to hexadecimal'
     HYPHENS_TO_EM: str = 'convert consecutive hyphens to em dashes'
     HYPHEN_TO_EN: str = 'convert hyphens to en dashes'

@@ -7,6 +7,7 @@ from textwarp.warping import (
     capitalize,
     cardinal_to_ordinal,
     curly_to_straight,
+    expand_contractions,
     hyphens_to_em,
     hyphen_to_en,
     punct_to_inside,
@@ -65,6 +66,8 @@ def parse_args() -> Callable[[str], str]:
                        help=HelpMessages.CARDINAL)
     group.add_argument('--curly-quotes', action='store_true',
                        help=HelpMessages.CURLY_QUOTES)
+    group.add_argument('--expand-contractions', action='store_true',
+                       help=HelpMessages.EXPAND_CONTRACTIONS)
     group.add_argument('--hexadecimal', action='store_true',
                        help=HelpMessages.HEXADECIMAL)
     group.add_argument('--hyphens-to-em', action='store_true',
@@ -116,6 +119,7 @@ def parse_args() -> Callable[[str], str]:
         'capitalize': capitalize,
         'cardinal': ordinal_to_cardinal,
         'curly_quotes': straight_to_curly,
+        'expand_contractions': expand_contractions,
         'hexadecimal': to_hexadecimal,
         'hyphens_to_em': hyphens_to_em,
         'hyphen_to_en': hyphen_to_en,
