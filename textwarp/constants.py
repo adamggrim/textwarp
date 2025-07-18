@@ -10,6 +10,11 @@ EXIT_INPUTS: str = {'quit', 'q', 'exit', 'e'}
 # Message for when the user exits the program.
 EXIT_MESSAGE: str = 'Exiting the program...'
 
+# Help description for command-line arguments.
+HELP_DESCRIPTION: str = (
+    'Specify which text warping function to apply to the clipboard.'
+)
+
 # Message for when the program copies modified text to the clipboard.
 MODIFIED_TEXT_COPIED: str = 'Modified text copied to clipboard.'
 
