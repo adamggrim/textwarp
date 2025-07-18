@@ -20,13 +20,11 @@ from textwarp.warping import (
     to_camel_case,
     to_hexadecimal,
     to_kebab_case,
-    to_lowercase,
     to_pascal_case,
     to_sentence_case,
     to_single_spaces,
     to_snake_case,
-    to_title_case,
-    to_uppercase
+    to_title_case
 )
 
 
@@ -78,7 +76,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         'convert-to-kebab-case'
     ),
     'lowercase': (
-        to_lowercase,
+        str.lower(),
         'convert to lowercase'
     ),
     'ordinal': (
@@ -142,7 +140,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         'Convert to Title Case'
     ),
     'uppercase': (
-        to_uppercase,
+        str.upper(),
         'CONVERT TO UPPERCASE'
     )
 }
