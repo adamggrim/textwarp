@@ -1,5 +1,6 @@
-import regex as re
+import random
 
+import regex as re
 from nltk import pos_tag
 
 from textwarp.enums import SeparatorCase
@@ -332,7 +333,7 @@ def punct_to_outside(text: str) -> str:
 
 def randomize(text: str) -> str:
     """
-    Randomize the characters in a given string.
+    Randomize the characters in each word of a given string.
 
     Args:
         text: The string to randomize.
@@ -340,10 +341,19 @@ def randomize(text: str) -> str:
     Returns:
         str: The randomized string.
     """
-    import random
-    chars: list[str] = list(text)
-    random.shuffle(chars)
-    return ''.join(chars)
+    def _repl(_):
+        return next(randomized_iter)
+
+    words = re.findall(r'\w+', text)
+
+    randomized_words = []
+    for word in words:
+        chars = list(word)
+        random.shuffle(chars)
+        randomized_words.append(''.join(chars))
+
+    randomized_iter = iter(randomized_words)
+    return re.sub(r'\w+', _repl, text)
 
 
 def redact(text: str) -> str:

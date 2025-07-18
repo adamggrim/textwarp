@@ -99,7 +99,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'randomize': (
         randomize,
-        'randomize characters'
+        'randomize the characters in each word'
     ),
     'redact': (
         redact,
