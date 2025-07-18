@@ -330,6 +330,22 @@ def punct_to_outside(text: str) -> str:
     return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, text)
 
 
+def randomize(text: str) -> str:
+    """
+    Randomize the characters in a given string.
+
+    Args:
+        text: The string to randomize.
+
+    Returns:
+        str: The randomized string.
+    """
+    import random
+    chars: list[str] = list(text)
+    random.shuffle(chars)
+    return ''.join(chars)
+
+
 def redact(text: str) -> str:
     """
     Redact a string by replacing each non-whitespace character with a
