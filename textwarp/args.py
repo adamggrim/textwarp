@@ -133,7 +133,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'swapcase': (
         str.swapcase,
-        'convert lowercase to UPPERCASE and UPPERCASE to lowercase'
+        'convert lowercase to UPPERCASE and vice versa'
     ),
     'title-case': (
         to_title_case,
