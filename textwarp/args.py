@@ -10,6 +10,7 @@ from textwarp.warping import (
     punct_to_inside,
     ordinal_to_cardinal,
     punct_to_outside,
+    reverse,
     straight_to_curly,
     strikethrough,
     to_alternating_caps,
@@ -93,6 +94,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'punct-to-outside': (
         punct_to_outside,
         '"move punctuation outside quotation marks".'
+    ),
+    'reverse': (
+        reverse,
+        'reverse text'
     ),
     'sentence-case': (
         to_sentence_case,

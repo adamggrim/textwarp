@@ -330,6 +330,19 @@ def punct_to_outside(text: str) -> str:
     return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, text)
 
 
+def reverse(text):
+    """
+    Reverses the characters of a given string.
+
+    Args:
+        text: The string to reverse.
+
+    Returns:
+        The reversed string.
+    """
+    return text[::-1]
+
+
 def straight_to_curly(text: str) -> str:
     """
     Convert straight quotes to curly quotes in a given string.
