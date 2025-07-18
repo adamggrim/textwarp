@@ -130,7 +130,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         's̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶'
     ),
     'strip': (
-        lambda text: text.strip(),
+        str.strip(),
         'remove leading and trailing whitespace'
     ),
     'swapcase': (
