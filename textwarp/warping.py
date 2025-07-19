@@ -208,16 +208,21 @@ def expand_contractions(text: str) -> str:
         Returns:
             str: The expanded version of the matched contraction.
         """
-        print(match.group(0))
         contraction: str = match.group(0)
-        lower_contraction: str = contraction.lower()
+        lower_contraction: str = re.sub(r'[’‘]', "'", contraction.lower())
         expanded_contraction: str = contractions_map.get(
             lower_contraction, contraction
         )
-        # Preserve the original capitalization of the contraction.
-        if contraction[0].isupper():
-            expanded_contraction = capitalize(expanded_contraction)
-        return expanded_contraction
+
+        # Handle all-uppercase contractions.
+        if contraction.isupper():
+            return expanded_contraction.upper()
+        # Handle mixed-case contractions that start with a uppercase
+        # letter.
+        elif contraction[0].isupper():
+            return expanded_contraction[0].upper() + expanded_contraction[1:]
+        else:
+            return expanded_contraction
     return re.sub(WarpingRegexes.CONTRACTION, _repl, text)
 
 
