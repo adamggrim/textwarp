@@ -1,4 +1,5 @@
 import regex as re
+
 from textwarp.config import contractions_map
 
 
@@ -162,21 +163,23 @@ class WarpingRegexes:
                 expanded versions.
 
         Returns:
-            A compiled regular expression object matching any contractions
-            in the contractions map.
+            A compiled regular expression object.
         """
-        escaped_contractions = [
-            re.escape(key) for key in contractions_map.keys()
-        ]
-
         # Sort the contractions by length in descending order, so that
         # longer contractions containing contraction substrings are
         # matched first (e.g., "can't've" before "can't").
         sorted_contractions = sorted(
-            escaped_contractions, key=len, reverse=True
+            contractions_map.keys(), key=len, reverse=True
         )
-        pattern_string = '|'.join(sorted_contractions)
-        final_pattern = r'\b(' + pattern_string + r')\b'
+
+        contraction_patterns = []
+
+        for contraction in sorted_contractions:
+            # Replace straight apostrophes with a regex character class
+            # that matches both straight and curly apostrophes.
+            contraction_patterns.append(contraction.replace("'", "['’‘]"))
+        pattern_string = '|'.join(contraction_patterns)
+        final_pattern = rf'(?<!\w){pattern_string}(?!\w)'
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
