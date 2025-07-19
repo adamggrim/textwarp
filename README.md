@@ -13,7 +13,6 @@
 - `nltk`: For identifying parts of speech to capitalize for title case
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
-- `setuptools`: For building and installing the `textwarp` package, and for implementing command-line functionality using entry points
 
 ## Example
 
@@ -100,7 +99,7 @@ textwarp/
 Follow these steps to run `textwarp`:
 
 1. **Install Python**: Verify that you have Python 3.9 or later. You can install Python at `https://www.python.org/downloads/`.
-2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip`, `regex` and `setuptools`.
+2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip` and `regex`.
 
     You can check whether these packages are installed using pip's `show` command on each package.
 
