@@ -87,6 +87,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         to_pascal_case,
         'ConvertToPascalCase'
     ),
+    'plain-text': (
+        str,
+        'convert to plain text'
+    ),
     'punct-to-inside': (
         punct_to_inside,
         '"move punctuation inside quotation marks."'

@@ -43,6 +43,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --lowercase            convert to lowercase
     --ordinal              convert cardinal numbers to ordinal numbers
     --pascal-case          ConvertToPascalCase
+    --plain-text           convert to plain text
     --punct-to-inside      "move punctuation inside quotation marks."
     --punct-to-outside     "move punctuation outside quotation marks".
     --randomize            randomize the characters in each word
