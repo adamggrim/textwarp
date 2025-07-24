@@ -755,5 +755,9 @@ def _uppercase_first_letter(text: str) -> str:
     Returns:
         str: The converted text.
     """
-    return re.sub(WarpingRegexes.LETTER_GROUP, lambda match:
-                    match.group(0).upper(), text, count=1)
+    for index, char in enumerate(text):
+        if char.isalpha():
+            # Uppercase the first letter and return the new text.
+            return text[:index] + char.upper() + text[index+1:]
+    # Return the original text if no letters were in the string.
+    return text
