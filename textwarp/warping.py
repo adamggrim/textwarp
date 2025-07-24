@@ -214,7 +214,7 @@ def expand_contractions(text: str) -> str:
             lower_contraction, contraction
         )
 
-        # Handle all-uppercase contractions.
+        # Handle all-caps contractions.
         if contraction.isupper():
             return expanded_contraction.upper()
         # Handle mixed-case contractions that start with a uppercase
@@ -675,10 +675,14 @@ def _capitalize_with_exceptions(word: str) -> str:
     Returns:
         str: The capitalized word.
     """
-    lower_word: str = word.lower()
-
     if not word or not word[0].isalpha():
         return word
+
+    # Handle all-caps words.
+    if word.isupper():
+        return word[0].upper() + word[1:].lower()
+
+    lower_word: str = word.lower()
 
     # Handle al- and el- prefixes, keeping them lowercase.
     if lower_word.startswith(('al-', 'el-')):
