@@ -1,10 +1,12 @@
 import random
 
 import regex as re
-from nltk import pos_tag
+import spacy
+from spacy.tokens import Token
 
 from textwarp.enums import SeparatorCase
 from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
+from textwarp.setup import nlp
 
 
 class HelperFunctions:
@@ -615,7 +617,11 @@ def to_snake_case(text: str) -> str:
 
 def to_title_case(text: str) -> str:
     """
-    Convert a string to title case.
+    Convert a string to title case, with exceptions for certain
+    prefixes and mid-word capitalizations.
+
+    This function considers mid-word apostrophes as part of the word.
+    Hyphenated words are capitalized after each hyphen.
 
     Args:
         text: The string to convert.
@@ -623,45 +629,73 @@ def to_title_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def should_capitalize(tag: str) -> bool:
+    def _should_capitalize(token: Token) -> bool:
         """
         Determine whether a word should be capitalized based on its
         part of speech.
 
         Args:
-            tag: The NLTK POS tag to check.
+            tag: The spaCy POS tag to check.
 
         Returns:
             bool: True if the tag should be capitalized, otherwise
                 False.
         """
-        return tag not in ['CC', 'DT', 'IN', 'RP', 'TO', 'WDT']
+        tags_to_exclude: set[str] = {
+            'CC',   # Coordinating conjunction (e.g., 'and', 'but')
+            'DT',   # Determiner (e.g., 'a', 'an', 'the')
+            'IN',   # Preposition or subordinating conjunction
+                    # (e.g., 'in', 'of', 'on')
+            'RP',   # Particle (e.g., 'in' in 'give in')
+            'TO',   # to (infinitive marker)
+            'WDT',  # Wh-determiner (e.g., 'which', 'what')
+        }
+        return token.tag_ not in tags_to_exclude
+    # Split after newlines, end-of-sentence punctuation and colons.
     substrings: list[str] = re.split(
         WarpingRegexes.TITLE_SUBSTRING_SPLIT, text
     )
-    title_substrings: list[str] = []
+    title_case_substrings: list[str] = []
+
     for substring in substrings:
-        # Capitalize the first character of the substring.
-        title_substring: str = _uppercase_first_letter(substring)
-        # Split the substring into words.
-        words: list[str] = re.split(
-            WarpingRegexes.TITLE_WORD_SPLIT, title_substring
-        )
-        all_words: list[str] = []
-        # For loop to break camel and Pascal case into constituent words
-        for word in words:
-            broken_words: list[str] = re.split(
-                SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, word)
-            all_words.extend([broken_word for broken_word in broken_words])
-        all_words_tags: list[tuple[str, str]] = pos_tag(all_words)
-        # Capitalize words based on their part of speech.
-        title_words = [
-            capitalize(word) if
-            should_capitalize(tag) else word for word, tag in all_words_tags
-        ]
-        title_substring = ' '.join(title_words)
-        title_substrings.append(title_substring)
-    return ''.join(title_substrings)
+        # Handle all-whitespace substrings.
+        if not substring.strip():
+            title_case_substrings.append(substring)
+            continue
+
+        doc = nlp(substring)
+        title_case_tokens: list[str] = []
+        first_word_capitalized: bool = False
+
+        for token in doc:
+            # Preserve whitespace tokens.
+            if token.is_space:
+                capitalized_text = token.text
+            # Capitalize the first non-space token.
+            elif not token.is_space and not first_word_capitalized:
+                capitalized_text = _capitalize_with_exceptions(token.text)
+                first_word_capitalized = True
+            # Capitalize words that should be capitalized based on POS
+            # tags.
+            elif _should_capitalize(token):
+                if '-' in token.text and len(token.text) > 1:
+                    parts = token.text.split('-')
+                    capitalized_parts = [
+                        _capitalize_with_exceptions(part) for part in parts
+                    ]
+                    capitalized_text = "-".join(capitalized_parts)
+                else:
+                    capitalized_text = _capitalize_with_exceptions(token.text)
+            else:
+                # Lowercase the word if the tag is in tags_to_exclude.
+                capitalized_text = token.text.lower()
+
+            # Add back trailing whitespace.
+            title_case_tokens.append(capitalized_text + token.whitespace_)
+
+        title_case_substrings.append(''.join(title_case_tokens))
+
+    return ''.join(title_case_substrings)
 
 
 def _capitalize_with_exceptions(word: str) -> str:
