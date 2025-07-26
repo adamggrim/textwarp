@@ -240,7 +240,7 @@ class WarpingRegexes:
     SENTENCE_START: re.Pattern[str] = re.compile(
         r'(^|(?<=[\'‘"“:.?!\t\n])\s*)([a-z])'
     )
-    TITLE_SUBSTRING_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\n\.:])')
+    TITLE_SUBSTRING_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\n.!?:])')
     TITLE_WORD_SPLIT: re.Pattern[str] = re.compile(r' |-|_')
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
         r"[a-zA-Z][\w'‘’\-]*")
