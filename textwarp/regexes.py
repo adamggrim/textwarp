@@ -126,9 +126,6 @@ class WarpingRegexes:
             that captures closing straight single quotes.
         DOUBLE_HYPHENS: Compiled regular expression object that
             captures hyphens that function as an em dash.
-        LETTER_GROUP: Compiled regular expression object that captures
-            any alphabetical letter of a string, encased in a capturing
-            group.
         OPENING_STRAIGHT_QUOTES: Compiled regular expression object
             that captures opening straight quotes.
         ORDINAL: Compiled regular expression object that captures an
@@ -204,7 +201,6 @@ class WarpingRegexes:
     )
     CONTRACTION: re.Pattern[str] = _create_contractions_regex(contractions_map)
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
-    LETTER_GROUP: re.Pattern[str] = re.compile(r'([A-Za-z])')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         (?:                     # OPENING CONTEXT (SINGLE QUOTES)
