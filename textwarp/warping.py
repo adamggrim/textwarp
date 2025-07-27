@@ -674,15 +674,15 @@ def to_title_case(text: str) -> str:
         first_word_capitalized: bool = False
 
         for token in doc:
-            # Preserve whitespace tokens.
+            # Preserve the token if it contains only whitespace.
             if token.is_space:
                 capitalized_text = token.text
-            # Capitalize the first non-space token.
+            # Capitalize the first non-whitespace token.
             elif not token.is_space and not first_word_capitalized:
                 capitalized_text = _capitalize_with_exceptions(token.text)
                 first_word_capitalized = True
-            # Capitalize words that should be capitalized based on POS
-            # tags.
+            # Capitalize the token if it should be capitalized based on
+            # its POS tag.
             elif _should_capitalize(token):
                 if '-' in token.text and len(token.text) > 1:
                     parts = token.text.split('-')
@@ -693,7 +693,8 @@ def to_title_case(text: str) -> str:
                 else:
                     capitalized_text = _capitalize_with_exceptions(token.text)
             else:
-                # Lowercase the word if the tag is in tags_to_exclude.
+                # Lowercase the token if it should not be capitalized
+                # based on its POS tag.
                 capitalized_text = token.text.lower()
 
             # Add back trailing whitespace.
