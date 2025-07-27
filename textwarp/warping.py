@@ -4,8 +4,8 @@ import regex as re
 import spacy
 from spacy.tokens import Token
 
-from textwarp.enums import SeparatorCase
-from textwarp.regexes import SeparatorCaseRegexes, WarpingRegexes
+from textwarp.enums import Separator
+from textwarp.regexes import SeparatorRegexes, WarpingRegexes
 from textwarp.setup import nlp
 
 
@@ -13,7 +13,7 @@ class HelperFunctions:
     """Helper functions for text warping."""
     def to_separator_case(
             text: str,
-            separator_case: SeparatorCase
+            separator_case: Separator
         ) -> str:
         """
         Convert a string to kebab case or snake case.
@@ -33,15 +33,15 @@ class HelperFunctions:
             Returns:
                 str: The other separator character.
             """
-            separator_mapping: dict[SeparatorCase, str] = {
-                SeparatorCase.KEBAB: "_",
-                SeparatorCase.SNAKE: "-",
+            separator_mapping: dict[Separator, str] = {
+                Separator.KEBAB: "_",
+                Separator.SNAKE: "-",
             }
             return separator_mapping.get(separator_case)
         other_separator: str | None = _get_other_separator()
         no_apostrophes_text: str = _remove_apostrophes(text)
         substrings: list[str] = re.split(
-            SeparatorCaseRegexes.SEPARATOR_SPLIT,
+            SeparatorRegexes.SEPARATOR_SPLIT,
             no_apostrophes_text
         )
         separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
@@ -49,8 +49,8 @@ class HelperFunctions:
         for substring in substrings:
             separator_substring: str
             # Substring is already in a separator case.
-            if (SeparatorCaseRegexes.KEBAB_CASE.match(substring) or
-                SeparatorCaseRegexes.SNAKE_CASE.match(substring)):
+            if (SeparatorRegexes.KEBAB_CASE.match(substring) or
+                SeparatorRegexes.SNAKE_CASE.match(substring)):
                 if substring.isupper():
                     separator_substring = re.sub(
                         separator_sub,
@@ -64,11 +64,11 @@ class HelperFunctions:
                         substring.lower()
                     )
             # Substring is in camel case or Pascal case.
-            elif (SeparatorCaseRegexes.CAMEL_CASE.match(substring) or
-                SeparatorCaseRegexes.PASCAL_CASE.match(substring)):
+            elif (SeparatorRegexes.CAMEL_CASE.match(substring) or
+                SeparatorRegexes.PASCAL_CASE.match(substring)):
                 # Break camel case and Pascal case into constituent words.
                 broken_words: list[str] = re.split(
-                    SeparatorCaseRegexes.CAMEL_PASCAL_SPLIT, substring)
+                    SeparatorRegexes.CAMEL_PASCAL_SPLIT, substring)
                 converted_words: list[str] = []
                 for word in broken_words:
                     converted_word = word.lower()
@@ -83,7 +83,7 @@ class HelperFunctions:
                     separator_substring = substring.replace(' ',
                                                         separator_case.value)
                 # Substring begins with an alphabebtical letter.
-                elif re.match(WarpingRegexes.LETTER_GROUP, substring):
+                elif re.match(re.compile(r'([A-Za-z])'), substring):
                     separator_substring = substring.lower().replace(
                         ' ', separator_case.value
                     )
@@ -537,7 +537,7 @@ def to_kebab_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(text, SeparatorCase.KEBAB)
+    return HelperFunctions.to_separator_case(text, Separator.KEBAB)
 
 
 def to_pascal_case(text: str) -> str:
@@ -551,18 +551,18 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = re.split(SeparatorCaseRegexes.PASCAL_SPLIT, no_apostrophes_text)
+    words: list[str] = re.split(SeparatorRegexes.PASCAL_SPLIT, no_apostrophes_text)
     pascal_words: list[str] = []
     for word in words:
         pascal_word: str
         # Word is already in Pascal case.
-        if SeparatorCaseRegexes.PASCAL_CASE.match(word):
+        if SeparatorRegexes.PASCAL_CASE.match(word):
             pascal_word = word
         # Word is an acronym of two characters.
-        elif SeparatorCaseRegexes.SHORT_ACRONYM.match(word):
+        elif SeparatorRegexes.SHORT_ACRONYM.match(word):
             pascal_word = word
         # Word is in camel case.
-        elif SeparatorCaseRegexes.CAMEL_CASE.match(word):
+        elif SeparatorRegexes.CAMEL_CASE.match(word):
             pascal_word = _uppercase_first_letter(word)
         # Word is not in Pascal case or camel case.
         else:
@@ -612,7 +612,9 @@ def to_snake_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(text, SeparatorCase.SNAKE)
+    return HelperFunctions.to_separator_case(
+        text, SeparatorRegexes.SNAKE_CASE
+    )
 
 
 def to_title_case(text: str) -> str:

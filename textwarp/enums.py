@@ -1,13 +1,20 @@
 from enum import Enum
 
 
-class SeparatorCase(Enum):
     """
-    Enum for selecting the separator case to apply to a string.
 
     Attributes:
-        KEBAB: Represents kebab case.
-        SNAKE: Represents snake case.
     """
-    KEBAB = "-"
-    SNAKE = "_"
+class Separator(Enum):
+    """
+    Specify which separator character to use in a string.
+
+    Attributes:
+        DOT: Represents dot.case.
+        KEBAB: Represents kebab-case.
+        SNAKE: Represents snake_case.
+    """
+    DOT = '.'
+    KEBAB = '-'
+    SNAKE = '_'
+

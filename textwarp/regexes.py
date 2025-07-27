@@ -3,7 +3,7 @@ import regex as re
 from textwarp.config import contractions_map
 
 
-class SeparatorCaseRegexes:
+class SeparatorRegexes:
     """
     Compiled regular expressions for parsing and warping text before
     conversion to kebab case or snake case.
