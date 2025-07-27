@@ -121,6 +121,10 @@ def capitalize(text: str) -> str:
             str: The capitalized word.
         """
         word = match.group(0)
+
+        if word.lower().startswith(('al-', 'el-')):
+            return _capitalize_with_exceptions(word)
+
         parts = word.split('-')
 
         return '-'.join(_capitalize_with_exceptions(part) for part in parts)
