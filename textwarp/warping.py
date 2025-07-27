@@ -684,14 +684,7 @@ def to_title_case(text: str) -> str:
             # Capitalize the token if it should be capitalized based on
             # its POS tag.
             elif _should_capitalize(token):
-                if '-' in token.text and len(token.text) > 1:
-                    parts = token.text.split('-')
-                    capitalized_parts = [
-                        _capitalize_with_exceptions(part) for part in parts
-                    ]
-                    capitalized_text = "-".join(capitalized_parts)
-                else:
-                    capitalized_text = _capitalize_with_exceptions(token.text)
+                capitalized_text = _capitalize_with_exceptions(token.text)
             else:
                 # Lowercase the token if it should not be capitalized
                 # based on its POS tag.
