@@ -655,7 +655,7 @@ def to_title_case(text: str) -> str:
         return token.tag_ not in tags_to_exclude
     # Split after newlines, end-of-sentence punctuation and colons.
     substrings: list[str] = re.split(
-        WarpingRegexes.TITLE_SUBSTRING_SPLIT, text
+        WarpingRegexes.SENTENCE_BOUNDARY, text
     )
     title_case_substrings: list[str] = []
 
