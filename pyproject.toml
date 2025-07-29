@@ -13,8 +13,9 @@ authors = [
   { name = "Adam Grim" }
 ]
 dependencies = [
-    "nltk",
     "pyperclip",
+    "regex",
+    "spacy",
 ]
 requires-python = ">=3.9"
 
