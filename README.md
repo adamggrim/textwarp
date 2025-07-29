@@ -10,9 +10,9 @@
 
 `textwarp` requires the following Python libraries:
 
-- `spacy`: For identifying parts of speech to capitalize for title case
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
+- `spaCy`: For identifying parts of speech to capitalize for title case
 
 ## Example
 
@@ -80,6 +80,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 └── data/
+|   └──contraction_fragments.json: Lists contraction parts split by spaCy
 |   └──contractions_map.json: Maps contractions to their expanded versions
 |   └──morse_map.json: Maps characters to their Morse code equivalents
 └── __init__.py: File for recognizing textwarp as a package
@@ -100,7 +101,7 @@ textwarp/
 Follow these steps to run `textwarp`:
 
 1. **Install Python**: Verify that you have Python 3.9 or later. You can install Python at `https://www.python.org/downloads/`.
-2. **Review dependencies**: Make sure the required Python packages are installed: `nltk`, `pyperclip` and `regex`.
+2. **Review dependencies**: Make sure the required Python packages are installed: `pyperclip`, `spaCy` and `regex`.
 
     You can check whether these packages are installed using pip's `show` command on each package.
 
