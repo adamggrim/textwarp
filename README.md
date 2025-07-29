@@ -10,7 +10,7 @@
 
 `textwarp` requires the following Python libraries:
 
-- `nltk`: For identifying parts of speech to capitalize for title case
+- `spacy`: For identifying parts of speech to capitalize for title case
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
 
@@ -106,14 +106,14 @@ Follow these steps to run `textwarp`:
 
     On macOS:
     ```
-    pip3 show nltk
+    pip3 show spacy
     ```
 
     If the package is not installed, you will receive a warning: `WARNING: Package(s) not found`. You can install a missing package using pip.
 
     On macOS:
     ```
-    pip3 install nltk
+    pip3 install spacy
     ```
 
 3. **Install the package**: Install `textwarp` using pip.
