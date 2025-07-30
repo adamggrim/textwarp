@@ -12,7 +12,7 @@
 
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
-- `spaCy`: For identifying parts of speech to capitalize for title case
+- `spaCy`: For identifying parts of speech for capitalization
 
 ## Example
 
@@ -92,6 +92,7 @@ textwarp/
 ├── input_output.py: Handles user input and console output
 ├── parsing.py: Parses command-line arguments
 ├── regexes.py: Defines regular expressions for text parsing
+├── setup.py: Loads spaCy model for use in the package
 ├── validation.py: Defines class and function for clipboard validation
 └── warping.py: Defines functions for modifying text
 ```
