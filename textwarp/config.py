@@ -1,13 +1,16 @@
 import json
 import os
-from typing import Any
+from typing import Union
 
 
 # Get the directory of the current file.
 file_dir: str = os.path.dirname(__file__)
 
+# Define a type for JSON data.
+JSONType = Union[dict, list, str, int, float, bool, None]
 
-def load_json_from_data(filename: str) -> dict[str, Any]:
+
+def load_json_from_data(filename: str) -> JSONType:
     """
     Construct a path to a file in the 'data' subdirectory and load it
     as a dictionary.
@@ -16,7 +19,7 @@ def load_json_from_data(filename: str) -> dict[str, Any]:
         filename: The name of the JSON file.
 
     Returns:
-        dict[str, Any]: The JSON file loaded as a dictionary.
+        JSONType: The JSON file loaded as a Python object.
     """
     # Construct a platform-independent path to the JSON file.
     json_file_path: str = os.path.join(file_dir, 'data', filename)
