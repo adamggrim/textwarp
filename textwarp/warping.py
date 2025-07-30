@@ -727,7 +727,7 @@ def _capitalize_with_exceptions(word: str) -> str:
         return word[:3].capitalize() + word[3:].capitalize()
 
     # Handle O', M', L', D' and Mc prefixes.
-    if (re.match(r"^(o|m|l|d)['‘’]", lower_word)
+    if (re.match(r"^(o|m|l|d)['’‘]", lower_word)
         or lower_word.startswith('mc')):
         return word[:2].capitalize() + word[2:].capitalize()
 
