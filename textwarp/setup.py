@@ -1,11 +1,23 @@
 import spacy
+from spacy.cli import download
 
 from textwarp.input_output import print_wrapped
 
-try:
-    nlp = spacy.load('en_core_web_sm')
-except OSError:
-    print_wrapped("Downloading spaCy model 'en_core_web_sm'...")
-    from spacy.cli import download
-    download('en_core_web_sm')
-    nlp = spacy.load('en_core_web_sm')
+
+def load_spacy_model(model_name: str):
+    """
+    Loads a spaCy model, downloading it if not found.
+
+    Args:
+        model_name (str): The name of the spaCy model to load.
+    """
+    try:
+        nlp = spacy.load(model_name)
+    except OSError:
+        print_wrapped(f"Downloading spaCy model '{model_name}'...")
+        download(model_name)
+        nlp = spacy.load(model_name)
+    return nlp
+
+
+nlp = load_spacy_model('en_core_web_lg')
