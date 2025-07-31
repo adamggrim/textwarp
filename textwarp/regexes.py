@@ -148,8 +148,7 @@ class WarpingRegexes:
             that captures a sequence of word characters, apostrophes or
             hyphens.
     """
-
-    def _create_contractions_regex(contractions_map: dict) -> re.Pattern:
+    def _create_contraction_regex(contractions_map: dict) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contractions in the given contractions map.
@@ -167,14 +166,14 @@ class WarpingRegexes:
         sorted_contractions = sorted(
             contractions_map.keys(), key=len, reverse=True
         )
-
-        contraction_patterns = []
-
-        for contraction in sorted_contractions:
-            # Replace straight apostrophes with a regex character class
-            # that matches both straight and curly apostrophes.
-            contraction_patterns.append(contraction.replace("'", "['’‘]"))
-        pattern_string = '|'.join(contraction_patterns)
+        # Replace straight apostrophes with a regex character class that
+        # matches both straight and curly apostrophes.
+        escaped_patterns = [
+            re.escape(c).replace("'", "['’‘]") for c in sorted_contractions
+        ]
+        pattern_string = '|'.join(escaped_patterns)
+        # Use word boundaries to match contractions that start or end
+        # with an apostrophe.
         final_pattern = rf'(?<!\w){pattern_string}(?!\w)'
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
@@ -220,7 +219,7 @@ class WarpingRegexes:
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
-    CONTRACTION: re.Pattern[str] = _create_contractions_regex(contractions_map)
+    CONTRACTION: re.Pattern[str] = _create_contraction_regex(contractions_map)
     CONTRACTION_TOKENS: re.Pattern[str] = _create_contraction_token_regex(
         contraction_tokens
     )
