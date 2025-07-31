@@ -1,9 +1,9 @@
 import random
 
 import regex as re
-import spacy
 from spacy.tokens import Token
 
+from textwarp.config import contractions_map, contraction_tokens
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
 from textwarp.setup import nlp
@@ -201,7 +201,7 @@ def expand_contractions(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    from textwarp.config import contractions_map
+
 
     def _repl(match: re.Match[str]) -> str:
         """
