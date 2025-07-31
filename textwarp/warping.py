@@ -201,8 +201,6 @@ def expand_contractions(text: str) -> str:
     Returns:
         str: The converted string.
     """
-
-
     def _repl(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched contraction with its
@@ -215,7 +213,8 @@ def expand_contractions(text: str) -> str:
             str: The expanded version of the matched contraction.
         """
         contraction: str = match.group(0)
-        lower_contraction: str = re.sub(r'[’‘]', "'", contraction.lower())
+        straight_contraction: str = curly_to_straight(contraction)
+        lower_contraction: str = straight_contraction.lower()
         expanded_contraction: str = contractions_map.get(
             lower_contraction, contraction
         )
