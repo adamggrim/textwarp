@@ -1,6 +1,6 @@
 import regex as re
 
-from textwarp.config import contractions_map
+from textwarp.config import contractions_map, contraction_tokens
 
 
 class SeparatorRegexes:
@@ -179,6 +179,28 @@ class WarpingRegexes:
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
+    def _create_contraction_token_regex(contraction_tokens: set[str]) -> re.Pattern:
+        """
+        Create a compiled regular expression object that matches any
+        contraction tokens in the given set.
+
+        Args:
+            contraction_tokens: A set of contraction tokens.
+
+        Returns:
+            A compiled regular expression object.
+        """
+        token_patterns = []
+
+        for token in contraction_tokens:
+            # Replace straight apostrophes with a regex character class
+            # that matches both straight and curly apostrophes.
+            token_patterns.append(token.replace("'", "['’‘]"))
+        pattern_string = '|'.join(token_patterns)
+        final_pattern = rf'(?<!\w){pattern_string}(?!\w)'
+        compiled_regex = re.compile(final_pattern, re.IGNORECASE)
+        return compiled_regex
+
     _ELISION_WORDS: str = (
         'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
     )
@@ -199,6 +221,9 @@ class WarpingRegexes:
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
     CONTRACTION: re.Pattern[str] = _create_contractions_regex(contractions_map)
+    CONTRACTION_TOKENS: re.Pattern[str] = _create_contraction_token_regex(
+        contraction_tokens
+    )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
