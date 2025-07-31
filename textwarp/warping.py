@@ -676,22 +676,22 @@ def to_title_case(text: str) -> str:
         for token in doc:
             # Preserve the token if it contains only whitespace.
             if token.is_space:
-                capitalized_text = token.text
+                capitalized_token = token.text
             # Capitalize the first non-whitespace token.
             elif not token.is_space and not first_word_capitalized:
-                capitalized_text = _capitalize_with_exceptions(token.text)
+                capitalized_token = _capitalize_with_exceptions(token.text)
                 first_word_capitalized = True
             # Capitalize the token if it should be capitalized based on
             # its POS tag.
             elif _should_capitalize(token):
-                capitalized_text = _capitalize_with_exceptions(token.text)
+                capitalized_token = _capitalize_with_exceptions(token.text)
             else:
                 # Lowercase the token if it should not be capitalized
                 # based on its POS tag.
-                capitalized_text = token.text.lower()
+                capitalized_token = token.text.lower()
 
             # Add back trailing whitespace.
-            title_case_tokens.append(capitalized_text + token.whitespace_)
+            title_case_tokens.append(capitalized_token + token.whitespace_)
 
         title_case_substrings.append(''.join(title_case_tokens))
 
