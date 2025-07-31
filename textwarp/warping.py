@@ -654,9 +654,15 @@ def to_title_case(text: str) -> str:
                     # (e.g., 'in', 'of', 'on')
             'RP',   # Particle (e.g., 'in' in 'give in')
             'TO',   # to (infinitive marker)
-            'WDT',  # Wh-determiner (e.g., 'which', 'what')
+            'WDT',  # Wh-determiner (e.g., 'what')
         }
+
+        # Capitalize long words regardless of POS tags.
+        if len(token.text) >= 5:
+            return True
+
         return token.tag_ not in tags_to_exclude
+
     # Split after newlines, end-of-sentence punctuation and colons.
     substrings: list[str] = re.split(
         WarpingRegexes.SENTENCE_BOUNDARY, text
@@ -673,25 +679,29 @@ def to_title_case(text: str) -> str:
         title_case_tokens: list[str] = []
         first_word_capitalized: bool = False
 
-        for token in doc:
+        for i, token in doc:
             # Preserve the token if it contains only whitespace.
             if token.is_space:
-                capitalized_token = token.text
+                cased_token = token.text
+            # Preserve tokens that are in the contraction tokens list.
+            elif (any(apostrophe in token.text for apostrophe in "'’‘") and
+                curly_to_straight(token.text).lower() in contraction_tokens):
+                cased_token = token.text
             # Capitalize the first non-whitespace token.
             elif not token.is_space and not first_word_capitalized:
-                capitalized_token = _capitalize_with_exceptions(token.text)
+                cased_token = _capitalize_with_exceptions(token.text)
                 first_word_capitalized = True
             # Capitalize the token if it should be capitalized based on
             # its POS tag.
             elif _should_capitalize(token):
-                capitalized_token = _capitalize_with_exceptions(token.text)
+                cased_token = _capitalize_with_exceptions(token.text)
             else:
                 # Lowercase the token if it should not be capitalized
                 # based on its POS tag.
-                capitalized_token = token.text.lower()
+                cased_token = token.text.lower()
 
             # Add back trailing whitespace.
-            title_case_tokens.append(capitalized_token + token.whitespace_)
+            title_case_tokens.append(cased_token + token.whitespace_)
 
         title_case_substrings.append(''.join(title_case_tokens))
 
