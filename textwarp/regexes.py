@@ -172,9 +172,7 @@ class WarpingRegexes:
             re.escape(c).replace("'", "['’‘]") for c in sorted_contractions
         ]
         pattern_string = '|'.join(escaped_patterns)
-        # Use word boundaries to match contractions that start or end
-        # with an apostrophe.
-        final_pattern = rf'(?<!\w){pattern_string}(?!\w)'
+        final_pattern = rf'\b{pattern_string}\b'
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
