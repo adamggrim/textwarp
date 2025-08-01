@@ -788,9 +788,9 @@ def _uppercase_first_letter(text: str) -> str:
     Returns:
         str: The converted text.
     """
-    for index, char in enumerate(text):
+    for i, char in enumerate(text):
         if char.isalpha():
             # Uppercase the first letter and return the new text.
-            return text[:index] + char.upper() + text[index+1:]
+            return text[:i] + char.upper() + text[i+1:]
     # Return the original text if no letters were in the string.
     return text
