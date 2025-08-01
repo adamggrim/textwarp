@@ -501,12 +501,12 @@ def to_camel_case(text: str) -> str:
         )
     pascal_text: str = to_pascal_case(text)
     # Split between each instance of Pascal case in the string.
-    pascal_words: list[str] = re.split(
+    pascal_substrings: list[str] = re.split(
         WarpingRegexes.CAMEL_SPLIT, pascal_text
     )
     camel_words: list[str] = []
-    for word in pascal_words:
-        camel_word: str = _lowercase_first_letter(word)
+    for substring in pascal_substrings:
+        camel_word: str = _lowercase_first_letter(substring)
         camel_words.append(camel_word)
     return ''.join(camel_words)
 
@@ -551,7 +551,7 @@ def to_pascal_case(text: str) -> str:
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
     words: list[str] = re.split(SeparatorRegexes.PASCAL_SPLIT, no_apostrophes_text)
-    pascal_words: list[str] = []
+    pascal_substrings: list[str] = []
     for word in words:
         pascal_word: str
         # Word is already in Pascal case.
@@ -566,8 +566,8 @@ def to_pascal_case(text: str) -> str:
         # Word is not in Pascal case or camel case.
         else:
             pascal_word = capitalize(word)
-        pascal_words.append(pascal_word)
-    return ''.join(pascal_words)
+        pascal_substrings.append(pascal_word)
+    return ''.join(pascal_substrings)
 
 
 def to_sentence_case(text: str) -> str:
