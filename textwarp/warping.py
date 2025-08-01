@@ -210,10 +210,9 @@ def expand_contractions(text: str) -> str:
             str: The expanded version of the matched contraction.
         """
         contraction: str = match.group(0)
-        straight_contraction: str = curly_to_straight(contraction)
-        lower_contraction: str = straight_contraction.lower()
+        normalized_contraction: str = curly_to_straight(contraction).lower()
         expanded_contraction: str = contractions_map.get(
-            lower_contraction, contraction
+            normalized_contraction, contraction
         )
 
         # Handle all-caps contractions.
