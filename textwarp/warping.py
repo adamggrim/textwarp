@@ -122,9 +122,6 @@ def capitalize(text: str) -> str:
         """
         word = match.group(0)
 
-        if word.lower().startswith(('al-', 'el-')):
-            return _capitalize_with_exceptions(word)
-
         parts = word.split('-')
 
         return '-'.join(_capitalize_with_exceptions(part) for part in parts)
@@ -726,10 +723,6 @@ def _capitalize_with_exceptions(word: str) -> str:
         return word[0].upper() + word[1:].lower()
 
     lower_word: str = word.lower()
-
-    # Handle al- and el- prefixes, keeping them lowercase.
-    if lower_word.startswith(('al-', 'el-')):
-        return lower_word[:3] + word[3:].capitalize()
 
     # Handle Mac prefix.
     if lower_word.startswith('mac'):
