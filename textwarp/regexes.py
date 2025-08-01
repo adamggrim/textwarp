@@ -136,8 +136,6 @@ class WarpingRegexes:
         PUNCT_OUTSIDE: Compiled regular expression object with
             capturing groups for quotes inside punctuation and
             punctuation outside quotes.
-        SENTENCE_BOUNDARY: Compiled regular expression object for
-            capturing the boundary between sentences or major clauses.
         SENTENCE_START: Compiled regular expression object for
             capturing the first letter of a string or the first letter
             after a sentence-ending punctuation character.
@@ -257,8 +255,6 @@ class WarpingRegexes:
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
     SENTENCE_START: re.Pattern[str] = re.compile(
         r'(^|(?<=[\'‘"“:.?!\t\n])\s*)([a-z])'
-    SENTENCE_BOUNDARY: re.Pattern[str] = re.compile(r'(?<=[\n.!?:])')
-
     )
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
         r"[a-zA-Z][\w'‘’\-]*")
