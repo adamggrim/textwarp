@@ -112,10 +112,10 @@ class WarpingRegexes:
     Attributes:
         _ELISION_WORDS: List of strings containing common elision words.
 
-        APOSTROPHE: Compiled regular expression object that captures a
-            straight apostrophe surrounded by alphabetical letter
-            characters. Also captures a straight apostrophe that is
-            part of an elision.
+        APOSTROPHE_IN_WORD: Compiled regular expression object that
+            captures a straight apostrophe surrounded by alphabetical
+            letter characters. Also captures a straight apostrophe that
+            is part of an elision.
         CAMEL_SPLIT: Compiled regular expression object for splitting
             strings before converting substrings to camel case.
         CARDINAL: Compiled regular expression object that captures a
@@ -204,7 +204,7 @@ class WarpingRegexes:
         'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
     )
 
-    APOSTROPHE: re.Pattern = re.compile(rf"""
+    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])            # A straight apostrophe inside
                                         # a word.
         |                               # OR

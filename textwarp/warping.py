@@ -402,7 +402,7 @@ def straight_to_curly(text: str) -> str:
     curly_text: str
 
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = re.sub(WarpingRegexes.APOSTROPHE, "’", text)
+    curly_text = re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, "’", text)
 
     # Replace opening straight quotes with opening curly quotes.
     curly_text = WarpingRegexes.OPENING_STRAIGHT_QUOTES.sub(
