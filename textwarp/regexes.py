@@ -141,9 +141,6 @@ class WarpingRegexes:
         SENTENCE_START: Compiled regular expression object for
             capturing the first letter of a string or the first letter
             after a sentence-ending punctuation character.
-        TITLE_WORD_SPLIT: Compiled regular expression object for
-            splitting substrings into words before capitalizing title
-            case words.
         WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
             that captures a sequence of word characters, apostrophes or
             hyphens.
@@ -263,6 +260,5 @@ class WarpingRegexes:
     SENTENCE_BOUNDARY: re.Pattern[str] = re.compile(r'(?<=[\n.!?:])')
 
     )
-    TITLE_WORD_SPLIT: re.Pattern[str] = re.compile(r' |-|_')
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
         r"[a-zA-Z][\w'‘’\-]*")
