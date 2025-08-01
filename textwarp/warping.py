@@ -622,9 +622,6 @@ def to_title_case(text: str) -> str:
     Convert a string to title case, with exceptions for certain
     prefixes and mid-word capitalizations.
 
-    This function considers mid-word apostrophes as part of the word.
-    Hyphenated words are capitalized after each hyphen.
-
     Args:
         text: The string to convert.
 
@@ -659,49 +656,57 @@ def to_title_case(text: str) -> str:
 
         return token.tag_ not in tags_to_exclude
 
-    # Split after newlines, end-of-sentence punctuation and colons.
-    substrings: list[str] = re.split(
-        WarpingRegexes.SENTENCE_BOUNDARY, text
-    )
-    title_case_substrings: list[str] = []
+    doc = nlp(text)
 
-    for substring in substrings:
-        # Handle all-whitespace substrings.
-        if not substring.strip():
-            title_case_substrings.append(substring)
-            continue
+    # Find the index of the first non-whitespace token in each
+    # sentence and after any colon.
+    first_word_indices: set[int] = set()
+    last_word_index: int = -1
 
-        doc = nlp(substring)
-        title_case_tokens: list[str] = []
-        first_word_capitalized: bool = False
+    for i, token in enumerate(doc):
+        if token.is_sent_start:
+            for sent_token in token.sent:
+                if not sent_token.is_space:
+                    first_word_indices.add(sent_token.i)
+                    break
+        if token.text == ":" and i + 1 < len(doc):
+            # Find the index of the next non-space token.
+            for j in range(i + 1, len(doc)):
+                if not doc[j].is_space:
+                    first_word_indices.add(j)
+                    break
+        # Find the index of the last non-whitespace, non-punctuation
+        # token.
+        if not token.is_space and not token.is_punct:
+            last_word_index = i
 
-        for i, token in doc:
-            # Preserve the token if it contains only whitespace.
-            if token.is_space:
-                cased_token = token.text
-            # Preserve tokens that are in the contraction tokens list.
-            elif (any(apostrophe in token.text for apostrophe in "'’‘") and
-                curly_to_straight(token.text).lower() in contraction_tokens):
-                cased_token = token.text
-            # Capitalize the first non-whitespace token.
-            elif not token.is_space and not first_word_capitalized:
-                cased_token = _capitalize_with_exceptions(token.text)
-                first_word_capitalized = True
-            # Capitalize the token if it should be capitalized based on
-            # its POS tag.
-            elif _should_capitalize(token):
-                cased_token = _capitalize_with_exceptions(token.text)
-            else:
-                # Lowercase the token if it should not be capitalized
-                # based on its POS tag.
-                cased_token = token.text.lower()
+    title_case_tokens: list[str] = []
 
-            # Add back trailing whitespace.
-            title_case_tokens.append(cased_token + token.whitespace_)
+    for i, token in enumerate(doc):
+        # Preserve the token if it contains only whitespace.
+        if token.is_space:
+            cased_token = token.text
+        # Preserve the token if it is in the contraction tokens list.
+        elif (any(apostrophe in token.text for apostrophe in "'’‘") and
+            curly_to_straight(token.text).lower() in contraction_tokens):
+            cased_token = token.text
+        # Capitalize the first token in the title or subtitle.
+        elif i in first_word_indices:
+            cased_token = _capitalize_with_exceptions(token.text)
+        # Capitalize the last word of the title.
+        elif i == last_word_index:
+            cased_token = _capitalize_with_exceptions(token.text)
+        # Capitalize the word based on its POS tag and length.
+        elif _should_capitalize(token):
+            cased_token = _capitalize_with_exceptions(token.text)
+        # Otherwise, lowercase the word.
+        else:
+            cased_token = token.text.lower()
 
-        title_case_substrings.append(''.join(title_case_tokens))
+        # Add back trailing whitespace.
+        title_case_tokens.append(cased_token + token.whitespace_)
 
-    return ''.join(title_case_substrings)
+    return ''.join(title_case_tokens)
 
 
 def _capitalize_with_exceptions(word: str) -> str:
