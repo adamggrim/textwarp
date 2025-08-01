@@ -12,7 +12,7 @@
 
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
-- `spaCy`: For identifying parts of speech for capitalization
+- `spaCy`: For identifying parts of speech for casing
 
 ## Example
 
