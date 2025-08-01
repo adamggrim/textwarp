@@ -723,28 +723,25 @@ def _capitalize_with_exceptions(word: str) -> str:
     if not word or not word[0].isalpha():
         return word
 
-    # Handle all-caps words.
-    if word.isupper():
-        return word[0].upper() + word[1:].lower()
-
     lower_word: str = word.lower()
 
     # Handle Mac prefix.
     if lower_word.startswith('mac'):
         return word[:3].capitalize() + word[3:].capitalize()
-
     # Handle O', M', L', D' and Mc prefixes.
-    if (re.match(r"^(o|m|l|d)['’‘]", lower_word)
+    elif (re.match(r"^(o|m|l|d)['’‘]", lower_word)
         or lower_word.startswith('mc')):
         return word[:2].capitalize() + word[2:].capitalize()
-
+    # Handle all-caps words.
+    elif word.isupper():
+        return word[0].upper() + word[1:].lower()
     # Preserve existing capitalization for words that contain another
     # mid-word capitalization.
-    if any(char.isupper() for char in word[1:]):
+    elif any(char.isupper() for char in word[1:]):
         return word
-
     # Otherwise, apply default capitalization.
-    return word[0].upper() + word[1:]
+    else:
+        return word[0].upper() + word[1:].lower()
 
 
 def _remove_apostrophes(text: str) -> str:
