@@ -171,10 +171,12 @@ class WarpingRegexes:
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
-    def _create_contraction_token_regex(contraction_tokens: set[str]) -> re.Pattern:
+    def _create_contraction_token_regex(
+        contraction_tokens: set[str]
+    ) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
-        contraction tokens in the given set.
+        contraction token in the given set.
 
         Args:
             contraction_tokens: A set of contraction tokens.
@@ -182,14 +184,13 @@ class WarpingRegexes:
         Returns:
             A compiled regular expression object.
         """
-        token_patterns = []
-
-        for token in contraction_tokens:
-            # Replace straight apostrophes with a regex character class
-            # that matches both straight and curly apostrophes.
-            token_patterns.append(token.replace("'", "['’‘]"))
-        pattern_string = '|'.join(token_patterns)
-        final_pattern = rf'(?<!\w){pattern_string}(?!\w)'
+        # Replace straight apostrophes with a regex character class that
+        # matches both straight and curly apostrophes.
+        escaped_patterns = [
+            re.escape(t).replace("'", "['’‘]") for t in contraction_tokens
+        ]
+        pattern_string = '|'.join(escaped_patterns)
+        final_pattern = rf'\b{pattern_string}\b'
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
