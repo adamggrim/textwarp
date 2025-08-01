@@ -724,6 +724,14 @@ def _capitalize_with_exceptions(word: str) -> str:
 
     lower_word: str = word.lower()
 
+    # Handle initialisms.
+    if '.' in word:
+        # Filter empty strings that can result from a trailing period.
+        parts = list(filter(None, word.split('.')))
+        # If all parts are single letters, it's an initialism.
+        if all(len(part) == 1 and part.isalpha() for part in parts):
+            return word.upper()
+
     # Handle Mac prefix.
     if lower_word.startswith('mac'):
         return word[:3].capitalize() + word[3:].capitalize()
