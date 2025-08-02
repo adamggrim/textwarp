@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for manipulating clipboard text from the console. For the given clipboard text, `textwarp` applies a conversion function and copies the modified text to the clipboard.
+`textwarp` is a Python package for manipulating and analyzing clipboard text from the console. For the given clipboard text, `textwarp` applies a conversion or analysis function and copies any modified text to the clipboard.
 
 ## Requirements
 
@@ -12,7 +12,7 @@
 
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For expanded regular expression functionality
-- `spaCy`: For identifying parts of speech for casing
+- `spaCy`: For identifying parts of speech
 
 ## Example
 
@@ -26,7 +26,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
     Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --camel-case`
 
-    For a list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
+    For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
     -h, --help             show this help message and exit
     --alternating-caps     cOnVeRt To AlTeRnAtInG cApS
@@ -80,11 +80,14 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 └── data/
-|   └──contraction_fragments.json: Lists contraction parts split by spaCy
+|   └──common_intialisms.json: Lists common initialisms to uppercase
+|   └──contraction_tokens.json: Lists contraction tokens split by spaCy
 |   └──contractions_map.json: Maps contractions to their expanded versions
+|   └──lowercase_particles.json: Lists lowercase particles that should not be capitalized
 |   └──morse_map.json: Maps characters to their Morse code equivalents
 └── __init__.py: File for recognizing textwarp as a package
 ├── __main__.py: Runs the textwarp command
+├── analyzing.py: Defines functions for analyzing text
 ├── args.py: Maps command-line arguments to functions and help messages
 ├── config.py: Loads JSON files for use in the package
 ├── constants.py: Defines constants used throughout the package
