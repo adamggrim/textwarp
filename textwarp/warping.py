@@ -3,7 +3,7 @@ import random
 import regex as re
 from spacy.tokens import Token
 
-from textwarp.config import contractions_map, contraction_tokens
+from textwarp.config import CONTRACTIONS_MAP, CONTRACTION_TOKENS
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
 from textwarp.setup import nlp
@@ -211,7 +211,7 @@ def expand_contractions(text: str) -> str:
         """
         contraction: str = match.group(0)
         normalized_contraction: str = curly_to_straight(contraction).lower()
-        expanded_contraction: str = contractions_map.get(
+        expanded_contraction: str = CONTRACTIONS_MAP.get(
             normalized_contraction, contraction
         )
 
@@ -687,7 +687,7 @@ def to_title_case(text: str) -> str:
             cased_token = token.text
         # Preserve the token if it is in the contraction tokens list.
         elif (any(apostrophe in token.text for apostrophe in "'’‘") and
-            curly_to_straight(token.text).lower() in contraction_tokens):
+            curly_to_straight(token.text).lower() in CONTRACTION_TOKENS):
             cased_token = token.text
         # Capitalize the first token in the title or subtitle.
         elif i in first_word_indices:

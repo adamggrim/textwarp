@@ -30,14 +30,14 @@ def load_json_from_data(filename: str) -> JSONType:
 
 
 # Tokens derived from contractions.
-contraction_tokens: set[str] = set(load_json_from_data(
-    'contraction_tokens.json'
+CONTRACTION_TOKENS: set[str] = set(load_json_from_data(
+    '.json'
 ))
 
 # Pairs each contraction with its expanded version.
-contractions_map: dict[str, str] = load_json_from_data(
+CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
     'contractions_map.json'
 )
 
 # Pairs each character with its Morse code equivalent.
-morse_map: dict[str, str] = load_json_from_data('morse_map.json')
+MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
