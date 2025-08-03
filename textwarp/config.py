@@ -29,15 +29,25 @@ def load_json_from_data(filename: str) -> JSONType:
         return json.load(json_file)
 
 
+# Common initialisms to uppercase.
+COMMON_INITIALISMS: set[str] = set(load_json_from_data(
+    'common_initialisms.json'
+))
+
 # Tokens derived from contractions.
 CONTRACTION_TOKENS: set[str] = set(load_json_from_data(
-    '.json'
+    'contraction_tokens.json'
 ))
 
 # Pairs each contraction with its expanded version.
 CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
     'contractions_map.json'
 )
+
+# Lowercase particles that should not be capitalized in title case.
+LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
+    'lowercase_particles.json'
+))
 
 # Pairs each character with its Morse code equivalent.
 MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
