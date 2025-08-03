@@ -732,8 +732,12 @@ def _capitalize_with_exceptions(word: str) -> str:
 
     lower_word: str = word.lower()
 
-    # Handle initialisms.
-    if '.' in word:
+    # Handle common initialisms without periods.
+    if lower_word in COMMON_INITIALISMS:
+        return word.upper()
+
+    # Handle period-separated initialisms.
+    elif '.' in word:
         # Filter empty strings that can result from a trailing period.
         parts = list(filter(None, word.split('.')))
         # If all parts are single letters, it's an initialism.
