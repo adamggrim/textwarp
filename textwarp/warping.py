@@ -644,6 +644,9 @@ def to_title_case(text: str) -> str:
             bool: True if the tag should be capitalized, otherwise
                 False.
         """
+        if token.text.lower() in LOWERCASE_PARTICLES:
+            return False
+
         tags_to_exclude: set[str] = {
             'CC',   # Coordinating conjunction (e.g., 'and', 'but')
             'DT',   # Determiner (e.g., 'a', 'an', 'the')
