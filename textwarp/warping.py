@@ -3,7 +3,12 @@ import random
 import regex as re
 from spacy.tokens import Token
 
-from textwarp.config import CONTRACTIONS_MAP, CONTRACTION_TOKENS
+from textwarp.config import (
+    COMMON_INITIALISMS,
+    CONTRACTION_TOKENS,
+    CONTRACTIONS_MAP,
+    LOWERCASE_PARTICLES
+)
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
 from textwarp.setup import nlp

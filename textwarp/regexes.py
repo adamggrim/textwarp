@@ -1,6 +1,6 @@
 import regex as re
 
-from textwarp.config import contractions_map, contraction_tokens
+from textwarp.config import CONTRACTIONS_MAP, CONTRACTION_TOKENS
 
 
 class SeparatorRegexes:
@@ -143,13 +143,13 @@ class WarpingRegexes:
             that captures a sequence of word characters, apostrophes or
             hyphens.
     """
-    def _create_contraction_regex(contractions_map: dict) -> re.Pattern:
+    def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contractions in the given contractions map.
 
         Args:
-            contractions_map: A dictionary mapping contractions to their
+            CONTRACTIONS_MAP: A dictionary mapping contractions to their
                 expanded versions.
 
         Returns:
@@ -159,7 +159,7 @@ class WarpingRegexes:
         # longer contractions containing contraction substrings are
         # matched first (e.g., "can't've" before "can't").
         sorted_contractions = sorted(
-            contractions_map.keys(), key=len, reverse=True
+            CONTRACTIONS_MAP.keys(), key=len, reverse=True
         )
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
@@ -172,14 +172,14 @@ class WarpingRegexes:
         return compiled_regex
 
     def _create_contraction_token_regex(
-        contraction_tokens: set[str]
+        CONTRACTION_TOKENS: set[str]
     ) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contraction token in the given set.
 
         Args:
-            contraction_tokens: A set of contraction tokens.
+            CONTRACTION_TOKENS: A set of contraction tokens.
 
         Returns:
             A compiled regular expression object.
@@ -187,7 +187,7 @@ class WarpingRegexes:
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
         escaped_patterns = [
-            re.escape(t).replace("'", "['’‘]") for t in contraction_tokens
+            re.escape(t).replace("'", "['’‘]") for t in CONTRACTION_TOKENS
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
@@ -213,9 +213,9 @@ class WarpingRegexes:
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
-    CONTRACTION: re.Pattern[str] = _create_contraction_regex(contractions_map)
+    CONTRACTION: re.Pattern[str] = _create_contraction_regex(CONTRACTIONS_MAP)
     CONTRACTION_TOKENS: re.Pattern[str] = _create_contraction_token_regex(
-        contraction_tokens
+        CONTRACTION_TOKENS
     )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
