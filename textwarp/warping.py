@@ -647,6 +647,10 @@ def to_title_case(text: str) -> str:
         if token.text.lower() in LOWERCASE_PARTICLES:
             return False
 
+        # Capitalize long words regardless of POS tags.
+        if len(token.text) >= 5:
+            return True
+
         tags_to_exclude: set[str] = {
             'CC',   # Coordinating conjunction (e.g., 'and', 'but')
             'DT',   # Determiner (e.g., 'a', 'an', 'the')
@@ -656,10 +660,6 @@ def to_title_case(text: str) -> str:
             'TO',   # to (infinitive marker)
             'WDT',  # Wh-determiner (e.g., 'what')
         }
-
-        # Capitalize long words regardless of POS tags.
-        if len(token.text) >= 5:
-            return True
 
         return token.tag_ not in tags_to_exclude
 
