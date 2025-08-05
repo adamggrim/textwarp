@@ -754,7 +754,7 @@ def _capitalize_with_exceptions(word: str) -> str:
     # Handle all-caps words.
     elif word.isupper():
         return word[0].upper() + word[1:].lower()
-    # Preserve existing capitalization for words that contain another
+    # Preserve existing capitalization for words containing another
     # mid-word capitalization.
     elif any(char.isupper() for char in word[1:]):
         return word

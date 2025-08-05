@@ -146,7 +146,7 @@ class WarpingRegexes:
     def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
-        contractions in the given contractions map.
+        contraction in the given contractions map.
 
         Args:
             CONTRACTIONS_MAP: A dictionary mapping contractions to their
