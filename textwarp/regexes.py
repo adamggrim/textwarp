@@ -1,6 +1,10 @@
 import regex as re
 
-from textwarp.config import CONTRACTIONS_MAP, CONTRACTION_TOKENS
+from textwarp.config import (
+    CONTRACTIONS_MAP,
+    CONTRACTION_TOKENS,
+    ELISION_WORDS
+)
 
 
 class SeparatorRegexes:
@@ -110,8 +114,6 @@ class WarpingRegexes:
     text.
 
     Attributes:
-        _ELISION_WORDS: List of strings containing common elision words.
-
         APOSTROPHE_IN_WORD: Compiled regular expression object that
             captures a straight apostrophe surrounded by alphabetical
             letter characters. Also captures a straight apostrophe that
@@ -194,17 +196,13 @@ class WarpingRegexes:
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
-    _ELISION_WORDS: str = (
-        'cause', 'em', 'ere', 'gainst', 'n', 'neath', 'o', 'tis', 'twas'
-    )
-
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])            # A straight apostrophe inside
                                         # a word.
         |                               # OR
         '(?=                            # A straight apostrophe
                                         # followed by...
-        {'|'.join(_ELISION_WORDS)}\b    # An elision.
+        {'|'.join(ELISION_WORDS)}\b     # An elision.
         |                               # OR
         \d{{2}}s\b)                     # An abbreviation for a decade.
         """, re.VERBOSE | re.IGNORECASE
