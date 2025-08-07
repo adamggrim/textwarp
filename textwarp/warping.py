@@ -34,7 +34,7 @@ class HelperFunctions:
         def _get_other_separator():
             """
             For a given a separator case, return the other separator
-                character.
+            character.
 
             Returns:
                 str: The other separator character.
@@ -148,7 +148,7 @@ def cardinal_to_ordinal(text: str) -> str:
     def replace_cardinal(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched cardinal number with an
-            ordinal.
+        ordinal.
 
         Args:
             match: A match object representing a cardinal
@@ -272,7 +272,7 @@ def ordinal_to_cardinal(text: str) -> str:
     def replace_ordinal(match):
         """
         Helper function to replace a matched ordinal number with its
-            cardinal equivalent.
+        cardinal equivalent.
 
         Args:
             match: A match object representing an ordinal number found
@@ -328,7 +328,7 @@ def punct_to_outside(text: str) -> str:
     def _repl(match: re.Match) -> str:
         """
         Reorder periods and commas to move them outside quotation
-            marks.
+        marks.
 
         Args:
             match: A match object.
