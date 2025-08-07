@@ -198,14 +198,15 @@ class WarpingRegexes:
         return compiled_regex
 
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
-        (?<=[a-z])'(?=[a-z])            # A straight apostrophe inside
-                                        # a word.
-        |                               # OR
-        '(?=                            # A straight apostrophe
-                                        # followed by...
-        {'|'.join(ELISION_WORDS)}\b     # An elision.
-        |                               # OR
-        \d{{2}}s\b)                     # An abbreviation for a decade.
+        (?<=[a-z])'(?=[a-z])                # A straight apostrophe
+                                            # inside a word.
+        |                                   # OR
+        '                                   # A straight apostrophe
+        (?=                                 # followed by...
+            {'|'.join(ELISION_WORDS)}\b     # An elision.
+            |                               # OR
+            \d{{2}}s\b                      # An abbreviation for a
+        )                                   # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
     CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–\-])')
