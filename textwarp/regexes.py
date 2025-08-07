@@ -1,6 +1,7 @@
 import regex as re
 
 from textwarp.config import (
+    ABBREVIATIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_TOKENS,
     ELISION_WORDS
@@ -252,8 +253,22 @@ class WarpingRegexes:
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
-    SENTENCE_START: re.Pattern[str] = re.compile(
-        r'(^|(?<=[\'‘"“:.?!\t\n])\s*)([a-z])'
+    SENTENCE_START: re.Pattern[str] = re.compile(rf"""
+        ^                   # The start of a line (see re.MULTILINE).
+        |                   # OR
+        (?<=                # Preceded by...
+            (?:             # A non-capturing group for...
+                # A period not preceded by an abbreviation.
+                (?<!{'|'.join(ABBREVIATIONS)})\.
+                |           # OR
+                [!?]        # A question mark or exclamation mark.
+            )
+            ["”“'’‘)\]]*    # Followed by any number of quotes,
+                            # brackets or closing parentheses.
+            \s+             # Followed by one or more whitespace
+                            # characters.
+        )
+        """, re.VERBOSE | re.MULTILINE
     )
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
         r"[a-zA-Z][\w'‘’\-]*")
