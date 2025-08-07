@@ -7,7 +7,8 @@ from textwarp.config import (
     COMMON_INITIALISMS,
     CONTRACTION_TOKENS,
     CONTRACTIONS_MAP,
-    LOWERCASE_PARTICLES
+    LOWERCASE_PARTICLES,
+    MORSE_MAP
 )
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
@@ -542,6 +543,52 @@ def to_kebab_case(text: str) -> str:
         str: The converted string.
     """
     return HelperFunctions.to_separator_case(text, Separator.KEBAB)
+
+
+def to_morse(text: str) -> str:
+    """
+    Converts a given string to Morse code.
+
+    Letters (A-Z), numbers (0-9) and common punctuation (., ?, !, ,, :,
+    ;, +, -, =, @, (, ), ", ', /, &) are all supported.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string, with a single space between
+            character codes and three spaces between word codes.
+    """
+    def _normalize_for_morse(text: str) -> str:
+        """
+        Normalize a string for Morse code by converting to
+        uppercase and replacing non-Morse-compatible characters.
+
+        Args:
+            text: The string to normalize.
+
+        Returns:
+            str: The normalized string.
+        """
+        upper_text: str = text.upper()
+        processed_text: str = curly_to_straight(upper_text)
+        processed_text = processed_text.replace('–', '-').replace('—', '-')
+        processed_text = processed_text.replace('…', '...')
+        return processed_text
+
+    normalized_text: str = _normalize_for_morse(text)
+    words = normalized_text.split()
+    morse_code_output = []
+
+    for word in words:
+        char_codes = []
+        for char in word:
+            if char in MORSE_MAP: # Skip unsupported characters.
+                char_codes.append(MORSE_MAP[char])
+        if char_codes:
+            morse_code_output.append(' '.join(char_codes))
+
+    return '   '.join(morse_code_output)
 
 
 def to_pascal_case(text: str) -> str:

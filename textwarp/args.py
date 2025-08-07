@@ -20,6 +20,7 @@ from textwarp.warping import (
     to_camel_case,
     to_hexadecimal,
     to_kebab_case,
+    to_morse,
     to_pascal_case,
     to_sentence_case,
     to_single_spaces,
@@ -78,6 +79,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'lowercase': (
         str.lower,
         'convert to lowercase'
+    ),
+    'morse': (
+        to_morse,
+        'convert to Morse code'
     ),
     'ordinal': (
         cardinal_to_ordinal,
