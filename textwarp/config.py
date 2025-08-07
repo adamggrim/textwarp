@@ -29,6 +29,11 @@ def load_json_from_data(filename: str) -> JSONType:
         return json.load(json_file)
 
 
+# Abbreviations that are followed by a period.
+ABBREVIATIONS: set[str] = set(load_json_from_data(
+    'abbreviations.json'
+))
+
 # Common initialisms to uppercase.
 COMMON_INITIALISMS: set[str] = set(load_json_from_data(
     'common_initialisms.json'
