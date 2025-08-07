@@ -673,13 +673,13 @@ def to_title_case(text: str) -> str:
     for i, token in enumerate(doc):
         if token.is_sent_start:
             for sent_token in token.sent:
-                if not sent_token.is_space:
+                if not sent_token.is_space and not sent_token.is_punct:
                     first_word_indices.add(sent_token.i)
                     break
         if token.text == ":" and i + 1 < len(doc):
             # Find the index of the next non-space token.
             for j in range(i + 1, len(doc)):
-                if not doc[j].is_space:
+                if not doc[j].is_space and not doc[j].is_punct:
                     first_word_indices.add(j)
                     break
         # Find the index of the last non-whitespace, non-punctuation
