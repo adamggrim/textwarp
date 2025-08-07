@@ -221,11 +221,11 @@ class WarpingRegexes:
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
             |               # OR
-            (?<=            # Positive lookbehind for...
-                [\s([{"“]   # Preceded by a whitespace character,
-                            # opening parenthesis, opening square
-                            # bracket, opening curly brace or straight
-                            # or opening double quote.
+            (?<=            # Preceded by...
+                [\s([{"“]   # A whitespace character, opening
+                            # parenthesis, opening square bracket,
+                            # opening curly brace or straight or
+                            # opening double quote.
                 |           # OR
                 ["“]\s      # Preceded by a straight or opening double
                             # quote followed by a space.
