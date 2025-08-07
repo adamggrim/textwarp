@@ -722,7 +722,7 @@ def _capitalize_with_exceptions(word: str) -> str:
     prefixes and preserving other mid-word capitalizations.
 
     Args:
-        text: The string to capitalize.
+        word: The word to capitalize.
 
     Returns:
         str: The capitalized word.
@@ -735,7 +735,6 @@ def _capitalize_with_exceptions(word: str) -> str:
     # Handle common initialisms without periods.
     if lower_word in COMMON_INITIALISMS:
         return word.upper()
-
     # Handle period-separated initialisms.
     elif '.' in word:
         # Filter empty strings that can result from a trailing period.
@@ -743,24 +742,20 @@ def _capitalize_with_exceptions(word: str) -> str:
         # If all parts are single letters, it's an initialism.
         if all(len(part) == 1 and part.isalpha() for part in parts):
             return word.upper()
-
     # Handle Mac prefix.
-    if lower_word.startswith('mac'):
+    elif lower_word.startswith('mac') and len(word) > 3:
         return word[:3].capitalize() + word[3:].capitalize()
     # Handle O', M', L', D' and Mc prefixes.
     elif (re.match(r"^(o|m|l|d)['’‘]", lower_word)
-        or lower_word.startswith('mc')):
+        or lower_word.startswith('mc') and len(word) > 2):
         return word[:2].capitalize() + word[2:].capitalize()
-    # Handle all-caps words.
-    elif word.isupper():
-        return word[0].upper() + word[1:].lower()
     # Preserve existing capitalization for words containing another
     # mid-word capitalization.
-    elif any(char.isupper() for char in word[1:]):
+    elif not word.isupper() and any(char.isupper() for char in word[1:]):
         return word
     # Otherwise, apply default capitalization.
     else:
-        return word[0].upper() + word[1:].lower()
+        return word.capitalize()
 
 
 def _remove_apostrophes(text: str) -> str:
