@@ -227,7 +227,7 @@ def expand_contractions(text: str) -> str:
         # Handle mixed-case contractions that start with a uppercase
         # letter.
         elif contraction[0].isupper():
-            return expanded_contraction[0].upper() + expanded_contraction[1:]
+            return expanded_contraction.capitalize()
         else:
             return expanded_contraction
     return re.sub(WarpingRegexes.CONTRACTION, _repl, text)
