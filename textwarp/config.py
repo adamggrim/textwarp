@@ -34,11 +34,6 @@ ABBREVIATIONS: set[str] = set(load_json_from_data(
     'abbreviations.json'
 ))
 
-# Common initialisms to uppercase.
-COMMON_INITIALISMS: set[str] = set(load_json_from_data(
-    'common_initialisms.json'
-))
-
 # Tokens derived from contractions.
 CONTRACTION_TOKENS: set[str] = set(load_json_from_data(
     'contraction_tokens.json'
@@ -52,6 +47,11 @@ CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
 # Words that are elided for certain contractions.
 ELISION_WORDS: set[str] = set(load_json_from_data(
     'elision_words.json'
+))
+
+# Initialisms to uppercase.
+INITIALISMS: set[str] = set(load_json_from_data(
+    'initialisms.json'
 ))
 
 # Lowercase particles that should not be capitalized in title case.

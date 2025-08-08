@@ -4,9 +4,9 @@ import regex as re
 from spacy.tokens import Token
 
 from textwarp.config import (
-    COMMON_INITIALISMS,
     CONTRACTION_TOKENS,
     CONTRACTIONS_MAP,
+    INITIALISMS,
     LOWERCASE_PARTICLES,
     MORSE_MAP
 )
@@ -780,7 +780,7 @@ def _capitalize_with_exceptions(word: str) -> str:
     lower_word: str = word.lower()
 
     # Handle common initialisms without periods.
-    if lower_word in COMMON_INITIALISMS:
+    if lower_word in INITIALISMS:
         return word.upper()
     # Handle period-separated initialisms.
     elif '.' in word:
