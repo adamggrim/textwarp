@@ -793,9 +793,8 @@ def _capitalize_with_exceptions(word: str) -> str:
     elif (re.match(r"^(o|m|l|d)['’‘]", lower_word)
         or lower_word.startswith('mc') and len(word) > 2):
         return word[:2].capitalize() + word[2:].capitalize()
-    # Preserve existing capitalization for words containing another
-    # mid-word capitalization.
-    elif not word.isupper() and any(char.isupper() for char in word[1:]):
+    # Preserve existing capitalization for other mixed-case words.
+    elif not word.islower() and not word.isupper():
         return word
     # Otherwise, apply default capitalization.
     else:
