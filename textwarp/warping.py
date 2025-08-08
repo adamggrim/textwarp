@@ -758,8 +758,8 @@ def to_title_case(text: str) -> str:
 
 def _capitalize_with_exceptions(word: str) -> str:
     """
-    Capitalize the first letter of a word, handling special name
-    prefixes and preserving other mid-word capitalizations.
+    Capitalize a word, handling special name prefixes and preserving
+    other mid-word capitalizations.
 
     Args:
         word: The word to capitalize.
@@ -778,8 +778,8 @@ def _capitalize_with_exceptions(word: str) -> str:
     # Handle period-separated initialisms.
     elif '.' in word:
         # Filter empty strings that can result from a trailing period.
-        parts = list(filter(None, word.split('.')))
-        # If all parts are single letters, it's an initialism.
+        parts: list[str] = list(filter(None, word.split('.')))
+        # If all parts are single letters, convert to uppercase.
         if all(len(part) == 1 and part.isalpha() for part in parts):
             return word.upper()
     # Handle Mac prefix.
