@@ -570,25 +570,18 @@ def to_morse(text: str) -> str:
         Returns:
             str: The normalized string.
         """
-        upper_text: str = text.upper()
-        processed_text: str = curly_to_straight(upper_text)
-        processed_text = processed_text.replace('–', '-').replace('—', '-')
-        processed_text = processed_text.replace('…', '...')
-        return processed_text
+        processed_text: str = curly_to_straight(text.upper())
+        processed_text = re.sub(r'[–—]', '-', processed_text)
+        return processed_text.replace('…', '...')
 
     normalized_text: str = _normalize_for_morse(text)
-    words = normalized_text.split()
-    morse_code_output = []
 
-    for word in words:
-        char_codes = []
-        for char in word:
-            if char in MORSE_MAP: # Skip unsupported characters.
-                char_codes.append(MORSE_MAP[char])
-        if char_codes:
-            morse_code_output.append(' '.join(char_codes))
+    morse_words = (
+        ' '.join(MORSE_MAP[char] for char in word if char in MORSE_MAP)
+        for word in normalized_text.split()
+    )
 
-    return '   '.join(morse_code_output)
+    return '   '.join(filter(None, morse_words))
 
 
 def to_pascal_case(text: str) -> str:
