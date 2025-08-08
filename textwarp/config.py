@@ -30,9 +30,7 @@ def load_json_from_data(filename: str) -> JSONType:
 
 
 # Abbreviations that are followed by a period.
-ABBREVIATIONS: set[str] = set(load_json_from_data(
-    'abbreviations.json'
-))
+ABBREVIATIONS: set[str] = set(load_json_from_data('abbreviations.json'))
 
 # Tokens derived from contractions.
 CONTRACTION_TOKENS: set[str] = set(load_json_from_data(
@@ -45,14 +43,10 @@ CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
 )
 
 # Words that are elided for certain contractions.
-ELISION_WORDS: set[str] = set(load_json_from_data(
-    'elision_words.json'
-))
+ELISION_WORDS: set[str] = set(load_json_from_data('elision_words.json'))
 
-# Initialisms to uppercase.
-INITIALISMS: set[str] = set(load_json_from_data(
-    'initialisms.json'
-))
+# Common initialisms to uppercase.
+INITIALISMS: set[str] = set(load_json_from_data('initialisms.json'))
 
 # Lowercase particles that should not be capitalized in title case.
 LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
