@@ -3,7 +3,7 @@ import regex as re
 from textwarp.config import (
     ABBREVIATIONS,
     CONTRACTIONS_MAP,
-    CONTRACTION_TOKENS,
+    CONTRACTION_SUFFIX_SET,
     ELISION_WORDS
 )
 
