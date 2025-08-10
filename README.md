@@ -81,8 +81,8 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 textwarp/
 └── data/
 |   └──common_intialisms.json: Lists common initialisms to uppercase
-|   └──contraction_tokens.json: Lists contraction tokens split by spaCy
 |   └──contractions_map.json: Maps contractions to their expanded versions
+|   └──contraction_suffixes.json: Lists suffixes derived from contractions
 |   └──lowercase_particles.json: Lists lowercase particles that should not be capitalized
 |   └──morse_map.json: Maps characters to their Morse code equivalents
 └── __init__.py: File for recognizing textwarp as a package
