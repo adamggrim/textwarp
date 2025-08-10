@@ -60,3 +60,8 @@ MIXED_CASE_WORDS: dict[str, str] = load_json_from_data(
 
 # Pairs each character with its Morse code equivalent.
 MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
+
+# Common name prefixes that necessitate special name casing.
+NAME_PREFIXES: set[str] = set(load_json_from_data(
+    'name_prefixes.json')
+)
