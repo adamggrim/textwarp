@@ -35,6 +35,7 @@ class SeparatorRegexes:
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
+    ALPHABETICAL: re.Pattern = re.compile(r'[A-Za-z]')
     CAMEL_CASE: re.Pattern = re.compile(
         r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+'
     )
@@ -237,8 +238,10 @@ class WarpingRegexes:
     CONTRACTION_SUFFIXES: re.Pattern[str] = _create_contraction_suffix_regex(
         CONTRACTION_SUFFIX_SET
     )
+    DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
+    NAME_PREFIXES: re.Pattern[str] = _create_name_prefix_regex(NAME_PREFIXES)
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
@@ -293,3 +296,5 @@ class WarpingRegexes:
     )
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
         r"[a-zA-Z][\w'‘’\-]*")
+    WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
+    WORD_CHARACTERS: re.Pattern[str] = re.compile(r'\w+')

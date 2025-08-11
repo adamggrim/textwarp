@@ -83,7 +83,7 @@ def cardinal_to_ordinal(text: str) -> str:
             f'{number:,}' if ',' in number_str else str(number)
         )
         return f'{formatted_number}{suffix}'
-    return re.sub(WarpingRegexes.CARDINAL, replace_cardinal, text)
+    return WarpingRegexes.CARDINAL.sub(replace_cardinal, text)
 
 
 def curly_to_straight(text: str) -> str:
@@ -145,7 +145,7 @@ def expand_contractions(text: str) -> str:
             return expanded_contraction.capitalize()
         else:
             return expanded_contraction
-    return re.sub(WarpingRegexes.CONTRACTION, _repl, text)
+    return WarpingRegexes.CONTRACTION.sub(_repl, text)
 
 
 def hyphens_to_em(text: str) -> str:
@@ -158,7 +158,7 @@ def hyphens_to_em(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return re.sub(WarpingRegexes.DOUBLE_HYPHENS, '—', text)
+    return WarpingRegexes.DOUBLE_HYPHENS.sub('—', text)
 
 
 def hyphen_to_en(text: str) -> str:
@@ -198,7 +198,7 @@ def ordinal_to_cardinal(text: str) -> str:
         """
         ordinal: str = match.group(0)
         return ordinal[:-2]
-    return re.sub(WarpingRegexes.ORDINAL, replace_ordinal, text)
+    return WarpingRegexes.ORDINAL.sub(replace_ordinal, text)
 
 
 def punct_to_inside(text: str) -> str:
@@ -226,7 +226,7 @@ def punct_to_inside(text: str) -> str:
         quote: str
         punct, quote = match.groups()
         return quote + punct
-    return re.sub(WarpingRegexes.PUNCT_OUTSIDE, _repl, text)
+    return WarpingRegexes.PUNCT_OUTSIDE.sub(_repl, text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -255,7 +255,7 @@ def punct_to_outside(text: str) -> str:
         punct: str
         quote, punct = match.groups()
         return punct + quote
-    return re.sub(WarpingRegexes.PUNCT_INSIDE, _repl, text)
+    return WarpingRegexes.PUNCT_INSIDE.sub(_repl, text)
 
 
 def randomize(text: str) -> str:
@@ -271,7 +271,7 @@ def randomize(text: str) -> str:
     def _repl(_):
         return next(randomized_iter)
 
-    words = re.findall(r'\w+', text)
+    words = WarpingRegexes.WORD_CHARACTERS.findall(text)
 
     randomized_words = []
     for word in words:
@@ -280,7 +280,7 @@ def randomize(text: str) -> str:
         randomized_words.append(''.join(chars))
 
     randomized_iter = iter(randomized_words)
-    return re.sub(r'\w+', _repl, text)
+    return WarpingRegexes.WORD_CHARACTERS.sub(_repl, text)
 
 
 def redact(text: str) -> str:
@@ -294,7 +294,7 @@ def redact(text: str) -> str:
     Returns:
         str: The redacted string.
     """
-    return re.sub(r'\w', '█', text)
+    return WarpingRegexes.WORD_CHARACTER.sub('█', text)
 
 
 def reverse(text):
@@ -323,7 +323,7 @@ def straight_to_curly(text: str) -> str:
     curly_text: str
 
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, "’", text)
+    curly_text = WarpingRegexes.APOSTROPHE_IN_WORD.sub("’", text)
 
     # Replace opening straight quotes with opening curly quotes.
     curly_text = WarpingRegexes.OPENING_STRAIGHT_QUOTES.sub(
@@ -416,14 +416,10 @@ def to_camel_case(text: str) -> str:
         Returns:
             str: The converted string.
         """
-        return re.sub(
-            WarpingRegexes.FIRST_LETTER, lambda match:
-            match.group(0).lower(), text, count=1
-        )
     pascal_text: str = to_pascal_case(text)
     # Split between each instance of Pascal case in the string.
-    pascal_substrings: list[str] = re.split(
-        WarpingRegexes.CAMEL_SPLIT, pascal_text
+    pascal_substrings: list[str] = WarpingRegexes.CAMEL_SPLIT.split(
+        pascal_text
     )
     camel_words: list[str] = []
     for substring in pascal_substrings:
@@ -486,7 +482,7 @@ def to_morse(text: str) -> str:
             str: The normalized string.
         """
         processed_text: str = curly_to_straight(text.upper())
-        processed_text = re.sub(r'[–—]', '-', processed_text)
+        processed_text = WarpingRegexes.DASH.sub('-', processed_text)
         return processed_text.replace('…', '...')
 
     normalized_text: str = _normalize_for_morse(text)
@@ -510,7 +506,9 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = re.split(SeparatorRegexes.PASCAL_SPLIT, no_apostrophes_text)
+    words: list[str] = SeparatorRegexes.PASCAL_SPLIT.split(
+        no_apostrophes_text
+    )
     pascal_substrings: list[str] = []
     for word in words:
         pascal_word: str
@@ -540,8 +538,7 @@ def to_sentence_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return re.sub(
-        WarpingRegexes.SENTENCE_START,
+    return WarpingRegexes.SENTENCE_START.sub(
         lambda match: match.group(1) + match.group(2).upper(), text
     )
 
@@ -558,7 +555,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return re.sub(WarpingRegexes.MULTIPLE_SPACES, ' ', text)
+    return WarpingRegexes.MULTIPLE_SPACES.sub(' ', text)
 
 
 def to_snake_case(text: str) -> str:
@@ -700,7 +697,7 @@ def _capitalize_with_exceptions(word: str) -> str:
         if all(len(part) == 1 and part.isalpha() for part in parts):
             return word.upper()
     # Handle name prefixes.
-    elif (match := SeparatorRegexes.NAME_PREFIXES.match(word)):
+    elif (match := WarpingRegexes.NAME_PREFIXES.match(word)):
         prefix_len = len(match.group(1))
         return word[:prefix_len].capitalize() + word[prefix_len:].capitalize()
     # Preserve existing capitalization for other mixed-case words.
@@ -722,7 +719,7 @@ def _remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return re.sub(WarpingRegexes.APOSTROPHE_IN_WORD, '', text)
+    return WarpingRegexes.APOSTROPHE_IN_WORD.sub('', text)
 
 
 def _replace_opening_quote(match: re.Match[str]) -> str:
@@ -793,8 +790,7 @@ def _to_separator_case(
         return separator_mapping.get(separator_case)
     other_separator: str | None = _get_other_separator()
     no_apostrophes_text: str = _remove_apostrophes(text)
-    substrings: list[str] = re.split(
-        SeparatorRegexes.SEPARATOR_SPLIT,
+    substrings: list[str] = SeparatorRegexes.SEPARATOR_SPLIT.split(
         no_apostrophes_text
     )
     separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
@@ -805,23 +801,18 @@ def _to_separator_case(
         if (SeparatorRegexes.KEBAB_CASE.match(substring) or
             SeparatorRegexes.SNAKE_CASE.match(substring)):
             if substring.isupper():
-                separator_substring = re.sub(
-                    separator_sub,
-                    separator_case.value,
-                    substring
+                separator_substring = separator_sub.sub(
+                    separator_case.value, substring
                 )
             else:
-                separator_substring = re.sub(
-                    separator_sub,
-                    separator_case.value,
-                    substring.lower()
-                )
+                separator_sub.sub(separator_case.value, substring.lower())
         # Substring is in camel case or Pascal case.
         elif (SeparatorRegexes.CAMEL_CASE.match(substring) or
             SeparatorRegexes.PASCAL_CASE.match(substring)):
             # Break camel case and Pascal case into constituent words.
-            broken_words: list[str] = re.split(
-                SeparatorRegexes.CAMEL_PASCAL_SPLIT, substring)
+            broken_words: list[str] = (
+                SeparatorRegexes.CAMEL_PASCAL_SPLIT.split(substring)
+            )
             converted_words: list[str] = []
             for word in broken_words:
                 converted_word = word.lower()
@@ -836,7 +827,7 @@ def _to_separator_case(
                 separator_substring = substring.replace(' ',
                                                     separator_case.value)
             # Substring begins with an alphabebtical letter.
-            elif re.match(re.compile(r'([A-Za-z])'), substring):
+            elif SeparatorRegexes.ALPHABETICAL.match(substring):
                 separator_substring = substring.lower().replace(
                     ' ', separator_case.value
                 )
