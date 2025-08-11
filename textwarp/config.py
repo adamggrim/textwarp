@@ -54,8 +54,8 @@ LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
 ))
 
 # Pairs each mixed-case word with its lowercase version.
-MIXED_CASE_WORDS: dict[str, str] = load_json_from_data(
-    'mixed_case_words.json'
+MIXED_CASE_WORDS_MAP: dict[str, str] = load_json_from_data(
+    'mixed_case_words_map.json'
 )
 
 # Pairs each character with its Morse code equivalent.

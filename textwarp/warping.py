@@ -7,8 +7,8 @@ from textwarp.config import (
     CONTRACTIONS_MAP,
     INITIALISMS_MAP,
     LOWERCASE_PARTICLES,
-    MIXED_CASE_WORDS,
-    MORSE_MAP
+    MIXED_CASE_WORDS_MAP,
+    MORSE_MAP,
 )
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
@@ -683,9 +683,9 @@ def _capitalize_with_exceptions(word: str) -> str:
 
     lower_word: str = word.lower()
 
-    # Handle common mixed-case words.
-    if lower_word in MIXED_CASE_WORDS:
-        return MIXED_CASE_WORDS[lower_word]
+    # Handle mixed-case words.
+    if lower_word in MIXED_CASE_WORDS_MAP:
+        return MIXED_CASE_WORDS_MAP[lower_word]
     # Handle period-separated initialisms.
     elif '.' in word:
         # Filter empty strings that can result from a trailing period.
