@@ -15,91 +15,6 @@ from textwarp.regexes import SeparatorRegexes, WarpingRegexes
 from textwarp.setup import nlp
 
 
-class HelperFunctions:
-    """Helper functions for text warping."""
-    def to_separator_case(
-            text: str,
-            separator_case: Separator
-        ) -> str:
-        """
-        Convert a string to kebab case or snake case.
-
-        Args:
-            text: The string to convert.
-            separator: The separator for the converted string.
-
-        Returns:
-            str: The converted string.
-        """
-        def _get_other_separator():
-            """
-            For a given a separator case, return the other separator
-            character.
-
-            Returns:
-                str: The other separator character.
-            """
-            separator_mapping: dict[Separator, str] = {
-                Separator.KEBAB: "_",
-                Separator.SNAKE: "-",
-            }
-            return separator_mapping.get(separator_case)
-        other_separator: str | None = _get_other_separator()
-        no_apostrophes_text: str = _remove_apostrophes(text)
-        substrings: list[str] = re.split(
-            SeparatorRegexes.SEPARATOR_SPLIT,
-            no_apostrophes_text
-        )
-        separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
-        separator_substrings: list[str] = []
-        for substring in substrings:
-            separator_substring: str
-            # Substring is already in a separator case.
-            if (SeparatorRegexes.KEBAB_CASE.match(substring) or
-                SeparatorRegexes.SNAKE_CASE.match(substring)):
-                if substring.isupper():
-                    separator_substring = re.sub(
-                        separator_sub,
-                        separator_case.value,
-                        substring
-                    )
-                else:
-                    separator_substring = re.sub(
-                        separator_sub,
-                        separator_case.value,
-                        substring.lower()
-                    )
-            # Substring is in camel case or Pascal case.
-            elif (SeparatorRegexes.CAMEL_CASE.match(substring) or
-                SeparatorRegexes.PASCAL_CASE.match(substring)):
-                # Break camel case and Pascal case into constituent words.
-                broken_words: list[str] = re.split(
-                    SeparatorRegexes.CAMEL_PASCAL_SPLIT, substring)
-                converted_words: list[str] = []
-                for word in broken_words:
-                    converted_word = word.lower()
-                    converted_words.append(converted_word)
-                separator_substring = separator_case.value.join(
-                    converted_words
-                )
-            # Substring is not in any of the above cases.
-            else:
-                # Substring is in all caps.
-                if substring.isupper():
-                    separator_substring = substring.replace(' ',
-                                                        separator_case.value)
-                # Substring begins with an alphabebtical letter.
-                elif re.match(re.compile(r'([A-Za-z])'), substring):
-                    separator_substring = substring.lower().replace(
-                        ' ', separator_case.value
-                    )
-                # Substring does not meet either of the above conditions.
-                else:
-                    separator_substring = substring
-            separator_substrings.append(separator_substring)
-        return ''.join(separator_substrings)
-
-
 def capitalize(text: str) -> str:
     """
     Capitalize the first letter of each word, with exceptions for
@@ -542,7 +457,7 @@ def to_kebab_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(text, Separator.KEBAB)
+    return _to_separator_case(text, Separator.KEBAB)
 
 
 def to_morse(text: str) -> str:
@@ -656,7 +571,7 @@ def to_snake_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return HelperFunctions.to_separator_case(
+    return _to_separator_case(
         text, SeparatorRegexes.SNAKE_CASE
     )
 
@@ -847,3 +762,86 @@ def _uppercase_first_letter(text: str) -> str:
             return text[:i] + char.upper() + text[i+1:]
     # Return the original text if no letters were in the string.
     return text
+
+
+def _to_separator_case(
+        text: str,
+        separator_case: Separator
+    ) -> str:
+    """
+    Convert a string to kebab case or snake case.
+
+    Args:
+        text: The string to convert.
+        separator: The separator for the converted string.
+
+    Returns:
+        str: The converted string.
+    """
+    def _get_other_separator():
+        """
+        For a given a separator case, return the other separator
+        character.
+
+        Returns:
+            str: The other separator character.
+        """
+        separator_mapping: dict[Separator, str] = {
+            Separator.KEBAB: "_",
+            Separator.SNAKE: "-",
+        }
+        return separator_mapping.get(separator_case)
+    other_separator: str | None = _get_other_separator()
+    no_apostrophes_text: str = _remove_apostrophes(text)
+    substrings: list[str] = re.split(
+        SeparatorRegexes.SEPARATOR_SPLIT,
+        no_apostrophes_text
+    )
+    separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
+    separator_substrings: list[str] = []
+    for substring in substrings:
+        separator_substring: str
+        # Substring is already in a separator case.
+        if (SeparatorRegexes.KEBAB_CASE.match(substring) or
+            SeparatorRegexes.SNAKE_CASE.match(substring)):
+            if substring.isupper():
+                separator_substring = re.sub(
+                    separator_sub,
+                    separator_case.value,
+                    substring
+                )
+            else:
+                separator_substring = re.sub(
+                    separator_sub,
+                    separator_case.value,
+                    substring.lower()
+                )
+        # Substring is in camel case or Pascal case.
+        elif (SeparatorRegexes.CAMEL_CASE.match(substring) or
+            SeparatorRegexes.PASCAL_CASE.match(substring)):
+            # Break camel case and Pascal case into constituent words.
+            broken_words: list[str] = re.split(
+                SeparatorRegexes.CAMEL_PASCAL_SPLIT, substring)
+            converted_words: list[str] = []
+            for word in broken_words:
+                converted_word = word.lower()
+                converted_words.append(converted_word)
+            separator_substring = separator_case.value.join(
+                converted_words
+            )
+        # Substring is not in any of the above cases.
+        else:
+            # Substring is in all caps.
+            if substring.isupper():
+                separator_substring = substring.replace(' ',
+                                                    separator_case.value)
+            # Substring begins with an alphabebtical letter.
+            elif re.match(re.compile(r'([A-Za-z])'), substring):
+                separator_substring = substring.lower().replace(
+                    ' ', separator_case.value
+                )
+            # Substring does not meet either of the above conditions.
+            else:
+                separator_substring = substring
+        separator_substrings.append(separator_substring)
+    return ''.join(separator_substrings)
