@@ -175,15 +175,15 @@ class WarpingRegexes:
         compiled_regex = re.compile(final_pattern, re.IGNORECASE)
         return compiled_regex
 
-    def _create_contraction_token_regex(
-        CONTRACTION_TOKENS: set[str]
+    def _create_contraction_suffix_regex(
+        CONTRACTION_SUFFIX_SET: set[str]
     ) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contraction token in the given set.
 
         Args:
-            CONTRACTION_TOKENS: A set of contraction tokens.
+            CONTRACTION_SUFFIXES: A set of contraction tokens.
 
         Returns:
             A compiled regular expression object.
@@ -191,7 +191,7 @@ class WarpingRegexes:
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
         escaped_patterns = [
-            re.escape(t).replace("'", "['’‘]") for t in CONTRACTION_TOKENS
+            re.escape(t).replace("'", "['’‘]") for t in CONTRACTION_SUFFIX_SET
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
@@ -234,8 +234,8 @@ class WarpingRegexes:
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
     CONTRACTION: re.Pattern[str] = _create_contraction_regex(CONTRACTIONS_MAP)
-    CONTRACTION_TOKENS: re.Pattern[str] = _create_contraction_token_regex(
-        CONTRACTION_TOKENS
+    CONTRACTION_SUFFIXES: re.Pattern[str] = _create_contraction_suffix_regex(
+        CONTRACTION_SUFFIX_SET
     )
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
