@@ -34,7 +34,7 @@ ABBREVIATIONS: set[str] = set(load_json_from_data('abbreviations.json'))
 
 # Suffixes derived from contractions.
 CONTRACTION_SUFFIX_SET: set[str] = set(load_json_from_data(
-    'contraction_sufixes.json'
+    'contraction_suffixes.json'
 ))
 
 # Pairs each contraction with its expanded version.
@@ -45,7 +45,7 @@ CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
 # Words that are elided for certain contractions.
 ELISION_WORDS: set[str] = set(load_json_from_data('elision_words.json'))
 
-# Common initialisms to uppercase.
+# Initialisms to uppercase.
 INITIALISMS: set[str] = set(load_json_from_data('initialisms.json'))
 
 # Lowercase particles that should not be capitalized in title case.
@@ -61,7 +61,7 @@ MIXED_CASE_WORDS: dict[str, str] = load_json_from_data(
 # Pairs each character with its Morse code equivalent.
 MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
 
-# Common name prefixes that necessitate special name casing.
+# Name prefixes that necessitate special name casing.
 NAME_PREFIXES: set[str] = set(load_json_from_data(
     'name_prefixes.json')
 )
