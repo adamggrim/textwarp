@@ -5,7 +5,7 @@ from spacy.tokens import Token
 
 from textwarp.config import (
     CONTRACTIONS_MAP,
-    INITIALISMS,
+    INITIALISMS_MAP,
     LOWERCASE_PARTICLES,
     MIXED_CASE_WORDS,
     MORSE_MAP
@@ -686,9 +686,6 @@ def _capitalize_with_exceptions(word: str) -> str:
     # Handle common mixed-case words.
     if lower_word in MIXED_CASE_WORDS:
         return MIXED_CASE_WORDS[lower_word]
-    # Handle common initialisms without periods.
-    elif lower_word in INITIALISMS:
-        return word.upper()
     # Handle period-separated initialisms.
     elif '.' in word:
         # Filter empty strings that can result from a trailing period.
@@ -696,6 +693,9 @@ def _capitalize_with_exceptions(word: str) -> str:
         # If all parts are single letters, convert to uppercase.
         if all(len(part) == 1 and part.isalpha() for part in parts):
             return word.upper()
+    # Handle initialisms without periods.
+    elif lower_word in INITIALISMS_MAP:
+        return INITIALISMS_MAP[lower_word]
     # Handle name prefixes.
     elif (match := WarpingRegexes.NAME_PREFIXES.match(word)):
         prefix_len = len(match.group(1))
