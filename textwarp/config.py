@@ -65,3 +65,9 @@ MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
 NAME_PREFIXES: set[str] = set(load_json_from_data(
     'name_prefixes.json')
 )
+
+# Words with name prefixes that should not be capitalized according
+# to standard name prefix rules.
+NAME_PREFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
+    'name_prefix_exceptions.json'
+))

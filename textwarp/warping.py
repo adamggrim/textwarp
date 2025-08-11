@@ -9,6 +9,7 @@ from textwarp.config import (
     LOWERCASE_PARTICLES,
     MIXED_CASE_WORDS_MAP,
     MORSE_MAP,
+    NAME_PREFIX_EXCEPTIONS
 )
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
@@ -696,6 +697,11 @@ def _capitalize_with_exceptions(word: str) -> str:
     # Handle initialisms without periods.
     elif lower_word in INITIALISMS_MAP:
         return INITIALISMS_MAP[lower_word]
+    # Handle exceptions to name prefixes.
+    elif any(
+        lower_word.startswith(prefix) for prefix in NAME_PREFIX_EXCEPTIONS
+    ):
+        return word.capitalize()
     # Handle name prefixes.
     elif (match := WarpingRegexes.NAME_PREFIXES.match(word)):
         prefix_len = len(match.group(1))
