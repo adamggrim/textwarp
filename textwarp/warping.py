@@ -786,13 +786,10 @@ def _capitalize_with_exceptions(word: str) -> str:
         # If all parts are single letters, convert to uppercase.
         if all(len(part) == 1 and part.isalpha() for part in parts):
             return word.upper()
-    # Handle Mac prefix.
-    elif lower_word.startswith('mac') and len(word) > 3:
-        return word[:3].capitalize() + word[3:].capitalize()
-    # Handle O', M', L', D' and Mc prefixes.
-    elif (re.match(r"^(o|m|l|d)['’‘]", lower_word)
-        or lower_word.startswith('mc') and len(word) > 2):
-        return word[:2].capitalize() + word[2:].capitalize()
+    # Handle name prefixes.
+    elif (match := SeparatorRegexes.NAME_PREFIXES.match(word)):
+        prefix_len = len(match.group(1))
+        return word[:prefix_len].capitalize() + word[prefix_len:].capitalize()
     # Preserve existing capitalization for other mixed-case words.
     elif not word.islower() and not word.isupper():
         return word

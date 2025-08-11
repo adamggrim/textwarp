@@ -4,7 +4,8 @@ from textwarp.config import (
     ABBREVIATIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_SET,
-    ELISION_WORDS
+    ELISION_WORDS,
+    NAME_PREFIXES
 )
 
 
@@ -194,8 +195,27 @@ class WarpingRegexes:
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
-        compiled_regex = re.compile(final_pattern, re.IGNORECASE)
-        return compiled_regex
+        return re.compile(final_pattern, re.IGNORECASE)
+
+    def _create_name_prefix_regex(NAME_PREFIXES: set[str]) -> re.Pattern:
+        """
+        Create a compiled regular expression object that matches any
+        name prefix in the given set.
+
+        Args:
+            NAME_PREFIXES: A set of name prefixes.
+
+        Returns:
+            A compiled regular expression object.
+        """
+        # Replace straight apostrophes with a regex character class that
+        # matches both straight and curly apostrophes.
+        prefix_patterns = [
+            re.escape(p).replace("'", "['’‘]") for p in NAME_PREFIXES
+        ]
+        pattern_string = '|'.join(prefix_patterns)
+        final_pattern = rf'\b{pattern_string}\b'
+        return re.compile(final_pattern)
 
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])                # A straight apostrophe
