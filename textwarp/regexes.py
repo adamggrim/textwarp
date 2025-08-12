@@ -145,8 +145,8 @@ class WarpingRegexes:
             capturing the first letter of a string or the first letter
             after a sentence-ending punctuation character.
         WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
-            that captures a sequence of word characters, apostrophes or
-            hyphens.
+            that captures a sequence of word characters, apostrophes,
+            hyphens or period-separated initialisms.
     """
     def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
         """
@@ -173,8 +173,7 @@ class WarpingRegexes:
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
-        compiled_regex = re.compile(final_pattern, re.IGNORECASE)
-        return compiled_regex
+        return re.compile(final_pattern, re.IGNORECASE)
 
     def _create_contraction_suffix_regex(
         CONTRACTION_SUFFIX_SET: set[str]
@@ -222,8 +221,8 @@ class WarpingRegexes:
         (?<=[a-z])'(?=[a-z])                # A straight apostrophe
                                             # inside a word.
         |                                   # OR
-        '                                   # A straight apostrophe
-        (?=                                 # followed by...
+        '                                   # A straight apostrophe.
+        (?=                                 # Followed by...
             {'|'.join(ELISION_WORDS)}\b     # An elision.
             |                               # OR
             \d{{2}}s\b                      # An abbreviation for a
@@ -285,7 +284,7 @@ class WarpingRegexes:
                 # A period not preceded by an abbreviation.
                 (?<!{'|'.join(ABBREVIATIONS)})\.
                 |           # OR
-                [!?]        # A question mark or exclamation mark.
+                [?!]        # A question or exclamation mark.
             )
             ["”“'’‘)\]]*    # Followed by any number of quotes,
                             # brackets or closing parentheses.
