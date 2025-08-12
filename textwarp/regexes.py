@@ -294,7 +294,25 @@ class WarpingRegexes:
         )
         """, re.VERBOSE | re.MULTILINE
     )
-    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(
-        r"[a-zA-Z][\w'‘’\-]*")
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
     WORD_CHARACTERS: re.Pattern[str] = re.compile(r'\w+')
+    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"""
+        # PART 1: Period-separated initialisms (e.g., U.S.A.)
+        \b          # The start of a word boundary.
+        \w+         # One or more word characters.
+        (?:         # A non-capturing group of...
+        \.          # A period.
+        [a-z]+      # Followed by one or more word characters.
+        )+          # One or more repetitions of the group.
+        \.?         # An optional final period.
+        \b          # The end of the word boundary.
+        |           # OR
+        # PART 2: Words including other internal punctuation.
+        \b          # The start of a word boundary.
+        [a-z]       # A word character.
+        [\w'‘’-]*   # Zero or more word characters, straight or curly
+                    # apostrophes, straight or curly single quotes or
+                    # hyphens.
+        \b          # The end of the word boundary.
+        """, re.VERBOSE | re.IGNORECASE
+    )
