@@ -117,6 +117,10 @@ class WarpingRegexes:
     text.
 
     Attributes:
+        WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
+            that captures a sequence of word characters, apostrophes,
+            hyphens or period-separated initialisms.
+
         APOSTROPHE_IN_WORD: Compiled regular expression object that
             captures a straight apostrophe surrounded by alphabetical
             letter characters. Also captures a straight apostrophe that
@@ -144,9 +148,6 @@ class WarpingRegexes:
         SENTENCE_START: Compiled regular expression object for
             capturing the first letter of a string or the first letter
             after a sentence-ending punctuation character.
-        WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
-            that captures a sequence of word characters, apostrophes,
-            hyphens or period-separated initialisms.
     """
     def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
         """
@@ -216,6 +217,27 @@ class WarpingRegexes:
         pattern_string = '|'.join(prefix_patterns)
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern)
+
+    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"""
+        # PART 1: Period-separated initialisms (e.g., U.S.A.)
+        \b          # The start of a word boundary.
+        \w+         # One or more word characters.
+        (?:         # A non-capturing group of...
+        \.          # A period.
+        [a-z]+      # Followed by one or more word characters.
+        )+          # One or more repetitions of the group.
+        \.?         # An optional final period.
+        \b          # The end of the word boundary.
+        |           # OR
+        # PART 2: Words including other internal punctuation.
+        \b          # The start of a word boundary.
+        [a-z]       # A word character.
+        [\w'‘’-]*   # Zero or more word characters, straight or curly
+                    # apostrophes, straight or curly single quotes or
+                    # hyphens.
+        \b          # The end of the word boundary.
+        """, re.VERBOSE | re.IGNORECASE
+    )
 
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])                # A straight apostrophe
@@ -295,23 +317,3 @@ class WarpingRegexes:
     )
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
     WORD_CHARACTERS: re.Pattern[str] = re.compile(r'\w+')
-    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"""
-        # PART 1: Period-separated initialisms (e.g., U.S.A.)
-        \b          # The start of a word boundary.
-        \w+         # One or more word characters.
-        (?:         # A non-capturing group of...
-        \.          # A period.
-        [a-z]+      # Followed by one or more word characters.
-        )+          # One or more repetitions of the group.
-        \.?         # An optional final period.
-        \b          # The end of the word boundary.
-        |           # OR
-        # PART 2: Words including other internal punctuation.
-        \b          # The start of a word boundary.
-        [a-z]       # A word character.
-        [\w'‘’-]*   # Zero or more word characters, straight or curly
-                    # apostrophes, straight or curly single quotes or
-                    # hyphens.
-        \b          # The end of the word boundary.
-        """, re.VERBOSE | re.IGNORECASE
-    )
