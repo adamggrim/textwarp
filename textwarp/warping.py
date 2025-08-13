@@ -539,8 +539,8 @@ def to_sentence_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingRegexes.SENTENCE_START.sub(
-        lambda match: match.group(1) + match.group(2).upper(), text
+    return WarpingRegexes.FIRST_WORD_IN_SENTENCE.sub(
+        lambda match: _capitalize_with_exceptions(match.group(0)), text
     )
 
 

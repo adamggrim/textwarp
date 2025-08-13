@@ -135,6 +135,9 @@ class WarpingRegexes:
             that captures closing straight single quotes.
         DOUBLE_HYPHENS: Compiled regular expression object that
             captures hyphens that function as an em dash.
+        FIRST_WORD_IN_SENTENCE: Compiled regular expression object for
+            capturing the first letter of a string or the first letter
+            after a sentence-ending punctuation character.
         OPENING_STRAIGHT_QUOTES: Compiled regular expression object
             that captures opening straight quotes.
         ORDINAL: Compiled regular expression object that captures an
@@ -145,9 +148,6 @@ class WarpingRegexes:
         PUNCT_OUTSIDE: Compiled regular expression object with
             capturing groups for quotes inside punctuation and
             punctuation outside quotes.
-        SENTENCE_START: Compiled regular expression object for
-            capturing the first letter of a string or the first letter
-            after a sentence-ending punctuation character.
     """
     def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
         """
@@ -261,6 +261,26 @@ class WarpingRegexes:
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
+    FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf"""
+        (?:                     # CONTEXT FOR SENTENCE START
+            ^                   # The start of a line (see re.MULTILINE).
+            |                   # OR
+            (?<=                # Preceded by...
+                (?:             # A non-capturing group for...
+                    # A period not preceded by an abbreviation.
+                    (?<!{'|'.join(ABBREVIATIONS)})\.
+                    |           # OR
+                    [?!]        # A question or exclamation mark.
+                )
+                ["”“'’‘)\]]*    # Followed by any number of quotes,
+                                # brackets or closing parentheses.
+                \s+             # Followed by one or more whitespace
+                                # characters.
+            )
+        )
+        (?:{WORD_INCLUDING_PUNCTUATION.pattern})
+        """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
+    )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIXES: re.Pattern[str] = _create_name_prefix_regex(NAME_PREFIXES)
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
@@ -298,22 +318,5 @@ class WarpingRegexes:
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
-    SENTENCE_START: re.Pattern[str] = re.compile(rf"""
-        ^                   # The start of a line (see re.MULTILINE).
-        |                   # OR
-        (?<=                # Preceded by...
-            (?:             # A non-capturing group for...
-                # A period not preceded by an abbreviation.
-                (?<!{'|'.join(ABBREVIATIONS)})\.
-                |           # OR
-                [?!]        # A question or exclamation mark.
-            )
-            ["”“'’‘)\]]*    # Followed by any number of quotes,
-                            # brackets or closing parentheses.
-            \s+             # Followed by one or more whitespace
-                            # characters.
-        )
-        """, re.VERBOSE | re.MULTILINE
-    )
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
     WORD_CHARACTERS: re.Pattern[str] = re.compile(r'\w+')
