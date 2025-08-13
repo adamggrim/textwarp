@@ -691,9 +691,8 @@ def _capitalize_with_exceptions(word: str) -> str:
     elif '.' in word:
         # Filter empty strings that can result from a trailing period.
         parts: list[str] = list(filter(None, word.split('.')))
-        # If all parts are single letters, convert to uppercase.
-        if all(len(part) == 1 and part.isalpha() for part in parts):
-            return word.upper()
+        # Capitalize each part.
+        return '.'.join(part.capitalize() for part in parts)
     # Handle initialisms without periods.
     elif lower_word in INITIALISMS_MAP:
         return INITIALISMS_MAP[lower_word]
