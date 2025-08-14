@@ -43,9 +43,7 @@ def capitalize(text: str) -> str:
             str: The capitalized word.
         """
         word = match.group(0)
-
         parts = word.split('-')
-
         return '-'.join(_capitalize_with_exceptions(part) for part in parts)
 
     return WarpingRegexes.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
@@ -204,7 +202,7 @@ def ordinal_to_cardinal(text: str) -> str:
 
 def punct_to_inside(text: str) -> str:
     """
-    Move periods and commas at the end of quotes inside the quotation
+    Move periods and commas at the end of quotes inside quotation
     marks.
 
     Args:
@@ -232,8 +230,8 @@ def punct_to_inside(text: str) -> str:
 
 def punct_to_outside(text: str) -> str:
     """
-    Move periods and commas at the end of quotes to outside the
-    quotation marks.
+    Move periods and commas at the end of quotes to outside quotation
+    marks.
 
     Args:
         text: The string to convert.
