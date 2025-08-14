@@ -251,7 +251,7 @@ class WarpingRegexes:
         )                                   # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
-    CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–\-])')
+    CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–-])')
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
