@@ -438,7 +438,10 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    hex_chars: list[str] = [format(ord(char), '02x') for char in text]
+    straight_text = curly_to_straight(text)
+    hex_chars: list[str] = [
+        format(ord(char), '02x') for char in straight_text
+    ]
     return ' '.join(hex_chars)
 
 
