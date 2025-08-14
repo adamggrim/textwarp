@@ -701,7 +701,7 @@ def _capitalize_with_exceptions(word: str) -> str:
         return word.capitalize()
     # Handle name prefixes.
     elif (match := WarpingRegexes.NAME_PREFIXES.match(word)):
-        prefix_len = len(match.group(1))
+        prefix_len = len(match.group(0))
         return word[:prefix_len].capitalize() + word[prefix_len:].capitalize()
     # Preserve existing capitalization for other mixed-case words.
     elif not word.islower() and not word.isupper():
