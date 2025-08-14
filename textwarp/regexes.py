@@ -129,10 +129,6 @@ class WarpingRegexes:
             strings before converting substrings to camel case.
         CARDINAL: Compiled regular expression object that captures a
             cardinal number.
-        CLOSING_STRAIGHT_DOUBLE: Compiled regular expression object
-            that captures closing straight double quotes.
-        CLOSING_STRAIGHT_SINGLE: Compiled regular expression object
-            that captures closing straight single quotes.
         DOUBLE_HYPHENS: Compiled regular expression object that
             captures hyphens that function as an em dash.
         FIRST_WORD_IN_SENTENCE: Compiled regular expression object for
