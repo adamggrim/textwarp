@@ -480,9 +480,9 @@ def to_morse(text: str) -> str:
         Returns:
             str: The normalized string.
         """
-        processed_text: str = curly_to_straight(text.upper())
-        processed_text = WarpingRegexes.DASH.sub('-', processed_text)
-        return processed_text.replace('…', '...')
+        straight_text: str = curly_to_straight(text.upper())
+        hyphenated_text = WarpingRegexes.DASH.sub('-', straight_text)
+        return hyphenated_text.replace('…', '...')
 
     normalized_text: str = _normalize_for_morse(text)
 
