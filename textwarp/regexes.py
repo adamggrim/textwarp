@@ -278,7 +278,7 @@ class WarpingRegexes:
                                 # characters.
             )
         )
-        (?:{WORD_INCLUDING_PUNCTUATION.pattern})
+        {WORD_INCLUDING_PUNCTUATION.pattern}
         """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
