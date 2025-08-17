@@ -5,6 +5,7 @@ from textwarp.warping import (
     cardinal_to_ordinal,
     curly_to_straight,
     expand_contractions,
+    from_morse,
     hyphens_to_em,
     hyphen_to_en,
     ordinal_to_cardinal,
@@ -55,6 +56,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'curly-quotes': (
         straight_to_curly,
         'convert "straight quotes" to “curly quotes”'
+    ),
+    'decode-morse': (
+        from_morse,
+        'convert from Morse code'
     ),
     'expand-contractions': (
         expand_contractions,

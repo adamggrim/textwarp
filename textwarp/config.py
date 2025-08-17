@@ -71,3 +71,6 @@ NAME_PREFIXES: set[str] = set(load_json_from_data(
 NAME_PREFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
     'name_prefix_exceptions.json'
 ))
+
+# Map for decoding Morse code.
+REVERSED_MORSE_MAP = {value: key for key, value in MORSE_MAP.items()}

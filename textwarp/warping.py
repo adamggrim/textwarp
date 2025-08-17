@@ -10,6 +10,7 @@ from textwarp.config import (
     MIXED_CASE_WORDS_MAP,
     MORSE_MAP,
     NAME_PREFIX_EXCEPTIONS
+    REVERSED_MORSE_MAP
 )
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
@@ -145,6 +146,27 @@ def expand_contractions(text: str) -> str:
         else:
             return expanded_contraction
     return WarpingRegexes.CONTRACTION.sub(_repl, text)
+
+
+def from_morse(text: str) -> str:
+    """
+    Convert a given string from Morse code.
+
+    Args:
+        text: The Morse string to convert.
+
+    Returns:
+        str: The converted string (in uppercase).
+    """
+    words = text.strip().split('   ')
+    decoded_words = []
+    for word in words:
+        char_codes = word.split(' ')
+        decoded_word = ''.join(
+            REVERSED_MORSE_MAP.get(code, '') for code in char_codes
+        )
+        decoded_words.append(decoded_word)
+    return ' '.join(decoded_words)
 
 
 def hyphens_to_em(text: str) -> str:
