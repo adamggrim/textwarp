@@ -9,7 +9,7 @@ from textwarp.config import (
     LOWERCASE_PARTICLES,
     MIXED_CASE_WORDS_MAP,
     MORSE_MAP,
-    NAME_PREFIX_EXCEPTIONS
+    NAME_PREFIX_EXCEPTIONS,
     REVERSED_MORSE_MAP
 )
 from textwarp.enums import Separator
@@ -146,6 +146,22 @@ def expand_contractions(text: str) -> str:
         else:
             return expanded_contraction
     return WarpingRegexes.CONTRACTION.sub(_repl, text)
+
+
+def from_hexadecimal(text: str) -> str:
+    """
+    Convert a given string from hexadecimal.
+
+    Args:
+        text: The hexadecimal string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    chars: list[str] = [
+        chr(int(hex_char, 16)) for hex_char in text.split(' ')
+    ]
+    return ''.join(chars)
 
 
 def from_morse(text: str) -> str:
