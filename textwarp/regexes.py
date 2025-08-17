@@ -129,9 +129,7 @@ class WarpingRegexes:
         APOSTROPHE_IN_WORD: Compiled regular expression object that
             captures a straight apostrophe surrounded by alphabetical
             letter characters. Also captures a straight apostrophe that
-            is part of an elision.
-        CAMEL_SPLIT: Compiled regular expression object for splitting
-            strings before converting substrings to camel case.
+            is part of a decade abbreviation or elision.
         CARDINAL: Compiled regular expression object that captures a
             cardinal number.
         DOUBLE_HYPHENS: Compiled regular expression object that
@@ -252,7 +250,6 @@ class WarpingRegexes:
         )                                   # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
-    CAMEL_SPLIT: re.Pattern[str] = re.compile(r'(?<=[\s—–-])')
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
