@@ -20,6 +20,8 @@ class SeparatorRegexes:
         CAMEL_PASCAL_SPLIT: Compiled regular expression object for
             splitting on the boundary between words in camel case and
             Pascal case.
+        FIRST_PASCAL_CHARACTER: Compiled regular expression object that
+            captures the first character of a Pascal case word.
         KEBAB_CASE: Compiled regular expression object that captures a
             kebab case string.
         PASCAL_CASE: Compiled regular expression object that captures a
@@ -49,6 +51,9 @@ class SeparatorRegexes:
                             # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
+    FIRST_PASCAL_CHARACTER: re.Pattern[str] = re.compile(
+        r'[A-Z][a-z]+(?:[A-Z][a-z]+)*'
+    )
     KEBAB_CASE: re.Pattern[str] = re.compile(
         r'([A-Za-z0-9]+\-[A-Za-z0-9]\-?)+'
     )
