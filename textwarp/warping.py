@@ -579,7 +579,7 @@ def to_sentence_case(text: str) -> str:
         str: The converted string.
     """
     return WarpingRegexes.FIRST_WORD_IN_SENTENCE.sub(
-        lambda match: _capitalize_with_exceptions(match.group(0)), text
+        lambda m: _capitalize_with_exceptions(m.group(0)), text
     )
 
 
@@ -736,9 +736,7 @@ def _capitalize_with_exceptions(word: str) -> str:
     elif lower_word in INITIALISMS_MAP:
         return INITIALISMS_MAP[lower_word]
     # Handle exceptions to name prefixes.
-    elif any(
-        lower_word.startswith(prefix) for prefix in NAME_PREFIX_EXCEPTIONS
-    ):
+    elif lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
         return word.capitalize()
     # Handle name prefixes.
     elif (match := WarpingRegexes.NAME_PREFIXES.match(word)):
