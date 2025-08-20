@@ -498,7 +498,7 @@ def to_kebab_case(text: str) -> str:
 
 def to_morse(text: str) -> str:
     """
-    Converts a given string to Morse code.
+    Convert a given string to Morse code.
 
     Letters (A-Z), numbers (0-9) and common punctuation (., ?, !, ,, :,
     ;, +, -, =, @, (, ), ", ', /, &) are all supported.

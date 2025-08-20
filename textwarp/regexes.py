@@ -21,7 +21,7 @@ class SeparatorRegexes:
             splitting on the boundary between words in camel case and
             Pascal case.
         FIRST_PASCAL_CHARACTER: Compiled regular expression object that
-            captures the first character of a Pascal case word.
+            captures the first character of a Pascal case substring.
         KEBAB_CASE: Compiled regular expression object that captures a
             kebab case string.
         PASCAL_CASE: Compiled regular expression object that captures a
