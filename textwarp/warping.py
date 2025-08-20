@@ -442,27 +442,11 @@ def to_camel_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _lowercase_first_letter(text) -> str:
-        """
-        Lowercase the first letter of the string without modifying any
-        other letters.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
     pascal_text: str = to_pascal_case(text)
-    # Split between each instance of Pascal case in the string.
-    pascal_substrings: list[str] = WarpingRegexes.CAMEL_SPLIT.split(
+    return SeparatorRegexes.FIRST_PASCAL_CHARACTER.sub(
+        lambda m: m.group(0).lower(),
         pascal_text
     )
-    camel_words: list[str] = []
-    for substring in pascal_substrings:
-        camel_word: str = _lowercase_first_letter(substring)
-        camel_words.append(camel_word)
-    return ''.join(camel_words)
 
 
 def to_hexadecimal(text: str) -> str:
