@@ -46,7 +46,7 @@ CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
 ELISION_WORDS: set[str] = set(load_json_from_data('elision_words.json'))
 
 # Map pairing each initialism with its capitalized version.
-INITIALISMS_MAP: set[str] = load_json_from_data('initialisms_map.json')
+INITIALISMS_MAP: dict[str, str] = load_json_from_data('initialisms_map.json')
 
 # Lowercase particles that should not be capitalized in title case.
 LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
