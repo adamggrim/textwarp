@@ -788,9 +788,9 @@ def _uppercase_first_letter(text: str) -> str:
 
 
 def _to_separator_case(
-        text: str,
-        separator_case: Separator
-    ) -> str:
+    text: str,
+    separator_case: Separator
+) -> str:
     """
     Convert a string to kebab case or snake case.
 
