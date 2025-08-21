@@ -443,8 +443,8 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text: str = to_pascal_case(text)
-    return SeparatorRegexes.FIRST_PASCAL_CHARACTER.sub(
-        lambda m: m.group(0).lower(),
+    return SeparatorRegexes.PASCAL_WORD.sub(
+        lambda m: m.group(1).lower() + m.group(2),
         pascal_text
     )
 
