@@ -149,13 +149,13 @@ class WarpingRegexes:
             capturing groups for quotes inside punctuation and
             punctuation outside quotes.
     """
-    def _create_contraction_regex(CONTRACTIONS_MAP: dict) -> re.Pattern:
+    def _create_contraction_regex(contractions_map: dict) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contraction in the given contractions map.
 
         Args:
-            CONTRACTIONS_MAP: A dictionary mapping contractions to their
+            contractions_map: A dictionary mapping contractions to their
                 expanded versions.
 
         Returns:
@@ -165,7 +165,7 @@ class WarpingRegexes:
         # longer contractions containing contraction substrings are
         # matched first (e.g., "can't've" before "can't").
         sorted_contractions = sorted(
-            CONTRACTIONS_MAP.keys(), key=len, reverse=True
+            contractions_map.keys(), key=len, reverse=True
         )
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
@@ -198,13 +198,13 @@ class WarpingRegexes:
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
 
-    def _create_name_prefix_regex(NAME_PREFIXES: set[str]) -> re.Pattern:
+    def _create_name_prefix_regex(name_prefixes: set[str]) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         name prefix in the given set.
 
         Args:
-            NAME_PREFIXES: A set of name prefixes.
+            name_prefixes: A set of name prefixes.
 
         Returns:
             A compiled regular expression object.
@@ -212,7 +212,7 @@ class WarpingRegexes:
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
         prefix_patterns = [
-            re.escape(p).replace("'", "['’‘]") for p in NAME_PREFIXES
+            re.escape(p).replace("'", "['’‘]") for p in name_prefixes
         ]
         pattern_string = '|'.join(prefix_patterns)
         final_pattern = rf'\b{pattern_string}\b'
