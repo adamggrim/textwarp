@@ -3,7 +3,7 @@ import regex as re
 from textwarp.config import (
     ABBREVIATIONS,
     CONTRACTIONS_MAP,
-    CONTRACTION_SUFFIX_SET,
+    CONTRACTION_SUFFIXES,
     ELISION_WORDS,
     NAME_PREFIXES
 )
@@ -177,14 +177,14 @@ class WarpingRegexes:
         return re.compile(final_pattern, re.IGNORECASE)
 
     def _create_contraction_suffix_regex(
-        CONTRACTION_SUFFIX_SET: set[str]
+        contraction_suffix_set: set[str]
     ) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contraction token in the given set.
 
         Args:
-            CONTRACTION_SUFFIXES: A set of contraction tokens.
+            contraction_suffix_set: A set of contraction tokens.
 
         Returns:
             A compiled regular expression object.
@@ -192,7 +192,7 @@ class WarpingRegexes:
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
         escaped_patterns = [
-            re.escape(t).replace("'", "['’‘]") for t in CONTRACTION_SUFFIX_SET
+            re.escape(t).replace("'", "['’‘]") for t in contraction_suffix_set
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
@@ -255,8 +255,8 @@ class WarpingRegexes:
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
     CONTRACTION: re.Pattern[str] = _create_contraction_regex(CONTRACTIONS_MAP)
-    CONTRACTION_SUFFIXES: re.Pattern[str] = _create_contraction_suffix_regex(
-        CONTRACTION_SUFFIX_SET
+    CONTRACTION_SUFFIX_PATTERN: re.Pattern[str] = (
+        _create_contraction_suffix_regex(CONTRACTION_SUFFIXES)
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')

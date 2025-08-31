@@ -33,7 +33,7 @@ def load_json_from_data(filename: str) -> JSONType:
 ABBREVIATIONS: set[str] = set(load_json_from_data('abbreviations.json'))
 
 # Suffixes derived from contractions.
-CONTRACTION_SUFFIX_SET: set[str] = set(load_json_from_data(
+CONTRACTION_SUFFIXES: set[str] = set(load_json_from_data(
     'contraction_suffixes.json'
 ))
 
