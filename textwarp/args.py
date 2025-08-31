@@ -16,7 +16,6 @@ from textwarp.warping import (
     redact,
     reverse,
     straight_to_curly,
-    strikethrough,
     to_alternating_caps,
     to_binary,
     to_camel_case,
@@ -141,10 +140,6 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'straight-quotes': (
         curly_to_straight,
         'convert “curly quotes” to "straight quotes"'
-    ),
-    'strikethrough': (
-        strikethrough,
-        's̶t̶r̶i̶k̶e̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶e̶x̶t̶'
     ),
     'strip': (
         str.strip,

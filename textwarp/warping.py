@@ -378,21 +378,6 @@ def straight_to_curly(text: str) -> str:
     return curly_text
 
 
-def strikethrough(text: str) -> str:
-    """
-    Convert a string to a struck-through version.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string, with each input character followed
-            by the Unicode strikethrough character (U+0336).
-    """
-    strikethrough_char: str = '\u0336'
-    return ''.join(char + strikethrough_char for char in text)
-
-
 def to_alternating_caps(text: str) -> str:
     """
     Convert a string to alternating caps.
