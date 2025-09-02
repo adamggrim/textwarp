@@ -149,14 +149,13 @@ class WarpingRegexes:
             capturing groups for quotes inside punctuation and
             punctuation outside quotes.
     """
-    def _create_contraction_regex(contractions_map: dict) -> re.Pattern:
+    def _create_contraction_regex(contractions: set[str]) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         contraction in the given contractions map.
 
         Args:
-            contractions_map: A dictionary mapping contractions to their
-                expanded versions.
+            contractions: An iterable of contractions.
 
         Returns:
             A compiled regular expression object.
@@ -165,7 +164,7 @@ class WarpingRegexes:
         # longer contractions containing contraction substrings are
         # matched first (e.g., "can't've" before "can't").
         sorted_contractions = sorted(
-            contractions_map.keys(), key=len, reverse=True
+            contractions, key=len, reverse=True
         )
         # Replace straight apostrophes with a regex character class that
         # matches both straight and curly apostrophes.
