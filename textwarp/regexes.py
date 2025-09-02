@@ -2,6 +2,7 @@ import regex as re
 
 from textwarp.config import (
     ABBREVIATIONS,
+    AMBIGUOUS_CONTRACTIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIXES,
     ELISION_WORDS,
@@ -231,9 +232,11 @@ class WarpingRegexes:
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
     )
-    CONTRACTION: re.Pattern[str] = _create_contraction_regex(CONTRACTIONS_MAP)
+    CONTRACTION: re.Pattern[str] = _create_contraction_regex(
+        set(CONTRACTIONS_MAP.keys())
+    )
     CONTRACTION_SUFFIX_PATTERN: re.Pattern[str] = (
-        _create_contraction_suffix_regex(CONTRACTION_SUFFIXES)
+        _create_contraction_regex(CONTRACTION_SUFFIXES)
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
