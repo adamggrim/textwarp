@@ -264,7 +264,9 @@ class WarpingRegexes:
         """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
-    NAME_PREFIXES: re.Pattern[str] = _create_name_prefix_regex(NAME_PREFIXES)
+    NAME_PREFIX_PATTERN: re.Pattern[str] = _create_name_prefix_regex(
+        NAME_PREFIXES
+    )
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
