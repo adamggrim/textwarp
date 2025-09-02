@@ -32,6 +32,11 @@ def load_json_from_data(filename: str) -> JSONType:
 # Abbreviations that are followed by a period.
 ABBREVIATIONS: set[str] = set(load_json_from_data('abbreviations.json'))
 
+# Contractions that can expand to multiple phrases.
+AMBIGUOUS_CONTRACTIONS: set[str] = set(load_json_from_data(
+    'ambiguous_contractions.json'
+))
+
 # Suffixes derived from contractions.
 CONTRACTION_SUFFIXES: set[str] = set(load_json_from_data(
     'contraction_suffixes.json'
