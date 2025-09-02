@@ -175,28 +175,6 @@ class WarpingRegexes:
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
 
-    def _create_contraction_suffix_regex(
-        contraction_suffix_set: set[str]
-    ) -> re.Pattern:
-        """
-        Create a compiled regular expression object that matches any
-        contraction token in the given set.
-
-        Args:
-            contraction_suffix_set: A set of contraction tokens.
-
-        Returns:
-            A compiled regular expression object.
-        """
-        # Replace straight apostrophes with a regex character class that
-        # matches both straight and curly apostrophes.
-        escaped_patterns = [
-            re.escape(t).replace("'", "['’‘]") for t in contraction_suffix_set
-        ]
-        pattern_string = '|'.join(escaped_patterns)
-        final_pattern = rf'\b{pattern_string}\b'
-        return re.compile(final_pattern, re.IGNORECASE)
-
     def _create_name_prefix_regex(name_prefixes: set[str]) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
