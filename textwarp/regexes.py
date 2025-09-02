@@ -217,6 +217,9 @@ class WarpingRegexes:
         """, re.VERBOSE | re.IGNORECASE
     )
 
+    AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_contraction_regex(
+        AMBIGUOUS_CONTRACTIONS
+    )
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         (?<=[a-z])'(?=[a-z])                # A straight apostrophe
                                             # inside a word.
