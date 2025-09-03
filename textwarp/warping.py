@@ -125,6 +125,24 @@ def expand_contractions(text: str) -> str:
     Returns:
         str: The converted string.
     """
+    def _apply_casing(original_word: str, expanded_word: str) -> str:
+        """
+        Apply the casing of the original word to the expanded word.
+
+        Args:
+            original_word: The original word.
+            expanded_word: The new word to which the casing should be
+                applied.
+
+        Returns:
+            str: The expanded word in the original word's casing.
+        """
+        if original_word.isupper():
+            return expanded_word.upper()
+        elif original_word.istitle():
+            return expanded_word.capitalize()
+        return expanded_word
+
     def _repl(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched contraction with its
