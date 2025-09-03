@@ -143,6 +143,22 @@ def expand_contractions(text: str) -> str:
             return expanded_word.capitalize()
         return expanded_word
 
+    def _repl_from_dict(contraction: str) -> str:
+        """
+        Replace a contraction using the contractions map.
+
+        Args:
+            contraction: The contraction to expand.
+
+        Returns:
+            str: The expanded contraction.
+        """
+        normalized_contraction = curly_to_straight(contraction).lower()
+        expanded_contraction = CONTRACTIONS_MAP.get(
+            normalized_contraction, contraction
+        )
+        return _apply_casing(contraction, expanded_contraction)
+
     def _repl(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched contraction with its
