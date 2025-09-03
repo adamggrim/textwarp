@@ -1,7 +1,7 @@
 import random
 
 import regex as re
-from spacy.tokens import Token
+from spacy.tokens import Doc, Token
 
 from textwarp.config import (
     CONTRACTIONS_MAP,
@@ -11,6 +11,12 @@ from textwarp.config import (
     MORSE_MAP,
     NAME_PREFIX_EXCEPTIONS,
     REVERSED_MORSE_MAP
+)
+from textwarp.constants import (
+    APOSTROPHE_D_VARIANTS,
+    APOSTROPHE_S_VARIANTS,
+    APOSTROPHE_VARIANTS,
+    PAST_PARTICIPLE_TAGS
 )
 from textwarp.enums import Separator
 from textwarp.regexes import SeparatorRegexes, WarpingRegexes
