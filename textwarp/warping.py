@@ -701,7 +701,7 @@ def to_title_case(text: str) -> str:
 
         return token.tag_ not in tags_to_exclude
 
-    doc = nlp(text)
+    doc: Doc = nlp(text)
 
     # Find the index of the first non-whitespace token in each
     # sentence and after any colon.
@@ -829,7 +829,7 @@ def _capitalize_with_exceptions(word: str) -> str:
         """
         if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
             return None
-        if (match := WarpingRegexes.NAME_PREFIXES.match(word)):
+        if (match := WarpingRegexes.NAME_PREFIX_PATTERN.match(word)):
             prefix_len = len(match.group(0))
             return (word[:prefix_len].capitalize() +
                     word[prefix_len:].capitalize())
