@@ -159,10 +159,22 @@ def expand_contractions(text: str) -> str:
         )
         return _apply_casing(contraction, expanded_contraction)
 
+    # If there are no ambiguous contractions, spaCy is unnecessary.
+    if not WarpingRegexes.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
+        def _simple_repl(match: re.Match[str]) -> str:
+            return _repl_from_dict(match.group(0))
+        return WarpingRegexes.CONTRACTION.sub(_simple_repl, text)
+
+    doc: Doc = nlp(text)
+    token_map: dict[int, Token] = {token.idx: token for token in doc}
+
     def _repl(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched contraction with its
-            expanded version.
+        expanded version.
+
+        This function uses spaCy to disambiguate certain contractions
+        based on the part of speech of the following word.
 
         Args:
             match: A match object representing a contraction.
@@ -171,20 +183,45 @@ def expand_contractions(text: str) -> str:
             str: The expanded version of the matched contraction.
         """
         contraction: str = match.group(0)
-        normalized_contraction: str = curly_to_straight(contraction).lower()
-        expanded_contraction: str = CONTRACTIONS_MAP.get(
-            normalized_contraction, contraction
-        )
+        start_char_index: int = match.start()
 
-        # Handle all-caps contractions.
-        if contraction.isupper():
-            return expanded_contraction.upper()
-        # Handle mixed-case contractions that start with a uppercase
-        # letter.
-        elif contraction[0].isupper():
-            return expanded_contraction.capitalize()
-        else:
-            return expanded_contraction
+        apostrophe_token: Token | None = None
+
+        for i in range(start_char_index, match.end()):
+            if i in token_map:
+                token_text = token_map[i].text
+                if any(char in token_text for char in APOSTROPHE_VARIANTS):
+                    apostrophe_token = token_map[i]
+                    break
+
+        expanded_suffix: str = ''
+
+        if apostrophe_token and apostrophe_token.i + 1 < len(doc):
+            next_token: Token = doc[apostrophe_token.i + 1]
+            # Disambiguate 's: "is" vs. "has"
+            if apostrophe_token.lower_ in APOSTROPHE_S_VARIANTS:
+                if next_token.tag_ in PAST_PARTICIPLE_TAGS:
+                    expanded_suffix = 'has'
+                else:
+                    expanded_suffix = 'is'
+            # Disambiguate 'd: "would" vs. "had"
+            elif apostrophe_token.lower_ in APOSTROPHE_D_VARIANTS:
+                if next_token.tag_ in PAST_PARTICIPLE_TAGS:
+                    expanded_suffix = 'had'
+                else:
+                    expanded_suffix = 'would'
+
+        if expanded_suffix:
+            base_word_token = doc[apostrophe_token.i - 1]
+
+            # Combine the base word with the expanded suffix.
+            full_expansion = f'{base_word_token.text} {expanded_suffix}'
+
+            return _apply_casing(contraction, full_expansion)
+
+        # Fallback to contractions map.
+        return _repl_from_dict(contraction)
+
     return WarpingRegexes.CONTRACTION.sub(_repl, text)
 
 
