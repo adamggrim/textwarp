@@ -45,12 +45,12 @@ class SeparatorRegexes:
     )
     CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
-                            # letter or digit
+                        # letter or digit
         (?=[A-Z])       # Positive lookahead to split before an uppercase
-                            # letter
+                        # letter
         |               # OR
         (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or
-                            # uppercase letter
+                        # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
     PASCAL_WORD: re.Pattern[str] = re.compile(
@@ -74,11 +74,11 @@ class SeparatorRegexes:
                                     # kebab case
         |                       # OR
         _                       # Split on an underscore to convert from snake
-                                    # case
+                                # case
         |                       # OR
         \b                      # Split on a word boundary character to ensure
-                                    # substrings begin and end with a word
-                                    # character.
+                                # substrings begin and end with a word
+                                # character.
         ''', re.VERBOSE
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
