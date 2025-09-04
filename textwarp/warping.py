@@ -883,7 +883,7 @@ def _remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingRegexes.APOSTROPHE_IN_WORD.sub('', text)
+    return SeparatorRegexes.APOSTROPHE_IN_WORD.sub('', text)
 
 
 def _replace_opening_quote(match: re.Match[str]) -> str:

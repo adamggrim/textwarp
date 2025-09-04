@@ -16,6 +16,10 @@ class SeparatorRegexes:
     conversion to kebab case or snake case.
 
     Attributes:
+        APOSTROPHE_IN_WORD: Compiled regular expression object that
+            captures a straight apostrophe surrounded by alphabetical
+            letter characters. Also captures a straight apostrophe that
+            is part of a decade abbreviation or elision.
         CAMEL_CASE: Compiled regular expression object that captures a
             camel case string.
         CAMEL_PASCAL_SPLIT: Compiled regular expression object for
@@ -40,6 +44,25 @@ class SeparatorRegexes:
             snake case string.
     """
     ALPHABETICAL: re.Pattern = re.compile(r'[A-Za-z]')
+    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
+                                        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
+        (?<=                            # Preceded by...
+            [a-z]                       # An alphabetical letter.
+        )
+        '                               # A straight apostrophe.
+        (?=                             # Followed by...
+            [a-z]                       # An alphabetical letter.
+        )
+                                            # inside a word.
+        |                                   # OR
+        '                                   # A straight apostrophe.
+        (?=                                 # Followed by...
+            {'|'.join(ELISION_WORDS)}\b # An elision.
+            |                           # OR
+            \d{{2}}s\b                  # An abbreviation for a
+        )                               # decade.
+        """, re.VERBOSE | re.IGNORECASE
+    )
     CAMEL_CASE: re.Pattern = re.compile(
         r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+'
     )
@@ -128,10 +151,6 @@ class WarpingRegexes:
             that captures a sequence of word characters, apostrophes,
             hyphens or period-separated initialisms.
 
-        APOSTROPHE_IN_WORD: Compiled regular expression object that
-            captures a straight apostrophe surrounded by alphabetical
-            letter characters. Also captures a straight apostrophe that
-            is part of a decade abbreviation or elision.
         CARDINAL: Compiled regular expression object that captures a
             cardinal number.
         DOUBLE_HYPHENS: Compiled regular expression object that
@@ -219,18 +238,6 @@ class WarpingRegexes:
 
     AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_contraction_regex(
         AMBIGUOUS_CONTRACTIONS
-    )
-    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
-        (?<=[a-z])'(?=[a-z])                # A straight apostrophe
-                                            # inside a word.
-        |                                   # OR
-        '                                   # A straight apostrophe.
-        (?=                                 # Followed by...
-            {'|'.join(ELISION_WORDS)}\b     # An elision.
-            |                               # OR
-            \d{{2}}s\b                      # An abbreviation for a
-        )                                   # decade.
-        """, re.VERBOSE | re.IGNORECASE
     )
     CARDINAL: re.Pattern[str] = re.compile(
         r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
