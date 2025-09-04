@@ -43,7 +43,6 @@ class SeparatorRegexes:
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
-    ALPHABETICAL: re.Pattern = re.compile(r'[A-Za-z]')
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
                                         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
@@ -76,6 +75,7 @@ class SeparatorRegexes:
                         # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
+    LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     PASCAL_WORD: re.Pattern[str] = re.compile(
         r'\b([A-Z])(\w*[a-z]\w*)\b'
     )

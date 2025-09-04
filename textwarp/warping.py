@@ -991,7 +991,7 @@ def _to_separator_case(
                 separator_substring = substring.replace(' ',
                                                     separator_case.value)
             # Substring begins with an alphabebtical letter.
-            elif SeparatorRegexes.ALPHABETICAL.match(substring):
+            elif SeparatorRegexes.LETTER.match(substring):
                 separator_substring = substring.lower().replace(
                     ' ', separator_case.value
                 )
