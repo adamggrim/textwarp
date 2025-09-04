@@ -216,7 +216,7 @@ class WarpingRegexes:
         return re.compile(final_pattern)
 
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"""
-        # PART 1: Period-separated initialisms (e.g., U.S.A.)
+        # PART 1: PERIOD-SEPARATED INITIALISMS (e.g., U.S.A.)
         \b          # The start of a word boundary.
         \w+         # One or more word characters.
         (?:         # A non-capturing group of...
@@ -226,7 +226,7 @@ class WarpingRegexes:
         \.?         # An optional final period.
         \b          # The end of the word boundary.
         |           # OR
-        # PART 2: Words including other internal punctuation.
+        # PART 2: WORDS INCLUDING OTHER INTERNAL PUNCTUATION
         \b          # The start of a word boundary.
         [a-z]       # A word character.
         [\w'‘’-]*   # Zero or more word characters, straight or curly
@@ -251,9 +251,12 @@ class WarpingRegexes:
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf"""
-        (?:                     # CONTEXT FOR SENTENCE START
-            ^                   # The start of a line (see re.MULTILINE).
+        # CONTEXT FOR SENTENCE START (2 CONDITIONS)
+        (?:
+            # CONDITION 1: AT THE START OF A LINE
+            ^
             |                   # OR
+            # CONDITION 2: AFTER SENTENCE-ENDING PUNCTUATION
             (?<=                # Preceded by...
                 (?:             # A non-capturing group for...
                     # A period not preceded by an abbreviation.
@@ -267,6 +270,7 @@ class WarpingRegexes:
                                 # characters.
             )
         )
+        # TARGET: THE ACTUAL WORD TO MATCH
         {WORD_INCLUDING_PUNCTUATION.pattern}
         """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )
@@ -275,6 +279,7 @@ class WarpingRegexes:
         NAME_PREFIXES
     )
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
+        # PART 1: SINGLE QUOTES
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
             |               # OR
@@ -292,6 +297,7 @@ class WarpingRegexes:
         '+                  # One or more straight single quotes.
         )
         |                   # OR
+        # PART 2: DOUBLE QUOTES
         (?:                 # OPENING CONTEXT (DOUBLE QUOTES)
             ^               # The start of a string.
             |               # OR
