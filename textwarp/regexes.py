@@ -20,7 +20,7 @@ class SeparatorRegexes:
             captures a straight apostrophe surrounded by alphabetical
             letter characters. Also captures a straight apostrophe that
             is part of a decade abbreviation or elision.
-        CAMEL_CASE: Compiled regular expression object that captures a
+        CAMEL_WORD: Compiled regular expression object that captures a
             camel case string.
         CAMEL_PASCAL_SPLIT: Compiled regular expression object for
             splitting on the boundary between words in camel case and
@@ -62,8 +62,8 @@ class SeparatorRegexes:
         )                               # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
-    CAMEL_CASE: re.Pattern = re.compile(
-        r'[a-z][a-z0-9]*([A-Z][A-Z]?[a-z0-9]*)+'
+    CAMEL_WORD: re.Pattern = re.compile(
+        r'\b[a-z][A-Z]+[a-z0-9][A-Z]*\b'
     )
     CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
