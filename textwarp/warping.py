@@ -592,24 +592,19 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = SeparatorRegexes.PASCAL_SPLIT.split(
+    words: list[str] = SeparatorRegexes.SPLIT_FOR_PASCAL.split(
         no_apostrophes_text
     )
     pascal_substrings: list[str] = []
+
     for word in words:
         pascal_word: str
         # Word is already in Pascal case.
-        if SeparatorRegexes.PASCAL_CASE.match(word):
+        if SeparatorRegexes.PASCAL_WORD.match(word):
             pascal_word = word
-        # Word is an acronym of two characters.
-        elif SeparatorRegexes.SHORT_ACRONYM.match(word):
-            pascal_word = word
-        # Word is in camel case.
-        elif SeparatorRegexes.CAMEL_CASE.match(word):
-            pascal_word = _uppercase_first_letter(word)
-        # Word is not in Pascal case or camel case.
+        # Word is not in Pascal case.
         else:
-            pascal_word = capitalize(word)
+            pascal_word = _uppercase_first_letter(word)
         pascal_substrings.append(pascal_word)
     return ''.join(pascal_substrings)
 
