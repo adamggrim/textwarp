@@ -85,24 +85,6 @@ class SeparatorRegexes:
     PASCAL_CASE: re.Pattern[str] = re.compile(
         r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+'
     )
-    PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<![ .!?—–\-,:;"”\'’]) # Negative lookbehind to preserve spacing
-                                    # after spaces, punctuation and dashes
-        [ ]                     # Character class to split on a single space
-        (?![ —–\-"“\'‘\(\[{])   # Negative lookahead to preserve spacing
-                                    # before dashes, quotes and brackets
-        |                       # OR
-        (?<=\w)-(?=\w)          # Positive lookbehind to split on a hyphen
-                                    # between word characters and convert from
-                                    # kebab case
-        |                       # OR
-        _                       # Split on an underscore to convert from snake
-                                # case
-        |                       # OR
-        \b                      # Split on a word boundary character to ensure
-                                # substrings begin and end with a word
-                                # character.
-        ''', re.VERBOSE
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
@@ -139,6 +121,50 @@ class SeparatorRegexes:
     )
     SHORT_ACRONYM: re.Pattern[str] = re.compile(r'[A-Z]{2}\b')
     SNAKE_CASE: re.Pattern[str] = re.compile(r'([A-Za-z0-9]+_[A-Za-z0-9]+_?)+')
+    SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(r'''
+        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY SPACE OR
+        # PUNCTUATION
+        (?<!                        # Not preceded by...
+            [ .!?—–\-,:;"”\'’]      # A space or select punctuation.
+        )
+        [ ]                         # A single space.
+        (?!                         # Not followed by...
+            [ —–\-"“\'‘\(\[{]       # A space, select punctuation or an
+                                    # opening parenthesis, bracket or
+                                    # brace.
+        )
+        |                           # OR
+        # PART 2: DOT, KEBAB OR SNAKE CASE
+        (?<=
+            [A-Za-z0-9]             # A letter or digit.
+        )
+        [.\-_]                      # An underscore, hyphen or period.
+        (?=                         # Followed by...
+            [A-Za-z0-9]             # A letter or digit.
+        )
+        |                           # OR
+        # PART 3: START OF NON-WORD SEQUENCE
+        (?=                         # Followed by...
+            [.!?—–\-,:;"”\'’\)\]}]  # Select punctuation or a closing
+                                    # parenthesis, bracket or brace.
+            [ \t]+                  # One or more space or tab
+                                    # characters.
+        )
+        |                           # OR
+        # PART 4: END OF NON-WORD SEQUENCE
+        (?<=                        # Preceded by...
+            [.!?—–\-,:;"”\'’\)\]}]  # Select punctuation or a closing
+                                    # parenthesis, bracket or brace.
+            [ \t]+                  # One or more space or tab
+                                    # characters.
+        )
+        |                           # OR
+        # PART 5: NEWLINE CHARACTER
+        (?=                         # Followed by...
+            \n                      # A newline character.
+        )
+        ''', re.VERBOSE
+    )
 
 
 class WarpingRegexes:
