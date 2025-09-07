@@ -73,13 +73,12 @@ class SeparatorRegexes:
         (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or
                         # uppercase letter
         (?=[0-9])       # Positive lookahead to split before a digit
-        ''', re.VERBOSE)
-    LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     )
     )
     KEBAB_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
     )
+    LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
