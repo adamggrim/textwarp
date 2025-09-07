@@ -79,6 +79,7 @@ class SeparatorRegexes:
         r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
     )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
+    LOWERCASE_WORD: re.Pattern = re.compile(r'\b[a-z][a-z0-9]*\b')
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
