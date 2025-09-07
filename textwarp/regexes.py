@@ -78,11 +78,11 @@ class SeparatorRegexes:
     PASCAL_WORD: re.Pattern[str] = re.compile(
         r'\b([A-Z])(\w*[a-z]\w*)\b'
     )
-    KEBAB_CASE: re.Pattern[str] = re.compile(
-        r'([A-Za-z0-9]+\-[A-Za-z0-9]\-?)+'
     )
     PASCAL_CASE: re.Pattern[str] = re.compile(
         r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+'
+    KEBAB_WORD: re.Pattern[str] = re.compile(
+        r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
     )
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
