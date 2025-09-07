@@ -75,6 +75,8 @@ class SeparatorRegexes:
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE
     )
+    DOT_WORD: re.Pattern[str] = re.compile(
+        r'\b[a-z0-9]+(?:\.[a-z0-9]+)+\b'
     )
     KEBAB_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
