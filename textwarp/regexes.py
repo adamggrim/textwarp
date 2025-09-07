@@ -62,7 +62,7 @@ class SeparatorRegexes:
         """, re.VERBOSE | re.IGNORECASE
     )
     CAMEL_WORD: re.Pattern = re.compile(
-        r'\b[a-z][A-Z]+[a-z0-9][A-Z]*\b'
+        r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
     )
     CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
