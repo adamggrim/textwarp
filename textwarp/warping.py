@@ -509,8 +509,8 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text: str = to_pascal_case(text)
-    return SeparatorRegexes.PASCAL_WORD.sub(
-        lambda m: m.group(1).lower() + m.group(2),
+    return CasePatterns.PASCAL_WORD.sub(
+        lambda m: _lowercase_first_letter(m.group(0)),
         pascal_text
     )
 
@@ -604,7 +604,7 @@ def to_pascal_case(text: str) -> str:
     for word in words:
         pascal_word: str
         # Word is already in Pascal case.
-        if SeparatorRegexes.PASCAL_WORD.match(word):
+        elif CasePatterns.PASCAL_WORD.match(word):
             pascal_word = word
         # Word is not in Pascal case.
         else:
@@ -970,8 +970,8 @@ def _to_separator_case(
             else:
                 separator_sub.sub(separator_case.value, substring.lower())
         # Substring is in camel case or Pascal case.
-        elif (SeparatorRegexes.CAMEL_CASE.match(substring) or
-            SeparatorRegexes.PASCAL_CASE.match(substring)):
+        elif (CasePatterns.CAMEL_WORD.match(substring) or
+            CasePatterns.PASCAL_WORD.match(substring)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
                 SeparatorPatterns.CAMEL_PASCAL_SPLIT.split(substring)
