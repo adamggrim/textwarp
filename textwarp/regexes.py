@@ -119,6 +119,9 @@ class SeparatorRegexes:
                                 # character
         ''', re.VERBOSE
     )
+    SNAKE_WORD: re.Pattern[str] = re.compile(
+        r'\b_?[a-z0-9]+(?:_[a-z0-9]+)+\b'
+    )
     SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR ANOTHER CASE
