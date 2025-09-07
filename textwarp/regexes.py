@@ -127,42 +127,104 @@ class SeparatorRegexes:
         # PUNCTUATION
         (?<!                        # Not preceded by...
             [ .!?—–\-,:;"”\'’]      # A space or select punctuation.
+    SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
+        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
+        # OR ANOTHER CASE
+        (?<!                            # Not preceded by...
+            [ .!?—–\-,:;"”\'’\)\]}}]    # A space or select punctuation.
+            |                           # OR
+            {_ANY_CASE_WORD_PATTERN}       # A Pascal case word.
+            |                           # OR
+            {CAMEL_WORD.pattern}        # A camel case word.
+            |                           # OR
+            {DOT_WORD.pattern}          # A dot case word.
+            |                           # OR
+            {KEBAB_WORD.pattern}        # A kebab case word.
+            |                           # OR
+            {SNAKE_WORD.pattern}        # A snake case word.
+            |                           # OR
+            {LOWERCASE_WORD.pattern}    # A lowercase word.
         )
-        [ ]                         # A single space.
-        (?!                         # Not followed by...
-            [ —–\-"“\'‘\(\[{]       # A space, select punctuation or an
-                                    # opening parenthesis, bracket or
-                                    # brace.
+        [ ]                             # A single space.
+        (?!                             # Not followed by...
+            [ —–\-"“\'‘\(\[{{]          # A space, select punctuation
+                                        # or an opening parenthesis,
+                                        # bracket or brace.
+            |                           # OR
+            {PASCAL_WORD.pattern}       # A Pascal case word.
+            |                           # OR
+            {CAMEL_WORD.pattern}        # A camel case word.
+            |                           # OR
+            {DOT_WORD.pattern}          # A dot case word.
+            |                           # OR
+            {KEBAB_WORD.pattern}        # A kebab case word.
+            |                           # OR
+            {SNAKE_WORD.pattern}        # A snake case word.
+            |                           # OR
+            {LOWERCASE_WORD.pattern}    # A lowercase word.
         )
-        |                           # OR
-        # PART 2: DOT, KEBAB OR SNAKE CASE
-        (?<=
-            [A-Za-z0-9]             # A letter or digit.
+        |                               # OR
+        # PART 2: DOT, KEBAB OR SNAKE CASE SEPARATOR
+        (?<=                            # Preceded by...
+            [A-Za-z0-9]                 # A letter or digit.
         )
-        [.\-_]                      # An underscore, hyphen or period.
-        (?=                         # Followed by...
-            [A-Za-z0-9]             # A letter or digit.
+        [.\-_]                          # An underscore, hyphen or
+                                        # period.
+        (?=                             # Followed by...
+            [A-Za-z0-9]                 # A letter or digit.
         )
-        |                           # OR
-        # PART 3: START OF NON-WORD SEQUENCE
-        (?=                         # Followed by...
-            [.!?—–\-,:;"”\'’\)\]}]  # Select punctuation or a closing
-                                    # parenthesis, bracket or brace.
-            [ \t]+                  # One or more space or tab
-                                    # characters.
+        |                               # OR
+        # PART 3: POSITION FOLLOWED BY ENDING PUNCTUATION
+        (?=                             # Followed by...
+            [.!?—–\-,:;"”\'’\)\]}}]     # Select punctuation or a
+                                        # closing parenthesis, bracket
+                                        # or brace.
+            [ \t]+                      # One or more space or tab
+                                        # characters.
         )
-        |                           # OR
-        # PART 4: END OF NON-WORD SEQUENCE
-        (?<=                        # Preceded by...
-            [.!?—–\-,:;"”\'’\)\]}]  # Select punctuation or a closing
-                                    # parenthesis, bracket or brace.
-            [ \t]+                  # One or more space or tab
-                                    # characters.
+        |                               # OR
+        # PART 4: POSITION PRECEDED BY ENDING PUNCTUATION
+        (?<=                            # Preceded by...
+            [.!?—–\-,:;"”\'’\)\]}}]     # Select punctuation or a
+                                        # closing parenthesis, bracket
+                                        # or brace.
+            [ \t]+                      # One or more space or tab
+                                        # characters.
         )
-        |                           # OR
-        # PART 5: NEWLINE CHARACTER
-        (?=                         # Followed by...
-            \n                      # A newline character.
+        |                               # OR
+        # PART 5: POSITION PRECEDED BY ANOTHER CASE
+        (?<=                            # Preceded by...
+            {PASCAL_WORD.pattern}       # A Pascal case word.
+            |                           # OR
+            {CAMEL_WORD.pattern}        # A camel case word.
+            |                           # OR
+            {DOT_WORD.pattern}          # A dot case word.
+            |                           # OR
+            {KEBAB_WORD.pattern}        # A kebab case word.
+            |                           # OR
+            {SNAKE_WORD.pattern}        # A snake case word.
+            |                           # OR
+            {LOWERCASE_WORD.pattern}    # A lowercase word.
+        )
+        |                               # OR
+        # PART 6: POSITION FOLLOWED BY ANOTHER CASE
+        (?=                             # Followed by...
+            {PASCAL_WORD.pattern}       # A Pascal case word.
+            |                           # OR
+            {CAMEL_WORD.pattern}        # A camel case word.
+            |                           # OR
+            {DOT_WORD.pattern}          # A dot case word.
+            |                           # OR
+            {KEBAB_WORD.pattern}        # A kebab case word.
+            |                           # OR
+            {SNAKE_WORD.pattern}        # A snake case word.
+            |                           # OR
+            {LOWERCASE_WORD.pattern}    # A lowercase word.
+        )
+        |                               # OR
+        # PART 6: NEWLINE CHARACTER
+        (?=                             # Followed by...
+            \n                          # A newline character.
         )
         ''', re.VERBOSE
     )
