@@ -43,19 +43,20 @@ class SeparatorRegexes:
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
+
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
-                                        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
+        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
             [a-z]                       # An alphabetical letter.
         )
-        '                               # A straight apostrophe.
+        ['’‘]                           # An apostrophe.
         (?=                             # Followed by...
             [a-z]                       # An alphabetical letter.
         )
-                                            # inside a word.
-        |                                   # OR
-        '                                   # A straight apostrophe.
-        (?=                                 # Followed by...
+        |                               # OR
+        # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
+        ['’‘]                           # An apostrophe.
+        (?=                             # Followed by...
             {'|'.join(ELISION_WORDS)}\b # An elision.
             |                           # OR
             \d{{2}}s\b                  # An abbreviation for a
