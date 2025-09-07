@@ -10,6 +10,43 @@ from textwarp.config import (
 )
 
 
+class CasePatterns:
+    """
+    Compiled regular expressions for identifying different types
+    of words.
+
+    Attributes:
+        CAMEL_WORD: Compiled regular expression object that
+            captures a camel case string.
+        DOT_WORD: Compiled regular expression object that
+            captures a dot case string.
+        KEBAB_WORD: Compiled regular expression object that
+            captures a kebab case string.
+        LOWERCASE_WORD: Compiled regular expression object that
+            captures a lowercase word.
+        PASCAL_WORD: Compiled regular expression object that
+            captures a Pascal case word.
+        SNAKE_WORD: Compiled regular expression object that
+            captures a snake case string.
+    """
+    CAMEL_WORD: re.Pattern = re.compile(
+        r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
+    )
+    DOT_WORD: re.Pattern[str] = re.compile(
+        r'\b[a-z0-9]+(?:\.[a-z0-9]+)+\b'
+    )
+    KEBAB_WORD: re.Pattern[str] = re.compile(
+        r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
+    )
+    LOWERCASE_WORD: re.Pattern = re.compile(r'\b[a-z][a-z0-9]*\b')
+    PASCAL_WORD: re.Pattern[str] = re.compile(
+        r'\b(?:[A-Z][a-zA-Z0-9]*){2,}\b'
+    )
+    SNAKE_WORD: re.Pattern[str] = re.compile(
+        r'\b_?[a-z0-9]+(?:_[a-z0-9]+)+\b'
+    )
+
+
 class SeparatorRegexes:
     """
     Compiled regular expressions for parsing and warping text before
@@ -61,9 +98,6 @@ class SeparatorRegexes:
         )                               # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
-    CAMEL_WORD: re.Pattern = re.compile(
-        r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
-    )
     CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
                         # letter or digit
@@ -75,17 +109,7 @@ class SeparatorRegexes:
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE
     )
-    DOT_WORD: re.Pattern[str] = re.compile(
-        r'\b[a-z0-9]+(?:\.[a-z0-9]+)+\b'
-    )
-    KEBAB_WORD: re.Pattern[str] = re.compile(
-        r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
-    )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
-    LOWERCASE_WORD: re.Pattern = re.compile(r'\b[a-z][a-z0-9]*\b')
-    PASCAL_WORD: re.Pattern[str] = re.compile(
-        r'\b(?:[A-Z][a-zA-Z0-9]*){2,}\b'
-    )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
                                 # non-word character followed by a space
@@ -118,9 +142,6 @@ class SeparatorRegexes:
         (?=\t)                  # Positive lookahead to split on a tab
                                 # character
         ''', re.VERBOSE
-    )
-    SNAKE_WORD: re.Pattern[str] = re.compile(
-        r'\b_?[a-z0-9]+(?:_[a-z0-9]+)+\b'
     )
     SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
