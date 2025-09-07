@@ -75,12 +75,8 @@ class SeparatorRegexes:
         (?=[0-9])       # Positive lookahead to split before a digit
         ''', re.VERBOSE)
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
-    PASCAL_WORD: re.Pattern[str] = re.compile(
-        r'\b([A-Z])(\w*[a-z]\w*)\b'
     )
     )
-    PASCAL_CASE: re.Pattern[str] = re.compile(
-        r'[A-Z][a-z0-9]+([A-Z][A-Z]?[a-z0-9]*)+'
     KEBAB_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
     )
