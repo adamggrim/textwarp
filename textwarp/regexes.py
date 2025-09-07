@@ -83,6 +83,8 @@ class SeparatorRegexes:
     )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     LOWERCASE_WORD: re.Pattern = re.compile(r'\b[a-z][a-z0-9]*\b')
+    PASCAL_WORD: re.Pattern[str] = re.compile(
+        r'\b(?:[A-Z][a-zA-Z0-9]*){2,}\b'
     )
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
