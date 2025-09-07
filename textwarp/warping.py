@@ -19,7 +19,11 @@ from textwarp.constants import (
     PAST_PARTICIPLE_TAGS
 )
 from textwarp.enums import Separator
-from textwarp.regexes import SeparatorRegexes, WarpingRegexes
+from textwarp.regexes import (
+    CasePatterns,
+    SeparatorPatterns,
+    WarpingPatterns
+)
 from textwarp.setup import nlp
 
 
@@ -53,7 +57,7 @@ def capitalize(text: str) -> str:
         parts = word.split('-')
         return '-'.join(_capitalize_with_exceptions(part) for part in parts)
 
-    return WarpingRegexes.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
+    return WarpingPatterns.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
 
 
 def cardinal_to_ordinal(text: str) -> str:
@@ -89,7 +93,7 @@ def cardinal_to_ordinal(text: str) -> str:
             f'{number:,}' if ',' in number_str else str(number)
         )
         return f'{formatted_number}{suffix}'
-    return WarpingRegexes.CARDINAL.sub(replace_cardinal, text)
+    return WarpingPatterns.CARDINAL.sub(replace_cardinal, text)
 
 
 def curly_to_straight(text: str) -> str:
@@ -160,10 +164,10 @@ def expand_contractions(text: str) -> str:
         return _apply_casing(contraction, expanded_contraction)
 
     # If there are no ambiguous contractions, spaCy is unnecessary.
-    if not WarpingRegexes.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
+    if not WarpingPatterns.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
         def _simple_repl(match: re.Match[str]) -> str:
             return _repl_from_dict(match.group(0))
-        return WarpingRegexes.CONTRACTION.sub(_simple_repl, text)
+        return WarpingPatterns.CONTRACTION.sub(_simple_repl, text)
 
     doc: Doc = nlp(text)
     token_map: dict[int, Token] = {token.idx: token for token in doc}
@@ -222,7 +226,7 @@ def expand_contractions(text: str) -> str:
         # Fallback to contractions map.
         return _repl_from_dict(contraction)
 
-    return WarpingRegexes.CONTRACTION.sub(_repl, text)
+    return WarpingPatterns.CONTRACTION.sub(_repl, text)
 
 
 def from_hexadecimal(text: str) -> str:
@@ -272,7 +276,7 @@ def hyphens_to_em(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingRegexes.DOUBLE_HYPHENS.sub('—', text)
+    return WarpingPatterns.DOUBLE_HYPHENS.sub('—', text)
 
 
 def hyphen_to_en(text: str) -> str:
@@ -312,7 +316,7 @@ def ordinal_to_cardinal(text: str) -> str:
         """
         ordinal: str = match.group(0)
         return ordinal[:-2]
-    return WarpingRegexes.ORDINAL.sub(replace_ordinal, text)
+    return WarpingPatterns.ORDINAL.sub(replace_ordinal, text)
 
 
 def punct_to_inside(text: str) -> str:
@@ -340,7 +344,7 @@ def punct_to_inside(text: str) -> str:
         quote: str
         punct, quote = match.groups()
         return quote + punct
-    return WarpingRegexes.PUNCT_OUTSIDE.sub(_repl, text)
+    return WarpingPatterns.PUNCT_OUTSIDE.sub(_repl, text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -369,7 +373,7 @@ def punct_to_outside(text: str) -> str:
         punct: str
         quote, punct = match.groups()
         return punct + quote
-    return WarpingRegexes.PUNCT_INSIDE.sub(_repl, text)
+    return WarpingPatterns.PUNCT_INSIDE.sub(_repl, text)
 
 
 def randomize(text: str) -> str:
@@ -385,7 +389,7 @@ def randomize(text: str) -> str:
     def _repl(_):
         return next(randomized_iter)
 
-    words = WarpingRegexes.WORD_CHARACTERS.findall(text)
+    words = WarpingPatterns.WORD_CHARACTERS.findall(text)
 
     randomized_words = []
     for word in words:
@@ -394,7 +398,7 @@ def randomize(text: str) -> str:
         randomized_words.append(''.join(chars))
 
     randomized_iter = iter(randomized_words)
-    return WarpingRegexes.WORD_CHARACTERS.sub(_repl, text)
+    return WarpingPatterns.WORD_CHARACTERS.sub(_repl, text)
 
 
 def redact(text: str) -> str:
@@ -408,7 +412,7 @@ def redact(text: str) -> str:
     Returns:
         str: The redacted string.
     """
-    return WarpingRegexes.WORD_CHARACTER.sub('█', text)
+    return WarpingPatterns.WORD_CHARACTER.sub('█', text)
 
 
 def reverse(text):
@@ -437,10 +441,10 @@ def straight_to_curly(text: str) -> str:
     curly_text: str
 
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = WarpingRegexes.APOSTROPHE_IN_WORD.sub("’", text)
+    curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub("’", text)
 
     # Replace opening straight quotes with opening curly quotes.
-    curly_text = WarpingRegexes.OPENING_STRAIGHT_QUOTES.sub(
+    curly_text = WarpingPatterns.OPENING_STRAIGHT_QUOTES.sub(
         _replace_opening_quote, curly_text
     )
 
@@ -568,7 +572,7 @@ def to_morse(text: str) -> str:
             str: The normalized string.
         """
         straight_text: str = curly_to_straight(text.upper())
-        hyphenated_text = WarpingRegexes.DASH.sub('-', straight_text)
+        hyphenated_text = WarpingPatterns.DASH.sub('-', straight_text)
         return hyphenated_text.replace('…', '...')
 
     normalized_text: str = _normalize_for_morse(text)
@@ -592,7 +596,7 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = SeparatorRegexes.SPLIT_FOR_PASCAL.split(
+    words: list[str] = SeparatorPatterns.SPLIT_FOR_PASCAL.split(
         no_apostrophes_text
     )
     pascal_substrings: list[str] = []
@@ -619,7 +623,7 @@ def to_sentence_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingRegexes.FIRST_WORD_IN_SENTENCE.sub(
+    return WarpingPatterns.FIRST_WORD_IN_SENTENCE.sub(
         lambda m: _capitalize_with_exceptions(m.group(0)), text
     )
 
@@ -636,7 +640,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingRegexes.MULTIPLE_SPACES.sub(' ', text)
+    return WarpingPatterns.MULTIPLE_SPACES.sub(' ', text)
 
 
 def to_snake_case(text: str) -> str:
@@ -650,7 +654,7 @@ def to_snake_case(text: str) -> str:
         str: The converted string.
     """
     return _to_separator_case(
-        text, SeparatorRegexes.SNAKE_CASE
+        text, SeparatorPatterns.SNAKE_CASE
     )
 
 
@@ -727,7 +731,7 @@ def to_title_case(text: str) -> str:
         if token.is_space:
             cased_token = token.text
         # Preserve the token if it is in the contraction suffixes list.
-        elif WarpingRegexes.CONTRACTION_SUFFIX_PATTERN.fullmatch(token.text):
+        elif WarpingPatterns.CONTRACTION_SUFFIX_PATTERN.fullmatch(token.text):
             cased_token = token.text
         # Capitalize the first token in the title or subtitle.
         elif i in first_word_indices:
@@ -878,7 +882,7 @@ def _remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return SeparatorRegexes.APOSTROPHE_IN_WORD.sub('', text)
+    return SeparatorPatterns.APOSTROPHE_IN_WORD.sub('', text)
 
 
 def _replace_opening_quote(match: re.Match[str]) -> str:
@@ -949,7 +953,7 @@ def _to_separator_case(
         return separator_mapping.get(separator_case)
     other_separator: str | None = _get_other_separator()
     no_apostrophes_text: str = _remove_apostrophes(text)
-    substrings: list[str] = SeparatorRegexes.SEPARATOR_SPLIT.split(
+    substrings: list[str] = SeparatorPatterns.SEPARATOR_SPLIT.split(
         no_apostrophes_text
     )
     separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
@@ -957,8 +961,8 @@ def _to_separator_case(
     for substring in substrings:
         separator_substring: str
         # Substring is already in a separator case.
-        if (SeparatorRegexes.KEBAB_CASE.match(substring) or
-            SeparatorRegexes.SNAKE_CASE.match(substring)):
+        if (SeparatorPatterns.KEBAB_CASE.match(substring) or
+            SeparatorPatterns.SNAKE_CASE.match(substring)):
             if substring.isupper():
                 separator_substring = separator_sub.sub(
                     separator_case.value, substring
@@ -970,7 +974,7 @@ def _to_separator_case(
             SeparatorRegexes.PASCAL_CASE.match(substring)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                SeparatorRegexes.CAMEL_PASCAL_SPLIT.split(substring)
+                SeparatorPatterns.CAMEL_PASCAL_SPLIT.split(substring)
             )
             converted_words: list[str] = []
             for word in broken_words:
@@ -986,7 +990,7 @@ def _to_separator_case(
                 separator_substring = substring.replace(' ',
                                                     separator_case.value)
             # Substring begins with an alphabebtical letter.
-            elif SeparatorRegexes.LETTER.match(substring):
+            elif SeparatorPatterns.LETTER.match(substring):
                 separator_substring = substring.lower().replace(
                     ' ', separator_case.value
                 )

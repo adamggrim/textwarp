@@ -47,7 +47,7 @@ class CasePatterns:
     )
 
 
-class SeparatorRegexes:
+class SeparatorPatterns:
     """
     Compiled regular expressions for parsing and warping text before
     conversion to kebab case or snake case.
@@ -78,7 +78,6 @@ class SeparatorRegexes:
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
-
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
@@ -246,7 +245,7 @@ class SeparatorRegexes:
     )
 
 
-class WarpingRegexes:
+class WarpingPatterns:
     """
     Compiled regular expressions and strings for parsing and warping
     text.
