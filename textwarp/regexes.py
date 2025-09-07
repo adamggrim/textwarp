@@ -38,8 +38,6 @@ class SeparatorRegexes:
         SEPARATOR_SPLIT: Compiled regular expression object for
             splitting strings before converting substrings to kebab
             case or snake case.
-        SHORT_ACRONYM: Compiled regular expression object that captures
-            a two-character acronym or initialism.
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
@@ -120,13 +118,6 @@ class SeparatorRegexes:
                                 # character
         ''', re.VERBOSE
     )
-    SHORT_ACRONYM: re.Pattern[str] = re.compile(r'[A-Z]{2}\b')
-    SNAKE_CASE: re.Pattern[str] = re.compile(r'([A-Za-z0-9]+_[A-Za-z0-9]+_?)+')
-    SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(r'''
-        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY SPACE OR
-        # PUNCTUATION
-        (?<!                        # Not preceded by...
-            [ .!?—–\-,:;"”\'’]      # A space or select punctuation.
     SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR ANOTHER CASE
