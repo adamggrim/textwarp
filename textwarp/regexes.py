@@ -179,15 +179,17 @@ class SeparatorPatterns:
             {LOWERCASE_WORD.pattern}    # A lowercase word.
         )
         |                               # OR
-        # PART 2: DOT, KEBAB OR SNAKE CASE SEPARATOR
+        # PART 2: DOT OR KEBAB CASE SEPARATOR
         (?<=                            # Preceded by...
             [A-Za-z0-9]                 # A letter or digit.
         )
-        [.\-_]                          # An underscore, hyphen or
-                                        # period.
+        [.\-]                           # A hyphen or period.
         (?=                             # Followed by...
             [A-Za-z0-9]                 # A letter or digit.
         )
+        |                               # OR
+        # PART 3: SNAKE CASE SEPARATOR
+        _                               # An underscore.
         |                               # OR
         # PART 3: POSITION FOLLOWED BY ENDING PUNCTUATION
         (?=                             # Followed by...
