@@ -601,12 +601,18 @@ def to_pascal_case(text: str) -> str:
 
     for word in words:
         pascal_word: str
-        # Word is already in Pascal case.
+        if not any(char.isalpha() for char in word):
+            pascal_substrings.append(word)
+            continue
+        # Word is in Pascal case.
         elif CasePatterns.PASCAL_WORD.match(word):
             pascal_word = word
-        # Word is not in Pascal case.
-        else:
+        # Word is in camel case.
+        elif CasePatterns.CAMEL_WORD.match(word):
             pascal_word = _uppercase_first_letter(word)
+        # Word is not in Pascal or camel case.
+        else:
+            pascal_word = _capitalize_with_exceptions(word)
         pascal_substrings.append(pascal_word)
     return ''.join(pascal_substrings)
 
