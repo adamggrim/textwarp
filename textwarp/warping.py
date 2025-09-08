@@ -761,93 +761,6 @@ def _capitalize_with_exceptions(word: str) -> str:
     Returns:
         str: The capitalized word.
     """
-    def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
-        """
-        Handle mixed-case capitalization.
-
-        Args:
-            _word: The word to capitalize (unused).
-            lower_word: The lowercase word.
-
-        Returns:
-            str | None: The mixed-case word, or None if lower_word is
-                not in MIXED_CASE_WORDS_MAP.
-        """
-        return MIXED_CASE_WORDS_MAP.get(lower_word)
-
-    def _handle_period_separated_initialism(
-        _word: str,
-        lower_word: str
-    ) -> str | None:
-        """
-        Handle period-separated initialisms.
-
-        Args:
-            _word: The word to capitalize (unused).
-            lower_word: The lowercase word.
-
-        Returns:
-            str | None: The capitalized initialism, or None if the
-                word does not contain a period.
-        """
-        if '.' in lower_word:
-            # Filter empty strings that can result from a trailing
-            # period.
-            parts = list(filter(None, lower_word.split('.')))
-            # Capitalize each part.
-            return '.'.join(part.capitalize() for part in parts)
-        return None
-
-    def _handle_initialism(_word: str, lower_word: str) -> str | None:
-        """
-        Handle initialisms without periods.
-
-        Args:
-            _word: The word to capitalize (unused).
-            lower_word: The lowercase word.
-
-        Returns:
-            str | None: The capitalized initialism, or None if not in
-                INITIALISMS_MAP.
-        """
-        return INITIALISMS_MAP.get(lower_word)
-
-    def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
-        """
-        Handle prefixed names.
-
-        Args:
-            word: The word to capitalize.
-            lower_word: The lowercase word.
-
-        Returns:
-            str | None: The capitalized name, or None if the
-                string starts with a name prefix exception.
-        """
-        if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
-            return None
-        if (match := WarpingRegexes.NAME_PREFIX_PATTERN.match(word)):
-            prefix_len = len(match.group(0))
-            return (word[:prefix_len].capitalize() +
-                    word[prefix_len:].capitalize())
-        return None
-
-    def _preserve_existing_capitalization(word: str, _lower_word: str) -> str:
-        """
-        Preserve words that are already mixed-case.
-
-        Args:
-            word: The word to check.
-            _lower_word: The lowercase word.
-
-        Returns:
-            str: The original word, or None if the word is all
-                lowercase or uppercase.
-        """
-        if not word.islower() and not word.isupper():
-            return word
-        return None
-
     if not word or not word[0].isalpha():
         return word
 
@@ -867,6 +780,117 @@ def _capitalize_with_exceptions(word: str) -> str:
             return result
 
     return word.capitalize()
+
+
+def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
+    """
+    Handle mixed-case capitalization.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The mixed-case word, or None if lower_word is
+            not in MIXED_CASE_WORDS_MAP.
+    """
+    return MIXED_CASE_WORDS_MAP.get(lower_word)
+
+
+def _handle_period_separated_initialism(
+    _word: str,
+    lower_word: str
+) -> str | None:
+    """
+    Handle period-separated initialisms.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if the
+            word does not contain a period.
+    """
+    if '.' in lower_word:
+        # Filter empty strings that can result from a trailing
+        # period.
+        parts = list(filter(None, lower_word.split('.')))
+        # Capitalize each part.
+        return '.'.join(part.capitalize() for part in parts)
+    return None
+
+
+def _handle_initialism(_word: str, lower_word: str) -> str | None:
+    """
+    Handle initialisms without periods.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if not in
+            INITIALISMS_MAP.
+    """
+    return INITIALISMS_MAP.get(lower_word)
+
+
+def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
+    """
+    Handle prefixed names.
+
+    Args:
+        word: The word to capitalize.
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized name, or None if the
+            string starts with a name prefix exception.
+    """
+    if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
+        return None
+    if (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(word)):
+        prefix_len = len(match.group(0))
+        return (word[:prefix_len].capitalize() +
+                word[prefix_len:].capitalize())
+    return None
+
+
+def _lowercase_first_letter(text: str) -> str:
+    """
+    Convert the first letter of the string to lowercase without
+    modifying any other letters.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted text.
+    """
+    for i, char in enumerate(text):
+        if char.isalpha():
+            # Lowercase the first letter and return the new text.
+            return text[:i] + char.lower() + text[i+1:]
+    # Return the original text if no letters were in the string.
+    return text
+
+
+def _preserve_existing_capitalization(word: str, _lower_word: str) -> str:
+    """
+    Preserve words that are already mixed-case.
+
+    Args:
+        word: The word to check.
+        _lower_word: The lowercase word.
+
+    Returns:
+        str: The original word, or None if the word is all
+            lowercase or uppercase.
+    """
+    if not word.islower() and not word.isupper():
+        return word
+    return None
 
 
 def _remove_apostrophes(text: str) -> str:
