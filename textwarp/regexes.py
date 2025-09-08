@@ -12,8 +12,7 @@ from textwarp.config import (
 
 class CasePatterns:
     """
-    Compiled regular expressions for identifying different types
-    of words.
+    Compiled regular expressions for identifying select cases.
 
     Attributes:
         CAMEL_WORD: Compiled regular expression object that
@@ -49,8 +48,8 @@ class CasePatterns:
 
 class SeparatorPatterns:
     """
-    Compiled regular expressions for parsing and warping text before
-    conversion to kebab case or snake case.
+    Compiled regular expressions for conversion to and from separator
+    cases.
 
     Attributes:
         APOSTROPHE_IN_WORD: Compiled regular expression object that
@@ -144,7 +143,7 @@ class SeparatorPatterns:
     )
     SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
-        # OR ANOTHER CASE
+        # OR NON-PASCAL CASES
         (?<!                            # Not preceded by...
             [ .!?—–\-,:;"”\'’\)\]}}]    # A space or select punctuation.
             |                           # OR
@@ -209,7 +208,7 @@ class SeparatorPatterns:
                                         # characters.
         )
         |                               # OR
-        # PART 5: POSITION PRECEDED BY ANOTHER CASE
+        # PART 5: POSITION PRECEDED BY A NON-PASCAL CASE
         (?<=                            # Preceded by...
             {PASCAL_WORD.pattern}       # A Pascal case word.
             |                           # OR
@@ -224,7 +223,7 @@ class SeparatorPatterns:
             {LOWERCASE_WORD.pattern}    # A lowercase word.
         )
         |                               # OR
-        # PART 6: POSITION FOLLOWED BY ANOTHER CASE
+        # PART 6: POSITION FOLLOWED BY A NON-PASCAL CASE
         (?=                             # Followed by...
             {PASCAL_WORD.pattern}       # A Pascal case word.
             |                           # OR
