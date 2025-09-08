@@ -40,7 +40,7 @@ class CasePatterns:
     )
     LOWERCASE_WORD: re.Pattern = re.compile(r"\b['’‘]?[a-z][a-z0-9'’‘]*\b")
     PASCAL_WORD: re.Pattern[str] = re.compile(
-        r'\b(?:[A-Z][a-zA-Z0-9]*){2,}\b'
+        r'\b(?:[A-Z][A-Z]*[a-z0-9]+)+\b'
     )
     SNAKE_WORD: re.Pattern[str] = re.compile(
         r'\b_?[a-z0-9]+(?:_[a-z0-9]+)+\b'
