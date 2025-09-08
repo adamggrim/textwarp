@@ -77,6 +77,13 @@ class SeparatorPatterns:
         SNAKE_CASE: Compiled regular expression object that captures a
             snake case string.
     """
+    _CASE_WORD_PATTERNS: list[re.Pattern] = [
+        pattern for name, pattern in vars(CasePatterns).items()
+        if not name.startswith('__') and isinstance(pattern, re.Pattern)
+    ]
+
+    _CASE_WORDS = '|'.join(p.pattern for p in _CASE_WORD_PATTERNS)
+
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
