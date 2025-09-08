@@ -154,17 +154,9 @@ class SeparatorPatterns:
         (?<!                            # Not preceded by...
             [ .!?—–\-,:;"”\'’\)\]}}]    # A space or select punctuation.
             |                           # OR
-            {_ANY_CASE_WORD_PATTERN}       # A Pascal case word.
-            |                           # OR
-            {CAMEL_WORD.pattern}        # A camel case word.
-            |                           # OR
-            {DOT_WORD.pattern}          # A dot case word.
-            |                           # OR
-            {KEBAB_WORD.pattern}        # A kebab case word.
-            |                           # OR
-            {SNAKE_WORD.pattern}        # A snake case word.
-            |                           # OR
-            {LOWERCASE_WORD.pattern}    # A lowercase word.
+            {_CASE_WORDS}               # Any Pascal, camel, dot,
+                                        # kebab, snake or lowercase
+                                        # word.
         )
         [ ]                             # A single space.
         (?!                             # Not followed by...
@@ -172,17 +164,9 @@ class SeparatorPatterns:
                                         # or an opening parenthesis,
                                         # bracket or brace.
             |                           # OR
-            {PASCAL_WORD.pattern}       # A Pascal case word.
-            |                           # OR
-            {CAMEL_WORD.pattern}        # A camel case word.
-            |                           # OR
-            {DOT_WORD.pattern}          # A dot case word.
-            |                           # OR
-            {KEBAB_WORD.pattern}        # A kebab case word.
-            |                           # OR
-            {SNAKE_WORD.pattern}        # A snake case word.
-            |                           # OR
-            {LOWERCASE_WORD.pattern}    # A lowercase word.
+            {_CASE_WORDS}               # Any Pascal, camel, dot,
+                                        # kebab, snake or lowercase
+                                        # word.
         )
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
@@ -217,32 +201,16 @@ class SeparatorPatterns:
         |                               # OR
         # PART 5: POSITION PRECEDED BY A NON-PASCAL CASE
         (?<=                            # Preceded by...
-            {PASCAL_WORD.pattern}       # A Pascal case word.
-            |                           # OR
-            {CAMEL_WORD.pattern}        # A camel case word.
-            |                           # OR
-            {DOT_WORD.pattern}          # A dot case word.
-            |                           # OR
-            {KEBAB_WORD.pattern}        # A kebab case word.
-            |                           # OR
-            {SNAKE_WORD.pattern}        # A snake case word.
-            |                           # OR
-            {LOWERCASE_WORD.pattern}    # A lowercase word.
+            {_CASE_WORDS}               # Any Pascal, camel, dot,
+                                        # kebab, snake or lowercase
+                                        # word.
         )
         |                               # OR
         # PART 6: POSITION FOLLOWED BY A NON-PASCAL CASE
         (?=                             # Followed by...
-            {PASCAL_WORD.pattern}       # A Pascal case word.
-            |                           # OR
-            {CAMEL_WORD.pattern}        # A camel case word.
-            |                           # OR
-            {DOT_WORD.pattern}          # A dot case word.
-            |                           # OR
-            {KEBAB_WORD.pattern}        # A kebab case word.
-            |                           # OR
-            {SNAKE_WORD.pattern}        # A snake case word.
-            |                           # OR
-            {LOWERCASE_WORD.pattern}    # A lowercase word.
+            {_CASE_WORDS}               # Any Pascal, camel, dot,
+                                        # kebab, snake or lowercase
+                                        # word.
         )
         |                               # OR
         # PART 6: NEWLINE CHARACTER
