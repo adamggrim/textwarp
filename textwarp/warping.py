@@ -32,9 +32,6 @@ def capitalize(text: str) -> str:
     Capitalize the first letter of each word, with exceptions for
     certain prefixes and mid-word capitalizations.
 
-    This function considers mid-word apostrophes as part of the word.
-    Hyphenated words are capitalized after each hyphen.
-
     Args:
         text: The string to capitalize.
 
@@ -54,6 +51,7 @@ def capitalize(text: str) -> str:
             str: The capitalized word.
         """
         word = match.group(0)
+        # Capitalize each part of a hyphenated word.
         parts = word.split('-')
         return '-'.join(_capitalize_with_exceptions(part) for part in parts)
 
@@ -163,7 +161,7 @@ def expand_contractions(text: str) -> str:
         )
         return _apply_casing(contraction, expanded_contraction)
 
-    # If there are no ambiguous contractions, spaCy is unnecessary.
+    # If there are no ambiguous contractions, spaCy isn't needed.
     if not WarpingPatterns.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
         def _simple_repl(match: re.Match[str]) -> str:
             return _repl_from_dict(match.group(0))
@@ -987,8 +985,9 @@ def _to_separator_case(
         else:
             # Substring is in all caps.
             if substring.isupper():
-                separator_substring = substring.replace(' ',
-                                                    separator_case.value)
+                separator_substring = substring.replace(
+                    ' ', separator_case.value
+                )
             # Substring begins with an alphabebtical letter.
             elif SeparatorPatterns.LETTER.match(substring):
                 separator_substring = substring.lower().replace(
