@@ -17,7 +17,7 @@ class Casing(Enum):
     CAPITALIZE = auto()
 
 
-class Separator(Enum):
+class CaseSeparator(Enum):
     """
     Specify which separator character to use in a string.
 
@@ -29,4 +29,3 @@ class Separator(Enum):
     DOT = '.'
     KEBAB = '-'
     SNAKE = '_'
-

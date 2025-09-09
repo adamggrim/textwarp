@@ -18,7 +18,7 @@ from textwarp.constants import (
     APOSTROPHE_VARIANTS,
     PAST_PARTICIPLE_TAGS
 )
-from textwarp.enums import Separator
+from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
     CasePatterns,
     SeparatorPatterns,
@@ -541,7 +541,7 @@ def to_kebab_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _to_separator_case(text, Separator.KEBAB)
+    return _to_separator_case(text, CaseSeparator.KEBAB)
 
 
 def to_morse(text: str) -> str:
@@ -954,7 +954,7 @@ def _uppercase_first_letter(text: str) -> str:
 
 def _to_separator_case(
     text: str,
-    separator_case: Separator
+    separator: CaseSeparator
 ) -> str:
     """
     Convert a string to kebab case or snake case.
@@ -974,11 +974,11 @@ def _to_separator_case(
         Returns:
             str: The other separator character.
         """
-        separator_mapping: dict[Separator, str] = {
-            Separator.KEBAB: "_",
-            Separator.SNAKE: "-",
+        separator_mapping: dict[CaseSeparator, str] = {
+            CaseSeparator.KEBAB: "_",
+            CaseSeparator.SNAKE: "-",
         }
-        return separator_mapping.get(separator_case)
+        return separator_mapping.get(separator)
     other_separator: str | None = _get_other_separator()
     no_apostrophes_text: str = _remove_apostrophes(text)
     substrings: list[str] = SeparatorPatterns.SEPARATOR_SPLIT.split(
@@ -993,10 +993,10 @@ def _to_separator_case(
             SeparatorPatterns.SNAKE_CASE.match(substring)):
             if substring.isupper():
                 separator_substring = separator_sub.sub(
-                    separator_case.value, substring
+                    separator.value, substring
                 )
             else:
-                separator_sub.sub(separator_case.value, substring.lower())
+                separator_sub.sub(separator.value, substring.lower())
         # Substring is in camel case or Pascal case.
         elif (CasePatterns.CAMEL_WORD.match(substring) or
             CasePatterns.PASCAL_WORD.match(substring)):
@@ -1008,7 +1008,7 @@ def _to_separator_case(
             for word in broken_words:
                 converted_word = word.lower()
                 converted_words.append(converted_word)
-            separator_substring = separator_case.value.join(
+            separator_substring = separator.value.join(
                 converted_words
             )
         # Substring is not in any of the above cases.
@@ -1016,12 +1016,12 @@ def _to_separator_case(
             # Substring is in all caps.
             if substring.isupper():
                 separator_substring = substring.replace(
-                    ' ', separator_case.value
+                    ' ', separator.value
                 )
             # Substring begins with an alphabebtical letter.
             elif SeparatorPatterns.LETTER.match(substring):
                 separator_substring = substring.lower().replace(
-                    ' ', separator_case.value
+                    ' ', separator.value
                 )
             # Substring does not meet either of the above conditions.
             else:
