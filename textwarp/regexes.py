@@ -58,9 +58,6 @@ class SeparatorPatterns:
             is part of a decade abbreviation or elision.
         CAMEL_WORD: Compiled regular expression object that captures a
             camel case string.
-        CAMEL_PASCAL_SPLIT: Compiled regular expression object for
-            splitting on the boundary between words in camel case and
-            Pascal case.
         KEBAB_CASE: Compiled regular expression object that captures a
             kebab case string.
         PASCAL_CASE: Compiled regular expression object that captures a
@@ -103,15 +100,16 @@ class SeparatorPatterns:
         )                               # decade.
         """, re.VERBOSE | re.IGNORECASE
     )
-    CAMEL_PASCAL_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<=[a-z0-9])   # Positive lookbehind to split after a lowercase
-                        # letter or digit
-        (?=[A-Z])       # Positive lookahead to split before an uppercase
-                        # letter
+    SPLIT_CAMEL_OR_PASCAL: re.Pattern[str] = re.compile(r'''
+        # PART 1: POSITION BETWEEN A LOWERCASE AND UPPERCASE LETTER
+        (?<=[a-z0-9])   # Preceded by a lowercase letter or a digit.
+        (?=[A-Z])       # Followed by an uppercase letter.
         |               # OR
-        (?<=[a-zA-Z])   # Positive lookbehind to split after a lowercase or
-                        # uppercase letter
-        (?=[0-9])       # Positive lookahead to split before a digit
+        # PART 2: POSITION BETWEEN AN UPPERCASE LETTER AND A DIGIT
+        (?<=[a-zA-Z])   # Preceded by a letter.
+        (?=[0-9])       # Followed by a digit.
+        ''', re.VERBOSE
+    )
         ''', re.VERBOSE
     )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
@@ -219,6 +217,7 @@ class SeparatorPatterns:
         )
         ''', re.VERBOSE
     )
+    SPLIT_FOR_SEPARATOR_CASE: re.Pattern[str] = re.compile(rf'''
 
 
 class WarpingPatterns:
