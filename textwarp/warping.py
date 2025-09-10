@@ -512,6 +512,18 @@ def to_camel_case(text: str) -> str:
         pascal_text
     )
 
+def to_dot_case(text: str) -> str:
+    """
+    Convert a string to dot case.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return _to_separator_case(text, CaseSeparator.DOT)
+
 
 def to_hexadecimal(text: str) -> str:
     """
@@ -957,7 +969,7 @@ def _to_separator_case(
     separator: CaseSeparator
 ) -> str:
     """
-    Convert a string to kebab case or snake case.
+    Convert a string to dot case, kebab case or snake case.
 
     Args:
         text: The string to convert.

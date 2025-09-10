@@ -19,6 +19,7 @@ from textwarp.warping import (
     to_alternating_caps,
     to_binary,
     to_camel_case,
+    to_dot_case,
     to_hexadecimal,
     to_kebab_case,
     to_morse,
@@ -64,6 +65,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'decode-morse': (
         from_morse,
         'convert from Morse code'
+    ),
+    'dot-case': (
+        to_dot_case,
+        'convert.to.dot.case'
     ),
     'expand-contractions': (
         expand_contractions,
