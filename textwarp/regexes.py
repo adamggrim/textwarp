@@ -109,39 +109,6 @@ class SeparatorCasePatterns:
         ''', re.VERBOSE
     )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
-    SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
-        (?<=\W\s)               # Positive lookbehind to split after a
-                                # non-word character followed by a space
-                                # character
-        |                       # OR
-        (?<=["“\'‘(\[{])        # Positive lookbehind to split after opening
-                                # quotes and brackets
-        |                       # OR
-        (?<=—\b)                # Postive lookbehind to split after an em dash
-                                # followed by a word boundary character
-        |                       # OR
-        (?<=\t)                 # Positive lookbehind to split after a tab
-                                # character
-        |                       # OR
-        (?=[.!?—,:;"”\'’)\]}])  # Positive lookahead to split before
-                                # punctuation or an em dash or bracket
-        |                       # OR
-        (?=\s+[–"”(\[{])        # Positive lookahead to split before spacing
-                                # followed by an en dash, quote or bracket
-        |                       # OR
-        (?=--)                  # Positive lookahead to split before two
-                                # consecutive hyphens
-        |                       # OR
-        (?=-\s+)                # Positive lookahead to split before a hyphen
-                                # followed by one or more whitespace characters
-        |                       # OR
-        (?=\s{2,})              # Positive lookahead to split before
-                                # consecutive spaces
-        |                       # OR
-        (?=\t)                  # Positive lookahead to split on a tab
-                                # character
-        ''', re.VERBOSE
-    )
     SPLIT_FOR_PASCAL_CASE: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR SELECT CASES
