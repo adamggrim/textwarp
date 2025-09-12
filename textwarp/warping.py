@@ -978,65 +978,44 @@ def _to_separator_case(
     Returns:
         str: The converted string.
     """
-    def _get_other_separator():
-        """
-        For a given a separator case, return the other separator
-        character.
-
-        Returns:
-            str: The other separator character.
-        """
-        separator_mapping: dict[CaseSeparator, str] = {
-            CaseSeparator.KEBAB: "_",
-            CaseSeparator.SNAKE: "-",
-        }
-        return separator_mapping.get(separator)
-    other_separator: str | None = _get_other_separator()
     no_apostrophes_text: str = _remove_apostrophes(text)
-    substrings: list[str] = SeparatorPatterns.SEPARATOR_SPLIT.split(
+    parts: list[str] = SeparatorCasePatterns.SPLIT_FOR_SEPARATOR_CASE.split(
         no_apostrophes_text
     )
-    separator_sub: re.Pattern[str] = re.compile(rf'{other_separator}| ')
-    separator_substrings: list[str] = []
-    for substring in substrings:
-        separator_substring: str
-        # Substring is already in a separator case.
-        if (SeparatorPatterns.KEBAB_CASE.match(substring) or
-            SeparatorPatterns.SNAKE_CASE.match(substring)):
-            if substring.isupper():
-                separator_substring = separator_sub.sub(
-                    separator.value, substring
-                )
-            else:
-                separator_sub.sub(separator.value, substring.lower())
-        # Substring is in camel case or Pascal case.
-        elif (CasePatterns.CAMEL_WORD.match(substring) or
-            CasePatterns.PASCAL_WORD.match(substring)):
+    converted_parts: list[str] = []
+
+    separator_pattern_name: str = f'{separator.name}_WORD'
+    separator_pattern = getattr(CasePatterns, separator_pattern_name)
+    other_separator_patterns = [s for s in CasePatterns if s != separator]
+
+    for part in parts:
+        converted_part: str
+        if not any(char.isalpha() for char in part):
+            converted_parts.append(part)
+            continue
+        # Word is already in the given separator case.
+        elif separator_pattern.match(part):
+            converted_part = part
+        # Word is in another separator case.
+        elif any(
+            getattr(CasePatterns, f'{s.name}_WORD').match(part)
+            for s in other_separator_patterns
+        ):
+            converted_part = SeparatorCasePatterns.ANY_SEPARATOR.sub(
+                separator.value,
+                part
+            )
+        # Word is in camel or Pascal case.
+        elif (CasePatterns.CAMEL_WORD.match(part)
+              or CasePatterns.PASCAL_WORD.match(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                SeparatorPatterns.CAMEL_PASCAL_SPLIT.split(substring)
+                SeparatorCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
-            converted_words: list[str] = []
-            for word in broken_words:
-                converted_word = word.lower()
-                converted_words.append(converted_word)
-            separator_substring = separator.value.join(
-                converted_words
-            )
-        # Substring is not in any of the above cases.
+            lower_words = [word.lower() for word in broken_words]
+            converted_part = separator.value.join(lower_words)
+        # Word is not in any of the above cases.
         else:
-            # Substring is in all caps.
-            if substring.isupper():
-                separator_substring = substring.replace(
-                    ' ', separator.value
-                )
-            # Substring begins with an alphabebtical letter.
-            elif SeparatorPatterns.LETTER.match(substring):
-                separator_substring = substring.lower().replace(
-                    ' ', separator.value
-                )
-            # Substring does not meet either of the above conditions.
-            else:
-                separator_substring = substring
-        separator_substrings.append(separator_substring)
-    return ''.join(separator_substrings)
+            converted_part = part.lower().replace(' ', separator.value)
+        converted_parts.append(converted_part)
+    return ''.join(converted_parts)
