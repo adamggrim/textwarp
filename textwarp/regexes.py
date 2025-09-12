@@ -35,7 +35,7 @@ class CasePatterns:
         r'\b[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\b'
     )
     KEBAB_WORD: re.Pattern[str] = re.compile(
-        r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
+        r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
     )
     LOWERCASE_WORD: re.Pattern = re.compile(r"\b['’‘]?[a-z][a-z0-9'’‘]*\b")
     PASCAL_WORD: re.Pattern[str] = re.compile(
