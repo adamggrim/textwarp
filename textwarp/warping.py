@@ -21,7 +21,7 @@ from textwarp.constants import (
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
     CasePatterns,
-    SeparatorPatterns,
+    SeparatorCasePatterns,
     WarpingPatterns
 )
 from textwarp.setup import nlp
@@ -606,7 +606,7 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = SeparatorPatterns.SPLIT_FOR_PASCAL.split(
+    words: list[str] = SeparatorCasePatterns.SPLIT_FOR_PASCAL_CASE.split(
         no_apostrophes_text
     )
     pascal_substrings: list[str] = []
@@ -670,7 +670,7 @@ def to_snake_case(text: str) -> str:
         str: The converted string.
     """
     return _to_separator_case(
-        text, SeparatorPatterns.SNAKE_CASE
+        text, SeparatorCasePatterns.SNAKE_CASE
     )
 
 
@@ -922,7 +922,7 @@ def _remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return SeparatorPatterns.APOSTROPHE_IN_WORD.sub('', text)
+    return SeparatorCasePatterns.APOSTROPHE_IN_WORD.sub('', text)
 
 
 def _replace_opening_quote(match: re.Match[str]) -> str:

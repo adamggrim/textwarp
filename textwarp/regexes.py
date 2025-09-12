@@ -46,7 +46,7 @@ class CasePatterns:
     )
 
 
-class SeparatorPatterns:
+class SeparatorCasePatterns:
     """
     Compiled regular expressions for conversion to and from separator
     cases.
