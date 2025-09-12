@@ -21,8 +21,6 @@ class CasePatterns:
             captures a dot case string.
         KEBAB_WORD: Compiled regular expression object that
             captures a kebab case string.
-        LOWERCASE_WORD: Compiled regular expression object that
-            captures a lowercase word.
         PASCAL_WORD: Compiled regular expression object that
             captures a Pascal case word.
         SNAKE_WORD: Compiled regular expression object that
@@ -37,7 +35,6 @@ class CasePatterns:
     KEBAB_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
     )
-    LOWERCASE_WORD: re.Pattern = re.compile(r"\b['’‘]?[a-z][a-z0-9'’‘]*\b")
     PASCAL_WORD: re.Pattern[str] = re.compile(
         r'\b(?:[A-Z][A-Z]*[a-z0-9]+)+\b'
     )
