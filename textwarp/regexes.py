@@ -32,7 +32,7 @@ class CasePatterns:
         r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
     )
     DOT_WORD: re.Pattern[str] = re.compile(
-        r'\b[a-z0-9]+(?:\.[a-z0-9]+)+\b'
+        r'\b[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\b'
     )
     KEBAB_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z0-9]+(?:\-[a-z0-9]+)+\b'
