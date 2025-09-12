@@ -145,7 +145,7 @@ class SeparatorCasePatterns:
                                 # character
         ''', re.VERBOSE
     )
-    SPLIT_FOR_PASCAL: re.Pattern[str] = re.compile(rf'''
+    SPLIT_FOR_PASCAL_CASE: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR NON-PASCAL CASES
         (?<!                            # Not preceded by...
