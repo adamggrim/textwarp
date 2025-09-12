@@ -36,7 +36,7 @@ class CasePatterns:
         r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
     )
     PASCAL_WORD: re.Pattern[str] = re.compile(
-        r'\b(?:[A-Z][A-Z]*[a-z0-9]+)+\b'
+        r'\b(?:[A-Z][A-Z0-9]*[a-z]+[A-Z0-9]*)+\b'
     )
     SNAKE_WORD: re.Pattern[str] = re.compile(
         r'\b_?[a-z0-9]+(?:_[a-z0-9]+)+\b'
