@@ -144,28 +144,28 @@ class SeparatorCasePatterns:
     )
     SPLIT_FOR_PASCAL_CASE: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
-        # OR NON-PASCAL CASES
+        # OR SELECT CASES
         (?<!                            # Not preceded by...
-            [ .!?—–\-,:;"”\'’\)\]}}]    # A space or select punctuation.
+            [\s.!?—–\-,:;"”“\'’‘\)\]}}] # A space character or select
+                                        # punctuation.
             |                           # OR
             {_CASE_WORDS}               # Any Pascal, camel, dot,
-                                        # kebab, snake or lowercase
-                                        # word.
+                                        # kebab or snake case word.
         )
         [ ]                             # A single space.
         (?!                             # Not followed by...
-            [ —–\-"“\'‘\(\[{{]          # A space, select punctuation
+            [\s—–\-"“”\'‘‘\(\[{{]       # A space, select punctuation
                                         # or an opening parenthesis,
                                         # bracket or brace.
             |                           # OR
             {_CASE_WORDS}               # Any Pascal, camel, dot,
-                                        # kebab, snake or lowercase
-                                        # word.
+                                        # kebab, snake case word.
         )
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
         (?<=                            # Preceded by...
-            [A-Za-z0-9]                 # A letter or digit.
+            [a-z][a-z0-9]*              # A letter followed by zero or
+                                        # more letters or digits.
         )
         [.\-]                           # A hyphen or period.
         (?=                             # Followed by...
@@ -175,41 +175,14 @@ class SeparatorCasePatterns:
         # PART 3: SNAKE CASE SEPARATOR
         _                               # An underscore.
         |                               # OR
-        # PART 3: POSITION FOLLOWED BY ENDING PUNCTUATION
-        (?=                             # Followed by...
-            [.!?—–\-,:;"”\'’\)\]}}]     # Select punctuation or a
-                                        # closing parenthesis, bracket
-                                        # or brace.
-            [ \t]+                      # One or more space or tab
-                                        # characters.
-        )
-        |                               # OR
-        # PART 4: POSITION PRECEDED BY ENDING PUNCTUATION
+        # PART 4: POSITION PRECEDED BY A WORD BOUNDARY
         (?<=                            # Preceded by...
-            [.!?—–\-,:;"”\'’\)\]}}]     # Select punctuation or a
-                                        # closing parenthesis, bracket
-                                        # or brace.
-            [ \t]+                      # One or more space or tab
-                                        # characters.
+            \b                          # A word boundary.
         )
         |                               # OR
-        # PART 5: POSITION PRECEDED BY A NON-PASCAL CASE
-        (?<=                            # Preceded by...
-            {_CASE_WORDS}               # Any Pascal, camel, dot,
-                                        # kebab, snake or lowercase
-                                        # word.
-        )
-        |                               # OR
-        # PART 6: POSITION FOLLOWED BY A NON-PASCAL CASE
+        # PART 5: POSITION FOLLOWED BY A WORD BOUNDARY
         (?=                             # Followed by...
-            {_CASE_WORDS}               # Any Pascal, camel, dot,
-                                        # kebab, snake or lowercase
-                                        # word.
-        )
-        |                               # OR
-        # PART 6: NEWLINE CHARACTER
-        (?=                             # Followed by...
-            \n                          # A newline character.
+            \b                          # A word boundary.
         )
         ''', re.VERBOSE
     )
