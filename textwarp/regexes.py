@@ -111,8 +111,6 @@ class SeparatorCasePatterns:
         (?=[0-9])       # Followed by a digit.
         ''', re.VERBOSE
     )
-        ''', re.VERBOSE
-    )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     SEPARATOR_SPLIT: re.Pattern[str] = re.compile(r'''
         (?<=\W\s)               # Positive lookbehind to split after a
