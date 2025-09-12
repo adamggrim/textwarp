@@ -81,6 +81,7 @@ class SeparatorCasePatterns:
 
     _CASE_WORDS = '|'.join(p.pattern for p in _CASE_WORD_PATTERNS)
 
+    ANY_SEPARATOR: re.Pattern = re.compile(r'[.\-_]')
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
