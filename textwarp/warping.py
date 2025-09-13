@@ -961,20 +961,32 @@ def _to_separator_case(
 
     separator_pattern_name: str = f'{separator.name}_WORD'
     separator_pattern = getattr(CasePatterns, separator_pattern_name)
-    other_separator_patterns = [s for s in CasePatterns if s != separator]
+    other_separators = [s for s in CaseSeparator if s != separator]
 
-    for part in parts:
+    for i, part in enumerate(parts):
         converted_part: str
-        if not any(char.isalpha() for char in part):
+        # Part contains no alphabetical characters and is not a single space.
+        if not any(char.isalpha() for char in part) and part != ' ':
             converted_parts.append(part)
             continue
-        # Word is already in the given separator case.
+        # Part is a single space.
+        elif part == ' ':
+            # Default to keeping the space.
+            converted_part = part
+            # Check if the space is surrounded by lowercase parts.
+            if i > 0 and i < len(parts) - 1:
+                prev_part = parts[i - 1]
+                next_part = parts[i + 1]
+                if (prev_part.isalpha() and prev_part.islower() and
+                        next_part.isalpha() and next_part.islower()):
+                    converted_part = separator.value
+        # Part is already in the given separator case.
         elif separator_pattern.match(part):
             converted_part = part
         # Part is in another separator case.
         elif any(
             getattr(CasePatterns, f'{s.name}_WORD').match(part)
-            for s in other_separator_patterns
+            for s in other_separators
         ):
             converted_part = SeparatorCasePatterns.ANY_SEPARATOR.sub(
                 separator.value,
@@ -991,6 +1003,6 @@ def _to_separator_case(
             converted_part = separator.value.join(lower_words)
         # Part is not in any of the above cases.
         else:
-            converted_part = part.lower().replace(' ', separator.value)
+            converted_part = part.lower()
         converted_parts.append(converted_part)
     return ''.join(converted_parts)
