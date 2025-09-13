@@ -509,7 +509,7 @@ def to_camel_case(text: str) -> str:
     """
     pascal_text: str = to_pascal_case(text)
     return CasePatterns.PASCAL_WORD.sub(
-        lambda m: _lowercase_first_letter(m.group(0)),
+        lambda m: _change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
 
@@ -622,7 +622,7 @@ def to_pascal_case(text: str) -> str:
             pascal_word = word
         # Word is in camel case.
         elif CasePatterns.CAMEL_WORD.match(word):
-            pascal_word = _uppercase_first_letter(word)
+            pascal_word = _change_first_letter_case(word, str.upper)
         # Word is not in Pascal or camel case.
         else:
             pascal_word = _capitalize_with_exceptions(word)
@@ -900,25 +900,6 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
     return None
 
 
-def _lowercase_first_letter(text: str) -> str:
-    """
-    Convert the first letter of the string to lowercase without
-    modifying any other letters.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted text.
-    """
-    for i, char in enumerate(text):
-        if char.isalpha():
-            # Lowercase the first letter and return the new text.
-            return text[:i] + char.lower() + text[i+1:]
-    # Return the original text if no letters were in the string.
-    return text
-
-
 def _preserve_existing_capitalization(word: str, _lower_word: str) -> str:
     """
     Preserve words that are already mixed-case.
@@ -968,25 +949,6 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
         return '‘' * len(quote_chars)
     else:
         return '“' * len(quote_chars)
-
-
-def _uppercase_first_letter(text: str) -> str:
-    """
-    Convert the first letter of the string to uppercase without
-    modifying any other letters.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted text.
-    """
-    for i, char in enumerate(text):
-        if char.isalpha():
-            # Uppercase the first letter and return the new text.
-            return text[:i] + char.upper() + text[i+1:]
-    # Return the original text if no letters were in the string.
-    return text
 
 
 def _to_separator_case(
