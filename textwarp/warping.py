@@ -1,4 +1,5 @@
 import random
+from typing import Callable
 
 import regex as re
 from spacy.tokens import Doc, Token
@@ -798,6 +799,30 @@ def _capitalize_with_exceptions(word: str) -> str:
             return result
 
     return word.capitalize()
+
+
+def _change_first_letter_case(
+    text: str,
+    casing_func: Callable[[str], str]
+) -> str:
+    """
+    Change the case of the first letter of a string without modifying
+    any other letters.
+
+    Args:
+        text: The string to convert.
+        casing_func: The function to apply to the first letter
+            (i.e., str.upper or str.lower).
+
+    Returns:
+        str: The converted text.
+    """
+    for i, char in enumerate(text):
+        if char.isalpha():
+            # Modify the first letter and return the new text.
+            return text[:i] + casing_func(char) + text[i+1:]
+    # Return the original text if there were no letters in the string.
+    return text
 
 
 def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
