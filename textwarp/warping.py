@@ -88,10 +88,7 @@ def cardinal_to_ordinal(text: str) -> str:
             suffix = 'th'
         else:
             suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
-        formatted_number: str = (
-            f'{number:,}' if ',' in number_str else str(number)
-        )
-        return f'{formatted_number}{suffix}'
+        return f'{number_str}{suffix}'
     return WarpingPatterns.CARDINAL.sub(replace_cardinal, text)
 
 
