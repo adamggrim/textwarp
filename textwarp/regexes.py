@@ -197,7 +197,7 @@ class WarpingPatterns:
         Returns:
             A compiled regular expression object.
         """
-        # Sort the contractions by length in descending order, so that
+        # Sort contractions by length in descending order, so that
         # longer contractions containing contraction substrings are
         # matched first (e.g., "can't've" before "can't").
         sorted_contractions = sorted(
@@ -327,7 +327,7 @@ class WarpingPatterns:
                                 # characters.
             )
         )
-        # TARGET: THE ACTUAL WORD TO MATCH
+        # TARGET: THE WORD TO MATCH
         {WORD_INCLUDING_PUNCTUATION.pattern}
         """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )

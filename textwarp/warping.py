@@ -974,7 +974,7 @@ def _to_separator_case(
         # Word is already in the given separator case.
         elif separator_pattern.match(part):
             converted_part = part
-        # Word is in another separator case.
+        # Part is in another separator case.
         elif any(
             getattr(CasePatterns, f'{s.name}_WORD').match(part)
             for s in other_separator_patterns
@@ -983,7 +983,7 @@ def _to_separator_case(
                 separator.value,
                 part
             )
-        # Word is in camel or Pascal case.
+        # Part is in camel or Pascal case.
         elif (CasePatterns.CAMEL_WORD.match(part)
               or CasePatterns.PASCAL_WORD.match(part)):
             # Break camel case and Pascal case into constituent words.
@@ -992,7 +992,7 @@ def _to_separator_case(
             )
             lower_words = [word.lower() for word in broken_words]
             converted_part = separator.value.join(lower_words)
-        # Word is not in any of the above cases.
+        # Part is not in any of the above cases.
         else:
             converted_part = part.lower().replace(' ', separator.value)
         converted_parts.append(converted_part)
