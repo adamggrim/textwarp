@@ -237,8 +237,8 @@ class WarpingPatterns:
         \b          # The start of a word boundary.
         \w+         # One or more word characters.
         (?:         # A non-capturing group of...
-        \.          # A period.
-        [a-z]+      # Followed by one or more word characters.
+            \.      # A period.
+            [a-z]+  # Followed by one or more word characters.
         )+          # One or more repetitions of the group.
         \.?         # An optional final period.
         \b          # The end of the word boundary.
