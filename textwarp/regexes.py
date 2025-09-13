@@ -233,7 +233,7 @@ class WarpingPatterns:
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern)
 
-    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r"""
+    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r'''
         # PART 1: PERIOD-SEPARATED INITIALISMS (e.g., U.S.A.)
         \b          # The start of a word boundary.
         \w+         # One or more word characters.
@@ -251,7 +251,7 @@ class WarpingPatterns:
                     # apostrophes, straight or curly single quotes or
                     # hyphens.
         \b          # The end of the word boundary.
-        """, re.VERBOSE | re.IGNORECASE
+        ''', re.VERBOSE | re.IGNORECASE
     )
 
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
@@ -308,7 +308,7 @@ class WarpingPatterns:
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
-    FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf"""
+    FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf'''
         # CONTEXT FOR SENTENCE START (2 CONDITIONS)
         (?:
             # CONDITION 1: AT THE START OF A LINE
@@ -330,7 +330,7 @@ class WarpingPatterns:
         )
         # TARGET: THE WORD TO MATCH
         {WORD_INCLUDING_PUNCTUATION.pattern}
-        """, re.VERBOSE | re.MULTILINE | re.IGNORECASE
+        ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_PATTERN: re.Pattern[str] = _create_name_prefix_regex(
