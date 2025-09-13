@@ -658,9 +658,7 @@ def to_snake_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _to_separator_case(
-        text, SeparatorCasePatterns.SNAKE_CASE
-    )
+    return _to_separator_case(text, CaseSeparator.SNAKE)
 
 
 def to_title_case(text: str) -> str:
