@@ -49,10 +49,6 @@ class SeparatorCasePatterns:
     cases.
 
     Attributes:
-        APOSTROPHE_IN_WORD: Compiled regular expression object that
-            captures a straight apostrophe surrounded by alphabetical
-            letter characters. Also captures a straight apostrophe that
-            is part of a decade abbreviation or elision.
         CAMEL_WORD: Compiled regular expression object that captures a
             camel case string.
         KEBAB_CASE: Compiled regular expression object that captures a
@@ -79,33 +75,39 @@ class SeparatorCasePatterns:
     _CASE_WORDS = '|'.join(p.pattern for p in _CASE_PATTERNS)
 
     ANY_SEPARATOR: re.Pattern = re.compile(r'[.\-_]')
-    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf"""
-        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
-        (?<=                            # Preceded by...
-            [a-z]                       # An alphabetical letter.
-        )
-        ['’‘]                           # An apostrophe.
-        (?=                             # Followed by...
-            [a-z]                       # An alphabetical letter.
-        )
-        |                               # OR
-        # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
-        ['’‘]                           # An apostrophe.
-        (?=                             # Followed by...
-            {'|'.join(ELISION_WORDS)}\b # An elision.
-            |                           # OR
-            \d{{2}}s\b                  # An abbreviation for a
-        )                               # decade.
-        """, re.VERBOSE | re.IGNORECASE
-    )
     SPLIT_CAMEL_OR_PASCAL: re.Pattern[str] = re.compile(r'''
-        # PART 1: POSITION BETWEEN A LOWERCASE AND UPPERCASE LETTER
-        (?<=[a-z0-9])   # Preceded by a lowercase letter or a digit.
-        (?=[A-Z])       # Followed by an uppercase letter.
+        # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
+        (?<=            # Preceded by...
+            [a-z]       # A lowercase letter.
+        )
+        (?=             # Followed by...
+            [A-Z]       # An uppercase letter.
+        )
         |               # OR
-        # PART 2: POSITION BETWEEN AN UPPERCASE LETTER AND A DIGIT
-        (?<=[a-zA-Z])   # Preceded by a letter.
-        (?=[0-9])       # Followed by a digit.
+        # PART 2: POSITION AFTER AN ACRYONYM
+        (?<=            # Preceded by...
+            [A-Z]       # An uppercase letter.
+        )
+        (?=             # Followed by...
+            [A-Z][a-z]  # An uppercase letter followed by a lowercase
+                        # letter.
+        )
+        |               # OR
+        # PART 3: POSITION BETWEEN A LETTER AND A DIGIT
+        (?<=            # Preceded by...
+            [A-Za-z]    # A letter.
+        )
+        (?=             # Followed by...
+            [0-9]       # A digit.
+        )
+        |               # OR
+        # PART 4: POSITION BETWEEN A DIGIT AND A LETTER
+        (?<=            # Preceded by...
+            [0-9]       # A digit.
+        )
+        (?=             # Followed by...
+            [A-Za-z]    # A letter.
+        )
         ''', re.VERBOSE
     )
     LETTER: re.Pattern = re.compile(r'[A-Za-z]')
@@ -251,6 +253,25 @@ class WarpingPatterns:
         """, re.VERBOSE | re.IGNORECASE
     )
 
+    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
+        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
+        (?<=                            # Preceded by...
+            [a-z]                       # An alphabetical letter.
+        )
+        ['’‘]                           # An apostrophe.
+        (?=                             # Followed by...
+            [a-z]                       # An alphabetical letter.
+        )
+        |                               # OR
+        # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
+        ['’‘]                           # An apostrophe.
+        (?=                             # Followed by...
+            {'|'.join(ELISION_WORDS)}\b # An elision.
+            |                           # OR
+            \d{{2}}s\b                  # An abbreviation for a
+        )                               # decade.
+        ''', re.VERBOSE | re.IGNORECASE
+    )
     AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_contraction_regex(
         AMBIGUOUS_CONTRACTIONS
     )
