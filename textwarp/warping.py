@@ -598,7 +598,7 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = SeparatorCasePatterns.SPLIT_FOR_PASCAL_CASE.split(
+    words: list[str] = SeparatorCasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
         no_apostrophes_text
     )
     pascal_substrings: list[str] = []
