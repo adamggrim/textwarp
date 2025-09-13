@@ -113,7 +113,7 @@ class SeparatorCasePatterns:
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR SELECT CASES
         (?<!                            # Not preceded by...
-            [\s.!?—–\-,:;"”“\'’‘\)\]}}] # A space character or select
+            [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
                                         # punctuation.
             |                           # OR
             {_CASE_WORD}                # Any Pascal, camel, dot,
@@ -121,7 +121,7 @@ class SeparatorCasePatterns:
         )
         [ ]                             # A single space.
         (?!                             # Not followed by...
-            [\s—–\-"“”\'‘‘\(\[{{]       # A space, select punctuation
+            [\s—–\-"“”\'‘‘(\[{{]        # A space, select punctuation
                                         # or an opening parenthesis,
                                         # bracket or brace.
             |                           # OR
