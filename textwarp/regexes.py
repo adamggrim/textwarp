@@ -71,8 +71,7 @@ class SeparatorCasePatterns:
         pattern for name, pattern in vars(CasePatterns).items()
         if not name.startswith('__') and isinstance(pattern, re.Pattern)
     ]
-
-    _CASE_WORDS = '|'.join(p.pattern for p in _CASE_PATTERNS)
+    _CASE_WORD: str = '|'.join(p.pattern for p in _CASE_PATTERNS)
 
     ANY_SEPARATOR: re.Pattern = re.compile(r'[.\-_]')
     SPLIT_CAMEL_OR_PASCAL: re.Pattern[str] = re.compile(r'''
@@ -118,7 +117,7 @@ class SeparatorCasePatterns:
             [\s.!?—–\-,:;"”“\'’‘\)\]}}] # A space character or select
                                         # punctuation.
             |                           # OR
-            {_CASE_WORDS}               # Any Pascal, camel, dot,
+            {_CASE_WORD}                # Any Pascal, camel, dot,
                                         # kebab or snake case word.
         )
         [ ]                             # A single space.
@@ -127,7 +126,7 @@ class SeparatorCasePatterns:
                                         # or an opening parenthesis,
                                         # bracket or brace.
             |                           # OR
-            {_CASE_WORDS}               # Any Pascal, camel, dot,
+            {_CASE_WORD}                # Any Pascal, camel, dot,
                                         # kebab, snake case word.
         )
         |                               # OR
