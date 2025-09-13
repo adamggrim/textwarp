@@ -109,7 +109,6 @@ class SeparatorCasePatterns:
         )
         ''', re.VERBOSE
     )
-    LETTER: re.Pattern = re.compile(r'[A-Za-z]')
     SPLIT_FOR_PASCAL_CASE: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR SELECT CASES
