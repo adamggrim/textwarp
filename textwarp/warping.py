@@ -301,7 +301,7 @@ def ordinal_to_cardinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def replace_ordinal(match):
+    def replace_ordinal(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched ordinal number with its
         cardinal equivalent.
@@ -405,7 +405,7 @@ def redact(text: str) -> str:
     return WarpingPatterns.WORD_CHARACTER.sub('█', text)
 
 
-def reverse(text):
+def reverse(text: str) -> str:
     """
     Reverses the characters of a given string.
 
