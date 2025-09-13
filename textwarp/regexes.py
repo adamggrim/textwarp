@@ -378,4 +378,3 @@ class WarpingPatterns:
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
-    WORD_CHARACTERS: re.Pattern[str] = re.compile(r'\w+')
