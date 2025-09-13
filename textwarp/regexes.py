@@ -275,8 +275,29 @@ class WarpingPatterns:
     AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_contraction_regex(
         AMBIGUOUS_CONTRACTIONS
     )
-    CARDINAL: re.Pattern[str] = re.compile(
-        r'(?<!\d\.)\b(\d{1,3}(?:,\d{3})+|\d+)\b(?!\.\d)'
+    CARDINAL: re.Pattern[str] = re.compile(r'''
+        # A CARDINAL INTEGER WITH OPTIONAL THOUSANDS SEPARATORS
+        (?<!            # Not preceded by...
+            \d          # A digit.
+            \.          # Followed by a period.
+        )
+        \b              # A word boundary.
+        (?:             # A non-capturing group for...
+            # A NUMBER WITH THOUSANDS SEPARATORS
+            \d{1,3}     # One to three digits.
+            (?:         # A non-capturing group for...
+                ,\d{3}  # A comma followed by exactly three digits.
+            )+          # One or more times.
+            |           # OR
+            # A NUMBER WITHOUT THOUSANDS SEPARATORS
+            \d+         # One or more digits.
+        )
+        \b              # A word boundary.
+        (?!             # Not followed by...
+            \.          # A period.
+            \d          # Followed by a digit.
+        )
+        ''', re.VERBOSE
     )
     CONTRACTION: re.Pattern[str] = _create_contraction_regex(
         set(CONTRACTIONS_MAP.keys())
