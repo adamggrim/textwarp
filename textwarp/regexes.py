@@ -142,14 +142,11 @@ class SeparatorCasePatterns:
         # PART 3: SNAKE CASE SEPARATOR
         _                               # An underscore.
         |                               # OR
-        # PART 4: POSITION PRECEDED BY A WORD BOUNDARY
-        (?<=                            # Preceded by...
-            \b                          # A word boundary.
+        # PART 4: WORD BOUNDARY
+        \b                              # A word boundary.
+        ''', re.VERBOSE
+    )
         )
-        |                               # OR
-        # PART 5: POSITION FOLLOWED BY A WORD BOUNDARY
-        (?=                             # Followed by...
-            \b                          # A word boundary.
         )
         ''', re.VERBOSE
     )
