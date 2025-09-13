@@ -146,11 +146,17 @@ class SeparatorCasePatterns:
         \b                              # A word boundary.
         ''', re.VERBOSE
     )
+    SPLIT_FOR_SEPARATOR_CONVERSION: re.Pattern[str] = re.compile(r'''
+        # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
+        (?<!        # Not preceded by...
+            [.\-]   # A period or hyphen.
         )
+        \b          # A word boundary.
+        (?!         # Not followed by...
+            [.\-]   # A period or hyphen.
         )
         ''', re.VERBOSE
     )
-    SPLIT_FOR_SEPARATOR_CASE: re.Pattern[str] = re.compile(rf'''
 
 
 class WarpingPatterns:

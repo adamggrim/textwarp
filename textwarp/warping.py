@@ -957,7 +957,7 @@ def _to_separator_case(
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    parts: list[str] = SeparatorCasePatterns.SPLIT_FOR_SEPARATOR_CASE.split(
+    parts: list[str] = SeparatorCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
         no_apostrophes_text
     )
     converted_parts: list[str] = []
