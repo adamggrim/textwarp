@@ -314,7 +314,7 @@ class WarpingPatterns:
     NAME_PREFIX_PATTERN: re.Pattern[str] = _create_name_prefix_regex(
         NAME_PREFIXES
     )
-    OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r"""
+    OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r'''
         # PART 1: SINGLE QUOTES
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
@@ -337,16 +337,20 @@ class WarpingPatterns:
         (?:                 # OPENING CONTEXT (DOUBLE QUOTES)
             ^               # The start of a string.
             |               # OR
-            (?<=[\s([{])    # Preceded by a whitespace character,
+            (?<=            # Preceded by...
+                [\s([{]     # A whitespace character,
                             # opening parenthesis, opening square
                             # bracket or opening curly brace.
+            )
         )
         (                   # GROUP 2 (DOUBLE QUOTES)
-        (?<!['’]\s)         # Not preceded by a straight or closing
-                            # single quote followed by a space.
+            (?<!            # Not preceded by...
+                ['’]\s      # A straight or closing single quote
+                            # followed by a space.
+            )
         "+                  # One or more straight double quotes.
         )
-        """, re.VERBOSE
+        ''', re.VERBOSE
     )
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
