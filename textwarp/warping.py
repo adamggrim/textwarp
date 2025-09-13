@@ -377,7 +377,7 @@ def punct_to_outside(text: str) -> str:
 
 def randomize(text: str) -> str:
     """
-    Randomize the characters in each word of a given string.
+    Randomize the characters of a given string.
 
     Args:
         text: The string to randomize.
@@ -385,19 +385,10 @@ def randomize(text: str) -> str:
     Returns:
         str: The randomized string.
     """
-    def _repl(_):
-        return next(randomized_iter)
-
-    words = WarpingPatterns.WORD_CHARACTERS.findall(text)
-
-    randomized_words = []
-    for word in words:
-        chars = list(word)
-        random.shuffle(chars)
-        randomized_words.append(''.join(chars))
-
-    randomized_iter = iter(randomized_words)
-    return WarpingPatterns.WORD_CHARACTERS.sub(_repl, text)
+    # Convert the string into a list of characters.
+    char_list: list[str] = list(text)
+    random.shuffle(char_list)
+    return ''.join(char_list)
 
 
 def redact(text: str) -> str:
