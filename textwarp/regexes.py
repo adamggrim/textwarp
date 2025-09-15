@@ -10,21 +10,43 @@ from textwarp.config import (
 )
 
 
-class CasePatterns:
+class ProgrammingCasePatterns:
     """
-    Compiled regular expressions for identifying select cases.
+    Compiled regular expressions for identifying and converting to
+    and from programming cases.
 
     Attributes:
-        CAMEL_WORD: Compiled regular expression object that
-            captures a camel case string.
-        DOT_WORD: Compiled regular expression object that
-            captures a dot case string.
-        KEBAB_WORD: Compiled regular expression object that
-            captures a kebab case string.
-        PASCAL_WORD: Compiled regular expression object that
-            captures a Pascal case word.
-        SNAKE_WORD: Compiled regular expression object that
-            captures a snake case string.
+        Case-Matching Patterns:
+            CAMEL_WORD: Compiled regular expression object that captures
+                a camel case word.
+            DOT_WORD: Compiled regular expression object that captures a
+                dot case word.
+            KEBAB_WORD: Compiled regular expression object that captures
+                a kebab case word.
+            PASCAL_WORD: Compiled regular expression object that
+                captures a Pascal case word.
+            SNAKE_WORD: Compiled regular expression object that captures
+                a snake case word.
+
+        Splitting Patterns:
+            ANY_SEPARATOR: Compiled regular expression object that
+                captures any separator character used in dot case, kebab
+                case or snake case.
+            SPLIT_CAMEL_OR_PASCAL: Compiled regular expression object
+                for splitting camel or Pascal case strings before
+                converting broken words to another programming case.
+            SPLIT_FOR_PASCAL_CONVERSION: Compiled regular expression
+                object for splitting strings before converting to Pascal
+                case.
+            SPLIT_FOR_SEPARATOR_CONVERSION: Compiled regular expression
+                object for splitting strings before converting to kebab
+                or snake case.
+
+        Helper Patterns:
+            _CASE_PATTERNS: A tuple of all compiled regular expression
+                objects for programming cases.
+            _CASE_WORD: A regular expression string that matches any
+                programming case word.
     """
     CAMEL_WORD: re.Pattern = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
@@ -42,35 +64,13 @@ class CasePatterns:
         r'\b_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b'
     )
 
-
-class SeparatorCasePatterns:
-    """
-    Compiled regular expressions for conversion to and from separator
-    cases.
-
-    Attributes:
-        CAMEL_WORD: Compiled regular expression object that captures a
-            camel case string.
-        KEBAB_CASE: Compiled regular expression object that captures a
-            kebab case string.
-        PASCAL_CASE: Compiled regular expression object that captures a
-            Pascal case string.
-        PASCAL_SPLIT: Compiled regular expression object for splitting
-            strings before converting substrings to camel case or
-            Pascal case.
-        PASCAL_WORD: Compiled regular expression object that captures a
-            Pascal case word, with capturing groups around the
-            first letter and the rest of the word.
-        SEPARATOR_SPLIT: Compiled regular expression object for
-            splitting strings before converting substrings to kebab
-            case or snake case.
-        SNAKE_CASE: Compiled regular expression object that captures a
-            snake case string.
-    """
-    _CASE_PATTERNS: list[re.Pattern] = [
-        pattern for name, pattern in vars(CasePatterns).items()
-        if not name.startswith('__') and isinstance(pattern, re.Pattern)
-    ]
+    _CASE_PATTERNS: tuple[re.Pattern] = (
+        CAMEL_WORD,
+        DOT_WORD,
+        KEBAB_WORD,
+        PASCAL_WORD,
+        SNAKE_WORD
+    )
     _CASE_WORD: str = '|'.join(p.pattern for p in _CASE_PATTERNS)
 
     ANY_SEPARATOR: re.Pattern = re.compile(r'[.\-_]')
@@ -111,7 +111,7 @@ class SeparatorCasePatterns:
     )
     SPLIT_FOR_PASCAL_CONVERSION: re.Pattern[str] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
-        # OR SELECT CASES
+        # OR PROGRAMMING CASE
         (?<!                            # Not preceded by...
             [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
                                         # punctuation.

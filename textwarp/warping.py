@@ -21,8 +21,7 @@ from textwarp.constants import (
 )
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
-    CasePatterns,
-    SeparatorCasePatterns,
+    ProgrammingCasePatterns,
     WarpingPatterns
 )
 from textwarp.setup import nlp
@@ -496,7 +495,7 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text: str = to_pascal_case(text)
-    return CasePatterns.PASCAL_WORD.sub(
+    return ProgrammingCasePatterns.PASCAL_WORD.sub(
         lambda m: _change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
@@ -595,8 +594,10 @@ def to_pascal_case(text: str) -> str:
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    words: list[str] = SeparatorCasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
-        no_apostrophes_text
+    words: list[str] = (
+        ProgrammingCasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
+            no_apostrophes_text
+        )
     )
     pascal_substrings: list[str] = []
 
@@ -606,10 +607,10 @@ def to_pascal_case(text: str) -> str:
             pascal_substrings.append(word)
             continue
         # Word is already in Pascal case.
-        elif CasePatterns.PASCAL_WORD.match(word):
+        elif ProgrammingCasePatterns.PASCAL_WORD.match(word):
             pascal_word = word
         # Word is in camel case.
-        elif CasePatterns.CAMEL_WORD.match(word):
+        elif ProgrammingCasePatterns.CAMEL_WORD.match(word):
             pascal_word = _change_first_letter_case(word, str.upper)
         # Word is not in Pascal or camel case.
         else:
@@ -952,13 +953,18 @@ def _to_separator_case(
         str: The converted string.
     """
     no_apostrophes_text: str = _remove_apostrophes(text)
-    parts: list[str] = SeparatorCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
-        no_apostrophes_text
+    parts: list[str] = (
+        ProgrammingCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
+            no_apostrophes_text
+        )
     )
     converted_parts: list[str] = []
 
     separator_pattern_name: str = f'{separator.name}_WORD'
-    separator_pattern = getattr(CasePatterns, separator_pattern_name)
+    separator_pattern = getattr(
+        ProgrammingCasePatterns,
+        separator_pattern_name
+    )
     other_separators = [s for s in CaseSeparator if s != separator]
 
     for i, part in enumerate(parts):
@@ -983,19 +989,21 @@ def _to_separator_case(
             converted_part = part
         # Part is in another separator case.
         elif any(
-            getattr(CasePatterns, f'{s.name}_WORD').match(part)
+            getattr(ProgrammingCasePatterns, f'{s.name}_WORD').match(part)
             for s in other_separators
         ):
-            converted_part = SeparatorCasePatterns.ANY_SEPARATOR.sub(
-                separator.value,
-                part
+            converted_part = (
+                ProgrammingCasePatterns.ANY_SEPARATOR.sub(
+                    separator.value,
+                    part
+                )
             )
         # Part is in camel or Pascal case.
-        elif (CasePatterns.CAMEL_WORD.match(part)
-              or CasePatterns.PASCAL_WORD.match(part)):
+        elif (ProgrammingCasePatterns.CAMEL_WORD.match(part)
+              or ProgrammingCasePatterns.PASCAL_WORD.match(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                SeparatorCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
+                ProgrammingCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
             lower_words = [word.lower() for word in broken_words]
             converted_part = separator.value.join(lower_words)
