@@ -49,7 +49,7 @@ class ProgrammingCasePatterns:
                 programming case word.
     """
     CAMEL_WORD: re.Pattern = re.compile(
-        r'\b[a-z][a-z0-9]*[A-Z][a-zA-Z0-9]*\b'
+        r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
     )
     DOT_WORD: re.Pattern[str] = re.compile(
         r'\b[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\b'
@@ -58,7 +58,7 @@ class ProgrammingCasePatterns:
         r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
     )
     PASCAL_WORD: re.Pattern[str] = re.compile(
-        r'\b(?:[A-Z][A-Z0-9]*[a-z]+[A-Z0-9]*)+\b'
+        r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
     )
     SNAKE_WORD: re.Pattern[str] = re.compile(
         r'\b_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b'
