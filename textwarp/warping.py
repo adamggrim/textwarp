@@ -11,6 +11,7 @@ from textwarp.config import (
     MIXED_CASE_WORDS_MAP,
     MORSE_MAP,
     NAME_PREFIX_EXCEPTIONS,
+    OTHER_PREFIXED_NAMES_MAP,
     REVERSED_MORSE_MAP
 )
 from textwarp.constants import (
