@@ -29,8 +29,8 @@ from textwarp.setup import nlp
 
 def capitalize(text: str) -> str:
     """
-    Capitalize the first letter of each word, with exceptions for
-    certain prefixes and mid-word capitalizations.
+    Capitalize the first letter of each word, handling special name
+    prefixes and preserving other mid-word capitalizations.
 
     Args:
         text: The string to capitalize.
@@ -664,8 +664,8 @@ def to_snake_case(text: str) -> str:
 
 def to_title_case(text: str) -> str:
     """
-    Convert a string to title case, with exceptions for certain
-    prefixes and mid-word capitalizations.
+    Convert a string to title case, handling special name prefixes and
+    preserving other mid-word capitalizations.
 
     Args:
         text: The string to convert.
@@ -874,8 +874,8 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
     Handle prefixed names.
 
     Args:
-        word: The word to capitalize.
-        lower_word: The lowercase word.
+        word: The name to capitalize.
+        lower_word: The lowercase name.
 
     Returns:
         str | None: The capitalized name, or None if the
@@ -892,11 +892,11 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
 
 def _preserve_existing_capitalization(word: str, _lower_word: str) -> str:
     """
-    Preserve words that are already mixed-case.
+    Preserve the capitalization of a word that is already mixed-case.
 
     Args:
         word: The word to check.
-        _lower_word: The lowercase word.
+        _lower_word: The lowercase word (unused).
 
     Returns:
         str: The original word, or None if the word is all
@@ -909,8 +909,7 @@ def _preserve_existing_capitalization(word: str, _lower_word: str) -> str:
 
 def _remove_apostrophes(text: str) -> str:
     """
-    Remove apostrophes from a string without removing single
-    quotes.
+    Remove apostrophes from a string without removing single quotes.
 
     Args:
         text: The string to convert.
@@ -972,7 +971,8 @@ def _to_separator_case(
 
     for i, part in enumerate(parts):
         converted_part: str
-        # Part contains no alphabetical characters and is not a single space.
+        # Part contains no alphabetical characters and is not a single
+        # space.
         if not any(char.isalpha() for char in part) and part != ' ':
             converted_parts.append(part)
             continue

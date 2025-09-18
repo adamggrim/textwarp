@@ -12,25 +12,25 @@ from textwarp.config import (
 
 class ProgrammingCasePatterns:
     """
-    Compiled regular expressions for identifying and converting to
-    and from programming cases.
+    A namespace for compiled regular expressions for identifying and
+    converting to and from programming cases.
 
     Attributes:
         Case-Matching Patterns:
-            CAMEL_WORD: Compiled regular expression object that captures
+            CAMEL_WORD: Compiled regular expression object that matches
                 a camel case word.
-            DOT_WORD: Compiled regular expression object that captures a
+            DOT_WORD: Compiled regular expression object that matches a
                 dot case word.
-            KEBAB_WORD: Compiled regular expression object that captures
+            KEBAB_WORD: Compiled regular expression object that matches
                 a kebab case word.
             PASCAL_WORD: Compiled regular expression object that
-                captures a Pascal case word.
-            SNAKE_WORD: Compiled regular expression object that captures
+                matches a Pascal case word.
+            SNAKE_WORD: Compiled regular expression object that matches
                 a snake case word.
 
         Splitting Patterns:
             ANY_SEPARATOR: Compiled regular expression object that
-                captures any separator character used in dot case, kebab
+                matches any separator character used in dot case, kebab
                 case or snake case.
             SPLIT_CAMEL_OR_PASCAL: Compiled regular expression object
                 for splitting camel or Pascal case strings before
@@ -41,12 +41,6 @@ class ProgrammingCasePatterns:
             SPLIT_FOR_SEPARATOR_CONVERSION: Compiled regular expression
                 object for splitting strings before converting to kebab
                 or snake case.
-
-        Helper Patterns:
-            _CASE_PATTERNS: A tuple of all compiled regular expression
-                objects for programming cases.
-            _CASE_WORD: A regular expression string that matches any
-                programming case word.
     """
     CAMEL_WORD: re.Pattern = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
@@ -161,51 +155,60 @@ class ProgrammingCasePatterns:
 
 class WarpingPatterns:
     """
-    Compiled regular expressions and strings for parsing and warping
-    text.
+    A namespace for compiled regular expressions for warping text.
 
     Attributes:
-        WORD_INCLUDING_PUNCTUATION: Compiled regular expression object
-            that captures a sequence of word characters, apostrophes,
-            hyphens or period-separated initialisms.
-
-        CARDINAL: Compiled regular expression object that captures a
+        APOSTROPHE_IN_WORD: Compiled regular expression object that
+            matches a straight apostrophe surrounded by alphabetical
+            letter characters.
+        AMBIGUOUS_CONTRACTION_PATTERN: Compiled regular expression
+            object that matches any contraction that can expand to
+            multiple phrases.
+        CARDINAL: Compiled regular expression object that matches a
             cardinal number.
+        CONTRACTION: Compiled regular expression object that matches
+            any expandable contraction.
+        CONTRACTION_SUFFIX_TOKENS_PATTERN: Compiled regular expression
+            object that matches any contraction suffix.
+        DASH: Compiled regular expression object that matches an en or
+            em dash.
         DOUBLE_HYPHENS: Compiled regular expression object that
-            captures hyphens that function as an em dash.
-        FIRST_WORD_IN_SENTENCE: Compiled regular expression object for
-            capturing the first letter of a string or the first letter
+            matches double hyphens that function as an em dash.
+        FIRST_WORD_IN_SENTENCE: Compiled regular expression object that
+            matches the first letter of a string or the first letter
             after a sentence-ending punctuation character.
+        MULTIPLE_SPACES: Compiled regular expression object that
+            matches two or more consecutive spaces.
+        NAME_PREFIX_PATTERN: Compiled regular expression object that
+            matches any name prefix.
         OPENING_STRAIGHT_QUOTES: Compiled regular expression object
-            that captures opening straight quotes.
-        ORDINAL: Compiled regular expression object that captures an
+            that matches opening straight quotes.
+        ORDINAL: Compiled regular expression object that matches an
             ordinal number.
-        PUNCT_INSIDE: Compiled regular expression object with capturing
-            groups for punctuation inside quotes and quotes outside
-            punctuation.
-        PUNCT_OUTSIDE: Compiled regular expression object with
-            capturing groups for quotes inside punctuation and
+        PUNCT_INSIDE: Compiled regular expression object for punctuation
+            inside quotes.
+        PUNCT_OUTSIDE: Compiled regular expression object for
             punctuation outside quotes.
     """
     def _create_contraction_regex(contractions: set[str]) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
-        contraction in the given contractions map.
+        word in the given set.
 
         Args:
-            contractions: An iterable of contractions.
+            words: A set of words.
 
         Returns:
             A compiled regular expression object.
         """
-        # Sort contractions by length in descending order, so that
-        # longer contractions containing contraction substrings are
-        # matched first (e.g., "can't've" before "can't").
-        sorted_contractions = sorted(
-            contractions, key=len, reverse=True
-        )
-        # Replace straight apostrophes with a regex character class that
-        # matches both straight and curly apostrophes.
+        sorted_words = words
+        if sort_by_length:
+            # Sort words by length in descending order, so that longer
+            # words containing other words from the set are matched
+            # first (e.g., "can't've" before "can't").
+            sorted_words = sorted(
+                sorted_words, key=len, reverse=True
+            )
         escaped_patterns = [
             re.escape(c).replace("'", "['’‘]") for c in sorted_contractions
         ]
@@ -235,22 +238,25 @@ class WarpingPatterns:
 
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r'''
         # PART 1: PERIOD-SEPARATED INITIALISMS (e.g., U.S.A.)
-        \b          # The start of a word boundary.
+        \b          # A word boundary.
         \w+         # One or more word characters.
-        (?:         # A non-capturing group of...
+        (?:         # A non-capturing group for...
             \.      # A period.
-            [a-z]+  # Followed by one or more word characters.
+            [a-z]+  # Followed by one or more alphabetical letters.
         )+          # One or more repetitions of the group.
         \.?         # An optional final period.
-        \b          # The end of the word boundary.
-        |           # OR
-        # PART 2: WORDS INCLUDING OTHER INTERNAL PUNCTUATION
-        \b          # The start of a word boundary.
-        [a-z]       # A word character.
         [\w'‘’-]*   # Zero or more word characters, straight or curly
                     # apostrophes, straight or curly single quotes or
                     # hyphens.
-        \b          # The end of the word boundary.
+        \b          # A word boundary.
+        |           # OR
+        # PART 2: WORDS INCLUDING OTHER INTERNAL PUNCTUATION
+        \b          # A word boundary.
+        [a-z]       # An alphabetical letter.
+        [\w'‘’-]*   # Zero or more word characters, straight or curly
+                    # apostrophes, straight or curly single quotes or
+                    # hyphens.
+        \b          # A word boundary.
         ''', re.VERBOSE | re.IGNORECASE
     )
 
@@ -309,7 +315,7 @@ class WarpingPatterns:
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf'''
-        # CONTEXT FOR SENTENCE START (2 CONDITIONS)
+        # CONTEXT FOR SENTENCE START
         (?:
             # CONDITION 1: AT THE START OF A LINE
             ^
