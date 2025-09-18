@@ -58,6 +58,11 @@ LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
     'lowercase_particles.json'
 ))
 
+# Suffixes to split off from map-capitalized words.
+MAP_SUFFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
+    'map_suffix_exceptions.json'
+))
+
 # Map pairing each mixed-case word with its lowercase version.
 MIXED_CASE_WORDS_MAP: dict[str, str] = load_json_from_data(
     'mixed_case_words_map.json'

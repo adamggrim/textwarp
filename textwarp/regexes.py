@@ -332,6 +332,10 @@ class WarpingPatterns:
         {WORD_INCLUDING_PUNCTUATION.pattern}
         ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE
     )
+    MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
+        set(MAP_SUFFIX_EXCEPTIONS),
+        sort_by_length=True
+    )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_PATTERN: re.Pattern[str] = _create_name_prefix_regex(
         NAME_PREFIXES
