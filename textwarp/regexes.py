@@ -192,7 +192,11 @@ class WarpingPatterns:
         PUNCT_OUTSIDE: Compiled regular expression object for
             punctuation outside quotes.
     """
-    def _create_contraction_regex(contractions: set[str]) -> re.Pattern:
+    @staticmethod
+    def _create_words_regex(
+        words: set[str],
+        sort_by_length: bool = False
+    ) -> re.Pattern:
         """
         Create a compiled regular expression object that matches any
         word in the given set.
@@ -217,26 +221,6 @@ class WarpingPatterns:
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
-
-    def _create_name_prefix_regex(name_prefixes: set[str]) -> re.Pattern:
-        """
-        Create a compiled regular expression object that matches any
-        name prefix in the given set.
-
-        Args:
-            name_prefixes: A set of name prefixes.
-
-        Returns:
-            A compiled regular expression object.
-        """
-        # Replace straight apostrophes with a regex character class that
-        # matches both straight and curly apostrophes.
-        prefix_patterns = [
-            re.escape(p).replace("'", "['’‘]") for p in name_prefixes
-        ]
-        pattern_string = '|'.join(prefix_patterns)
-        final_pattern = rf'\b{pattern_string}\b'
-        return re.compile(final_pattern)
 
     WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r'''
         # PART 1: PERIOD-SEPARATED INITIALISMS (e.g., U.S.A.)
@@ -281,8 +265,9 @@ class WarpingPatterns:
         )                               # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
-    AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_contraction_regex(
-        AMBIGUOUS_CONTRACTIONS
+    AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_words_regex(
+        AMBIGUOUS_CONTRACTIONS,
+        sort_by_length=True
     )
     CARDINAL: re.Pattern[str] = re.compile(r'''
         # A CARDINAL INTEGER WITH OPTIONAL THOUSANDS SEPARATORS
@@ -308,8 +293,9 @@ class WarpingPatterns:
         )
         ''', re.VERBOSE
     )
-    CONTRACTION: re.Pattern[str] = _create_contraction_regex(
-        set(CONTRACTIONS_MAP.keys())
+    CONTRACTION: re.Pattern[str] = _create_words_regex(
+        set(CONTRACTIONS_MAP.keys()),
+        sort_by_length=True
     )
     CONTRACTION_SUFFIX_TOKENS_PATTERN: re.Pattern[str] = (
         _create_words_regex(CONTRACTION_SUFFIX_TOKENS, sort_by_length=True)
@@ -345,7 +331,7 @@ class WarpingPatterns:
         sort_by_length=True
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
-    NAME_PREFIX_PATTERN: re.Pattern[str] = _create_name_prefix_regex(
+    NAME_PREFIX_PATTERN: re.Pattern[str] = _create_words_regex(
         NAME_PREFIXES
     )
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r'''
