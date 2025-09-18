@@ -792,7 +792,7 @@ def _capitalize_with_exceptions(word: str) -> str:
 
 
 def _change_first_letter_case(
-    text: str,
+    word: str,
     casing_func: Callable[[str], str]
 ) -> str:
     """
@@ -807,12 +807,12 @@ def _change_first_letter_case(
     Returns:
         str: The converted text.
     """
-    for i, char in enumerate(text):
+    for i, char in enumerate(word):
         if char.isalpha():
             # Modify the first letter and return the new text.
-            return text[:i] + casing_func(char) + text[i+1:]
+            return word[:i] + casing_func(char) + word[i+1:]
     # Return the original text if there were no letters in the string.
-    return text
+    return word
 
 
 def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
