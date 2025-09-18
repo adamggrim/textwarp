@@ -37,9 +37,9 @@ AMBIGUOUS_CONTRACTIONS: set[str] = set(load_json_from_data(
     'ambiguous_contractions.json'
 ))
 
-# Suffixes derived from contractions.
-CONTRACTION_SUFFIXES: set[str] = set(load_json_from_data(
-    'contraction_suffixes.json'
+# Suffix tokens derived from contractions.
+CONTRACTION_SUFFIX_TOKENS: set[str] = set(load_json_from_data(
+    'contraction_suffix_tokens.json'
 ))
 
 # Map pairing each contraction with its expanded version.

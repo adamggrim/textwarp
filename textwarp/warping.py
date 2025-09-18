@@ -735,7 +735,10 @@ def to_title_case(text: str) -> str:
         if token.is_space:
             cased_token = token.text
         # Preserve the token if it is in the contraction suffixes list.
-        elif WarpingPatterns.CONTRACTION_SUFFIX_PATTERN.fullmatch(token.text):
+        elif (
+            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+            .fullmatch(token.text)
+        ):
             cased_token = token.text
         # Capitalize the first token in the title or subtitle.
         elif i in first_word_indices:

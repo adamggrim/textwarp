@@ -4,7 +4,7 @@ from textwarp.config import (
     ABBREVIATIONS,
     AMBIGUOUS_CONTRACTIONS,
     CONTRACTIONS_MAP,
-    CONTRACTION_SUFFIXES,
+    CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,
     NAME_PREFIXES
 )
@@ -303,8 +303,8 @@ class WarpingPatterns:
     CONTRACTION: re.Pattern[str] = _create_contraction_regex(
         set(CONTRACTIONS_MAP.keys())
     )
-    CONTRACTION_SUFFIX_PATTERN: re.Pattern[str] = (
-        _create_contraction_regex(CONTRACTION_SUFFIXES)
+    CONTRACTION_SUFFIX_TOKENS_PATTERN: re.Pattern[str] = (
+        _create_words_regex(CONTRACTION_SUFFIX_TOKENS, sort_by_length=True)
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
