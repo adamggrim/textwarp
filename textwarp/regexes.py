@@ -216,7 +216,7 @@ class WarpingPatterns:
                 sorted_words, key=len, reverse=True
             )
         escaped_patterns = [
-            re.escape(c).replace("'", "['’‘]") for c in sorted_contractions
+            re.escape(w).replace("'", "['’‘]") for w in sorted_words
         ]
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
