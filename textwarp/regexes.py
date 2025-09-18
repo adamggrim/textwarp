@@ -373,6 +373,9 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
+    OTHER_PREFIXED_NAMES_PATTERN: re.Pattern = _create_words_regex(
+        set(OTHER_PREFIXED_NAMES_MAP.keys())
+    )
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')

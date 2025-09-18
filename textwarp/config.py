@@ -81,5 +81,11 @@ NAME_PREFIX_EXCEPTIONS: tuple[str, ...] = tuple(load_json_from_data(
     'name_prefix_exceptions.json'
 ))
 
+# Map pairing each prefixed name not following standard prefix rules
+# with its capitalized version.
+OTHER_PREFIXED_NAMES_MAP: dict[str, str] = load_json_from_data(
+    'other_prefixed_names_map.json'
+)
+
 # Map for decoding Morse code.
 REVERSED_MORSE_MAP = {value: key for key, value in MORSE_MAP.items()}

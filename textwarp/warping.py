@@ -888,6 +888,8 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
         prefix_len = len(match.group(0))
         return (word[:prefix_len].capitalize() +
                 word[prefix_len:].capitalize())
+    elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
+        return OTHER_PREFIXED_NAMES_MAP.get(lower_word)
     return None
 
 
