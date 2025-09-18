@@ -259,9 +259,9 @@ class WarpingPatterns:
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
         ['’‘]                           # An apostrophe.
         (?=                             # Followed by...
-            {'|'.join(ELISION_WORDS)}\b # An elision.
+            {'|'.join(ELISION_WORDS)}   # An elision.
             |                           # OR
-            \d{{2}}s\b                  # An abbreviation for a
+            \d{{2}}s                    # An abbreviation for a
         )                               # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
