@@ -829,6 +829,7 @@ def _capitalize_with_exceptions(
     lower_word: str = word.lower()
 
     capitalization_strategies = [
+        _handle_i_pronoun,
         _handle_capitalized_abbreviation,
         _handle_initialism,
         _handle_mixed_case_word,
@@ -905,7 +906,20 @@ def _handle_initialism(_word: str, lower_word: str) -> str | None:
     return _capitalize_from_map(lower_word, INITIALISMS_MAP)
 
 
+def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
     """
+    Handle the capitalization of the "I" pronoun.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized pronoun "I", or None if the input is
+            not "i".
+    """
+    if lower_word == 'i':
+        return 'I'
     return None
 
 
