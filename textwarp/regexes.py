@@ -175,9 +175,6 @@ class WarpingPatterns:
             em dash.
         DOUBLE_HYPHENS: Compiled regular expression object that
             matches double hyphens that function as an em dash.
-        FIRST_WORD_IN_SENTENCE: Compiled regular expression object that
-            matches the first letter of a string or the first letter
-            after a sentence-ending punctuation character.
         MULTIPLE_SPACES: Compiled regular expression object that
             matches two or more consecutive spaces.
         NAME_PREFIX_PATTERN: Compiled regular expression object that
@@ -301,30 +298,6 @@ class WarpingPatterns:
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
-    FIRST_WORD_IN_SENTENCE: re.Pattern[str] = re.compile(rf'''
-        # CONTEXT FOR SENTENCE START
-        (?:
-            # CONDITION 1: AT THE START OF A LINE
-            ^
-            |                   # OR
-            # CONDITION 2: AFTER SENTENCE-ENDING PUNCTUATION
-            (?<=                # Preceded by...
-                (?:             # A non-capturing group for...
-                    # A period not preceded by an abbreviation.
-                    (?<!{'|'.join(ABBREVIATIONS)})\.
-                    |           # OR
-                    [?!]        # A question or exclamation mark.
-                )
-                ["”“'’‘)\]]*    # Followed by any number of quotes,
-                                # brackets or closing parentheses.
-                \s+             # Followed by one or more whitespace
-                                # characters.
-            )
-        )
-        # TARGET: THE WORD TO MATCH
-        {WORD_INCLUDING_PUNCTUATION.pattern}
-        ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE
-    )
     MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
         set(MAP_SUFFIX_EXCEPTIONS),
         sort_by_length=True
