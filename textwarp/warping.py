@@ -264,8 +264,8 @@ def from_morse(text: str) -> str:
     """
     words = text.strip().split('   ')
     decoded_words = []
-    for word in words:
-        char_codes = word.split(' ')
+    for w in words:
+        char_codes = w.split(' ')
         decoded_word = ''.join(
             REVERSED_MORSE_MAP.get(code, '') for code in char_codes
         )
@@ -439,7 +439,7 @@ def straight_to_curly(text: str) -> str:
     curly_text: str
 
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub("’", text)
+    curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub('’', text)
 
     # Replace opening straight quotes with opening curly quotes.
     curly_text = WarpingPatterns.OPENING_STRAIGHT_QUOTES.sub(
@@ -448,7 +448,7 @@ def straight_to_curly(text: str) -> str:
 
     # Replace any remaining straight single quotes with closing curly
     # single quotes.
-    curly_text = curly_text.replace("'", "’")
+    curly_text = curly_text.replace("'", '’')
 
     # Replace any remaining straight double quotes with closing curly
     # double quotes.
@@ -613,20 +613,20 @@ def to_pascal_case(text: str) -> str:
     )
     pascal_substrings: list[str] = []
 
-    for word in words:
+    for w in words:
         pascal_word: str
-        if not any(char.isalpha() for char in word):
-            pascal_substrings.append(word)
+        if not any(char.isalpha() for char in w):
+            pascal_substrings.append(w)
             continue
         # Word is already in Pascal case.
-        elif ProgrammingCasePatterns.PASCAL_WORD.match(word):
-            pascal_word = word
+        elif ProgrammingCasePatterns.PASCAL_WORD.match(w):
+            pascal_word = w
         # Word is in camel case.
-        elif ProgrammingCasePatterns.CAMEL_WORD.match(word):
-            pascal_word = _change_first_letter_case(word, str.upper)
+        elif ProgrammingCasePatterns.CAMEL_WORD.match(w):
+            pascal_word = _change_first_letter_case(w, str.upper)
         # Word is not in Pascal or camel case.
         else:
-            pascal_word = _capitalize_with_exceptions(word)
+            pascal_word = _capitalize_with_exceptions(w)
         pascal_substrings.append(pascal_word)
     return ''.join(pascal_substrings)
 
