@@ -193,6 +193,11 @@ class WarpingPatterns:
             punctuation outside quotes.
         SPLIT_AT_SENTENCE_BOUNDARY: Compiled regular expression object
             that matches the position after sentence-ending punctuation.
+        WORD_CHARACTER: Compiled regular expression object that
+            matches any word character.
+        WORD_INCLUDING_PUNCTUATION: Compiled regular expression
+            object that matches any word with or without internal
+            punctuation.
     """
     @staticmethod
     def _create_words_regex(
