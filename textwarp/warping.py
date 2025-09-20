@@ -29,13 +29,15 @@ from textwarp.regexes import (
 from textwarp.setup import nlp
 
 
-def capitalize(text: str) -> str:
+def capitalize(text: str, lowercase_by_default: bool = False) -> str:
     """
     Capitalize the first letter of each word, handling special name
     prefixes and preserving other mid-word capitalizations.
 
     Args:
         text: The string to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to False.
 
     Returns:
         str: The capitalized string.
@@ -53,9 +55,17 @@ def capitalize(text: str) -> str:
             str: The capitalized word.
         """
         word = match.group(0)
+        print(f'Word: {word}')
         # Capitalize each part of a hyphenated word.
         parts = word.split('-')
-        return '-'.join(_capitalize_with_exceptions(part) for part in parts)
+        capitalized_parts = []
+        for part in parts:
+            capitalized_word = _capitalize_with_exceptions(
+                part, lowercase_by_default=lowercase_by_default
+            )
+            capitalized_parts.append(capitalized_word)
+
+        return '-'.join(capitalized_parts)
 
     return WarpingPatterns.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
 
@@ -762,12 +772,18 @@ def to_title_case(text: str) -> str:
 
 
 def _capitalize_with_exceptions(word: str) -> str:
+def _capitalize_with_exceptions(
+    word: str,
+    lowercase_by_default: bool = False
+) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving
     other mid-word capitalizations.
 
     Args:
         word: The word to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to True.
 
     Returns:
         str: The capitalized word.
@@ -790,7 +806,7 @@ def _capitalize_with_exceptions(word: str) -> str:
         if result is not None:
             return result
 
-    return word.capitalize()
+    return word.capitalize() if not lowercase_by_default else lower_word
 
 
 def _change_first_letter_case(
