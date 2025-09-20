@@ -194,8 +194,6 @@ class WarpingPatterns:
             inside quotes.
         PUNCT_OUTSIDE: Compiled regular expression object for
             punctuation outside quotes.
-        SPLIT_AT_SENTENCE_BOUNDARY: Compiled regular expression object
-            that matches the position after sentence-ending punctuation.
         WORD_CHARACTER: Compiled regular expression object that
             matches any word character.
         WORD_INCLUDING_PUNCTUATION: Compiled regular expression
@@ -369,35 +367,4 @@ class WarpingPatterns:
     )
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
-    SPLIT_AT_SENTENCE_BOUNDARY: re.Pattern[str] = re.compile(rf'''
-        # PART 1: POSITION AFTER SENTENCE-ENDING PUNCTUATION
-        (?<=                                # Preceded by...
-            (?<!                            # Not preceded by...
-                {'|'.join(                  # An abbreviation.
-                    COMBINED_ABBREVIATIONS
-                )}
-            )
-            [.?!]                           # A period, question mark or
-                                            # exclamation mark.
-            ["”“'’‘)\]}}]*                  # Followed by zero or more
-                                            # select closing punctuation
-                                            # characters.
-            \s+                             # One or more space
-                                            # characters.
-            ["“”'‘’(\[{{]*                  # Followed by zero or more
-                                            # select opening punctuation
-                                            # characters.
-        )
-        |                                   # OR
-        # PART 2: POSITION AFTER START-OF-STRING OPENING PUNCTUATION
-        (?<=                                # Preceded by...
-            ^                               # The start of a string
-            \s*                             # Followed by zero or more
-                                            # space characters.
-            ["“”'‘’(\[{{]*                  # Followed by zero or more
-                                            # select opening punctuation
-                                            # characters.
-        )
-        ''', re.VERBOSE
-    )
     WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
