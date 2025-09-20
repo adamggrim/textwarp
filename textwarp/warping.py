@@ -641,40 +641,19 @@ def to_sentence_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    sentences: list[str] = (
-        WarpingPatterns.SPLIT_AT_SENTENCE_BOUNDARY.split(text)
-    )
-    capitalized_sentences: list[str] = []
-    for s in sentences:
-        # Skip empty or non-alphabetic parts.
-        if not s or not any(c.isalpha() for c in s):
-            capitalized_sentences.append(s)
-            continue
+    doc = nlp(text)
+    processed_parts = []
 
-        words = s.split(' ')
-        processed_words = []
-        first_word_processed = False
+    for token in doc:
+        if token.is_sent_start:
+            processed_word = _capitalize_with_exceptions(token.text)
+        else:
+            processed_word = _capitalize_with_exceptions(
+                token.text, lowercase_by_default=True
+            )
+        processed_parts.extend([processed_word, token.whitespace_])
 
-        for w in words:
-            # Preserve existing spaces.
-            if not w:
-                processed_words.append(w)
-                continue
-
-            if not first_word_processed:
-                # Capitalize the first word of the sentence.
-                processed_words.append(_capitalize_with_exceptions(w))
-                first_word_processed = True
-            else:
-                # For all other words, apply special capitalization
-                # rules and lowercase by default.
-                processed_words.append(
-                    _capitalize_with_exceptions(w, lowercase_by_default=True)
-                )
-
-        capitalized_sentences.append(' '.join(processed_words))
-
-    return ''.join(capitalized_sentences)
+    return ''.join(processed_parts)
 
 
 def to_single_spaces(text: str) -> str:
