@@ -84,15 +84,15 @@ MIXED_CASE_WORDS_MAP: dict[str, str] = load_json_from_data(
 # Map pairing each character with its Morse code equivalent.
 MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
 
-# Name prefixes that necessitate special name casing.
-NAME_PREFIXES: set[str] = set(load_json_from_data(
-    'name_prefixes.json')
-)
-
 # Words with name prefixes that do not follow standard prefix rules.
 NAME_PREFIX_EXCEPTIONS: tuple[str, ...] = tuple(load_json_from_data(
     'name_prefix_exceptions.json'
 ))
+
+# Name prefixes that necessitate special name casing.
+NAME_PREFIXES: set[str] = set(load_json_from_data(
+    'name_prefixes.json')
+)
 
 # Map pairing each prefixed name not following standard prefix rules
 # with its capitalized version.
