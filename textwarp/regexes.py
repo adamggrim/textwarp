@@ -185,6 +185,8 @@ class WarpingPatterns:
             that matches opening straight quotes.
         ORDINAL: Compiled regular expression object that matches an
             ordinal number.
+        PERIOD_SEPARATED_INITIALISM: Compiled regular expression
+            object that matches a period-separated initialism.
         PUNCT_INSIDE: Compiled regular expression object for punctuation
             inside quotes.
         PUNCT_OUTSIDE: Compiled regular expression object for
@@ -352,6 +354,9 @@ class WarpingPatterns:
     ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
     OTHER_PREFIXED_NAMES_PATTERN: re.Pattern = _create_words_regex(
         set(OTHER_PREFIXED_NAMES_MAP.keys())
+    )
+    PERIOD_SEPARATED_INITIALISM: re.Pattern[str] = re.compile(
+        r'\b(?:[A-Za-z]\.){2,}\b'
     )
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
