@@ -161,6 +161,9 @@ class WarpingPatterns:
     Attributes:
         ANY_APOSTROPHE: Compiled regular expression object that
             matches any straight or curly apostrophe.
+        ANY_APOSTROPHE_LOOKAHEAD: Compiled regular expression object
+            that matches the position before any straight or curly
+            apostrophe.
         APOSTROPHE_IN_WORD: Compiled regular expression object that
             matches a straight apostrophe surrounded by alphabetical
             letter characters.
@@ -254,6 +257,7 @@ class WarpingPatterns:
     )
 
     ANY_APOSTROPHE: re.Pattern = re.compile(r"['’‘]")
+    ANY_APOSTROPHE_LOOKAHEAD: re.Pattern = re.compile(r"(?=['’‘])")
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
