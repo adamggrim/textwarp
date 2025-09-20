@@ -29,8 +29,21 @@ def load_json_from_data(filename: str) -> JSONType:
         return json.load(json_file)
 
 
-# Abbreviations that are followed by a period.
-ABBREVIATIONS: set[str] = set(load_json_from_data('abbreviations.json'))
+# Abbreviations that are always capitalized.
+CAPITALIZED_ABBREVIATIONS_MAP: dict[str, str] = load_json_from_data(
+    'capitalized_abbreviations_map.json'
+)
+
+# Abbreviations that are always lowercase.
+LOWERCASE_ABBREVIATIONS: set[str] = set(load_json_from_data(
+    'lowercase_abbreviations.json'
+))
+
+# Combined set of capitalized and lowercase abbreviations.
+COMBINED_ABBREVIATIONS: set[str] = (
+    set(CAPITALIZED_ABBREVIATIONS_MAP.keys()) | LOWERCASE_ABBREVIATIONS
+)
+
 
 # Contractions that can expand to multiple phrases.
 AMBIGUOUS_CONTRACTIONS: set[str] = set(load_json_from_data(

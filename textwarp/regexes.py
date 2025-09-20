@@ -1,8 +1,8 @@
 import regex as re
 
 from textwarp.config import (
-    ABBREVIATIONS,
     AMBIGUOUS_CONTRACTIONS,
+    COMBINED_ABBREVIATIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,

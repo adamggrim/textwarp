@@ -5,6 +5,7 @@ import regex as re
 from spacy.tokens import Doc, Token
 
 from textwarp.config import (
+    CAPITALIZED_ABBREVIATIONS_MAP,
     CONTRACTIONS_MAP,
     INITIALISMS_MAP,
     LOWERCASE_PARTICLES,
