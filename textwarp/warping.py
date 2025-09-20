@@ -881,8 +881,8 @@ def _change_first_letter_case(
 
 
 def _handle_capitalized_abbreviation(
-        _word: str,
-        lower_word: str
+    _word: str,
+    lower_word: str
 ) -> str | None:
     """
     Handle the capitalization of a capitalized abbreviation.
@@ -895,8 +895,9 @@ def _handle_capitalized_abbreviation(
         str | None: The capitalized abbreviation, or None if lower_word
             is not in CAPITALIZED_ABBREVIATIONS_MAP.
     """
+    lookup_key = lower_word.removesuffix('.')
     capitalized_word = _capitalize_from_map(
-        lower_word, CAPITALIZED_ABBREVIATIONS_MAP
+        lookup_key, CAPITALIZED_ABBREVIATIONS_MAP
     )
     return capitalized_word + '.' if capitalized_word else None
 
