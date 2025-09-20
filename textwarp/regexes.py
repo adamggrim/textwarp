@@ -110,16 +110,15 @@ class ProgrammingCasePatterns:
         # OR PROGRAMMING CASE
         (?<!                            # Not preceded by...
             [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
-                                        # punctuation.
+                                        # closing punctuation.
             |                           # OR
             {_CASE_WORD}                # Any Pascal, camel, dot,
                                         # kebab or snake case word.
         )
         [ ]                             # A single space.
         (?!                             # Not followed by...
-            [\s—–\-"“”\'‘‘(\[{{]        # A space, select punctuation
-                                        # or an opening parenthesis,
-                                        # bracket or brace.
+            [\s—–\-"“”\'‘‘(\[{{]        # A space character or select
+                                        # opening punctuation.
             |                           # OR
             {_CASE_WORD}                # Any Pascal, camel, dot,
                                         # kebab, snake case word.

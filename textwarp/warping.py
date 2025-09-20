@@ -813,13 +813,13 @@ def _change_first_letter_case(
         if char.isalpha():
             # Modify the first letter and return the new text.
             return word[:i] + casing_func(char) + word[i+1:]
-    # Return the original text if there were no letters in the string.
+    # Return the original text if there are no letters in the string.
     return word
 
 
 def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
     """
-    Handle mixed-case capitalization.
+    Handle the capitalization of a capitalized abbreviation.
 
     Args:
         _word: The word to capitalize (unused).
@@ -873,7 +873,7 @@ def _handle_initialism(_word: str, lower_word: str) -> str | None:
 
 def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
     """
-    Handle prefixed names.
+    Handle the capitalization of a prefixed name.
 
     Args:
         word: The name to capitalize.
