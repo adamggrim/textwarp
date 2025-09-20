@@ -159,6 +159,8 @@ class WarpingPatterns:
     A namespace for compiled regular expressions for warping text.
 
     Attributes:
+        ANY_APOSTROPHE: Compiled regular expression object that
+            matches any straight or curly apostrophe.
         APOSTROPHE_IN_WORD: Compiled regular expression object that
             matches a straight apostrophe surrounded by alphabetical
             letter characters.
@@ -244,6 +246,7 @@ class WarpingPatterns:
         ''', re.VERBOSE | re.IGNORECASE
     )
 
+    ANY_APOSTROPHE: re.Pattern = re.compile(r"['’‘]")
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
