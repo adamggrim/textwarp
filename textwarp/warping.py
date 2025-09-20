@@ -867,8 +867,28 @@ def _handle_initialism(_word: str, lower_word: str) -> str | None:
     Returns:
         str | None: The capitalized initialism, or None if not in
             INITIALISMS_MAP.
+def _handle_period_separated_initialism(
+    _word: str,
+    lower_word: str
+) -> str | None:
     """
-    return INITIALISMS_MAP.get(lower_word)
+    Handle the capitalization of a period-separated initialism.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if the
+            word does not contain a period.
+    """
+    if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.match(lower_word):
+        parts = lower_word.split('.')
+        return '.'.join(
+            [part.upper() if not WarpingPatterns.ANY_APOSTROPHE.search(part)
+             else part.lower() for part in parts]
+        )
+    return None
 
 
 def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
