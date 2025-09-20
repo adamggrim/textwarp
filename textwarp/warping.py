@@ -829,11 +829,12 @@ def _capitalize_with_exceptions(
     lower_word: str = word.lower()
 
     capitalization_strategies = [
-        _handle_mixed_case_word,
-        _handle_period_separated_initialism,
+        _handle_capitalized_abbreviation,
         _handle_initialism,
+        _handle_mixed_case_word,
         _handle_prefixed_name,
-        _preserve_existing_capitalization,
+        _handle_period_separated_initialism,
+        _preserve_existing_capitalization
     ]
 
     for strategy in capitalization_strategies:
@@ -868,9 +869,49 @@ def _change_first_letter_case(
     return word
 
 
-def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
+def _handle_capitalized_abbreviation(
+        _word: str,
+        lower_word: str
+) -> str | None:
     """
     Handle the capitalization of a capitalized abbreviation.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized abbreviation, or None if lower_word
+            is not in CAPITALIZED_ABBREVIATIONS_MAP.
+    """
+    capitalized_word = _capitalize_from_map(
+        lower_word, CAPITALIZED_ABBREVIATIONS_MAP
+    )
+    return capitalized_word + '.' if capitalized_word else None
+
+
+def _handle_initialism(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of an initialism without periods.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if lower_word is
+            not in INITIALISMS_MAP.
+    """
+    return _capitalize_from_map(lower_word, INITIALISMS_MAP)
+
+
+    """
+    return None
+
+
+def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
+    """
+    Handle mixed-case capitalization.
 
     Args:
         _word: The word to capitalize (unused).
@@ -880,44 +921,9 @@ def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
         str | None: The mixed-case word, or None if lower_word is
             not in MIXED_CASE_WORDS_MAP.
     """
-    return MIXED_CASE_WORDS_MAP.get(lower_word)
+    return _capitalize_from_map(lower_word, MIXED_CASE_WORDS_MAP)
 
 
-def _handle_period_separated_initialism(
-    _word: str,
-    lower_word: str
-) -> str | None:
-    """
-    Handle period-separated initialisms.
-
-    Args:
-        _word: The word to capitalize (unused).
-        lower_word: The lowercase word.
-
-    Returns:
-        str | None: The capitalized initialism, or None if the
-            word does not contain a period.
-    """
-    if '.' in lower_word:
-        # Filter empty strings that can result from a trailing
-        # period.
-        parts = list(filter(None, lower_word.split('.')))
-        # Capitalize each part.
-        return '.'.join(part.capitalize() for part in parts)
-    return None
-
-
-def _handle_initialism(_word: str, lower_word: str) -> str | None:
-    """
-    Handle initialisms without periods.
-
-    Args:
-        _word: The word to capitalize (unused).
-        lower_word: The lowercase word.
-
-    Returns:
-        str | None: The capitalized initialism, or None if not in
-            INITIALISMS_MAP.
 def _handle_period_separated_initialism(
     _word: str,
     lower_word: str
@@ -956,12 +962,12 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
     """
     if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
         return None
-    if (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(word)):
+    elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(word)):
         prefix_len = len(match.group(0))
         return (word[:prefix_len].capitalize() +
                 word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
-        return OTHER_PREFIXED_NAMES_MAP.get(lower_word)
+        return _capitalize_from_map(lower_word, OTHER_PREFIXED_NAMES_MAP)
     return None
 
 
