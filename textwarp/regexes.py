@@ -363,7 +363,7 @@ class WarpingPatterns:
         set(OTHER_PREFIXED_NAMES_MAP.keys())
     )
     PERIOD_SEPARATED_INITIALISM: re.Pattern[str] = re.compile(
-        r'\b(?:[A-Za-z]\.){2,}\b'
+        r'\b(?:[A-Za-z]\.){2,}'
     )
     PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
     PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
