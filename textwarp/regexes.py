@@ -318,7 +318,8 @@ class WarpingPatterns:
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_PATTERN: re.Pattern[str] = _create_words_regex(
-        NAME_PREFIXES
+        NAME_PREFIXES,
+        sort_by_length=True
     )
     OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r'''
         # PART 1: SINGLE QUOTES
