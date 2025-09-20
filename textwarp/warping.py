@@ -771,7 +771,42 @@ def to_title_case(text: str) -> str:
     return ''.join(title_case_tokens)
 
 
-def _capitalize_with_exceptions(word: str) -> str:
+def _capitalize_from_map(
+    lower_word: str,
+    capitalization_map: dict
+) -> str | None:
+    """
+    Handle word capitalization through dictionary lookup, lowercasing
+    any suffix.
+
+    Args:
+        lower_word: The lowercase word.
+        capitalization_map: A dictionary with lowercase words as keys
+            and their capitalized versions as values.
+
+    Returns:
+        str | None: The capitalized initialism, or None if lower_word is
+            not in the map.
+    """
+    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS.search(lower_word)
+
+    if match:
+        split_start = match.start()
+        base = lower_word[:split_start]
+        suffix = lower_word[split_start:]
+
+        # Look up the base part in the map.
+        capitalized_base = capitalization_map.get(base)
+
+        if capitalized_base:
+            # If the base is in the map, recombine it with the
+            # lowercase suffix.
+            return f'{capitalized_base}{suffix.lower()}'
+        return None
+    else:
+        return capitalization_map.get(lower_word)
+
+
 def _capitalize_with_exceptions(
     word: str,
     lowercase_by_default: bool = False
