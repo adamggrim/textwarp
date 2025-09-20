@@ -88,4 +88,6 @@ OTHER_PREFIXED_NAMES_MAP: dict[str, str] = load_json_from_data(
 )
 
 # Map for decoding Morse code.
-REVERSED_MORSE_MAP = {value: key for key, value in MORSE_MAP.items()}
+REVERSED_MORSE_MAP: dict[str, str] = {
+    value: key for key, value in MORSE_MAP.items()
+}
