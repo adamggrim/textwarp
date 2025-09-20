@@ -972,12 +972,12 @@ def _handle_period_separated_initialism(
     return None
 
 
-def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
+def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     """
     Handle the capitalization of a prefixed name.
 
     Args:
-        word: The name to capitalize.
+        _word: The name to capitalize (unused).
         lower_word: The lowercase name.
 
     Returns:
@@ -986,10 +986,10 @@ def _handle_prefixed_name(word: str, lower_word: str) -> str | None:
     """
     if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
         return None
-    elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(word)):
+    elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(lower_word)):
         prefix_len = len(match.group(0))
-        return (word[:prefix_len].capitalize() +
-                word[prefix_len:].capitalize())
+        return (lower_word[:prefix_len].capitalize() +
+                lower_word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
         return _capitalize_from_map(lower_word, OTHER_PREFIXED_NAMES_MAP)
     return None
