@@ -42,32 +42,16 @@ def capitalize(text: str, lowercase_by_default: bool = False) -> str:
     Returns:
         str: The capitalized string.
     """
-    def _repl(match: re.Match) -> str:
-        """
-        Helper function to capitalize a matched word, handling special
-        name prefixes and preserving other mid-word capitalizations.
+    doc = nlp(text)
+    capitalized_parts = []
 
-        Args:
-            match: A match object representing a word found in the
-                string.
+    for token in doc:
+        capitalized_word = _capitalize_with_exceptions(
+            token.text, lowercase_by_default=lowercase_by_default
+        )
+        capitalized_parts.append(capitalized_word + token.whitespace_)
 
-        Returns:
-            str: The capitalized word.
-        """
-        word = match.group(0)
-        print(f'Word: {word}')
-        # Capitalize each part of a hyphenated word.
-        parts = word.split('-')
-        capitalized_parts = []
-        for part in parts:
-            capitalized_word = _capitalize_with_exceptions(
-                part, lowercase_by_default=lowercase_by_default
-            )
-            capitalized_parts.append(capitalized_word)
-
-        return '-'.join(capitalized_parts)
-
-    return WarpingPatterns.WORD_INCLUDING_PUNCTUATION.sub(_repl, text)
+    return ''.join(capitalized_parts)
 
 
 def cardinal_to_ordinal(text: str) -> str:
