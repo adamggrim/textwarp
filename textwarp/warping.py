@@ -79,11 +79,14 @@ def cardinal_to_ordinal(text: str) -> str:
         number_str: str = match.group(0)
         number: int = int(number_str.replace(',', ''))
         suffix: str
+
         if 10 <= number % 100 <= 20:
             suffix = 'th'
         else:
             suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
+
         return f'{number_str}{suffix}'
+
     return WarpingPatterns.CARDINAL.sub(replace_cardinal, text)
 
 
@@ -205,7 +208,6 @@ def expand_contractions(text: str) -> str:
                     expanded_suffix = 'had'
                 else:
                     expanded_suffix = 'would'
-
         if expanded_suffix:
             base_word_token = doc[apostrophe_token.i - 1]
 
@@ -248,12 +250,14 @@ def from_morse(text: str) -> str:
     """
     words = text.strip().split('   ')
     decoded_words = []
+
     for w in words:
         char_codes = w.split(' ')
         decoded_word = ''.join(
             REVERSED_MORSE_MAP.get(code, '') for code in char_codes
         )
         decoded_words.append(decoded_word)
+
     return ' '.join(decoded_words)
 
 
@@ -307,6 +311,7 @@ def ordinal_to_cardinal(text: str) -> str:
         """
         ordinal: str = match.group(0)
         return ordinal[:-2]
+
     return WarpingPatterns.ORDINAL.sub(replace_ordinal, text)
 
 
@@ -335,6 +340,7 @@ def punct_to_inside(text: str) -> str:
         quote: str
         punct, quote = match.groups()
         return quote + punct
+
     return WarpingPatterns.PUNCT_OUTSIDE.sub(_repl, text)
 
 
@@ -364,6 +370,7 @@ def punct_to_outside(text: str) -> str:
         punct: str
         quote, punct = match.groups()
         return punct + quote
+
     return WarpingPatterns.PUNCT_INSIDE.sub(_repl, text)
 
 
@@ -453,6 +460,7 @@ def to_alternating_caps(text: str) -> str:
     """
     result: list[str] = []
     upper: bool = False
+
     for char in text:
         if char.isalpha():
             if upper:
@@ -462,6 +470,7 @@ def to_alternating_caps(text: str) -> str:
             upper = not upper
         else:
             result.append(char)
+
     return ''.join(result)
 
 
@@ -612,6 +621,7 @@ def to_pascal_case(text: str) -> str:
         else:
             pascal_word = _capitalize_with_exceptions(w)
         pascal_substrings.append(pascal_word)
+
     return ''.join(pascal_substrings)
 
 
@@ -860,6 +870,7 @@ def _change_first_letter_case(
         if char.isalpha():
             # Modify the first letter and return the new text.
             return word[:i] + casing_func(char) + word[i+1:]
+
     # Return the original text if there are no letters in the string.
     return word
 
@@ -1104,4 +1115,5 @@ def _to_separator_case(
         else:
             converted_part = part.lower()
         converted_parts.append(converted_part)
+
     return ''.join(converted_parts)
