@@ -196,9 +196,6 @@ class WarpingPatterns:
             punctuation outside quotes.
         WORD_CHARACTER: Compiled regular expression object that
             matches any word character.
-        WORD_INCLUDING_PUNCTUATION: Compiled regular expression
-            object that matches any word with or without internal
-            punctuation.
     """
     @staticmethod
     def _create_words_regex(
@@ -229,30 +226,6 @@ class WarpingPatterns:
         pattern_string = '|'.join(escaped_patterns)
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
-
-    WORD_INCLUDING_PUNCTUATION: re.Pattern[str] = re.compile(r'''
-        # PART 1: PERIOD-SEPARATED INITIALISMS (e.g., U.S.A.)
-        \b          # A word boundary.
-        \w+         # One or more word characters.
-        (?:         # A non-capturing group for...
-            \.      # A period.
-            [a-z]+  # Followed by one or more alphabetical letters.
-        )+          # One or more repetitions of the group.
-        \.?         # An optional final period.
-        [\w'‘’-]*   # Zero or more word characters, straight or curly
-                    # apostrophes, straight or curly single quotes or
-                    # hyphens.
-        \b          # A word boundary.
-        |           # OR
-        # PART 2: WORDS INCLUDING OTHER INTERNAL PUNCTUATION
-        \b          # A word boundary.
-        [a-z]       # An alphabetical letter.
-        [\w'‘’-]*   # Zero or more word characters, straight or curly
-                    # apostrophes, straight or curly single quotes or
-                    # hyphens.
-        \b          # A word boundary.
-        ''', re.VERBOSE | re.IGNORECASE
-    )
 
     ANY_APOSTROPHE: re.Pattern = re.compile(r"['’‘]")
     ANY_APOSTROPHE_LOOKAHEAD: re.Pattern = re.compile(r"(?=['’‘])")
