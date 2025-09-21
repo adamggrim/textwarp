@@ -159,9 +159,9 @@ def expand_contractions(text: str) -> str:
 
     # If there are no ambiguous contractions, spaCy isn't needed.
     if not WarpingPatterns.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
-        def _simple_repl(match: re.Match[str]) -> str:
-            return _repl_from_dict(match.group(0))
-        return WarpingPatterns.CONTRACTION.sub(_simple_repl, text)
+        return WarpingPatterns.CONTRACTION.sub(
+        lambda match: _repl_from_dict(match.group(0)), text
+    )
 
     doc: Doc = nlp(text)
     token_map: dict[int, Token] = {token.idx: token for token in doc}
