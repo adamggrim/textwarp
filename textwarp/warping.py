@@ -8,6 +8,7 @@ from textwarp.config import (
     CAPITALIZED_ABBREVIATIONS_MAP,
     CONTRACTIONS_MAP,
     INITIALISMS_MAP,
+    LOWERCASE_ABBREVIATIONS,
     LOWERCASE_PARTICLES,
     MIXED_CASE_WORDS_MAP,
     MORSE_MAP,
@@ -941,7 +942,24 @@ def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
     return None
 
 
-def _handle_mixed_case_word(_word: str, lower_word: str) -> str | None:
+def _handle_lowercase_abbreviation(_word: str, lower_word: str,) -> str | None:
+    """
+    Preserve the capitalization of a lowercase abbreviation.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The lowercase abbreviation, or None if lower_word is
+            not in LOWERCASE_ABBREVIATIONS.
+    """
+    if lower_word.removesuffix('.') in LOWERCASE_ABBREVIATIONS:
+        return lower_word
+    return None
+
+
+def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
     """
     Handle mixed-case capitalization.
 
