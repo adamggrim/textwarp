@@ -20,7 +20,8 @@ from textwarp.constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
-    PAST_PARTICIPLE_TAGS
+    PAST_PARTICIPLE_TAGS,
+    PROPER_NOUN_ENTITIES
 )
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
@@ -856,6 +857,40 @@ def _capitalize_from_string(
             return result
 
     return word.capitalize() if not lowercase_by_default else lower_word
+
+
+def _capitalize_from_token(
+    token: Token,
+    lowercase_by_default: bool = False,
+) -> str:
+    """
+    Capitalize a spaCy token, handling special name prefixes and
+    preserving other mid-word capitalizations.
+
+    Args:
+        token: The spaCy token to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to True.
+
+    Returns:
+        str: The capitalized word.
+    """
+    lower_token: str = token.text.lower()
+
+    # Call with lowercase_by_default set to True to ensure a lowercase
+    # function return if no capitalization occurs.
+    string_result: str = _capitalize_from_string(
+        token.text,
+        lowercase_by_default=True
+    )
+    if string_result != token.text.lower():
+        return string_result
+
+    token_result: str | None = _handle_proper_noun(token)
+    if token_result is not None:
+        return token_result
+
+    return token.text.capitalize() if not lowercase_by_default else lower_token
 
 
 def _change_first_letter_case(
