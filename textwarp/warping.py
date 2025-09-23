@@ -824,9 +824,9 @@ def _capitalize_from_map(
         return capitalization_map.get(lower_word)
 
 
-def _capitalize_with_exceptions(
+def _capitalize_from_string(
     word: str,
-    lowercase_by_default: bool = False
+    lowercase_by_default: bool = False,
 ) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving
@@ -845,18 +845,17 @@ def _capitalize_with_exceptions(
 
     lower_word: str = word.lower()
 
-    capitalization_strategies = [
+    capitalization_strategies: list[Callable[[str, str], str | None]] = [
         _handle_i_pronoun,
         _handle_capitalized_abbreviation,
         _handle_initialism,
         _handle_mixed_case_word,
-        _handle_prefixed_name,
         _handle_period_separated_initialism,
         _preserve_existing_capitalization
     ]
 
     for strategy in capitalization_strategies:
-        result = strategy(word, lower_word)
+        result: str | None = strategy(word, lower_word)
         if result is not None:
             return result
 
