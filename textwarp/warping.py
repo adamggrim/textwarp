@@ -55,9 +55,7 @@ def capitalize(text: str) -> str:
         ):
             cased_token = token.text
         else:
-            cased_token = _capitalize_with_exceptions(
-                token.text, lowercase_by_default=lowercase_by_default
-            )
+            cased_token = _capitalize_from_string(token.text)
 
         # Add back trailing whitespace.
         capitalized_tokens.append(cased_token + token.whitespace_)
@@ -630,7 +628,7 @@ def to_pascal_case(text: str) -> str:
             pascal_word = _change_first_letter_case(w, str.upper)
         # Word is not in Pascal or camel case.
         else:
-            pascal_word = _capitalize_with_exceptions(w)
+            pascal_word = _capitalize_from_string(w)
         pascal_substrings.append(pascal_word)
 
     return ''.join(pascal_substrings)
@@ -769,13 +767,13 @@ def to_title_case(text: str) -> str:
             cased_token = token.text
         # Capitalize the first token in the title or subtitle.
         elif i in first_word_indices:
-            cased_token = _capitalize_with_exceptions(token.text)
+            cased_token = _capitalize_from_string(token.text)
         # Capitalize the last word of the title.
         elif i == last_word_index:
-            cased_token = _capitalize_with_exceptions(token.text)
+            cased_token = _capitalize_from_string(token.text)
         # Capitalize the word based on its POS tag and length.
         elif _should_capitalize(token):
-            cased_token = _capitalize_with_exceptions(token.text)
+            cased_token = _capitalize_from_string(token.text)
         # Otherwise, lowercase the word.
         else:
             cased_token = token.text.lower()
