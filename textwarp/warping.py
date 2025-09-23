@@ -469,6 +469,7 @@ def to_alternating_caps(text: str) -> str:
         str: The converted string.
     """
     result: list[str] = []
+    # Toggle switch for alternating caps effect.
     upper: bool = False
 
     for char in text:
@@ -926,7 +927,8 @@ def _handle_capitalized_abbreviation(
     lower_word: str
 ) -> str | None:
     """
-    Handle the capitalization of a capitalized abbreviation.
+    Handle the capitalization of an abbreviation that should be
+    capitalized.
 
     Args:
         _word: The word to capitalize (unused).
@@ -945,7 +947,7 @@ def _handle_capitalized_abbreviation(
 
 def _handle_initialism(_word: str, lower_word: str) -> str | None:
     """
-    Handle the capitalization of an initialism without periods.
+    Handle the capitalization of an initialism without hyphens or periods.
 
     Args:
         _word: The word to capitalize (unused).
