@@ -33,5 +33,19 @@ NO_INPUTS: str = {'no', 'n'}
 # Part-of-speech tag for past participles.
 PAST_PARTICIPLE_TAGS: set[str] = {'VBN', 'VBD'}
 
+# Named entities that are typically proper nouns.
+PROPER_NOUN_ENTITIES: set[str]= {
+    'PERSON',
+    'GPE',
+    'ORG',
+    'NORP',
+    'FAC',
+    'LOC',
+    'PRODUCT',
+    'EVENT',
+    'WORK_OF_ART',
+    'LAW'
+}
+
 # Inputs for indicating an affirmative response.
 YES_INPUTS: str = {'yes', 'y'}
