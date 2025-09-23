@@ -938,11 +938,10 @@ def _handle_capitalized_abbreviation(
         str | None: The capitalized abbreviation, or None if lower_word
             is not in CAPITALIZED_ABBREVIATIONS_MAP.
     """
-    lookup_key = lower_word.removesuffix('.')
     capitalized_word = _capitalize_from_map(
-        lookup_key, CAPITALIZED_ABBREVIATIONS_MAP
+        lower_word.removesuffix('.'), CAPITALIZED_ABBREVIATIONS_MAP
     )
-    return capitalized_word + '.' if capitalized_word else None
+    return capitalized_word if capitalized_word else None
 
 
 def _handle_initialism(_word: str, lower_word: str) -> str | None:
