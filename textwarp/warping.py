@@ -851,10 +851,13 @@ def _capitalize_from_string(
         _preserve_existing_capitalization
     ]
 
+    if lowercase_by_default:
+        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
+
     for strategy in capitalization_strategies:
-        result: str | None = strategy(word, lower_word)
-        if result is not None:
-            return result
+        word_result: str | None = strategy(word, lower_word)
+        if word_result is not None:
+            return word_result
 
     return word.capitalize() if not lowercase_by_default else lower_word
 
