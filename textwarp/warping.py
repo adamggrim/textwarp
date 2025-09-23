@@ -30,15 +30,13 @@ from textwarp.regexes import (
 from textwarp.setup import nlp
 
 
-def capitalize(text: str, lowercase_by_default: bool = False) -> str:
+def capitalize(text: str) -> str:
     """
     Capitalize the first letter of each word, handling special name
     prefixes and preserving other mid-word capitalizations.
 
     Args:
         text: The string to capitalize.
-        lowercase_by_default: Whether to lowercase the word if no
-            capitalization strategy applies. Defaults to False.
 
     Returns:
         str: The capitalized string.
