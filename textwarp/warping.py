@@ -651,10 +651,10 @@ def to_sentence_case(text: str) -> str:
 
     for token in doc:
         if token.is_sent_start:
-            processed_word = _capitalize_with_exceptions(token.text)
+            processed_word = _capitalize_from_token(token)
         else:
-            processed_word = _capitalize_with_exceptions(
-                token.text, lowercase_by_default=True
+            processed_word = _capitalize_from_token(
+                token, lowercase_by_default=True
             )
         processed_parts.extend([processed_word, token.whitespace_])
 
