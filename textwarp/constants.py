@@ -50,6 +50,17 @@ PROPER_NOUN_ENTITIES: set[str]= {
     'LAW'
 }
 
+# Part-of-speech tag exceptions for title case capitalization.
+TITLE_CASE_TAG_EXCEPTIONS: set[str] = {
+    'CC',   # Coordinating conjunction (e.g., 'and', 'but')
+    'DT',   # Determiner (e.g., 'a', 'an', 'the')
+    'IN',   # Preposition or subordinating conjunction
+            # (e.g., 'in', 'of', 'on')
+    'RP',   # Particle (e.g., 'in' in 'give in')
+    'TO',   # to (infinitive marker)
+    'WDT',  # Wh-determiner (e.g., 'what')
+}
+
 # Message for unexpected errors.
 UNEXPECTED_ERROR_MESSAGE: str = 'An unexpected error occurred: '
 

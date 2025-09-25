@@ -21,7 +21,8 @@ from textwarp.constants import (
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
     PAST_PARTICIPLE_TAGS,
-    PROPER_NOUN_ENTITIES
+    PROPER_NOUN_ENTITIES,
+    TITLE_CASE_TAG_EXCEPTIONS
 )
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
@@ -719,17 +720,7 @@ def to_title_case(text: str) -> str:
         if len(token.text) >= 5:
             return True
 
-        tags_to_exclude: set[str] = {
-            'CC',   # Coordinating conjunction (e.g., 'and', 'but')
-            'DT',   # Determiner (e.g., 'a', 'an', 'the')
-            'IN',   # Preposition or subordinating conjunction
-                    # (e.g., 'in', 'of', 'on')
-            'RP',   # Particle (e.g., 'in' in 'give in')
-            'TO',   # to (infinitive marker)
-            'WDT',  # Wh-determiner (e.g., 'what')
-        }
-
-        return token.tag_ not in tags_to_exclude
+        return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
 
     doc: Doc = nlp(text)
 
