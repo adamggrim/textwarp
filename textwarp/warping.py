@@ -47,11 +47,9 @@ def capitalize(text: str) -> str:
     capitalized_tokens = []
 
     for token in doc:
-        # Preserve the token if it contains only whitespace.
-        if token.is_space:
-            cased_token = token.text
-        # Preserve the token if it is in the contraction suffixes list.
-        elif (
+        # Preserve the token if it contains only whitespace or is in
+        # the contraction suffixes list.
+        if token.is_space or (
             WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
             .fullmatch(token.text)
         ):
@@ -749,11 +747,9 @@ def to_title_case(text: str) -> str:
     title_case_tokens: list[str] = []
 
     for i, token in enumerate(doc):
-        # Preserve the token if it contains only whitespace.
-        if token.is_space:
-            cased_token = token.text
-        # Preserve the token if it is in the contraction suffixes list.
-        elif (
+        # Preserve the token if it contains only whitespace or is in
+        # the contraction suffixes list.
+        if token.is_space or (
             WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
             .fullmatch(token.text)
         ):
