@@ -10,6 +10,9 @@ APOSTROPHE_S_VARIANTS: set[str] = {"'s", '’s', '‘s'}
 # Variants of apostrophes.
 APOSTROPHE_VARIANTS: set[str] = {"'", '’', '‘'}
 
+# Message for any error accessing the clipboard.
+CLIPBOARD_ACCESS_ERROR_MESSAGE: str = 'Error accessing clipboard: '
+
 # Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: str = 'Please enter a valid response.'
 
@@ -46,6 +49,9 @@ PROPER_NOUN_ENTITIES: set[str]= {
     'WORK_OF_ART',
     'LAW'
 }
+
+# Message for unexpected errors.
+UNEXPECTED_ERROR_MESSAGE: str = 'An unexpected error occurred: '
 
 # Inputs for indicating an affirmative response.
 YES_INPUTS: set[str] = {'yes', 'y'}

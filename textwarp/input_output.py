@@ -6,11 +6,13 @@ import pyperclip
 
 from textwarp.constants import (
     ANY_OTHER_TEXT_PROMPT,
+    CLIPBOARD_ACCESS_ERROR_MESSAGE,
     ENTER_VALID_RESPONSE_PROMPT,
     EXIT_MESSAGE,
     MODIFIED_TEXT_COPIED,
     NO_INPUTS,
     EXIT_INPUTS,
+    UNEXPECTED_ERROR_MESSAGE,
     YES_INPUTS
 )
 from textwarp.validation import EmptyClipboardError, validate_clipboard
@@ -93,6 +95,6 @@ def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     except EmptyClipboardError as e:
         print_wrapped(str(e))
     except pyperclip.PyperclipException as e:
-        print_wrapped(f'Error accessing clipboard: {e}')
+        print_wrapped(f'{CLIPBOARD_ACCESS_ERROR_MESSAGE}{e}')
     except Exception as e:
-        print_wrapped(f'An unexpected error occurred: {e}')
+        print_wrapped(f'{UNEXPECTED_ERROR_MESSAGE}{e}')
