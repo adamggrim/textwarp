@@ -180,6 +180,8 @@ class WarpingPatterns:
             em dash.
         DOUBLE_HYPHENS: Compiled regular expression object that
             matches double hyphens that function as an em dash.
+        HYPHENATED_INITIALISM: Compiled regular expression object that
+            matches a hyphenated initialism.
         MULTIPLE_SPACES: Compiled regular expression object that
             matches two or more consecutive spaces.
         NAME_PREFIX_PATTERN: Compiled regular expression object that
@@ -285,6 +287,9 @@ class WarpingPatterns:
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
+    HYPHENATED_INITIALISM: re.Pattern = re.compile(
+        r'(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9.]*-[A-Za-z0-9.]+'
+    )
     MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
         set(MAP_SUFFIX_EXCEPTIONS),
         sort_by_length=True
