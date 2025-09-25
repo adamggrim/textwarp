@@ -1074,8 +1074,12 @@ def _handle_proper_noun(
         str | None: The capitalized name, or None if the token is
             not a name.
     """
-    if token.ent_type_ in PROPER_NOUN_ENTITIES:
-        return token.text.capitalize()
+    if token.ent_type_ in PROPER_NOUN_ENTITIES or token.pos_ == 'PROPN':
+        parts = token.text.split('-')
+        capitalized_parts = [_capitalize_from_string(
+            part, lowercase_by_default=False
+        ) for part in parts]
+        return '-'.join(capitalized_parts)
     return None
 
 
