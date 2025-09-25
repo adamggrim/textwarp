@@ -288,7 +288,7 @@ class WarpingPatterns:
     DASH: re.Pattern[str] = re.compile(r'[–—]')
     DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
     HYPHENATED_INITIALISM: re.Pattern = re.compile(
-        r'(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9.]*-[A-Za-z0-9.]+'
+        r'\b[A-Za-z0-9]+(?:[.-][A-Za-z0-9]+)+\b'
     )
     MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
         set(MAP_SUFFIX_EXCEPTIONS),
