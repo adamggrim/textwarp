@@ -8,13 +8,13 @@ APOSTROPHE_D_VARIANTS: set[str] = {"'d", '’d', '‘d'}
 APOSTROPHE_S_VARIANTS: set[str] = {"'s", '’s', '‘s'}
 
 # Variants of apostrophes.
-APOSTROPHE_VARIANTS = {"'", '’', '‘'}
+APOSTROPHE_VARIANTS: set[str] = {"'", '’', '‘'}
 
 # Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: str = 'Please enter a valid response.'
 
 # Inputs for exiting the program.
-EXIT_INPUTS: str = {'quit', 'q', 'exit', 'e'}
+EXIT_INPUTS: set[str] = {'quit', 'q', 'exit', 'e'}
 
 # Message for when the user exits the program.
 EXIT_MESSAGE: str = 'Exiting the program...'
@@ -28,7 +28,7 @@ HELP_DESCRIPTION: str = (
 MODIFIED_TEXT_COPIED: str = 'Modified text copied to clipboard.'
 
 # Inputs for indicating a negative response.
-NO_INPUTS: str = {'no', 'n'}
+NO_INPUTS: set[str] = {'no', 'n'}
 
 # Part-of-speech tag for past participles.
 PAST_PARTICIPLE_TAGS: set[str] = {'VBN', 'VBD'}
@@ -48,4 +48,4 @@ PROPER_NOUN_ENTITIES: set[str]= {
 }
 
 # Inputs for indicating an affirmative response.
-YES_INPUTS: str = {'yes', 'y'}
+YES_INPUTS: set[str] = {'yes', 'y'}
