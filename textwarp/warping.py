@@ -53,12 +53,12 @@ def capitalize(text: str) -> str:
             WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
             .fullmatch(token.text)
         ):
-            cased_token = token.text
+            capitalized_token = token.text
         else:
-            cased_token = _capitalize_from_string(token.text)
+            capitalized_token = _capitalize_from_string(token.text)
 
         # Add back trailing whitespace.
-        capitalized_tokens.append(cased_token + token.whitespace_)
+        capitalized_tokens.append(capitalized_token + token.whitespace_)
 
     return ''.join(capitalized_tokens)
 
@@ -753,22 +753,22 @@ def to_title_case(text: str) -> str:
             WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
             .fullmatch(token.text)
         ):
-            cased_token = token.text
+            title_case_token = token.text
         # Capitalize the first token in the title or subtitle.
         elif i in first_word_indices:
-            cased_token = _capitalize_from_string(token.text)
+            title_case_token = _capitalize_from_string(token.text)
         # Capitalize the last word of the title.
         elif i == last_word_index:
-            cased_token = _capitalize_from_string(token.text)
+            title_case_token = _capitalize_from_string(token.text)
         # Capitalize the word based on its POS tag and length.
         elif _should_capitalize(token):
-            cased_token = _capitalize_from_string(token.text)
+            title_case_token = _capitalize_from_string(token.text)
         # Otherwise, lowercase the word.
         else:
-            cased_token = token.text.lower()
+            title_case_token = token.text.lower()
 
         # Add back trailing whitespace.
-        title_case_tokens.append(cased_token + token.whitespace_)
+        title_case_tokens.append(title_case_token + token.whitespace_)
 
     return ''.join(title_case_tokens)
 
