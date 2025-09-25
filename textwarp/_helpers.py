@@ -1,0 +1,459 @@
+from typing import Callable
+
+import regex as re
+from spacy.tokens import Token
+
+from textwarp._helpers import *
+from textwarp.config import (
+    CAPITALIZED_ABBREVIATIONS_MAP,
+    INITIALISMS_MAP,
+    LOWERCASE_ABBREVIATIONS,
+    MIXED_CASE_WORDS_MAP,
+    NAME_PREFIX_EXCEPTIONS,
+    OTHER_PREFIXED_NAMES_MAP
+)
+from textwarp.constants import PROPER_NOUN_ENTITIES
+from textwarp.enums import CaseSeparator
+from textwarp.regexes import (
+    ProgrammingCasePatterns,
+    WarpingPatterns
+)
+
+
+def _capitalize_from_map(
+    lower_word: str,
+    capitalization_map: dict
+) -> str | None:
+    """
+    Handle word capitalization through dictionary lookup, lowercasing
+    any suffix.
+
+    Args:
+        lower_word: The lowercase word.
+        capitalization_map: A dictionary with lowercase words as keys
+            and their capitalized versions as values.
+
+    Returns:
+        str | None: The capitalized initialism, or None if lower_word is
+            not in the map.
+    """
+    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS.search(lower_word)
+
+    if match:
+        split_start = match.start()
+        base = lower_word[:split_start]
+        suffix = lower_word[split_start:]
+
+        # Look up the base part in the map.
+        capitalized_base = capitalization_map.get(base)
+
+        if capitalized_base:
+            # If the base is in the map, recombine it with the
+            # lowercase suffix.
+            return f'{capitalized_base}{suffix.lower()}'
+        return None
+    else:
+        return capitalization_map.get(lower_word)
+
+
+def _capitalize_from_string(
+    word: str,
+    lowercase_by_default: bool = False,
+) -> str:
+    """
+    Capitalize a word, handling special name prefixes and preserving
+    other mid-word capitalizations.
+
+    Args:
+        word: The word to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to True.
+
+    Returns:
+        str: The capitalized word.
+    """
+    if not word or not word[0].isalpha():
+        return word
+
+    lower_word: str = word.lower()
+
+    capitalization_strategies: list[Callable[[str, str], str | None]] = [
+        _handle_i_pronoun,
+        _handle_capitalized_abbreviation,
+        _handle_hyphenated_initialism,
+        _handle_initialism,
+        _handle_mixed_case_word,
+        _handle_period_separated_initialism,
+        _handle_prefixed_name,
+        _preserve_existing_capitalization
+    ]
+
+    if lowercase_by_default:
+        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
+
+    for strategy in capitalization_strategies:
+        word_result: str | None = strategy(word, lower_word)
+        if word_result is not None:
+            return word_result
+
+    return word.capitalize() if not lowercase_by_default else lower_word
+
+
+def _capitalize_from_token(
+    token: Token,
+    lowercase_by_default: bool = False,
+) -> str:
+    """
+    Capitalize a spaCy token, handling special name prefixes and
+    preserving other mid-word capitalizations.
+
+    Args:
+        token: The spaCy token to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to True.
+
+    Returns:
+        str: The capitalized word.
+    """
+    lower_token: str = token.text.lower()
+
+    # Call with lowercase_by_default set to True to ensure a lowercase
+    # function return if no capitalization occurs.
+    string_result: str = _capitalize_from_string(
+        token.text,
+        lowercase_by_default=True
+    )
+    if string_result != token.text.lower():
+        return string_result
+
+    token_result: str | None = _handle_proper_noun(token)
+    if token_result is not None:
+        return token_result
+
+    return token.text.capitalize() if not lowercase_by_default else lower_token
+
+
+def _change_first_letter_case(
+    word: str,
+    casing_func: Callable[[str], str]
+) -> str:
+    """
+    Change the case of the first letter of a string without modifying
+    any other letters.
+
+    Args:
+        text: The string to convert.
+        casing_func: The function to apply to the first letter
+            (i.e., str.upper or str.lower).
+
+    Returns:
+        str: The converted text.
+    """
+    for i, char in enumerate(word):
+        if char.isalpha():
+            # Modify the first letter and return the new text.
+            return word[:i] + casing_func(char) + word[i+1:]
+
+    # Return the original text if there are no letters in the string.
+    return word
+
+
+def _handle_capitalized_abbreviation(
+    _word: str,
+    lower_word: str
+) -> str | None:
+    """
+    Handle the capitalization of an abbreviation that should be
+    capitalized.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized abbreviation, or None if lower_word
+            is not in CAPITALIZED_ABBREVIATIONS_MAP.
+    """
+    capitalized_word = _capitalize_from_map(
+        lower_word.removesuffix('.'), CAPITALIZED_ABBREVIATIONS_MAP
+    )
+    return capitalized_word if capitalized_word else None
+
+
+def _handle_hyphenated_initialism(_word: str, lower_word: str,) -> str | None:
+    """
+    Handle the capitalization of an alphanumeric hyphen-separated
+    initialism (must contain at least one number).
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if the
+            word does not contain a hyphen or number.
+    """
+    if WarpingPatterns.HYPHENATED_INITIALISM.match(lower_word):
+        return lower_word.upper()
+    return None
+
+
+def _handle_initialism(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of an initialism without hyphens or periods.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if lower_word is
+            not in INITIALISMS_MAP.
+    """
+    return _capitalize_from_map(lower_word, INITIALISMS_MAP)
+
+
+def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of the "I" pronoun.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized pronoun "I", or None if the input is
+            not "i".
+    """
+    if lower_word == 'i':
+        return 'I'
+    return None
+
+
+def _handle_lowercase_abbreviation(_word: str, lower_word: str,) -> str | None:
+    """
+    Preserve the capitalization of a lowercase abbreviation.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The lowercase abbreviation, or None if lower_word is
+            not in LOWERCASE_ABBREVIATIONS.
+    """
+    if lower_word.removesuffix('.') in LOWERCASE_ABBREVIATIONS:
+        return lower_word
+    return None
+
+
+def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
+    """
+    Handle mixed-case capitalization.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The mixed-case word, or None if lower_word is
+            not in MIXED_CASE_WORDS_MAP.
+    """
+    return _capitalize_from_map(lower_word, MIXED_CASE_WORDS_MAP)
+
+
+def _handle_period_separated_initialism(
+    _word: str,
+    lower_word: str
+) -> str | None:
+    """
+    Handle the capitalization of a period-separated initialism.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if the
+            word does not contain a period.
+    """
+    if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.match(lower_word):
+        parts = lower_word.split('.')
+        return '.'.join(
+            [part.upper() if not WarpingPatterns.ANY_APOSTROPHE.search(part)
+             else part.lower() for part in parts]
+        )
+    return None
+
+
+def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of a prefixed name.
+
+    Args:
+        _word: The name to capitalize (unused).
+        lower_word: The lowercase name.
+
+    Returns:
+        str | None: The capitalized name, or None if the
+            string starts with a name prefix exception.
+    """
+    if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
+        return None
+    elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(lower_word)):
+        prefix_len = len(match.group(0))
+        return (lower_word[:prefix_len].capitalize() +
+                lower_word[prefix_len:].capitalize())
+    elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
+        return _capitalize_from_map(lower_word, OTHER_PREFIXED_NAMES_MAP)
+    return None
+
+
+def _handle_proper_noun(
+    token: Token,
+) -> str | None:
+    """
+    Handle the capitalization of a proper noun entity.
+
+    Args:
+        token: The spaCy token to capitalize.
+
+    Returns:
+        str | None: The capitalized name, or None if the token is
+            not a name.
+    """
+    if token.ent_type_ in PROPER_NOUN_ENTITIES or token.pos_ == 'PROPN':
+        parts = token.text.split('-')
+        capitalized_parts = [_capitalize_from_string(
+            part, lowercase_by_default=False
+        ) for part in parts]
+        return '-'.join(capitalized_parts)
+    return None
+
+
+def _preserve_existing_capitalization(word: str, _lower_word: str,) -> str:
+    """
+    Preserve the capitalization of a word that is already mixed-case.
+
+    Args:
+        word: The word to check.
+        _lower_word: The lowercase word (unused).
+
+    Returns:
+        str: The original word, or None if the word is all
+            lowercase or uppercase.
+    """
+    if not word.islower() and not word.isupper():
+        return word
+    return None
+
+
+def _remove_apostrophes(text: str) -> str:
+    """
+    Remove apostrophes from a string without removing single quotes.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return WarpingPatterns.APOSTROPHE_IN_WORD.sub('', text)
+
+
+def _replace_opening_quote(match: re.Match[str]) -> str:
+    """
+    Convert a sequence of straight quotes to opening curly quotes in a
+    given match.
+
+    Args:
+        match: A match object where the first captured group is a
+            string of one or more consecutive straight quote
+            characters.
+
+    Returns:
+        str: A string of opening curly quotes.
+    """
+    quote_chars: str | None = match.group(1) or match.group(2)
+    if quote_chars.startswith("'"):
+        return '‘' * len(quote_chars)
+    else:
+        return '“' * len(quote_chars)
+
+
+def _to_separator_case(
+    text: str,
+    separator: CaseSeparator
+) -> str:
+    """
+    Convert a string to dot case, kebab case or snake case.
+
+    Args:
+        text: The string to convert.
+        separator: The separator for the converted string.
+
+    Returns:
+        str: The converted string.
+    """
+    no_apostrophes_text: str = _remove_apostrophes(text)
+    parts: list[str] = (
+        ProgrammingCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
+            no_apostrophes_text
+        )
+    )
+    converted_parts: list[str] = []
+
+    separator_pattern_name: str = f'{separator.name}_WORD'
+    separator_pattern = getattr(
+        ProgrammingCasePatterns,
+        separator_pattern_name
+    )
+    other_separators = [s for s in CaseSeparator if s != separator]
+
+    for i, part in enumerate(parts):
+        converted_part: str
+        # Part contains no alphabetical characters and is not a single
+        # space.
+        if not any(char.isalpha() for char in part) and part != ' ':
+            converted_parts.append(part)
+            continue
+        # Part is a single space.
+        elif part == ' ':
+            # Default to keeping the space.
+            converted_part = part
+            # Check if the space is surrounded by lowercase parts.
+            if i > 0 and i < len(parts) - 1:
+                prev_part = parts[i - 1]
+                next_part = parts[i + 1]
+                if (prev_part.isalpha() and prev_part.islower() and
+                        next_part.isalpha() and next_part.islower()):
+                    converted_part = separator.value
+        # Part is already in the given separator case.
+        elif separator_pattern.match(part):
+            converted_part = part
+        # Part is in another separator case.
+        elif any(
+            getattr(ProgrammingCasePatterns, f'{s.name}_WORD').match(part)
+            for s in other_separators
+        ):
+            converted_part = (
+                ProgrammingCasePatterns.ANY_SEPARATOR.sub(
+                    separator.value,
+                    part
+                )
+            )
+        # Part is in camel or Pascal case.
+        elif (ProgrammingCasePatterns.CAMEL_WORD.match(part)
+              or ProgrammingCasePatterns.PASCAL_WORD.match(part)):
+            # Break camel case and Pascal case into constituent words.
+            broken_words: list[str] = (
+                ProgrammingCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
+            )
+            lower_words = [word.lower() for word in broken_words]
+            converted_part = separator.value.join(lower_words)
+        # Part is not in any of the above cases.
+        else:
+            converted_part = part.lower()
+        converted_parts.append(converted_part)
+
+    return ''.join(converted_parts)
