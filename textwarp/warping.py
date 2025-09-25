@@ -833,6 +833,7 @@ def _capitalize_from_string(
     capitalization_strategies: list[Callable[[str, str], str | None]] = [
         _handle_i_pronoun,
         _handle_capitalized_abbreviation,
+        _handle_hyphenated_initialism,
         _handle_initialism,
         _handle_mixed_case_word,
         _handle_period_separated_initialism,
@@ -929,6 +930,24 @@ def _handle_capitalized_abbreviation(
         lower_word.removesuffix('.'), CAPITALIZED_ABBREVIATIONS_MAP
     )
     return capitalized_word if capitalized_word else None
+
+
+def _handle_hyphenated_initialism(_word: str, lower_word: str,) -> str | None:
+    """
+    Handle the capitalization of an alphanumeric hyphen-separated
+    initialism (must contain at least one number).
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or None if the
+            word does not contain a hyphen or number.
+    """
+    if WarpingPatterns.HYPHENATED_INITIALISM.match(lower_word):
+        return lower_word.upper()
+    return None
 
 
 def _handle_initialism(_word: str, lower_word: str) -> str | None:
