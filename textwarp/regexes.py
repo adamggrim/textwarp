@@ -2,7 +2,6 @@ import regex as re
 
 from textwarp.config import (
     AMBIGUOUS_CONTRACTIONS,
-    COMBINED_ABBREVIATIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,
