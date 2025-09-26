@@ -29,26 +29,15 @@ def load_json_from_data(filename: str) -> JSONType:
         return json.load(json_file)
 
 
-# Abbreviations that are always capitalized.
-CAPITALIZED_ABBREVIATIONS_MAP: dict[str, str] = load_json_from_data(
-    'capitalized_abbreviations_map.json'
-)
-
-# Abbreviations that are always lowercase.
-LOWERCASE_ABBREVIATIONS: set[str] = set(load_json_from_data(
-    'lowercase_abbreviations.json'
-))
-
-# Combined set of capitalized and lowercase abbreviations.
-COMBINED_ABBREVIATIONS: set[str] = (
-    set(CAPITALIZED_ABBREVIATIONS_MAP.keys()) | LOWERCASE_ABBREVIATIONS
-)
-
-
 # Contractions that can expand to multiple phrases.
 AMBIGUOUS_CONTRACTIONS: set[str] = set(load_json_from_data(
     'ambiguous_contractions.json'
 ))
+
+# Abbreviations that are always capitalized.
+CAPITALIZED_ABBREVIATIONS_MAP: dict[str, str] = load_json_from_data(
+    'capitalized_abbreviations_map.json'
+)
 
 # Suffix tokens derived from contractions.
 CONTRACTION_SUFFIX_TOKENS: set[str] = set(load_json_from_data(
@@ -65,6 +54,11 @@ ELISION_WORDS: set[str] = set(load_json_from_data('elision_words.json'))
 
 # Map pairing each initialism with its capitalized version.
 INITIALISMS_MAP: dict[str, str] = load_json_from_data('initialisms_map.json')
+
+# Abbreviations that are always lowercase.
+LOWERCASE_ABBREVIATIONS: set[str] = set(load_json_from_data(
+    'lowercase_abbreviations.json'
+))
 
 # Lowercase particles that are not capitalized in title case.
 LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
