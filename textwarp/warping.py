@@ -649,13 +649,20 @@ def to_sentence_case(text: str) -> str:
     processed_parts = []
 
     for token in doc:
-        if token.is_sent_start:
-            processed_word = _capitalize_from_token(token)
+        # Preserve the token if it contains only whitespace or is in
+        # the contraction suffixes list.
+        if token.is_space or (
+            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+            .fullmatch(token.text)
+        ):
+            processed_token = token.text
+        elif token.is_sent_start:
+            processed_token = _capitalize_from_token(token)
         else:
-            processed_word = _capitalize_from_token(
+            processed_token = _capitalize_from_token(
                 token, lowercase_by_default=True
             )
-        processed_parts.extend([processed_word, token.whitespace_])
+        processed_parts.extend([processed_token, token.whitespace_])
 
     return ''.join(processed_parts)
 
