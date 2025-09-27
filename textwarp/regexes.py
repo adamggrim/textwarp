@@ -226,6 +226,24 @@ class WarpingPatterns:
         final_pattern = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
 
+    _NUMBER_BASE_PATTERN: str = r'''
+        (?<!            # Not preceded by...
+            \d          # A digit.
+            \.          # Followed by a period.
+        )
+        \b              # An opening word boundary.
+        (?:             # A non-capturing group for...
+            # A NUMBER WITH THOUSANDS SEPARATORS
+            \d{1,3}     # One to three digits.
+            (?:         # A non-capturing group for...
+                ,\d{3}  # A comma followed by exactly three digits.
+            )+          # One or more times.
+            |           # OR
+            # A NUMBER WITHOUT THOUSANDS SEPARATORS
+            \d+         # One or more digits.
+        )
+    '''
+
     ANY_APOSTROPHE: re.Pattern = re.compile(r"['’‘]")
     ANY_APOSTROPHE_LOOKAHEAD: re.Pattern = re.compile(r"(?=['’‘])")
     APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
