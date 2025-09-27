@@ -269,27 +269,13 @@ class WarpingPatterns:
         AMBIGUOUS_CONTRACTIONS,
         sort_by_length=True
     )
-    CARDINAL: re.Pattern[str] = re.compile(r'''
-        # A CARDINAL INTEGER WITH OPTIONAL THOUSANDS SEPARATORS
-        (?<!            # Not preceded by...
-            \d          # A digit.
-            \.          # Followed by a period.
-        )
-        \b              # A word boundary.
-        (?:             # A non-capturing group for...
-            # A NUMBER WITH THOUSANDS SEPARATORS
-            \d{1,3}     # One to three digits.
-            (?:         # A non-capturing group for...
-                ,\d{3}  # A comma followed by exactly three digits.
-            )+          # One or more times.
-            |           # OR
-            # A NUMBER WITHOUT THOUSANDS SEPARATORS
-            \d+         # One or more digits.
-        )
-        \b              # A word boundary.
-        (?!             # Not followed by...
-            \.          # A period.
-            \d          # Followed by a digit.
+    CARDINAL: re.Pattern[str] = re.compile(rf'''
+        {_NUMBER_BASE_PATTERN}  # A number with or without thousands
+                                # separators.
+        \b                      # Followed by a closing word boundary.
+        (?!                     # Not followed by...
+            \.                  # A period.
+            \d                  # Followed by a digit.
         )
         ''', re.VERBOSE
     )
@@ -349,7 +335,13 @@ class WarpingPatterns:
         )
         ''', re.VERBOSE
     )
-    ORDINAL: re.Pattern[str] = re.compile(r'\b\d+(?:st|nd|rd|th)\b')
+    ORDINAL: re.Pattern[str] = re.compile(rf'''
+        {_NUMBER_BASE_PATTERN}  # A number with or without thousands
+                                # separators.
+        (?:st|nd|rd|th)         # Followed by an ordinal suffix.
+        \b                      # A closing word boundary.
+        ''', re.VERBOSE
+    )
     OTHER_PREFIXED_NAMES_PATTERN: re.Pattern = _create_words_regex(
         set(OTHER_PREFIXED_NAMES_MAP.keys())
     )
