@@ -79,7 +79,7 @@ MIXED_CASE_WORDS_MAP: dict[str, str] = load_json_from_data(
 MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
 
 # Words with name prefixes that do not follow standard prefix rules.
-NAME_PREFIX_EXCEPTIONS: tuple[str, ...] = tuple(load_json_from_data(
+NAME_PREFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
     'name_prefix_exceptions.json'
 ))
 
