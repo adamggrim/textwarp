@@ -5,6 +5,7 @@ from textwarp.config import (
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,
+    NAME_PREFIX_EXCEPTIONS,
     NAME_PREFIXES,
     MAP_SUFFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP
@@ -293,6 +294,10 @@ class WarpingPatterns:
         sort_by_length=True
     )
     MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
+    NAME_PREFIX_EXCEPTION_PATTERN: re.Pattern[str] = _create_words_regex(
+        NAME_PREFIX_EXCEPTIONS,
+        sort_by_length=True
+    )
     NAME_PREFIX_PATTERN: re.Pattern[str] = _create_words_regex(
         NAME_PREFIXES,
         sort_by_length=True
