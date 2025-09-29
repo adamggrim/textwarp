@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class CaseSeparator(Enum):
@@ -13,3 +13,15 @@ class CaseSeparator(Enum):
     DOT = '.'
     KEBAB = '-'
     SNAKE = '_'
+
+
+class Casing(Enum):
+    """
+    Specify which capitalization style to use in a string.
+
+    Attributes:
+        TITLE: Represents title case.
+        SENTENCE: Represents sentence case.
+    """
+    TITLE = auto()
+    SENTENCE = auto()
