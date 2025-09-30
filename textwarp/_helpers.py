@@ -354,28 +354,6 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     return None
 
 
-def _handle_proper_noun(
-    token: Token,
-) -> str | None:
-    """
-    Handle the capitalization of a proper noun entity.
-
-    Args:
-        token: The spaCy token to capitalize.
-
-    Returns:
-        str | None: The capitalized name, or None if the token is
-            not a name.
-    """
-    if token.ent_type_ in PROPER_NOUN_ENTITIES or token.pos_ == 'PROPN':
-        parts = token.text.split('-')
-        capitalized_parts = [_capitalize_from_string(
-            part, lowercase_by_default=False
-        ) for part in parts]
-        return '-'.join(capitalized_parts)
-    return None
-
-
 def _preserve_existing_capitalization(word: str, _lower_word: str,) -> str:
     """
     Preserve the capitalization of a word that is already mixed-case.
