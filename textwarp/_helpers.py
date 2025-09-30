@@ -327,7 +327,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
         str | None: The capitalized name, or None if the
             string starts with a name prefix exception.
     """
-    if lower_word.startswith(NAME_PREFIX_EXCEPTIONS):
+    if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
         return None
     elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(lower_word)):
         prefix_len = len(match.group(0))
