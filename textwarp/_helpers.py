@@ -425,46 +425,6 @@ def _should_capitalize_pos(token: Token) -> bool:
     return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
 
 
-def _title_case_from_doc(text_container: Doc | Span) -> str:
-    """
-    Convert a spaCy Doc to a title-case string, handling special name
-    prefixes and preserving other mid-word capitalizations.
-
-    Args:
-        text_container: The spaCy Doc or Span to convert.
-
-    Returns:
-        str: The converted Doc text.
-    """
-    # Find the indices of tokens that should be capitalized based on
-    # their position.
-    position_indices = _get_position_indices(text_container)
-
-    title_case_tokens: list[str] = []
-
-    for token in text_container:
-        # Preserve the token if it contains only whitespace or is in
-        # the contraction suffixes list.
-        if token.is_space or (
-            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
-            .fullmatch(token.text)
-        ):
-            title_case_token = token.text
-        # Capitalize the token based on position or part of speech.
-        elif (token.i in position_indices
-            or _should_capitalize_pos(token)
-        ):
-            title_case_token = _capitalize_from_string(token.text)
-        # Otherwise, lowercase the token.
-        else:
-            title_case_token = token.text.lower()
-
-        # Add back trailing whitespace.
-        title_case_tokens.append(title_case_token + token.whitespace_)
-
-    return ''.join(title_case_tokens)
-
-
 def _to_separator_case(
     text: str,
     separator: CaseSeparator
@@ -541,3 +501,43 @@ def _to_separator_case(
         converted_parts.append(converted_part)
 
     return ''.join(converted_parts)
+
+
+def _to_title_case_from_doc(text_container: Doc | Span) -> str:
+    """
+    Convert a spaCy Doc to a title-case string, handling special name
+    prefixes and preserving other mid-word capitalizations.
+
+    Args:
+        text_container: The spaCy Doc or Span to convert.
+
+    Returns:
+        str: The converted Doc text.
+    """
+    # Find the indices of tokens that should be capitalized based on
+    # their position.
+    position_indices = _get_position_indices(text_container)
+
+    title_case_tokens: list[str] = []
+
+    for token in text_container:
+        # Preserve the token if it contains only whitespace or is in
+        # the contraction suffixes list.
+        if token.is_space or (
+            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+            .fullmatch(token.text)
+        ):
+            title_case_token = token.text
+        # Capitalize the token based on position or part of speech.
+        elif (token.i in position_indices
+            or _should_capitalize_pos(token)
+        ):
+            title_case_token = _capitalize_from_string(token.text)
+        # Otherwise, lowercase the token.
+        else:
+            title_case_token = token.text.lower()
+
+        # Add back trailing whitespace.
+        title_case_tokens.append(title_case_token + token.whitespace_)
+
+    return ''.join(title_case_tokens)
