@@ -3,17 +3,19 @@ from typing import Callable
 import regex as re
 from spacy.tokens import Doc, Span, Token
 
-from textwarp._helpers import *
 from textwarp.config import (
     CAPITALIZED_ABBREVIATIONS_MAP,
     INITIALISMS_MAP,
     LOWERCASE_ABBREVIATIONS,
+    LOWERCASE_PARTICLES,
     MIXED_CASE_WORDS_MAP,
-    NAME_PREFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP
 )
-from textwarp.constants import PROPER_NOUN_ENTITIES
-from textwarp.enums import CaseSeparator
+from textwarp.constants import (
+    PROPER_NOUN_ENTITIES,
+    TITLE_CASE_TAG_EXCEPTIONS
+)
+from textwarp.enums import CaseSeparator, Casing
 from textwarp.regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns

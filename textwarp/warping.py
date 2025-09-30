@@ -21,8 +21,7 @@ from textwarp.constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
-    PAST_PARTICIPLE_TAGS,
-    TITLE_CASE_TAG_EXCEPTIONS
+    PAST_PARTICIPLE_TAGS
 )
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
