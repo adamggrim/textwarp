@@ -404,6 +404,27 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
         return '“' * len(quote_chars)
 
 
+def _should_capitalize_pos(token: Token) -> bool:
+    """
+    Determine whether a token should be capitalized for title case
+    based on its part of speech.
+
+    Args:
+        tag: The spaCy POS tag to check.
+
+    Returns:
+        bool: True if the tag should be capitalized, otherwise
+            False.
+    """
+    if token.text.lower() in LOWERCASE_PARTICLES:
+        return False
+    # Capitalize long words regardless of POS tag.
+    if len(token.text) >= 5:
+        return True
+
+    return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
+
+
 def _title_case_from_doc(text_container: Doc | Span) -> str:
     """
     Convert a spaCy Doc to a title-case string, handling special name
