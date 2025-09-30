@@ -22,6 +22,22 @@ from textwarp.regexes import (
 )
 
 
+def _capitalize_entity(entity: Span) -> str:
+    """
+    Capitalize a proper noun entity.
+
+    Args:
+        entity: The entity to capitalize.
+
+    Returns:
+        str: The capitalized entity text, or the original text if the
+            entity should not be capitalized.
+    """
+    if entity.label_ in PROPER_NOUN_ENTITIES:
+        return _capitalize_from_string(entity.text)
+    return entity.text
+
+
 def _capitalize_from_map(
     lower_word: str,
     capitalization_map: dict
