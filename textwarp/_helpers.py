@@ -1,7 +1,7 @@
 from typing import Callable
 
 import regex as re
-from spacy.tokens import Token
+from spacy.tokens import Doc, Span, Token
 
 from textwarp._helpers import *
 from textwarp.config import (
@@ -155,6 +155,52 @@ def _change_first_letter_case(
 
     # Return the original text if there are no letters in the string.
     return word
+
+
+def _get_position_indices(text_container: Doc | Span) -> set[int]:
+    """
+    Find the indices of tokens that should be capitalized in title case
+    based on their position.
+
+    This includes tokens at the start of a sentence, after a colon or at
+    the end of the Doc.
+
+    Args:
+        text_container: The spaCy Doc or Span to analyze.
+
+    Returns:
+        set[int]: A set containing the set of first word indices and the
+            last word index.
+    """
+    position_indices: set[int] = set()
+    last_word_index: int = -1
+
+    for i, token in enumerate(text_container):
+        # Find the first word token in a sentence.
+        if token.is_sent_start:
+            # Keep the range within a Doc's or Span's boundaries.
+            for j in range(i, len(text_container)):
+                candidate_token = text_container[j]
+                if (not candidate_token.is_space and
+                    not candidate_token.is_punct):
+                    position_indices.add(j)
+                    break
+        # Find the first word token after a colon.
+        if token.text == ':' and token.i + 1 < len(text_container):
+            for j in range(token.i + 1, len(text_container)):
+                if (not text_container[j].is_space and
+                    not text_container[j].is_punct):
+                    position_indices.add(j)
+                    break
+        # Find the most recent word token.
+        if not token.is_space and not token.is_punct:
+            last_word_index = token.i
+
+    # Add the index of the last word found.
+    if last_word_index != -1:
+        position_indices.add(last_word_index)
+
+    return position_indices
 
 
 def _handle_capitalized_abbreviation(
