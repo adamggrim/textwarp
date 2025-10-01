@@ -22,20 +22,25 @@ from textwarp.regexes import (
 )
 
 
-def _capitalize_entity(entity: Span) -> str:
+def _title_case_entities_from_doc(
+    doc: Doc
+) -> dict[int, tuple[str, int]]:
     """
-    Capitalize a proper noun entity.
+    Convert the entities in a spaCy Doc to title case.
 
     Args:
-        entity: The entity to capitalize.
+        doc: The spaCy Doc to convert.
 
     Returns:
-        str: The capitalized entity text, or the original text if the
-            entity should not be capitalized.
+        dict[str, str]: A dictionary keyed by the entity start token
+            index, with the value a tuple of the title-case entity text
+            and end token index.
     """
-    if entity.label_ in PROPER_NOUN_ENTITIES:
-        return _capitalize_from_string(entity.text)
-    return entity.text
+    return {
+        ent.start: (_to_title_case_from_doc(ent), ent.end)
+        for ent in doc.ents
+        if ent.label_ in PROPER_NOUN_ENTITIES
+    }
 
 
 def _capitalize_from_map(
