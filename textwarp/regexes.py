@@ -178,8 +178,8 @@ class WarpingPatterns:
             object that matches any contraction suffix.
         DASH: Compiled regular expression object that matches an en or
             em dash.
-        DOUBLE_HYPHENS: Compiled regular expression object that
-            matches double hyphens that function as an em dash.
+        EM_DASH_STAND_IN: Compiled regular expression object that
+            matches characters that function as an em dash.
         MULTIPLE_SPACES: Compiled regular expression object that
             matches two or more consecutive spaces.
         NAME_PREFIX_PATTERN: Compiled regular expression object that
@@ -288,7 +288,7 @@ class WarpingPatterns:
         _create_words_regex(CONTRACTION_SUFFIX_TOKENS, sort_by_length=True)
     )
     DASH: re.Pattern[str] = re.compile(r'[–—]')
-    DOUBLE_HYPHENS: re.Pattern[str] = re.compile(r'\s?--?\s?')
+    EM_DASH_STAND_IN: re.Pattern[str] = re.compile(r'\s?--?\s?')
     MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
         set(MAP_SUFFIX_EXCEPTIONS),
         sort_by_length=True

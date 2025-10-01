@@ -271,7 +271,7 @@ def from_morse(text: str) -> str:
 
 def hyphens_to_em(text: str) -> str:
     """
-    Convert consecutive hyphens to em dashes in a given string.
+    Convert em dash stand-ins to em dashes in a given string.
 
     Args:
         text: The string to convert.
@@ -279,7 +279,7 @@ def hyphens_to_em(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.DOUBLE_HYPHENS.sub('—', text)
+    return WarpingPatterns.EM_DASH_STAND_IN.sub('—', text)
 
 
 def hyphen_to_en(text: str) -> str:
