@@ -79,8 +79,9 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     Find the indices of tokens that should be capitalized for title
     case.
 
-    This includes tokens at the start of a sentence, after a colon or at
-    the end of the Doc.
+    This includes tokens at the start of a sentence, after a colon, at
+    the end of the Doc or that should be capitalized based on their part
+    of speech or length.
 
     Args:
         text_container: The spaCy Doc or Span to analyze.
@@ -93,21 +94,25 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     last_word_index: int = -1
 
     for i, token in enumerate(text_container):
-        # Find the first word token in each sentence.
-        if token.is_sent_start:
-            for j in range(i, len(text_container)):
+        # Find the first word token in each sentence or container.
+        if i == 0 or token.is_sent_start:
+            for j in text_container[i:]:
                 candidate_token = text_container[j]
                 if (not candidate_token.is_space and
                     not candidate_token.is_punct):
                     position_indices.add(j)
                     break
         # Find the first word token after a colon.
-        if token.text == ':' and token.i + 1 < len(text_container):
-            for j in range(token.i + 1, len(text_container)):
+        elif token.text == ':' and token.i + 1 < len(text_container):
+            for j in text_container[token.i + 1:]:
                 if (not text_container[j].is_space and
                     not text_container[j].is_punct):
                     position_indices.add(j)
                     break
+        # Find tokens that should be capitalized based on POS or length.
+        elif _should_capitalize_pos_or_length(token):
+            position_indices.add(token.i)
+
         # Find the most recent word token to determine the last word.
         if not token.is_space and not token.is_punct:
             last_word_index = token.i
