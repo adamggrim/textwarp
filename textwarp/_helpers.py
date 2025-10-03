@@ -404,6 +404,25 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     return position_indices
 
 
+def _map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
+    """
+    Create a map of specific proper noun entities from a spaCy Doc.
+
+    Args:
+        doc: The spaCy Doc to convert.
+
+    Returns:
+        dict[int, tuple[Span, int]]: A dictionary where each key is an
+            entity's start token index and each value is a tuple
+            containing the entity's spaCy Span object and its end token
+            index.
+    """
+    return {
+        ent.start: (ent, ent.end) for ent in doc.ents
+        if ent.label_ in PROPER_NOUN_ENTITIES
+    }
+
+
 def _preserve_existing_capitalization(word: str, _lower_word: str,) -> str:
     """
     Preserve the capitalization of a word that is already mixed-case.
