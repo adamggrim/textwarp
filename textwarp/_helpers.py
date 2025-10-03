@@ -500,13 +500,13 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
         return '“' * len(quote_chars)
 
 
-def _should_capitalize_pos(token: Token) -> bool:
+def _should_capitalize_pos_or_length(token: Token) -> bool:
     """
-    Determine whether a token should be capitalized for title case
-    based on its part of speech.
+    Determine whether a spaCy token should be capitalized for title
+    case based on its part of speech or length.
 
     Args:
-        tag: The spaCy POS tag to check.
+        token: The spaCy token to check.
 
     Returns:
         bool: True if the tag should be capitalized, otherwise
