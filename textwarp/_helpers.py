@@ -359,6 +359,33 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     return None
 
 
+def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
+    """
+    Find the indices of tokens that should be capitalized for sentence
+    case.
+
+    Args:
+        text_container: The spaCy Doc or Span to analyze.
+
+    Returns:
+        set[int]: A set containing the indices of the first word of each
+            sentence.
+    """
+    position_indices: set[int] = set()
+
+    for i, token in enumerate(text_container):
+        # Find the first word token in each sentence.
+        if token.is_sent_start:
+            for j in range(i, len(text_container)):
+                candidate_token = text_container[j]
+                if (not candidate_token.is_space and
+                    not candidate_token.is_punct):
+                    position_indices.add(j)
+                    break
+
+    return position_indices
+
+
 def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for title
