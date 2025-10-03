@@ -267,7 +267,7 @@ def _to_separator_case(
             processed_part = part.lower()
         processed_parts.append(processed_part)
 
-    return ''.join(converted_parts)
+    return ''.join(processed_parts)
 
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
