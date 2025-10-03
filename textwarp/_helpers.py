@@ -272,14 +272,14 @@ def _to_separator_case(
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
-    Convert a spaCy Doc to a title-case string, handling special name
-    prefixes and preserving other mid-word capitalizations.
+    Convert a spaCy Doc or Span to a title case string, handling special
+    name prefixes and preserving other mid-word capitalizations.
 
     Args:
         text_container: The spaCy Doc or Span to convert.
 
     Returns:
-        str: The converted Doc text.
+        str: The converted Doc or Span text.
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
