@@ -32,17 +32,18 @@ class ProgrammingCasePatterns:
 
         Splitting Patterns:
             ANY_SEPARATOR: Compiled regular expression object that
-                matches any separator character used in dot case, kebab
-                case or snake case.
+                matches any separator used in dot, kebab or snake case.
             SPLIT_CAMEL_OR_PASCAL: Compiled regular expression object
-                for splitting camel or Pascal case strings before
-                converting broken words to another programming case.
+                for splitting camel or Pascal case strings into
+                constituent words, correctly handling initialisms (e.g.,
+                URLSuffix -> ['URL', 'Suffix'])
             SPLIT_FOR_PASCAL_CONVERSION: Compiled regular expression
-                object for splitting strings before converting to Pascal
-                case.
+                object for removing select characters before conversion
+                to Pascal case.
             SPLIT_FOR_SEPARATOR_CONVERSION: Compiled regular expression
-                object for splitting strings before converting to kebab
-                or snake case.
+                object for splitting strings on non-separator word
+                boundaries before converting to dot, kebab or snake
+                case.
     """
     CAMEL_WORD: re.Pattern = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
