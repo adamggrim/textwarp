@@ -450,7 +450,7 @@ def _to_separator_case(
             no_apostrophes_text
         )
     )
-    converted_parts: list[str] = []
+    processed_parts: list[str] = []
 
     separator_pattern_name: str = f'{separator.name}_WORD'
     separator_pattern = getattr(
@@ -460,32 +460,32 @@ def _to_separator_case(
     other_separators = [s for s in CaseSeparator if s != separator]
 
     for i, part in enumerate(parts):
-        converted_part: str
+        processed_part: str
         # Part contains no alphabetical characters and is not a single
         # space.
         if not any(char.isalpha() for char in part) and part != ' ':
-            converted_parts.append(part)
+            processed_parts.append(part)
             continue
         # Part is a single space.
         elif part == ' ':
             # Default to keeping the space.
-            converted_part = part
+            processed_part = part
             # Check if the space is surrounded by lowercase parts.
             if i > 0 and i < len(parts) - 1:
                 prev_part = parts[i - 1]
                 next_part = parts[i + 1]
                 if (prev_part.isalpha() and prev_part.islower() and
                         next_part.isalpha() and next_part.islower()):
-                    converted_part = separator.value
+                    processed_part = separator.value
         # Part is already in the given separator case.
         elif separator_pattern.match(part):
-            converted_part = part
+            processed_part = part
         # Part is in another separator case.
         elif any(
             getattr(ProgrammingCasePatterns, f'{s.name}_WORD').match(part)
             for s in other_separators
         ):
-            converted_part = (
+            processed_part = (
                 ProgrammingCasePatterns.ANY_SEPARATOR.sub(
                     separator.value,
                     part
@@ -499,11 +499,11 @@ def _to_separator_case(
                 ProgrammingCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
             lower_words = [word.lower() for word in broken_words]
-            converted_part = separator.value.join(lower_words)
+            processed_part = separator.value.join(lower_words)
         # Part is not in any of the above cases.
         else:
-            converted_part = part.lower()
-        converted_parts.append(converted_part)
+            processed_part = part.lower()
+        processed_parts.append(processed_part)
 
     return ''.join(converted_parts)
 
@@ -523,7 +523,7 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     # on their position.
     position_indices = _locate_title_case_indices(text_container)
 
-    title_case_tokens: list[str] = []
+    processed_parts: list[str] = []
 
     for token in text_container:
         # Preserve the token if it contains only whitespace or is in
