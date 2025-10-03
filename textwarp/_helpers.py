@@ -22,27 +22,6 @@ from textwarp.regexes import (
 )
 
 
-def _title_case_entities_from_doc(
-    doc: Doc
-) -> dict[int, tuple[str, int]]:
-    """
-    Convert the entities in a spaCy Doc to title case.
-
-    Args:
-        doc: The spaCy Doc to convert.
-
-    Returns:
-        dict[str, str]: A dictionary keyed by the entity start token
-            index, with the value a tuple of the title-case entity text
-            and end token index.
-    """
-    return {
-        ent.start: (_to_title_case_from_doc(ent), ent.end)
-        for ent in doc.ents
-        if ent.label_ in PROPER_NOUN_ENTITIES
-    }
-
-
 def _change_first_letter_case(
     word: str,
     casing_func: Callable[[str], str]
