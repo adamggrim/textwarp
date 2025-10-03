@@ -180,7 +180,7 @@ def _change_first_letter_case(
     return word
 
 
-def _get_position_indices(text_container: Doc | Span) -> set[int]:
+def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized in title case
     based on their position.
@@ -519,9 +519,9 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     Returns:
         str: The converted Doc text.
     """
-    # Find the indices of tokens that should be capitalized based on
-    # their position.
-    position_indices = _get_position_indices(text_container)
+    # Find the indices of tokens that should always be capitalized based
+    # on their position.
+    position_indices = _locate_title_case_indices(text_container)
 
     title_case_tokens: list[str] = []
 
