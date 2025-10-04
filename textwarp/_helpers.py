@@ -56,14 +56,15 @@ def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
         text_container: The spaCy ``Doc`` or ``Span`` to analyze.
 
     Returns:
-        set[int]: A set containing the indices of the first word of each
-            sentence.
+        set[int]: A set containing the indices of the first token of
+            each sentence.
     """
     position_indices: set[int] = set()
 
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence.
         if token.is_sent_start:
+            # Find the next non-space, non-punctuation character.
             for j in range(i, len(text_container)):
                 candidate_token = text_container[j]
                 if (not candidate_token.is_space and
@@ -96,6 +97,7 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence or container.
         if i == 0 or token.is_sent_start:
+            # Find the next non-space, non-punctuation character.
             for j in text_container[i:]:
                 candidate_token = text_container[j]
                 if (not candidate_token.is_space and
@@ -104,6 +106,7 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
                     break
         # Find the first word token after a colon.
         elif token.text == ':' and token.i + 1 < len(text_container):
+            # Find the next non-space, non-punctuation character.
             for j in text_container[token.i + 1:]:
                 if (not text_container[j].is_space and
                     not text_container[j].is_punct):
