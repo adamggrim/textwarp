@@ -20,8 +20,8 @@ class Casing(Enum):
     Specify which capitalization style to use in a string.
 
     Attributes:
-        TITLE: Represents title case.
         SENTENCE: Represents sentence case.
+        TITLE: Represents title case.
     """
-    TITLE = auto()
     SENTENCE = auto()
+    TITLE = auto()
