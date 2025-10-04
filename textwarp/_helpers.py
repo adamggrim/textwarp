@@ -197,6 +197,51 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
     return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
 
 
+def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
+    """
+    Apply title or sentence case to a spaCy ``Doc``, capitalizing any
+    proper noun entities.
+
+    Args:
+        doc (Doc): A spaCy ``Doc``.
+        casing (Casing): The target casing to apply, either
+            ``Casing.SENTENCE`` or ``Casing.TITLE``.
+
+    Returns:
+        str: The cased string.
+    """
+    entity_indices = _map_proper_noun_entities(doc)
+
+    processed_parts: list[str] = []
+    i = 0
+
+    if casing == Casing.SENTENCE:
+        token_indices = _locate_sentence_start_indices(doc)
+    elif casing == Casing.TITLE:
+        token_indices = _locate_title_case_indices(doc)
+
+    while i < len(doc):
+        if i in entity_indices:
+            cased_entity_text, end_index = _to_title_case_from_doc(
+                entity_indices[i]
+            )
+            processed_parts.append(cased_entity_text)
+            i = end_index
+            continue
+
+        token_text = doc[i].text
+
+        if i in token_indices:
+            cased_token_text = _capitalize_from_string(token_text)
+            processed_parts.append(cased_token_text)
+        else:
+            processed_parts.append(token_text.lower())
+
+        i += 1
+
+    return ''.join(processed_parts)
+
+
 def _to_separator_case(
     text: str,
     separator: CaseSeparator
