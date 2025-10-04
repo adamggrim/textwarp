@@ -12,7 +12,7 @@ JSONType = Union[dict, list, str, int, float, bool, None]
 
 def load_json_from_data(filename: str) -> JSONType:
     """
-    Construct a path to a file in the 'data' subdirectory and load it
+    Construct a path to a file in the ``data`` subdirectory and load it
     as a dictionary.
 
     Args:

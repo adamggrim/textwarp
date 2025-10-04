@@ -66,7 +66,7 @@ def _get_input() -> bool:
     Boolean representing whether to continue.
 
     Returns:
-        True: To continue processing the clipboard, otherwise False.
+        True: To continue processing the clipboard, otherwise ``False``.
     """
     print_wrapped(ANY_OTHER_TEXT_PROMPT)
     while True:

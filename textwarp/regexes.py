@@ -36,7 +36,7 @@ class ProgrammingCasePatterns:
             SPLIT_CAMEL_OR_PASCAL: Compiled regular expression object
                 for splitting camel or Pascal case strings into
                 constituent words, correctly handling initialisms (e.g.,
-                URLSuffix -> ['URL', 'Suffix'])
+                ``URLSuffix -> ['URL', 'Suffix']``)
             SPLIT_FOR_PASCAL_CONVERSION: Compiled regular expression
                 object for removing select characters before conversion
                 to Pascal case.

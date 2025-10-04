@@ -29,8 +29,8 @@ def _capitalize_from_map(
             and their capitalized versions as values.
 
     Returns:
-        str | None: The capitalized initialism, or None if lower_word is
-            not in the map.
+        str | None: The capitalized initialism, or ``None`` if
+            ``lower_word`` is not in the map.
     """
     match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS.search(lower_word)
 
@@ -62,7 +62,7 @@ def _capitalize_from_string(
     Args:
         word: The word to capitalize.
         lowercase_by_default: Whether to lowercase the word if no
-            capitalization strategy applies. Defaults to True.
+            capitalization strategy applies. Defaults to ``True``.
 
     Returns:
         str: The capitalized word.
@@ -106,8 +106,8 @@ def _handle_capitalized_abbreviation(
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The capitalized abbreviation, or None if lower_word
-            is not in CAPITALIZED_ABBREVIATIONS_MAP.
+        str | None: The capitalized abbreviation, or ``None`` if
+            ``lower_word`` is not in ``CAPITALIZED_ABBREVIATIONS_MAP``.
     """
     capitalized_word = _capitalize_from_map(
         lower_word.removesuffix('.'), CAPITALIZED_ABBREVIATIONS_MAP
@@ -124,8 +124,8 @@ def _handle_initialism(_word: str, lower_word: str) -> str | None:
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The capitalized initialism, or None if lower_word is
-            not in INITIALISMS_MAP.
+        str | None: The capitalized initialism, or ``None`` if
+            ``lower_word`` is not in ``INITIALISMS_MAP``.
     """
     return _capitalize_from_map(lower_word, INITIALISMS_MAP)
 
@@ -139,8 +139,8 @@ def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The capitalized pronoun "I", or None if the input is
-            not "i".
+        str | None: The capitalized pronoun "I", or ``None`` if the
+            input is not "i".
     """
     if lower_word == 'i':
         return 'I'
@@ -156,8 +156,8 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str,) -> str | None:
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The lowercase abbreviation, or None if lower_word is
-            not in LOWERCASE_ABBREVIATIONS.
+        str | None: The lowercase abbreviation, or ``None`` if
+            ``lower_word`` is not in ``LOWERCASE_ABBREVIATIONS``.
     """
     if lower_word.removesuffix('.') in LOWERCASE_ABBREVIATIONS:
         return lower_word
@@ -173,8 +173,8 @@ def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The mixed-case word, or None if lower_word is
-            not in MIXED_CASE_WORDS_MAP.
+        str | None: The mixed-case word, or ``None`` if ``lower_word`` is
+            not in ``MIXED_CASE_WORDS_MAP``.
     """
     return _capitalize_from_map(lower_word, MIXED_CASE_WORDS_MAP)
 
@@ -191,7 +191,7 @@ def _handle_period_separated_initialism(
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The capitalized initialism, or None if the
+        str | None: The capitalized initialism, or ``None`` if the
             word does not contain a period.
     """
     if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.match(lower_word):
@@ -212,7 +212,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
         lower_word: The lowercase name.
 
     Returns:
-        str | None: The capitalized name, or None if the
+        str | None: The capitalized name, or ``None`` if the
             string starts with a name prefix exception.
     """
     if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
@@ -235,7 +235,7 @@ def _preserve_existing_capitalization(word: str, _lower_word: str,) -> str:
         _lower_word: The lowercase word (unused).
 
     Returns:
-        str: The original word, or None if the word is all
+        str: The original word, or ``None`` if the word is all
             lowercase or uppercase.
     """
     if not word.islower() and not word.isupper():

@@ -53,7 +53,7 @@ def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     case.
 
     Args:
-        text_container: The spaCy Doc or Span to analyze.
+        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
 
     Returns:
         set[int]: A set containing the indices of the first word of each
@@ -80,11 +80,11 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     case.
 
     This includes tokens at the start of a sentence, after a colon, at
-    the end of the Doc or that should be capitalized based on their part
+    the end of the ``Doc`` or that should be capitalized based on their part
     of speech or length.
 
     Args:
-        text_container: The spaCy Doc or Span to analyze.
+        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
 
     Returns:
         set[int]: A set containing the set of first word indices and the
@@ -126,10 +126,10 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
 
 def _map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     """
-    Create a map of specific proper noun entities from a spaCy Doc.
+    Create a map of specific proper noun entities from a spaCy ``Doc``.
 
     Args:
-        doc: The spaCy Doc to convert.
+        doc: The spaCy ``Doc`` to convert.
 
     Returns:
         dict[int, tuple[Span, int]]: A dictionary where each key is an
@@ -185,8 +185,8 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
         token: The spaCy token to check.
 
     Returns:
-        bool: True if the tag should be capitalized, otherwise
-            False.
+        bool: ``True`` if the tag should be capitalized, otherwise
+            ``False``.
     """
     if token.text.lower() in LOWERCASE_PARTICLES:
         return False
@@ -277,14 +277,14 @@ def _to_separator_case(
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
-    Convert a spaCy Doc or Span to a title case string, handling special
+    Convert a spaCy ``Doc`` or ``Span`` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
 
     Args:
-        text_container: The spaCy Doc or Span to convert.
+        text_container: The spaCy ``Doc`` or ``Span`` to convert.
 
     Returns:
-        str: The converted Doc or Span text.
+        str: The converted ``Doc`` or ``Span`` text.
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
