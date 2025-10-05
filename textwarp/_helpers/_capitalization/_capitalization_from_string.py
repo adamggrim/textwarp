@@ -1,8 +1,5 @@
 from typing import Callable
 
-import regex as re
-from spacy.tokens import Doc, Span, Token
-
 from textwarp.config import (
     CAPITALIZED_ABBREVIATIONS_MAP,
     INITIALISMS_MAP,

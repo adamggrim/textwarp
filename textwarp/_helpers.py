@@ -3,13 +3,8 @@ from typing import Callable
 import regex as re
 from spacy.tokens import Doc, Span, Token
 
-from textwarp.config import (
-    CAPITALIZED_ABBREVIATIONS_MAP,
-    INITIALISMS_MAP,
-    LOWERCASE_ABBREVIATIONS,
-    LOWERCASE_PARTICLES,
-    MIXED_CASE_WORDS_MAP,
-    OTHER_PREFIXED_NAMES_MAP
+from textwarp._helpers._capitalization._capitalization_from_string import (
+    _capitalize_from_string
 )
 from textwarp.constants import (
     PROPER_NOUN_ENTITIES,

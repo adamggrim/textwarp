@@ -13,7 +13,6 @@ from textwarp._helpers import (
 )
 from textwarp.config import (
     CONTRACTIONS_MAP,
-    LOWERCASE_PARTICLES,
     MORSE_MAP,
     REVERSED_MORSE_MAP
 )
