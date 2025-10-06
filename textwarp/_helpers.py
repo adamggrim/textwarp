@@ -1,16 +1,8 @@
 from typing import Callable
 
 import regex as re
-from spacy.tokens import Doc, Span, Token
 
-from textwarp._helpers._capitalization._capitalization_from_string import (
-    _capitalize_from_string
-)
-from textwarp.constants import (
-    PROPER_NOUN_ENTITIES,
-    TITLE_CASE_TAG_EXCEPTIONS
-)
-from textwarp.enums import CaseSeparator, Casing
+from textwarp.enums import CaseSeparator
 from textwarp.regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
