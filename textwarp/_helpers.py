@@ -336,23 +336,37 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     processed_parts: list[str] = []
 
     for token in text_container:
-        # Preserve the token if it contains only whitespace or is in
-        # the contraction suffixes list.
-        if token.is_space or (
-            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
-            .fullmatch(token.text)
-        ):
-            title_case_token = token.text
-        # Capitalize the token based on position or part of speech.
-        elif (token.i in position_indices
-            or _should_capitalize_pos(token)
-        ):
-            title_case_token = _capitalize_from_string(token.text)
-        # Otherwise, lowercase the token.
-        else:
-            title_case_token = token.text.lower()
+        should_capitalize = token.i in position_indices
+        processed_token = _to_title_case_from_token(
+            token, capitalize_by_position=should_capitalize
+        )
+        processed_parts.append(f'{processed_token}{token.whitespace_}')
 
-        # Add back trailing whitespace.
-        title_case_tokens.append(title_case_token + token.whitespace_)
+    return ''.join(processed_parts)
 
-    return ''.join(title_case_tokens)
+
+def _to_title_case_from_token(token: Token, capitalize_by_position: bool) -> str:
+    """
+    Convert a spaCy token to a title case string, handling special name
+    prefixes and preserving other mid-word capitalizations.
+
+    Args:
+        token: The token to convert.
+        capitalize_by_position: A flag indicating if the token should be
+            capitalized based on its position (e.g., being the first or
+            last token).
+
+    Returns:
+        str: The converted token.
+    """
+    # Preserve the token if it contains only whitespace or is a
+    # contraction suffix.
+    if token.is_space or (
+        WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+        .fullmatch(token.text)
+    ):
+        return token.text
+    elif capitalize_by_position or _should_capitalize_pos_or_length(token):
+        return capitalize_from_string(token.text)
+    else:
+        return token.text.lower()
