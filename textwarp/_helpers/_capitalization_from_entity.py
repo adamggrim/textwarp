@@ -82,7 +82,6 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
         return None
 
     position_indices: set[int] = set()
-    last_word_index: int = -1
 
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence or container.
@@ -99,13 +98,11 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
         elif _should_capitalize_pos_or_length(token):
             position_indices.add(token.i)
 
-        # Find the most recent word token to determine the last word.
+    # Find the index of the last word.
+    for token in reversed(text_container):
         if not token.is_space and not token.is_punct:
-            last_word_index = token.i
-
-    # Add the index of the last word.
-    if last_word_index != -1:
-        position_indices.add(last_word_index)
+            position_indices.add(token.i)
+            break
 
     return position_indices
 
