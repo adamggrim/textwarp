@@ -42,7 +42,7 @@ def _capitalize_from_map(
         if capitalized_base:
             # If the base is in the map, recombine it with the
             # lowercase suffix.
-            return f'{capitalized_base}{suffix.lower()}'
+            return capitalized_base + suffix.lower()
         return None
     else:
         return capitalization_map.get(lower_word)

@@ -95,6 +95,6 @@ def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     except EmptyClipboardError as e:
         print_wrapped(str(e))
     except pyperclip.PyperclipException as e:
-        print_wrapped(f'{CLIPBOARD_ACCESS_ERROR_MESSAGE}{e}')
+        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + e)
     except Exception as e:
-        print_wrapped(f'{UNEXPECTED_ERROR_MESSAGE}{e}')
+        print_wrapped(UNEXPECTED_ERROR_MESSAGE + e)
