@@ -29,13 +29,9 @@ def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence.
         if token.is_sent_start:
-            # Find the next non-space, non-punctuation character.
-            for j in range(i, len(text_container)):
-                candidate_token: Token = text_container[j]
-                if (not candidate_token.is_space and
-                    not candidate_token.is_punct):
-                    position_indices.add(j)
-                    break
+            next_word_index = _find_next_word_token_index(i, text_container)
+            if next_word_index is not None:
+                position_indices.add(next_word_index)
 
     return position_indices
 
@@ -56,29 +52,6 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
         set[int]: A set containing the set of first word indices and the
             last word index.
     """
-    def _find_next_word_token_index(
-        start_index: int,
-        text_container: Doc | Span
-    ) -> int | None:
-        """
-        Find the index of the next word token in a spaCy ``Doc`` or
-        ``Span``.
-
-        Args:
-            start_index: The relative index in the text container to
-                start the search from.
-
-        Returns:
-            int | None: The doc index of the next word token, or
-                ``None`` if no non-space, non-punctuation token is
-                found.
-        """
-        for i in range(start_index, len(text_container)):
-            token = text_container[i]
-            if not token.is_space and not token.is_punct:
-                return token.i
-        return None
-
     position_indices: set[int] = set()
 
     for i, token in enumerate(text_container):
@@ -103,6 +76,30 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
             break
 
     return position_indices
+
+
+def _find_next_word_token_index(
+    start_index: int,
+    text_container: Doc | Span
+) -> int | None:
+    """
+    Find the index of the next non-space, non-punctuation token in a
+    spaCy ``Doc`` or ``Span``.
+
+    Args:
+        start_index: The relative index in the text container to
+            start the search from.
+
+    Returns:
+        int | None: The doc index of the next word token, or
+            ``None`` if no non-space, non-punctuation token is
+            found.
+    """
+    for i in range(start_index, len(text_container)):
+        token = text_container[i]
+        if not token.is_space and not token.is_punct:
+            return token.i
+    return None
 
 
 def _map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
