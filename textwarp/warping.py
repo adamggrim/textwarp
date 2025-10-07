@@ -4,12 +4,13 @@ from collections.abc import Generator
 import regex as re
 from spacy.tokens import Doc, Token
 
+from textwarp.enums import Casing
 from textwarp._helpers import (
     _capitalize_from_string,
-    _capitalize_from_token,
     _change_first_letter_case,
     _remove_apostrophes,
     _replace_opening_quote,
+    _to_case_from_doc,
     _to_separator_case
 )
 from textwarp.config import (
@@ -646,26 +647,8 @@ def to_sentence_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    doc = nlp(text)
-    processed_parts = []
-
-    for token in doc:
-        # Preserve the token if it contains only whitespace or is in
-        # the contraction suffixes list.
-        if token.is_space or (
-            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
-            .fullmatch(token.text)
-        ):
-            processed_token = token.text
-        elif token.is_sent_start:
-            processed_token = _capitalize_from_token(token)
-        else:
-            processed_token = _capitalize_from_token(
-                token, lowercase_by_default=True
-            )
-        processed_parts.extend([processed_token, token.whitespace_])
-
-    return ''.join(processed_parts)
+    doc: Doc = nlp(text)
+    return _to_case_from_doc(doc, Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -707,75 +690,5 @@ def to_title_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _should_capitalize(token: Token) -> bool:
-        """
-        Determine whether a word should be capitalized based on its
-        part of speech.
-
-        Args:
-            tag: The spaCy POS tag to check.
-
-        Returns:
-            bool: True if the tag should be capitalized, otherwise
-                False.
-        """
-        if token.text.lower() in LOWERCASE_PARTICLES:
-            return False
-
-        # Capitalize long words regardless of POS tags.
-        if len(token.text) >= 5:
-            return True
-
-        return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
-
     doc: Doc = nlp(text)
-
-    # Find the index of the first non-whitespace token in each
-    # sentence and after any colon.
-    first_word_indices: set[int] = set()
-    last_word_index: int = -1
-
-    for i, token in enumerate(doc):
-        if token.is_sent_start:
-            for sent_token in token.sent:
-                if not sent_token.is_space and not sent_token.is_punct:
-                    first_word_indices.add(sent_token.i)
-                    break
-        if token.text == ":" and i + 1 < len(doc):
-            # Find the index of the next non-space token.
-            for j in range(i + 1, len(doc)):
-                if not doc[j].is_space and not doc[j].is_punct:
-                    first_word_indices.add(j)
-                    break
-        # Find the index of the last non-whitespace, non-punctuation
-        # token.
-        if not token.is_space and not token.is_punct:
-            last_word_index = i
-
-    title_case_tokens: list[str] = []
-
-    for i, token in enumerate(doc):
-        # Preserve the token if it contains only whitespace or is in
-        # the contraction suffixes list.
-        if token.is_space or (
-            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
-            .fullmatch(token.text)
-        ):
-            title_case_token = token.text
-        # Capitalize the first token in the title or subtitle.
-        elif i in first_word_indices:
-            title_case_token = _capitalize_from_string(token.text)
-        # Capitalize the last word of the title.
-        elif i == last_word_index:
-            title_case_token = _capitalize_from_string(token.text)
-        # Capitalize the word based on its POS tag and length.
-        elif _should_capitalize(token):
-            title_case_token = _capitalize_from_string(token.text)
-        # Otherwise, lowercase the word.
-        else:
-            title_case_token = token.text.lower()
-
-        # Add back trailing whitespace.
-        title_case_tokens.append(title_case_token + token.whitespace_)
-
-    return ''.join(title_case_tokens)
+    return _to_case_from_doc(doc, Casing.TITLE)
