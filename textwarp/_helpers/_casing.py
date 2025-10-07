@@ -34,39 +34,6 @@ def _change_first_letter_case(
     return word
 
 
-def _remove_apostrophes(text: str) -> str:
-    """
-    Remove apostrophes from a string without removing single quotes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    return WarpingPatterns.APOSTROPHE_IN_WORD.sub('', text)
-
-
-def _replace_opening_quote(match: re.Match[str]) -> str:
-    """
-    Convert a sequence of straight quotes to opening curly quotes in a
-    given match.
-
-    Args:
-        match: A match object where the first captured group is a
-            string of one or more consecutive straight quote
-            characters.
-
-    Returns:
-        str: A string of opening curly quotes.
-    """
-    quote_chars: str | None = match.group(1) or match.group(2)
-    if quote_chars.startswith("'"):
-        return '‘' * len(quote_chars)
-    else:
-        return '“' * len(quote_chars)
-
-
 def _to_separator_case(
     text: str,
     separator: CaseSeparator
