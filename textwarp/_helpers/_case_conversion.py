@@ -1,12 +1,8 @@
 from typing import Callable
 
-import regex as re
-
 from textwarp.enums import CaseSeparator
-from textwarp.regexes import (
-    ProgrammingCasePatterns,
-    WarpingPatterns
-)
+from textwarp._helpers import _remove_apostrophes
+from textwarp.regexes import ProgrammingCasePatterns
 
 
 def _change_first_letter_case(
