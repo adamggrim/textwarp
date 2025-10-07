@@ -54,11 +54,13 @@ def _to_separator_case(
     processed_parts: list[str] = []
 
     separator_pattern_name: str = f'{separator.name}_WORD'
-    separator_pattern = getattr(
+    separator_pattern: re.Pattern = getattr(
         ProgrammingCasePatterns,
         separator_pattern_name
     )
-    other_separators = [s for s in CaseSeparator if s != separator]
+    other_separators: list[CaseSeparator] = [
+        s for s in CaseSeparator if s != separator
+    ]
 
     for i, part in enumerate(parts):
         processed_part: str
@@ -99,7 +101,7 @@ def _to_separator_case(
             broken_words: list[str] = (
                 ProgrammingCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
-            lower_words = [word.lower() for word in broken_words]
+            lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
         # Part is not in any of the above cases.
         else:

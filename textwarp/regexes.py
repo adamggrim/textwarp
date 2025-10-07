@@ -213,7 +213,7 @@ class WarpingPatterns:
         Returns:
             A compiled regular expression object.
         """
-        sorted_words = words
+        sorted_words: list[str] = words
         if sort_by_length:
             # Sort words by length in descending order, so that longer
             # words containing other words from the set are matched
@@ -221,11 +221,11 @@ class WarpingPatterns:
             sorted_words = sorted(
                 sorted_words, key=len, reverse=True
             )
-        escaped_patterns = [
+        escaped_patterns: list[str] = [
             re.escape(w).replace("'", "['’‘]") for w in sorted_words
         ]
-        pattern_string = '|'.join(escaped_patterns)
-        final_pattern = rf'\b{pattern_string}\b'
+        pattern_string: str = '|'.join(escaped_patterns)
+        final_pattern: str = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
 
     _NUMBER_BASE_PATTERN: str = r'''

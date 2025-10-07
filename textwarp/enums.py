@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class CaseSeparator(Enum):
+class CaseSeparator(str, Enum):
     """
     Specify which separator character to use in a string.
 

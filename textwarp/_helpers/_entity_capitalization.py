@@ -95,7 +95,7 @@ def _find_next_word_token_index(
             found.
     """
     for i in range(start_index, len(text_container)):
-        token = text_container[i]
+        token: Token = text_container[i]
         if not token.is_space and not token.is_punct:
             return token.i
     return None
@@ -186,7 +186,7 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
         # If the curent token is not part of a proper noun entity,
         # process it as a normal string, handling special name prefixes
         # and preserving other mid-word capitalizations.
-        token = doc[i]
+        token: Token = doc[i]
         token_text: str = doc[i].text
 
         if i in token_indices:

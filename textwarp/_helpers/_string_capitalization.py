@@ -14,7 +14,7 @@ from textwarp.regexes import (
 
 def _capitalize_from_map(
     lower_word: str,
-    capitalization_map: dict
+    capitalization_map: dict[str, str]
 ) -> str | None:
     """
     Handle word capitalization through dictionary lookup, lowercasing
