@@ -33,7 +33,7 @@ def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
         if token.is_sent_start:
             # Find the next non-space, non-punctuation character.
             for j in range(i, len(text_container)):
-                candidate_token = text_container[j]
+                candidate_token: Token = text_container[j]
                 if (not candidate_token.is_space and
                     not candidate_token.is_punct):
                     position_indices.add(j)
@@ -147,7 +147,9 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
     Returns:
         str: The cased string.
     """
-    entity_indices = _map_proper_noun_entities(doc)
+    entity_indices: dict[int, tuple[Span, int]] = (
+        _map_proper_noun_entities(doc)
+    )
 
     processed_parts: list[str] = []
     i = 0
@@ -159,9 +161,11 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
 
     while i < len(doc):
         if i in entity_indices:
-            cased_entity_text, end_index = _to_title_case_from_doc(
-                entity_indices[i]
-            )
+            cased_entity_text: str
+            end_index: int
+            entity_span, end_index = entity_indices[i]
+
+            cased_entity_text: str = _to_title_case_from_doc(entity_span)
             processed_parts.append(cased_entity_text)
             i = end_index
             continue
@@ -192,13 +196,12 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
-    position_indices = _locate_title_case_indices(text_container)
-
+    position_indices: set[int] = _locate_title_case_indices(text_container)
     processed_parts: list[str] = []
 
     for token in text_container:
-        should_capitalize = token.i in position_indices
-        processed_token = _to_title_case_from_token(
+        should_capitalize: bool = token.i in position_indices
+        processed_token: str = _to_title_case_from_token(
             token, should_capitalize=should_capitalize
         )
         processed_parts.append(f'{processed_token}{token.whitespace_}')
