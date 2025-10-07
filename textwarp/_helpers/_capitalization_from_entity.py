@@ -165,7 +165,8 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
     )
 
     processed_parts: list[str] = []
-    i = 0
+    token_indices: set[int] = set()
+    i: int = 0
 
     if casing == Casing.SENTENCE:
         token_indices = _locate_sentence_start_indices(doc)
@@ -183,14 +184,15 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
             i = end_index
             continue
 
-        token_text = doc[i].text
+        token = doc[i]
+        token_text: str = doc[i].text
 
         if i in token_indices:
-            cased_token_text = _capitalize_from_string(token_text)
-            processed_parts.append(cased_token_text)
+            processed_parts.append(_capitalize_from_string(token_text))
         else:
             processed_parts.append(token_text.lower())
 
+        processed_parts.append(token.whitespace_)
         i += 1
 
     return ''.join(processed_parts)
