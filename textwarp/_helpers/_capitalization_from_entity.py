@@ -199,23 +199,22 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     for token in text_container:
         should_capitalize = token.i in position_indices
         processed_token = _to_title_case_from_token(
-            token, capitalize_by_position=should_capitalize
+            token, should_capitalize=should_capitalize
         )
         processed_parts.append(f'{processed_token}{token.whitespace_}')
 
     return ''.join(processed_parts)
 
 
-def _to_title_case_from_token(token: Token, capitalize_by_position: bool) -> str:
+def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
     """
     Convert a spaCy token to a title case string, handling special name
     prefixes and preserving other mid-word capitalizations.
 
     Args:
         token: The token to convert.
-        capitalize_by_position: A flag indicating if the token should be
-            capitalized based on its position (e.g., being the first or
-            last token).
+        should_capitalize: A flag indicating if the token should be
+            capitalized.
 
     Returns:
         str: The converted token.
@@ -227,7 +226,7 @@ def _to_title_case_from_token(token: Token, capitalize_by_position: bool) -> str
         .fullmatch(token.text)
     ):
         return token.text
-    elif capitalize_by_position or _should_capitalize_pos_or_length(token):
+    elif should_capitalize:
         return _capitalize_from_string(token.text)
     else:
         return token.text.lower()
