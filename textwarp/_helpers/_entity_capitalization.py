@@ -6,8 +6,9 @@ from textwarp.constants import (
     TITLE_CASE_TAG_EXCEPTIONS
 )
 from textwarp.enums import Casing
-from textwarp._helpers import _capitalize_from_string
 from textwarp.regexes import WarpingPatterns
+
+from ._string_capitalization import _capitalize_from_string
 
 
 def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
