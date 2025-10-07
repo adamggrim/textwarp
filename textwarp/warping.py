@@ -1,4 +1,5 @@
 import random
+from collections.abc import Generator
 
 import regex as re
 from spacy.tokens import Doc, Token
@@ -41,8 +42,9 @@ def capitalize(text: str) -> str:
     Returns:
         str: The capitalized string.
     """
-    doc = nlp(text)
-    capitalized_tokens = []
+    doc: Doc = nlp(text)
+    capitalized_tokens: list[str] = []
+    capitalized_token: str
 
     for token in doc:
         # Preserve the token if it contains only whitespace or is in
@@ -158,8 +160,8 @@ def expand_contractions(text: str) -> str:
         Returns:
             str: The expanded contraction.
         """
-        normalized_contraction = curly_to_straight(contraction).lower()
-        expanded_contraction = CONTRACTIONS_MAP.get(
+        normalized_contraction: str = curly_to_straight(contraction).lower()
+        expanded_contraction: str = CONTRACTIONS_MAP.get(
             normalized_contraction, contraction
         )
         return _apply_casing(contraction, expanded_contraction)
@@ -194,7 +196,7 @@ def expand_contractions(text: str) -> str:
 
         for i in range(start_char_index, match.end()):
             if i in token_map:
-                token_text = token_map[i].text
+                token_text: str = token_map[i].text
                 if any(char in token_text for char in APOSTROPHE_VARIANTS):
                     apostrophe_token = token_map[i]
                     break
@@ -216,10 +218,10 @@ def expand_contractions(text: str) -> str:
                 else:
                     expanded_suffix = 'would'
         if expanded_suffix:
-            base_word_token = doc[apostrophe_token.i - 1]
+            base_word_token: Token = doc[apostrophe_token.i - 1]
 
             # Combine the base word with the expanded suffix.
-            full_expansion = f'{base_word_token.text} {expanded_suffix}'
+            full_expansion: str = f'{base_word_token.text} {expanded_suffix}'
 
             return _apply_casing(contraction, full_expansion)
 
@@ -255,12 +257,12 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in uppercase).
     """
-    words = text.strip().split('   ')
-    decoded_words = []
+    words: list[str] = text.strip().split('   ')
+    decoded_words: list[str] = []
 
     for w in words:
-        char_codes = w.split(' ')
-        decoded_word = ''.join(
+        char_codes: list[str] = w.split(' ')
+        decoded_word: str = ''.join(
             REVERSED_MORSE_MAP.get(code, '') for code in char_codes
         )
         decoded_words.append(decoded_word)
@@ -333,7 +335,7 @@ def punct_to_inside(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _repl(match: re.Match) -> str:
+    def _repl(match: re.Match[str]) -> str:
         """
         Reorder periods and commas to move them inside quotation marks.
 
@@ -362,7 +364,7 @@ def punct_to_outside(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _repl(match: re.Match) -> str:
+    def _repl(match: re.Match[str]) -> str:
         """
         Reorder periods and commas to move them outside quotation
         marks.
@@ -513,6 +515,7 @@ def to_camel_case(text: str) -> str:
         pascal_text
     )
 
+
 def to_dot_case(text: str) -> str:
     """
     Convert a string to dot case.
@@ -537,7 +540,7 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    straight_text = curly_to_straight(text)
+    straight_text: str = curly_to_straight(text)
     hex_chars: list[str] = [
         format(ord(char), '02x') for char in straight_text
     ]
@@ -583,12 +586,12 @@ def to_morse(text: str) -> str:
             str: The normalized string.
         """
         straight_text: str = curly_to_straight(text.upper())
-        hyphenated_text = WarpingPatterns.DASH.sub('-', straight_text)
+        hyphenated_text: str = WarpingPatterns.DASH.sub('-', straight_text)
         return hyphenated_text.replace('…', '...')
 
     normalized_text: str = _normalize_for_morse(text)
 
-    morse_words = (
+    morse_words: Generator[str, None, None] = (
         ' '.join(MORSE_MAP[char] for char in word if char in MORSE_MAP)
         for word in normalized_text.split()
     )
