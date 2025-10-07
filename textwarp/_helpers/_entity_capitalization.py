@@ -7,9 +7,7 @@ from textwarp.constants import (
 )
 from textwarp.enums import Casing
 from textwarp._helpers import _capitalize_from_string
-from textwarp.regexes import (
-    WarpingPatterns
-)
+from textwarp.regexes import WarpingPatterns
 
 
 def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
@@ -224,7 +222,7 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
         processed_token: str = _to_title_case_from_token(
             token, should_capitalize=should_capitalize
         )
-        processed_parts.append(f'{processed_token}{token.whitespace_}')
+        processed_parts.append(processed_token + token.whitespace_)
 
     return ''.join(processed_parts)
 
