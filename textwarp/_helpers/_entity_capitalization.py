@@ -82,7 +82,7 @@ def _locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     position_indices: set[int] = set()
 
     for i, token in enumerate(text_container):
-        # Find the first word token in each sentence or container.
+        # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
             next_word_index = _find_next_word_token_index(i, text_container)
             if next_word_index is not None:
@@ -171,17 +171,25 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
     elif casing == Casing.TITLE:
         token_indices = _locate_title_case_indices(doc)
 
+    # Loop through each token in the `Doc` to look for indices that
+    # should be cased.
     while i < len(doc):
+        # Check if the current token is part of a proper noun entity.
         if i in entity_indices:
             cased_entity_text: str
             end_index: int
             entity_span, end_index = entity_indices[i]
 
+            # Always title-case proper noun entities.
             cased_entity_text: str = _to_title_case_from_doc(entity_span)
             processed_parts.append(cased_entity_text)
+            # Jump the index to the end of the entity.
             i = end_index
             continue
 
+        # If the curent token is not part of a proper noun entity,
+        # process it as a normal string, handling special name prefixes
+        # and preserving other mid-word capitalizations.
         token = doc[i]
         token_text: str = doc[i].text
 
@@ -200,6 +208,8 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     Convert a spaCy ``Doc`` or ``Span`` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
+
+    This function does not capitalize proper noun entities.
 
     Args:
         text_container: The spaCy ``Doc`` or ``Span`` to convert.
