@@ -173,6 +173,7 @@ def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
         # Check if the current token is part of a proper noun entity.
         if i in entity_indices:
             cased_entity_text: str
+            entity_span: Span
             end_index: int
             entity_span, end_index = entity_indices[i]
 
