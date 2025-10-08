@@ -1,4 +1,5 @@
 import regex as re
+from typing import Final
 
 from textwarp.config import (
     AMBIGUOUS_CONTRACTIONS,
@@ -45,33 +46,33 @@ class ProgrammingCasePatterns:
                 boundaries before converting to dot, kebab or snake
                 case.
     """
-    CAMEL_WORD: re.Pattern = re.compile(
+    CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
     )
-    DOT_WORD: re.Pattern[str] = re.compile(
+    DOT_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\b'
     )
-    KEBAB_WORD: re.Pattern[str] = re.compile(
+    KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
     )
-    PASCAL_WORD: re.Pattern[str] = re.compile(
+    PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
     )
-    SNAKE_WORD: re.Pattern[str] = re.compile(
+    SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b'
     )
 
-    _CASE_PATTERNS: tuple[re.Pattern] = (
+    _CASE_PATTERNS: Final[tuple[re.Pattern]] = (
         CAMEL_WORD,
         DOT_WORD,
         KEBAB_WORD,
         PASCAL_WORD,
         SNAKE_WORD
     )
-    _CASE_WORD: str = '|'.join(p.pattern for p in _CASE_PATTERNS)
+    _CASE_WORD: Final[str] = '|'.join(p.pattern for p in _CASE_PATTERNS)
 
-    ANY_SEPARATOR: re.Pattern = re.compile(r'[.\-_]')
-    SPLIT_CAMEL_OR_PASCAL: re.Pattern[str] = re.compile(r'''
+    ANY_SEPARATOR: Final[re.Pattern[str]] = re.compile(r'[.\-_]')
+    SPLIT_CAMEL_OR_PASCAL: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
         (?<=            # Preceded by...
             [a-z]       # A lowercase letter.
@@ -106,7 +107,7 @@ class ProgrammingCasePatterns:
         )
         ''', re.VERBOSE
     )
-    SPLIT_FOR_PASCAL_CONVERSION: re.Pattern[str] = re.compile(rf'''
+    SPLIT_FOR_PASCAL_CONVERSION: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
         # OR PROGRAMMING CASE
         (?<!                            # Not preceded by...
@@ -142,7 +143,7 @@ class ProgrammingCasePatterns:
         \b                              # A word boundary.
         ''', re.VERBOSE
     )
-    SPLIT_FOR_SEPARATOR_CONVERSION: re.Pattern[str] = re.compile(r'''
+    SPLIT_FOR_SEPARATOR_CONVERSION: Final[re.Pattern[str]] = re.compile(r'''
         # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
         (?<!        # Not preceded by...
             [.\-]   # A period or hyphen.
@@ -200,9 +201,9 @@ class WarpingPatterns:
     """
     @staticmethod
     def _create_words_regex(
-        words: set[str],
+        words: list[str],
         sort_by_length: bool = False
-    ) -> re.Pattern:
+    ) -> re.Pattern[str]:
         """
         Create a compiled regular expression object that matches any
         word in the given set.
@@ -228,7 +229,7 @@ class WarpingPatterns:
         final_pattern: str = rf'\b{pattern_string}\b'
         return re.compile(final_pattern, re.IGNORECASE)
 
-    _NUMBER_BASE_PATTERN: str = r'''
+    _NUMBER_BASE_PATTERN: Final[str] = r'''
         (?<!            # Not preceded by...
             \d          # A digit.
             \.          # Followed by a period.
@@ -246,9 +247,9 @@ class WarpingPatterns:
         )
     '''
 
-    ANY_APOSTROPHE: re.Pattern = re.compile(r"['’‘]")
-    ANY_APOSTROPHE_LOOKAHEAD: re.Pattern = re.compile(r"(?=['’‘])")
-    APOSTROPHE_IN_WORD: re.Pattern = re.compile(rf'''
+    ANY_APOSTROPHE: Final[re.Pattern[str]] = re.compile(r"['’‘]")
+    ANY_APOSTROPHE_LOOKAHEAD: Final[re.Pattern[str]] = re.compile(r"(?=['’‘])")
+    APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=                            # Preceded by...
             [a-z]                       # An alphabetical letter.
@@ -267,11 +268,13 @@ class WarpingPatterns:
         )                               # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
-    AMBIGUOUS_CONTRACTION_PATTERN: re.Pattern = _create_words_regex(
-        AMBIGUOUS_CONTRACTIONS,
-        sort_by_length=True
+    AMBIGUOUS_CONTRACTION_PATTERN: Final[re.Pattern[str]] = (
+        _create_words_regex(
+            AMBIGUOUS_CONTRACTIONS,
+            sort_by_length=True
+        )
     )
-    CARDINAL: re.Pattern[str] = re.compile(rf'''
+    CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
                                 # separators.
         \b                      # Followed by a closing word boundary.
@@ -281,29 +284,33 @@ class WarpingPatterns:
         )
         ''', re.VERBOSE
     )
-    CONTRACTION: re.Pattern[str] = _create_words_regex(
-        set(CONTRACTIONS_MAP.keys()),
+    CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
+        list(CONTRACTIONS_MAP.keys()),
         sort_by_length=True
     )
-    CONTRACTION_SUFFIX_TOKENS_PATTERN: re.Pattern[str] = (
+    CONTRACTION_SUFFIX_TOKENS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(CONTRACTION_SUFFIX_TOKENS, sort_by_length=True)
     )
-    DASH: re.Pattern[str] = re.compile(r'[–—]')
-    EM_DASH_STAND_IN: re.Pattern[str] = re.compile(r'\s?--?\s?')
-    MAP_SUFFIX_EXCEPTIONS: re.Pattern = _create_words_regex(
-        set(MAP_SUFFIX_EXCEPTIONS),
-        sort_by_length=True
+    DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
+    EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
+    MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
+        _create_words_regex(
+            MAP_SUFFIX_EXCEPTIONS,
+            sort_by_length=True
+        )
     )
-    MULTIPLE_SPACES: re.Pattern[str] = re.compile(r'(?<=\S) {2,}')
-    NAME_PREFIX_EXCEPTION_PATTERN: re.Pattern[str] = _create_words_regex(
-        NAME_PREFIX_EXCEPTIONS,
-        sort_by_length=True
+    MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
+    NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
+        _create_words_regex(
+            NAME_PREFIX_EXCEPTIONS,
+            sort_by_length=True
+        )
     )
-    NAME_PREFIX_PATTERN: re.Pattern[str] = _create_words_regex(
+    NAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
         NAME_PREFIXES,
         sort_by_length=True
     )
-    OPENING_STRAIGHT_QUOTES: re.Pattern[str] = re.compile(r'''
+    OPENING_STRAIGHT_QUOTES: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: SINGLE QUOTES
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
@@ -341,19 +348,23 @@ class WarpingPatterns:
         )
         ''', re.VERBOSE
     )
-    ORDINAL: re.Pattern[str] = re.compile(rf'''
+    ORDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
                                 # separators.
         (?:st|nd|rd|th)         # Followed by an ordinal suffix.
         \b                      # A closing word boundary.
         ''', re.VERBOSE
     )
-    OTHER_PREFIXED_NAMES_PATTERN: re.Pattern = _create_words_regex(
-        set(OTHER_PREFIXED_NAMES_MAP.keys())
+    OTHER_PREFIXED_NAMES_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
+        list(OTHER_PREFIXED_NAMES_MAP.keys())
     )
-    PERIOD_SEPARATED_INITIALISM: re.Pattern[str] = re.compile(
+    PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
         r'\b(?:[A-Za-z]\.){2,}'
     )
-    PUNCT_INSIDE: re.Pattern[str] = re.compile(r'([.,])(["”\'’]?["”\'’])')
-    PUNCT_OUTSIDE: re.Pattern[str] = re.compile(r'(["”\'’]?["”\'’])([.,])')
-    WORD_CHARACTER: re.Pattern[str] = re.compile(r'\w')
+    PUNCT_INSIDE: Final[re.Pattern[str]] = re.compile(
+        r'([.,])(["”\'’]?["”\'’])'
+    )
+    PUNCT_OUTSIDE: Final[re.Pattern[str]] = re.compile(
+        r'(["”\'’]?["”\'’])([.,])'
+    )
+    WORD_CHARACTER: Final[re.Pattern[str]] = re.compile(r'\w')

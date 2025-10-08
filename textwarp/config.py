@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Union
+from typing import Final, Union, cast
 
 
 # Get the directory of the current file.
@@ -30,71 +30,73 @@ def load_json_from_data(filename: str) -> JSONType:
 
 
 # Contractions that can expand to multiple phrases.
-AMBIGUOUS_CONTRACTIONS: set[str] = set(load_json_from_data(
+AMBIGUOUS_CONTRACTIONS: Final[list[str]] = list(load_json_from_data(
     'ambiguous_contractions.json'
 ))
 
 # Abbreviations that are always capitalized.
-CAPITALIZED_ABBREVIATIONS_MAP: dict[str, str] = load_json_from_data(
+CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = load_json_from_data(
     'capitalized_abbreviations_map.json'
 )
 
 # Suffix tokens derived from contractions.
-CONTRACTION_SUFFIX_TOKENS: set[str] = set(load_json_from_data(
+CONTRACTION_SUFFIX_TOKENS: Final[list[str]] = list(load_json_from_data(
     'contraction_suffix_tokens.json'
 ))
 
 # Map pairing each contraction with its expanded version.
-CONTRACTIONS_MAP: dict[str, str] = load_json_from_data(
+CONTRACTIONS_MAP: Final[dict[str, str]] = load_json_from_data(
     'contractions_map.json'
 )
 
 # Words that are elided for certain contractions.
-ELISION_WORDS: set[str] = set(load_json_from_data('elision_words.json'))
+ELISION_WORDS: Final[set[str]] = set(load_json_from_data('elision_words.json'))
 
 # Map pairing each initialism with its capitalized version.
-INITIALISMS_MAP: dict[str, str] = load_json_from_data('initialisms_map.json')
+INITIALISMS_MAP: Final[dict[str, str]] = load_json_from_data(
+    'initialisms_map.json'
+)
 
 # Abbreviations that are always lowercase.
-LOWERCASE_ABBREVIATIONS: set[str] = set(load_json_from_data(
+LOWERCASE_ABBREVIATIONS: Final[set[str]] = set(load_json_from_data(
     'lowercase_abbreviations.json'
 ))
 
 # Lowercase particles that are not capitalized in title case.
-LOWERCASE_PARTICLES: set[str] = set(load_json_from_data(
+LOWERCASE_PARTICLES: Final[set[str]] = set(load_json_from_data(
     'lowercase_particles.json'
 ))
 
 # Suffixes to split off from map-capitalized words.
-MAP_SUFFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
+MAP_SUFFIX_EXCEPTIONS: Final[list[str]] = list(load_json_from_data(
     'map_suffix_exceptions.json'
 ))
 
 # Map pairing each mixed-case word with its lowercase version.
-MIXED_CASE_WORDS_MAP: dict[str, str] = load_json_from_data(
+MIXED_CASE_WORDS_MAP: Final[dict[str, str]] = load_json_from_data(
     'mixed_case_words_map.json'
 )
 
 # Map pairing each character with its Morse code equivalent.
-MORSE_MAP: dict[str, str] = load_json_from_data('morse_map.json')
+MORSE_MAP: Final[dict[str, str]] = load_json_from_data('morse_map.json')
 
 # Name prefixes that necessitate special name casing.
-NAME_PREFIXES: set[str] = set(load_json_from_data(
+NAME_PREFIXES: Final[list[str]] = list(load_json_from_data(
     'name_prefixes.json')
 )
 
 # Words with name prefixes that do not follow standard prefix rules.
-NAME_PREFIX_EXCEPTIONS: set[str] = set(load_json_from_data(
+NAME_PREFIX_EXCEPTIONS: Final[list[str]] = list(load_json_from_data(
     'name_prefix_exceptions.json'
 ))
 
 # Map pairing each prefixed name not following standard prefix rules
 # with its capitalized version.
-OTHER_PREFIXED_NAMES_MAP: dict[str, str] = load_json_from_data(
+OTHER_PREFIXED_NAMES_MAP: Final[dict[str, str]] = load_json_from_data(
     'other_prefixed_names_map.json'
 )
 
 # Map for decoding Morse code.
-REVERSED_MORSE_MAP: dict[str, str] = {
+REVERSED_MORSE_MAP: Final[dict[str, str]] = {
     value: key for key, value in MORSE_MAP.items()
 }
