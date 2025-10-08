@@ -1,5 +1,7 @@
 from typing import Callable
 
+import regex as re
+
 from textwarp.enums import CaseSeparator
 from textwarp.regexes import ProgrammingCasePatterns
 
