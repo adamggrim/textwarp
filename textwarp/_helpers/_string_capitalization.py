@@ -29,7 +29,7 @@ def _capitalize_from_map(
         str | None: The capitalized initialism, or ``None`` if
             ``lower_word`` is not in the map.
     """
-    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS.search(lower_word)
+    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
 
     if match:
         split_start = match.start()
