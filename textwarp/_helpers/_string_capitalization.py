@@ -223,7 +223,10 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     return None
 
 
-def _preserve_existing_capitalization(word: str, _lower_word: str,) -> str:
+def _preserve_existing_capitalization(
+    word: str,
+    _lower_word: str
+) -> str | None:
     """
     Preserve the capitalization of a word that is already mixed-case.
 
