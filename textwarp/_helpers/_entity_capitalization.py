@@ -5,7 +5,6 @@ from textwarp.constants import (
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
-from textwarp.enums import Casing
 from textwarp.regexes import WarpingPatterns
 
 from ._string_capitalization import _capitalize_from_string
@@ -158,71 +157,6 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
         return True
 
     return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
-
-
-def _doc_to_case(doc: Doc, casing: Casing) -> str:
-    """
-    Apply title or sentence case to a spaCy ``Doc``, capitalizing any
-    proper noun entities.
-
-    Args:
-        doc (Doc): A spaCy ``Doc``.
-        casing (Casing): The target casing to apply, either
-            ``Casing.SENTENCE`` or ``Casing.TITLE``.
-
-    Returns:
-        str: The cased string.
-    """
-    entity_indices: dict[int, tuple[Span, int]] = (
-        _map_proper_noun_entities(doc)
-    )
-
-    processed_parts: list[str] = []
-    token_indices: set[int] = set()
-    lowercase_by_default: bool = False
-    i: int = 0
-
-    if casing == Casing.SENTENCE:
-        token_indices = _locate_sentence_start_indices(doc)
-        lowercase_by_default = True
-    elif casing == Casing.TITLE:
-        token_indices = _locate_title_case_indices(doc)
-
-    # Loop through each token in the `Doc` to look for indices that
-    # should be cased.
-    while i < len(doc):
-        # Check if the current token is part of a proper noun entity.
-        if i in entity_indices:
-            cased_entity_text: str
-            entity_span: Span
-            end_index: int
-            entity_span, end_index = entity_indices[i]
-
-            # Always title-case proper noun entities.
-            cased_entity_text: str = _to_title_case_from_doc(entity_span)
-            processed_parts.append(cased_entity_text)
-            # Jump the index to the end of the entity.
-            i = end_index
-            continue
-
-        # If the curent token is not part of a proper noun entity,
-        # process it as a normal string.
-        token: Token = doc[i]
-        token_text: str = doc[i].text
-
-        if i in token_indices:
-            processed_parts.append(
-                _capitalize_from_string(token_text)
-            )
-        else:
-            processed_parts.append(
-                _capitalize_from_string(token_text, lowercase_by_default)
-            )
-
-        processed_parts.append(token.whitespace_)
-        i += 1
-
-    return ''.join(processed_parts)
 
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
