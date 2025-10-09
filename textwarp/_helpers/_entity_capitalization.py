@@ -231,8 +231,8 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
 
 def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
     """
-    Convert a spaCy token to a title case string, handling special name
-    prefixes and preserving other mid-word capitalizations.
+    Convert a spaCy token to title case, handling special name prefixes
+    and preserving other mid-word capitalizations.
 
     Args:
         token: The token to convert.
