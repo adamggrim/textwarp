@@ -120,6 +120,22 @@ def _map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     }
 
 
+def _should_always_lowercase(token: Token) -> bool:
+    """
+    Determine if a token should always be lowercase.
+
+    Args:
+        token: The spaCy token to check.
+
+    Returns:
+        bool: ``True`` if the token should always be lowercase, otherwise
+            ``False``.
+    """
+    return (token.text.lower() in LOWERCASE_PARTICLES or
+        WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+        .fullmatch(token.text))
+
+
 def _should_capitalize_pos_or_length(token: Token) -> bool:
     """
     Determine whether a spaCy token should be capitalized for title
@@ -132,7 +148,7 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
         bool: ``True`` if the tag should be capitalized, otherwise
             ``False``.
     """
-    if token.text.lower() in LOWERCASE_PARTICLES:
+    if _should_always_lowercase(token):
         return False
     # Capitalize long words regardless of POS tag.
     if len(token.text) >= 5:
