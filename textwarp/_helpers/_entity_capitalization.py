@@ -157,7 +157,7 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
     return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
 
 
-def _to_case_from_doc(doc: Doc, casing: Casing) -> str:
+def _doc_to_case(doc: Doc, casing: Casing) -> str:
     """
     Apply title or sentence case to a spaCy ``Doc``, capitalizing any
     proper noun entities.

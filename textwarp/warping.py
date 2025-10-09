@@ -8,9 +8,9 @@ from textwarp.enums import Casing
 from textwarp._helpers import (
     _capitalize_from_string,
     _change_first_letter_case,
+    _doc_to_case,
     _remove_apostrophes,
     _replace_opening_quote,
-    _to_case_from_doc,
     _to_separator_case
 )
 from textwarp.config import (
@@ -648,7 +648,7 @@ def to_sentence_case(text: str) -> str:
         str: The converted string.
     """
     doc: Doc = nlp(text)
-    return _to_case_from_doc(doc, Casing.SENTENCE)
+    return _doc_to_case(doc, Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -691,4 +691,4 @@ def to_title_case(text: str) -> str:
         str: The converted string.
     """
     doc: Doc = nlp(text)
-    return _to_case_from_doc(doc, Casing.TITLE)
+    return _doc_to_case(doc, Casing.TITLE)
