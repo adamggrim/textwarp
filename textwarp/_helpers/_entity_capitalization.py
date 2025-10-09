@@ -176,10 +176,12 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
 
     processed_parts: list[str] = []
     token_indices: set[int] = set()
+    lowercase_by_default: bool = False
     i: int = 0
 
     if casing == Casing.SENTENCE:
         token_indices = _locate_sentence_start_indices(doc)
+        lowercase_by_default = True
     elif casing == Casing.TITLE:
         token_indices = _locate_title_case_indices(doc)
 
