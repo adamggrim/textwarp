@@ -209,9 +209,13 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
         token_text: str = doc[i].text
 
         if i in token_indices:
-            processed_parts.append(_capitalize_from_string(token_text))
+            processed_parts.append(
+                _capitalize_from_string(token_text)
+            )
         else:
-            processed_parts.append(token_text.lower())
+            processed_parts.append(
+                _capitalize_from_string(token_text, lowercase_by_default)
+            )
 
         processed_parts.append(token.whitespace_)
         i += 1
