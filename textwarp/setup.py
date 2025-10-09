@@ -20,4 +20,4 @@ def load_spacy_model(model_name: str):
     return nlp
 
 
-nlp = load_spacy_model('en_core_web_lg')
+nlp = load_spacy_model('en_core_web_trf')
