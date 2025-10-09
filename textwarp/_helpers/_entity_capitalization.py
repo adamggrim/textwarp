@@ -124,6 +124,9 @@ def _should_always_lowercase(token: Token) -> bool:
     """
     Determine if a token should always be lowercase.
 
+    This occurs when it is a lowercase particle (e.g., "de", "von") or a
+    contraction suffix (e.g., "'ve", "n't").
+
     Args:
         token: The spaCy token to check.
 
@@ -203,8 +206,7 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
             continue
 
         # If the curent token is not part of a proper noun entity,
-        # process it as a normal string, handling special name prefixes
-        # and preserving other mid-word capitalizations.
+        # process it as a normal string.
         token: Token = doc[i]
         token_text: str = doc[i].text
 
@@ -257,7 +259,7 @@ def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
     and preserving other mid-word capitalizations.
 
     Args:
-        token: The token to convert.
+        token: The spaCy token to convert.
         should_capitalize: A flag indicating if the token should be
             capitalized.
 
