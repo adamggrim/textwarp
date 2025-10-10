@@ -1,5 +1,5 @@
 import regex as re
-from typing import Final
+from typing import Final, final
 
 from textwarp.config import (
     AMBIGUOUS_CONTRACTIONS,
@@ -11,8 +11,11 @@ from textwarp.config import (
     MAP_SUFFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP
 )
+from .decorators import non_instantiable
 
 
+@final
+@non_instantiable
 class ProgrammingCasePatterns:
     """
     A namespace for compiled regular expressions for identifying and
@@ -156,6 +159,8 @@ class ProgrammingCasePatterns:
     )
 
 
+@final
+@non_instantiable
 class WarpingPatterns:
     """
     A namespace for compiled regular expressions for warping text.
