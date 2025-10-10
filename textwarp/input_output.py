@@ -15,7 +15,7 @@ from textwarp.constants import (
     UNEXPECTED_ERROR_MESSAGE,
     YES_INPUTS
 )
-from textwarp.validation import EmptyClipboardError, validate_clipboard
+from .validation import EmptyClipboardError, _validate_clipboard
 
 
 def print_padding() -> None:
