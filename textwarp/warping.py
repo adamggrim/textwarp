@@ -6,12 +6,12 @@ from spacy.tokens import Doc, Token
 
 from textwarp.enums import Casing
 from textwarp._helpers import (
-    _capitalize_from_string,
     _change_first_letter_case,
     _doc_to_case,
     _remove_apostrophes,
     _replace_opening_quote,
     _to_separator_case
+    capitalize_from_string,
 )
 from textwarp.config import (
     CONTRACTIONS_MAP,

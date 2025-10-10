@@ -48,48 +48,6 @@ def _capitalize_from_map(
         return capitalization_map.get(lower_word)
 
 
-def _capitalize_from_string(
-    word: str,
-    lowercase_by_default: bool = False,
-) -> str:
-    """
-    Capitalize a word, handling special name prefixes and preserving
-    other mid-word capitalizations.
-
-    Args:
-        word: The word to capitalize.
-        lowercase_by_default: Whether to lowercase the word if no
-            capitalization strategy applies. Defaults to ``True``.
-
-    Returns:
-        str: The capitalized word.
-    """
-    if not word or not word[0].isalpha():
-        return word
-
-    lower_word: str = word.lower()
-
-    capitalization_strategies: list[Callable[[str, str], str | None]] = [
-        _handle_i_pronoun,
-        _handle_capitalized_abbreviation,
-        _handle_initialism,
-        _handle_mixed_case_word,
-        _handle_period_separated_initialism,
-        _handle_prefixed_name,
-        _preserve_existing_capitalization
-    ]
-
-    if lowercase_by_default:
-        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
-
-    for strategy in capitalization_strategies:
-        word_result: str | None = strategy(word, lower_word)
-        if word_result is not None:
-            return word_result
-
-    return word.capitalize() if not lowercase_by_default else lower_word
-
-
 def _handle_capitalized_abbreviation(
     _word: str,
     lower_word: str
@@ -241,3 +199,45 @@ def _preserve_existing_capitalization(
     if not word.islower() and not word.isupper():
         return word
     return None
+
+
+def capitalize_from_string(
+    word: str,
+    lowercase_by_default: bool = False,
+) -> str:
+    """
+    Capitalize a word, handling special name prefixes and preserving
+    other mid-word capitalizations.
+
+    Args:
+        word: The word to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to ``True``.
+
+    Returns:
+        str: The capitalized word.
+    """
+    if not word or not word[0].isalpha():
+        return word
+
+    lower_word: str = word.lower()
+
+    capitalization_strategies: list[Callable[[str, str], str | None]] = [
+        _handle_i_pronoun,
+        _handle_capitalized_abbreviation,
+        _handle_initialism,
+        _handle_mixed_case_word,
+        _handle_period_separated_initialism,
+        _handle_prefixed_name,
+        _preserve_existing_capitalization
+    ]
+
+    if lowercase_by_default:
+        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
+
+    for strategy in capitalization_strategies:
+        word_result: str | None = strategy(word, lower_word)
+        if word_result is not None:
+            return word_result
+
+    return word.capitalize() if not lowercase_by_default else lower_word

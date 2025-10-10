@@ -7,7 +7,7 @@ from textwarp.constants import (
 )
 from textwarp.regexes import WarpingPatterns
 
-from ._string_capitalization import _capitalize_from_string
+from ._string_capitalization import capitalize_from_string
 
 
 def _locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:

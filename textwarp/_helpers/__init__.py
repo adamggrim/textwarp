@@ -7,4 +7,4 @@ from ._punctuation import (
     _remove_apostrophes,
     _replace_opening_quote
 )
-from ._string_capitalization import _capitalize_from_string
+from ._string_capitalization import capitalize_from_string
