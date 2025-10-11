@@ -18,6 +18,46 @@ from .constants import (
 from .validation import EmptyClipboardError, _validate_clipboard
 
 
+def _get_input() -> bool:
+    """
+    Prompt the user whether to process the clipboard and return a
+    Boolean representing whether to continue.
+
+    Returns:
+        True: To continue processing the clipboard, otherwise ``False``.
+    """
+    print_wrapped(ANY_OTHER_TEXT_PROMPT)
+    while True:
+        response: str = input().strip().lower()
+        if response in (YES_INPUTS):
+            return True
+        if response in (NO_INPUTS | EXIT_INPUTS):
+            return False
+        print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
+
+
+def _process_clipboard(warping_function: Callable[[str], str]) -> None:
+    """
+    Process the clipboard using a given text warping function.
+
+    Args:
+        warping_function (Callable[[str], str]): A function that
+            takes a string as input and returns the converted string.
+    """
+    try:
+        clipboard: str = pyperclip.paste()
+        _validate_clipboard(clipboard)
+        converted_clipboard: str = warping_function(clipboard)
+        pyperclip.copy(converted_clipboard)
+        print_wrapped(MODIFIED_TEXT_COPIED)
+    except EmptyClipboardError as e:
+        print_wrapped(str(e))
+    except pyperclip.PyperclipException as e:
+        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + e)
+    except Exception as e:
+        print_wrapped(UNEXPECTED_ERROR_MESSAGE + e)
+
+
 def print_padding() -> None:
     """Print a blank line for padding."""
     print('')
@@ -58,43 +98,3 @@ def warp_text(warping_function: Callable[[str], str]) -> None:
         _process_clipboard(warping_function)
         if not _get_input():
             break
-
-
-def _get_input() -> bool:
-    """
-    Prompt the user whether to process the clipboard and return a
-    Boolean representing whether to continue.
-
-    Returns:
-        True: To continue processing the clipboard, otherwise ``False``.
-    """
-    print_wrapped(ANY_OTHER_TEXT_PROMPT)
-    while True:
-        response: str = input().strip().lower()
-        if response in (YES_INPUTS):
-            return True
-        if response in (NO_INPUTS | EXIT_INPUTS):
-            return False
-        print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
-
-
-def _process_clipboard(warping_function: Callable[[str], str]) -> None:
-    """
-    Process the clipboard using a given text warping function.
-
-    Args:
-        warping_function (Callable[[str], str]): A function that
-            takes a string as input and returns the converted string.
-    """
-    try:
-        clipboard: str = pyperclip.paste()
-        validate_clipboard(clipboard)
-        converted_clipboard: str = warping_function(clipboard)
-        pyperclip.copy(converted_clipboard)
-        print_wrapped(MODIFIED_TEXT_COPIED)
-    except EmptyClipboardError as e:
-        print_wrapped(str(e))
-    except pyperclip.PyperclipException as e:
-        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + e)
-    except Exception as e:
-        print_wrapped(UNEXPECTED_ERROR_MESSAGE + e)
