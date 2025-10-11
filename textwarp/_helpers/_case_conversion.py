@@ -27,7 +27,7 @@ def change_first_letter_case(
     Args:
         text: The string to convert.
         casing_func: The function to apply to the first letter
-            (i.e., str.upper or str.lower).
+            (i.e., ``str.upper`` or ``str.lower``).
 
     Returns:
         str: The converted text.
