@@ -4,14 +4,14 @@ from collections.abc import Generator
 import regex as re
 from spacy.tokens import Doc, Token
 
-    _change_first_letter_case,
-    _doc_to_case,
-    _to_separator_case
 from .enums import Casing
 from ._helpers import (
     capitalize_from_string,
+    change_first_letter_case,
+    doc_to_case,
     remove_apostrophes,
     replace_opening_quote,
+    to_separator_case
 )
 from .config import (
     CONTRACTIONS_MAP,
@@ -56,7 +56,7 @@ def capitalize(text: str) -> str:
         ):
             capitalized_token = token.text
         else:
-            capitalized_token = _capitalize_from_string(token.text)
+            capitalized_token = capitalize_from_string(token.text)
 
         # Add back trailing whitespace.
         capitalized_tokens.append(capitalized_token + token.whitespace_)
@@ -74,7 +74,7 @@ def cardinal_to_ordinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def replace_cardinal(match: re.Match[str]) -> str:
+    def _replace_cardinal(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched cardinal number with an
         ordinal.
@@ -97,7 +97,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
         return number_str + suffix
 
-    return WarpingPatterns.CARDINAL.sub(replace_cardinal, text)
+    return WarpingPatterns.CARDINAL.sub(_replace_cardinal, text)
 
 
 def curly_to_straight(text: str) -> str:
@@ -307,7 +307,7 @@ def ordinal_to_cardinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def replace_ordinal(match: re.Match[str]) -> str:
+    def _replace_ordinal(match: re.Match[str]) -> str:
         """
         Helper function to replace a matched ordinal number with its
         cardinal equivalent.
@@ -322,7 +322,7 @@ def ordinal_to_cardinal(text: str) -> str:
         ordinal: str = match.group(0)
         return ordinal[:-2]
 
-    return WarpingPatterns.ORDINAL.sub(replace_ordinal, text)
+    return WarpingPatterns.ORDINAL.sub(_replace_ordinal, text)
 
 
 def punct_to_inside(text: str) -> str:
@@ -512,7 +512,7 @@ def to_camel_case(text: str) -> str:
     """
     pascal_text: str = to_pascal_case(text)
     return ProgrammingCasePatterns.PASCAL_WORD.sub(
-        lambda m: _change_first_letter_case(m.group(0), str.lower),
+        lambda m: change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
 
@@ -527,7 +527,7 @@ def to_dot_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _to_separator_case(text, CaseSeparator.DOT)
+    return to_separator_case(text, CaseSeparator.DOT)
 
 
 def to_hexadecimal(text: str) -> str:
@@ -558,7 +558,7 @@ def to_kebab_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _to_separator_case(text, CaseSeparator.KEBAB)
+    return to_separator_case(text, CaseSeparator.KEBAB)
 
 
 def to_morse(text: str) -> str:
@@ -628,10 +628,10 @@ def to_pascal_case(text: str) -> str:
             pascal_word = w
         # Word is in camel case.
         elif ProgrammingCasePatterns.CAMEL_WORD.match(w):
-            pascal_word = _change_first_letter_case(w, str.upper)
+            pascal_word = change_first_letter_case(w, str.upper)
         # Word is not in Pascal or camel case.
         else:
-            pascal_word = _capitalize_from_string(w)
+            pascal_word = capitalize_from_string(w)
         pascal_substrings.append(pascal_word)
 
     return ''.join(pascal_substrings)
@@ -648,7 +648,7 @@ def to_sentence_case(text: str) -> str:
         str: The converted string.
     """
     doc: Doc = nlp(text)
-    return _doc_to_case(doc, Casing.SENTENCE)
+    return doc_to_case(doc, Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -676,7 +676,7 @@ def to_snake_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _to_separator_case(text, CaseSeparator.SNAKE)
+    return to_separator_case(text, CaseSeparator.SNAKE)
 
 
 def to_title_case(text: str) -> str:
@@ -691,4 +691,4 @@ def to_title_case(text: str) -> str:
         str: The converted string.
     """
     doc: Doc = nlp(text)
-    return _doc_to_case(doc, Casing.TITLE)
+    return doc_to_case(doc, Casing.TITLE)
