@@ -7,10 +7,10 @@ from textwarp.enums import CaseSeparator, Casing
 from textwarp.regexes import ProgrammingCasePatterns
 
 from ._entity_capitalization import (
-    _locate_sentence_start_indices,
-    _locate_title_case_indices,
-    _map_proper_noun_entities,
-    _to_title_case_from_doc
+    locate_sentence_start_indices,
+    locate_title_case_indices,
+    map_proper_noun_entities,
+    to_title_case_from_doc
 )
 from ._punctuation import _remove_apostrophes
 from ._string_capitalization import capitalize_from_string
@@ -64,10 +64,10 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
     i: int = 0
 
     if casing == Casing.SENTENCE:
-        token_indices = _locate_sentence_start_indices(doc)
+        token_indices = locate_sentence_start_indices(doc)
         lowercase_by_default = True
     elif casing == Casing.TITLE:
-        token_indices = _locate_title_case_indices(doc)
+        token_indices = locate_title_case_indices(doc)
 
     # Loop through each token in the `Doc` to look for indices that
     # should be cased.
