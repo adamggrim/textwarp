@@ -1,7 +1,7 @@
 import regex as re
 from typing import Final, final
 
-from textwarp.config import (
+from .config import (
     AMBIGUOUS_CONTRACTIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,

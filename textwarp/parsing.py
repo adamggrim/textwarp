@@ -2,8 +2,8 @@ import argparse
 import sys
 from typing import Callable
 
-from textwarp.args import ARGS_MAP
-from textwarp.constants import HELP_DESCRIPTION
+from .args import ARGS_MAP
+from .constants import HELP_DESCRIPTION
 
 
 def parse_args() -> Callable[[str], str]:

@@ -1,7 +1,7 @@
 import spacy
 from spacy.cli import download
 
-from textwarp.input_output import print_wrapped
+from .input_output import print_wrapped
 
 
 def load_spacy_model(model_name: str):

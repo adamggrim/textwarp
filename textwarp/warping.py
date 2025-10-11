@@ -4,32 +4,32 @@ from collections.abc import Generator
 import regex as re
 from spacy.tokens import Doc, Token
 
-from textwarp.enums import Casing
-from textwarp._helpers import (
     _change_first_letter_case,
     _doc_to_case,
     _remove_apostrophes,
     _replace_opening_quote,
     _to_separator_case
+from .enums import Casing
+from ._helpers import (
     capitalize_from_string,
 )
-from textwarp.config import (
+from .config import (
     CONTRACTIONS_MAP,
     MORSE_MAP,
     REVERSED_MORSE_MAP
 )
-from textwarp.constants import (
+from .constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
     PAST_PARTICIPLE_TAGS
 )
-from textwarp.enums import CaseSeparator
-from textwarp.regexes import (
+from .enums import CaseSeparator
+from .regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )
-from textwarp.setup import nlp
+from .setup import nlp
 
 
 def capitalize(text: str) -> str:

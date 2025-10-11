@@ -1,6 +1,6 @@
 from typing import Callable
 
-from textwarp.warping import (
+from .warping import (
     capitalize,
     cardinal_to_ordinal,
     curly_to_straight,
