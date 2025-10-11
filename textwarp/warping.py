@@ -6,12 +6,12 @@ from spacy.tokens import Doc, Token
 
     _change_first_letter_case,
     _doc_to_case,
-    _remove_apostrophes,
-    _replace_opening_quote,
     _to_separator_case
 from .enums import Casing
 from ._helpers import (
     capitalize_from_string,
+    remove_apostrophes,
+    replace_opening_quote,
 )
 from .config import (
     CONTRACTIONS_MAP,
@@ -444,7 +444,7 @@ def straight_to_curly(text: str) -> str:
 
     # Replace opening straight quotes with opening curly quotes.
     curly_text = WarpingPatterns.OPENING_STRAIGHT_QUOTES.sub(
-        _replace_opening_quote, curly_text
+        replace_opening_quote, curly_text
     )
 
     # Replace any remaining straight single quotes with closing curly
@@ -610,7 +610,7 @@ def to_pascal_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    no_apostrophes_text: str = _remove_apostrophes(text)
+    no_apostrophes_text: str = remove_apostrophes(text)
     words: list[str] = (
         ProgrammingCasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
             no_apostrophes_text

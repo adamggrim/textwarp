@@ -3,7 +3,7 @@ import regex as re
 from textwarp.regexes import WarpingPatterns
 
 
-def _remove_apostrophes(text: str) -> str:
+def remove_apostrophes(text: str) -> str:
     """
     Remove apostrophes from a string without removing single quotes.
 
@@ -16,7 +16,7 @@ def _remove_apostrophes(text: str) -> str:
     return WarpingPatterns.APOSTROPHE_IN_WORD.sub('', text)
 
 
-def _replace_opening_quote(match: re.Match[str]) -> str:
+def replace_opening_quote(match: re.Match[str]) -> str:
     """
     Convert a sequence of straight quotes to opening curly quotes in a
     given match.
