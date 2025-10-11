@@ -6,6 +6,22 @@ from .args import ARGS_MAP
 from .constants import HELP_DESCRIPTION
 
 
+def _calculate_max_arg_width(commands: dict) -> int:
+    """
+    Calculate the length of the longest command string.
+
+    Args:
+        commands (dict): A dictionary mapping command names to their
+            corresponding functions and help messages.
+
+    Returns:
+        int: The length of the longest command string, adjusted for
+            formatting.
+    """
+    adjustment: int = 6 # Account for the '--' prefix and whitespace.
+    return max(len(key) + adjustment for key in commands.keys())
+
+
 def parse_args() -> Callable[[str], str]:
     """
     Parse command-line arguments for a text warping function.
@@ -53,19 +69,3 @@ def parse_args() -> Callable[[str], str]:
     for arg_key, (func, _) in ARGS_MAP.items():
         if getattr(args, arg_key.replace('-', '_')):
             return func
-
-
-def _calculate_max_arg_width(commands: dict) -> int:
-    """
-    Calculate the length of the longest command string.
-
-    Args:
-        commands (dict): A dictionary mapping command names to their
-            corresponding functions and help messages.
-
-    Returns:
-        int: The length of the longest command string, adjusted for
-            formatting.
-    """
-    adjustment: int = 6 # Account for the '--' prefix and whitespace.
-    return max(len(key) + adjustment for key in commands.keys())
