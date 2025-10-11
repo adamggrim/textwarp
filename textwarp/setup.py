@@ -4,7 +4,7 @@ from spacy.cli import download
 from .input_output import print_wrapped
 
 
-def load_spacy_model(model_name: str):
+def _load_spacy_model(model_name: str):
     """
     Loads a spaCy model, downloading it if not found.
 
@@ -20,4 +20,4 @@ def load_spacy_model(model_name: str):
     return nlp
 
 
-nlp = load_spacy_model('en_core_web_trf')
+nlp = _load_spacy_model('en_core_web_trf')
