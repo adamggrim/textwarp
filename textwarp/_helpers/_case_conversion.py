@@ -16,7 +16,7 @@ from ._punctuation import _remove_apostrophes
 from ._string_capitalization import capitalize_from_string
 
 
-def _change_first_letter_case(
+def change_first_letter_case(
     word: str,
     casing_func: Callable[[str], str]
 ) -> str:
@@ -41,7 +41,7 @@ def _change_first_letter_case(
     return word
 
 
-def _doc_to_case(doc: Doc, casing: Casing) -> str:
+def doc_to_case(doc: Doc, casing: Casing) -> str:
     """
     Apply title or sentence case to a spaCy ``Doc``, capitalizing any
     proper noun entities.
@@ -55,7 +55,7 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
         str: The cased string.
     """
     entity_indices: dict[int, tuple[Span, int]] = (
-        _map_proper_noun_entities(doc)
+        map_proper_noun_entities(doc)
     )
 
     processed_parts: list[str] = []
@@ -80,7 +80,7 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
             entity_span, end_index = entity_indices[i]
 
             # Always title-case proper noun entities.
-            cased_entity_text: str = _to_title_case_from_doc(entity_span)
+            cased_entity_text: str = to_title_case_from_doc(entity_span)
             processed_parts.append(cased_entity_text)
             # Jump the index to the end of the entity.
             i = end_index
@@ -93,11 +93,11 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
 
         if i in token_indices:
             processed_parts.append(
-                _capitalize_from_string(token_text)
+                capitalize_from_string(token_text)
             )
         else:
             processed_parts.append(
-                _capitalize_from_string(token_text, lowercase_by_default)
+                capitalize_from_string(token_text, lowercase_by_default)
             )
 
         processed_parts.append(token.whitespace_)
@@ -106,7 +106,7 @@ def _doc_to_case(doc: Doc, casing: Casing) -> str:
     return ''.join(processed_parts)
 
 
-def _to_separator_case(
+def to_separator_case(
     text: str,
     separator: CaseSeparator
 ) -> str:
@@ -120,7 +120,7 @@ def _to_separator_case(
     Returns:
         str: The converted string.
     """
-    no_apostrophes_text: str = _remove_apostrophes(text)
+    no_apostrophes_text: str = remove_apostrophes(text)
     parts: list[str] = (
         ProgrammingCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
             no_apostrophes_text
