@@ -53,9 +53,9 @@ def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     except EmptyClipboardError as e:
         print_wrapped(str(e))
     except pyperclip.PyperclipException as e:
-        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + e)
+        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e))
     except Exception as e:
-        print_wrapped(UNEXPECTED_ERROR_MESSAGE + e)
+        print_wrapped(UNEXPECTED_ERROR_MESSAGE + str(e))
 
 
 def print_padding() -> None:
