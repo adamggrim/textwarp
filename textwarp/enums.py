@@ -24,9 +24,9 @@ class Casing(Enum):
 
     Attributes:
         SENTENCE: Represents sentence case.
-        START_CASE: Represents start case.
+        START: Represents start case.
         TITLE: Represents title case.
     """
     SENTENCE = auto()
-    START_CASE = auto()
+    START = auto()
     TITLE = auto()
