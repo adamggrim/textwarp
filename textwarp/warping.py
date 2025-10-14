@@ -34,8 +34,8 @@ from .setup import nlp
 
 def capitalize(text: str) -> str:
     """
-    Capitalize the first letter of each word, handling special name
-    prefixes and preserving other mid-word capitalizations.
+    Capitalize the each word, handling special name prefixes and
+    preserving other mid-word capitalizations.
 
     Args:
         text: The string to capitalize.

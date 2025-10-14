@@ -12,14 +12,15 @@ from .config import (
     OTHER_PREFIXED_NAMES_MAP
 )
 from .decorators import non_instantiable
+from .enums import RegexBoundary
 
 
 @final
 @non_instantiable
 class ProgrammingCasePatterns:
     """
-    A namespace for compiled regular expressions for identifying and
-    converting to and from programming cases.
+    A namespace for compiled regular expressions identifying and
+    converting between programming cases.
 
     Attributes:
         Case-Matching Patterns:

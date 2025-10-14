@@ -15,6 +15,9 @@ def _load_json_from_data(filename: str) -> JSONType:
     Construct a path to a file in the ``data`` subdirectory and load it
     as a dictionary.
 
+    This function can also load files from subdirectories within the
+    ``data`` folder.
+
     Args:
         filename: The name of the JSON file.
 

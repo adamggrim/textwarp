@@ -188,7 +188,8 @@ def locate_title_case_indices(text_container: Doc | Span) -> set[int]:
 
 def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     """
-    Create a map of specific proper noun entities from a spaCy ``Doc``.
+    Create a map of specific proper noun entity indices and Span objects
+    from a spaCy ``Doc``.
 
     Args:
         doc: The spaCy ``Doc`` to convert.
@@ -209,8 +210,6 @@ def to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     Convert a spaCy ``Doc`` or ``Span`` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
-
-    This function does not capitalize proper noun entities.
 
     Args:
         text_container: The spaCy ``Doc`` or ``Span`` to convert.
