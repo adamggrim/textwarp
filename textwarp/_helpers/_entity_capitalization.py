@@ -2,6 +2,7 @@ from spacy.tokens import Doc, Span, Token
 
 from textwarp.config import LOWERCASE_PARTICLES
 from textwarp.constants import (
+    OPEN_QUOTES,
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
@@ -168,9 +169,12 @@ def locate_title_case_indices(text_container: Doc | Span) -> set[int]:
             next_word_index = _find_next_word_token_index(i, text_container)
             if next_word_index is not None:
                 position_indices.add(next_word_index)
-        # Find the first word token after a colon.
-        elif token.text == ':' and token.i + 1 < len(text_container):
-            next_word_index = _find_next_word_token_index(i + 1, text_container)
+        # Find the first word token after a colon or opening quote.
+        elif (token.text in {':'} | OPEN_QUOTES
+              and token.i + 1 < len(text_container)):
+            next_word_index = _find_next_word_token_index(
+                i + 1, text_container
+            )
             if next_word_index is not None:
                 position_indices.add(next_word_index)
         # Find tokens that should be capitalized based on POS or length.
