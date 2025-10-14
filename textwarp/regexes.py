@@ -208,8 +208,7 @@ class WarpingPatterns:
     @staticmethod
     def _create_words_regex(
         words: list[str],
-        word_boundaries: bool = True,
-        end_anchor: bool = False,
+        boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY,
         sort_by_length: bool = False
     ) -> re.Pattern[str]:
         """
@@ -229,11 +228,6 @@ class WarpingPatterns:
         Returns:
             A compiled regular expression object.
         """
-        if word_boundaries and end_anchor:
-            raise ValueError(
-                "Cannot use both 'use_word_boundaries' and 'anchor_end' flags."
-            )
-
         sorted_words: list[str] = words
         if sort_by_length:
             # Sort words by length in descending order, so that longer
@@ -248,12 +242,13 @@ class WarpingPatterns:
         ]
         pattern_string: str = '|'.join(escaped_patterns)
 
-        if word_boundaries:
-            final_pattern: str = rf'\b{pattern_string}\b'
-        elif end_anchor:
-            final_pattern: str = rf'{pattern_string}$'
-        else:
-            final_pattern: str = pattern_string
+        match boundary:
+            case RegexBoundary.WORD_BOUNDARY:
+                final_pattern: str = rf'\b{pattern_string}\b'
+            case RegexBoundary.END_ANCHOR:
+                final_pattern: str = rf'{pattern_string}$'
+            case RegexBoundary.NONE:
+                final_pattern: str = pattern_string
 
         return re.compile(final_pattern, re.IGNORECASE)
 
@@ -324,8 +319,7 @@ class WarpingPatterns:
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
             MAP_SUFFIX_EXCEPTIONS,
-            word_boundaries=False,
-            end_anchor=True,
+            boundary=RegexBoundary.END_ANCHOR,
             sort_by_length=True
         )
     )
