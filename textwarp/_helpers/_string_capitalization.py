@@ -32,9 +32,9 @@ def _capitalize_from_map(
     match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
 
     if match:
-        split_start = match.start()
-        base = lower_word[:split_start]
-        suffix = lower_word[split_start:]
+        start_of_split = match.start()
+        base = lower_word[:start_of_split]
+        suffix = lower_word[start_of_split:]
 
         # Look up the base part in the map.
         capitalized_base = capitalization_map.get(base)
