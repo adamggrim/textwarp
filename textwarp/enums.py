@@ -30,3 +30,19 @@ class Casing(Enum):
     SENTENCE = auto()
     START = auto()
     TITLE = auto()
+
+
+@final
+class RegexBoundary(Enum):
+    """
+    Specify the boundary-matching strategy for a regular expression.
+
+    Attributes:
+        WORD_BOUNDARY: Represents the pattern only when it appears as a
+            whole word.
+        END_ANCHOR: Anchors the pattern to the end of the string.
+        NONE: Represents the pattern without any boundaries or anchors.
+    """
+    WORD_BOUNDARY = auto()
+    END_ANCHOR = auto()
+    NONE = auto()
