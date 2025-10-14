@@ -44,24 +44,7 @@ def capitalize(text: str) -> str:
         str: The capitalized string.
     """
     doc: Doc = nlp(text)
-    capitalized_tokens: list[str] = []
-    capitalized_token: str
-
-    for token in doc:
-        # Preserve the token if it contains only whitespace or is in
-        # the contraction suffixes list.
-        if token.is_space or (
-            WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
-            .fullmatch(token.text)
-        ):
-            capitalized_token = token.text
-        else:
-            capitalized_token = capitalize_from_string(token.text)
-
-        # Add back trailing whitespace.
-        capitalized_tokens.append(capitalized_token + token.whitespace_)
-
-    return ''.join(capitalized_tokens)
+    return doc_to_case(doc, Casing.START)
 
 
 def cardinal_to_ordinal(text: str) -> str:
