@@ -124,6 +124,26 @@ def locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     return position_indices
 
 
+def locate_start_case_indices(text_container: Doc | Span) -> set[int]:
+    """
+    Find the indices of tokens that should be capitalized for start
+    case (i.e., all word tokens).
+
+    Args:
+        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
+
+    Returns:
+        set[int]: A set containing the indices of all word tokens.
+    """
+    word_indices: set[int] = set()
+
+    for token in text_container:
+        if not token.is_space and not token.is_punct:
+            word_indices.add(token.i)
+
+    return word_indices
+
+
 def locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for title
