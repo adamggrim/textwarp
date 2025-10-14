@@ -8,12 +8,14 @@ from textwarp.regexes import ProgrammingCasePatterns
 
 from ._entity_capitalization import (
     locate_sentence_start_indices,
+    locate_start_case_indices,
     locate_title_case_indices,
     map_proper_noun_entities,
     to_title_case_from_doc
 )
 from ._punctuation import remove_apostrophes
 from ._string_capitalization import capitalize_from_string
+from textwarp.config import UNCAPITALIZED_ENTITIES
 
 
 def change_first_letter_case(
@@ -54,18 +56,20 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     Returns:
         str: The cased string.
     """
-    entity_indices: dict[int, tuple[Span, int]] = (
+    entity_map: dict[int, tuple[Span, int]] = (
         map_proper_noun_entities(doc)
     )
 
     processed_parts: list[str] = []
     token_indices: set[int] = set()
-    lowercase_by_default: bool = False
+    lowercase_by_default: bool = True
     i: int = 0
 
     if casing == Casing.SENTENCE:
         token_indices = locate_sentence_start_indices(doc)
-        lowercase_by_default = True
+    elif casing == Casing.START:
+        token_indices = locate_start_case_indices(doc)
+        lowercase_by_default = False
     elif casing == Casing.TITLE:
         token_indices = locate_title_case_indices(doc)
 
@@ -73,18 +77,21 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     # should be cased.
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
-        if i in entity_indices:
-            cased_entity_text: str
+        if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
             entity_span: Span
             end_index: int
-            entity_span, end_index = entity_indices[i]
+            entity_span, end_index = [i]
+            lower_entity_text: str = entity_span.text.lower()
+            title_cased_entity_text: str
 
-            # Always title-case proper noun entities.
-            cased_entity_text: str = to_title_case_from_doc(entity_span)
-            processed_parts.append(cased_entity_text)
-            # Jump the index to the end of the entity.
-            i = end_index
-            continue
+            if lower_entity_text not in UNCAPITALIZED_ENTITIES:
+                title_cased_entity_text: str = to_title_case_from_doc(
+                    entity_span
+                )
+                processed_parts.append(title_cased_entity_text)
+                # Jump the index to the end of the entity.
+                i = end_index
+                continue
 
         # If the curent token is not part of a proper noun entity,
         # process it as a normal string.
