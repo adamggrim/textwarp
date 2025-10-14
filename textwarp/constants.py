@@ -35,6 +35,9 @@ MODIFIED_TEXT_COPIED: Final[str] = 'Modified text copied to clipboard.'
 # Inputs for indicating a negative response.
 NO_INPUTS: Final[set[str]] = {'no', 'n'}
 
+# Opening quote characters.
+OPEN_QUOTES: Final[set[str]] = {'"', '“', "'", '‘'}
+
 # Part-of-speech tag for past participles.
 PAST_PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
 
