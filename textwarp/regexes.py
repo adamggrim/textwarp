@@ -207,6 +207,8 @@ class WarpingPatterns:
     @staticmethod
     def _create_words_regex(
         words: list[str],
+        word_boundaries: bool = True,
+        end_anchor: bool = False,
         sort_by_length: bool = False
     ) -> re.Pattern[str]:
         """
@@ -215,10 +217,22 @@ class WarpingPatterns:
 
         Args:
             words: A set of words.
+            word_boundaries: A ``bool`` indicating whether the pattern
+                should match only whole words. Defaults to ``True``.
+            end_anchor: A ``bool`` indicating whether to add an end
+                anchor to the pattern. Defaults to ``False``.
+            sort_by_length: A ``bool`` indicating whether the words
+                should be sorted by length in descending order before
+                building the pattern. Defaults to ``False``.
 
         Returns:
             A compiled regular expression object.
         """
+        if word_boundaries and end_anchor:
+            raise ValueError(
+                "Cannot use both 'use_word_boundaries' and 'anchor_end' flags."
+            )
+
         sorted_words: list[str] = words
         if sort_by_length:
             # Sort words by length in descending order, so that longer
@@ -227,11 +241,19 @@ class WarpingPatterns:
             sorted_words = sorted(
                 sorted_words, key=len, reverse=True
             )
+
         escaped_patterns: list[str] = [
             re.escape(w).replace("'", "['’‘]") for w in sorted_words
         ]
         pattern_string: str = '|'.join(escaped_patterns)
-        final_pattern: str = rf'\b{pattern_string}\b'
+
+        if word_boundaries:
+            final_pattern: str = rf'\b{pattern_string}\b'
+        elif end_anchor:
+            final_pattern: str = rf'{pattern_string}$'
+        else:
+            final_pattern: str = pattern_string
+
         return re.compile(final_pattern, re.IGNORECASE)
 
     _NUMBER_BASE_PATTERN: Final[str] = r'''
@@ -301,6 +323,8 @@ class WarpingPatterns:
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
             MAP_SUFFIX_EXCEPTIONS,
+            word_boundaries=False,
+            end_anchor=True,
             sort_by_length=True
         )
     )
