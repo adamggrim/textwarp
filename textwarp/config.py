@@ -107,10 +107,3 @@ OTHER_PREFIXED_NAMES_MAP: Final[dict[str, str]] = cast(
 REVERSED_MORSE_MAP: Final[dict[str, str]] = {
     value: key for key, value in MORSE_MAP.items()
 }
-
-# Entities that are not normally capitalized.
-UNCAPITALIZED_ENTITIES: Final[set[str]] = set(
-    cast(list[str], _load_json_from_data(
-        'entity_capitalization/uncapitalized_entities.json'
-    ))
-)

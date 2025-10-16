@@ -15,7 +15,6 @@ from ._entity_capitalization import (
 )
 from ._punctuation import remove_apostrophes
 from ._string_capitalization import capitalize_from_string
-from textwarp.config import UNCAPITALIZED_ENTITIES
 
 
 def change_first_letter_case(
@@ -84,14 +83,13 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             lower_entity_text: str = entity_span.text.lower()
             title_cased_entity_text: str
 
-            if lower_entity_text not in UNCAPITALIZED_ENTITIES:
-                title_cased_entity_text: str = to_title_case_from_doc(
-                    entity_span
-                )
-                processed_parts.append(title_cased_entity_text)
-                # Jump the index to the end of the entity.
-                i = end_index
-                continue
+            title_cased_entity_text: str = to_title_case_from_doc(
+                entity_span
+            )
+            processed_parts.append(title_cased_entity_text)
+            # Jump the index to the end of the entity.
+            i = end_index
+            continue
 
         # If the curent token is not part of a proper noun entity,
         # process it as a normal string.
