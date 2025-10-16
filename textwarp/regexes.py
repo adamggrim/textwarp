@@ -217,10 +217,8 @@ class WarpingPatterns:
 
         Args:
             words: A set of words.
-            word_boundaries: A ``bool`` indicating whether the pattern
-                should match only whole words. Defaults to ``True``.
-            end_anchor: A ``bool`` indicating whether to add an end
-                anchor to the pattern. Defaults to ``False``.
+            boundary: The boundary-matching strategy to use. Defaults to
+                ``RegexBoundary.WORD_BOUNDARY``.
             sort_by_length: A ``bool`` indicating whether the words
                 should be sorted by length in descending order before
                 building the pattern. Defaults to ``False``.
