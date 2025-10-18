@@ -79,7 +79,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
             entity_span: Span
             end_index: int
-            entity_span, end_index = [i]
+            entity_span, end_index = entity_map[i]
             lower_entity_text: str = entity_span.text.lower()
             title_cased_entity_text: str
 
