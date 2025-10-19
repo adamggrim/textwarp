@@ -2,8 +2,8 @@ import argparse
 import sys
 from typing import Callable
 
-from .args import ARGS_MAP
-from .constants import HELP_DESCRIPTION
+from ._args import ARGS_MAP
+from ._constants import HELP_DESCRIPTION
 
 
 def _calculate_max_arg_width(commands: dict) -> int:

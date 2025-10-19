@@ -1,6 +1,6 @@
 import regex as re
 
-from textwarp.regexes import WarpingPatterns
+from textwarp._regexes import WarpingPatterns
 
 
 def remove_apostrophes(text: str) -> str:

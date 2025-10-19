@@ -1,9 +1,9 @@
-from textwarp.input_output import (
+from textwarp._input_output import (
     warp_text,
     print_padding,
     program_exit
 )
-from textwarp.parsing import parse_args
+from textwarp._parsing import parse_args
 
 
 def main() -> None:

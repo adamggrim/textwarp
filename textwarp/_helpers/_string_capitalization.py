@@ -1,13 +1,13 @@
 from typing import Callable
 
-from textwarp.config import (
+from textwarp._config import (
     CAPITALIZED_ABBREVIATIONS_MAP,
     INITIALISMS_MAP,
     LOWERCASE_ABBREVIATIONS,
     MIXED_CASE_WORDS_MAP,
     OTHER_PREFIXED_NAMES_MAP
 )
-from textwarp.regexes import (
+from textwarp._regexes import (
     WarpingPatterns
 )
 

@@ -4,7 +4,7 @@ from typing import Callable
 
 import pyperclip
 
-from .constants import (
+from ._constants import (
     ANY_OTHER_TEXT_PROMPT,
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     ENTER_VALID_RESPONSE_PROMPT,

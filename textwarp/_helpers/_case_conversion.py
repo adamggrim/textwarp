@@ -3,8 +3,8 @@ from typing import Callable
 import regex as re
 from spacy.tokens import Doc, Span, Token
 
-from textwarp.enums import CaseSeparator, Casing
-from textwarp.regexes import ProgrammingCasePatterns
+from textwarp._enums import CaseSeparator, Casing
+from textwarp._regexes import ProgrammingCasePatterns
 
 from ._entity_capitalization import (
     locate_sentence_start_indices,

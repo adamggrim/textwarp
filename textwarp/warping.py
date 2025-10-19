@@ -4,7 +4,7 @@ from collections.abc import Generator
 import regex as re
 from spacy.tokens import Doc, Token
 
-from .enums import Casing
+from ._enums import Casing
 from ._helpers import (
     capitalize_from_string,
     change_first_letter_case,
@@ -13,19 +13,19 @@ from ._helpers import (
     replace_opening_quote,
     to_separator_case
 )
-from .config import (
+from ._config import (
     CONTRACTIONS_MAP,
     MORSE_MAP,
     REVERSED_MORSE_MAP
 )
-from .constants import (
+from ._constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
     PAST_PARTICIPLE_TAGS
 )
-from .enums import CaseSeparator
-from .regexes import (
+from ._enums import CaseSeparator
+from ._regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )

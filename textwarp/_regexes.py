@@ -1,7 +1,7 @@
 import regex as re
 from typing import Final, final
 
-from .config import (
+from ._config import (
     AMBIGUOUS_CONTRACTIONS,
     CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,
@@ -11,8 +11,8 @@ from .config import (
     MAP_SUFFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP
 )
-from .decorators import non_instantiable
-from .enums import RegexBoundary
+from ._decorators import non_instantiable
+from ._enums import RegexBoundary
 
 
 @final
