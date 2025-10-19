@@ -73,7 +73,7 @@
         {
             "casing": "Q-Tip",
             "pos": ["PROPN"],
-            "ngrams": ["album", "a tribe called quest", "producer", "rapper"]
+            "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
         }
     ],
 
@@ -81,12 +81,12 @@
         {
             "casing": "GO",
             "pos": ["PROPN", "NOUN"],
-            "ngrams": ["board game", "game of", "general order"]
+            "ngrams": ["general order", "import", "status"]
         },
         {
             "casing": "Go",
             "pos": ["VERB"],
-            "ngrams": ["can", "let's", "must", "to", "will"]
+            "ngrams": ["board", "game", "let's", "to"]
         }
     ],
 
