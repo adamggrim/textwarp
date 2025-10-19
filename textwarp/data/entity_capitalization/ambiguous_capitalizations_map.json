@@ -1,0 +1,183 @@
+{
+    "aids": [
+        {
+            "casing": "AIDS",
+            "pos": ["PROPN"],
+            "ngrams": ["crisis", "epidemic", "hiv", "patient", "research", "virus"]
+        },
+        {
+            "casing": "Aids",
+            "pos": ["NOUN", "VERB"],
+            "ngrams": ["first", "hearing", "visual"]
+        }
+    ],
+
+    "art": [
+        {
+            "casing": "ART",
+            "pos": ["PROPN"],
+            "ngrams": ["assisted reproductive", "clinic", "technology", "treatment"]
+        },
+        {
+            "casing": "Art",
+            "pos": ["NOUN"],
+            "ngrams": ["gallery", "history", "museum", "piece of"]
+        }
+    ],
+
+    "cat": [
+        {
+            "casing": "CAT",
+            "pos": ["PROPN"],
+            "ngrams": ["imaging", "machine", "scan"]
+        },
+        {
+            "casing": "Cat",
+            "pos": ["NOUN"],
+            "ngrams": ["animal", "black", "feed the", "meow", "pet"]
+        }
+    ],
+
+    "cod": [
+        {
+            "casing": "COD",
+            "pos": ["PROPN"],
+            "ngrams": ["call of duty", "game", "online", "play"]
+        },
+        {
+            "casing": "Cod",
+            "pos": ["NOUN"],
+            "ngrams": ["atlantic", "cape", "fish", "fresh"]
+        }
+    ],
+
+    "coo": [
+        {
+            "casing": "COO",
+            "pos": ["PROPN"],
+            "ngrams": ["chief operating", "company", "new", "officer", "our"]
+        },
+        {
+            "casing": "Coo",
+            "pos": ["VERB", "NOUN"],
+            "ngrams": ["baby", "dove", "pigeon"]
+        }
+    ],
+
+    "q-tip": [
+        {
+            "casing": "Q-tip",
+            "pos": ["PROPN", "NOUN"],
+            "ngrams": ["cotton", "ear", "swab"]
+        },
+        {
+            "casing": "Q-Tip",
+            "pos": ["PROPN"],
+            "ngrams": ["album", "a tribe called quest", "producer", "rapper"]
+        }
+    ],
+
+    "go": [
+        {
+            "casing": "GO",
+            "pos": ["PROPN", "NOUN"],
+            "ngrams": ["board game", "game of", "general order"]
+        },
+        {
+            "casing": "Go",
+            "pos": ["VERB"],
+            "ngrams": ["can", "let's", "must", "to", "will"]
+        }
+    ],
+
+    "it": [
+        {
+            "casing": "IT",
+            "pos": ["PROPN"],
+            "ngrams": ["consultant", "department", "help desk", "industry", "sector", "support"]
+        },
+        {
+            "casing": "It",
+            "pos": ["PRON"],
+            "ngrams": []
+        }
+    ],
+
+    "now": [
+        {
+            "casing": "NOW",
+            "pos": ["PROPN"],
+            "ngrams": ["national organization for women", "organization"]
+        },
+        {
+            "casing": "Now",
+            "pos": ["ADV"],
+            "ngrams": ["is", "right", "we are"]
+        }
+    ],
+
+    "pin": [
+        {
+            "casing": "PIN",
+            "pos": ["PROPN", "NOUN"],
+            "ngrams": ["atm", "code", "enter", "number", "personal identification"]
+        },
+        {
+            "casing": "Pin",
+            "pos": ["NOUN", "VERB"],
+            "ngrams": ["bowling", "on", "rolling", "safety", "sewing"]
+        }
+    ],
+
+    "ram": [
+        {
+            "casing": "RAM",
+            "pos": ["PROPN", "NOUN"],
+            "ngrams": ["8gb of", "computer", "gb", "memory", "upgrade"]
+        },
+        {
+            "casing": "Ram",
+            "pos": ["NOUN", "VERB"],
+            "ngrams": ["animal", "dodge", "into", "sheep", "truck"]
+        }
+    ],
+
+    "us": [
+        {
+            "casing": "US",
+            "pos": ["PROPN"],
+            "ngrams": ["government", "in the", "military", "the", "visit the"]
+        },
+        {
+            "casing": "Us",
+            "pos": ["PRON"],
+            "ngrams": ["among", "between", "for", "let", "told", "with"]
+        }
+    ],
+
+    "vet": [
+        {
+            "casing": "VET",
+            "pos": ["PROPN", "NOUN"],
+            "ngrams": ["military", "veteran", "war"]
+        },
+        {
+            "casing": "Vet",
+            "pos": ["NOUN", "VERB"],
+            "ngrams": ["animal", "cat", "dog", "pet", "veterinarian"]
+        }
+    ],
+
+    "who": [
+        {
+            "casing": "WHO",
+            "pos": ["PROPN"],
+            "ngrams": ["chief", "declares", "health", "organization", "report"]
+        },
+        {
+            "casing": "Who",
+            "pos": ["PRON"],
+            "ngrams": ["are", "did", "is", "was"]
+        }
+    ]
+}
