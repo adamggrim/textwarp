@@ -29,7 +29,7 @@ from .regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )
-from .setup import nlp
+from ._model import nlp
 
 
 def capitalize(text: str) -> str:
