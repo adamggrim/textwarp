@@ -6,7 +6,7 @@ class WhitespaceClipboardError(Exception):
     """Exception raised when the clipboard contains only whitespace."""
 
 
-def _validate_clipboard(clipboard: str) -> None:
+def validate_clipboard(clipboard: str) -> None:
     """
     Validate the clipboard input.
 

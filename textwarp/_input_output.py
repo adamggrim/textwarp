@@ -15,7 +15,7 @@ from ._constants import (
     UNEXPECTED_ERROR_MESSAGE,
     YES_INPUTS
 )
-from .validation import EmptyClipboardError, _validate_clipboard
+from ._validation import EmptyClipboardError, validate_clipboard
 
 
 def _get_input() -> bool:
@@ -46,7 +46,7 @@ def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     """
     try:
         clipboard: str = pyperclip.paste()
-        _validate_clipboard(clipboard)
+        validate_clipboard(clipboard)
         converted_clipboard: str = warping_function(clipboard)
         pyperclip.copy(converted_clipboard)
         print_wrapped(MODIFIED_TEXT_COPIED)
