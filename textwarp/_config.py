@@ -25,7 +25,7 @@ def _load_json_from_data(filename: str) -> JSONType:
         JSONType: The JSON file loaded as a Python object.
     """
     # Construct a platform-independent path to the JSON file.
-    json_file_path: str = os.path.join(file_dir, 'data', filename)
+    json_file_path: str = os.path.join(file_dir, '_data', filename)
 
     # Load and return the JSON data.
     with open(json_file_path, 'r') as json_file:
