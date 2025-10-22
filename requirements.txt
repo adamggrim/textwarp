@@ -1,3 +1,4 @@
-nltk
-pyperclip
-setuptools
+pyperclip>=1.8.2
+regex>=2023.6.3
+spaCy>=3.0.0
+setuptools>=42
