@@ -3,8 +3,8 @@ from math import ceil
 
 from nltk import pos_tag, word_tokenize
 
-from textcount.constants import POS_TAGS, POS_WORD_TAGS
-from textcount.data_structures import POSCounts
+from ._constants import POS_TAGS, POS_WORD_TAGS
+from ._pos_counts import POSCounts
 
 
 def count_chars(text: str) -> int:
