@@ -30,6 +30,21 @@ class POSCounts:
         self.verb_count: int = verb_count
         self.x_count: int = x_count
 
+
+    def _calculate_percentage(self, count: int) -> float:
+        """
+        Calculate the percentage of a given part of
+        speech in the total word count.
+
+        Args:
+            count (int): The specific POS count.
+
+        Returns:
+            float: The calculated percentage, or 0.0 if self.word_count
+                is zero.
+        """
+        return (count / self.word_count * 100) if self.word_count else 0.0
+
     @property
     def adj_ratio(self) -> float:
         """
@@ -38,7 +53,7 @@ class POSCounts:
         Returns:
             float: The ratio of adjectives to the total word count.
         """
-        return self.adj_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.adj_count)
 
     @property
     def adp_ratio(self) -> float:
@@ -48,7 +63,7 @@ class POSCounts:
         Returns:
             float: The ratio of adpositions to the total word count.
         """
-        return self.adp_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.adp_count)
 
     @property
     def adv_ratio(self) -> float:
@@ -58,7 +73,7 @@ class POSCounts:
         Returns:
             float: The ratio of adverbs to the total word count.
         """
-        return self.adv_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.adv_count)
 
     @property
     def conj_ratio(self) -> float:
@@ -68,8 +83,7 @@ class POSCounts:
         Returns:
             float: The ratio of conjunctions to the total word count.
         """
-        return (self.conj_count / self.word_count * 100 if self.word_count
-                else 0)
+        return self._calculate_percentage(self.conj_count)
 
     @property
     def det_ratio(self) -> float:
@@ -79,7 +93,7 @@ class POSCounts:
         Returns:
             float: The ratio of determiners to the total word count.
         """
-        return self.det_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.det_count)
 
     @property
     def noun_ratio(self) -> float:
@@ -89,8 +103,7 @@ class POSCounts:
         Returns:
             float: The ratio of nouns to the total word count.
         """
-        return (self.noun_count / self.word_count * 100 if self.word_count
-                else 0)
+        return self._calculate_percentage(self.noun_count)
 
     @property
     def num_ratio(self) -> float:
@@ -100,7 +113,7 @@ class POSCounts:
         Returns:
             float: The ratio of numbers to the total word count.
         """
-        return self.num_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.num_count)
 
     @property
     def prt_ratio(self) -> float:
@@ -110,7 +123,7 @@ class POSCounts:
         Returns:
             float: The ratio of particles to the total word count.
         """
-        return self.prt_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.prt_count)
 
     @property
     def pron_ratio(self) -> float:
@@ -120,8 +133,7 @@ class POSCounts:
         Returns:
             float: The ratio of pronouns to the total word count.
         """
-        return (self.pron_count / self.word_count * 100 if self.word_count
-                else 0)
+        return self._calculate_percentage(self.pron_count)
 
     @property
     def verb_ratio(self) -> float:
@@ -131,7 +143,7 @@ class POSCounts:
         Returns:
             float: The ratio of verbs to the total word count.
         """
-        return self.verb_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.verb_count)
 
     @property
     def x_ratio(self) -> float:
@@ -143,4 +155,4 @@ class POSCounts:
             float: The ratio of other parts of speech tags to the total
                 word count.
         """
-        return self.x_count / self.word_count * 100 if self.word_count else 0
+        return self._calculate_percentage(self.x_count)
