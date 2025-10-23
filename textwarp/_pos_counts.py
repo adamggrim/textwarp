@@ -48,113 +48,117 @@ class POSCounts:
         return (count / self.word_count * 100) if self.word_count else 0.0
 
     @property
-    def adj_ratio(self) -> float:
+    def adj_percentage(self) -> float:
         """
-        Calculate the ratio of adjectives to the total word count.
+        Calculate the percentage of adjectives in the total word count.
 
         Returns:
-            float: The ratio of adjectives to the total word count.
+            float: The percentage of adjectives in the total word count.
         """
         return self._calculate_percentage(self.adj_count)
 
     @property
-    def adp_ratio(self) -> float:
+    def adp_percentage(self) -> float:
         """
-        Calculate the ratio of adpositions to the total word count.
+        Calculate the percentage of adpositions in the total word count.
 
         Returns:
-            float: The ratio of adpositions to the total word count.
+            float: The percentage of adpositions in the total word
+                count.
         """
         return self._calculate_percentage(self.adp_count)
 
     @property
-    def adv_ratio(self) -> float:
+    def adv_percentage(self) -> float:
         """
-        Calculate the ratio of adverbs to the total word count.
+        Calculate the percentage of adverbs in the total word count.
 
         Returns:
-            float: The ratio of adverbs to the total word count.
+            float: The percentage of adverbs in the total word count.
         """
         return self._calculate_percentage(self.adv_count)
 
     @property
-    def conj_ratio(self) -> float:
+    def conj_percentage(self) -> float:
         """
-        Calculate the ratio of conjunctions to the total word count.
+        Calculate the percentage of conjunctions in the total word
+        count.
 
         Returns:
-            float: The ratio of conjunctions to the total word count.
+            float: The percentage of conjunctions in the total word
+                count.
         """
         return self._calculate_percentage(self.conj_count)
 
     @property
-    def det_ratio(self) -> float:
+    def det_percentage(self) -> float:
         """
-        Calculate the ratio of determiners to the total word count.
+        Calculate the percentage of determiners in the total word count.
 
         Returns:
-            float: The ratio of determiners to the total word count.
+            float: The percentage of determiners in the total word
+                count.
         """
         return self._calculate_percentage(self.det_count)
 
     @property
-    def noun_ratio(self) -> float:
+    def noun_percentage(self) -> float:
         """
-        Calculate the ratio of nouns to the total word count.
+        Calculate the percentage of nouns in the total word count.
 
         Returns:
-            float: The ratio of nouns to the total word count.
+            float: The percentage of nouns in the total word count.
         """
         return self._calculate_percentage(self.noun_count)
 
     @property
-    def num_ratio(self) -> float:
+    def num_percentage(self) -> float:
         """
-        Calculate the ratio of numbers to the total word count.
+        Calculate the percentage of numbers in the total word count.
 
         Returns:
-            float: The ratio of numbers to the total word count.
+            float: The percentage of numbers in the total word count.
         """
         return self._calculate_percentage(self.num_count)
 
     @property
-    def prt_ratio(self) -> float:
+    def prt_percentage(self) -> float:
         """
-        Calculate the ratio of particles to the total word count.
+        Calculate the percentage of particles in the total word count.
 
         Returns:
-            float: The ratio of particles to the total word count.
+            float: The percentage of particles in the total word count.
         """
         return self._calculate_percentage(self.prt_count)
 
     @property
-    def pron_ratio(self) -> float:
+    def pron_percentage(self) -> float:
         """
-        Calculate the ratio of pronouns to the total word count.
+        Calculate the percentage of pronouns in the total word count.
 
         Returns:
-            float: The ratio of pronouns to the total word count.
+            float: The percentage of pronouns in the total word count.
         """
         return self._calculate_percentage(self.pron_count)
 
     @property
-    def verb_ratio(self) -> float:
+    def verb_percentage(self) -> float:
         """
-        Calculate the ratio of verbs to the total word count.
+        Calculate the percentage of verbs in the total word count.
 
         Returns:
-            float: The ratio of verbs to the total word count.
+            float: The percentage of verbs in the total word count.
         """
         return self._calculate_percentage(self.verb_count)
 
     @property
-    def x_ratio(self) -> float:
+    def x_percentage(self) -> float:
         """
-        Calculate the ratio of other parts of speech tags to the total
-        word count.
+        Calculate the percentage of other parts of speech tags in the
+        total word count.
 
         Returns:
-            float: The ratio of other parts of speech tags to the total
-                word count.
+            float: The percentage of other parts of speech tags in the
+                total word count.
         """
         return self._calculate_percentage(self.x_count)
