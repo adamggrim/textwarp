@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "textcount"
+version = "0.1.0"
+description = "Package for analyzing clipboard text"
+readme = "README.md"
+keywords = ["text", "clipboard", "analyze", "count"]
+license = {text = "MIT"}
+authors = [
+  { name = "Adam Grim" }
+]
+dependencies = [
+    "nltk",
+    "pyperclip",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+
+[project.urls]
+"Source" = "https://github.com/adamggrim/textcount"
+
+[project.scripts]
+textcount = "textcount.__main__:main"
+
+[tool.setuptools]
+packages = ["textcount"]
