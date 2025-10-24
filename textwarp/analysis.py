@@ -27,8 +27,7 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
 
 def count_chars(text: str) -> int:
     """
-    Return an integer representing the number of characters in a given
-    string.
+    Count the number of characters in a given string.
 
     Args:
         text: The string to analyze.
@@ -41,8 +40,7 @@ def count_chars(text: str) -> int:
 
 def count_lines(text: str) -> int:
     """
-    Return an integer representing the number of non-whitespace lines
-    in a given string.
+    Count the number of non-whitespace lines in a given string.
 
     Args:
         text: The string to analyze.
@@ -57,8 +55,7 @@ def count_lines(text: str) -> int:
 
 def count_mfws(text: str, mfw_count: int) -> list[tuple]:
     """
-    Return a list of tuples indicating the most frequent words in a
-    given string.
+    Count the most frequent words in a given string.
 
     Args:
         text: The string to analyze.
@@ -76,8 +73,7 @@ def count_mfws(text: str, mfw_count: int) -> list[tuple]:
 
 def count_pos(text: str) -> POSCounts:
     """
-    Return a POSCounts object containing the parts of speech counts
-    for a given string.
+    Count the parts of speech in a given string.
 
     Args:
         text: The string to analyze.
@@ -109,15 +105,13 @@ def count_pos(text: str) -> POSCounts:
 
 def count_sents(text: str) -> int:
     """
-    Return an integer representing the minutes to read a given string.
+    Count the number of sentences in a given string.
 
     Args:
         text: The string to analyze.
-        wpm: The number of words per minute to return.
 
     Returns:
-        int: The minutes to read the given string. Rounded up if more
-            than one minute, zero if less than one minute.
+        int: The number of sentences in the string.
     """
     doc: Doc = nlp(text)
     return len(list(doc.sents))
@@ -125,8 +119,7 @@ def count_sents(text: str) -> int:
 
 def count_words(text: str) -> int:
     """
-    Return an integer representing the number of words in a given
-    string.
+    Count the number of words in a given string.
 
     Args:
         text: The string to analyze.
