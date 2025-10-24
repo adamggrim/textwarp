@@ -1,31 +1,8 @@
 import os
 import textwrap
 
-from textcount.constants import POS_TAGS, MAX_POS_LENGTH
-from textcount.data_structures import POSCounts
-
-
-class FormatPrinting:
-    """
-    Class for formatting and printing text.
-    """
-    def print_padding() -> None:
-        """Prints a blank line for padding."""
-        print('')
-
-
-    def print_wrapped(text: str) -> None:
-        """
-        Wrap printing based on the width of the terminal and adds a
-        newline character to the start of the string.
-
-        Args:
-            text: The string to print.
-        """
-        terminal_size: int = os.get_terminal_size()[0]
-        print_size: int = terminal_size - 1
-        wrapped_text: str = textwrap.fill(text, width=print_size)
-        print('\n' + wrapped_text)
+from ._constants import POS_TAGS, MAX_POS_LENGTH
+from ._pos_counts import POSCounts
 
 
 def format_count(name: str, count: int) -> str:
