@@ -14,7 +14,7 @@ class POSCounts:
             det_count: int =0,
             noun_count: int = 0,
             num_count: int = 0,
-            prt_count: int =0,
+            part_count: int =0,
             pron_count: int = 0,
             verb_count: int = 0,
             x_count: int = 0
@@ -27,7 +27,7 @@ class POSCounts:
         self.det_count: int = det_count
         self.noun_count: int = noun_count
         self.num_count: int = num_count
-        self.prt_count: int = prt_count
+        self.part_count: int = part_count
         self.pron_count: int = pron_count
         self.verb_count: int = verb_count
         self.x_count: int = x_count
@@ -122,14 +122,14 @@ class POSCounts:
         return self._calculate_percentage(self.num_count)
 
     @property
-    def prt_percentage(self) -> float:
+    def part_percentage(self) -> float:
         """
         Calculate the percentage of particles in the total word count.
 
         Returns:
             float: The percentage of particles in the total word count.
         """
-        return self._calculate_percentage(self.prt_count)
+        return self._calculate_percentage(self.part_count)
 
     @property
     def pron_percentage(self) -> float:

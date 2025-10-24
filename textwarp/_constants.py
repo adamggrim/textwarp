@@ -50,7 +50,7 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('DET', 'Determiners'),
     ('NOUN', 'Nouns'),
     ('NUM', 'Numbers'),
-    ('PRT', 'Particles'),
+    ('PART', 'Particles'),
     ('PRON', 'Pronouns'),
     ('VERB', 'Verbs'),
     ('X', 'Other')
