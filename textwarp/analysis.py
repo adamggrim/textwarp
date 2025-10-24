@@ -1,10 +1,28 @@
 from collections import Counter
 from math import ceil
 
-from nltk import pos_tag, word_tokenize
+from spacy.tokens import Doc
 
 from ._constants import POS_TAGS, POS_WORD_TAGS
+from ._model import nlp
 from ._pos_counts import POSCounts
+
+
+def calculate_time_to_read(text: str, wpm: int) -> int:
+    """
+    Calculate the minutes to read a given string.
+
+    Args:
+        text: The string to analyze.
+        wpm: The number of words per minute to return.
+
+    Returns:
+        int: The minutes to read the given string. Rounded up if more
+            than one minute, zero if less than one minute.
+    """
+    word_count: int = count_words(text)
+    minutes_to_read: float = word_count / wpm
+    return ceil(minutes_to_read) if minutes_to_read > 1 else 0
 
 
 def count_chars(text: str) -> int:
@@ -50,7 +68,8 @@ def count_mfws(text: str, mfw_count: int) -> list[tuple]:
         list[tuple]: A list of tuples with each tuple containing a word
             and its count.
     """
-    words: list[str] = word_tokenize(text)
+    doc: Doc = nlp(text)
+    words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
     counts: Counter[str] = Counter(words)
     return counts.most_common(mfw_count)
 
@@ -66,21 +85,29 @@ def count_pos(text: str) -> POSCounts:
     Returns:
         POSCounts: The parts of speech counts for the string.
     """
-    words: list[str] = word_tokenize(text)
-    word_tags: list[tuple[str, str]] = pos_tag(words, tagset='universal')
-    counts: Counter[str] = Counter(tag for _, tag in word_tags)
-    pos_counts: POSCounts = POSCounts()
-    # Set total word count for POSCounts object
-    setattr(pos_counts, 'word_count', sum(counts.get(tag, 0) for tag in
-                                          POS_WORD_TAGS))
-    # Set parts of speech counts for POSCounts object
-    for tag_pair in POS_TAGS:
-        count: int = counts.get(tag_pair[0], 0)
-        setattr(pos_counts, f'{tag_pair[0].lower()}_count', count)
-    return pos_counts
+    doc: Doc = nlp(text)
+    tags: list[str] = [
+        token.pos_ for token in doc if not token.is_space
+    ]
+    counts: Counter[str] = Counter(tags)
+
+    tag_counts: dict[str, int] = {
+        tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
+    }
+    total_word_count: int = sum(
+        counts.get(tag, 0) for tag in POS_WORD_TAGS
+    )
+
+    pos_kwargs = {
+        f"{tag.lower()}_count": count for tag, count in tag_counts.items()
+    }
+    return POSCounts(
+        word_count=total_word_count,
+        **pos_kwargs
+    )
 
 
-def count_time_to_read(text: str, wpm: int) -> int:
+def count_sents(text: str) -> int:
     """
     Return an integer representing the minutes to read a given string.
 
@@ -92,9 +119,8 @@ def count_time_to_read(text: str, wpm: int) -> int:
         int: The minutes to read the given string. Rounded up if more
             than one minute, zero if less than one minute.
     """
-    word_count: int = count_words(text)
-    minutes_to_read: float = word_count / wpm
-    return ceil(minutes_to_read) if minutes_to_read > 1 else 0
+    doc: Doc = nlp(text)
+    return len(list(doc.sents))
 
 
 def count_words(text: str) -> int:
@@ -108,10 +134,4 @@ def count_words(text: str) -> int:
     Returns:
         word_count: The number of words in the string.
     """
-    words: list[str] = word_tokenize(text)
-    word_tags: list[tuple[str, str]] = pos_tag(words, tagset='universal')
-    counts: Counter[str] = Counter(tag for _, tag in word_tags)
-    word_count: int = 0
-    for tag in POS_WORD_TAGS:
-        word_count += counts[tag]
-    return word_count
+    count_pos(text).word_count
