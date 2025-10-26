@@ -32,6 +32,12 @@ def _load_json_from_data(filename: str) -> JSONType:
         return json.load(json_file)
 
 
+# Abbreviations that are always capitalized.
+AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, str]] = cast(
+    dict[str, str], _load_json_from_data('ambiguous_capitalizations_map.json')
+)
+
+
 # Contractions that can expand to multiple phrases.
 AMBIGUOUS_CONTRACTIONS: Final[list[str]] = cast(
     list[str], _load_json_from_data('ambiguous_contractions.json')
