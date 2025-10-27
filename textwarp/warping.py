@@ -116,7 +116,7 @@ def expand_contractions(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _apply_casing(original_word: str, expanded_word: str) -> str:
+    def _apply_expansion_casing(original_word: str, expanded_word: str) -> str:
         """
         Apply the casing of the original word to the expanded word.
 
@@ -148,7 +148,7 @@ def expand_contractions(text: str) -> str:
         expanded_contraction: str = CONTRACTIONS_MAP.get(
             normalized_contraction, contraction
         )
-        return _apply_casing(contraction, expanded_contraction)
+        return _apply_expansion_casing(contraction, expanded_contraction)
 
     # If there are no ambiguous contractions, spaCy isn't needed.
     if not WarpingPatterns.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
