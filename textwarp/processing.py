@@ -1,20 +1,20 @@
-from textcount.counting import (
+from .analysis import (
+    calculate_time_to_read,
     count_chars,
     count_lines,
     count_mfws,
     count_pos,
-    count_time_to_read,
+    count_sents,
     count_words
 )
-from textcount.constants import (
+from ._constants import (
     FormatCountLabels,
     ENTER_MFW_COUNT_PROMPT,
     ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
-from textcount.data_structures import POSCounts
-from textcount.formatting import (
-    FormatPrinting,
+from ._pos_counts import POSCounts
+from ._formatting import (
     format_count,
     format_mfws,
     format_pos_count,
@@ -32,7 +32,7 @@ def process_char_count(text: str) -> None:
     """
     char_count: int = count_chars(text)
     formatted_char_count: str = format_count(FormatCountLabels.CHAR, char_count)
-    FormatPrinting.print_wrapped(formatted_char_count)
+    print_wrapped(formatted_char_count)
 
 
 def process_line_count(text: str) -> None:
@@ -44,7 +44,7 @@ def process_line_count(text: str) -> None:
     """
     line_count: int = count_lines(text)
     formatted_line_count: str = format_count(FormatCountLabels.LINE, line_count)
-    FormatPrinting.print_wrapped(formatted_line_count)
+    print_wrapped(formatted_line_count)
 
 
 def process_mfws(text: str) -> None:
@@ -63,7 +63,7 @@ def process_mfws(text: str) -> None:
         Returns:
             int: The number of most frequent words to display.
         """
-        FormatPrinting.print_wrapped(ENTER_MFW_COUNT_PROMPT)
+        print_wrapped(ENTER_MFW_COUNT_PROMPT)
         mfw_count_input: str = input().strip()
         while True:
             if mfw_count_input.isdigit() == True:
@@ -76,7 +76,7 @@ def process_mfws(text: str) -> None:
     mfw_count: int = prompt_for_mfw_count()
     mfws: list[tuple] = count_mfws(text, mfw_count)
     formatted_mfws: str = format_mfws(mfws)
-    FormatPrinting.print_wrapped(formatted_mfws)
+    print_wrapped(formatted_mfws)
 
 
 def process_pos_count(text: str) -> None:
@@ -89,7 +89,7 @@ def process_pos_count(text: str) -> None:
     """
     pos_count: POSCounts = count_pos(text)
     formatted_pos_count: str = format_pos_count(pos_count)
-    FormatPrinting.print_wrapped(formatted_pos_count)
+    print_wrapped(formatted_pos_count)
 
 
 def process_time_to_read(text: str) -> None:
@@ -106,7 +106,7 @@ def process_time_to_read(text: str) -> None:
         Returns:
             int: The number of words per minute.
         """
-        FormatPrinting.print_wrapped(ENTER_WPM_PROMPT)
+        print_wrapped(ENTER_WPM_PROMPT)
         wpm_input: str = input().strip()
         while True:
             if wpm_input.isdigit() == True:
@@ -117,9 +117,9 @@ def process_time_to_read(text: str) -> None:
                 continue
         return int(wpm_input)
     wpm: int = prompt_for_wpm()
-    time_to_read: int = count_time_to_read(text, wpm)
+    time_to_read: int = calculate_time_to_read(text, wpm)
     formatted_time_to_read: str = format_time_to_read(time_to_read)
-    FormatPrinting.print_wrapped(formatted_time_to_read)
+    print_wrapped(formatted_time_to_read)
 
 
 def process_word_count(text: str) -> None:
@@ -131,4 +131,4 @@ def process_word_count(text: str) -> None:
     """
     word_count: int = count_words(text)
     formatted_word_count: str = format_count(FormatCountLabels.WORD, word_count)
-    FormatPrinting.print_wrapped(formatted_word_count)
+    print_wrapped(formatted_word_count)
