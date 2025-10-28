@@ -122,8 +122,7 @@ def expand_contractions(text: str) -> str:
 
         Args:
             original_word: The original word.
-            expanded_word: The new word to which the casing should be
-                applied.
+            expanded_word: The cased word.
 
         Returns:
             str: The expanded word in the original word's casing.
@@ -165,7 +164,7 @@ def expand_contractions(text: str) -> str:
         expanded version.
 
         This function uses spaCy to disambiguate certain contractions
-        based on the part of speech of the following word.
+        based on context.
 
         Args:
             match: A match object representing a contraction.

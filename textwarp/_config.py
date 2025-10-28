@@ -30,8 +30,8 @@ def _load_json_from_data(relative_path: Path) -> JSONType:
 
 # Capitalization mappings for entities with multiple possible
 # capitalizations.
-AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict]]] = cast(
+    dict[str, list[dict]], _load_json_from_data(
         Path('_entity_capitalization') / 'ambiguous_capitalizations_map.json'
     )
 )
