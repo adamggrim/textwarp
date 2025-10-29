@@ -1,37 +1,23 @@
+from dataclasses import dataclass
+
+@dataclass
 class POSCounts:
     """
     A class representing the counts and percentages for each part of
     speech.
     """
-
-    def __init__(
-            self,
-            word_count: int = 0,
-            adj_count: int = 0,
-            adp_count: int = 0,
-            adv_count: int = 0,
-            conj_count: int = 0,
-            det_count: int =0,
-            noun_count: int = 0,
-            num_count: int = 0,
-            part_count: int =0,
-            pron_count: int = 0,
-            verb_count: int = 0,
-            x_count: int = 0
-    ):
-        self.word_count: int = word_count
-        self.adj_count: int = adj_count
-        self.adp_count: int = adp_count
-        self.adv_count: int = adv_count
-        self.conj_count: int = conj_count
-        self.det_count: int = det_count
-        self.noun_count: int = noun_count
-        self.num_count: int = num_count
-        self.part_count: int = part_count
-        self.pron_count: int = pron_count
-        self.verb_count: int = verb_count
-        self.x_count: int = x_count
-
+    word_count: int = 0,
+    adj_count: int = 0,
+    adp_count: int = 0,
+    adv_count: int = 0,
+    conj_count: int = 0,
+    det_count: int = 0,
+    noun_count: int = 0,
+    num_count: int = 0,
+    part_count: int =0,
+    pron_count: int = 0,
+    verb_count: int = 0,
+    x_count: int = 0
 
     def _calculate_percentage(self, count: int) -> float:
         """
