@@ -22,7 +22,8 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
     """
     word_count: int = count_words(text)
     minutes_to_read: float = word_count / wpm
-    return ceil(minutes_to_read) if minutes_to_read > 1 else 0
+    rounded_minutes: int = int(minutes_to_read + 0.5)
+    return ceil(minutes_to_read) if minutes_to_read < 1 else rounded_minutes
 
 
 def count_chars(text: str) -> int:
