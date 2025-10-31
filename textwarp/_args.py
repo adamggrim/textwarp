@@ -58,14 +58,6 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         straight_to_curly,
         'convert "straight quotes" to “curly quotes”'
     ),
-    'decode-hexadecimal': (
-        from_hexadecimal,
-        'convert from hexadecimal'
-    ),
-    'decode-morse': (
-        from_morse,
-        'convert from Morse code'
-    ),
     'dot-case': (
         to_dot_case,
         'convert.to.dot.case'
@@ -73,6 +65,14 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'expand-contractions': (
         expand_contractions,
         'expand contractions'
+    ),
+    'from-hexadecimal': (
+        from_hexadecimal,
+        'convert from hexadecimal'
+    ),
+    'from-morse': (
+        from_morse,
+        'convert from Morse code'
     ),
     'hexadecimal': (
         to_hexadecimal,
