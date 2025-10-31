@@ -231,7 +231,7 @@ def from_binary(binary_text: str) -> str:
 
 def from_hexadecimal(text: str) -> str:
     """
-    Convert a given string from hexadecimal.
+    Convert a string from hexadecimal.
 
     Args:
         text: The hexadecimal string to convert.
@@ -247,7 +247,7 @@ def from_hexadecimal(text: str) -> str:
 
 def from_morse(text: str) -> str:
     """
-    Convert a given string from Morse code.
+    Convert a string from Morse code.
 
     Args:
         text: The Morse string to convert.

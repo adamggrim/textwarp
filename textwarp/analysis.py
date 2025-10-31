@@ -34,7 +34,7 @@ def count_chars(text: str) -> int:
         text: The string to analyze.
 
     Returns:
-        int: A formatted string indicating character count.
+        int: The total number of characters in the string.
     """
     return len(text)
 
