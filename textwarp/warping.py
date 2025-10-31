@@ -214,6 +214,21 @@ def expand_contractions(text: str) -> str:
     return WarpingPatterns.CONTRACTION.sub(_repl, text)
 
 
+def from_binary(binary_text: str) -> str:
+    """
+    Convert a string from binary.
+
+    Args:
+        binary_text: The space-separated binary string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    binary_chars: list[str] = binary_text.split(' ')
+    decoded_chars: list[str] = [chr(int(binary, 2)) for binary in binary_chars]
+    return ''.join(decoded_chars)
+
+
 def from_hexadecimal(text: str) -> str:
     """
     Convert a given string from hexadecimal.

@@ -5,6 +5,7 @@ from .warping import (
     cardinal_to_ordinal,
     curly_to_straight,
     expand_contractions,
+    from_binary,
     from_hexadecimal,
     from_morse,
     hyphens_to_em,
@@ -65,6 +66,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'expand-contractions': (
         expand_contractions,
         'expand contractions'
+    ),
+    'from-binary': (
+        from_binary,
+        'convert from binary'
     ),
     'from-hexadecimal': (
         from_hexadecimal,
