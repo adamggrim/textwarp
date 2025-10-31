@@ -40,14 +40,14 @@ AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict]]] = cast(
 # phrases.
 AMBIGUOUS_CONTRACTIONS: Final[list[str]] = cast(
     dict[str, str], _load_json_from_data(
-        Path('_contraction_expansion') / 'ambiguous_contractions_map.json'
+        Path('_contraction_expansion') / 'ambiguous_contractions.json'
     )
 )
 
 # Abbreviations that are always capitalized.
 CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = cast(
     dict[str, str], _load_json_from_data(
-        Path('_string_capitalizatiion') / 'capitalized_abbreviations_map.json'
+        Path('_string_capitalization') / 'capitalized_abbreviations_map.json'
     )
 )
 
@@ -80,14 +80,14 @@ ELISION_WORDS: Final[set[str]] = set(
 # Map pairing each initialism with its capitalized version.
 INITIALISMS_MAP: Final[dict[str, str]] = cast(
     dict[str, str], _load_json_from_data(
-        Path('_string_capitalizatiion') / 'initialisms_map.json'
+        Path('_string_capitalization') / 'initialisms_map.json'
     )
 )
 
 # Abbreviations that are always lowercase.
 LOWERCASE_ABBREVIATIONS: Final[set[str]] = set(
     cast(list[str], _load_json_from_data(
-        Path('_string_capitalizatiion') / 'lowercase_abbreviations.json')
+        Path('_string_capitalization') / 'lowercase_abbreviations.json')
     )
 )
 
