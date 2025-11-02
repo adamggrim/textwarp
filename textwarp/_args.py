@@ -1,5 +1,14 @@
 from typing import Callable
 
+from .processing import (
+    char_count,
+    line_count,
+    mfws,
+    pos_count,
+    sent_count,
+    time_to_read,
+    word_count
+)
 from .warping import (
     capitalize,
     cardinal_to_ordinal,

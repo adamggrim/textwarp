@@ -2,14 +2,14 @@ import argparse
 import sys
 from typing import Callable
 
-from textcount.constants import HelpMessages
-from textcount.processing import (
-    process_char_count,
-    process_line_count,
-    process_mfws,
-    process_pos_count,
-    process_time_to_read,
-    process_word_count
+from textwarp._constants import HelpMessages
+from textwarp.processing import (
+    char_count,
+    line_count,
+    mfws,
+    pos_count,
+    time_to_read,
+    word_count
 )
 
 

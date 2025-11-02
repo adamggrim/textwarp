@@ -8,11 +8,12 @@ from .analysis import (
     count_words
 )
 from ._constants import (
-    FormatCountLabels,
-    ENTER_MFW_COUNT_PROMPT,
+    ENTER_MFWS_PROMPT,
     ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
+from _enums import CountLabels
+from _input_output import print_wrapped
 from ._pos_counts import POSCounts
 from ._formatting import (
     format_count,

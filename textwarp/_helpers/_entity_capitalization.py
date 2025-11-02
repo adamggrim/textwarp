@@ -6,6 +6,7 @@ from textwarp._constants import (
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
+from textwarp._enums import Casing
 from textwarp._regexes import WarpingPatterns
 
 from ._string_capitalization import capitalize_from_string

@@ -19,6 +19,7 @@ from ._config import (
     REVERSED_MORSE_MAP
 )
 from ._constants import (
+    AINT_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     APOSTROPHE_VARIANTS,
