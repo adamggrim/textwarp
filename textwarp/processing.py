@@ -8,7 +8,7 @@ from .analysis import (
     count_words
 )
 from ._constants import (
-    ENTER_MFWS_PROMPT,
+    ENTER_MFW_COUNT_PROMPT,
     ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
@@ -32,7 +32,7 @@ def char_count(text: str) -> None:
         text: The string to process.
     """
     char_count: int = count_chars(text)
-    formatted_char_count: str = format_count(FormatCountLabels.CHAR, char_count)
+    formatted_char_count: str = format_count(CountLabels.CHAR, char_count)
     print_wrapped(formatted_char_count)
 
 
@@ -44,7 +44,7 @@ def line_count(text: str) -> None:
         text: The string to process.
     """
     line_count: int = count_lines(text)
-    formatted_line_count: str = format_count(FormatCountLabels.LINE, line_count)
+    formatted_line_count: str = format_count(CountLabels.LINE, line_count)
     print_wrapped(formatted_line_count)
 
 
@@ -145,5 +145,5 @@ def word_count(text: str) -> None:
         text: The string to process.
     """
     word_count: int = count_words(text)
-    formatted_word_count: str = format_count(FormatCountLabels.WORD, word_count)
+    formatted_word_count: str = format_count(CountLabels.WORD, word_count)
     print_wrapped(formatted_word_count)
