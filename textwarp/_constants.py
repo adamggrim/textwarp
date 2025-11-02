@@ -4,7 +4,9 @@ from typing import Final
 AINT_SUFFIX_VARIANTS: Final[set[str]] = {"n't", 'n’t', 'n‘t'}
 
 # Prompt for the user to enter any other text.
-ANY_OTHER_TEXT_PROMPT: Final[str] = 'Any other text? (y/n) (Copy text to clipboard):'
+ANY_OTHER_TEXT_PROMPT: Final[str] = (
+    'Any other text? (y/n) (Copy text to clipboard):'
+)
 
 # Variants of 'd for contractions.
 APOSTROPHE_D_VARIANTS: Final[set[str]] = {"'d", '’d', '‘d'}

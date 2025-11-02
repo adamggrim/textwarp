@@ -97,7 +97,7 @@ def count_pos(text: str) -> POSCounts:
     )
 
     pos_kwargs = {
-        f"{tag.lower()}_count": count for tag, count in tag_counts.items()
+        f'{tag.lower()}_count': count for tag, count in tag_counts.items()
     }
     return POSCounts(
         word_count=total_word_count,
