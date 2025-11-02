@@ -17,8 +17,9 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
         wpm: The number of words per minute to return.
 
     Returns:
-        int: The minutes to read the given string. Rounded up if more
-            than one minute, zero if less than one minute.
+        int: The minutes to read the given string. Rounded up if
+            between zero and one minute, otherwise rounded to the
+            nearest integer.
     """
     word_count: int = count_words(text)
     minutes_to_read: float = word_count / wpm

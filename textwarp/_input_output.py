@@ -20,7 +20,7 @@ from ._validation import EmptyClipboardError, validate_clipboard
 
 def _get_input() -> bool:
     """
-    Prompt the user whether to process the clipboard and return a
+    Prompt the user on whether to process the clipboard and return a
     Boolean representing whether to continue.
 
     Returns:

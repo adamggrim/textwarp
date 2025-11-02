@@ -26,7 +26,7 @@ from ._formatting import (
 def char_count(text: str) -> None:
     """
     Deploy functions to analyze, format and print character count
-        output.
+    output.
 
     Args:
         text: The string to process.
@@ -59,7 +59,7 @@ def mfws(text: str) -> None:
     def prompt_for_mfws() -> int:
         """
         Prompt the user for the number of most frequent words to
-            display.
+        display.
 
         Returns:
             int: The number of most frequent words to display.
