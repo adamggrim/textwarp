@@ -93,6 +93,18 @@ def pos_count(text: str) -> None:
     print_wrapped(formatted_pos_count)
 
 
+def sentence_count(text: str) -> None:
+    """
+    Deploy functions to analyze, format and print line count output.
+
+    Args:
+        text: The string to process.
+    """
+    sentence_count: int = count_sents(text)
+    formatted_line_count: str = format_count(CountLabels.SENT, sentence_count)
+    print_wrapped(formatted_line_count)
+
+
 def time_to_read(text: str) -> None:
     """
     Deploy functions to analyze, format and print time to read output.
