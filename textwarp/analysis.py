@@ -54,13 +54,13 @@ def count_lines(text: str) -> int:
     return len(text_lines)
 
 
-def count_mfws(text: str, mfw_count: int) -> list[tuple]:
+def count_mfws(text: str, number_of_mfws: int) -> list[tuple]:
     """
     Count the most frequent words in a given string.
 
     Args:
         text: The string to analyze.
-        mfw_count: The number of most frequent words to return.
+        number_of_mfws: The number of most frequent words to return.
 
     Returns:
         list[tuple]: A list of tuples with each tuple containing a word
@@ -69,7 +69,7 @@ def count_mfws(text: str, mfw_count: int) -> list[tuple]:
     doc: Doc = nlp(text)
     words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
     counts: Counter[str] = Counter(words)
-    return counts.most_common(mfw_count)
+    return counts.most_common(number_of_mfws)
 
 
 def count_pos(text: str) -> POSCounts:
