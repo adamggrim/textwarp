@@ -18,8 +18,17 @@ APOSTROPHE_VARIANTS: Final[set[str]] = {"'", '’', '‘'}
 # Message for any error accessing the clipboard.
 CLIPBOARD_ACCESS_ERROR_MESSAGE: Final[str] = 'Error accessing clipboard: '
 
+# Prompt for the user to enter the number of most frequent words.
+ENTER_MFW_COUNT_PROMPT: str = 'How many most frequent words?'
+
+# Prompt for when the previous response was not a number.
+ENTER_NUMBER_PROMPT: str = 'Please enter a number.'
+
 # Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: Final[str] = 'Please enter a valid response.'
+
+# Prompt for the user to enter the words per minute.
+ENTER_WPM_PROMPT: str = 'How many words per minute?'
 
 # Inputs for exiting the program.
 EXIT_INPUTS: Final[set[str]] = {'quit', 'q', 'exit', 'e'}
