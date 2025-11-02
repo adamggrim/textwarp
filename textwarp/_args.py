@@ -5,7 +5,7 @@ from .processing import (
     line_count,
     mfws,
     pos_count,
-    sent_count,
+    sentence_count,
     time_to_read,
     word_count
 )
@@ -64,6 +64,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         ordinal_to_cardinal,
         'convert ordinal numbers to cardinal numbers'
     ),
+    'char-count': (
+        char_count,
+        'count characters'
+    ),
     'curly-quotes': (
         straight_to_curly,
         'convert "straight quotes" to “curly quotes”'
@@ -104,9 +108,17 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         to_kebab_case,
         'convert-to-kebab-case'
     ),
+    'line-count': (
+        line_count,
+        'count lines'
+    ),
     'lowercase': (
         str.lower,
         'convert to lowercase'
+    ),
+    'mfws': (
+        mfws,
+        'get most frequent words'
     ),
     'morse': (
         to_morse,
@@ -123,6 +135,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'plain-text': (
         str,
         'convert to plain text'
+    ),
+    'pos-count': (
+        pos_count,
+        'count parts of speech'
     ),
     'punct-to-inside': (
         punct_to_inside,
@@ -146,7 +162,11 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'sentence-case': (
         to_sentence_case,
-        'Convert to sentence case.'
+        'convert to sentence case.'
+    ),
+    'sentence-count': (
+        sentence_count,
+        'count sentences'
     ),
     'single-spaces': (
         to_single_spaces,
@@ -168,6 +188,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         str.swapcase,
         'convert lowercase to UPPERCASE and vice versa'
     ),
+    'time-to-read': (
+        time_to_read,
+        'calculate time to read'
+    ),
     'title-case': (
         to_title_case,
         'Convert to Title Case'
@@ -175,5 +199,9 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'uppercase': (
         str.upper,
         'CONVERT TO UPPERCASE'
+    ),
+    'word-count': (
+        word_count,
+        'count words'
     )
 }
