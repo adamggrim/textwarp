@@ -2,7 +2,7 @@ import spacy
 from spacy.cli import download
 from spacy.language import Language
 
-from ._input_output import print_wrapped
+from ._ui import print_wrapped
 
 
 def _load_spacy_model(model_name: str):

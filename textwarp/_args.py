@@ -1,6 +1,6 @@
 from typing import Callable
 
-from .processing import (
+from ._analysis_commands import (
     char_count,
     line_count,
     mfws,
