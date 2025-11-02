@@ -33,6 +33,23 @@ class Casing(Enum):
 
 
 @final
+class CountLabels(Enum):
+    """
+    Label strings for count formatting.
+
+    Attributes:
+        CHAR: String specifying character count.
+        LINE: String specifying line count.
+        SENTENCE: String specifying sentence count.
+        WORD: String specifying word count.
+    """
+    CHAR: str = 'Character'
+    LINE: str = 'Line'
+    SENTENCE: str = 'Sentence'
+    WORD: str = 'Word'
+
+
+@final
 class RegexBoundary(Enum):
     """
     Specify the boundary-matching strategy for a regular expression.
