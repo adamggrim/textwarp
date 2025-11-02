@@ -23,7 +23,7 @@ from ._formatting import (
 )
 
 
-def process_char_count(text: str) -> None:
+def char_count(text: str) -> None:
     """
     Deploy functions to analyze, format and print character count
         output.
@@ -36,7 +36,7 @@ def process_char_count(text: str) -> None:
     print_wrapped(formatted_char_count)
 
 
-def process_line_count(text: str) -> None:
+def line_count(text: str) -> None:
     """
     Deploy functions to analyze, format and print line count output.
 
@@ -48,7 +48,7 @@ def process_line_count(text: str) -> None:
     print_wrapped(formatted_line_count)
 
 
-def process_mfws(text: str) -> None:
+def mfws(text: str) -> None:
     """
     Deploy functions to analyze, format and print most frequent words
     output.
@@ -56,7 +56,7 @@ def process_mfws(text: str) -> None:
     Args:
         text: The string to process.
     """
-    def prompt_for_mfw_count() -> int:
+    def prompt_for_mfws() -> int:
         """
         Prompt the user for the number of most frequent words to
             display.
@@ -80,7 +80,7 @@ def process_mfws(text: str) -> None:
     print_wrapped(formatted_mfws)
 
 
-def process_pos_count(text: str) -> None:
+def pos_count(text: str) -> None:
     """
     Deploy functions to analyze, format and print parts of speech count
     output.
@@ -93,7 +93,7 @@ def process_pos_count(text: str) -> None:
     print_wrapped(formatted_pos_count)
 
 
-def process_time_to_read(text: str) -> None:
+def time_to_read(text: str) -> None:
     """
     Deploy functions to analyze, format and print time to read output.
 
@@ -123,7 +123,7 @@ def process_time_to_read(text: str) -> None:
     print_wrapped(formatted_time_to_read)
 
 
-def process_word_count(text: str) -> None:
+def word_count(text: str) -> None:
     """
     Deploy functions to analyze, format and print word count output.
 
