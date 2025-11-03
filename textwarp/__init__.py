@@ -1,5 +1,12 @@
 """A Python package for analyzing and transforming text."""
 
+from .analysis import (
+    count_chars,
+    count_lines,
+    count_mfws,
+    count_pos,
+    calculate_time_to_read
+)
 from .warping import (
     capitalize,
     cardinal_to_ordinal,
@@ -31,8 +38,13 @@ from .warping import (
 )
 
 __all__ = [
+    'calculate_time_to_read',
     'capitalize',
     'cardinal_to_ordinal',
+    'count_chars',
+    'count_lines',
+    'count_mfws',
+    'count_pos',
     'curly_to_straight',
     'expand_contractions',
     'from_hexadecimal',
