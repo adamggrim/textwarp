@@ -129,4 +129,4 @@ def count_words(text: str) -> int:
     Returns:
         word_count: The number of words in the string.
     """
-    count_pos(text).word_count
+    return count_pos(text).word_count
