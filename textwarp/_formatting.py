@@ -1,4 +1,7 @@
-from ._constants import POS_TAGS, MAX_POS_LENGTH
+from ._constants import (
+    POS_TAGS,
+    MAX_POS_LENGTH
+)
 from ._pos_counts import POSCounts
 
 

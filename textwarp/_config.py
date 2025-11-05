@@ -1,5 +1,9 @@
 import json
-from typing import Final, Union, cast
+from typing import (
+    Final,
+    Union,
+    cast
+)
 from pathlib import Path
 
 # Define a type for JSON data.

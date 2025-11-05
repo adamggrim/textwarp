@@ -2,7 +2,10 @@ import random
 from collections.abc import Generator
 
 import regex as re
-from spacy.tokens import Doc, Token
+from spacy.tokens import (
+    Doc,
+    Token
+)
 
 from ._enums import Casing
 from ._helpers import (

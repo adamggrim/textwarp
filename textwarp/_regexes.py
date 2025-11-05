@@ -1,5 +1,8 @@
 import regex as re
-from typing import Final, final
+from typing import (
+    Final,
+    final
+)
 
 from ._config import (
     AMBIGUOUS_CONTRACTIONS,
