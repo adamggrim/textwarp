@@ -27,31 +27,27 @@ class ProgrammingCasePatterns:
 
     Attributes:
         Case-Matching Patterns:
-            CAMEL_WORD: Compiled regular expression object that matches
-                a camel case word.
-            DOT_WORD: Compiled regular expression object that matches a
-                dot case word.
-            KEBAB_WORD: Compiled regular expression object that matches
-                a kebab case word.
-            PASCAL_WORD: Compiled regular expression object that
-                matches a Pascal case word.
-            SNAKE_WORD: Compiled regular expression object that matches
-                a snake case word.
+            CAMEL_WORD: Matches a camel case word (e.g., ``camelWord``).
+            DOT_WORD: Matches a dot case word (e.g., ``dot.word``).
+            KEBAB_WORD: Matches a kebab case word (e.g.,
+                ``kebab-word``).
+            PASCAL_WORD: Matches a Pascal case word (e.g.,
+                ``PascalWord``).
+            SNAKE_WORD: Matches a snake case word (e.g.,
+                ``snake_word``).
 
         Splitting Patterns:
-            ANY_SEPARATOR: Compiled regular expression object that
-                matches any separator used in dot, kebab or snake case.
-            SPLIT_CAMEL_OR_PASCAL: Compiled regular expression object
-                for splitting camel or Pascal case strings into
-                constituent words, correctly handling initialisms (e.g.,
-                ``URLSuffix -> ['URL', 'Suffix']``)
-            SPLIT_FOR_PASCAL_CONVERSION: Compiled regular expression
-                object for removing select characters before conversion
-                to Pascal case.
-            SPLIT_FOR_SEPARATOR_CONVERSION: Compiled regular expression
-                object for splitting strings on non-separator word
-                boundaries before converting to dot, kebab or snake
-                case.
+            ANY_SEPARATOR: Matches any separator used in dot, kebab or
+                snake case (i.e., ``.``, ``-`` or ``_``).
+            SPLIT_CAMEL_OR_PASCAL: Splits camel or Pascal case strings
+                into constituent words, correctly handling initialisms
+                (e.g., ``URLSuffix -> ['URL', 'Suffix']``).
+            SPLIT_FOR_PASCAL_CONVERSION: Removes select characters
+                (i.e., a single space, ``.``, ``-``, ``_`` or a word
+                boundary) before conversion to Pascal case.
+            SPLIT_FOR_SEPARATOR_CONVERSION: Splits strings on non-
+                separator word boundaries before converting to dot,
+                kebab or snake case.
     """
     CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
@@ -170,43 +166,33 @@ class WarpingPatterns:
     A namespace for compiled regular expressions for warping text.
 
     Attributes:
-        ANY_APOSTROPHE: Compiled regular expression object that
-            matches any straight or curly apostrophe.
-        ANY_APOSTROPHE_LOOKAHEAD: Compiled regular expression object
-            that matches the position before any straight or curly
-            apostrophe.
-        APOSTROPHE_IN_WORD: Compiled regular expression object that
-            matches a straight apostrophe surrounded by alphabetical
-            letter characters.
-        AMBIGUOUS_CONTRACTION_PATTERN: Compiled regular expression
-            object that matches any contraction that can expand to
-            multiple phrases.
-        CARDINAL: Compiled regular expression object that matches a
-            cardinal number.
-        CONTRACTION: Compiled regular expression object that matches
-            any expandable contraction.
-        CONTRACTION_SUFFIX_TOKENS_PATTERN: Compiled regular expression
-            object that matches any contraction suffix.
-        DASH: Compiled regular expression object that matches an en or
-            em dash.
-        EM_DASH_STAND_IN: Compiled regular expression object that
-            matches characters that function as an em dash.
-        MULTIPLE_SPACES: Compiled regular expression object that
-            matches two or more consecutive spaces.
-        NAME_PREFIX_PATTERN: Compiled regular expression object that
-            matches any name prefix.
-        OPENING_STRAIGHT_QUOTES: Compiled regular expression object
-            that matches opening straight quotes.
-        ORDINAL: Compiled regular expression object that matches an
-            ordinal number.
-        PERIOD_SEPARATED_INITIALISM: Compiled regular expression
-            object that matches a period-separated initialism.
-        PUNCT_INSIDE: Compiled regular expression object for punctuation
-            inside quotes.
-        PUNCT_OUTSIDE: Compiled regular expression object for
-            punctuation outside quotes.
-        WORD_CHARACTER: Compiled regular expression object that
-            matches any word character.
+        ANY_APOSTROPHE: Matches any straight (``'``) or curly (``’`` or
+            ``‘``) apostrophe.
+        ANY_APOSTROPHE_LOOKAHEAD: Matches the position before a straight
+            or curly apostrophe.
+        APOSTROPHE_IN_WORD: Matches a straight apostrophe within a word
+            (e.g., "it's", "'twas").
+        AMBIGUOUS_CONTRACTION_PATTERN: Matches any contraction that can
+            expand to multiple phrases (e.g., "it's" -> "it is" or "it
+            has").
+        CARDINAL: Matches a cardinal number (e.g., "525,600" or "13").
+        CONTRACTION: Matches any expandable contraction (e.g., "don't").
+        CONTRACTION_SUFFIX_TOKENS_PATTERN: Matches any contraction
+            suffix (e.g., "'s", "'ll").
+        DASH: Matches an en (``–``) or em (``—``) dash.
+        EM_DASH_STAND_IN: Matches characters that function as an em
+            dash (e.g., ``--``).
+        MULTIPLE_SPACES: Matches two or more consecutive spaces.
+        NAME_PREFIX_PATTERN: Matches any name prefix (e.g., "Mac",
+            "O'").
+        OPENING_STRAIGHT_QUOTES: Matches opening straight quotes.
+        ORDINAL: Matches an ordinal number (e.g., "19th").
+        PERIOD_SEPARATED_INITIALISM: Matches a period-separated
+            initialism (e.g., ``U.S.A.``).
+        PUNCT_INSIDE: Matches punctuation inside quotes (e.g., ``."``).
+        PUNCT_OUTSIDE: Matches punctuation outside quotes (e.g.,
+            ``".``).
+        WORD_CHARACTER: Matches any word character.
     """
     @staticmethod
     def _create_words_regex(
