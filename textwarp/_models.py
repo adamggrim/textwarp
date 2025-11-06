@@ -1,5 +1,8 @@
 from dataclasses import dataclass
+from typing import final
 
+
+@final
 @dataclass
 class POSCounts:
     """
@@ -148,3 +151,15 @@ class POSCounts:
                 total word count.
         """
         return self._calculate_percentage(self.x_count)
+
+
+@final
+@dataclass
+class WordCount:
+    """
+    A class representing the count and percentage for a word in a
+    string.
+    """
+    word: str
+    count: int
+    percentage: float
