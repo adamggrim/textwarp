@@ -20,24 +20,26 @@ from ._validation import (
 
 def _process_clipboard(warping_function: Callable[[str], str]) -> None:
     """
-    Process the clipboard using a given text warping function.
+    Process the clipboard for use in a text warping or analysis
+    function.
 
-    Args:
-        warping_function (Callable[[str], str]): A function that
-            takes a string as input and returns the converted string.
+    Returns:
+        clipboard (str): The validated clipboard text, or ``None`` if an error
+            occurred.
     """
     try:
         clipboard: str = pyperclip.paste()
         validate_clipboard(clipboard)
-        converted_clipboard: str = warping_function(clipboard)
-        pyperclip.copy(converted_clipboard)
-        print_wrapped(MODIFIED_TEXT_COPIED)
+        return clipboard
     except EmptyClipboardError as e:
         print_wrapped(str(e))
+        return None
     except pyperclip.PyperclipException as e:
         print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e))
+        return None
     except Exception as e:
         print_wrapped(UNEXPECTED_ERROR_MESSAGE + str(e))
+        return None
 
 
 def analyze_text(analysis_function: Callable[[str], str]) -> None:
