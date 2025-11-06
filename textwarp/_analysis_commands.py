@@ -41,7 +41,9 @@ def char_count(text: str) -> None:
         text: The string to process.
     """
     char_count: int = count_chars(text)
-    formatted_char_count: str = format_count(CountLabels.CHAR, char_count)
+    formatted_char_count: str = format_count(
+        CountLabels.CHAR.value, char_count
+    )
     print_wrapped(formatted_char_count)
 
 
@@ -53,7 +55,9 @@ def line_count(text: str) -> None:
         text: The string to process.
     """
     line_count: int = count_lines(text)
-    formatted_line_count: str = format_count(CountLabels.LINE, line_count)
+    formatted_line_count: str = format_count(
+        CountLabels.LINE.value, line_count
+    )
     print_wrapped(formatted_line_count)
 
 
@@ -106,9 +110,11 @@ def sentence_count(text: str) -> None:
     Args:
         text: The string to process.
     """
-    sentence_count: int = count_sents(text)
-    formatted_line_count: str = format_count(CountLabels.SENT, sentence_count)
-    print_wrapped(formatted_line_count)
+    sent_count: int = count_sents(text)
+    formatted_sent_count: str = format_count(
+        CountLabels.SENT.value, sent_count
+    )
+    print_wrapped(formatted_sent_count)
 
 
 def time_to_read(text: str) -> None:
@@ -149,5 +155,7 @@ def word_count(text: str) -> None:
         text: The string to process.
     """
     word_count: int = count_words(text)
-    formatted_word_count: str = format_count(CountLabels.WORD, word_count)
+    formatted_word_count: str = format_count(
+        CountLabels.WORD.value, word_count
+    )
     print_wrapped(formatted_word_count)
