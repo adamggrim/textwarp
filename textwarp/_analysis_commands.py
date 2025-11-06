@@ -23,6 +23,16 @@ from ._formatting import (
 from ._ui import print_wrapped
 
 
+__all__ = [
+    'char_count',
+    'line_count',
+    'mfws',
+    'pos_count',
+    'sentence_count',
+    'time_to_read',
+    'word_count'
+]
+
 def char_count(text: str) -> None:
     """
     Analyze, format and print character count output.
