@@ -84,7 +84,7 @@ def mfws(text: str) -> None:
     number_of_mfws: int = prompt_for_mfws()
     mfws: list[tuple] = count_mfws(text, number_of_mfws)
     formatted_mfws: str = format_mfws(mfws)
-    print_wrapped(formatted_mfws)
+    print('\n' + formatted_mfws)
 
 
 def pos_count(text: str) -> None:
@@ -96,7 +96,7 @@ def pos_count(text: str) -> None:
     """
     pos_count: POSCounts = count_pos(text)
     formatted_pos_count: str = format_pos_count(pos_count)
-    print_wrapped(formatted_pos_count)
+    print(formatted_pos_count)
 
 
 def sentence_count(text: str) -> None:
