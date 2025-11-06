@@ -12,7 +12,7 @@ from ._constants import (
     ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
-from _enums import CountLabels
+from ._enums import CountLabels
 from ._pos_counts import POSCounts
 from ._formatting import (
     format_count,
