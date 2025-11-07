@@ -14,148 +14,54 @@ class POSCounts:
     A class representing the counts and percentages for each part of
     speech.
     """
-    word_count: int = 0,
-    adj_count: int = 0,
-    adp_count: int = 0,
-    adv_count: int = 0,
-    conj_count: int = 0,
-    det_count: int = 0,
-    noun_count: int = 0,
-    num_count: int = 0,
-    part_count: int =0,
-    pron_count: int = 0,
-    verb_count: int = 0,
-    x_count: int = 0
+    word_count: int = 0
+    tag_counts: dict[str, int] = field(default_factory=dict)
 
-    def _calculate_percentage(self, count: int) -> float:
+    def get_pos_count(self, tag: str) -> int:
         """
-        Calculate the percentage of a given part of
-        speech in the total word count.
+        Get the count for a given part-of-speech tag.
 
         Args:
-            count (int): The specific POS count.
+            tag: The part-of-speech tag (e.g., "ADJ", "NOUN").
+
+        Returns:
+            int: The count for the given part-of-speech tag, or 0 if not
+                found.
+        """
+        return self.tag_counts.get(tag, 0)
+
+    def get_percentage(self, tag: str) -> float:
+        """
+        Get the percentage of a given part of speech in the total word
+        count.
+
+        Args:
+            tag: The part-of-speech tag (e.g., "ADJ", "NOUN").
 
         Returns:
             float: The calculated percentage, or 0.0 if self.word_count
                 is zero.
         """
+        count = self.get_pos_count(tag)
         return (count / self.word_count * 100) if self.word_count else 0.0
 
-    @property
-    def adj_percentage(self) -> float:
+    def get_pos_data(self) -> list[tuple[str, int, float]]:
         """
-        Calculate the percentage of adjectives in the total word count.
+        Get all part-of-speech data (count and percentage) as an
+        iterable list of tuples.
 
         Returns:
-            float: The percentage of adjectives in the total word count.
+            list[tuple[str, int, float]]: A list where each tuple
+                contains the part-of-speech name, count and percentage.
         """
-        return self._calculate_percentage(self.adj_count)
+        pos_data: list[tuple[str, int, float]] = []
 
-    @property
-    def adp_percentage(self) -> float:
-        """
-        Calculate the percentage of adpositions in the total word count.
+        for tag, name in POS_TAGS:
+            count: int = self.get_pos_count(tag)
+            percentage: float = self.get_percentage(tag)
+            pos_data.append((name, count, percentage))
 
-        Returns:
-            float: The percentage of adpositions in the total word
-                count.
-        """
-        return self._calculate_percentage(self.adp_count)
-
-    @property
-    def adv_percentage(self) -> float:
-        """
-        Calculate the percentage of adverbs in the total word count.
-
-        Returns:
-            float: The percentage of adverbs in the total word count.
-        """
-        return self._calculate_percentage(self.adv_count)
-
-    @property
-    def conj_percentage(self) -> float:
-        """
-        Calculate the percentage of conjunctions in the total word
-        count.
-
-        Returns:
-            float: The percentage of conjunctions in the total word
-                count.
-        """
-        return self._calculate_percentage(self.conj_count)
-
-    @property
-    def det_percentage(self) -> float:
-        """
-        Calculate the percentage of determiners in the total word count.
-
-        Returns:
-            float: The percentage of determiners in the total word
-                count.
-        """
-        return self._calculate_percentage(self.det_count)
-
-    @property
-    def noun_percentage(self) -> float:
-        """
-        Calculate the percentage of nouns in the total word count.
-
-        Returns:
-            float: The percentage of nouns in the total word count.
-        """
-        return self._calculate_percentage(self.noun_count)
-
-    @property
-    def num_percentage(self) -> float:
-        """
-        Calculate the percentage of numbers in the total word count.
-
-        Returns:
-            float: The percentage of numbers in the total word count.
-        """
-        return self._calculate_percentage(self.num_count)
-
-    @property
-    def part_percentage(self) -> float:
-        """
-        Calculate the percentage of particles in the total word count.
-
-        Returns:
-            float: The percentage of particles in the total word count.
-        """
-        return self._calculate_percentage(self.part_count)
-
-    @property
-    def pron_percentage(self) -> float:
-        """
-        Calculate the percentage of pronouns in the total word count.
-
-        Returns:
-            float: The percentage of pronouns in the total word count.
-        """
-        return self._calculate_percentage(self.pron_count)
-
-    @property
-    def verb_percentage(self) -> float:
-        """
-        Calculate the percentage of verbs in the total word count.
-
-        Returns:
-            float: The percentage of verbs in the total word count.
-        """
-        return self._calculate_percentage(self.verb_count)
-
-    @property
-    def x_percentage(self) -> float:
-        """
-        Calculate the percentage of other parts of speech tags in the
-        total word count.
-
-        Returns:
-            float: The percentage of other parts of speech tags in the
-                total word count.
-        """
-        return self._calculate_percentage(self.x_count)
+        return pos_data
 
 
 @final
