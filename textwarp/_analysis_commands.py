@@ -104,7 +104,7 @@ def pos_count(text: str) -> None:
     """
     pos_count: POSCounts = count_pos(text)
     formatted_pos_count: str = format_pos_count(pos_count)
-    print(formatted_pos_count)
+    print('\n' + formatted_pos_count)
 
 
 def sentence_count(text: str) -> None:
