@@ -4,6 +4,47 @@ from ._models import (
 )
 
 
+def _format_table(
+    data_rows: list[tuple[str, ...]],
+    padding: int = 2
+) -> str:
+    """
+    Create a neatly aligned, multi-line table from tuples of strings.
+
+    Args:
+        data_rows: A list of rows, where each row is a tuple of strings.
+        padding: The space to add between columns.
+
+    Returns:
+        str: A formatted, multi-line string table.
+    """
+    if not data_rows:
+        return ''
+
+    num_cols = len(data_rows[0])
+
+    col_widths = [0] * num_cols
+    for row in data_rows:
+        for i, item in enumerate(row):
+            col_widths[i] = max(col_widths[i], len(item))
+
+    results = []
+    for row in data_rows:
+        formatted_cols = []
+        for i, item in enumerate(row):
+            align = '<' if i != num_cols - 1 else '>'
+            width = col_widths[i]
+
+            if i < num_cols - 1:
+                width += padding
+
+            formatted_cols.append(f'{item:{align}{width}}')
+
+        results.append(''.join(formatted_cols))
+
+    return '\n'.join(results)
+
+
 def format_count(name: str, count: int) -> str:
     """
     Return a string indicating the count of a specific analysis.
