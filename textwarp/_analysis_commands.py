@@ -80,7 +80,7 @@ def mfws(text: str) -> None:
         number_of_mfws_input: str = input().strip()
         while True:
             if number_of_mfws_input.isdigit() == True:
-                break
+                return int(num_mfws_input)
             else:
                 print(ENTER_NUMBER_PROMPT)
                 number_of_mfws_input = input().strip()
