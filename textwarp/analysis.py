@@ -58,13 +58,13 @@ def count_lines(text: str) -> int:
     return len(text_lines)
 
 
-def count_mfws(text: str, number_of_mfws: int) -> list[tuple]:
+def count_mfws(text: str, num_mfws: int) -> list[WordCount]:
     """
     Count the most frequent words in a given string.
 
     Args:
         text: The string to analyze.
-        number_of_mfws: The number of most frequent words to return.
+        num_mfws: The number of most frequent words to return.
 
     Returns:
         list[tuple]: A list of tuples with each tuple containing a word

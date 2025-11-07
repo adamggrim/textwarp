@@ -77,16 +77,17 @@ def mfws(text: str) -> None:
             int: The number of most frequent words to display.
         """
         print_wrapped(ENTER_MFW_COUNT_PROMPT)
-        number_of_mfws_input: str = input().strip()
+        num_mfws_input: str = input().strip()
         while True:
-            if number_of_mfws_input.isdigit() == True:
+            if num_mfws_input.isdigit() == True:
                 return int(num_mfws_input)
             else:
                 print(ENTER_NUMBER_PROMPT)
-                number_of_mfws_input = input().strip()
+                num_mfws_input = input().strip()
                 continue
-    number_of_mfws: int = prompt_for_mfws()
-    mfws: list[tuple] = count_mfws(text, number_of_mfws)
+
+    num_mfws: int = prompt_for_mfws()
+    mfws: list[WordCount] = count_mfws(text, num_mfws)
     formatted_mfws: str = format_mfws(mfws)
     print('\n' + formatted_mfws)
 
