@@ -1,8 +1,7 @@
-from ._constants import (
-    POS_TAGS,
-    MAX_POS_LENGTH
+from ._models import (
+    POSCounts,
+    WordCount
 )
-from ._pos_counts import POSCounts
 
 
 def format_count(name: str, count: int) -> str:

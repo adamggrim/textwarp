@@ -1,5 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import (
+    dataclass,
+    field
+)
 from typing import final
+
+from ._constants import POS_TAGS
 
 
 @final

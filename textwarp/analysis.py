@@ -7,8 +7,11 @@ from ._constants import (
     POS_TAGS,
     POS_WORD_TAGS
 )
-from ._model import nlp
-from ._pos_counts import POSCounts
+from ._nlp import nlp
+from ._models import (
+    POSCounts,
+    WordCount
+)
 
 
 def calculate_time_to_read(text: str, wpm: int) -> int:

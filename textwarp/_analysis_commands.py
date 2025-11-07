@@ -13,7 +13,10 @@ from ._constants import (
     ENTER_WPM_PROMPT
 )
 from ._enums import CountLabels
-from ._pos_counts import POSCounts
+from ._models import (
+    POSCounts,
+    WordCount
+)
 from ._formatting import (
     format_count,
     format_mfws,

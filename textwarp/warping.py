@@ -33,7 +33,7 @@ from ._regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )
-from ._model import nlp
+from ._nlp import nlp
 
 
 __all__ = [

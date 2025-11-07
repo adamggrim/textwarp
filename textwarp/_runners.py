@@ -2,6 +2,9 @@ from typing import Callable
 
 import pyperclip
 
+import textwarp._analysis_commands as analysis_mod
+import textwarp.warping as warping_mod
+
 from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     MODIFIED_TEXT_COPIED,
@@ -9,8 +12,7 @@ from ._constants import (
 )
 from ._ui import (
     get_input,
-    print_wrapped,
-    program_exit
+    print_wrapped
 )
 from ._validation import (
     EmptyClipboardError,
