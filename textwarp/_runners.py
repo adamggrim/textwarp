@@ -2,7 +2,8 @@ from typing import Callable
 
 import pyperclip
 
-import textwarp._analysis_commands as analysis_mod
+import textwarp._commands._analysis as analysis_mod
+import textwarp._commands._replacement as replacement_mod
 import textwarp.warping as warping_mod
 
 from ._constants import (

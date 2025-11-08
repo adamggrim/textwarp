@@ -1,10 +1,12 @@
 from typing import Callable
 
-from ._analysis_commands import (
+from ._commands import (
     char_count,
+    replace,
     line_count,
     mfws,
     pos_count,
+    regex_replace,
     sentence_count,
     time_to_read,
     word_count
