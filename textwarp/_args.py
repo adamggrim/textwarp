@@ -70,6 +70,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         char_count,
         'count characters'
     ),
+    'clear': (
+        lambda text: text, # Placeholder to match Callable signature
+        'clear clipboard text'
+    ),
     'curly-quotes': (
         straight_to_curly,
         'convert "straight quotes" to “curly quotes”'

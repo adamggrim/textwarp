@@ -130,6 +130,12 @@ def analyze_text(command_name: str) -> None:
     )
 
 
+def clear_clipboard() -> None:
+    """Clear clipboard text."""
+    pyperclip.copy('')
+    print_wrapped(CLIPBOARD_CLEARED_MESSAGE)
+
+
 def replace_text(command_name: str) -> None:
     """
     Apply the selected replacement function to the clipboard and prompt
