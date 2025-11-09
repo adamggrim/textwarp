@@ -95,6 +95,9 @@ PROPER_NOUN_ENTITIES: Final[set[str]] = {
     'LAW'
 }
 
+# Message for when a replacement is not found in the text.
+REPLACEMENT_NOT_FOUND_MESSAGE: Final[str] = 'Replacement not found.'
+
 # Part-of-speech tag exceptions for title case capitalization.
 TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
     'CC',   # Coordinating conjunction (e.g., 'and', 'but')
