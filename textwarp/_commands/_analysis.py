@@ -7,23 +7,23 @@ from textwarp.analysis import (
     count_sents,
     count_words
 )
-from textwarp._constants import (
+from .._constants import (
     ENTER_MFW_COUNT_PROMPT,
     ENTER_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
-from textwarp._enums import CountLabels
-from textwarp._models import (
+from .._enums import CountLabels
+from .._models import (
     POSCounts,
     WordCount
 )
-from textwarp._formatting import (
+from .._formatting import (
     format_count,
     format_mfws,
     format_pos_count,
     format_time_to_read
 )
-from textwarp._ui import print_wrapped
+from .._ui import print_wrapped
 
 __all__ = [
     'char_count',

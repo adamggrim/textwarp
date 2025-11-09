@@ -1,10 +1,11 @@
-import textwarp._commands._analysis as analysis_mod
-import textwarp._commands._replacement as replacement_mod
-import textwarp.warping as warping_mod
-
+from ._args import ARGS_MAP
+from ._commands import _analysis as analysis_mod
+from ._commands import _replacement as replacement_mod
 from ._parsing import parse_args
 from ._runners import (
     analyze_text,
+    clear_clipboard,
+    replace_text,
     warp_text
 )
 from ._ui import (

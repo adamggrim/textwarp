@@ -5,7 +5,7 @@ from textwarp._constants import (
     ENTER_REGEX_PROMPT,
     ENTER_REPLACEMENT_PROMPT
 )
-from textwarp._ui import print_wrapped
+from .._ui import print_wrapped
 
 __all__ = [
     'replace',

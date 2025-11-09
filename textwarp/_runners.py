@@ -1,16 +1,17 @@
+from types import ModuleType
 from typing import Callable
 
 import pyperclip
 
-import textwarp._commands._analysis as analysis_mod
-import textwarp._commands._replacement as replacement_mod
-import textwarp.warping as warping_mod
-
+from ._commands import _analysis as analysis_mod
+from ._commands import _replacement as replacement_mod
 from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
-    MODIFIED_TEXT_COPIED,
-    UNEXPECTED_ERROR_MESSAGE
+    CLIPBOARD_CLEARED_MESSAGE,
+    MODIFIED_TEXT_COPIED_MESSAGE,
+    REPLACEMENT_NOT_FOUND_MESSAGE
 )
+from . import warping as warping_mod
 from ._ui import (
     get_input,
     print_wrapped

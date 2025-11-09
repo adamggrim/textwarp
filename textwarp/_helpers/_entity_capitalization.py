@@ -1,13 +1,13 @@
 from spacy.tokens import Doc, Span, Token
 
-from textwarp._config import LOWERCASE_PARTICLES
-from textwarp._constants import (
+from .._config import LOWERCASE_PARTICLES
+from .._constants import (
     OPEN_QUOTES,
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
-from textwarp._enums import Casing
-from textwarp._regexes import WarpingPatterns
+from .._enums import Casing
+from .._regexes import WarpingPatterns
 
 from ._string_capitalization import capitalize_from_string
 
