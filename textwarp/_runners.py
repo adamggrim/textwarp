@@ -22,13 +22,12 @@ from ._validation import (
 )
 
 
-def _process_clipboard(warping_function: Callable[[str], str]) -> None:
+def _paste_and_validate() -> str | None:
     """
-    Process the clipboard for use in a text warping or analysis
-    function.
+    Paste and validate clipboard text.
 
     Returns:
-        clipboard (str): The validated clipboard text, or ``None`` if an error
+        clipboard: The validated clipboard text, or ``None`` if an error
             occurred.
     """
     try:
@@ -42,37 +41,120 @@ def _process_clipboard(warping_function: Callable[[str], str]) -> None:
         print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e))
         return None
     except Exception as e:
-        print_wrapped(UNEXPECTED_ERROR_MESSAGE + str(e))
+        print_wrapped(str(e))
         return None
 
 
-def analyze_text(analysis_function: Callable[[str], str]) -> None:
+def _replace_and_copy(
+    command: Callable[[str], str],
+    clipboard: str
+) -> None:
     """
-    Prints the text analysis and prompts the user for any other
+    Transform text using a replacement command and copy the result.
+    Print if the replacement was not found.
+
+    Args:
+        command: The replacement function.
+        clipboard: The clipboard text to transform.
+    """
+    transformation: str = command(clipboard)
+
+    if transformation == clipboard:
+        print_wrapped(REPLACEMENT_NOT_FOUND_MESSAGE)
+    else:
+        pyperclip.copy(transformation)
+        print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+
+
+def _warp_and_copy(
+    command: Callable[[str], str],
+    clipboard: str
+) -> None:
+    """
+    Transform text using a given command and copy the result back to the
+    clipboard.
+
+    Args:
+        command: The transformation function.
+        clipboard: The clipboard text to transform.
+    """
+    transformation: str = command(clipboard)
+    pyperclip.copy(transformation)
+    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+
+
+def _run_command_loop(
+    command_name: str,
+    module: ModuleType,
+    action_handler: Callable[[Callable[[str], str], str], None] | None = None
+) -> None:
+    """
+    Run a module command to transform or analyze clipboard text.
+
+    Args:
+        command_name: The command name.
+        module: The module containing the command.
+        action_handler: A function defining what to do with the
+            command and clipboard text.
+    """
+    command: Callable[[str], str] = getattr(module, command_name)
+
+    while True:
+        clipboard: str | None = _paste_and_validate()
+
+        if clipboard is None:
+            if not get_input():
+                break
+            continue
+
+        if action_handler:
+            action_handler(command, clipboard)
+        else:
+            command(clipboard)
+
+        if not get_input():
+            break
+
+
+def analyze_text(command_name: str) -> None:
+    """
+    Print the given text analysis and prompt the user for any other
     clipboard input.
 
     Args:
-        analysis_function (Callable[[str], str]): A function that takes
-            a string as input and prints the selected analysis.
+        command_name: The name of the analysis function.
     """
-    while True:
-        clipboard: str = pyperclip.paste()
-        analysis_function(clipboard)
-
-        if not get_input():
-            program_exit()
+    _run_command_loop(
+        command_name,
+        analysis_mod
+    )
 
 
-def warp_text(warping_function: Callable[[str], str]) -> None:
+def replace_text(command_name: str) -> None:
     """
-    Apply the selected warping function within a loop and prompt the
+    Apply the selected replacement function to the clipboard and prompt
+    the user for any other clipboard input.
+
+    Args:
+        command_name: The name of the replacement function.
+    """
+    _run_command_loop(
+        command_name,
+        replacement_mod,
+        _replace_and_copy
+    )
+
+
+def warp_text(command_name: str) -> None:
+    """
+    Apply the selected warping function to the clipboard and prompt the
     user for any other clipboard input.
 
     Args:
-        warping_function (Callable[[str], str]): A function that
-            takes a string as input and returns the converted string.
+        command_name: The name of the warping function.
     """
-    while True:
-        _process_clipboard(warping_function)
-        if not get_input():
-            break
+    _run_command_loop(
+        command_name,
+        warping_mod,
+        _warp_and_copy
+    )
