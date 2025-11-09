@@ -20,6 +20,9 @@ APOSTROPHE_VARIANTS: Final[set[str]] = {"'", '’', '‘'}
 # Message for any error accessing the clipboard.
 CLIPBOARD_ACCESS_ERROR_MESSAGE: Final[str] = 'Error accessing clipboard: '
 
+# Message for when the clipboard is cleared.
+CLIPBOARD_CLEARED_MESSAGE: Final[str] = 'Clipboard text cleared.'
+
 # Prompt for the user to enter the number of most frequent words.
 ENTER_MFW_COUNT_PROMPT: str = 'How many most frequent words?'
 
