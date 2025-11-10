@@ -1,5 +1,9 @@
-import random
 from collections.abc import Generator
+from random import shuffle
+from typing import (
+    Callable,
+    Match
+)
 
 import regex as re
 from spacy.tokens import (

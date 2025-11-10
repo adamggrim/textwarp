@@ -1,6 +1,6 @@
 import regex as re
 
-from textwarp._constants import (
+from .._constants import (
     ENTER_TEXT_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
     ENTER_REPLACEMENT_PROMPT

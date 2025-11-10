@@ -1,4 +1,4 @@
-from textwarp.analysis import (
+from ..analysis import (
     calculate_time_to_read,
     count_chars,
     count_lines,

@@ -1,5 +1,4 @@
 import spacy
-from spacy.cli import download
 from spacy.language import Language
 
 from ._ui import print_wrapped
@@ -16,7 +15,7 @@ def _load_spacy_model(model_name: str):
         nlp: Language = spacy.load(model_name)
     except OSError:
         print_wrapped(f"Downloading spaCy model '{model_name}'...")
-        download(model_name)
+        spacy.cli.download(model_name)
         nlp = spacy.load(model_name)
     return nlp
 
