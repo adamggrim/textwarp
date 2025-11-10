@@ -9,7 +9,7 @@ from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
-    REPLACEMENT_NOT_FOUND_MESSAGE
+    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
 from . import warping as warping_mod
 from ._ui import (
@@ -60,7 +60,7 @@ def _replace_and_copy(
     transformation: str = command(clipboard)
 
     if transformation == clipboard:
-        print_wrapped(REPLACEMENT_NOT_FOUND_MESSAGE)
+        print_wrapped(TEXT_TO_REPLACE_NOT_FOUND_MESSAGE)
     else:
         pyperclip.copy(transformation)
         print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)

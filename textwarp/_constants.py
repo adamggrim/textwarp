@@ -47,7 +47,7 @@ HELP_DESCRIPTION: Final[str] = (
 )
 
 # Message for when the program copies modified text to the clipboard.
-MODIFIED_TEXT_COPIED: Final[str] = 'Modified text copied to clipboard.'
+MODIFIED_TEXT_COPIED_MESSAGE: Final[str] = 'Modified text copied to clipboard.'
 
 # Inputs for indicating a negative response.
 NO_INPUTS: Final[set[str]] = {'no', 'n'}
@@ -92,8 +92,8 @@ PROPER_NOUN_ENTITIES: Final[set[str]] = {
     'LAW'
 }
 
-# Message for when a replacement is not found in the text.
-REPLACEMENT_NOT_FOUND_MESSAGE: Final[str] = 'Replacement not found.'
+# Message for when the text to replace is not found in the text.
+TEXT_TO_REPLACE_NOT_FOUND_MESSAGE: Final[str] = 'Text to replace not found.'
 
 # Part-of-speech tag exceptions for title case capitalization.
 TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
