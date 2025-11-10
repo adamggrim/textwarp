@@ -30,7 +30,7 @@ ENTER_MFW_COUNT_PROMPT: str = 'How many most frequent words?'
 ENTER_NUMBER_PROMPT: str = 'Please enter a number.'
 
 # Prompt for when the previous response was invalid.
-ENTER_VALID_RESPONSE_PROMPT: Final[str] = 'Please enter a valid response.'
+ENTER_VALID_RESPONSE_PROMPT: Final[str] = 'Please enter a valid response (y/n).'
 
 # Prompt for the user to enter the words per minute.
 ENTER_WPM_PROMPT: str = 'How many words per minute?'
