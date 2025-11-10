@@ -73,9 +73,6 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('X', 'Other')
 )
 
-# Integer representing the length of the longest tag name in POS_TAGS.
-MAX_POS_LENGTH: Final[int] = max(len(tag_pair[1]) for tag_pair in POS_TAGS)
-
 # Tuple of strings for POS tags representing words.
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
@@ -108,9 +105,6 @@ TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
     'TO',   # to (infinitive marker)
     'WDT',  # Wh-determiner (e.g., 'what')
 }
-
-# Message for unexpected errors.
-UNEXPECTED_ERROR_MESSAGE: Final[str] = 'An unexpected error occurred: '
 
 # Inputs for indicating an affirmative response.
 YES_INPUTS: Final[set[str]] = {'yes', 'y'}
