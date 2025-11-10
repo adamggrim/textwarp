@@ -24,7 +24,8 @@ def _calculate_max_arg_width(commands: dict) -> int:
 
 def parse_args() -> Callable[[str], str]:
     """
-    Parse command-line arguments for a text warping function.
+    Parse command-line arguments for a text warping or analysis
+    function name.
 
     Returns:
         Callable[[str], str]: The text warping function corresponding
@@ -58,8 +59,8 @@ def parse_args() -> Callable[[str], str]:
             help=help_message
         )
 
-    # If the user enters the command name with no arguments, print the
-    # help messages and exit.
+    # If the user enters the command with no arguments, print the help
+    # messages and exit.
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
