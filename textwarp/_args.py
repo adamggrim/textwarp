@@ -162,6 +162,14 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
         redact,
         'redact text'
     ),
+    'regex-replace': (
+        regex_replace,
+        'find and replace a regular expression'
+    ),
+    'replace': (
+        replace,
+        'find and replace text'
+    ),
     'reverse': (
         reverse,
         'reverse text'
