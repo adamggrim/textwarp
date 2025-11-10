@@ -75,8 +75,22 @@ def count_mfws(text: str, num_mfws: int) -> list[WordCount]:
     """
     doc: Doc = nlp(text)
     words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
+    total_word_count: int = len(words)
+
+    if total_word_count == 0:
+        return []
+
     counts: Counter[str] = Counter(words)
-    return counts.most_common(number_of_mfws)
+    count_tuples: list[tuple[str, int]] = counts.most_common(num_mfws)
+
+    return [
+        WordCount(
+            word=word,
+            count=count,
+            percentage=(count / total_word_count * 100)
+        )
+        for word, count in count_tuples
+    ]
 
 
 def count_pos(text: str) -> POSCounts:
@@ -102,12 +116,9 @@ def count_pos(text: str) -> POSCounts:
         counts.get(tag, 0) for tag in POS_WORD_TAGS
     )
 
-    pos_kwargs = {
-        f'{tag.lower()}_count': count for tag, count in tag_counts.items()
-    }
     return POSCounts(
         word_count=total_word_count,
-        **pos_kwargs
+        tag_counts=tag_counts
     )
 
 
