@@ -59,7 +59,7 @@ def format_count(name: str, count: int) -> str:
     return f'{name} count: {count}'
 
 
-def format_mfws(mfws: list[tuple]) -> str:
+def format_mfws(mfws: list[WordCount]) -> str:
     """
     Return a string indicating the most frequent words in a given
     string.
@@ -71,8 +71,16 @@ def format_mfws(mfws: list[tuple]) -> str:
     Returns:
         str: A formatted string indicating most frequent words.
     """
-    formatted_word_counts: list[str] = [f'{word}: {count}' for word, count in mfws]
-    return '\n'.join(formatted_word_counts)
+    mfw_data: list[tuple[str, str, str]] = [
+        (
+            word_count.word,
+            str(word_count.count),
+            f'({word_count.percentage:.2f}%)'
+        )
+        for word_count in mfws
+    ]
+
+    return _format_table(mfw_data)
 
 
 def format_pos_count(pos_counts: POSCounts) -> str:
@@ -86,24 +94,18 @@ def format_pos_count(pos_counts: POSCounts) -> str:
     Returns:
         str: A formatted string indicating parts of speech counts.
     """
-    pos_tuples: list[tuple[str, int, float]] = []
-    for tag_pair in POS_TAGS:
-        pos: str = tag_pair[1]
-        count: int = getattr(pos_counts, f'{tag_pair[0].lower()}_count')
-        ratio: float = getattr(pos_counts, f'{tag_pair[0].lower()}_ratio')
-        pos_tuples.append((pos, count, ratio))
-    max_count_length: int = max(len(f'{count}') for _, count, _ in pos_tuples)
-    max_ratio_length: int = max(len(f'({ratio:.2f}%)') for _, _, ratio in
-                           pos_tuples)
-    padding: int = 2
-    results: list[str] = []
-    for pos, count, ratio in pos_tuples:
-        formatted_ratio: str = f'({ratio:.2f}%)'
-        # Dynamic spacing based on POS, count and ratio length
-        results.append(f'{pos:{MAX_POS_LENGTH + padding}}'
-                       f'{count:<{max_count_length + padding}}'
-                       f'{formatted_ratio:>{max_ratio_length}}')
-    return '\n'.join(results)
+    pos_data: list[tuple[str, int, float]] = pos_counts.get_pos_data()
+
+    formatted_pos_data: list[tuple[str, str, str]] = [
+        (
+            name,
+            str(count),
+            f'({percentage:.2f}%)'
+        )
+        for name, count, percentage in pos_data
+    ]
+
+    return _format_table(formatted_pos_data)
 
 
 def format_time_to_read(minutes_to_read: int) -> str:
@@ -123,7 +125,9 @@ def format_time_to_read(minutes_to_read: int) -> str:
         formatted_hours = f'{hours} hours' if hours != 1 else '1 hour'
         if minutes == 0:
             return formatted_hours
-        formatted_minutes = f'{minutes} minutes' if minutes != 1 else '1 minute'
+        formatted_minutes = (
+            f'{minutes} minutes' if minutes != 1 else '1 minute'
+        )
         return f'{formatted_hours}, {formatted_minutes}'
     elif minutes >= 1:
         return f'{minutes} minutes' if minutes != 1 else '1 minute'
