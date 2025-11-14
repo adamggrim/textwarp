@@ -1,13 +1,14 @@
 import json
 from typing import (
     Final,
+    TypeAlias,
     Union,
     cast
 )
 from pathlib import Path
 
 # Define a type for JSON data.
-JSONType = Union[dict, list, str, int, float, bool, None]
+JSONType: TypeAlias = Union[dict, list, str, int, float, bool, None]
 
 # Path to the base directory for data files.
 data_root: Path = Path(__file__).parent / '_data'
