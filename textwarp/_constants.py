@@ -1,3 +1,7 @@
+"""
+This module contains constants used across the package.
+"""
+
 from typing import Final
 
 # Variants of 's for contractions.
