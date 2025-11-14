@@ -1,3 +1,7 @@
+"""
+Provides a custom decorator function to denote non-instantiable classes.
+"""
+
 def non_instantiable(cls) -> None:
     """Class decorator to make a class non-instantiable.
 
