@@ -1,5 +1,5 @@
 from collections.abc import Generator
-from random import shuffle
+from random import choice, shuffle
 from typing import (
     Callable,
     Match
@@ -53,6 +53,7 @@ __all__ = [
     'ordinal_to_cardinal',
     'punct_to_inside',
     'punct_to_outside',
+    'random_case',
     'randomize',
     'redact',
     'reverse',
@@ -419,6 +420,29 @@ def punct_to_outside(text: str) -> str:
         return punct + quote
 
     return WarpingPatterns.PUNCT_INSIDE.sub(_repl, text)
+
+def random_case(text: str) -> str:
+    """
+    Randomize the casing of each character in a given string.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    result: list[str] = []
+
+    for char in text:
+        if char.isalpha():
+            if choice([True, False]):
+                result.append(char.upper())
+            else:
+                result.append(char.lower())
+        else:
+            result.append(char)
+
+    return ''.join(result)
 
 
 def randomize(text: str) -> str:

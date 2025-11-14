@@ -29,6 +29,7 @@ from .warping import (
     ordinal_to_cardinal,
     punct_to_inside,
     punct_to_outside,
+    random_case,
     randomize,
     redact,
     reverse,
@@ -159,6 +160,10 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'punct-to-outside': (
         punct_to_outside,
         '"move punctuation outside quotation marks".'
+    ),
+    'random-case': (
+        random_case,
+        'randomize the casing of each character'
     ),
     'randomize': (
         randomize,
