@@ -1,3 +1,5 @@
+"""Functions for formatting analysis data into printable output."""
+
 from ._models import (
     POSCounts,
     WordCount
