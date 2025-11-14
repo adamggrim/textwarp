@@ -44,7 +44,8 @@ from .warping import (
     to_sentence_case,
     to_single_spaces,
     to_snake_case,
-    to_title_case
+    to_title_case,
+    widen
 )
 
 
@@ -222,5 +223,9 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'word-count': (
         word_count,
         'count words'
+    ),
+    'widen': (
+        widen,
+        'widen text'
     )
 }

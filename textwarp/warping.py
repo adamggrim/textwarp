@@ -68,7 +68,8 @@ __all__ = [
     'to_sentence_case',
     'to_single_spaces',
     'to_snake_case',
-    'to_title_case'
+    'to_title_case',
+    'widen'
 ]
 
 def capitalize(text: str) -> str:
@@ -728,3 +729,17 @@ def to_title_case(text: str) -> str:
     """
     doc: Doc = nlp(text)
     return doc_to_case(doc, Casing.TITLE)
+
+
+def widen(text: str) -> str:
+    """
+    Widen a string by adding a space after each character except
+    the last one.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return ' '.join(text)
