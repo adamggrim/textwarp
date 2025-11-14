@@ -1,3 +1,8 @@
+"""
+This module contains a central registry for all warping, analysis,
+replacement and clearing commands.
+"""
+
 from typing import Callable
 
 from ._commands import (
