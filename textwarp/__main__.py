@@ -1,3 +1,13 @@
+"""
+The main entry point for the package.
+
+This module is responsible for:
+1.  Parsing command-line arguments.
+2.  Defining command groups (warping, analysis, replacement and
+    clearing).
+3.  Dispatching the parsed command to the relevant runner function.
+"""
+
 from ._args import ARGS_MAP
 from ._commands import _analysis as analysis_mod
 from ._commands import _replacement as replacement_mod
