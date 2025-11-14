@@ -22,14 +22,15 @@ def _calculate_max_arg_width(commands: dict) -> int:
     return max(len(key) + adjustment for key in commands.keys())
 
 
-def parse_args() -> str:
+def parse_args() -> tuple[str, str]:
     """
     Parse command-line arguments for a text warping or analysis
     function name.
 
     Returns:
-        str: The name of the text warping or analysis function
-            corresponding with the specified command-line argument.
+        tuple[str, str]: A tuple containing:
+            - The command-line argument string (e.g., 'word-count').
+            - The corresponding function name (e.g., 'word_count').
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
@@ -69,5 +70,6 @@ def parse_args() -> str:
 
     for arg_key, _ in ARGS_MAP.items():
         if getattr(args, arg_key.replace('-', '_')):
-            module_name = arg_key.replace('-', '_')
-            return module_name
+            command_name: str = arg_key
+            func_name: str = command_name.replace('-', '_')
+            return command_name, func_name
