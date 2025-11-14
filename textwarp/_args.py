@@ -50,8 +50,13 @@ from .warping import (
 )
 
 
-# A dictionary mapping command-line arguments to their corresponding
-# functions and help messages.
+# A dictionary for all warping, analysis, replacement and
+# clearing commands.
+
+# This dictionary maps the public-facing command-line argument
+# (e.g., 'word-count') to a tuple containing:
+#   1. The function that performs the action (e.g., word_count).
+#   2. The help message to display for that argument.
 ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     'alternating-caps': (
         to_alternating_caps,
