@@ -172,7 +172,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'randomize': (
         randomize,
-        'randomize the characters in each word'
+        'randomize characters'
     ),
     'redact': (
         redact,
@@ -216,7 +216,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'swapcase': (
         str.swapcase,
-        'convert lowercase to UPPERCASE and vice versa'
+        'convert LOWERCASE to uppercase and vice versa'
     ),
     'time-to-read': (
         time_to_read,
@@ -236,6 +236,6 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'widen': (
         widen,
-        'widen text'
+        'w i d e n  t e x t'
     )
 }
