@@ -136,6 +136,14 @@ NAME_PREFIXES: Final[list[str]] = cast(
     )
 )
 
+# Capitalization mappings for contractions that contain a negative.
+NEGATIVE_CONTRACTIONS: Final[list[str]] = cast(
+    dict[str, str], _load_json_from_data(
+        Path('_contraction_expansion') / 'negative_contractions.json'
+    )
+)
+
+
 # Map pairing each prefixed name not following standard prefix rules
 # with its capitalized version.
 OTHER_PREFIXED_NAMES_MAP: Final[dict[str, str]] = cast(
