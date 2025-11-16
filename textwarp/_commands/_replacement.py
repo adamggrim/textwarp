@@ -25,10 +25,10 @@ def replace(text: str) -> str:
         str: The transformed text.
     """
     print_wrapped(ENTER_TEXT_TO_REPLACE_PROMPT)
-    to_replace_text: str = input().rstrip('\n')
+    text_to_replace: str = input().rstrip('\n')
     print_wrapped(ENTER_REPLACEMENT_PROMPT)
     replacement_text: str = input().rstrip('\n')
-    return text.replace(to_replace_text, replacement_text)
+    return text.replace(text_to_replace, replacement_text)
 
 
 def regex_replace(text: str) -> str:
