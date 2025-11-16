@@ -13,11 +13,13 @@ from spacy.tokens import (
 
 from ._enums import Casing
 from ._helpers import (
+    apply_expansion_casing,
     capitalize_from_string,
     change_first_letter_case,
+    curly_to_straight,
     doc_to_case,
     remove_apostrophes,
-    replace_opening_quote,
+    straight_to_curly,
     to_separator_case
 )
 from ._config import (

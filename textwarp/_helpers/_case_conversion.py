@@ -6,6 +6,7 @@ from spacy.tokens import Doc, Span, Token
 from .._enums import CaseSeparator, Casing
 from .._regexes import ProgrammingCasePatterns
 
+from ._apostrophes import remove_apostrophes
 from ._entity_capitalization import (
     locate_sentence_start_indices,
     locate_start_case_indices,

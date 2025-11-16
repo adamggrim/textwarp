@@ -1,5 +1,6 @@
 from .._config import CONTRACTIONS_MAP
-from ..warping import curly_to_straight
+
+from ._quote_conversion import curly_to_straight
 
 
 def apply_expansion_casing(original_word: str, expanded_word: str) -> str:

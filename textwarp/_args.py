@@ -16,6 +16,10 @@ from ._commands import (
     time_to_read,
     word_count
 )
+from ._helpers import (
+    curly_to_straight,
+    straight_to_curly
+)
 from .warping import (
     capitalize,
     cardinal_to_ordinal,
