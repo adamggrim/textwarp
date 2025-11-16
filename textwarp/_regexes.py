@@ -11,6 +11,7 @@ from ._config import (
     ELISION_WORDS,
     NAME_PREFIX_EXCEPTIONS,
     NAME_PREFIXES,
+    NEGATIVE_CONTRACTIONS,
     MAP_SUFFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP
 )
@@ -320,6 +321,12 @@ class WarpingPatterns:
     NAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
         NAME_PREFIXES,
         sort_by_length=True
+    )
+    NEGATIVE_CONTRACTION_PATTERN: Final[re.Pattern[str]] = (
+        _create_words_regex(
+            NEGATIVE_CONTRACTIONS,
+            sort_by_length=True
+        )
     )
     OPENING_STRAIGHT_QUOTES: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: SINGLE QUOTES
