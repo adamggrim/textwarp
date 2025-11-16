@@ -23,6 +23,7 @@ from .warping import (
     punct_to_inside,
     punct_to_outside,
     randomize,
+    random_case,
     redact,
     reverse,
     to_alternating_caps,
@@ -36,7 +37,8 @@ from .warping import (
     to_sentence_case,
     to_single_spaces,
     to_snake_case,
-    to_title_case
+    to_title_case,
+    widen
 )
 
 __all__ = [
@@ -57,6 +59,7 @@ __all__ = [
     'punct_to_inside',
     'punct_to_outside',
     'randomize',
+    'random_case',
     'redact',
     'reverse',
     'straight_to_curly',
@@ -71,5 +74,6 @@ __all__ = [
     'to_sentence_case',
     'to_single_spaces',
     'to_snake_case',
-    'to_title_case'
+    'to_title_case',
+    'widen'
 ]
