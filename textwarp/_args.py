@@ -196,7 +196,7 @@ ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
     ),
     'sentence-case': (
         to_sentence_case,
-        'convert to sentence case.'
+        'Convert to sentence case.'
     ),
     'sentence-count': (
         sentence_count,
