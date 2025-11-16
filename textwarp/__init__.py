@@ -14,7 +14,6 @@ from .analysis import (
 from .warping import (
     capitalize,
     cardinal_to_ordinal,
-    curly_to_straight,
     expand_contractions,
     from_hexadecimal,
     from_morse,
@@ -26,7 +25,6 @@ from .warping import (
     randomize,
     redact,
     reverse,
-    straight_to_curly,
     to_alternating_caps,
     to_binary,
     to_camel_case,

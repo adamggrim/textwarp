@@ -23,7 +23,6 @@ from ._helpers import (
 from .warping import (
     capitalize,
     cardinal_to_ordinal,
-    curly_to_straight,
     expand_contractions,
     from_binary,
     from_hexadecimal,
@@ -37,7 +36,6 @@ from .warping import (
     randomize,
     redact,
     reverse,
-    straight_to_curly,
     to_alternating_caps,
     to_binary,
     to_camel_case,
