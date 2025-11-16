@@ -37,7 +37,8 @@ def parse_args() -> tuple[str, str]:
     # A custom help formatter to align help messages neatly based on
     # the maximum argument length.
     formatter: Callable[[str], argparse.HelpFormatter] = (
-        lambda prog: argparse.HelpFormatter(
+        # Use RawTextHelpFormatter to preserve consecutive spaces.
+        lambda prog: argparse.RawTextHelpFormatter(
             prog, max_help_position=max_arg_width
         )
     )
