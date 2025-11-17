@@ -489,37 +489,6 @@ def reverse(text: str) -> str:
     return text[::-1]
 
 
-def straight_to_curly(text: str) -> str:
-    """
-    Convert straight quotes to curly quotes in a given string.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        curly_text: The converted string.
-    """
-    curly_text: str
-
-    # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub('’', text)
-
-    # Replace opening straight quotes with opening curly quotes.
-    curly_text = WarpingPatterns.OPENING_STRAIGHT_QUOTES.sub(
-        replace_opening_quote, curly_text
-    )
-
-    # Replace any remaining straight single quotes with closing curly
-    # single quotes.
-    curly_text = curly_text.replace("'", '’')
-
-    # Replace any remaining straight double quotes with closing curly
-    # double quotes.
-    curly_text = curly_text.replace('"', '”')
-
-    return curly_text
-
-
 def to_alternating_caps(text: str) -> str:
     """
     Convert a string to alternating caps.
