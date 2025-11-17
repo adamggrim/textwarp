@@ -197,7 +197,7 @@ class WarpingPatterns:
     """
     @staticmethod
     def _create_words_regex(
-        words: list[str],
+        words: str | list[str],
         boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY,
         sort_by_length: bool = False
     ) -> re.Pattern[str]:
@@ -206,7 +206,7 @@ class WarpingPatterns:
         word in the given set.
 
         Args:
-            words: A set of words.
+            words: A word or set of words.
             boundary: The boundary-matching strategy to use. Defaults to
                 ``RegexBoundary.WORD_BOUNDARY``.
             sort_by_length: A ``bool`` indicating whether the words
@@ -216,19 +216,30 @@ class WarpingPatterns:
         Returns:
             A compiled regular expression object.
         """
-        sorted_words: list[str] = words
-        if sort_by_length:
-            # Sort words by length in descending order, so that longer
-            # words containing other words from the set are matched
-            # first (e.g., "can't've" before "can't").
-            sorted_words = sorted(
-                sorted_words, key=len, reverse=True
-            )
+        def _add_escaped_apostrophes(word: str) -> str:
+            """
+            Add escaped apostrophes to a word.
 
-        escaped_patterns: list[str] = [
-            re.escape(w).replace("'", "['’‘]") for w in sorted_words
-        ]
-        pattern_string: str = '|'.join(escaped_patterns)
+            Args:
+                word: The word to process.
+            """
+            return re.escape(word).replace("'", "['’‘]")
+        if isinstance(words, str):
+            pattern_string: str = _add_escaped_apostrophes(words)
+        else:
+            sorted_words: list[str] = words
+            if sort_by_length:
+                # Sort words by length in descending order, so that
+                # longer words containing other words from the set are
+                # matched first (e.g., "can't've" before "can't").
+                sorted_words = sorted(
+                    sorted_words, key=len, reverse=True
+                )
+
+            escaped_patterns: list[str] = [
+                _add_escaped_apostrophes(w) for w in sorted_words
+            ]
+            pattern_string: str = '|'.join(escaped_patterns)
 
         match boundary:
             case RegexBoundary.WORD_BOUNDARY:
