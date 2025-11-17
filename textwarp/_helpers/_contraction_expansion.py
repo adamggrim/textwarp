@@ -1,5 +1,3 @@
-from .._config import CONTRACTIONS_MAP
-
 from ._quote_conversion import curly_to_straight
 
 
@@ -21,7 +19,10 @@ def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     return expanded_word
 
 
-def repl_contraction_from_dict(contraction: str) -> str:
+def repl_contraction_from_dict(
+    contraction: str,
+    contractions_map: dict[str, str]
+) -> str:
     """
     Replace a contraction using the contractions map.
 
@@ -30,9 +31,11 @@ def repl_contraction_from_dict(contraction: str) -> str:
 
     Returns:
         str: The expanded contraction.
+        contractions_map: A dictionary pairing each contraction with its
+            expanded version.
     """
     normalized_contraction: str = curly_to_straight(contraction).lower()
-    expanded_contraction: str = CONTRACTIONS_MAP.get(
+    expanded_contraction: str = contractions_map.get(
         normalized_contraction, contraction
     )
     return apply_expansion_casing(contraction, expanded_contraction)
