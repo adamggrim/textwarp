@@ -6,14 +6,14 @@ from typing import (
 
 from ._config import (
     AMBIGUOUS_CONTRACTIONS,
-    CONTRACTIONS_MAP,
     CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,
     NAME_PREFIX_EXCEPTIONS,
     NAME_PREFIXES,
     NEGATIVE_CONTRACTIONS,
     MAP_SUFFIX_EXCEPTIONS,
-    OTHER_PREFIXED_NAMES_MAP
+    OTHER_PREFIXED_NAMES_MAP,
+    UNAMBIGUOUS_CONTRACTIONS_MAP
 )
 from ._decorators import non_instantiable
 from ._enums import RegexBoundary
@@ -296,7 +296,7 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
-        list(CONTRACTIONS_MAP.keys()),
+        list(UNAMBIGUOUS_CONTRACTIONS_MAP.keys()) + AMBIGUOUS_CONTRACTIONS,
         sort_by_length=True
     )
     CONTRACTION_SUFFIX_TOKENS_PATTERN: Final[re.Pattern[str]] = (
