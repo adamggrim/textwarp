@@ -125,29 +125,6 @@ def cardinal_to_ordinal(text: str) -> str:
     return WarpingPatterns.CARDINAL.sub(_replace_cardinal, text)
 
 
-def curly_to_straight(text: str) -> str:
-    """
-    Convert curly quotes to straight quotes in a given string.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    translation_table: dict[int, str] = str.maketrans({
-        # Curly opening single quotes to straight single quotes
-        '’': "'",
-        # Curly opening double quotes to straight double quotes
-        '”': '"',
-        # Curly closing single quotes to straight single quotes
-        '‘': "'",
-        # Curly closing double quotes to straight double quotes
-        '“': '"'
-    })
-    return text.translate(translation_table)
-
-
 def expand_contractions(text: str) -> str:
     """
     Expand contractions in a given string.
