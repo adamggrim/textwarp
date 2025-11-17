@@ -20,9 +20,9 @@ from ._helpers import (
     to_separator_case
 )
 from ._config import (
-    CONTRACTIONS_MAP,
     MORSE_MAP,
-    REVERSED_MORSE_MAP
+    REVERSED_MORSE_MAP,
+    UNAMBIGUOUS_CONTRACTIONS_MAP
 )
 from ._constants import (
     AIN_T_SUFFIX_VARIANTS,
