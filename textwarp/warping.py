@@ -42,6 +42,7 @@ from ._nlp import nlp
 __all__ = [
     'capitalize',
     'cardinal_to_ordinal',
+    # Add helper function.
     'curly_to_straight',
     'expand_contractions',
     'from_binary',
@@ -56,6 +57,7 @@ __all__ = [
     'randomize',
     'redact',
     'reverse',
+    # Add helper function.
     'straight_to_curly',
     'to_alternating_caps',
     'to_binary',
