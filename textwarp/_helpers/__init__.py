@@ -3,6 +3,10 @@ from ._case_conversion import (
     doc_to_case,
     to_separator_case
 )
+from ._contraction_expansion import (
+    apply_expansion_casing,
+    repl_contraction_from_dict
+)
 from ._apostrophes import (
     remove_apostrophes
 )
