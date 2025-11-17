@@ -5,7 +5,7 @@ This module contains constants used across the package.
 from typing import Final
 
 # Variants of 's for contractions.
-AINT_SUFFIX_VARIANTS: Final[set[str]] = {"n't", 'n’t', 'n‘t'}
+AIN_T_SUFFIX_VARIANTS: Final[set[str]] = {"n't", 'n’t', 'n‘t'}
 
 # Prompt for the user to enter any other text.
 ANY_OTHER_TEXT_PROMPT: Final[str] = (
