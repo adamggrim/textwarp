@@ -14,7 +14,6 @@ from ._entity_capitalization import (
     map_proper_noun_entities,
     to_title_case_from_doc
 )
-from ._punctuation import remove_apostrophes
 from ._string_capitalization import capitalize_from_string
 
 

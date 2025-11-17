@@ -1,9 +1,5 @@
 from collections.abc import Generator
 from random import choice, shuffle
-from typing import (
-    Callable,
-    Match
-)
 
 import regex as re
 from spacy.tokens import (
@@ -19,6 +15,7 @@ from ._helpers import (
     curly_to_straight,
     doc_to_case,
     remove_apostrophes,
+    repl_contraction_from_dict,
     straight_to_curly,
     to_separator_case
 )

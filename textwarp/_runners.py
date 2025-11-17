@@ -1,17 +1,18 @@
-from types import ModuleType
 from typing import Callable
 
 import pyperclip
 
-from ._commands import _analysis as analysis_mod
-from ._commands import _replacement as replacement_mod
+from ._args import ARGS_MAP
+from ._commands import (
+    _analysis,
+    _replacement
+)
 from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
     TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
-from . import warping as warping_mod
 from ._ui import (
     get_input,
     print_wrapped
@@ -20,6 +21,7 @@ from ._validation import (
     EmptyClipboardError,
     validate_clipboard
 )
+from . import warping
 
 
 def _paste_and_validate() -> str | None:
