@@ -63,13 +63,6 @@ CONTRACTION_SUFFIX_TOKENS: Final[list[str]] = cast(
     )
 )
 
-# Map pairing each contraction with its expanded version.
-CONTRACTIONS_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
-        Path('_contraction_expansion') / 'contractions_map.json'
-    )
-)
-
 # Map pairing each custom entity with its capitalized version.
 CUSTOM_ENTITIES_MAP: Final[dict[str, str]] = cast(
     dict[str, str], _load_json_from_data(
@@ -156,3 +149,10 @@ OTHER_PREFIXED_NAMES_MAP: Final[dict[str, str]] = cast(
 REVERSED_MORSE_MAP: Final[dict[str, str]] = {
     value: key for key, value in MORSE_MAP.items()
 }
+
+# Map pairing each unambiguous contraction with its expanded version.
+UNAMBIGUOUS_CONTRACTIONS_MAP: Final[dict[str, str]] = cast(
+    dict[str, str], _load_json_from_data(
+        Path('_contraction_expansion') / 'unambiguous_contractions_map.json'
+    )
+)
