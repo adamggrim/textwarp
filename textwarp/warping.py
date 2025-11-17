@@ -38,7 +38,6 @@ from ._regexes import (
 )
 from ._nlp import nlp
 
-
 __all__ = [
     'capitalize',
     'cardinal_to_ordinal',
@@ -73,6 +72,7 @@ __all__ = [
     'to_title_case',
     'widen'
 ]
+
 
 def capitalize(text: str) -> str:
     """
