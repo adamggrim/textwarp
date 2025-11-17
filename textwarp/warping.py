@@ -138,7 +138,10 @@ def expand_contractions(text: str) -> str:
     # If there are no ambiguous contractions, spaCy isn't needed.
     if not WarpingPatterns.AMBIGUOUS_CONTRACTION_PATTERN.search(text):
         return WarpingPatterns.CONTRACTION.sub(
-        lambda match: _repl_from_dict(match.group(0)), text
+        lambda match: repl_contraction_from_dict(
+            match.group(0),
+            UNAMBIGUOUS_CONTRACTIONS_MAP
+        ), text
     )
 
     doc: Doc = nlp(text)
@@ -161,41 +164,74 @@ def expand_contractions(text: str) -> str:
         contraction: str = match.group(0)
         start_char_index: int = match.start()
 
-        apostrophe_token: Token | None = None
+        # A token containing a contraction suffix (e.g., "'s", "'d").
+        suffix_token: Token | None = None
 
         for i in range(start_char_index, match.end()):
             if i in token_map:
                 token_text: str = token_map[i].text
                 if any(char in token_text for char in APOSTROPHE_VARIANTS):
-                    apostrophe_token = token_map[i]
+                    suffix_token = token_map[i]
                     break
 
         expanded_suffix: str = ''
 
-        if apostrophe_token and apostrophe_token.i + 1 < len(doc):
-            next_token: Token = doc[apostrophe_token.i + 1]
-            # Disambiguate 's: "is" vs. "has"
-            if apostrophe_token.lower_ in APOSTROPHE_S_VARIANTS:
-                if next_token.tag_ in PAST_PARTICIPLE_TAGS:
-                    expanded_suffix = 'has'
+        if not suffix_token:
+            return repl_contraction_from_dict(
+                contraction,
+                UNAMBIGUOUS_CONTRACTIONS_MAP
+            )
+
+        if suffix_token and 0 < suffix_token.i < len(doc) - 1:
+            previous_token: Token = doc[suffix_token.i - 1]
+            next_token: Token = doc[suffix_token.i + 1]
+            # Disambiguate ain't: "am not," "is not," "are not," "has
+            # not" or "have not"
+            if (previous_token.lower_ == 'ai' and
+                    suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+                subject_token: Token = doc[suffix_token.i - 2]
+                # Default expansion
+                full_expansion = 'am not'
+                # 1. Check for "has"/"have not".
+                if next_token and next_token.tag_ in PAST_PARTICIPLE_TAGS:
+                    if subject_token.lower_ in ('he', 'she', 'it'):
+                        full_expansion = 'has not'
+                    else:
+                        # Covers "I", "you", "we", "they".
+                        full_expansion = 'have not'
+                # 2. Check for "is"/"am"/"are not".
                 else:
-                    expanded_suffix = 'is'
-            # Disambiguate 'd: "would" vs. "had"
-            elif apostrophe_token.lower_ in APOSTROPHE_D_VARIANTS:
-                if next_token.tag_ in PAST_PARTICIPLE_TAGS:
-                    expanded_suffix = 'had'
-                else:
-                    expanded_suffix = 'would'
-        if expanded_suffix:
-            base_word_token: Token = doc[apostrophe_token.i - 1]
+                    if subject_token.lower_ == 'i':
+                        full_expansion = 'am not'
+                    elif subject_token.lower_ in ('he', 'she', 'it'):
+                        full_expansion = 'is not'
+                    else:
+                        # Covers "you", "we", "they".
+                        full_expansion = 'are not'
 
-            # Combine the base word with the expanded suffix.
-            full_expansion: str = f'{base_word_token.text} {expanded_suffix}'
+                return apply_expansion_casing(contraction, full_expansion)
 
-            return _apply_casing(contraction, full_expansion)
+            else:
+                expanded_suffix = ''
+                # Disambiguate 's: "is" vs. "has"
+                if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
+                    if next_token.tag_ in PAST_PARTICIPLE_TAGS:
+                        expanded_suffix = 'has'
+                    else:
+                        expanded_suffix = 'is'
+                # Disambiguate 'd: "would" vs. "had"
+                elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
+                    if next_token.tag_ in PAST_PARTICIPLE_TAGS:
+                        expanded_suffix = 'had'
+                    else:
+                        expanded_suffix = 'would'
 
-        # Fallback to contractions map.
-        return _repl_from_dict(contraction)
+                if expanded_suffix:
+                    subject_token: Token = doc[suffix_token.i - 1]
+                    # Combine the subject with the expanded suffix.
+                    full_expansion: str = f'{subject_token.text} {expanded_suffix}'
+
+            return apply_expansion_casing(contraction, full_expansion)
 
     return WarpingPatterns.CONTRACTION.sub(_repl, text)
 
