@@ -9,8 +9,8 @@ This module is responsible for:
 """
 
 from ._args import ARGS_MAP
-from ._commands import _analysis as analysis_mod
-from ._commands import _replacement as replacement_mod
+from ._commands import _analysis
+from ._commands import _replacement
 from ._parsing import parse_args
 from ._runners import (
     analyze_text,
@@ -23,13 +23,23 @@ from ._ui import (
     program_exit
 )
 
-ALL_COMMANDS: set[str] = set(ARGS_MAP.keys())
-ANALYSIS_COMMANDS: set[str] = set(analysis_mod.__all__)
-REPLACEMENT_COMMANDS: set[str] = set(replacement_mod.__all__)
-CLEAR_COMMAND: set[str] = {'clear'}
-WARPING_COMMANDS: set[str] = (
-    ALL_COMMANDS - ANALYSIS_COMMANDS - REPLACEMENT_COMMANDS - CLEAR_COMMAND
-)
+# A set of all warping, analysis, replacement and clearing function
+# names, each converted from its hyphenated ARGS_MAP key to its
+# underscored version.
+ALL_FUNC_NAMES: set[str] = {
+    key.replace('-', '_') for key in ARGS_MAP.keys()
+}
+
+# All function names for analysis commands.
+ANALYSIS_FUNC_NAMES: set[str] = set(_analysis.__all__)
+
+# All function names for replacement commands.
+REPLACEMENT_FUNC_NAMES: set[str] = set(_replacement.__all__)
+
+# Signal set to represent the ``clear_clipboard`` function with the
+# ``clear`` command name.
+CLEAR_FUNC_NAMES: set[str] = {'clear'}
+
 
 def main() -> None:
     """Run the main loop for text transformation or analysis."""
