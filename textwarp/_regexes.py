@@ -173,9 +173,8 @@ class WarpingPatterns:
             or curly apostrophe.
         APOSTROPHE_IN_WORD: Matches a straight apostrophe within a word
             (e.g., "it's", "'twas").
-        AMBIGUOUS_CONTRACTION_PATTERN: Matches any contraction that can
-            expand to multiple phrases (e.g., "it's" -> "it is" or "it
-            has").
+        AMBIGUOUS_CONTRACTION: Matches any contraction that can expand
+            to multiple phrases (e.g., "it's" -> "it is" or "it has").
         CARDINAL: Matches a cardinal number (e.g., "525,600" or "13").
         CONTRACTION: Matches any expandable contraction (e.g., "don't").
         CONTRACTION_SUFFIX_TOKENS_PATTERN: Matches any contraction
@@ -290,7 +289,7 @@ class WarpingPatterns:
         )                               # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
-    AMBIGUOUS_CONTRACTION_PATTERN: Final[re.Pattern[str]] = (
+    AMBIGUOUS_CONTRACTION: Final[re.Pattern[str]] = (
         _create_words_regex(
             AMBIGUOUS_CONTRACTIONS,
             sort_by_length=True
