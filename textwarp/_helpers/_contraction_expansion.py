@@ -31,7 +31,6 @@ def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     return expanded_word
 
 
-def repl_contraction_from_dict(
 def expand_ambiguous_contraction(
     contraction: str,
     suffix_token: Token,
@@ -114,11 +113,12 @@ def expand_ambiguous_contraction(
         return apply_expansion_casing(contraction, full_expansion)
 
 
+def expand_unambiguous_contraction(
     contraction: str,
     contractions_map: dict[str, str]
 ) -> str:
     """
-    Replace a contraction using the contractions map.
+    Replace an unambiguous contraction using the contractions map.
 
     Args:
         contraction: The contraction to expand.
