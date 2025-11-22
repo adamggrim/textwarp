@@ -1,15 +1,20 @@
 import regex as re
 from spacy.tokens import (
     Doc,
+    Span,
     Token
 )
 
+from .._config import UNAMBIGUOUS_CONTRACTIONS_MAP
 from .._constants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,
     PAST_PARTICIPLE_TAGS
 )
+from .._nlp import nlp
+from .._regexes import WarpingPatterns
+
 from ._quote_conversion import curly_to_straight
 
 
@@ -133,6 +138,7 @@ def expand_unambiguous_contraction(
         normalized_contraction, contraction
     )
     return apply_expansion_casing(contraction, expanded_contraction)
+
 
 def expand_contractions(text: str) -> str:
     """
