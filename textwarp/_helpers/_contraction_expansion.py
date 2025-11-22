@@ -1,3 +1,15 @@
+import regex as re
+from spacy.tokens import (
+    Doc,
+    Token
+)
+
+from .._constants import (
+    AIN_T_SUFFIX_VARIANTS,
+    APOSTROPHE_D_VARIANTS,
+    APOSTROPHE_S_VARIANTS,
+    PAST_PARTICIPLE_TAGS
+)
 from ._quote_conversion import curly_to_straight
 
 

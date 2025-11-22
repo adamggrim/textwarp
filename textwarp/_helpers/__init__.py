@@ -4,8 +4,8 @@ from ._case_conversion import (
     to_separator_case
 )
 from ._contraction_expansion import (
-    apply_expansion_casing,
-    repl_contraction_from_dict
+    expand_ambiguous_contraction,
+    expand_unambiguous_contraction
 )
 from ._apostrophes import (
     remove_apostrophes

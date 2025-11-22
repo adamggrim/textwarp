@@ -4,9 +4,11 @@ from random import choice, shuffle
 import regex as re
 from spacy.tokens import (
     Doc,
+    Span,
     Token
 )
 
+from ._constants import APOSTROPHE_VARIANTS
 from ._enums import Casing
 from ._helpers import (
     apply_expansion_casing,
@@ -14,8 +16,10 @@ from ._helpers import (
     change_first_letter_case,
     curly_to_straight,
     doc_to_case,
+    expand_ambiguous_contraction,
+    expand_unambiguous_contraction,
     remove_apostrophes,
-    repl_contraction_from_dict,
+    expand_unambiguous_contraction,
     straight_to_curly,
     to_separator_case
 )
@@ -23,13 +27,6 @@ from ._config import (
     MORSE_MAP,
     REVERSED_MORSE_MAP,
     UNAMBIGUOUS_CONTRACTIONS_MAP
-)
-from ._constants import (
-    AIN_T_SUFFIX_VARIANTS,
-    APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS,
-    APOSTROPHE_VARIANTS,
-    PAST_PARTICIPLE_TAGS
 )
 from ._enums import CaseSeparator
 from ._regexes import (
