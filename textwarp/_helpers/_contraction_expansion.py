@@ -133,3 +133,60 @@ def expand_unambiguous_contraction(
         normalized_contraction, contraction
     )
     return apply_expansion_casing(contraction, expanded_contraction)
+
+def expand_contractions(text: str) -> str:
+    """
+    Expand all contractions in a given string.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    # If there are no ambiguous contractions, spaCy isn't needed.
+    if not WarpingPatterns.AMBIGUOUS_CONTRACTION.search(text):
+        return WarpingPatterns.CONTRACTION.sub(
+        # Replace each contraction using the unambiguous contractions
+        # map.
+        lambda match: expand_unambiguous_contraction(
+            match.group(0),
+            UNAMBIGUOUS_CONTRACTIONS_MAP
+        ), text
+    )
+
+    doc: Doc = nlp(text)
+
+    def _repl(match: re.Match[str]) -> str:
+        """
+        Helper function to replace a matched contraction with its
+        expanded version.
+
+        Args:
+            match: A match object representing a contraction.
+
+        Returns:
+            str: The expanded version of the matched contraction.
+        """
+        contraction: str = match.group(0)
+        start_char: int = match.start()
+        end_char: int = match.end()
+
+        span: Span | None = doc.char_span(start_char, end_char)
+        suffix_token: Token | None = span[-1] if span else None
+
+        # Handle cases where the regular expression identifies a
+        # contraction, but the tokenizer fails to split it.
+        if not suffix_token:
+            return expand_unambiguous_contraction(
+                contraction,
+                UNAMBIGUOUS_CONTRACTIONS_MAP
+            )
+
+        return expand_ambiguous_contraction(
+            contraction,
+            suffix_token,
+            doc
+        )
+
+    return WarpingPatterns.CONTRACTION.sub(_repl, text)
