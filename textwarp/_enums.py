@@ -1,3 +1,13 @@
+"""
+Defines enums for text warping and analysis.
+
+Classes:
+    CaseSeparator: Specifies separator case separators (dot, kebab, snake).
+    Casing: Specifies capitalization styles (sentence, start, title).
+    CountLabels: Defines labels for text analysis.
+    RegexBoundary: Defines regular expression boundary positions.
+"""
+
 from enum import Enum, auto
 from typing import final
 
