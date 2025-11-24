@@ -3,10 +3,7 @@ from ._case_conversion import (
     doc_to_case,
     to_separator_case
 )
-from ._contraction_expansion import (
-    expand_ambiguous_contraction,
-    expand_unambiguous_contraction
-)
+from ._contraction_expansion import expand_contractions_in_doc
 from ._apostrophes import (
     remove_apostrophes
 )
