@@ -1,4 +1,4 @@
-"""Functions for formatting analysis data into printable output."""
+"""Functions for formatting text analysis into human-readable output."""
 
 from ._models import (
     POSCounts,
