@@ -115,66 +115,83 @@ def _expand_ambiguous_contraction(
     """
     full_expansion: str = contraction
 
-    if suffix_token and suffix_token.i > 0:
-        previous_token: Token = doc[suffix_token.i - 1]
-        next_token: Token | None = (
-            doc[suffix_token.i + 1]
-            if suffix_token.i < len(doc) - 1
-            else None
-        )
-        # Disambiguate ain't: "am not," "is not," "are not," "has
-        # not" or "have not"
-        if (previous_token.lower_ == 'ai' and
-                suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
-            if suffix_token.i >= 2:
-                subject_token: Token = doc[suffix_token.i - 2]
-                # Default expansion
-                full_expansion = 'am not'
-                # 1. Check for "has"/"have not".
-                if next_token and next_token.tag_ in PAST_PARTICIPLE_TAGS:
-                    if subject_token.lower_ in ('he', 'she', 'it'):
-                        full_expansion = 'has not'
-                    else:
-                        # Covers "I", "you", "we" and "they".
-                        full_expansion = 'have not'
-                # 2. Check for "is"/"am"/"are not".
-                else:
-                    if subject_token.lower_ == 'i':
-                        full_expansion = 'am not'
-                    elif subject_token.lower_ in ('he', 'she', 'it'):
-                        full_expansion = 'is not'
-                    else:
-                        # Covers "you", "we" and "they".
-                        full_expansion = 'are not'
+    if not suffix_token or suffix_token.i == 0:
+        return contraction
+
+    previous_token: Token = doc[suffix_token.i - 1]
+    next_token: Token | None = (
+        doc[suffix_token.i + 1]
+        if suffix_token.i < len(doc) - 1
+        else None
+    )
+
+# --- HANDLE "AIN'T" ---
+    if (previous_token.lower_ == 'ai' and
+            suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+
+        # Default fallback
+        expansion_phrase = 'am not'
+
+        verb_token = previous_token
+        subject_token = _find_subject_token(verb_token)
+
+        subject_text = subject_token.lower_ if subject_token else ''
+        subject_tag = subject_token.tag_ if subject_token else ''
+
+        # If "ain't" is followed by a participle (VBN) or past tense
+        # (VBD), it functions as "have/has not". Otherwise, it functions
+        # as "am/is/are not".
+        is_perfect_tense = (next_token and next_token.tag_ in ('VBN', 'VBD'))
+
+        if is_perfect_tense:
+            # Disambiguate "has not" vs. "have not".
+            if (subject_text in ('he', 'she', 'it') or
+                subject_tag in ('NN', 'NNP')):
+                expansion_phrase = 'has not'
             else:
-                full_expansion = 'am not'
-
-            return apply_expansion_casing(contraction, full_expansion)
-
+                expansion_phrase = 'have not'
         else:
-            expanded_suffix = ''
-            # Disambiguate 's: "is" vs. "has"
-            if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
-                if next_token and next_token.tag_ in PAST_PARTICIPLE_TAGS:
-                    expanded_suffix = 'has'
-                else:
-                    expanded_suffix = 'is'
-            # Disambiguate 'd: "would" vs. "had"
-            elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-                if next_token and next_token.tag_ in PAST_PARTICIPLE_TAGS:
-                    expanded_suffix = 'had'
-                else:
-                    expanded_suffix = 'would'
+            # Disambiguate "am not" vs. "is not" vs. "are not".
+            if subject_text == 'i':
+                expansion_phrase = 'am not'
+            elif (subject_text in ('he', 'she', 'it') or
+                  subject_tag in ('NN', 'NNP')):
+                expansion_phrase = 'is not'
+            else:
+                expansion_phrase = 'are not'
 
-            if expanded_suffix:
-                subject_token: Token = doc[suffix_token.i - 1]
-                # Combine the subject with the expanded suffix.
-                full_expansion: str = f'{subject_token.text} {expanded_suffix}'
+        return _apply_expansion_casing(contraction, expansion_phrase)
 
-        return apply_expansion_casing(contraction, full_expansion)
+    # --- HANDLE 'S AND 'D ---
+    else:
+        expanded_suffix = ''
+
+        # Disambiguate "is" vs. "has".
+        if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
+            # If followed by a participle (VBN, sometimes tagged as
+            # VBD), 's is "has". Otherwise, 's is "is".
+            if next_token and next_token.tag_ in ('VBN', 'VBD'):
+                expanded_suffix = 'has'
+            else:
+                expanded_suffix = 'is'
+
+        # Disambiguate "would" vs. "had".
+        elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
+            if next_token and next_token.tag_ in ('VBN', 'VBD'):
+                expanded_suffix = 'had'
+            else:
+                expanded_suffix = 'would'
+
+        if expanded_suffix:
+            # Keep the host word and append the suffix.
+            host_token = doc[suffix_token.i - 1]
+            full_expansion = f'{host_token.text} {expanded_suffix}'
+            return _apply_expansion_casing(contraction, full_expansion)
+
+    return contraction
 
 
-def expand_unambiguous_contraction(
+def _expand_unambiguous_contraction(
     contraction: str,
     contractions_map: dict[str, str]
 ) -> str:
