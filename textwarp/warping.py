@@ -61,19 +61,26 @@ __all__ = [
 ]
 
 
-def capitalize(text: str) -> str:
+@overload
+def capitalize(content: str) -> str: ...
+@overload
+def capitalize(content: Doc) -> str: ...
+def capitalize(content: str | Doc) -> str:
     """
-    Capitalize the each word, handling special name prefixes and
-    preserving other mid-word capitalizations.
+    Capitalize the each word in a given string or spaCy ``Doc``,
+    handling special name prefixes and preserving other mid-word
+    capitalizations.
 
     Args:
-        text: The string to capitalize.
+        content: The string or spaCy ``Doc`` to capitalize.
 
     Returns:
         str: The capitalized string.
     """
-    doc: Doc = nlp(text)
-    return doc_to_case(doc, Casing.START)
+    if isinstance(content, Doc):
+        return doc_to_case(content, Casing.START)
+
+    return doc_to_case(nlp(content), Casing.START)
 
 
 def cardinal_to_ordinal(text: str) -> str:
@@ -635,18 +642,24 @@ def to_pascal_case(text: str) -> str:
     return ''.join(pascal_substrings)
 
 
-def to_sentence_case(text: str) -> str:
+@overload
+def to_sentence_case(content: str) -> str: ...
+@overload
+def to_sentence_case(content: Doc) -> str: ...
+def to_sentence_case(content: str | Doc) -> str:
     """
-    Convert a string to sentence case.
+    Convert a string or spaCy ``Doc`` to sentence case.
 
     Args:
-        text: The string to convert.
+        content: The string or spaCy ``Doc`` to convert.
 
     Returns:
         str: The converted string.
     """
-    doc: Doc = nlp(text)
-    return doc_to_case(doc, Casing.SENTENCE)
+    if isinstance(content, Doc):
+        return doc_to_case(content, Casing.SENTENCE)
+
+    return doc_to_case(nlp(content), Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -677,19 +690,25 @@ def to_snake_case(text: str) -> str:
     return to_separator_case(text, CaseSeparator.SNAKE)
 
 
-def to_title_case(text: str) -> str:
+@overload
+def to_title_case(content: str) -> str: ...
+@overload
+def to_title_case(content: Doc) -> str: ...
+def to_title_case(content: str | Doc) -> str:
     """
-    Convert a string to title case, handling special name prefixes and
-    preserving other mid-word capitalizations.
+    Convert a string or spaCy ``Doc`` to title case, handling special
+    name prefixes and preserving other mid-word capitalizations.
 
     Args:
-        text: The string to convert.
+        content: The string or spaCy ``Doc`` to convert.
 
     Returns:
         str: The converted string.
     """
-    doc: Doc = nlp(text)
-    return doc_to_case(doc, Casing.TITLE)
+    if isinstance(content, Doc):
+        return doc_to_case(content, Casing.TITLE)
+
+    return doc_to_case(nlp(content), Casing.TITLE)
 
 
 def widen(text: str) -> str:
