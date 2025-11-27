@@ -213,28 +213,26 @@ def _expand_unambiguous_contraction(
     return _apply_expansion_casing(contraction, expanded_contraction)
 
 
-def expand_contractions(text: str) -> str:
+def expand_contractions_from_doc(doc: Doc) -> str:
     """
-    Expand all contractions in a given string.
+    Expand all contractions in a given spaCy ``Doc``.
 
     Args:
-        text: The string to convert.
+        doc: A spaCy ``Doc``.
 
     Returns:
-        str: The converted string.
+        str: The converted ``Doc`` text.
     """
     # If there are no ambiguous contractions, spaCy isn't needed.
-    if not WarpingPatterns.AMBIGUOUS_CONTRACTION.search(text):
+    if not WarpingPatterns.AMBIGUOUS_CONTRACTION.search(doc.text):
         return WarpingPatterns.CONTRACTION.sub(
         # Replace each contraction using the unambiguous contractions
         # map.
-        lambda match: expand_unambiguous_contraction(
+        lambda match: _expand_unambiguous_contraction(
             match.group(0),
             UNAMBIGUOUS_CONTRACTIONS_MAP
-        ), text
+        ), doc.text
     )
-
-    doc: Doc = nlp(text)
 
     def _repl(match: re.Match[str]) -> str:
         """
@@ -248,24 +246,32 @@ def expand_contractions(text: str) -> str:
             str: The expanded version of the matched contraction.
         """
         contraction: str = match.group(0)
+
+        # If the contraction always expands the same phrase, skip the
+        # spaCy logic and go directly to the map.
+        if not WarpingPatterns.AMBIGUOUS_CONTRACTION.match(contraction):
+             return _expand_unambiguous_contraction(
+                contraction,
+                UNAMBIGUOUS_CONTRACTIONS_MAP
+            )
+
         start_char: int = match.start()
         end_char: int = match.end()
-
         span: Span | None = doc.char_span(start_char, end_char)
         suffix_token: Token | None = span[-1] if span else None
 
         # Handle cases where the regular expression identifies a
         # contraction, but the tokenizer fails to split it.
         if not suffix_token:
-            return expand_unambiguous_contraction(
+            return _expand_unambiguous_contraction(
                 contraction,
                 UNAMBIGUOUS_CONTRACTIONS_MAP
             )
 
-        return expand_ambiguous_contraction(
+        return _expand_ambiguous_contraction(
             contraction,
             suffix_token,
             doc
         )
 
-    return WarpingPatterns.CONTRACTION.sub(_repl, text)
+    return WarpingPatterns.CONTRACTION.sub(_repl, doc.text)
