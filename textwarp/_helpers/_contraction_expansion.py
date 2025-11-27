@@ -36,7 +36,63 @@ def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     return expanded_word
 
 
-def expand_ambiguous_contraction(
+def _find_subject_token(verb_token: Token) -> Token | None:
+    """
+    Find the subject of a verb in a spaCy ``Doc``, handling both
+    standard order (subject to the left: e.g., "I don't") and inverted
+    order (subject to the right: e.g., "Don't I").
+
+    This function attempts to use the dependency parser first. If the
+    parser fails (common in questions or fragments), it falls back to
+    positional heuristics.
+
+    Args:
+        verb_token: The token for the verb that predicates the subject.
+
+    Returns:
+        Token | None: The subject token, otherwise ``None``.
+    """
+    doc = verb_token.doc
+
+    # Try to find the subject using the dependency parser.
+    for child in verb_token.children:
+        if child.dep_ in ('nsubj', 'nsubjpass'):
+            return child
+
+    # Fallback A: Look immediately before the verb (standard order).
+    curr_index = verb_token.i - 1
+    while curr_index >= 0:
+        candidate = doc[curr_index]
+
+        if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
+            return candidate
+        # Stop if the loop hits a determiner, verb, or punctuation.
+        if candidate.pos_ in ('DET', 'VERB', 'PUNCT'):
+            break
+
+        # Otherwise, move one step left to skip adverbs.
+        curr_index -= 1
+
+    # Fallback B: Look immediately after the suffix (inverted order).
+    start_index = verb_token.i + 1
+    if start_index < len(doc) and doc[start_index].lower_ == "n't":
+        start_index += 1
+
+    end_index = min(start_index + 6, len(doc))
+
+    for j in range(start_index, end_index):
+        candidate = doc[j]
+
+        if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
+            return candidate
+        # Stop if the loop hits a verb or punctuation.
+        if candidate.pos_ in ('VERB', 'PUNCT'):
+            break
+
+    return None
+
+
+def _expand_ambiguous_contraction(
     contraction: str,
     suffix_token: Token,
     doc: Doc,
