@@ -210,7 +210,7 @@ def _expand_unambiguous_contraction(
     expanded_contraction: str = contractions_map.get(
         normalized_contraction, contraction
     )
-    return apply_expansion_casing(contraction, expanded_contraction)
+    return _apply_expansion_casing(contraction, expanded_contraction)
 
 
 def expand_contractions(text: str) -> str:
