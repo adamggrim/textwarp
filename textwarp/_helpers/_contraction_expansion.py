@@ -18,7 +18,7 @@ from .._regexes import WarpingPatterns
 from ._quote_conversion import curly_to_straight
 
 
-def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
+def _apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     """
     Apply the casing of the original word to the expanded word.
 
