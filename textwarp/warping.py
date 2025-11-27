@@ -410,7 +410,7 @@ def to_binary(text: str) -> str:
         str: The converted string in binary, with each character's
             binary value separated by a space.
     """
-    binary_chars: list [str] = [format(ord(char), '08b') for char in text]
+    binary_chars: list[str] = [format(ord(char), '08b') for char in text]
     return ' '.join(binary_chars)
 
 
