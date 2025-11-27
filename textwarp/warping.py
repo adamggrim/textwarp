@@ -1,32 +1,24 @@
 from collections.abc import Generator
 from random import choice, shuffle
+from typing import overload
 
 import regex as re
-from spacy.tokens import (
-    Doc,
-    Span,
-    Token
-)
+from spacy.tokens import Doc
 
-from ._constants import APOSTROPHE_VARIANTS
 from ._enums import Casing
 from ._helpers import (
-    apply_expansion_casing,
     capitalize_from_string,
     change_first_letter_case,
     curly_to_straight,
+    expand_contractions_from_doc,
     doc_to_case,
-    expand_ambiguous_contraction,
-    expand_unambiguous_contraction,
     remove_apostrophes,
-    expand_unambiguous_contraction,
     straight_to_curly,
     to_separator_case
 )
 from ._config import (
     MORSE_MAP,
-    REVERSED_MORSE_MAP,
-    UNAMBIGUOUS_CONTRACTIONS_MAP
+    REVERSED_MORSE_MAP
 )
 from ._enums import CaseSeparator
 from ._regexes import (

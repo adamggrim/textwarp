@@ -9,10 +9,8 @@ from .._config import UNAMBIGUOUS_CONTRACTIONS_MAP
 from .._constants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS,
-    PAST_PARTICIPLE_TAGS
+    APOSTROPHE_S_VARIANTS
 )
-from .._nlp import nlp
 from .._regexes import WarpingPatterns
 
 from ._quote_conversion import curly_to_straight
