@@ -68,9 +68,6 @@ NO_INPUTS: Final[set[str]] = {'no', 'n'}
 # Opening quote characters.
 OPEN_QUOTES: Final[set[str]] = {'"', '“', "'", '‘'}
 
-# Part-of-speech tags for past participles.
-PAST_PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
-
 # Tuple of tuples for part-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', 'Adjectives'),
