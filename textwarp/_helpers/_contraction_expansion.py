@@ -92,9 +92,9 @@ def _find_subject_token(verb_token: Token) -> Token | None:
 
 def _expand_ambiguous_contraction(
     contraction: str,
-    suffix_token: Token,
+    span: Span,
     doc: Doc,
-) -> str:
+) -> tuple[str, int]:
     """
     Helper function to replace a matched ambiguous contraction with its
     expanded version.
@@ -109,84 +109,129 @@ def _expand_ambiguous_contraction(
         doc: The spaCy ``Doc`` containing the contraction.
 
     Returns:
-        str: The expanded version of the matched contraction.
+        tuple[str, int]: A tuple containing:
+            1. The expanded version of the matched contraction.
+            2. The index (character offset) where the next search should
+            begin.
     """
-    full_expansion: str = contraction
+    original_end_char: int = span.end_char
+    suffix_token: Token | None = span[-1] if span else None
 
     if not suffix_token or suffix_token.i == 0:
-        return contraction
+        return contraction, original_end_char
 
     previous_token: Token = doc[suffix_token.i - 1]
+
+    # --- HANDLE "N'T" CONTRACTIONS ---
+    if WarpingPatterns.N_T_SUFFIX.match(suffix_token.text):
+        base_verb = ''
+
+        # --- HANDLE "AIN'T" ---
+        if (previous_token.lower_ == 'ai' and
+                suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+
+            verb_token: Token = previous_token
+            subject_token: Token | None = _find_subject_token(verb_token)
+
+            subject_text: str = subject_token.lower_ if subject_token else ''
+            subject_tag: str = subject_token.tag_ if subject_token else ''
+
+            next_token: Token | None = (
+                doc[suffix_token.i + 1]
+                if suffix_token.i < len(doc) - 1
+                else None
+            )
+            # If "ain't" is followed by a participle (VBN) or past tense
+            # (VBD), it functions as "have/has not". Otherwise, it functions
+            # as "am/is/are not".
+            is_perfect_tense: bool = (
+                next_token and next_token.tag_ in ('VBN', 'VBD')
+            )
+
+            if is_perfect_tense:
+                # Disambiguate "has not" vs. "have not".
+                if (subject_text in ('he', 'she', 'it') or
+                    subject_tag in ('NN', 'NNP')):
+                    base_verb = 'has'
+                else:
+                    base_verb = 'have'
+            else:
+                # Disambiguate "am not" vs. "is not" vs. "are not".
+                if subject_text == 'i':
+                    base_verb = 'am'
+                elif (subject_text in ('he', 'she', 'it') or
+                    subject_tag in ('NN', 'NNP')):
+                    base_verb = 'is'
+                else:
+                    base_verb = 'are'
+
+        # --- HANDLE STANDARD NEGATION ---
+        # (e.g., "couldn't", "wouldn't", "shouldn't")
+        else:
+            # The token before "n't" is the base verb.
+            verb_token = previous_token
+            subject_token = _find_subject_token(verb_token)
+            base_verb = _negative_contraction_to_base_verb(contraction)
+
+        # --- INVERSION CHECK ---
+        # Verb comes before subject (e.g., "Don't I").
+        if subject_token and subject_token.i > verb_token.i:
+            cased_base: str = _apply_expansion_casing(
+                verb_token.text, base_verb
+            )
+            subject_text: str = subject_token.text
+            expanded_text: str = f'{cased_base} {subject_text} not'
+
+            # New end index to skip over the subject in the main loop.
+            new_end_idx: int = subject_token.idx + len(subject_token)
+
+            return expanded_text, new_end_idx
+
+        # --- NO INVERSION ---
+        # Verb comes after subject (e.g., "I do not").
+        else:
+            expanded_text = f'{base_verb} not'
+            cased_text: str = (
+                _apply_expansion_casing(
+                    verb_token.text, expanded_text
+                ), original_end_char
+            )
+            return cased_text, original_end_char
+
+    # --- HANDLE "'S" AND "'D" ---
     next_token: Token | None = (
         doc[suffix_token.i + 1]
         if suffix_token.i < len(doc) - 1
         else None
     )
+    expanded_suffix: str = ''
 
-# --- HANDLE "AIN'T" ---
-    if (previous_token.lower_ == 'ai' and
-            suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
-
-        # Default fallback
-        expansion_phrase = 'am not'
-
-        verb_token = previous_token
-        subject_token = _find_subject_token(verb_token)
-
-        subject_text = subject_token.lower_ if subject_token else ''
-        subject_tag = subject_token.tag_ if subject_token else ''
-
-        # If "ain't" is followed by a participle (VBN) or past tense
-        # (VBD), it functions as "have/has not". Otherwise, it functions
-        # as "am/is/are not".
-        is_perfect_tense = (next_token and next_token.tag_ in ('VBN', 'VBD'))
-
-        if is_perfect_tense:
-            # Disambiguate "has not" vs. "have not".
-            if (subject_text in ('he', 'she', 'it') or
-                subject_tag in ('NN', 'NNP')):
-                expansion_phrase = 'has not'
-            else:
-                expansion_phrase = 'have not'
+    # Disambiguate "'s": "is" vs. "has".
+    if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
+        # If followed by a participle (VBN, sometimes tagged as
+        # VBD), 's is "has". Otherwise, 's is "is".
+        if next_token and next_token.tag_ in ('VBN', 'VBD'):
+            expanded_suffix = 'has'
         else:
-            # Disambiguate "am not" vs. "is not" vs. "are not".
-            if subject_text == 'i':
-                expansion_phrase = 'am not'
-            elif (subject_text in ('he', 'she', 'it') or
-                  subject_tag in ('NN', 'NNP')):
-                expansion_phrase = 'is not'
-            else:
-                expansion_phrase = 'are not'
+            expanded_suffix = 'is'
 
-        return _apply_expansion_casing(contraction, expansion_phrase)
+    # Disambiguate "'d": "would" vs. "had".
+    elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
+        if next_token and next_token.tag_ in ('VBN', 'VBD'):
+            expanded_suffix = 'had'
+        else:
+            expanded_suffix = 'would'
 
-    # --- HANDLE 'S AND 'D ---
-    else:
-        expanded_suffix = ''
+    if expanded_suffix:
+        # Keep the base word and append the suffix.
+        base_token: Token = doc[suffix_token.i - 1]
+        full_expansion: str = f'{base_token.text} {expanded_suffix}'
+        cased_expansion: str = _apply_expansion_casing(
+            contraction, full_expansion
+        )
+        return cased_expansion, original_end_char
 
-        # Disambiguate "is" vs. "has".
-        if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
-            # If followed by a participle (VBN, sometimes tagged as
-            # VBD), 's is "has". Otherwise, 's is "is".
-            if next_token and next_token.tag_ in ('VBN', 'VBD'):
-                expanded_suffix = 'has'
-            else:
-                expanded_suffix = 'is'
-
-        # Disambiguate "would" vs. "had".
-        elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-            if next_token and next_token.tag_ in ('VBN', 'VBD'):
-                expanded_suffix = 'had'
-            else:
-                expanded_suffix = 'would'
-
-        if expanded_suffix:
-            # Keep the host word and append the suffix.
-            host_token = doc[suffix_token.i - 1]
-            full_expansion = f'{host_token.text} {expanded_suffix}'
-            return _apply_expansion_casing(contraction, full_expansion)
-
-    return contraction
+    return contraction, original_end_char
 
 
 def _expand_unambiguous_contraction(
