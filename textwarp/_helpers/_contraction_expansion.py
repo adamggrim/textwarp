@@ -256,6 +256,36 @@ def _expand_unambiguous_contraction(
     return _apply_expansion_casing(contraction, expanded_contraction)
 
 
+def _negative_contraction_to_base_verb(contraction: str) -> str:
+    """
+    Determine the base verb from a given negative contraction (e.g.,
+    "won't" -> "will").
+
+    Args:
+        contraction: The contraction to analyze.
+
+    Returns:
+        str: The base verb corresponding to the contraction.
+    """
+    straight_contraction: str = curly_to_straight(contraction).lower()
+
+    # Look for the contraction in the unambiguous contractions map.
+    expanded_contraction: str = UNAMBIGUOUS_CONTRACTIONS_MAP.get(
+        straight_contraction, ''
+    )
+
+    if not expanded_contraction:
+        # Fallback for edge cases: strip n't
+        return straight_contraction.replace("n't", '')
+
+    # "Cannot" is a special case.
+    if expanded_contraction == 'cannot':
+        return 'can'
+
+    # Return the first word of the expansion.
+    return expanded_contraction.split()[0]
+
+
 def expand_contractions_from_doc(doc: Doc) -> str:
     """
     Expand all contractions in a given spaCy ``Doc``.
