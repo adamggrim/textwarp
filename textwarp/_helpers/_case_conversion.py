@@ -78,8 +78,8 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         # Check if the current token is part of a proper noun entity.
         if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
             entity_span: Span
-            end_index: int
-            entity_span, end_index = entity_map[i]
+            end_idx: int
+            entity_span, end_idx = entity_map[i]
             lower_entity_text: str = entity_span.text.lower()
             title_cased_entity_text: str
 
@@ -88,7 +88,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             )
             processed_parts.append(title_cased_entity_text)
             # Jump the index to the end of the entity.
-            i = end_index
+            i = end_idx
             continue
 
         # If the curent token is not part of a proper noun entity,

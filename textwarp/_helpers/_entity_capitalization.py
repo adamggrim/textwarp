@@ -12,8 +12,8 @@ from .._regexes import WarpingPatterns
 from ._string_capitalization import capitalize_from_string
 
 
-def _find_next_word_token_index(
-    start_index: int,
+def _find_next_word_token_idx(
+    start_idx: int,
     text_container: Doc | Span
 ) -> int | None:
     """
@@ -21,7 +21,7 @@ def _find_next_word_token_index(
     spaCy ``Doc`` or ``Span``.
 
     Args:
-        start_index: The relative index in the text container to
+        start_idx: The relative index in the text container to
             start the search from.
 
     Returns:
@@ -29,7 +29,7 @@ def _find_next_word_token_index(
             ``None`` if no non-space, non-punctuation token is
             found.
     """
-    for i in range(start_index, len(text_container)):
+    for i in range(start_idx, len(text_container)):
         token: Token = text_container[i]
         if not token.is_space and not token.is_punct:
             return token.i
@@ -119,9 +119,9 @@ def locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence.
         if token.is_sent_start:
-            next_word_index = _find_next_word_token_index(i, text_container)
-            if next_word_index is not None:
-                position_indices.add(next_word_index)
+            next_word_idx = _find_next_word_token_idx(i, text_container)
+            if next_word_idx is not None:
+                position_indices.add(next_word_idx)
 
     return position_indices
 
@@ -167,17 +167,17 @@ def locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
-            next_word_index = _find_next_word_token_index(i, text_container)
-            if next_word_index is not None:
-                position_indices.add(next_word_index)
+            next_word_idx = _find_next_word_token_idx(i, text_container)
+            if next_word_idx is not None:
+                position_indices.add(next_word_idx)
         # Find the first word token after a colon or opening quote.
         elif (token.text in {':'} | OPEN_QUOTES
               and token.i + 1 < len(text_container)):
-            next_word_index = _find_next_word_token_index(
+            next_word_idx = _find_next_word_token_idx(
                 i + 1, text_container
             )
-            if next_word_index is not None:
-                position_indices.add(next_word_index)
+            if next_word_idx is not None:
+                position_indices.add(next_word_idx)
         # Find tokens that should be capitalized based on POS or length.
         elif _should_capitalize_pos_or_length(token):
             position_indices.add(token.i)
@@ -273,8 +273,8 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         # Check if the current token is part of a proper noun entity.
         if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
             entity_span: Span
-            end_index: int
-            entity_span, end_index = entity_map[i]
+            end_idx: int
+            entity_span, end_idx = entity_map[i]
             title_cased_entity_text: str
 
             title_cased_entity_text: str = to_title_case_from_doc(
@@ -282,7 +282,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             )
             processed_parts.append(title_cased_entity_text)
             # Jump the index to the end of the entity.
-            i = end_index
+            i = end_idx
             continue
 
         # If the curent token is not part of a proper noun entity,

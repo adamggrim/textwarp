@@ -58,9 +58,9 @@ def _find_subject_token(verb_token: Token) -> Token | None:
             return child
 
     # Fallback A: Look immediately before the verb (standard order).
-    curr_index = verb_token.i - 1
-    while curr_index >= 0:
-        candidate = doc[curr_index]
+    curr_idx: int = verb_token.i - 1
+    while curr_idx >= 0:
+        candidate: Token = doc[curr_idx]
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
@@ -69,16 +69,16 @@ def _find_subject_token(verb_token: Token) -> Token | None:
             break
 
         # Otherwise, move one step left to skip adverbs.
-        curr_index -= 1
+        curr_idx -= 1
 
     # Fallback B: Look immediately after the suffix (inverted order).
-    start_index = verb_token.i + 1
-    if start_index < len(doc) and doc[start_index].lower_ == "n't":
-        start_index += 1
+    start_idx: int = verb_token.i + 1
+    if start_idx < len(doc) and doc[start_idx].lower_ == "n't":
+        start_idx += 1
 
-    end_index = min(start_index + 6, len(doc))
+    end_idx: int = min(start_idx + 6, len(doc))
 
-    for j in range(start_index, end_index):
+    for j in range(start_idx, end_idx):
         candidate = doc[j]
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
