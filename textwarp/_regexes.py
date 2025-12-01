@@ -10,7 +10,6 @@ from ._config import (
     ELISION_WORDS,
     NAME_PREFIX_EXCEPTIONS,
     NAME_PREFIXES,
-    NEGATIVE_CONTRACTIONS,
     MAP_SUFFIX_EXCEPTIONS,
     OTHER_PREFIXED_NAMES_MAP,
     UNAMBIGUOUS_CONTRACTIONS_MAP
@@ -332,11 +331,6 @@ class WarpingPatterns:
         NAME_PREFIXES,
         sort_by_length=True
     )
-    NEGATIVE_CONTRACTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(
-            NEGATIVE_CONTRACTIONS,
-            sort_by_length=True
-        )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’]t$", re.IGNORECASE
     )
