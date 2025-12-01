@@ -296,55 +296,61 @@ def expand_contractions_from_doc(doc: Doc) -> str:
     Returns:
         str: The converted ``Doc`` text.
     """
-    # If there are no ambiguous contractions, spaCy isn't needed.
-    if not WarpingPatterns.AMBIGUOUS_CONTRACTION.search(doc.text):
-        return WarpingPatterns.CONTRACTION.sub(
-        # Replace each contraction using the unambiguous contractions
-        # map.
-        lambda match: _expand_unambiguous_contraction(
-            match.group(0),
-            UNAMBIGUOUS_CONTRACTIONS_MAP
-        ), doc.text
+    matches:list[re.Match[str]] = list(
+        WarpingPatterns.CONTRACTION.finditer(doc.text)
     )
+    if not matches:
+        return doc.text
 
-    def _repl(match: re.Match[str]) -> str:
-        """
-        Helper function to replace a matched contraction with its
-        expanded version.
+    expanded_parts: list[str] = []
+    last_idx: int = 0
+    skip_until_idx: int = -1
 
-        Args:
-            match: A match object representing a contraction.
+    for match in matches:
+        start_char: int
+        end_char: int
 
-        Returns:
-            str: The expanded version of the matched contraction.
-        """
+        start_char, end_char = match.span()
+
+        # If a previous inverted expansion already consumed this token,
+        # skip it.
+        if start_char < skip_until_idx:
+            continue
+
+        # Append all text from the previous contraction (or beginning)
+        # to the current contraction.
+        expanded_parts.append(doc.text[last_idx:start_char])
         contraction: str = match.group(0)
 
-        # If the contraction always expands the same phrase, skip the
-        # spaCy logic and go directly to the map.
-        if not WarpingPatterns.AMBIGUOUS_CONTRACTION.match(contraction):
-             return _expand_unambiguous_contraction(
-                contraction,
-                UNAMBIGUOUS_CONTRACTIONS_MAP
-            )
-
-        start_char: int = match.start()
-        end_char: int = match.end()
-        span: Span | None = doc.char_span(start_char, end_char)
-        suffix_token: Token | None = span[-1] if span else None
-
-        # Handle cases where the regular expression identifies a
-        # contraction, but the tokenizer fails to split it.
-        if not suffix_token:
-            return _expand_unambiguous_contraction(
-                contraction,
-                UNAMBIGUOUS_CONTRACTIONS_MAP
-            )
-
-        return _expand_ambiguous_contraction(
-            contraction,
-            suffix_token,
-            doc
+        # Check if complex negation/ambiguity logic is needed.
+        is_negation: bool = bool(WarpingPatterns.N_T_SUFFIX.search(contraction))
+        is_ambiguous: bool = bool(
+            WarpingPatterns.AMBIGUOUS_CONTRACTION.match(contraction)
         )
 
-    return WarpingPatterns.CONTRACTION.sub(_repl, doc.text)
+        if is_negation or is_ambiguous:
+            span = doc.char_span(start_char, end_char)
+            if span:
+                expanded_text: str
+                new_end_char: int
+
+                expanded_text, new_end_char = _expand_ambiguous_contraction(
+                    contraction, span, doc
+                )
+                expanded_parts.append(expanded_text)
+                last_idx = new_end_char
+                skip_until_idx = new_end_char
+                continue
+
+        # For unambiguous contractions, use the unambiguous contractions
+        # map.
+        cased_expansion: str = _expand_unambiguous_contraction(
+            contraction,
+            UNAMBIGUOUS_CONTRACTIONS_MAP
+        )
+
+        expanded_parts.append(cased_expansion)
+        last_idx = end_char
+
+    expanded_parts.append(doc.text[last_idx:])
+    return ''.join(expanded_parts)
