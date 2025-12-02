@@ -1,15 +1,15 @@
 from spacy.tokens import Doc, Span, Token
 
-from .._config import LOWERCASE_PARTICLES
-from .._constants import (
+from ..._config import LOWERCASE_PARTICLES
+from ..._constants import (
     OPEN_QUOTES,
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
-from .._enums import Casing
-from .._regexes import WarpingPatterns
+from ..._enums import Casing
+from ..._regexes import WarpingPatterns
 
-from ._string_capitalization import capitalize_from_string
+from .._string_capitalization import capitalize_from_string
 
 
 def _find_next_word_token_idx(
@@ -119,7 +119,7 @@ def locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence.
         if token.is_sent_start:
-            next_word_idx = _find_next_word_token_idx(i, text_container)
+            next_word_idx: int | None = _find_next_word_token_idx(i, text_container)
             if next_word_idx is not None:
                 position_indices.add(next_word_idx)
 
@@ -167,7 +167,7 @@ def locate_title_case_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
-            next_word_idx = _find_next_word_token_idx(i, text_container)
+            next_word_idx: int | None = _find_next_word_token_idx(i, text_container)
             if next_word_idx is not None:
                 position_indices.add(next_word_idx)
         # Find the first word token after a colon or opening quote.
@@ -267,7 +267,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     elif casing == Casing.TITLE:
         token_indices = locate_title_case_indices(doc)
 
-    # Loop through each token in the `Doc` to look for indices that
+    # Loop through each token in the `Doc` to find any indices that
     # should be cased.
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
@@ -275,7 +275,6 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             entity_span: Span
             end_idx: int
             entity_span, end_idx = entity_map[i]
-            title_cased_entity_text: str
 
             title_cased_entity_text: str = to_title_case_from_doc(
                 entity_span
