@@ -332,7 +332,7 @@ class WarpingPatterns:
         sort_by_length=True
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
-        r"n['’]t$", re.IGNORECASE
+        r"n['’‘]t$", re.IGNORECASE
     )
     OPENING_STRAIGHT_QUOTES: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: SINGLE QUOTES
