@@ -22,9 +22,9 @@ class CaseSeparator(str, Enum):
         KEBAB: Represents kebab-case.
         SNAKE: Represents snake_case.
     """
-    DOT = '.'
-    KEBAB = '-'
-    SNAKE = '_'
+    DOT: str = '.'
+    KEBAB: str = '-'
+    SNAKE: str = '_'
 
 
 @final
@@ -43,7 +43,7 @@ class Casing(Enum):
 
 
 @final
-class CountLabels(Enum):
+class CountLabels(str, Enum):
     """
     Label strings for count formatting.
 
