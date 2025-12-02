@@ -116,7 +116,7 @@ def sentence_count(text: str) -> None:
     """
     sent_count: int = count_sents(text)
     formatted_sent_count: str = format_count(
-        CountLabels.SENT.value, sent_count
+        CountLabels.SENTENCE.value, sent_count
     )
     print_wrapped(formatted_sent_count)
 
@@ -146,9 +146,9 @@ def time_to_read(text: str) -> None:
                 continue
         return int(wpm_input)
     wpm: int = prompt_for_wpm()
-    time_to_read: int = calculate_time_to_read(text, wpm)
-    formatted_time_to_read: str = format_time_to_read(time_to_read)
-    print_wrapped(formatted_time_to_read)
+    minutes: int = calculate_time_to_read(text, wpm)
+    formatted_minutes: str = format_time_to_read(minutes)
+    print_wrapped(formatted_minutes)
 
 
 def word_count(text: str) -> None:
