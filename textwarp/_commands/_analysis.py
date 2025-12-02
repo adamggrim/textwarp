@@ -82,7 +82,7 @@ def mfws(text: str) -> None:
         print_wrapped(ENTER_MFW_COUNT_PROMPT)
         num_mfws_input: str = input().strip()
         while True:
-            if num_mfws_input.isdigit() == True:
+            if num_mfws_input.isdigit():
                 return int(num_mfws_input)
             else:
                 print(ENTER_NUMBER_PROMPT)
@@ -138,7 +138,7 @@ def time_to_read(text: str) -> None:
         print_wrapped(ENTER_WPM_PROMPT)
         wpm_input: str = input().strip()
         while True:
-            if wpm_input.isdigit() == True:
+            if wpm_input.isdigit():
                 break
             else:
                 print(ENTER_NUMBER_PROMPT)
