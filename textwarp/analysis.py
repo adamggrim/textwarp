@@ -70,8 +70,8 @@ def count_mfws(text: str, num_mfws: int) -> list[WordCount]:
         num_mfws: The number of most frequent words to return.
 
     Returns:
-        list[tuple]: A list of WordCount objects containing a word and
-            its count.
+        list[WordCount]: A list of WordCount objects containing a word
+            and its count.
     """
     doc: Doc = nlp(text)
     words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
