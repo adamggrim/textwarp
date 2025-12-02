@@ -1,5 +1,6 @@
 import os
 import textwrap
+from typing import NoReturn
 
 from ._constants import (
     ANY_OTHER_TEXT_PROMPT,
@@ -48,7 +49,7 @@ def print_wrapped(text: str) -> None:
     print('\n' + wrapped_text)
 
 
-def program_exit() -> None:
+def program_exit() -> NoReturn:
     """Print a message that the program is exiting, then exit the
     program."""
     print_wrapped(EXIT_MESSAGE)
