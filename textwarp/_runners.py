@@ -1,4 +1,7 @@
-from typing import Callable
+from typing import (
+    Callable,
+    TypeAlias
+)
 
 import pyperclip
 
@@ -23,7 +26,7 @@ from ._validation import (
 )
 from . import warping
 
-WARPING_MODULE_COMMANDS: set[str] = set(warping.__all__)
+ActionHandler: TypeAlias = Callable[[Callable[[str], str], str], None]
 
 
 def _paste_and_validate() -> str | None:
@@ -89,7 +92,7 @@ def _warp_and_copy(
 
 def _run_command_loop(
     command_func: Callable[[str], str],
-    action_handler: Callable[[Callable[[str], str], str], None] | None = None
+    action_handler: ActionHandler | None = None
 ) -> None:
     """
     Run a module command to transform or analyze clipboard text.
