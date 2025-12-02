@@ -1,12 +1,12 @@
 import argparse
 import sys
-from typing import Callable
+from typing import Any, Callable
 
 from ._args import ARGS_MAP
 from ._constants import HELP_DESCRIPTION
 
 
-def _calculate_max_arg_width(commands: dict) -> int:
+def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
     """
     Calculate the length of the longest command string.
 
