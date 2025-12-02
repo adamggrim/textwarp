@@ -37,7 +37,10 @@ def regex_replace(text: str) -> str:
     return the transformed text.
 
     Args:
-        text: The string to process.
+        text: The string to transform.
+
+    Returns:
+        str: The transformed text.
     """
     print_wrapped(ENTER_REGEX_PROMPT)
     regex_text: str = input().rstrip('\n')
