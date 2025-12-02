@@ -23,19 +23,19 @@ def _format_table(
     if not data_rows:
         return ''
 
-    num_cols = len(data_rows[0])
+    num_cols: int = len(data_rows[0])
 
-    col_widths = [0] * num_cols
+    col_widths: list[int] = [0] * num_cols
     for row in data_rows:
         for i, item in enumerate(row):
             col_widths[i] = max(col_widths[i], len(item))
 
-    results = []
+    results: list[str] = []
     for row in data_rows:
-        formatted_cols = []
+        formatted_cols: list[str] = []
         for i, item in enumerate(row):
-            align = '<' if i != num_cols - 1 else '>'
-            width = col_widths[i]
+            align: str = '<' if i != num_cols - 1 else '>'
+            width: int = col_widths[i]
 
             if i < num_cols - 1:
                 width += padding
@@ -124,10 +124,10 @@ def format_time_to_read(minutes_to_read: int) -> str:
     minutes: int
     hours, minutes = divmod(minutes_to_read, 60)
     if hours >= 1:
-        formatted_hours = f'{hours} hours' if hours != 1 else '1 hour'
+        formatted_hours: str = f'{hours} hours' if hours != 1 else '1 hour'
         if minutes == 0:
             return formatted_hours
-        formatted_minutes = (
+        formatted_minutes: str = (
             f'{minutes} minutes' if minutes != 1 else '1 minute'
         )
         return f'{formatted_hours}, {formatted_minutes}'
