@@ -3,7 +3,10 @@ This module contains a central registry for all warping, analysis,
 replacement and clearing commands.
 """
 
-from typing import Callable
+from typing import (
+    Callable,
+    Final
+)
 
 from ._commands import (
     char_count,
@@ -59,7 +62,7 @@ from .warping import (
 # (e.g., 'word-count') to a tuple containing:
 #   1. The function that performs the action (e.g., word_count).
 #   2. The help message to display for that argument.
-ARGS_MAP: dict[str, tuple[Callable[[str], str], str]] = {
+ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     'alternating-caps': (
         to_alternating_caps,
         'cOnVeRt To AlTeRnAtInG cApS'
