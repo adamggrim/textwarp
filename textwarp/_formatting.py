@@ -67,7 +67,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
     string.
 
     Args:
-        mfws: A list of tuples with each tuple containing a word and its
+        mfws: A list of WordCount objects containing a word and its
             count.
 
     Returns:

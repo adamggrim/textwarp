@@ -212,7 +212,7 @@ def capitalize_from_string(
     Args:
         word: The word to capitalize.
         lowercase_by_default: Whether to lowercase the word if no
-            capitalization strategy applies. Defaults to ``True``.
+            capitalization strategy applies. Defaults to ``False``.
 
     Returns:
         str: The capitalized word.

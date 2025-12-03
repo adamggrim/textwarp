@@ -10,7 +10,8 @@ def validate_clipboard(clipboard: str) -> None:
     """
     Validate the clipboard input.
 
-    This function checks if the clipboard content is an empty string.
+    This function checks if the clipboard content is an empty string or
+    contains only whitespace.
 
     Args:
         clipboard: A string representing the content of the clipboard.
