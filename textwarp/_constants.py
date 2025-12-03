@@ -28,25 +28,25 @@ CLIPBOARD_ACCESS_ERROR_MESSAGE: Final[str] = 'Error accessing clipboard: '
 CLIPBOARD_CLEARED_MESSAGE: Final[str] = 'Clipboard text cleared.'
 
 # Prompt for the user to enter the number of most frequent words.
-ENTER_MFW_COUNT_PROMPT: str = 'How many most frequent words?'
+ENTER_MFW_COUNT_PROMPT: Final[str] = 'How many most frequent words?'
 
 # Prompt for when the previous response was not a number.
-ENTER_NUMBER_PROMPT: str = 'Please enter a number.'
+ENTER_NUMBER_PROMPT: Final[str] = 'Please enter a number.'
 
 # Prompt for the user to enter a regular expression to find.
-ENTER_REGEX_PROMPT: str = 'Enter a regular expression to replace:'
+ENTER_REGEX_PROMPT: Final[str] = 'Enter a regular expression to replace:'
 
 # Prompt for the user to enter replacement text.
-ENTER_REPLACEMENT_PROMPT: str = 'Enter replacement text:'
+ENTER_REPLACEMENT_PROMPT: Final[str] = 'Enter replacement text:'
 
 # Prompt for the user to enter text to find.
-ENTER_TEXT_TO_REPLACE_PROMPT: str = 'Enter text to replace:'
+ENTER_TEXT_TO_REPLACE_PROMPT: Final[str] = 'Enter text to replace:'
 
 # Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: Final[str] = 'Please enter a valid response (y/n).'
 
 # Prompt for the user to enter the words per minute.
-ENTER_WPM_PROMPT: str = 'How many words per minute?'
+ENTER_WPM_PROMPT: Final[str] = 'How many words per minute?'
 
 # Inputs for exiting the program.
 EXIT_INPUTS: Final[set[str]] = {'quit', 'q', 'exit', 'e'}
