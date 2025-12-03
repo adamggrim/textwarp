@@ -87,8 +87,6 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             entity_span: Span
             end_idx: int
             entity_span, end_idx = entity_map[i]
-            lower_entity_text: str = entity_span.text.lower()
-            title_cased_entity_text: str
 
             title_cased_entity_text: str = to_title_case_from_doc(
                 entity_span
