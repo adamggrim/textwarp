@@ -1,6 +1,9 @@
 import argparse
 import sys
-from typing import Any, Callable
+from typing import (
+    Any,
+    Callable
+)
 
 from ._args import ARGS_MAP
 from ._constants import HELP_DESCRIPTION

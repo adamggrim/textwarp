@@ -1,9 +1,16 @@
 from typing import Callable
 
 import regex as re
-from spacy.tokens import Doc, Span, Token
+from spacy.tokens import (
+    Doc,
+    Span,
+    Token
+)
 
-from .._enums import CaseSeparator, Casing
+from .._enums import (
+    CaseSeparator,
+    Casing
+)
 from .._regexes import ProgrammingCasePatterns
 
 from ._apostrophes import remove_apostrophes
