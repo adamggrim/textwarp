@@ -25,7 +25,7 @@ from ._string_capitalization import capitalize_from_string
 
 
 def change_first_letter_case(
-    word: str,
+    text: str,
     casing_func: Callable[[str], str]
 ) -> str:
     """
@@ -40,13 +40,13 @@ def change_first_letter_case(
     Returns:
         str: The converted text.
     """
-    for i, char in enumerate(word):
+    for i, char in enumerate(text):
         if char.isalpha():
             # Modify the first letter and return the new text.
-            return word[:i] + casing_func(char) + word[i+1:]
+            return text[:i] + casing_func(char) + text[i+1:]
 
     # Return the original text if there are no letters in the string.
-    return word
+    return text
 
 
 def doc_to_case(doc: Doc, casing: Casing) -> str:
