@@ -2,7 +2,17 @@
 Provides a custom decorator function to denote non-instantiable classes.
 """
 
-def non_instantiable(cls) -> None:
+from typing import (
+    Any,
+    TypeVar
+)
+
+# Type variable bound to ``type`` so the decorator preserves the
+# identity of the class it modifies.
+_T = TypeVar('_T', bound=type)
+
+
+def non_instantiable(cls: _T) -> _T:
     """Class decorator to make a class non-instantiable.
 
     Args:
