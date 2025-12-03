@@ -14,7 +14,8 @@ from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
-    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
+    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE,
+    WARPING_MODULE_COMMANDS
 )
 from ._ui import (
     get_input,
@@ -167,10 +168,10 @@ def warp_text(command_name: str) -> None:
         command_name: The name of the warping function.
     """
     if command_name in WARPING_MODULE_COMMANDS:
-        command_func = getattr(warping, command_name)
+        command_func: Callable[[str], str] = getattr(warping, command_name)
     else:
-        func_name = command_name.replace('_', '-')
-        command_func = ARGS_MAP[func_name][0]
+        func_name: str = command_name.replace('_', '-')
+        command_func: Callable[[str], str] = ARGS_MAP[func_name][0]
 
     _run_command_loop(
         command_func,
