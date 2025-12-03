@@ -7,7 +7,9 @@ from typing import (
 from pathlib import Path
 
 # Define a type for JSON data.
-JSONType: TypeAlias = dict | list | str | int | float | bool | None
+JSONType: TypeAlias = (
+    dict[str, Any] | list[Any] | str | int | float | bool | None
+)
 
 # Path to the base directory for data files.
 data_root: Path = Path(__file__).parent / '_data'
