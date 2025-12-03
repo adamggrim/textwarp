@@ -50,7 +50,7 @@ def _find_subject_token(verb_token: Token) -> Token | None:
     Returns:
         Token | None: The subject token, otherwise ``None``.
     """
-    doc = verb_token.doc
+    doc: Doc = verb_token.doc
 
     # Try to find the subject using the dependency parser.
     for child in verb_token.children:
@@ -79,7 +79,7 @@ def _find_subject_token(verb_token: Token) -> Token | None:
     end_idx: int = min(start_idx + 6, len(doc))
 
     for j in range(start_idx, end_idx):
-        candidate = doc[j]
+        candidate: Token = doc[j]
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
@@ -124,7 +124,7 @@ def _expand_ambiguous_contraction(
 
     # --- HANDLE "N'T" CONTRACTIONS ---
     if WarpingPatterns.N_T_SUFFIX.match(suffix_token.text):
-        base_verb = ''
+        base_verb: str = ''
 
         # --- HANDLE "AIN'T" ---
         if (previous_token.lower_ == 'ai' and
@@ -329,7 +329,7 @@ def expand_contractions_from_doc(doc: Doc) -> str:
         )
 
         if is_negation or is_ambiguous:
-            span = doc.char_span(start_char, end_char)
+            span: Span | None = doc.char_span(start_char, end_char)
             if span:
                 expanded_text: str
                 new_end_char: int
