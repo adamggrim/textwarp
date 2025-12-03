@@ -4,6 +4,8 @@ This module contains constants used across the package.
 
 from typing import Final
 
+from . import warping
+
 # Variants of 's for contractions.
 AIN_T_SUFFIX_VARIANTS: Final[set[str]] = {"n't", 'n’t', 'n‘t'}
 
@@ -115,6 +117,9 @@ TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
     'TO',   # to (infinitive marker)
     'WDT',  # Wh-determiner (e.g., 'what')
 }
+
+# Set of warping module command names.
+WARPING_MODULE_COMMANDS: Final[set[str]] = set(warping.__all__)
 
 # Inputs for indicating an affirmative response.
 YES_INPUTS: Final[set[str]] = {'yes', 'y'}
