@@ -194,7 +194,7 @@ def _expand_ambiguous_contraction(
             cased_text: str = (
                 _apply_expansion_casing(
                     verb_token.text, expanded_text
-                ), original_end_char
+                )
             )
             return cased_text, original_end_char
 
