@@ -65,7 +65,7 @@ class ProgrammingCasePatterns:
         r'\b_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b'
     )
 
-    _CASE_PATTERNS: Final[tuple[re.Pattern]] = (
+    _CASE_PATTERNS: Final[tuple[re.Pattern[str], ...]] = (
         CAMEL_WORD,
         DOT_WORD,
         KEBAB_WORD,
