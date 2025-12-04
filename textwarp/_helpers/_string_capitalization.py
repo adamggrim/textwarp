@@ -39,7 +39,6 @@ def _capitalize_from_map(
         base = lower_word[:start_of_split]
         suffix = lower_word[start_of_split:]
 
-        # Look up the base part in the map.
         capitalized_base = capitalization_map.get(base)
 
         if capitalized_base:
