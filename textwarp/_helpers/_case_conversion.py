@@ -139,7 +139,7 @@ def to_separator_case(
     processed_parts: list[str] = []
 
     separator_pattern_name: str = f'{separator.name}_WORD'
-    separator_pattern: re.Pattern = getattr(
+    separator_pattern: re.Pattern[str] = getattr(
         ProgrammingCasePatterns,
         separator_pattern_name
     )
