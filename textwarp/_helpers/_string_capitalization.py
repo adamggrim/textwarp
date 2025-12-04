@@ -105,7 +105,7 @@ def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
     return None
 
 
-def _handle_lowercase_abbreviation(_word: str, lower_word: str,) -> str | None:
+def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
     """
     Preserve the capitalization of a lowercase abbreviation.
 
