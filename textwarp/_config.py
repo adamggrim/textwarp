@@ -45,87 +45,105 @@ AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict]]] = cast(
 # Capitalization mappings for contractions that can expand to multiple
 # phrases.
 AMBIGUOUS_CONTRACTIONS: Final[list[str]] = cast(
-    dict[str, str], _load_json_from_data(
+    list[str],
+    _load_json_from_data(
         Path('_contraction_expansion') / 'ambiguous_contractions.json'
     )
 )
 
 # Abbreviations that are always capitalized.
 CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'capitalized_abbreviations_map.json'
     )
 )
 
 # Suffix tokens derived from contractions.
 CONTRACTION_SUFFIX_TOKENS: Final[list[str]] = cast(
-    list[str], _load_json_from_data(
+    list[str],
+    _load_json_from_data(
         Path('_entity_capitalization') / 'contraction_suffix_tokens.json'
     )
 )
 
 # Map pairing each custom entity with its capitalized version.
 CUSTOM_ENTITIES_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_entity_capitalization') / 'custom_entities_map.json'
     )
 )
 
 # Words that are elided for certain contractions.
 ELISION_WORDS: Final[set[str]] = set(
-    cast(list[str], _load_json_from_data(Path('elision_words.json')))
+    cast(
+        list[str],
+        _load_json_from_data(Path('elision_words.json')))
 )
 
 # Map pairing each initialism with its capitalized version.
 INITIALISMS_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'initialisms_map.json'
     )
 )
 
 # Abbreviations that are always lowercase.
 LOWERCASE_ABBREVIATIONS: Final[set[str]] = set(
-    cast(list[str], _load_json_from_data(
-        Path('_string_capitalization') / 'lowercase_abbreviations.json')
+    cast(
+        list[str],
+        _load_json_from_data(
+            Path('_string_capitalization') / 'lowercase_abbreviations.json'
+        )
     )
 )
 
 # Lowercase particles that are not capitalized in title case.
 LOWERCASE_PARTICLES: Final[set[str]] = set(
-    cast(list[str], _load_json_from_data(
-        Path('_entity_capitalization') / 'lowercase_particles.json'
-    ))
+    cast(
+        list[str],
+        _load_json_from_data(
+            Path('_entity_capitalization') / 'lowercase_particles.json'
+        )
+    )
 )
 
 # Suffixes to split off from map-capitalized words.
 MAP_SUFFIX_EXCEPTIONS: Final[list[str]] = cast(
-    list[str], _load_json_from_data(
+    list[str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'map_suffix_exceptions.json'
     )
 )
 
 # Map pairing each mixed-case word with its lowercase version.
 MIXED_CASE_WORDS_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'mixed_case_words_map.json'
     )
 )
 
 # Map pairing each character with its Morse code equivalent.
 MORSE_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(Path('morse_map.json'))
+    dict[str, str],
+    _load_json_from_data(Path('morse_map.json'))
 )
 
 # Words with name prefixes that do not follow standard prefix rules.
 NAME_PREFIX_EXCEPTIONS: Final[list[str]] = cast(
-    list[str], _load_json_from_data(
+    list[str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'name_prefix_exceptions.json'
     )
 )
 
 # Name prefixes that necessitate special name casing.
 NAME_PREFIXES: Final[list[str]] = cast(
-    list[str], _load_json_from_data(
+    list[str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'name_prefixes.json'
     )
 )
@@ -133,7 +151,8 @@ NAME_PREFIXES: Final[list[str]] = cast(
 # Map pairing each prefixed name not following standard prefix rules
 # with its capitalized version.
 OTHER_PREFIXED_NAMES_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_string_capitalization') / 'other_prefixed_names_map.json'
     )
 )
@@ -145,7 +164,8 @@ REVERSED_MORSE_MAP: Final[dict[str, str]] = {
 
 # Map pairing each unambiguous contraction with its expanded version.
 UNAMBIGUOUS_CONTRACTIONS_MAP: Final[dict[str, str]] = cast(
-    dict[str, str], _load_json_from_data(
+    dict[str, str],
+    _load_json_from_data(
         Path('_contraction_expansion') / 'unambiguous_contractions_map.json'
     )
 )
