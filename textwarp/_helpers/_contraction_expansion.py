@@ -246,8 +246,6 @@ def _expand_unambiguous_contraction(
 
     Returns:
         str: The expanded contraction.
-        contractions_map: A dictionary pairing each contraction with its
-            expanded version.
     """
     straight_contraction: str = curly_to_straight(contraction).lower()
     expanded_contraction: str = contractions_map.get(
