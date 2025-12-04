@@ -32,7 +32,9 @@ def _capitalize_from_map(
         str | None: The capitalized initialism, or ``None`` if
             ``lower_word`` is not in the map.
     """
-    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
+    match: Match[str] | None = (
+        WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
+    )
 
     if match:
         start_of_split = match.start()
@@ -153,7 +155,7 @@ def _handle_period_separated_initialism(
             word does not contain a period.
     """
     if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.match(lower_word):
-        parts = lower_word.split('.')
+        parts: list[str] = lower_word.split('.')
         return '.'.join(
             [part.upper() if not WarpingPatterns.ANY_APOSTROPHE.search(part)
              else part.lower() for part in parts]
@@ -176,7 +178,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
         return None
     elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(lower_word)):
-        prefix_len = len(match.group(0))
+        prefix_len: int = len(match.group(0))
         return (lower_word[:prefix_len].capitalize() +
                 lower_word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
