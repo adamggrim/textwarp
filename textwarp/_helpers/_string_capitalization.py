@@ -10,9 +10,7 @@ from .._config import (
     MIXED_CASE_WORDS_MAP,
     OTHER_PREFIXED_NAMES_MAP
 )
-from .._regexes import (
-    WarpingPatterns
-)
+from .._regexes import WarpingPatterns
 
 
 def _capitalize_from_map(
