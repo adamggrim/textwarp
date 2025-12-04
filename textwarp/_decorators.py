@@ -26,8 +26,8 @@ def non_instantiable(cls: _T) -> _T:
         RuntimeError: When an attempt is made to instantiate the
             decorated class.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self: Any, *args: Any, **kwargs: Any) -> None:
         raise RuntimeError(f'{cls.__name__} cannot be instantiated.')
 
-    cls.__init__ = __init__
+    setattr(cls, '__init__', __init__)
     return cls
