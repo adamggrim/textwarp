@@ -1,5 +1,6 @@
 import json
 from typing import (
+    Any,
     Final,
     TypeAlias,
     cast
@@ -15,7 +16,7 @@ JSONType: TypeAlias = (
 data_root: Path = Path(__file__).parent / '_data'
 
 
-def _load_json_from_data(relative_path: Path) -> JSONType:
+def _load_json_from_data(relative_path: Path | str) -> JSONType:
     """
     Construct the path to a file relative to the base data directory and
     load its contents as a JSON object.
@@ -36,8 +37,9 @@ def _load_json_from_data(relative_path: Path) -> JSONType:
 
 # Capitalization mappings for entities with multiple possible
 # capitalizations.
-AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict]]] = cast(
-    dict[str, list[dict]], _load_json_from_data(
+AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict[str, Any]]]] = cast(
+    [str, list[dict[str, Any]]],
+    _load_json_from_data(
         Path('_entity_capitalization') / 'ambiguous_capitalizations_map.json'
     )
 )
