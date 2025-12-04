@@ -42,7 +42,7 @@ class POSCounts:
             float: The calculated percentage, or 0.0 if self.word_count
                 is zero.
         """
-        count = self.get_pos_count(tag)
+        count: int = self.get_pos_count(tag)
         return (count / self.word_count * 100) if self.word_count else 0.0
 
     def get_pos_data(self) -> list[tuple[str, int, float]]:
