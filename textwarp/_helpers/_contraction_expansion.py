@@ -239,7 +239,8 @@ def _expand_unambiguous_contraction(
     contractions_map: dict[str, str]
 ) -> str:
     """
-    Replace an unambiguous contraction using the contractions map.
+    Replace an unambiguous contraction with its expanded version using
+    the contractions map.
 
     Args:
         contraction: The contraction to expand.
