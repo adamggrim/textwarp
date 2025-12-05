@@ -117,6 +117,42 @@ def _expand_ambiguous_contraction(
     original_end_char_index: int = span.end_char
     suffix_token: Token | None = span[-1] if span else None
 
+    # --- HANDLE "WHATCHA" ---
+    if contraction.lower() == 'whatcha':
+        next_token: Token | None = (
+            doc[span.start + 1] if span.start + 1 < len(doc) else None
+        )
+        after_next_token: Token | None = (
+            doc[span.start + 2] if span.start + 2 < len(doc) else None
+        )
+        base_verb: str = ''
+
+        if next_token:
+            next_text_lower = next_token.lower_
+            tag = next_token.tag_
+
+            if after_next_token and (next_text_lower == 'ai' and
+                    after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+                expanded_text = "what you"
+                cased_text = _apply_expansion_casing(
+                    contraction, expanded_text
+                )
+                return cased_text, original_end_char_index
+
+            # Disambiguate "are" vs. "has".
+            if (next_text_lower in ('gonna', 'tryna', 'goin', "goin'")
+                    or tag == 'VBG'):
+                base_verb = 'are'
+            elif next_text_lower == 'gotta' or tag in ('VBN', 'VBD'):
+                base_verb = 'have'
+            # Fall back to "do".
+            else:
+                base_verb = 'do'
+
+        expanded_text = f'what {base_verb} you'
+        cased_text = _apply_expansion_casing(contraction, expanded_text)
+        return cased_text, original_end_char_index
+
     if not suffix_token or suffix_token.i == 0:
         return contraction, original_end_char_index
 
