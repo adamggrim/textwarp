@@ -1,15 +1,18 @@
-from spacy.tokens import Doc, Span, Token
+from spacy.tokens import (
+    Doc,
+    Span,
+    Token
+)
 
-from ..._config import LOWERCASE_PARTICLES
-from ..._constants import (
+from .._config import LOWERCASE_PARTICLES
+from .._constants import (
     OPEN_QUOTES,
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
-from ..._enums import Casing
-from ..._regexes import WarpingPatterns
+from .._regexes import WarpingPatterns
 
-from .._string_capitalization import capitalize_from_string
+from ._string_capitalization import capitalize_from_string
 
 
 def _find_next_word_token_idx(
@@ -233,72 +236,5 @@ def to_title_case_from_doc(text_container: Doc | Span) -> str:
             token, should_capitalize=should_capitalize
         )
         processed_parts.append(processed_token + token.whitespace_)
-
-    return ''.join(processed_parts)
-
-
-def doc_to_case(doc: Doc, casing: Casing) -> str:
-    """
-    Apply title or sentence case to a spaCy ``Doc``, capitalizing any
-    proper noun entities.
-
-    Args:
-        doc (Doc): A spaCy ``Doc``.
-        casing (Casing): The target casing to apply, either
-            ``Casing.SENTENCE``, ``Casing.START`` or ``Casing.TITLE``.
-
-    Returns:
-        str: The cased string.
-    """
-    entity_map: dict[int, tuple[Span, int]] = (
-        map_proper_noun_entities(doc)
-    )
-
-    processed_parts: list[str] = []
-    token_indices: set[int] = set()
-    lowercase_by_default: bool = True
-    i: int = 0
-
-    if casing == Casing.SENTENCE:
-        token_indices = locate_sentence_start_indices(doc)
-    elif casing == Casing.START:
-        token_indices = locate_start_case_indices(doc)
-        lowercase_by_default = False
-    elif casing == Casing.TITLE:
-        token_indices = locate_title_case_indices(doc)
-
-    # Loop through each token in the `Doc` to find any indices that
-    # should be cased.
-    while i < len(doc):
-        # Check if the current token is part of a proper noun entity.
-        if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
-            entity_span: Span
-            end_idx: int
-            entity_span, end_idx = entity_map[i]
-
-            title_cased_entity_text: str = to_title_case_from_doc(
-                entity_span
-            )
-            processed_parts.append(title_cased_entity_text)
-            # Jump the index to the end of the entity.
-            i = end_idx
-            continue
-
-        # If the curent token is not part of a proper noun entity,
-        # process it as a normal string.
-        token: Token = doc[i]
-        token_text: str = doc[i].text
-
-        if i in token_indices:
-            processed_parts.append(
-                capitalize_from_string(token_text)
-            )
-        else:
-            processed_parts.append(
-                capitalize_from_string(token_text, lowercase_by_default)
-            )
-
-        processed_parts.append(token.whitespace_)
-        i += 1
 
     return ''.join(processed_parts)
