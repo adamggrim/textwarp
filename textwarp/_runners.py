@@ -1,5 +1,6 @@
 from typing import (
     Callable,
+    Final,
     TypeAlias
 )
 
@@ -14,8 +15,7 @@ from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
-    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE,
-    WARPING_MODULE_COMMANDS
+    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
 from ._ui import (
     get_input,
@@ -27,6 +27,11 @@ from ._validation import (
 )
 from . import warping
 
+# Set of warping module command names.
+WARPING_MODULE_COMMANDS: Final[set[str]] = set(warping.__all__)
+
+# Type alias for a function defining what to do with a command and
+# clipboard text.
 ActionHandler: TypeAlias = Callable[[Callable[[str], str], str], None]
 
 
