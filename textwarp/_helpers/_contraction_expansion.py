@@ -114,11 +114,11 @@ def _expand_ambiguous_contraction(
             2. The index (character offset) where the next search should
             begin.
     """
-    original_end_char: int = span.end_char
+    original_end_char_index: int = span.end_char
     suffix_token: Token | None = span[-1] if span else None
 
     if not suffix_token or suffix_token.i == 0:
-        return contraction, original_end_char
+        return contraction, original_end_char_index
 
     previous_token: Token = doc[suffix_token.i - 1]
 
@@ -196,7 +196,7 @@ def _expand_ambiguous_contraction(
                     verb_token.text, expanded_text
                 )
             )
-            return cased_text, original_end_char
+            return cased_text, original_end_char_index
 
     # --- HANDLE "'S" AND "'D" ---
     next_token: Token | None = (
@@ -229,9 +229,9 @@ def _expand_ambiguous_contraction(
         cased_expansion: str = _apply_expansion_casing(
             contraction, full_expansion
         )
-        return cased_expansion, original_end_char
+        return cased_expansion, original_end_char_index
 
-    return contraction, original_end_char
+    return contraction, original_end_char_index
 
 
 def _expand_unambiguous_contraction(
