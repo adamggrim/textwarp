@@ -1,5 +1,8 @@
 from collections.abc import Generator
-from random import choice, shuffle
+from random import (
+    choice,
+    shuffle
+)
 from typing import overload
 
 import regex as re
