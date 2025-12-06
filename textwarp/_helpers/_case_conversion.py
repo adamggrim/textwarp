@@ -194,3 +194,26 @@ def to_separator_case(
         processed_parts.append(processed_part)
 
     return ''.join(processed_parts)
+
+
+def word_to_pascal(word: str) -> str:
+    """
+    Convert a single word to Pascal case.
+
+    Args:
+        word: The word to convert.
+
+    Returns:
+        str: The converted word.
+    """
+    # Word contains no alphabetical characters.
+    if not any(char.isalpha() for char in word):
+        return word
+    # Word is already in Pascal case.
+    if ProgrammingCasePatterns.PASCAL_WORD.match(word):
+        return word
+    # Word is in camel case.
+    if ProgrammingCasePatterns.CAMEL_WORD.match(word):
+        return change_first_letter_case(word, str.upper)
+    # Word is not in Pascal or camel case.
+    return capitalize_from_string(word)
