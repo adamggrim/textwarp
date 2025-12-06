@@ -3,7 +3,6 @@ from random import (
     choice,
     shuffle
 )
-from typing import overload
 
 import regex as re
 from spacy.tokens import Doc
@@ -64,10 +63,6 @@ __all__ = [
 ]
 
 
-@overload
-def capitalize(content: str) -> str: ...
-@overload
-def capitalize(content: Doc) -> str: ...
 def capitalize(content: str | Doc) -> str:
     """
     Capitalize the each word in a given string or spaCy ``Doc``,
@@ -122,10 +117,6 @@ def cardinal_to_ordinal(text: str) -> str:
     return WarpingPatterns.CARDINAL.sub(_replace_cardinal, text)
 
 
-@overload
-def expand_contractions(content: str) -> str: ...
-@overload
-def expand_contractions(content: Doc) -> str: ...
 def expand_contractions(content: str | Doc) -> str:
     """
     Expand all contractions in a given string or spaCy ``Doc``.
@@ -554,10 +545,6 @@ def to_pascal_case(text: str) -> str:
     return ''.join(pascal_substrings)
 
 
-@overload
-def to_sentence_case(content: str) -> str: ...
-@overload
-def to_sentence_case(content: Doc) -> str: ...
 def to_sentence_case(content: str | Doc) -> str:
     """
     Convert a string or spaCy ``Doc`` to sentence case.
@@ -602,10 +589,6 @@ def to_snake_case(text: str) -> str:
     return to_separator_case(text, CaseSeparator.SNAKE)
 
 
-@overload
-def to_title_case(content: str) -> str: ...
-@overload
-def to_title_case(content: Doc) -> str: ...
 def to_title_case(content: str | Doc) -> str:
     """
     Convert a string or spaCy ``Doc`` to title case, handling special
