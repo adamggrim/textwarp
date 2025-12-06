@@ -9,11 +9,10 @@ from spacy.tokens import Doc
 
 from ._enums import Casing
 from ._helpers import (
-    capitalize_from_string,
     change_first_letter_case,
     curly_to_straight,
-    expand_contractions_from_doc,
     doc_to_case,
+    expand_contractions_from_doc,
     process_as_doc,
     remove_apostrophes,
     straight_to_curly,
@@ -29,7 +28,6 @@ from ._regexes import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )
-from ._nlp import nlp
 
 __all__ = [
     'capitalize',
