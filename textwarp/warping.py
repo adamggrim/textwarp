@@ -17,7 +17,8 @@ from ._helpers import (
     process_as_doc,
     remove_apostrophes,
     straight_to_curly,
-    to_separator_case
+    to_separator_case,
+    word_to_pascal
 )
 from ._config import (
     MORSE_MAP,
@@ -521,25 +522,7 @@ def to_pascal_case(text: str) -> str:
             no_apostrophes_text
         )
     )
-    pascal_substrings: list[str] = []
-
-    for w in words:
-        pascal_word: str
-        if not any(char.isalpha() for char in w):
-            pascal_substrings.append(w)
-            continue
-        # Word is already in Pascal case.
-        elif ProgrammingCasePatterns.PASCAL_WORD.match(w):
-            pascal_word = w
-        # Word is in camel case.
-        elif ProgrammingCasePatterns.CAMEL_WORD.match(w):
-            pascal_word = change_first_letter_case(w, str.upper)
-        # Word is not in Pascal or camel case.
-        else:
-            pascal_word = capitalize_from_string(w)
-        pascal_substrings.append(pascal_word)
-
-    return ''.join(pascal_substrings)
+    return ''.join(word_to_pascal(w) for w in words)
 
 
 def to_sentence_case(content: str | Doc) -> str:
