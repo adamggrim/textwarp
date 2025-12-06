@@ -14,6 +14,7 @@ from ._helpers import (
     curly_to_straight,
     expand_contractions_from_doc,
     doc_to_case,
+    process_as_doc,
     remove_apostrophes,
     straight_to_curly,
     to_separator_case
@@ -75,10 +76,8 @@ def capitalize(content: str | Doc) -> str:
     Returns:
         str: The capitalized string.
     """
-    if isinstance(content, Doc):
-        return doc_to_case(content, Casing.START)
-
-    return doc_to_case(nlp(content), Casing.START)
+    doc: Doc = process_as_doc(content)
+    return doc_to_case(doc, Casing.START)
 
 
 def cardinal_to_ordinal(text: str) -> str:
@@ -127,10 +126,8 @@ def expand_contractions(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    if isinstance(content, Doc):
-        return expand_contractions_from_doc(content)
-
-    return expand_contractions_from_doc(nlp(content))
+    doc: Doc = process_as_doc(content)
+    return expand_contractions_from_doc(doc)
 
 
 def from_binary(binary_text: str) -> str:
@@ -555,10 +552,8 @@ def to_sentence_case(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    if isinstance(content, Doc):
-        return doc_to_case(content, Casing.SENTENCE)
-
-    return doc_to_case(nlp(content), Casing.SENTENCE)
+    doc: Doc = process_as_doc(content)
+    return doc_to_case(doc, Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -600,10 +595,8 @@ def to_title_case(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    if isinstance(content, Doc):
-        return doc_to_case(content, Casing.TITLE)
-
-    return doc_to_case(nlp(content), Casing.TITLE)
+    doc: Doc = process_as_doc(content)
+    return doc_to_case(doc, Casing.TITLE)
 
 
 def widen(text: str) -> str:
