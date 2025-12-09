@@ -139,7 +139,7 @@ def from_binary(binary_text: str) -> str:
     Returns:
         str: The converted string.
     """
-    binary_chars: list[str] = binary_text.split(' ')
+    binary_chars: list[str] = binary_text.split()
     decoded_chars: list[str] = [chr(int(binary, 2)) for binary in binary_chars]
     return ''.join(decoded_chars)
 
@@ -155,7 +155,7 @@ def from_hexadecimal(text: str) -> str:
         str: The converted string.
     """
     chars: list[str] = [
-        chr(int(hex_char, 16)) for hex_char in text.split(' ')
+        chr(int(hex_char, 16)) for hex_char in text.split()
     ]
     return ''.join(chars)
 
@@ -174,7 +174,7 @@ def from_morse(text: str) -> str:
     decoded_words: list[str] = []
 
     for w in words:
-        char_codes: list[str] = w.split(' ')
+        char_codes: list[str] = w.split()
         decoded_word: str = ''.join(
             REVERSED_MORSE_MAP.get(code, '') for code in char_codes
         )
