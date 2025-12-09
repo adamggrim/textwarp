@@ -9,7 +9,7 @@ from .._quote_conversion import curly_to_straight
 
 def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     """
-    Apply the casing of the original word to the expanded word.
+    Apply the original word casing to the expanded word.
 
     Args:
         original_word: The original word.
@@ -83,7 +83,7 @@ def find_subject_token(verb_token: Token) -> Token | None:
 
 def negative_contraction_to_base_verb(contraction: str) -> str:
     """
-    Determine the base verb from a given negative contraction (e.g.,
+    Determine the base verb from a standard negative contraction (e.g.,
     "won't" -> "will").
 
     Args:

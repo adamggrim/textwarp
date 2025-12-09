@@ -68,7 +68,7 @@ NO_INPUTS: Final[set[str]] = {'no', 'n'}
 # Opening quote characters.
 OPEN_QUOTES: Final[set[str]] = {'"', '“', "'", '‘'}
 
-# Tuple of tuples for part-of-speech tags and their names.
+# Tuple of tuples for all part-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', 'Adjectives'),
     ('ADP', 'Adpositions'),
@@ -83,7 +83,7 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('X', 'Other')
 )
 
-# Tuple of strings for part-of-speech tags representing words.
+# Tuple of strings for all part-of-speech tags representing words.
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
