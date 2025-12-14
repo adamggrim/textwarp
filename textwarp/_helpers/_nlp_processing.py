@@ -1,6 +1,24 @@
 from spacy.tokens import Doc
 
+from .._constants import POS_WORD_TAGS
 from .._nlp import nlp
+
+
+def extract_words_from_doc(doc: Doc) -> list[str]:
+    """
+    Extract a list of word strings from a spaCy ``Doc``.
+
+    Args:
+        doc: The spaCy ``Doc`` to analyze.
+
+    Returns:
+        list[str]: The list of word strings from the ``Doc``.
+    """
+    return [
+        token.text.lower()
+        for token in doc
+        if token.pos_ in POS_WORD_TAGS
+    ]
 
 
 def process_as_doc(content: str | Doc) -> Doc:
