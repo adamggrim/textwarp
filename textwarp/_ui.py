@@ -22,7 +22,7 @@ def get_input() -> bool:
     """
     print_wrapped(ANY_OTHER_TEXT_PROMPT)
     while True:
-        response: str = input().strip().lower()
+        response = input().strip().lower()
         if response in (YES_INPUTS):
             return True
         if response in (NO_INPUTS | EXIT_INPUTS):
@@ -43,9 +43,9 @@ def print_wrapped(text: str) -> None:
     Args:
         text: The string to print.
     """
-    terminal_size: int = os.get_terminal_size()[0]
-    print_size: int = terminal_size - 1
-    wrapped_text: str = textwrap.fill(text, width=print_size)
+    terminal_size = os.get_terminal_size()[0]
+    print_size = terminal_size - 1
+    wrapped_text = textwrap.fill(text, width=print_size)
     print('\n' + wrapped_text)
 
 
