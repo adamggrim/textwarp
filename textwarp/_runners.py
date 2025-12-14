@@ -44,7 +44,7 @@ def _paste_and_validate() -> str | None:
             occurred.
     """
     try:
-        clipboard: str = pyperclip.paste()
+        clipboard = pyperclip.paste()
         validate_clipboard(clipboard)
         return clipboard
     except EmptyClipboardError as e:
@@ -109,7 +109,7 @@ def _run_command_loop(
             command and clipboard text.
     """
     while True:
-        clipboard: str | None = _paste_and_validate()
+        clipboard = _paste_and_validate()
 
         if clipboard is None:
             if not get_input():
@@ -133,7 +133,7 @@ def analyze_text(command_name: str) -> None:
     Args:
         command_name: The name of the analysis function.
     """
-    func_name: str = command_name.replace('-', '_')
+    func_name = command_name.replace('-', '_')
     command_func: Callable[[str], str] = getattr(_analysis, func_name)
 
     _run_command_loop(command_func)
@@ -175,7 +175,7 @@ def warp_text(command_name: str) -> None:
     if command_name in WARPING_MODULE_COMMANDS:
         command_func: Callable[[str], str] = getattr(warping, command_name)
     else:
-        func_name: str = command_name.replace('_', '-')
+        func_name = command_name.replace('_', '-')
         command_func: Callable[[str], str] = ARGS_MAP[func_name][0]
 
     _run_command_loop(
