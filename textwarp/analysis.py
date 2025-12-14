@@ -3,11 +3,11 @@ from math import ceil
 
 from spacy.tokens import Doc
 
-from ._constants import (
-    POS_TAGS,
-    POS_WORD_TAGS
+from ._constants import POS_TAGS
+from ._helpers import (
+    extract_words_from_doc,
+    process_as_doc
 )
-from ._nlp import nlp
 from ._models import (
     POSCounts,
     WordCount
@@ -27,9 +27,9 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
             between zero and one minute, otherwise rounded to the
             nearest integer.
     """
-    word_count: int = count_words(text)
+    word_count = count_words(text)
     minutes_to_read: float = word_count / wpm
-    rounded_minutes: int = int(minutes_to_read + 0.5)
+    rounded_minutes = int(minutes_to_read + 0.5)
     return ceil(minutes_to_read) if minutes_to_read < 1 else rounded_minutes
 
 
@@ -61,26 +61,26 @@ def count_lines(text: str) -> int:
     return len(text_lines)
 
 
-def count_mfws(text: str, num_mfws: int) -> list[WordCount]:
+def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
     """
     Count the most frequent words in a given string.
 
     Args:
-        text: The string to analyze.
+        content: The string or spaCy ``Doc`` to analyze.
         num_mfws: The number of most frequent words to return.
 
     Returns:
         list[WordCount]: A list of WordCount objects containing a word
             and its count.
     """
-    doc: Doc = nlp(text)
     words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
-    total_word_count: int = len(words)
+    doc = process_as_doc(content)
+    total_word_count = len(words)
 
     if total_word_count == 0:
         return []
 
-    counts: Counter[str] = Counter(words)
+    counts = Counter(words)
     count_tuples: list[tuple[str, int]] = counts.most_common(num_mfws)
 
     return [
@@ -93,21 +93,21 @@ def count_mfws(text: str, num_mfws: int) -> list[WordCount]:
     ]
 
 
-def count_pos(text: str) -> POSCounts:
+def count_pos(content: str | Doc) -> POSCounts:
     """
     Count the parts of speech in a given string.
 
     Args:
-        text: The string to analyze.
+        content: The string or spaCy ``Doc`` to analyze.
 
     Returns:
         POSCounts: The parts of speech counts for the string.
     """
-    doc: Doc = nlp(text)
+    doc = process_as_doc(content)
     tags: list[str] = [
         token.pos_ for token in doc if not token.is_space
     ]
-    counts: Counter[str] = Counter(tags)
+    counts = Counter(tags)
 
     tag_counts: dict[str, int] = {
         tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
@@ -122,21 +122,21 @@ def count_pos(text: str) -> POSCounts:
     )
 
 
-def count_sents(text: str) -> int:
+def count_sents(content: str | Doc) -> int:
     """
     Count the number of sentences in a given string.
 
     Args:
-        text: The string to analyze.
+        content: The string or spaCy ``Doc`` to analyze.
 
     Returns:
         int: The number of sentences in the string.
     """
-    doc: Doc = nlp(text)
+    doc = process_as_doc(content)
     return len(list(doc.sents))
 
 
-def count_words(text: str) -> int:
+def count_words(content: str | Doc) -> int:
     """
     Count the number of words in a given string.
 
@@ -146,4 +146,5 @@ def count_words(text: str) -> int:
     Returns:
         word_count: The number of words in the string.
     """
-    return count_pos(text).word_count
+    doc = process_as_doc(content)
+    return len(extract_words_from_doc(doc))
