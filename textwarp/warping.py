@@ -75,7 +75,7 @@ def capitalize(content: str | Doc) -> str:
     Returns:
         str: The capitalized string.
     """
-    doc: Doc = process_as_doc(content)
+    doc = process_as_doc(content)
     return doc_to_case(doc, Casing.START)
 
 
@@ -101,10 +101,10 @@ def cardinal_to_ordinal(text: str) -> str:
         Returns:
             str: The ordinal version of the matched cardinal.
         """
-        number_str: str = match.group(0)
-        number: int = int(number_str.replace(',', ''))
-        suffix: str
+        number_str = match.group(0)
+        number = int(number_str.replace(',', ''))
 
+        suffix: str
         if 10 <= number % 100 <= 20:
             suffix = 'th'
         else:
@@ -125,7 +125,7 @@ def expand_contractions(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    doc: Doc = process_as_doc(content)
+    doc = process_as_doc(content)
     return expand_contractions_from_doc(doc)
 
 
@@ -139,8 +139,8 @@ def from_binary(binary_text: str) -> str:
     Returns:
         str: The converted string.
     """
-    binary_chars: list[str] = binary_text.split()
-    decoded_chars: list[str] = [chr(int(binary, 2)) for binary in binary_chars]
+    binary_chars = binary_text.split()
+    decoded_chars = [chr(int(binary, 2)) for binary in binary_chars]
     return ''.join(decoded_chars)
 
 
@@ -154,9 +154,7 @@ def from_hexadecimal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    chars: list[str] = [
-        chr(int(hex_char, 16)) for hex_char in text.split()
-    ]
+    chars = [chr(int(hex_char, 16)) for hex_char in text.split()]
     return ''.join(chars)
 
 
@@ -170,12 +168,12 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in uppercase).
     """
-    words: list[str] = text.strip().split('   ')
+    words = text.strip().split('   ')
     decoded_words: list[str] = []
 
     for w in words:
         char_codes: list[str] = w.split()
-        decoded_word: str = ''.join(
+        decoded_word = ''.join(
             REVERSED_MORSE_MAP.get(code, '') for code in char_codes
         )
         decoded_words.append(decoded_word)
@@ -231,7 +229,7 @@ def ordinal_to_cardinal(text: str) -> str:
         Returns:
             str: The cardinal version of the matched ordinal.
         """
-        ordinal: str = match.group(0)
+        ordinal = match.group(0)
         return ordinal[:-2]
 
     return WarpingPatterns.ORDINAL.sub(_replace_ordinal, text)
@@ -258,8 +256,6 @@ def punct_to_inside(text: str) -> str:
         Returns:
             str: The reordered string.
         """
-        punct: str
-        quote: str
         punct, quote = match.groups()
         return quote + punct
 
@@ -288,8 +284,6 @@ def punct_to_outside(text: str) -> str:
         Returns:
             str: The reordered string.
         """
-        quote: str
-        punct: str
         quote, punct = match.groups()
         return punct + quote
 
@@ -330,7 +324,7 @@ def randomize(text: str) -> str:
         str: The randomized string.
     """
     # Convert the string into a list of characters.
-    char_list: list[str] = list(text)
+    char_list = list(text)
     shuffle(char_list)
     return ''.join(char_list)
 
@@ -374,7 +368,7 @@ def to_alternating_caps(text: str) -> str:
     """
     result: list[str] = []
     # Toggle switch for alternating caps effect.
-    upper: bool = False
+    upper = False
 
     for char in text:
         if char.isalpha():
@@ -400,7 +394,7 @@ def to_binary(text: str) -> str:
         str: The converted string in binary, with each character's
             binary value separated by a space.
     """
-    binary_chars: list[str] = [format(ord(char), '08b') for char in text]
+    binary_chars = [format(ord(char), '08b') for char in text]
     return ' '.join(binary_chars)
 
 
@@ -414,7 +408,7 @@ def to_camel_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    pascal_text: str = to_pascal_case(text)
+    pascal_text = to_pascal_case(text)
     return ProgrammingCasePatterns.PASCAL_WORD.sub(
         lambda m: change_first_letter_case(m.group(0), str.lower),
         pascal_text
@@ -445,10 +439,8 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    straight_text: str = curly_to_straight(text)
-    hex_chars: list[str] = [
-        format(ord(char), '02x') for char in straight_text
-    ]
+    straight_text = curly_to_straight(text)
+    hex_chars = [format(ord(char), '02x') for char in straight_text]
     return ' '.join(hex_chars)
 
 
@@ -490,11 +482,11 @@ def to_morse(text: str) -> str:
         Returns:
             str: The normalized string.
         """
-        straight_text: str = curly_to_straight(text.upper())
-        hyphenated_text: str = WarpingPatterns.DASH.sub('-', straight_text)
+        straight_text = curly_to_straight(text.upper())
+        hyphenated_text = WarpingPatterns.DASH.sub('-', straight_text)
         return hyphenated_text.replace('…', '...')
 
-    normalized_text: str = _normalize_for_morse(text)
+    normalized_text = _normalize_for_morse(text)
 
     morse_words: Generator[str, None, None] = (
         ' '.join(MORSE_MAP[char] for char in word if char in MORSE_MAP)
@@ -533,7 +525,7 @@ def to_sentence_case(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    doc: Doc = process_as_doc(content)
+    doc = process_as_doc(content)
     return doc_to_case(doc, Casing.SENTENCE)
 
 
@@ -576,7 +568,7 @@ def to_title_case(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    doc: Doc = process_as_doc(content)
+    doc = process_as_doc(content)
     return doc_to_case(doc, Casing.TITLE)
 
 
