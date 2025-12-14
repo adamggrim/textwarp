@@ -73,8 +73,8 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
         list[WordCount]: A list of WordCount objects containing a word
             and its count.
     """
-    words: list[str] = [token.text.lower() for token in doc if token.is_alpha]
     doc = process_as_doc(content)
+    words: list[str] = extract_words_from_doc(doc)
     total_word_count = len(words)
 
     if total_word_count == 0:
@@ -112,9 +112,7 @@ def count_pos(content: str | Doc) -> POSCounts:
     tag_counts: dict[str, int] = {
         tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
     }
-    total_word_count: int = sum(
-        counts.get(tag, 0) for tag in POS_WORD_TAGS
-    )
+    total_word_count = len(extract_words_from_doc(doc))
 
     return POSCounts(
         word_count=total_word_count,
