@@ -1,5 +1,4 @@
 import spacy
-from spacy.language import Language
 
 from ._ui import print_wrapped
 
@@ -12,7 +11,7 @@ def _load_spacy_model(model_name: str):
         model_name (str): The name of the spaCy model to load.
     """
     try:
-        nlp: Language = spacy.load(model_name)
+        nlp = spacy.load(model_name)
     except OSError:
         print_wrapped(f"Downloading spaCy model '{model_name}'...")
         spacy.cli.download(model_name)
@@ -20,4 +19,4 @@ def _load_spacy_model(model_name: str):
     return nlp
 
 
-nlp: Language = _load_spacy_model('en_core_web_trf')
+nlp = _load_spacy_model('en_core_web_trf')
