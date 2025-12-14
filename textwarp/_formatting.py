@@ -23,7 +23,7 @@ def _format_table(
     if not data_rows:
         return ''
 
-    num_cols: int = len(data_rows[0])
+    num_cols = len(data_rows[0])
 
     col_widths: list[int] = [0] * num_cols
     for row in data_rows:
@@ -120,8 +120,6 @@ def format_time_to_read(minutes_to_read: int) -> str:
     Returns:
         str: The formatted string indicating time to read.
     """
-    hours: int
-    minutes: int
     hours, minutes = divmod(minutes_to_read, 60)
     if hours >= 1:
         formatted_hours: str = f'{hours} hours' if hours != 1 else '1 hour'
