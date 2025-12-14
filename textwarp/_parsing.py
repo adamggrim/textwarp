@@ -21,7 +21,7 @@ def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
         int: The length of the longest command string, adjusted for
             formatting.
     """
-    adjustment: int = 6 # Account for the '--' prefix and whitespace.
+    adjustment = 6 # Account for both the '--' prefix and whitespace.
     return max(len(key) + adjustment for key in commands.keys())
 
 
@@ -46,16 +46,14 @@ def parse_args() -> tuple[str, str]:
         )
     )
 
-    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
         description=HELP_DESCRIPTION,
         usage='%(prog)s [command]'
     )
 
-    group: argparse._MutuallyExclusiveGroup = (
-        parser.add_mutually_exclusive_group(required=True)
-    )
+    group = (parser.add_mutually_exclusive_group(required=True))
 
     for arg_key, (_, help_message) in ARGS_MAP.items():
         group.add_argument(
