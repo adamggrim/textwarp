@@ -223,7 +223,7 @@ class WarpingPatterns:
             """
             return re.escape(word).replace("'", "['’‘]")
         if isinstance(words, str):
-            pattern_string: str = _add_escaped_apostrophes(words)
+            pattern_string = _add_escaped_apostrophes(words)
         else:
             sorted_words: list[str] = words
             if sort_by_length:
@@ -237,15 +237,15 @@ class WarpingPatterns:
             escaped_patterns: list[str] = [
                 _add_escaped_apostrophes(w) for w in sorted_words
             ]
-            pattern_string: str = '|'.join(escaped_patterns)
+            pattern_string = '|'.join(escaped_patterns)
 
         match boundary:
             case RegexBoundary.WORD_BOUNDARY:
-                final_pattern: str = rf'\b{pattern_string}\b'
+                final_pattern = rf'\b{pattern_string}\b'
             case RegexBoundary.END_ANCHOR:
-                final_pattern: str = rf'{pattern_string}$'
+                final_pattern = rf'{pattern_string}$'
             case RegexBoundary.NONE:
-                final_pattern: str = pattern_string
+                final_pattern = pattern_string
 
         return re.compile(final_pattern, re.IGNORECASE)
 
