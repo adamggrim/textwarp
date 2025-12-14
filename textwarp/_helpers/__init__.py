@@ -6,7 +6,10 @@ from ._case_conversion import (
 )
 from ._contraction_expansion import expand_contractions_from_doc
 from ._apostrophes import remove_apostrophes
-from ._nlp_processing import process_as_doc
+from ._nlp_processing import (
+    extract_words_from_doc,
+    process_as_doc
+)
 from ._quote_conversion import (
     curly_to_straight,
     straight_to_curly
