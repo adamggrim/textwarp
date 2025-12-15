@@ -28,7 +28,7 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
             nearest integer.
     """
     word_count = count_words(text)
-    minutes_to_read: float = word_count / wpm
+    minutes_to_read = word_count / wpm
     rounded_minutes = int(minutes_to_read + 0.5)
     return ceil(minutes_to_read) if minutes_to_read < 1 else rounded_minutes
 
@@ -56,8 +56,8 @@ def count_lines(text: str) -> int:
     Returns:
         int: The number of non-whitespace lines in the string.
     """
-    lines: list[str] = text.splitlines()
-    text_lines: list[str] = [line for line in lines if line.strip()]
+    lines = text.splitlines()
+    text_lines = [line for line in lines if line.strip()]
     return len(text_lines)
 
 
@@ -74,7 +74,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
             and its count.
     """
     doc = process_as_doc(content)
-    words: list[str] = extract_words_from_doc(doc)
+    words = extract_words_from_doc(doc)
     total_word_count = len(words)
 
     if total_word_count == 0:
@@ -104,9 +104,7 @@ def count_pos(content: str | Doc) -> POSCounts:
         POSCounts: The parts of speech counts for the string.
     """
     doc = process_as_doc(content)
-    tags: list[str] = [
-        token.pos_ for token in doc if not token.is_space
-    ]
+    tags = [token.pos_ for token in doc if not token.is_space]
     counts = Counter(tags)
 
     tag_counts: dict[str, int] = {
