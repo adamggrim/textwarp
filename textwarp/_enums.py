@@ -53,10 +53,10 @@ class CountLabels(str, Enum):
         SENTENCE: String specifying sentence count.
         WORD: String specifying word count.
     """
-    CHAR: str = 'Character'
-    LINE: str = 'Line'
-    SENTENCE: str = 'Sentence'
-    WORD: str = 'Word'
+    CHAR = 'Character'
+    LINE = 'Line'
+    SENTENCE = 'Sentence'
+    WORD = 'Word'
 
 
 @final
