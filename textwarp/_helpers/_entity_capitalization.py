@@ -11,7 +11,6 @@ from .._constants import (
     TITLE_CASE_TAG_EXCEPTIONS
 )
 from .._regexes import WarpingPatterns
-
 from ._string_capitalization import capitalize_from_string
 
 
@@ -33,7 +32,7 @@ def _find_next_word_token_idx(
             found.
     """
     for i in range(start_idx, len(text_container)):
-        token: Token = text_container[i]
+        token = text_container[i]
         if not token.is_space and not token.is_punct:
             return token.i
     return None
@@ -122,7 +121,7 @@ def locate_sentence_start_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence.
         if token.is_sent_start:
-            next_word_idx: int | None = _find_next_word_token_idx(i, text_container)
+            next_word_idx = _find_next_word_token_idx(i, text_container)
             if next_word_idx is not None:
                 position_indices.add(next_word_idx)
 
@@ -227,12 +226,12 @@ def to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
-    position_indices: set[int] = locate_title_case_indices(text_container)
+    position_indices = locate_title_case_indices(text_container)
     processed_parts: list[str] = []
 
     for token in text_container:
-        should_capitalize: bool = token.i in position_indices
-        processed_token: str = _to_title_case_from_token(
+        should_capitalize = token.i in position_indices
+        processed_token = _to_title_case_from_token(
             token, should_capitalize=should_capitalize
         )
         processed_parts.append(processed_token + token.whitespace_)
