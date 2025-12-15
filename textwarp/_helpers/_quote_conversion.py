@@ -16,7 +16,7 @@ def _replace_opening_quote(match: re.Match[str]) -> str:
     Returns:
         str: A string of opening curly quotes.
     """
-    quote_chars: str = match.group(1) or match.group(2) or ''
+    quote_chars = match.group(1) or match.group(2) or ''
     if quote_chars.startswith("'"):
         return '‘' * len(quote_chars)
     else:
@@ -33,7 +33,7 @@ def curly_to_straight(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    translation_table: dict[int, str] = str.maketrans({
+    translation_table = str.maketrans({
         # Curly opening single quotes to straight single quotes
         '’': "'",
         # Curly opening double quotes to straight double quotes
@@ -56,8 +56,6 @@ def straight_to_curly(text: str) -> str:
     Returns:
         curly_text: The converted string.
     """
-    curly_text: str
-
     # Replace intra-word apostrophes and apostrophes in elisions.
     curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub('’', text)
 
