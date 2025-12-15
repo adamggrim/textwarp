@@ -2,10 +2,7 @@
 Provides a custom decorator function to denote non-instantiable classes.
 """
 
-from typing import (
-    Any,
-    TypeVar
-)
+from typing import TypeVar
 
 # Type variable bound to ``type`` so the decorator preserves the
 # identity of the class it modifies.
@@ -26,7 +23,7 @@ def non_instantiable(cls: _T) -> _T:
         RuntimeError: When an attempt is made to instantiate the
             decorated class.
     """
-    def __init__(self: Any, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         raise RuntimeError(f'{cls.__name__} cannot be instantiated.')
 
     setattr(cls, '__init__', __init__)
