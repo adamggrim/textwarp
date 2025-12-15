@@ -5,68 +5,68 @@ This module contains constants used across the package.
 from typing import Final
 
 # Variants of 's for contractions.
-AIN_T_SUFFIX_VARIANTS: Final[set[str]] = {"n't", 'n’t', 'n‘t'}
+AIN_T_SUFFIX_VARIANTS: Final = {"n't", 'n’t', 'n‘t'}
 
 # Prompt for the user to enter any other text.
-ANY_OTHER_TEXT_PROMPT: Final[str] = (
+ANY_OTHER_TEXT_PROMPT: Final = (
     'Any other text? (y/n) (Copy text to clipboard):'
 )
 
 # Variants of 'd for contractions.
-APOSTROPHE_D_VARIANTS: Final[set[str]] = {"'d", '’d', '‘d'}
+APOSTROPHE_D_VARIANTS: Final = {"'d", '’d', '‘d'}
 
 # Variants of 's for contractions.
-APOSTROPHE_S_VARIANTS: Final[set[str]] = {"'s", '’s', '‘s'}
+APOSTROPHE_S_VARIANTS: Final = {"'s", '’s', '‘s'}
 
 # Variants of apostrophes.
-APOSTROPHE_VARIANTS: Final[set[str]] = {"'", '’', '‘'}
+APOSTROPHE_VARIANTS: Final = {"'", '’', '‘'}
 
 # Message for any error accessing the clipboard.
-CLIPBOARD_ACCESS_ERROR_MESSAGE: Final[str] = 'Error accessing clipboard: '
+CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = 'Error accessing clipboard: '
 
 # Message for when the clipboard is cleared.
-CLIPBOARD_CLEARED_MESSAGE: Final[str] = 'Clipboard text cleared.'
+CLIPBOARD_CLEARED_MESSAGE: Final = 'Clipboard text cleared.'
 
 # Prompt for the user to enter the number of most frequent words.
-ENTER_MFW_COUNT_PROMPT: Final[str] = 'How many most frequent words?'
+ENTER_MFW_COUNT_PROMPT: Final = 'How many most frequent words?'
 
 # Prompt for when the previous response was not a number.
-ENTER_NUMBER_PROMPT: Final[str] = 'Please enter a number.'
+ENTER_NUMBER_PROMPT: Final = 'Please enter a number.'
 
 # Prompt for the user to enter a regular expression to find.
-ENTER_REGEX_PROMPT: Final[str] = 'Enter a regular expression to replace:'
+ENTER_REGEX_PROMPT: Final = 'Enter a regular expression to replace:'
 
 # Prompt for the user to enter replacement text.
-ENTER_REPLACEMENT_PROMPT: Final[str] = 'Enter replacement text:'
+ENTER_REPLACEMENT_PROMPT: Final = 'Enter replacement text:'
 
 # Prompt for the user to enter text to find.
-ENTER_TEXT_TO_REPLACE_PROMPT: Final[str] = 'Enter text to replace:'
+ENTER_TEXT_TO_REPLACE_PROMPT: Final = 'Enter text to replace:'
 
 # Prompt for when the previous response was invalid.
-ENTER_VALID_RESPONSE_PROMPT: Final[str] = 'Please enter a valid response (y/n).'
+ENTER_VALID_RESPONSE_PROMPT: Final = 'Please enter a valid response (y/n).'
 
 # Prompt for the user to enter the words per minute.
-ENTER_WPM_PROMPT: Final[str] = 'How many words per minute?'
+ENTER_WPM_PROMPT: Final = 'How many words per minute?'
 
 # Inputs for exiting the program.
-EXIT_INPUTS: Final[set[str]] = {'quit', 'q', 'exit', 'e'}
+EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
 
 # Message for when the user exits the program.
-EXIT_MESSAGE: Final[str] = 'Exiting the program...'
+EXIT_MESSAGE: Final = 'Exiting the program...'
 
 # Help description for command-line arguments.
-HELP_DESCRIPTION: Final[str] = (
+HELP_DESCRIPTION: Final = (
     'Specify which text warping function to apply to the clipboard.'
 )
 
 # Message for when the program copies modified text to the clipboard.
-MODIFIED_TEXT_COPIED_MESSAGE: Final[str] = 'Modified text copied to clipboard.'
+MODIFIED_TEXT_COPIED_MESSAGE: Final = 'Modified text copied to clipboard.'
 
 # Inputs for indicating a negative response.
-NO_INPUTS: Final[set[str]] = {'no', 'n'}
+NO_INPUTS: Final = {'no', 'n'}
 
 # Opening quote characters.
-OPEN_QUOTES: Final[set[str]] = {'"', '“', "'", '‘'}
+OPEN_QUOTES: Final = {'"', '“', "'", '‘'}
 
 # Tuple of tuples for all part-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
@@ -89,7 +89,7 @@ POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
 )
 
 # Named entities that are typically proper nouns.
-PROPER_NOUN_ENTITIES: Final[set[str]] = {
+PROPER_NOUN_ENTITIES: Final = {
     'PERSON',
     'GPE',
     'ORG',
@@ -103,10 +103,10 @@ PROPER_NOUN_ENTITIES: Final[set[str]] = {
 }
 
 # Message for when the text to replace is not found in the text.
-TEXT_TO_REPLACE_NOT_FOUND_MESSAGE: Final[str] = 'Text to replace not found.'
+TEXT_TO_REPLACE_NOT_FOUND_MESSAGE: Final = 'Text to replace not found.'
 
 # Part-of-speech tag exceptions for title case capitalization.
-TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
+TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'CC',   # Coordinating conjunction (e.g., 'and', 'but')
     'DT',   # Determiner (e.g., 'a', 'an', 'the')
     'IN',   # Preposition or subordinating conjunction
@@ -117,4 +117,4 @@ TITLE_CASE_TAG_EXCEPTIONS: Final[set[str]] = {
 }
 
 # Inputs for indicating an affirmative response.
-YES_INPUTS: Final[set[str]] = {'yes', 'y'}
+YES_INPUTS: Final = {'yes', 'y'}
