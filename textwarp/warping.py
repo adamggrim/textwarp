@@ -166,7 +166,7 @@ def from_morse(text: str) -> str:
         text: The Morse string to convert.
 
     Returns:
-        str: The converted string (in uppercase).
+        str: The converted string (in all caps).
     """
     words = text.strip().split('   ')
     decoded_words: list[str] = []
@@ -473,8 +473,8 @@ def to_morse(text: str) -> str:
     """
     def _normalize_for_morse(text: str) -> str:
         """
-        Normalize a string for Morse code by converting to
-        uppercase and replacing non-Morse-compatible characters.
+        Normalize a string for Morse code by converting to all caps and
+        replacing non-Morse-compatible characters.
 
         Args:
             text: The string to normalize.

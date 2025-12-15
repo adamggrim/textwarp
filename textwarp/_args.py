@@ -221,7 +221,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     ),
     'swapcase': (
         str.swapcase,
-        'convert LOWERCASE to uppercase and vice versa'
+        'convert LOWERCASE to all caps and vice versa'
     ),
     'time-to-read': (
         time_to_read,
@@ -233,7 +233,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     ),
     'uppercase': (
         str.upper,
-        'CONVERT TO UPPERCASE'
+        'CONVERT TO ALL CAPS'
     ),
     'word-count': (
         word_count,
