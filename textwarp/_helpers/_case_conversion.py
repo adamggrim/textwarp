@@ -12,7 +12,6 @@ from .._enums import (
     Casing
 )
 from .._regexes import ProgrammingCasePatterns
-
 from ._apostrophes import remove_apostrophes
 from ._entity_capitalization import (
     locate_sentence_start_indices,
@@ -68,24 +67,23 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
 
     processed_parts: list[str] = []
     token_indices: set[int] = set()
-    lowercase_by_default: bool = True
-    i: int = 0
+    i = 0
 
     if casing == Casing.SENTENCE:
         token_indices = locate_sentence_start_indices(doc)
+        lowercase_by_default = True
     elif casing == Casing.START:
         token_indices = locate_start_case_indices(doc)
         lowercase_by_default = False
     elif casing == Casing.TITLE:
         token_indices = locate_title_case_indices(doc)
+        lowercase_by_default = True
 
     # Loop through each token in the `Doc` to find any indices that
     # should be cased.
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
         if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
-            entity_span: Span
-            end_idx: int
             entity_span, end_idx = entity_map[i]
 
             title_cased_entity_text: str = to_title_case_from_doc(
@@ -98,8 +96,8 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
 
         # If the curent token is not part of a proper noun entity,
         # process it as a normal string.
-        token: Token = doc[i]
-        token_text: str = doc[i].text
+        token = doc[i]
+        token_text = doc[i].text
 
         if i in token_indices:
             processed_parts.append(
@@ -130,7 +128,7 @@ def to_separator_case(
     Returns:
         str: The converted string.
     """
-    no_apostrophes_text: str = remove_apostrophes(text)
+    no_apostrophes_text = remove_apostrophes(text)
     parts: list[str] = (
         ProgrammingCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
             no_apostrophes_text
@@ -138,7 +136,7 @@ def to_separator_case(
     )
     processed_parts: list[str] = []
 
-    separator_pattern_name: str = f'{separator.name}_WORD'
+    separator_pattern_name = f'{separator.name}_WORD'
     separator_pattern: re.Pattern[str] = getattr(
         ProgrammingCasePatterns,
         separator_pattern_name
@@ -148,7 +146,6 @@ def to_separator_case(
     ]
 
     for i, part in enumerate(parts):
-        processed_part: str
         # Part contains no alphabetical characters and is not a single
         # space.
         if not any(char.isalpha() for char in part) and part != ' ':
