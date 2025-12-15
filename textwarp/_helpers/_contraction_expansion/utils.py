@@ -9,11 +9,11 @@ from .._quote_conversion import curly_to_straight
 
 def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
     """
-    Apply the original word casing to the expanded word.
+    Apply the original text casing to the expanded text.
 
     Args:
-        original_word: The original word.
-        expanded_word: The cased word.
+        original_text: The original text.
+        expanded_text: The expanded text.
 
     Returns:
         str: The expanded word in the original word's casing.
