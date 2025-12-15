@@ -5,27 +5,45 @@ from spacy.tokens import (
 
 from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP
 from .._quote_conversion import curly_to_straight
+from .._string_capitalization import capitalize_from_string
 
 
-def apply_expansion_casing(original_word: str, expanded_word: str) -> str:
+def apply_expansion_casing(
+    original_text: str,
+    expanded_text: str
+) -> str | None:
     """
     Apply the original text casing to the expanded text.
 
     Args:
         original_text: The original text.
-        expanded_text: The expanded text.
+        expanded_text: The expanded text (not yet cased).
 
     Returns:
-        str: The expanded word in the original word's casing.
+        str: The expanded text in the original text's casing, or None
+            if the input is empty or invalid.
     """
-    if original_word.isupper():
-        return expanded_word.upper()
-    elif original_word.istitle():
-        return expanded_word.capitalize()
-    return expanded_word
+    if (not original_text or not expanded_text or
+            not isinstance(expanded_text, str)):
+        return None
+
+    # Check for all caps.
+    if original_text.isupper():
+        return expanded_text.upper()
+
+    original_parts: list[str] = original_text.split()
+    expanded_parts: list[str] = expanded_text.split()
+
+    # Check for title case.
+    if all(part[0].isupper() for part in original_parts):
+        return ''.join([
+            capitalize_from_string(part) for part in expanded_parts
+        ])
+    # Otherwise, return the original ``expanded_text`` casing.
+    return expanded_text
 
 
-def find_subject_token(verb_token: Token) -> Token | None:
+def find_subject_token(verb_token: Token | None) -> Token | None:
     """
     Find the subject of a verb in a spaCy ``Doc``, handling both
     standard order (subject to the left: e.g., "I don't") and inverted
