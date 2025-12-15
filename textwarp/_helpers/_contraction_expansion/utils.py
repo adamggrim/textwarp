@@ -39,6 +39,14 @@ def apply_expansion_casing(
         return ''.join([
             capitalize_from_string(part) for part in expanded_parts
         ])
+    # Check for sentence case.
+    elif original_text[0].isupper():
+        return ''.join([
+            capitalize_from_string(
+                part,
+                lowercase_by_default=True
+            ) for part in expanded_parts
+        ])
     # Otherwise, return the original ``expanded_text`` casing.
     return expanded_text
 
