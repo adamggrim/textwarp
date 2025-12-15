@@ -49,9 +49,9 @@ def find_subject_token(verb_token: Token) -> Token | None:
             return child
 
     # Fallback A: Look immediately before the verb (standard order).
-    curr_idx: int = verb_token.i - 1
+    curr_idx = verb_token.i - 1
     while curr_idx >= 0:
-        candidate: Token = doc[curr_idx]
+        candidate = doc[curr_idx]
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
@@ -63,14 +63,14 @@ def find_subject_token(verb_token: Token) -> Token | None:
         curr_idx -= 1
 
     # Fallback B: Look immediately after the suffix (inverted order).
-    start_idx: int = verb_token.i + 1
+    start_idx = verb_token.i + 1
     if start_idx < len(doc) and doc[start_idx].lower_ == "n't":
         start_idx += 1
 
-    end_idx: int = min(start_idx + 6, len(doc))
+    end_idx = min(start_idx + 6, len(doc))
 
     for j in range(start_idx, end_idx):
-        candidate: Token = doc[j]
+        candidate = doc[j]
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
@@ -92,10 +92,10 @@ def negative_contraction_to_base_verb(contraction: str) -> str:
     Returns:
         str: The base verb corresponding to the contraction.
     """
-    straight_contraction: str = curly_to_straight(contraction).lower()
+    straight_contraction = curly_to_straight(contraction).lower()
 
     # Look for the contraction in the unambiguous contractions map.
-    expanded_contraction: str = UNAMBIGUOUS_CONTRACTIONS_MAP.get(
+    expanded_contraction = UNAMBIGUOUS_CONTRACTIONS_MAP.get(
         straight_contraction, ''
     )
 
