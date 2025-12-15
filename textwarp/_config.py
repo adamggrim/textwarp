@@ -13,7 +13,7 @@ JSONType: TypeAlias = (
 )
 
 # Path to the base directory for data files.
-data_root: Path = Path(__file__).parent / '_data'
+data_root = Path(__file__).parent / '_data'
 
 
 def _load_json_from_data(relative_path: Path | str) -> JSONType:
@@ -28,7 +28,7 @@ def _load_json_from_data(relative_path: Path | str) -> JSONType:
         JSONType: The JSON file loaded as a Python object.
     """
     # Construct a platform-independent path to the JSON file.
-    json_file_path: Path = data_root / relative_path
+    json_file_path = data_root / relative_path
 
     # Load and return the JSON data.
     with open(json_file_path, 'r') as json_file:
