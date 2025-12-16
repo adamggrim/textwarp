@@ -40,8 +40,8 @@ def _paste_and_validate() -> str | None:
     Paste and validate clipboard text.
 
     Returns:
-        clipboard: The validated clipboard text, or ``None`` if an error
-            occurred.
+        clipboard | None: The validated clipboard text, or ``None`` if
+            an error occurred.
     """
     try:
         clipboard = pyperclip.paste()
@@ -105,7 +105,7 @@ def _run_command_loop(
 
     Args:
         command_func: The command function.
-        action_handler: A function defining what to do with the
+        action_handler | None: A function defining what to do with the
             command and clipboard text.
     """
     while True:

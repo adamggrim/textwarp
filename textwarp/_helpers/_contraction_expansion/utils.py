@@ -20,8 +20,8 @@ def apply_expansion_casing(
         expanded_text: The expanded text (not yet cased).
 
     Returns:
-        str: The expanded text in the original text's casing, or None
-            if the input is empty or invalid.
+        str | None: The expanded text in the original text's casing, or
+            ``None`` if the input is empty or invalid.
     """
     if (not original_text or not expanded_text or
             not isinstance(expanded_text, str)):
@@ -62,7 +62,8 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     positional heuristics.
 
     Args:
-        verb_token: The token for the verb that predicates the subject.
+        verb_token | None: The token for the verb that predicates the subject,
+            otherwise ``None``.
 
     Returns:
         Token | None: The subject token, otherwise ``None``.
@@ -116,7 +117,8 @@ def negative_contraction_to_base_verb(contraction: str) -> str:
         contraction: The contraction to analyze.
 
     Returns:
-        str: The base verb corresponding to the contraction.
+        str | None: The base verb corresponding to the contraction,
+            otherwise ``None``.
     """
     straight_contraction = curly_to_straight(contraction).lower()
 

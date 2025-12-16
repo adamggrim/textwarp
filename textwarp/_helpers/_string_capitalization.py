@@ -193,7 +193,7 @@ def _preserve_existing_capitalization(
         _lower_word: The lowercase word (unused).
 
     Returns:
-        str: The original word, or ``None`` if the word is all
+        str | None : The original word, or ``None`` if the word is all
             lowercase or uppercase.
     """
     if not word.islower() and not word.isupper():
