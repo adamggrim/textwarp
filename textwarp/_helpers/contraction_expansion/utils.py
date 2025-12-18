@@ -43,12 +43,15 @@ def apply_expansion_casing(
 
     # Check for sentence case.
     elif original_text[0].isupper():
-        return ' '.join([
-            capitalize_from_string(
-                part,
-                lowercase_by_default=True
-            ) for part in expanded_parts
-        ])
+        first_part: str = capitalize_from_string(expanded_parts[0])
+
+        remaining_parts = [
+            capitalize_from_string(part, lowercase_by_default=True)
+            for part in expanded_parts[1:]
+        ]
+
+        return ' '.join([first_part] + remaining_parts)
+
     # Otherwise, return the original ``expanded_text`` casing.
     return expanded_text
 
