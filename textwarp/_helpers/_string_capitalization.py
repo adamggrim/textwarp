@@ -1,7 +1,4 @@
-from typing import (
-    Callable,
-    Match
-)
+from typing import Callable
 
 from .._config import (
     CAPITALIZED_ABBREVIATIONS_MAP,

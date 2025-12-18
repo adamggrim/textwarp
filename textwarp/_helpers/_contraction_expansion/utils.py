@@ -1,7 +1,4 @@
-from spacy.tokens import (
-    Doc,
-    Token
-)
+from spacy.tokens import Token
 
 from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP
 from .._quote_conversion import curly_to_straight
