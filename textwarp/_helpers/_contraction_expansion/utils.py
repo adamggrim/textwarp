@@ -107,7 +107,7 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     return None
 
 
-def negative_contraction_to_base_verb(contraction: str) -> str:
+def negative_contraction_to_base_verb(contraction: str) -> str | None:
     """
     Determine the base verb from a standard negative contraction (e.g.,
     "won't" -> "will").
@@ -123,17 +123,19 @@ def negative_contraction_to_base_verb(contraction: str) -> str:
 
     # Look for the contraction in the unambiguous contractions map.
     expanded_contraction = UNAMBIGUOUS_CONTRACTIONS_MAP.get(
-        straight_contraction, ''
+        straight_contraction
     )
 
-    if not expanded_contraction:
+    if expanded_contraction:
+        # "Cannot" is a special case.
+        if expanded_contraction == 'cannot':
+            return 'can'
+        # Return the first word of the expansion.
+        return expanded_contraction.split()[0]
+
+    # Only attempt to strip if "n't" is actually present.
+    if straight_contraction.endswith("n't"):
         # Fallback for edge cases: strip n't
         return straight_contraction.replace("n't", '')
 
-    # "Cannot" is a special case.
-    if expanded_contraction == 'cannot':
-        return 'can'
-
-    # Return the first word of the expansion.
-    return expanded_contraction.split()[0]
-
+    return None
