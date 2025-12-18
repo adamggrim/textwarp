@@ -22,15 +22,12 @@ def disambiguate_ain_t(span: Span) -> str | None:
         str | None : The base verb for the "ain't" contraction.
     """
     doc = span.doc
-
-    prev_token = (doc[span.start - 1] if span.start - 1 >= 0 else None)
-
-    if prev_token is None:
-        return None
-
-    # The "ai" part of "ain't".
-    verb_token = prev_token
     suffix_token = span[-1]
+
+    verb_token = (doc[suffix_token.i - 1] if suffix_token.i > 0 else None)
+
+    if verb_token is None:
+        return None
 
     subject_token = find_subject_token(verb_token)
 
