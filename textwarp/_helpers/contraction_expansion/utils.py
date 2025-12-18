@@ -30,11 +30,17 @@ def apply_expansion_casing(
     original_parts: list[str] = original_text.split()
     expanded_parts: list[str] = expanded_text.split()
 
+    is_title_case = (
+        len(original_parts) > 1 and
+        all(part and part[0].isupper() for part in original_parts)
+    )
+
     # Check for title case.
-    if all(part[0].isupper() for part in original_parts):
+    if is_title_case:
         return ' '.join([
             capitalize_from_string(part) for part in expanded_parts
         ])
+
     # Check for sentence case.
     elif original_text[0].isupper():
         return ' '.join([
