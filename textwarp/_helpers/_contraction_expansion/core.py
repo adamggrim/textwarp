@@ -131,7 +131,7 @@ def expand_contractions_from_doc(doc: Doc) -> str:
                 new_end_char_idx: int
 
                 expanded_text, new_end_char_idx = _expand_ambiguous_contraction(
-                    contraction, span, doc
+                    contraction, span
                 )
                 expanded_parts.append(expanded_text)
                 last_idx = new_end_char_idx
