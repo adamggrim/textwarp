@@ -8,7 +8,7 @@ from .._string_capitalization import capitalize_from_string
 def apply_expansion_casing(
     original_text: str,
     expanded_text: str
-) -> str | None:
+) -> str:
     """
     Apply the original text casing to the expanded text.
 
@@ -17,12 +17,11 @@ def apply_expansion_casing(
         expanded_text: The expanded text (not yet cased).
 
     Returns:
-        str | None: The expanded text in the original text's casing, or
-            ``None`` if the input is empty or invalid.
+        str: The expanded text in the original text's casing.
     """
-    if (not original_text or not expanded_text or
-            not isinstance(expanded_text, str)):
-        return None
+    # Handle empty strings.
+    if not original_text or not expanded_text:
+        return expanded_text
 
     # Check for all caps.
     if original_text.isupper():
@@ -65,7 +64,10 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     Returns:
         Token | None: The subject token, otherwise ``None``.
     """
-    doc: Doc = verb_token.doc
+    if verb_token is None:
+        return None
+
+    doc = verb_token.doc
 
     # Try to find the subject using the dependency parser.
     for child in verb_token.children:
