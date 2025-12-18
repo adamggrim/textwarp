@@ -60,8 +60,8 @@ def handle_negation(span: Span) -> tuple[str, int]:
             # The token before "n't" is the base verb.
             base_verb = negative_contraction_to_base_verb(span.text)
 
-    if not base_verb:
     # Handle a failed disambiguation.
+    if base_verb is None:
         return span.text, span.end_char
 
     verb_token = prev_token
@@ -145,19 +145,13 @@ def handle_whatcha(span: Span) -> tuple[str, int]:
     doc = span.doc
     suffix_token = span[-1]
 
-    # Check the bounds.
-    if suffix_token.i == 0:
-        return span.text, span.end_char
-
     base_verb: str | None = disambiguate_whatcha(span)
 
     # Handle a failed disambiguation.
     if not base_verb:
         return span.text, span.end_char
 
-    subject_token = doc[suffix_token.i - 1]
-
-    expanded_text: str = f'{subject_token.text} {base_verb}'
+    expanded_text: str = f'what {base_verb} you'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
     return cased_text, span.end_char
