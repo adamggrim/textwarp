@@ -7,7 +7,7 @@ from typing import (
 )
 from pathlib import Path
 
-# Define a type for JSON data.
+# A type for JSON data.
 JSONType: TypeAlias = (
     dict[str, Any] | list[Any] | str | int | float | bool | None
 )
