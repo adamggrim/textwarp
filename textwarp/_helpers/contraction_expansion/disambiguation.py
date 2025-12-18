@@ -108,7 +108,9 @@ def disambiguate_s_or_d(span: Span) -> str | None:
 
     # Disambiguate "'d": "would" vs. "had".
     elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-        if next_token and next_token.tag_ in ('VBN', 'VBD'):
+        if next_token and next_token.lower_ == 'better':
+            return 'had'
+        elif next_token and next_token.tag_ in ('VBN', 'VBD'):
             return 'had'
         else:
             return 'would'
