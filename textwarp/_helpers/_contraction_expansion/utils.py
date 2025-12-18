@@ -32,12 +32,12 @@ def apply_expansion_casing(
 
     # Check for title case.
     if all(part[0].isupper() for part in original_parts):
-        return ''.join([
+        return ' '.join([
             capitalize_from_string(part) for part in expanded_parts
         ])
     # Check for sentence case.
     elif original_text[0].isupper():
-        return ''.join([
+        return ' '.join([
             capitalize_from_string(
                 part,
                 lowercase_by_default=True
