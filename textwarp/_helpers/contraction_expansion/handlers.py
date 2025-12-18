@@ -71,7 +71,10 @@ def handle_negation(span: Span) -> tuple[str, int]:
     # Verb comes before the subject (e.g., "Don't I").
     if subject_token and subject_token.i > verb_token.i:
         subject_text: str = subject_token.text
-        expanded_text: str = f'{base_verb} {subject_text} not'
+        # Everything between the end of the contraction and the subject.
+        intermediate_text: str = doc.text[span.end_char : subject_token.idx]
+
+        expanded_text: str = f'{base_verb}{intermediate_text}{subject_text} not'
         cased_text: str = (apply_expansion_casing(span.text, expanded_text))
 
         # New end index to skip over the subject in the main loop.
