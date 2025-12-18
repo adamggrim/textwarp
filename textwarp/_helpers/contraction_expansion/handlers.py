@@ -70,16 +70,18 @@ def handle_negation(span: Span) -> tuple[str, int]:
     # --- INVERSION CHECK ---
     # Verb comes before the subject (e.g., "Don't I").
     if subject_token and subject_token.i > verb_token.i:
-        subject_text: str = subject_token.text
-        # Everything between the end of the contraction and the subject.
-        intermediate_text: str = doc.text[span.end_char : subject_token.idx]
+        subject_end_token = subject_token.right_edge
+        subject_phrase_end_char_idx = (
+            subject_end_token.idx + len(subject_end_token)
+        )
+        # Everything between the end of the contraction and the end of the
+        # subject phrase.
+        intermediate_text = doc.text[span.end_char : subject_phrase_end_char_idx]
 
-        expanded_text: str = f'{base_verb}{intermediate_text}{subject_text} not'
-        cased_text: str = (apply_expansion_casing(span.text, expanded_text))
+        expanded_text: str = f'{base_verb}{intermediate_text} not'
+        cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
-        # New end index to skip over the subject in the main loop.
-        new_end_idx: int = subject_token.idx + len(subject_token)
-        return cased_text, new_end_idx
+        return cased_text, subject_phrase_end_char_idx
 
     # --- STANDARD ORDER (NO INVERSION) ---
     # Verb comes after the subject (e.g., "I don't").
