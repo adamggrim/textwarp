@@ -103,19 +103,16 @@ def expand_contractions_from_doc(doc: Doc) -> str:
     skip_until_idx = -1
 
     for match in matches:
-        start_char_idx: int
-        end_char_idx: int
-
-        start_char_idx, end_char_idx = match.span()
+        start_idx, end_idx = match.span()
 
         # If a previous inverted expansion already consumed this token,
         # skip it.
-        if start_char_idx < skip_until_idx:
+        if start_idx < skip_until_idx:
             continue
 
         # Append all text from the previous contraction (or beginning)
         # to the current contraction.
-        expanded_parts.append(doc.text[last_idx:start_char_idx])
+        expanded_parts.append(doc.text[last_idx:start_idx])
         contraction: str = match.group(0)
 
         # Check if complex negation/ambiguity logic is needed.
@@ -125,17 +122,17 @@ def expand_contractions_from_doc(doc: Doc) -> str:
         )
 
         if is_negation or is_ambiguous:
-            span: Span | None = doc.char_span(start_char_idx, end_char_idx)
+            span: Span | None = doc.char_span(start_idx, end_idx)
             if span:
                 expanded_text: str
-                new_end_char_idx: int
+                new_end_idx: int
 
-                expanded_text, new_end_char_idx = _expand_ambiguous_contraction(
+                expanded_text, new_end_idx = _expand_ambiguous_contraction(
                     contraction, span
                 )
                 expanded_parts.append(expanded_text)
-                last_idx = new_end_char_idx
-                skip_until_idx = new_end_char_idx
+                last_idx = new_end_idx
+                skip_until_idx = new_end_idx
                 continue
 
         # For unambiguous contractions, use the unambiguous contractions
@@ -146,7 +143,7 @@ def expand_contractions_from_doc(doc: Doc) -> str:
         )
 
         expanded_parts.append(cased_expansion)
-        last_idx = end_char_idx
+        last_idx = end_idx
 
     expanded_parts.append(doc.text[last_idx:])
     return ''.join(expanded_parts)
