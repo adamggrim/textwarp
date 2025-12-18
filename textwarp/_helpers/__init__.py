@@ -15,3 +15,5 @@ from ._quote_conversion import (
     straight_to_curly
 )
 from ._string_capitalization import capitalize_from_string
+
+from ._contraction_expansion import expand_contractions_from_doc
