@@ -93,7 +93,7 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     )
 
     prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
-    if (prev_token and prev_token.lower_ == "let" and
+    if (prev_token and prev_token.lower_ == 'let' and
             suffix_token.lower_ in APOSTROPHE_S_VARIANTS):
         return 'us'
 
