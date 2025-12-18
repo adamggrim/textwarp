@@ -11,7 +11,7 @@ from .._constants import (
     TITLE_CASE_TAG_EXCEPTIONS
 )
 from .._regexes import WarpingPatterns
-from ._string_capitalization import capitalize_from_string
+from .string_capitalization import capitalize_from_string
 
 
 def _find_next_word_token_idx(

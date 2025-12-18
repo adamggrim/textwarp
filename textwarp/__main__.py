@@ -9,8 +9,8 @@ This module is responsible for:
 """
 
 from ._args import ARGS_MAP
-from ._commands import _analysis
-from ._commands import _replacement
+from ._commands import analysis
+from ._commands import replacement
 from ._parsing import parse_args
 from ._runners import (
     analyze_text,
@@ -31,10 +31,10 @@ ALL_FUNC_NAMES: set[str] = {
 }
 
 # All function names for analysis commands.
-ANALYSIS_FUNC_NAMES: set[str] = set(_analysis.__all__)
+ANALYSIS_FUNC_NAMES: set[str] = set(analysis.__all__)
 
 # All function names for replacement commands.
-REPLACEMENT_FUNC_NAMES: set[str] = set(_replacement.__all__)
+REPLACEMENT_FUNC_NAMES: set[str] = set(replacement.__all__)
 
 # Signal set to represent the ``clear_clipboard`` function with the
 # ``clear`` command name.

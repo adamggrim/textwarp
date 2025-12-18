@@ -1,4 +1,4 @@
-from ._analysis import (
+from .analysis import (
     char_count,
     line_count,
     mfws,
@@ -7,7 +7,7 @@ from ._analysis import (
     time_to_read,
     word_count
 )
-from ._replacement import (
+from .replacement import (
     replace,
     regex_replace
 )

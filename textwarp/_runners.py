@@ -8,8 +8,8 @@ import pyperclip
 
 from ._args import ARGS_MAP
 from ._commands import (
-    _analysis,
-    _replacement
+    analysis,
+    replacement
 )
 from ._constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
@@ -134,7 +134,7 @@ def analyze_text(command_name: str) -> None:
         command_name: The name of the analysis function.
     """
     func_name = command_name.replace('-', '_')
-    command_func: Callable[[str], str] = getattr(_analysis, func_name)
+    command_func: Callable[[str], str] = getattr(analysis, func_name)
 
     _run_command_loop(command_func)
 
@@ -154,7 +154,7 @@ def replace_text(command_name: str) -> None:
         command_name: The name of the replacement function.
     """
     command_func: Callable[[str], str] = getattr(
-        _replacement,
+        replacement,
         command_name
     )
 

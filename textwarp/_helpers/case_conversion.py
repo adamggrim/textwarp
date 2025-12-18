@@ -12,15 +12,15 @@ from .._enums import (
     Casing
 )
 from .._regexes import ProgrammingCasePatterns
-from ._apostrophes import remove_apostrophes
-from ._entity_capitalization import (
+from .apostrophes import remove_apostrophes
+from .entity_capitalization import (
     locate_sentence_start_indices,
     locate_start_case_indices,
     locate_title_case_indices,
     map_proper_noun_entities,
     to_title_case_from_doc
 )
-from ._string_capitalization import capitalize_from_string
+from .string_capitalization import capitalize_from_string
 
 
 def change_first_letter_case(

@@ -1,8 +1,8 @@
 from spacy.tokens import Token
 
 from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP
-from .._quote_conversion import curly_to_straight
-from .._string_capitalization import capitalize_from_string
+from ..quote_conversion import curly_to_straight
+from ..string_capitalization import capitalize_from_string
 
 
 def apply_expansion_casing(
