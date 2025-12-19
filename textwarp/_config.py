@@ -17,6 +17,7 @@ ENTITY_CAPITALIZATION_DIR: Final = Path('entity_capitalization')
 CONTRACTION_EXPANSION_DIR: Final = Path('contraction_expansion')
 STRING_CAPITALIZATION_DIR: Final = Path('string_capitalization')
 
+
 def _load_json_from_data(relative_path: Path | str) -> JSONType:
     """
     Construct the path to a file relative to the base data directory and
@@ -36,15 +37,6 @@ def _load_json_from_data(relative_path: Path | str) -> JSONType:
         return cast(JSONType, json.load(json_file))
 
 
-# Capitalization mappings for entities with multiple possible
-# capitalizations.
-AMBIGUOUS_CAPITALIZATIONS: Final[dict[str, list[dict[str, Any]]]] = cast(
-    dict[str, list[dict[str, Any]]],
-    _load_json_from_data(
-        ENTITY_CAPITALIZATION_DIR / 'ambiguous_capitalizations_map.json'
-    )
-)
-
 # Capitalization mappings for contractions that can expand to multiple
 # phrases.
 AMBIGUOUS_CONTRACTIONS: Final[list[str]] = cast(
@@ -59,6 +51,15 @@ CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = cast(
     dict[str, str],
     _load_json_from_data(
         STRING_CAPITALIZATION_DIR / 'capitalized_abbreviations_map.json'
+    )
+)
+
+# Capitalization mappings for entities with multiple possible
+# capitalizations depending on context.
+CONTEXTUAL_CAPITALIZATIONS: Final[dict[str, list[dict[str, Any]]]] = cast(
+    dict[str, list[dict[str, Any]]],
+    _load_json_from_data(
+        ENTITY_CAPITALIZATION_DIR / 'contextual_capitalizations_map.json'
     )
 )
 
