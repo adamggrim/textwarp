@@ -37,6 +37,14 @@ def _load_json_from_data(relative_path: Path | str) -> JSONType:
         return cast(JSONType, json.load(json_file))
 
 
+# Map pairing each custom entity with its capitalized version.
+ABSOLUTE_CAPITALIZATIONS_MAP: Final[dict[str, str]] = cast(
+    dict[str, str],
+    _load_json_from_data(
+        ENTITY_CAPITALIZATION_DIR / 'absolute_capitalizations_map.json'
+    )
+)
+
 # Capitalization mappings for contractions that can expand to multiple
 # phrases.
 AMBIGUOUS_CONTRACTIONS: Final[list[str]] = cast(
@@ -68,14 +76,6 @@ CONTRACTION_SUFFIX_TOKENS: Final[list[str]] = cast(
     list[str],
     _load_json_from_data(
         ENTITY_CAPITALIZATION_DIR / 'contraction_suffix_tokens.json'
-    )
-)
-
-# Map pairing each custom entity with its capitalized version.
-CUSTOM_ENTITIES_MAP: Final[dict[str, str]] = cast(
-    dict[str, str],
-    _load_json_from_data(
-        ENTITY_CAPITALIZATION_DIR / 'custom_entities_map.json'
     )
 )
 
