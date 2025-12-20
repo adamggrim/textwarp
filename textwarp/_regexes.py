@@ -65,15 +65,6 @@ class ProgrammingCasePatterns:
         r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
     )
 
-    _CASE_PATTERNS: Final[tuple[re.Pattern[str], ...]] = (
-        CAMEL_WORD,
-        DOT_WORD,
-        KEBAB_WORD,
-        PASCAL_WORD,
-        SNAKE_WORD
-    )
-    _CASE_WORD: Final[str] = '|'.join(p.pattern for p in _CASE_PATTERNS)
-
     ANY_SEPARATOR: Final[re.Pattern[str]] = re.compile(r'[.\-_]')
     SPLIT_CAMEL_OR_PASCAL: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
