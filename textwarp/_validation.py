@@ -1,9 +1,9 @@
-class EmptyClipboardError(Exception):
-    """Exception raised when the clipboard is empty."""
 
+from ._exceptions import (
+    EmptyClipboardError,
+    WhitespaceClipboardError,
+)
 
-class WhitespaceClipboardError(Exception):
-    """Exception raised when the clipboard contains only whitespace."""
 
 
 def validate_clipboard(clipboard: str) -> None:
