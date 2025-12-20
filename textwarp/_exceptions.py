@@ -10,10 +10,6 @@ class InvalidCaseNameError(Exception):
     invalid."""
 
 
-class InvalidRegexError(Exception):
-    """Exception raised when the provided regex string is invalid."""
-
-
 class NoRegexError(Exception):
     """Exception raised when the provided regex string is empty."""
 
