@@ -53,16 +53,16 @@ class ProgrammingCasePatterns:
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
     )
     DOT_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\b'
+        r'\b[a-zA-Z][a-zA-Z0-9]*(?:\.[a-zA-Z0-9]+)+\b'
     )
     KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-z][a-z0-9]*(?:\-[a-z0-9]+)+\b'
+        r'\b[a-zA-Z][a-zA-Z0-9]*(?:\-[a-zA-Z0-9]+)+\b'
     )
     PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
     )
     SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b_?[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b'
+        r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
     )
 
     _CASE_PATTERNS: Final[tuple[re.Pattern[str], ...]] = (
