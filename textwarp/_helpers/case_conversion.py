@@ -154,12 +154,11 @@ def to_separator_case(
         elif part == ' ':
             # Default to keeping the space.
             processed_part = part
-            # Check if the space is surrounded by lowercase parts.
+            # Check if the space is surrounded by alphabetical parts.
             if i > 0 and i < len(parts) - 1:
                 prev_part = parts[i - 1]
                 next_part = parts[i + 1]
-                if (prev_part.isalpha() and prev_part.islower() and
-                        next_part.isalpha() and next_part.islower()):
+                if (prev_part.isalpha() and next_part.isalpha()):
                     processed_part = separator.value
         # Part is already in the given separator case.
         elif separator_pattern.match(part):
