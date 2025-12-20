@@ -111,22 +111,16 @@ class ProgrammingCasePatterns:
         ''', re.VERBOSE
     )
     SPLIT_FOR_PASCAL_CONVERSION: Final[re.Pattern[str]] = re.compile(rf'''
-        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE, PUNCTUATION
-        # OR PROGRAMMING CASE
+        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE OR
+        # PUNCTUATION
         (?<!                            # Not preceded by...
             [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
                                         # closing punctuation.
-            |                           # OR
-            {_CASE_WORD}                # Any Pascal, camel, dot,
-                                        # kebab or snake case word.
         )
         [ ]                             # A single space.
         (?!                             # Not followed by...
             [\s—–\-"“”\'‘‘(\[{{]        # A space character or select
                                         # opening punctuation.
-            |                           # OR
-            {_CASE_WORD}                # Any Pascal, camel, dot,
-                                        # kebab, snake case word.
         )
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
