@@ -27,6 +27,9 @@ CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = 'Error accessing clipboard: '
 # Message for when the clipboard is cleared.
 CLIPBOARD_CLEARED_MESSAGE: Final = 'Clipboard text cleared.'
 
+# Prompt for the user to enter a case to replace.
+ENTER_CASE_TO_REPLACE_PROMPT: Final = 'Enter the case to replace:'
+
 # Prompt for the user to enter the number of most frequent words.
 ENTER_MFW_COUNT_PROMPT: Final = 'How many most frequent words?'
 
@@ -35,6 +38,9 @@ ENTER_NUMBER_PROMPT: Final = 'Please enter a number.'
 
 # Prompt for the user to enter a regular expression to find.
 ENTER_REGEX_PROMPT: Final = 'Enter a regular expression to replace:'
+
+# Prompt for the user to enter a replacement case.
+ENTER_REPLACEMENT_CASE_PROMPT: Final = 'Enter replacement case:'
 
 # Prompt for the user to enter replacement text.
 ENTER_REPLACEMENT_PROMPT: Final = 'Enter replacement text:'
