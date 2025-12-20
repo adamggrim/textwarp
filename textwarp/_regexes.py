@@ -125,7 +125,7 @@ class ProgrammingCasePatterns:
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
         (?<=                            # Preceded by...
-            [a-z][a-z0-9]*              # A letter followed by zero or
+            [a-zA-Z][a-zA-Z0-9]*        # A letter followed by zero or
                                         # more letters or digits.
         )
         [.\-]                           # A hyphen or period.
