@@ -25,9 +25,9 @@ def replace(text: str) -> str:
         str: The transformed text.
     """
     print_wrapped(ENTER_TEXT_TO_REPLACE_PROMPT)
-    text_to_replace: str = input().rstrip('\n')
-    replacement_text: str = input().rstrip('\n')
+    text_to_replace = input().rstrip('\n')
     print_wrapped(ENTER_REPLACEMENT_TEXT_PROMPT)
+    replacement_text = input().rstrip('\n')
     return text.replace(text_to_replace, replacement_text)
 
 
@@ -43,7 +43,7 @@ def regex_replace(text: str) -> str:
         str: The transformed text.
     """
     print_wrapped(ENTER_REGEX_PROMPT)
-    regex_text: str = input().rstrip('\n')
-    replacement_text: str = input().rstrip('\n')
+    regex_text = input().rstrip('\n')
     print_wrapped(ENTER_REPLACEMENT_TEXT_PROMPT)
+    replacement_text = input().rstrip('\n')
     return re.sub(regex_text, replacement_text, text)
