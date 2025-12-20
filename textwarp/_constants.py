@@ -43,7 +43,7 @@ ENTER_REGEX_PROMPT: Final = 'Enter a regular expression to replace:'
 ENTER_REPLACEMENT_CASE_PROMPT: Final = 'Enter replacement case:'
 
 # Prompt for the user to enter replacement text.
-ENTER_REPLACEMENT_PROMPT: Final = 'Enter replacement text:'
+ENTER_REPLACEMENT_TEXT_PROMPT: Final = 'Enter replacement text:'
 
 # Prompt for the user to enter text to find.
 ENTER_TEXT_TO_REPLACE_PROMPT: Final = 'Enter text to replace:'
