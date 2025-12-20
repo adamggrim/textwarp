@@ -196,6 +196,9 @@ def word_to_pascal(word: str) -> str:
     """
     Convert a single word to Pascal case.
 
+    This function applies to words split by the
+    ``SPLIT_FOR_PASCAL_CONVERSION`` regular expression.
+
     Args:
         word: The word to convert.
 
