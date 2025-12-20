@@ -3,8 +3,7 @@ from typing import Callable
 import regex as re
 from spacy.tokens import (
     Doc,
-    Span,
-    Token
+    Span
 )
 
 from .._enums import (
