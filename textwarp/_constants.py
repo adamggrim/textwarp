@@ -1,5 +1,5 @@
 """
-This module contains constants used across the package.
+This module contains constants of various types used across the package.
 """
 
 from typing import Final
