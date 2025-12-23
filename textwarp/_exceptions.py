@@ -18,11 +18,6 @@ class NoCaseNameError(Exception):
     """Exception raised when the provided case name string is empty."""
 
 
-class NoReplacementTextError(Exception):
-    """Exception raised when the provided replacement text string is
-    empty."""
-
-
 class RegexNotFoundError(Exception):
     """Exception raised when the provided regex string is not found in
     the searched text."""
