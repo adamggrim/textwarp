@@ -1,8 +1,17 @@
+import regex as re
+from typing import (
+    Callable,
+    Final
+)
 
 from ._constants import CASE_NAMES_MAP
 from ._exceptions import (
     EmptyClipboardError,
-    WhitespaceClipboardError,
+    InvalidCaseNameError,
+    NoCaseNameError,
+    NoRegexError,
+    WhitespaceCaseNameError,
+    WhitespaceClipboardError
 )
 from .warping import (
     to_camel_case,
@@ -51,3 +60,51 @@ def validate_clipboard(clipboard: str) -> None:
         raise EmptyClipboardError('Clipboard is empty.')
     elif clipboard.strip() == '':
         raise WhitespaceClipboardError('Clipboard contains only whitespace.')
+
+
+def validate_case_name(case_name_input: str) -> None:
+    """
+    Validate a case name string.
+
+    This function checks whether the string is a valid case name (i.e.,
+    camel case, dot case, lowercase, kebab case, Pascal case, snake case
+    or uppercase).
+
+    Args:
+        case_name_input: A string representing a case name.
+
+    Raises:
+        NoCaseNameError: If the input string is empty.
+        WhitespaceCaseNameError: If the input string contains only
+            whitespace.
+        InvalidCaseNameError: If the input is not a valid case name.
+    """
+    if case_name_input == '':
+        raise NoCaseNameError('Case name string is empty.')
+    elif case_name_input.strip() == '':
+        raise WhitespaceCaseNameError(
+            'Case name contains only whitespace.'
+        )
+    elif case_name_input.lower() not in CASE_NAMES_MAP:
+        raise InvalidCaseNameError('Invalid case name.')
+
+
+
+def validate_regex(regex_input: str) -> None:
+    """
+    Validate a regular expression string.
+
+    This function checks whether the string is a valid regular
+    expression.
+
+    Args:
+        regex_input: A string representing a regular expression.
+
+    Raises:
+        NoRegexError: If the input string is empty.
+        re.error: If the input string is not a valid regular expression.
+    """
+    if regex_input == '':
+        raise NoRegexError('Regex string is empty.')
+
+    re.compile(regex_input)
