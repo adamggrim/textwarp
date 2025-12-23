@@ -14,7 +14,7 @@ from ..quote_conversion import curly_to_straight
 from .handlers import (
     handle_negation,
     handle_s_or_d,
-    handle_whatcha,
+    handle_whatcha
 )
 from .utils import apply_expansion_casing
 

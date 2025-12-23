@@ -200,7 +200,7 @@ def _preserve_existing_capitalization(
 
 def capitalize_from_string(
     word: str,
-    lowercase_by_default: bool = False,
+    lowercase_by_default: bool = False
 ) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving
