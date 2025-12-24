@@ -1,15 +1,29 @@
 import regex as re
+from typing import Callable
 
 from .._constants import (
-    ENTER_TEXT_TO_REPLACE_PROMPT,
+    ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
+    ENTER_REPLACEMENT_CASE_PROMPT,
     ENTER_REPLACEMENT_TEXT_PROMPT,
+    ENTER_TEXT_TO_REPLACE_PROMPT
+)
+from .._exceptions import (
+    CaseNotFoundError,
+    RegexNotFoundError,
+    TextToReplaceNotFoundError
 )
 from .._ui import print_wrapped
+from .._validation import (
+    validate_case_name,
+    validate_regex,
+    validate_text
+)
 
 __all__ = [
+    'case_replace',
     'replace',
-    'regex_replace',
+    'regex_replace'
 ]
 
 
