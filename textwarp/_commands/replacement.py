@@ -13,6 +13,34 @@ __all__ = [
 ]
 
 
+def _prompt_for_valid_input(
+    enter_text_prompt: str,
+    validation_func: Callable[[str], None],
+    enter_valid_text_prompt: str
+) -> str:
+    """
+    Prompt the user for input until the input is valid.
+
+    Args:
+        enter_text_prompt: The prompt to display to the user.
+        validation_func: A function that accepts a string as input,
+            returning ``None`` if the string is valid or raising an
+            exception if the string is invalid.
+        enter_valid_text_prompt: The prompt to display when the input is
+            invalid.
+    """
+    current_prompt = enter_text_prompt
+
+    while True:
+        print_wrapped(current_prompt)
+        user_input = input().rstrip('\n')
+
+        try:
+            validation_func(user_input)
+            return user_input
+        except Exception as e:
+            print_wrapped(str(e))
+            current_prompt = enter_valid_text_prompt
 def replace(text: str) -> str:
     """
     Prompt the user for a string to find and replace, and return the
