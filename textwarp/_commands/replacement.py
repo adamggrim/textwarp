@@ -55,6 +55,32 @@ def _prompt_for_valid_input(
         except Exception as e:
             print_wrapped(str(e))
             current_prompt = enter_valid_text_prompt
+
+
+def case_replace(text: str) -> str:
+    """
+    Prompt the user for a case to replace and a replacement case, and
+    return the transformed text.
+
+    Args:
+        text: The string to transform.
+
+    Returns:
+        str: The transformed text.
+    """
+    case_to_replace = _prompt_for_valid_input(
+        ENTER_CASE_TO_REPLACE_PROMPT,
+        validate_case_name,
+        ENTER_VALID_CASE_NAME_PROMPT
+    )
+    replacement_case = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_CASE_PROMPT,
+        validate_case_name,
+        ENTER_VALID_CASE_NAME_PROMPT
+    )
+    return text.replace(case_to_replace, replacement_case)
+
+
 def replace(text: str) -> str:
     """
     Prompt the user for a string to find and replace, and return the
