@@ -1,7 +1,7 @@
 from spacy.tokens import Span
 
 from ..._constants import AIN_T_SUFFIX_VARIANTS
-from ..._regexes import WarpingPatterns
+from ..._constants import WarpingPatterns
 from .disambiguation import (
     disambiguate_ain_t,
     disambiguate_whatcha,

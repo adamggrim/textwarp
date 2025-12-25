@@ -1,6 +1,6 @@
 import regex as re
 
-from .._regexes import WarpingPatterns
+from .._constants import WarpingPatterns
 
 
 def _replace_opening_quote(match: re.Match[str]) -> str:

@@ -10,7 +10,7 @@ from .._constants import (
     PROPER_NOUN_ENTITIES,
     TITLE_CASE_TAG_EXCEPTIONS
 )
-from .._regexes import WarpingPatterns
+from .._constants import WarpingPatterns
 from .string_capitalization import capitalize_from_string
 
 

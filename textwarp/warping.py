@@ -24,7 +24,7 @@ from ._config import (
     REVERSED_MORSE_MAP
 )
 from ._enums import CaseSeparator
-from ._regexes import (
+from ._constants import (
     ProgrammingCasePatterns,
     WarpingPatterns
 )

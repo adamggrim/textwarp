@@ -4,7 +4,7 @@ from typing import (
     final
 )
 
-from ._config import (
+from .._config import (
     AMBIGUOUS_CONTRACTIONS,
     CONTRACTION_SUFFIX_TOKENS,
     ELISION_WORDS,
@@ -14,8 +14,8 @@ from ._config import (
     OTHER_PREFIXED_NAMES_MAP,
     UNAMBIGUOUS_CONTRACTIONS_MAP
 )
-from ._decorators import non_instantiable
-from ._enums import RegexBoundary
+from .._decorators import non_instantiable
+from .._enums import RegexBoundary
 
 
 @final

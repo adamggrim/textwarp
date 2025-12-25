@@ -3,7 +3,7 @@ from spacy.tokens import (
     Span
 )
 
-from ..._regexes import WarpingPatterns
+from ..._constants import WarpingPatterns
 
 from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP
 from ..._constants import (

@@ -10,7 +10,7 @@ from .._enums import (
     CaseSeparator,
     Casing
 )
-from .._regexes import ProgrammingCasePatterns
+from .._constants import ProgrammingCasePatterns
 from .apostrophes import remove_apostrophes
 from .entity_capitalization import (
     locate_sentence_start_indices,

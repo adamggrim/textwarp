@@ -1,4 +1,4 @@
-from .._regexes import WarpingPatterns
+from .._constants import WarpingPatterns
 
 
 def remove_apostrophes(text: str) -> str:
