@@ -95,10 +95,16 @@ def replace(text: str) -> str:
     Returns:
         str: The transformed text.
     """
-    print_wrapped(ENTER_TEXT_TO_REPLACE_PROMPT)
-    text_to_replace = input().rstrip('\n')
-    print_wrapped(ENTER_REPLACEMENT_TEXT_PROMPT)
-    replacement_text = input().rstrip('\n')
+    text_to_replace = _prompt_for_valid_input(
+        ENTER_TEXT_TO_REPLACE_PROMPT,
+        validate_text,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    replacement_text = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_TEXT_PROMPT,
+        validate_text,
+        ENTER_VALID_TEXT_PROMPT
+    )
     return text.replace(text_to_replace, replacement_text)
 
 
@@ -113,8 +119,14 @@ def regex_replace(text: str) -> str:
     Returns:
         str: The transformed text.
     """
-    print_wrapped(ENTER_REGEX_PROMPT)
-    regex_text = input().rstrip('\n')
-    print_wrapped(ENTER_REPLACEMENT_TEXT_PROMPT)
-    replacement_text = input().rstrip('\n')
+    regex_text = _prompt_for_valid_input(
+        ENTER_REGEX_PROMPT,
+        validate_regex,
+        ENTER_VALID_REGEX_PROMPT
+    )
+    replacement_text = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_TEXT_PROMPT,
+        validate_text,
+        ENTER_VALID_TEXT_PROMPT
+    )
     return re.sub(regex_text, replacement_text, text)
