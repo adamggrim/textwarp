@@ -48,8 +48,17 @@ ENTER_REPLACEMENT_TEXT_PROMPT: Final = 'Enter replacement text:'
 # Prompt for the user to enter text to find.
 ENTER_TEXT_TO_REPLACE_PROMPT: Final = 'Enter text to replace:'
 
+# Prompt for when the previous case name was invalid.
+ENTER_VALID_CASE_NAME_PROMPT: Final = 'Please enter a valid case name.'
+
+# Prompt for when the previous regex was invalid.
+ENTER_VALID_REGEX_PROMPT: Final = 'Please enter a valid regular expression.'
+
 # Prompt for when the previous response was invalid.
 ENTER_VALID_RESPONSE_PROMPT: Final = 'Please enter a valid response (y/n).'
+
+# Prompt for when the previous text was invalid.
+ENTER_VALID_TEXT_PROMPT: Final = 'Please enter valid text.'
 
 # Prompt for the user to enter the words per minute.
 ENTER_WPM_PROMPT: Final = 'How many words per minute?'
