@@ -83,8 +83,8 @@ def case_replace(text: str) -> str:
 
 def replace(text: str) -> str:
     """
-    Prompt the user for a string to find and replace, and return the
-    transformed text.
+    Prompt the user for a string to replace and a string to replace it,
+    and return the transformed text.
 
     Args:
         text: The string to transform.
@@ -101,8 +101,8 @@ def replace(text: str) -> str:
 
 def regex_replace(text: str) -> str:
     """
-    Prompt the user for a regular expression to find and replace, and
-    return the transformed text.
+    Prompt the user for a regular expression to find and a string to
+    replace it, and return the transformed text.
 
     Args:
         text: The string to transform.

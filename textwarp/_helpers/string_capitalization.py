@@ -125,8 +125,8 @@ def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The mixed-case word, or ``None`` if ``lower_word`` is
-            not in ``MIXED_CASE_WORDS_MAP``.
+        str | None: The mixed-case word, or ``None`` if ``lower_word``
+            is not in ``MIXED_CASE_WORDS_MAP``.
     """
     return _capitalize_from_map(lower_word, MIXED_CASE_WORDS_MAP)
 
