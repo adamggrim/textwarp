@@ -41,6 +41,18 @@ CASE_NAMES_MAP: Final[dict[str, Callable[[str], str]]]= {
 }
 
 
+def validate_any_text(text: str) -> None:
+    """
+    Validate and accept any text string.
+
+    This function applies when deletion of a string is valid.
+
+    Args:
+        text: A string of any text.
+    """
+    pass
+
+
 def validate_clipboard(clipboard: str) -> None:
     """
     Validate the clipboard input.
