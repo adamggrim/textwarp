@@ -41,10 +41,12 @@ class ProgrammingCasePatterns:
             DOT_WORD: Matches a dot case word (e.g., ``dot.word``).
             KEBAB_WORD: Matches a kebab case word (e.g.,
                 ``kebab-word``).
+            LOWER_WORD: Matches a lowercase word (e.g., ``lowercase``).
             PASCAL_WORD: Matches a Pascal case word (e.g.,
                 ``PascalWord``).
             SNAKE_WORD: Matches a snake case word (e.g.,
                 ``snake_word``).
+            UPPER_WORD: Matches an uppercase word (e.g., ``UPPERCASE``).
 
         Splitting Patterns:
             ANY_SEPARATOR: Matches any separator used in dot, kebab or
@@ -69,11 +71,17 @@ class ProgrammingCasePatterns:
     KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-zA-Z][a-zA-Z0-9]*(?:\-[a-zA-Z0-9]+)+\b'
     )
+    LOWER_WORD: Final[re.Pattern[str]] = re.compile(
+        r'\b[a-z][a-z0-9]*\b'
+    )
     PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
     )
     SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
+    )
+    UPPER_WORD: Final[re.Pattern[str]] = re.compile(
+        r'\b[A-Z][A-Z0-9]*\b'
     )
 
     # --- SPLITTING PATTERNS ---
