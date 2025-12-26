@@ -4,6 +4,28 @@ This module contains string constants used across the package.
 
 from typing import Final
 
+__all__ = [
+    'CLIPBOARD_ACCESS_ERROR_MESSAGE',
+    'CLIPBOARD_CLEARED_MESSAGE',
+    'ENTER_CASE_TO_REPLACE_PROMPT',
+    'ENTER_MFW_COUNT_PROMPT',
+    'ENTER_NUMBER_PROMPT',
+    'ENTER_REGEX_PROMPT',
+    'ENTER_REPLACEMENT_CASE_PROMPT',
+    'ENTER_REPLACEMENT_TEXT_PROMPT',
+    'ENTER_TEXT_TO_REPLACE_PROMPT',
+    'ENTER_VALID_CASE_NAME_PROMPT',
+    'ENTER_VALID_REGEX_PROMPT',
+    'ENTER_VALID_RESPONSE_PROMPT',
+    'ENTER_VALID_TEXT_PROMPT',
+    'ENTER_WPM_PROMPT',
+    'EXIT_MESSAGE',
+    'HELP_DESCRIPTION',
+    'MODIFIED_TEXT_COPIED_MESSAGE',
+    'TEXT_TO_REPLACE_NOT_FOUND_MESSAGE'
+]
+
+
 # Message for any error accessing the clipboard.
 CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = 'Error accessing clipboard: '
 
