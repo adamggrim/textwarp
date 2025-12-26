@@ -25,7 +25,7 @@ from ._config import (
 )
 from ._enums import CaseSeparator
 from ._constants import (
-    ProgrammingCasePatterns,
+    CasePatterns,
     WarpingPatterns
 )
 
@@ -409,7 +409,7 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text = to_pascal_case(text)
-    return ProgrammingCasePatterns.PASCAL_WORD.sub(
+    return CasePatterns.PASCAL_WORD.sub(
         lambda m: change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
@@ -508,7 +508,7 @@ def to_pascal_case(text: str) -> str:
     """
     no_apostrophes_text: str = remove_apostrophes(text)
     words: list[str] = (
-        ProgrammingCasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
+        CasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
             no_apostrophes_text
         )
     )

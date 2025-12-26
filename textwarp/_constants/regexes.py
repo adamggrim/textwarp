@@ -23,14 +23,14 @@ from .._decorators import non_instantiable
 from .._enums import RegexBoundary
 
 __all__ = [
-    'ProgrammingCasePatterns',
+    'CasePatterns',
     'WarpingPatterns'
 ]
 
 
 @final
 @non_instantiable
-class ProgrammingCasePatterns:
+class CasePatterns:
     """
     A namespace for compiled regular expressions identifying and
     converting between programming cases.

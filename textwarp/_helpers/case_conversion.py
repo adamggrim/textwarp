@@ -10,7 +10,7 @@ from .._enums import (
     CaseSeparator,
     Casing
 )
-from .._constants import ProgrammingCasePatterns
+from .._constants import CasePatterns
 from .apostrophes import remove_apostrophes
 from .entity_capitalization import (
     locate_sentence_start_indices,
@@ -136,7 +136,7 @@ def to_separator_case(
     """
     no_apostrophes_text = remove_apostrophes(text)
     parts: list[str] = (
-        ProgrammingCasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
+        CasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
             no_apostrophes_text
         )
     )
@@ -144,7 +144,7 @@ def to_separator_case(
 
     separator_pattern_name = f'{separator.name}_WORD'
     separator_pattern: re.Pattern[str] = getattr(
-        ProgrammingCasePatterns,
+        CasePatterns,
         separator_pattern_name
     )
     other_separators: list[CaseSeparator] = [
@@ -172,21 +172,21 @@ def to_separator_case(
             processed_part = part
         # Part is in another separator case.
         elif any(
-            getattr(ProgrammingCasePatterns, f'{s.name}_WORD').match(part)
+            getattr(CasePatterns, f'{s.name}_WORD').match(part)
             for s in other_separators
         ):
             processed_part = (
-                ProgrammingCasePatterns.ANY_SEPARATOR.sub(
+                CasePatterns.ANY_SEPARATOR.sub(
                     separator.value,
                     part
                 )
             )
         # Part is in camel or Pascal case.
-        elif (ProgrammingCasePatterns.CAMEL_WORD.match(part)
-              or ProgrammingCasePatterns.PASCAL_WORD.match(part)):
+        elif (CasePatterns.CAMEL_WORD.match(part)
+              or CasePatterns.PASCAL_WORD.match(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                ProgrammingCasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
+                CasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
             lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
@@ -215,10 +215,10 @@ def word_to_pascal(word: str) -> str:
     if not any(char.isalpha() for char in word):
         return word
     # Word is already in Pascal case.
-    if ProgrammingCasePatterns.PASCAL_WORD.match(word):
+    if CasePatterns.PASCAL_WORD.match(word):
         return word
     # Word is in camel case.
-    if ProgrammingCasePatterns.CAMEL_WORD.match(word):
+    if CasePatterns.CAMEL_WORD.match(word):
         return change_first_letter_case(word, str.upper)
     # Word is not in Pascal or camel case.
     return capitalize_from_string(word)
