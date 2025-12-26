@@ -102,7 +102,6 @@ def validate_case_name(case_name: str) -> None:
         raise InvalidCaseNameError('Invalid case name.')
 
 
-
 def validate_regex(regex: str) -> None:
     """
     Validate a regular expression string.
@@ -126,6 +125,8 @@ def validate_regex(regex: str) -> None:
 def validate_text(text: str) -> None:
     """
     Validate a text string.
+
+    This function applies when deletion of a string is invalid.
 
     Args:
         text: A string of text.

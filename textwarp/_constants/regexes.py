@@ -1,5 +1,5 @@
 """
-This module contains regular expression patterns used across the
+This module contains regular expressions used across the
 package.
 """
 
@@ -36,7 +36,7 @@ class ProgrammingCasePatterns:
     converting between programming cases.
 
     Attributes:
-        Case-Matching Patterns:
+        Case Patterns:
             CAMEL_WORD: Matches a camel case word (e.g., ``camelWord``).
             DOT_WORD: Matches a dot case word (e.g., ``dot.word``).
             KEBAB_WORD: Matches a kebab case word (e.g.,
@@ -59,6 +59,7 @@ class ProgrammingCasePatterns:
                 separator word boundaries before converting to dot,
                 kebab or snake case.
     """
+    # --- CASE PATTERNS ---
     CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
     )
@@ -75,6 +76,7 @@ class ProgrammingCasePatterns:
         r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
     )
 
+    # --- SPLITTING PATTERNS ---
     ANY_SEPARATOR: Final[re.Pattern[str]] = re.compile(r'[.\-_]')
     SPLIT_CAMEL_OR_PASCAL: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
