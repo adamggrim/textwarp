@@ -74,7 +74,7 @@ def validate_clipboard(clipboard: str) -> None:
         raise WhitespaceClipboardError('Clipboard contains only whitespace.')
 
 
-def validate_case_name(case_name_input: str) -> None:
+def validate_case_name(case_name: str) -> None:
     """
     Validate a case name string.
 
@@ -83,7 +83,7 @@ def validate_case_name(case_name_input: str) -> None:
     or uppercase).
 
     Args:
-        case_name_input: A string representing a case name.
+        case_name: A string representing a case name.
 
     Raises:
         NoCaseNameError: If the input string is empty.
@@ -91,18 +91,18 @@ def validate_case_name(case_name_input: str) -> None:
             whitespace.
         InvalidCaseNameError: If the input is not a valid case name.
     """
-    if case_name_input == '':
+    if case_name == '':
         raise NoCaseNameError('Case name string is empty.')
-    elif case_name_input.strip() == '':
+    elif case_name.strip() == '':
         raise WhitespaceCaseNameError(
             'Case name contains only whitespace.'
         )
-    elif case_name_input.lower() not in CASE_NAMES_MAP:
+    elif case_name.lower() not in CASE_NAMES_MAP:
         raise InvalidCaseNameError('Invalid case name.')
 
 
 
-def validate_regex(regex_input: str) -> None:
+def validate_regex(regex: str) -> None:
     """
     Validate a regular expression string.
 
@@ -110,13 +110,14 @@ def validate_regex(regex_input: str) -> None:
     expression.
 
     Args:
-        regex_input: A string representing a regular expression.
+        regex: A string representing a regular expression.
 
     Raises:
         NoRegexError: If the input string is empty.
         re.error: If the input string is not a valid regular expression.
     """
-    if regex_input == '':
+    if regex == '':
         raise NoRegexError('Regex string is empty.')
 
-    re.compile(regex_input)
+    re.compile(regex)
+
