@@ -1,5 +1,5 @@
 """
-This module contains configuration constants of used across the package.
+This module contains sets and tuples used across the package.
 """
 
 from typing import Final

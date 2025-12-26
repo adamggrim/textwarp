@@ -1,3 +1,8 @@
+"""
+This module contains regular expression patterns used across the
+package.
+"""
+
 import regex as re
 from typing import (
     Final,
