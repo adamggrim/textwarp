@@ -13,6 +13,14 @@ from .._constants import (
 from .._constants import WarpingPatterns
 from .string_capitalization import capitalize_from_string
 
+__all__ = [
+    'locate_sentence_start_indices',
+    'locate_start_case_indices',
+    'locate_title_case_indices',
+    'map_proper_noun_entities',
+    'to_title_case_from_doc'
+]
+
 
 def _find_next_word_token_idx(
     start_idx: int,

@@ -1,5 +1,7 @@
 from .._constants import WarpingPatterns
 
+__all__ = ['remove_apostrophes']
+
 
 def remove_apostrophes(text: str) -> str:
     """

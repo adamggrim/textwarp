@@ -3,6 +3,11 @@ from spacy.tokens import Doc
 from .._constants import POS_WORD_TAGS
 from .._nlp import nlp
 
+__all__ = [
+    'extract_words_from_doc',
+    'process_as_doc'
+]
+
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
     """

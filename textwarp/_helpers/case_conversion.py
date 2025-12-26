@@ -21,6 +21,13 @@ from .entity_capitalization import (
 )
 from .string_capitalization import capitalize_from_string
 
+__all__ = [
+    'change_first_letter_case',
+    'doc_to_case',
+    'to_separator_case',
+    'word_to_pascal'
+]
+
 
 def change_first_letter_case(
     text: str,

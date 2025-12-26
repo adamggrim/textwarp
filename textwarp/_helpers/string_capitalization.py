@@ -9,6 +9,8 @@ from .._config import (
 )
 from .._constants import WarpingPatterns
 
+__all__ = ['capitalize_from_string']
+
 
 def _capitalize_from_map(
     lower_word: str,

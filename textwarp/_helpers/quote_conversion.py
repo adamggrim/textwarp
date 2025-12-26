@@ -2,6 +2,11 @@ import regex as re
 
 from .._constants import WarpingPatterns
 
+__all__ = [
+    'curly_to_straight',
+    'straight_to_curly'
+]
+
 
 def _replace_opening_quote(match: re.Match[str]) -> str:
     """
