@@ -1,4 +1,3 @@
 from .regexes import *
-from .sets import *
+from .definitions import *
 from .strings import *
-from .tuples import *

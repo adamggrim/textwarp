@@ -4,6 +4,18 @@ This module contains configuration constants of used across the package.
 
 from typing import Final
 
+__all__ = [
+    'EXIT_INPUTS',
+    'NO_INPUTS',
+    'OPEN_QUOTES',
+    'POS_TAGS',
+    'POS_WORD_TAGS',
+    'PROPER_NOUN_ENTITIES',
+    'TITLE_CASE_TAG_EXCEPTIONS',
+    'YES_INPUTS'
+]
+
+
 # Inputs for exiting the program.
 EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
 
