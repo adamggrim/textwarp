@@ -25,6 +25,7 @@ from ._config import (
 )
 from ._enums import CaseSeparator
 from ._constants import (
+    CaseConversionPatterns,
     CasePatterns,
     WarpingPatterns
 )
@@ -508,7 +509,7 @@ def to_pascal_case(text: str) -> str:
     """
     no_apostrophes_text: str = remove_apostrophes(text)
     words: list[str] = (
-        CasePatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
+        CaseConversionPatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
             no_apostrophes_text
         )
     )

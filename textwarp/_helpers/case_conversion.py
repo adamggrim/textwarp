@@ -10,7 +10,10 @@ from .._enums import (
     CaseSeparator,
     Casing
 )
-from .._constants import CasePatterns
+from .._constants import (
+    CaseConversionPatterns,
+    CasePatterns
+)
 from .apostrophes import remove_apostrophes
 from .entity_capitalization import (
     locate_sentence_start_indices,
@@ -136,7 +139,7 @@ def to_separator_case(
     """
     no_apostrophes_text = remove_apostrophes(text)
     parts: list[str] = (
-        CasePatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
+        CaseConversionPatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
             no_apostrophes_text
         )
     )
@@ -176,7 +179,7 @@ def to_separator_case(
             for s in other_separators
         ):
             processed_part = (
-                CasePatterns.ANY_SEPARATOR.sub(
+                CaseConversionPatterns.ANY_SEPARATOR.sub(
                     separator.value,
                     part
                 )
@@ -186,7 +189,7 @@ def to_separator_case(
               or CasePatterns.PASCAL_WORD.match(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                CasePatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
+                CaseConversionPatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
             )
             lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
