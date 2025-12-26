@@ -10,6 +10,7 @@ from ._exceptions import (
     InvalidCaseNameError,
     NoCaseNameError,
     NoRegexError,
+    NoTextError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
@@ -121,3 +122,15 @@ def validate_regex(regex: str) -> None:
 
     re.compile(regex)
 
+
+def validate_text(text: str) -> None:
+    """
+    Validate a text string.
+
+    Args:
+        text: A string of text.
+    Raises:
+        ValueError: If the text string is empty.
+    """
+    if text == '':
+        raise NoTextError('Text string is empty.')
