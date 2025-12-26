@@ -20,6 +20,10 @@ class NoCaseNameError(Exception):
     """Exception raised when the provided case name string is empty."""
 
 
+class NoTextError(Exception):
+    """Exception raised when the provided text string is empty."""
+
+
 class RegexNotFoundError(Exception):
     """Exception raised when the provided regex string is not found in
     the searched text."""
