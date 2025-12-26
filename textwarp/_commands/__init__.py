@@ -1,13 +1,2 @@
-from .analysis import (
-    char_count,
-    line_count,
-    mfws,
-    pos_count,
-    sentence_count,
-    time_to_read,
-    word_count
-)
-from .replacement import (
-    replace,
-    regex_replace
-)
+from .analysis import *
+from .replacement import *
