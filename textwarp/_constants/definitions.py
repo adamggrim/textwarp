@@ -17,6 +17,8 @@ from ..warping import (
 )
 
 __all__ = [
+    'CASE_NAMES_FUNC_MAP',
+    'CASE_NAMES_REGEX_MAP',
     'EXIT_INPUTS',
     'NO_INPUTS',
     'OPEN_QUOTES',
