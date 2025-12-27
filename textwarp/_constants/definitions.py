@@ -27,6 +27,23 @@ __all__ = [
     'YES_INPUTS'
 ]
 
+# Mapping of valid case name inputs to their standardized names.
+CASE_NAMES_FUNC_MAP: Final[dict[str, Callable[[str], str]]]= {
+    'camel': to_camel_case,
+    'camel case': to_camel_case,
+    'dot': to_dot_case,
+    'dot case': to_dot_case,
+    'lower': str.lower,
+    'lowercase': str.lower,
+    'kebab': to_kebab_case,
+    'kebab case': to_kebab_case,
+    'pascal': to_pascal_case,
+    'pascal case': to_pascal_case,
+    'snake': to_snake_case,
+    'snake case': to_snake_case,
+    'upper': str.upper,
+    'uppercase': str.upper,
+}
 
 # Inputs for exiting the program.
 EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
