@@ -14,9 +14,7 @@ from ._exceptions import (
 
 def validate_any_text(text: str) -> None:
     """
-    Validate and accept any text string.
-
-    This function applies when deletion of a string is valid.
+    Validate and accept any text string, including empty text.
 
     Args:
         text: A string of any text.
