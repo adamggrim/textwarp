@@ -66,7 +66,7 @@ def validate_case_name(case_name: str) -> None:
         raise WhitespaceCaseNameError(
             'Case name contains only whitespace.'
         )
-    elif case_name.lower() not in CASE_NAMES_MAP:
+    elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
         raise InvalidCaseNameError('Invalid case name.')
 
 
