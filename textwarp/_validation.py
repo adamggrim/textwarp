@@ -1,10 +1,6 @@
 import regex as re
-from typing import (
-    Callable,
-    Final
-)
 
-from ._constants import CASE_NAMES_MAP
+from ._constants import CASE_NAMES_FUNC_MAP
 from ._exceptions import (
     EmptyClipboardError,
     InvalidCaseNameError,
@@ -13,13 +9,6 @@ from ._exceptions import (
     NoTextError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
-)
-from .warping import (
-    to_camel_case,
-    to_dot_case,
-    to_kebab_case,
-    to_pascal_case,
-    to_snake_case
 )
 
 
