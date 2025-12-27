@@ -34,6 +34,55 @@ __all__ = [
 ]
 
 
+def _create_presence_validator(
+    base_validator: Callable[[str], None],
+    text: str,
+    check_type: CheckType
+) -> Callable[[str], None]:
+    """
+    Create a validator function that checks for the presence and
+    validity of a case, regular expression or substring in a given
+    string.
+
+    Args:
+        base_validator: A function that validates the input without
+            checking for presence.
+        text: The string to search.
+        check_type: The type of check to perform (case, regex or
+            substring).
+
+    Returns:
+        Callable[[str], None]: A validator function.
+    """
+    def validator(search_input: str) -> None:
+        """
+        Check the user input for presence in the given string.
+
+        search_input: A string input from the user, representing a case,
+            regular expression or substring.
+        """
+        base_validator(search_input)
+
+        if check_type is CheckType.CASE_NAME:
+            case_key = search_input.lower()
+            pattern = CASE_NAMES_REGEX_MAP.get(case_key)
+
+            if pattern and not pattern.search(text):
+                raise CaseNotFoundError('Case not found.')
+        elif check_type is CheckType.REGEX:
+            if not re.search(search_input, text):
+                raise RegexNotFoundError(
+                    'Regular expression not found.'
+                )
+        elif check_type is CheckType.SUBSTRING:
+            if search_input not in text:
+                raise TextToReplaceNotFoundError(
+                    'Text to replace not found.'
+                )
+
+    return validator
+
+
 def _prompt_for_valid_input(
     enter_text_prompt: str,
     validation_func: Callable[[str], None],
