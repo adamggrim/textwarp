@@ -124,17 +124,30 @@ def case_replace(text: str) -> str:
     Returns:
         str: The transformed text.
     """
-    case_to_replace = _prompt_for_valid_input(
-        ENTER_CASE_TO_REPLACE_PROMPT,
+    presence_validator = _create_presence_validator(
         validate_case_name,
-        ENTER_VALID_CASE_NAME_PROMPT
+        text,
+        CheckType.CASE_NAME
     )
-    replacement_case = _prompt_for_valid_input(
+
+    case_to_replace_name = _prompt_for_valid_input(
+        ENTER_CASE_TO_REPLACE_PROMPT,
+        presence_validator,
+        ENTER_VALID_CASE_NAME_PROMPT
+    ).lower()
+    replacement_case_name = _prompt_for_valid_input(
         ENTER_REPLACEMENT_CASE_PROMPT,
         validate_case_name,
         ENTER_VALID_CASE_NAME_PROMPT
+    ).lower()
+
+    search_pattern = CASE_NAMES_REGEX_MAP[case_to_replace_name]
+    conversion_func = CASE_NAMES_FUNC_MAP[replacement_case_name]
+
+    return search_pattern.sub(
+        lambda match: conversion_func(match.group(0)),
+        text
     )
-    return text.replace(case_to_replace, replacement_case)
 
 
 def replace(text: str) -> str:
@@ -148,14 +161,21 @@ def replace(text: str) -> str:
     Returns:
         str: The transformed text.
     """
+    presence_validator = _create_presence_validator(
+        validate_text,
+        text,
+        CheckType.SUBSTRING
+    )
+
     text_to_replace = _prompt_for_valid_input(
         ENTER_TEXT_TO_REPLACE_PROMPT,
-        validate_text,
+        presence_validator,
         ENTER_VALID_TEXT_PROMPT
     )
     replacement_text = _prompt_for_valid_input(
         ENTER_REPLACEMENT_TEXT_PROMPT,
-        validate_text,
+        # Accept any text (including empty) for replacement.
+        validate_any_text,
         ENTER_VALID_TEXT_PROMPT
     )
     return text.replace(text_to_replace, replacement_text)
@@ -172,14 +192,19 @@ def regex_replace(text: str) -> str:
     Returns:
         str: The transformed text.
     """
+    presence_validator = _create_presence_validator(
+        validate_regex, text, CheckType.REGEX
+    )
+
     regex_text = _prompt_for_valid_input(
         ENTER_REGEX_PROMPT,
-        validate_regex,
+        presence_validator,
         ENTER_VALID_REGEX_PROMPT
     )
     replacement_text = _prompt_for_valid_input(
         ENTER_REPLACEMENT_TEXT_PROMPT,
-        validate_text,
+        # Accept any text (including empty) for replacement.
+        validate_any_text,
         ENTER_VALID_TEXT_PROMPT
     )
     return re.sub(regex_text, replacement_text, text)
