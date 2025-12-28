@@ -17,7 +17,10 @@ from ..warping import (
 )
 
 __all__ = [
-    'CASE_NAMES_FUNC_MAP',
+    'AIN_T_SUFFIX_VARIANTS',
+    'APOSTROPHE_D_VARIANTS',
+    'APOSTROPHE_S_VARIANTS',
+    'APOSTROPHE_VARIANTS',
     'CASE_NAMES_REGEX_MAP',
     'EXIT_INPUTS',
     'NO_INPUTS',
@@ -29,6 +32,17 @@ __all__ = [
     'YES_INPUTS'
 ]
 
+# Variants of 's for contractions.
+AIN_T_SUFFIX_VARIANTS: Final = {"n't", 'n’t', 'n‘t'}
+
+# Variants of 'd for contractions.
+APOSTROPHE_D_VARIANTS: Final = {"'d", '’d', '‘d'}
+
+# Variants of 's for contractions.
+APOSTROPHE_S_VARIANTS: Final = {"'s", '’s', '‘s'}
+
+# Variants of apostrophes.
+APOSTROPHE_VARIANTS: Final = {"'", '’', '‘'}
 
 CASE_NAMES_REGEX_MAP: Final[dict[str, re.Pattern[str]]] = {
     'camel': CasePatterns.CAMEL_WORD,
