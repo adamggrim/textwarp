@@ -61,13 +61,11 @@ def validate_case_name(case_name: str) -> None:
         InvalidCaseNameError: If the input is not a valid case name.
     """
     if case_name == '':
-        raise NoCaseNameError('Case name string is empty.')
+        raise NoCaseNameError('Case string is empty.')
     elif case_name.strip() == '':
-        raise WhitespaceCaseNameError(
-            'Case name contains only whitespace.'
-        )
+        raise WhitespaceCaseNameError('Case contains only whitespace.')
     elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
-        raise InvalidCaseNameError('Invalid case name.')
+        raise InvalidCaseNameError('Invalid case.')
 
 
 def validate_regex(regex: str) -> None:
