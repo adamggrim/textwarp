@@ -254,8 +254,6 @@ class WarpingPatterns:
                 final_pattern = rf'\b{pattern_string}\b'
             case RegexBoundary.END_ANCHOR:
                 final_pattern = rf'{pattern_string}$'
-            case RegexBoundary.NONE:
-                final_pattern = pattern_string
 
         return re.compile(final_pattern, re.IGNORECASE)
 

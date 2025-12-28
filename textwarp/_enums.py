@@ -76,10 +76,8 @@ class RegexBoundary(Enum):
     Attributes:
         WORD_BOUNDARY: Matches the pattern only when it appears as a
             whole word.
-        NONE: Represents the pattern without any boundaries or anchors.
         END_ANCHOR: Matches the pattern only when it appears at the end
             of a string.
     """
     WORD_BOUNDARY = auto()
     END_ANCHOR = auto()
-    NONE = auto()
