@@ -1,20 +1,11 @@
 """
 This module contains sets and tuples used across the package.
 """
-from typing import (
-    Callable,
-    Final
-)
+from typing import Final
+
 import regex as re
 
 from .._constants import CasePatterns
-from ..warping import (
-    to_camel_case,
-    to_dot_case,
-    to_kebab_case,
-    to_pascal_case,
-    to_snake_case
-)
 
 __all__ = [
     'AIN_T_SUFFIX_VARIANTS',

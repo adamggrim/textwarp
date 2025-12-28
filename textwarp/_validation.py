@@ -1,6 +1,6 @@
 import regex as re
 
-from ._constants import CASE_NAMES_FUNC_MAP
+from ._dispatch import CASE_NAMES_FUNC_MAP
 from ._exceptions import (
     EmptyClipboardError,
     InvalidCaseNameError,
