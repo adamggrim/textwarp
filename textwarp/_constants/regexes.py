@@ -139,12 +139,14 @@ class CasePatterns:
         DOT_WORD: Matches a dot case word (e.g., ``dot.word``).
         KEBAB_WORD: Matches a kebab case word (e.g.,
             ``kebab-word``).
-        LOWER_WORD: Matches a lowercase word (e.g., ``lowercase``).
+        LOWER_WORD: Matches a lowercase word (e.g., ``lowercase``) and
+            any optional separators (i.e., ``.``, ``-`` or ``_``).
         PASCAL_WORD: Matches a Pascal case word (e.g.,
             ``PascalWord``).
         SNAKE_WORD: Matches a snake case word (e.g.,
             ``snake_word``).
-        UPPER_WORD: Matches an uppercase word (e.g., ``UPPERCASE``).
+        UPPER_WORD: Matches an uppercase word (e.g., ``UPPERCASE``) and
+            any optional separators (i.e., ``.``, ``-`` or ``_``).
     """
     CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
@@ -155,8 +157,16 @@ class CasePatterns:
     KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[a-zA-Z][a-zA-Z0-9]*(?:\-[a-zA-Z0-9]+)+\b'
     )
-    LOWER_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-z][a-z0-9]*\b'
+    LOWER_WORD: Final[re.Pattern[str]] = re.compile(r'''
+        \b                      # A word boundary.
+        (?=                     # Followed by...
+            [0-9.\-_]*          # Zero or more digits or separators.
+            [a-z]               # And a lowercase letter.
+        )
+        [a-z0-9.\-_]+           # One or more lowercase letters, digits
+                                # or separators.
+        \b                      # Followed by a word boundary.
+        ''', re.VERBOSE
     )
     PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
@@ -164,8 +174,16 @@ class CasePatterns:
     SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
         r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
     )
-    UPPER_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[A-Z][A-Z0-9]*\b'
+    UPPER_WORD: Final[re.Pattern[str]] = re.compile(r'''
+        \b                      # A word boundary.
+        (?=                     # Followed by...
+            [0-9.\-_]*          # Zero or more digits or separators.
+            [A-Z]               # And an uppercase letter.
+        )
+        [A-Z0-9.\-_]+           # One or more uppercase letters, digits or
+                                # separators.
+        \b                      # Followed by a word boundary.
+        ''', re.VERBOSE
     )
 
 
