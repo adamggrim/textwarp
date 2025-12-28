@@ -2,7 +2,6 @@ import regex as re
 from typing import Callable
 
 from .._constants import (
-    CASE_NAMES_FUNC_MAP,
     CASE_NAMES_REGEX_MAP,
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
@@ -13,6 +12,7 @@ from .._constants import (
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT
 )
+from .._dispatch import CASE_NAMES_FUNC_MAP
 from .._enums import CheckType
 from .._exceptions import (
     CaseNotFoundError,
