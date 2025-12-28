@@ -203,7 +203,7 @@ def replace_regex(text: str) -> str:
     )
     replacement_text = _prompt_for_valid_input(
         ENTER_REPLACEMENT_TEXT_PROMPT,
-        # Accept any text (including empty) for replacement.
+        # Accept any text (including empty text) for replacement.
         validate_any_text,
         ENTER_VALID_TEXT_PROMPT
     )

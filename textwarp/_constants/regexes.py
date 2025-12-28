@@ -276,7 +276,7 @@ class WarpingPatterns:
             \d          # A digit.
             \.          # Followed by a period.
         )
-        \b              # An opening word boundary.
+        \b              # A word boundary.
         (?:             # A non-capturing group for...
             # A NUMBER WITH THOUSANDS SEPARATORS
             \d{1,3}     # One to three digits.
@@ -316,7 +316,7 @@ class WarpingPatterns:
     CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
                                 # separators.
-        \b                      # Followed by a closing word boundary.
+        \b                      # Followed by a word boundary.
         (?!                     # Not followed by...
             \.                  # A period.
             \d                  # Followed by a digit.
@@ -389,7 +389,7 @@ class WarpingPatterns:
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
                                 # separators.
         (?:st|nd|rd|th)         # Followed by an ordinal suffix.
-        \b                      # A closing word boundary.
+        \b                      # Followed by a word boundary.
         ''', re.VERBOSE
     )
     OTHER_PREFIXED_NAMES_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
