@@ -74,10 +74,11 @@ class RegexBoundary(Enum):
     Specify the boundary-matching strategy for a regular expression.
 
     Attributes:
-        WORD_BOUNDARY: Represents the pattern only when it appears as a
+        WORD_BOUNDARY: Matches the pattern only when it appears as a
             whole word.
-        END_ANCHOR: Anchors the pattern to the end of the string.
         NONE: Represents the pattern without any boundaries or anchors.
+        END_ANCHOR: Matches the pattern only when it appears at the end
+            of a string.
     """
     WORD_BOUNDARY = auto()
     END_ANCHOR = auto()
