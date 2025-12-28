@@ -229,10 +229,10 @@ class WarpingPatterns:
     ) -> re.Pattern[str]:
         """
         Create a compiled regular expression object that matches any
-        word in the given set.
+        word in the given list.
 
         Args:
-            words: A word or set of words.
+            words: A word or list of words.
             boundary: The boundary-matching strategy to use. Defaults to
                 ``RegexBoundary.WORD_BOUNDARY``.
             sort_by_length: A ``bool`` indicating whether the words
