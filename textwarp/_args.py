@@ -10,11 +10,12 @@ from typing import (
 
 from ._commands import (
     char_count,
-    replace,
     line_count,
     mfws,
     pos_count,
-    regex_replace,
+    replace,
+    replace_case,
+    replace_regex,
     sentence_count,
     time_to_read,
     word_count
@@ -183,13 +184,17 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         redact,
         'redact text'
     ),
-    'regex-replace': (
-        regex_replace,
-        'find and replace a regular expression'
-    ),
     'replace': (
         replace,
         'find and replace text'
+    ),
+    'replace-case': (
+        replace_case,
+        'find and replace a case'
+    ),
+    'replace-regex': (
+        replace_regex,
+        'find and replace a regular expression'
     ),
     'reverse': (
         reverse,

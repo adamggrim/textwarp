@@ -28,9 +28,9 @@ from .._validation import (
 )
 
 __all__ = [
-    'case_replace',
     'replace',
-    'regex_replace'
+    'replace_case',
+    'replace_regex'
 ]
 
 
@@ -113,7 +113,38 @@ def _prompt_for_valid_input(
             current_prompt = enter_valid_text_prompt
 
 
-def case_replace(text: str) -> str:
+def replace(text: str) -> str:
+    """
+    Prompt the user for a string to replace and a string to replace it,
+    and return the transformed text.
+
+    Args:
+        text: The string to transform.
+
+    Returns:
+        str: The transformed text.
+    """
+    presence_validator = _create_presence_validator(
+        validate_text,
+        text,
+        CheckType.SUBSTRING
+    )
+
+    text_to_replace = _prompt_for_valid_input(
+        ENTER_TEXT_TO_REPLACE_PROMPT,
+        presence_validator,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    replacement_text = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_TEXT_PROMPT,
+        # Accept any text (including empty text) for replacement.
+        validate_any_text,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    return text.replace(text_to_replace, replacement_text)
+
+
+def replace_case(text: str) -> str:
     """
     Prompt the user for a case to replace and a replacement case, and
     return the transformed text.
@@ -150,38 +181,7 @@ def case_replace(text: str) -> str:
     )
 
 
-def replace(text: str) -> str:
-    """
-    Prompt the user for a string to replace and a string to replace it,
-    and return the transformed text.
-
-    Args:
-        text: The string to transform.
-
-    Returns:
-        str: The transformed text.
-    """
-    presence_validator = _create_presence_validator(
-        validate_text,
-        text,
-        CheckType.SUBSTRING
-    )
-
-    text_to_replace = _prompt_for_valid_input(
-        ENTER_TEXT_TO_REPLACE_PROMPT,
-        presence_validator,
-        ENTER_VALID_TEXT_PROMPT
-    )
-    replacement_text = _prompt_for_valid_input(
-        ENTER_REPLACEMENT_TEXT_PROMPT,
-        # Accept any text (including empty) for replacement.
-        validate_any_text,
-        ENTER_VALID_TEXT_PROMPT
-    )
-    return text.replace(text_to_replace, replacement_text)
-
-
-def regex_replace(text: str) -> str:
+def replace_regex(text: str) -> str:
     """
     Prompt the user for a regular expression to find and a string to
     replace it, and return the transformed text.
