@@ -224,8 +224,7 @@ class WarpingPatterns:
     @staticmethod
     def _create_words_regex(
         words: str | list[str],
-        boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY,
-        sort_by_length: bool = False
+        boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
     ) -> re.Pattern[str]:
         """
         Create a compiled regular expression object that matches any
@@ -235,9 +234,6 @@ class WarpingPatterns:
             words: A word or list of words.
             boundary: The boundary-matching strategy to use. Defaults to
                 ``RegexBoundary.WORD_BOUNDARY``.
-            sort_by_length: A ``bool`` indicating whether the words
-                should be sorted by length in descending order before
-                building the pattern. Defaults to ``False``.
 
         Returns:
             A compiled regular expression object.
@@ -253,14 +249,14 @@ class WarpingPatterns:
         if isinstance(words, str):
             pattern_string = _add_escaped_apostrophes(words)
         else:
-            sorted_words: list[str] = words
-            if sort_by_length:
-                # Sort words by length in descending order, so that
-                # longer words containing other words from the set are
-                # matched first (e.g., "can't've" before "can't").
-                sorted_words = sorted(
-                    sorted_words, key=len, reverse=True
-                )
+            # Sort words by length in descending order, so that longer
+            # words containing other words from the set are matched
+            # first (e.g., "can't've" before "can't").
+            sorted_words: list[str] = sorted(
+                words,
+                key=len,
+                reverse=True
+            )
 
             escaped_patterns: list[str] = [
                 _add_escaped_apostrophes(w) for w in sorted_words
@@ -315,10 +311,7 @@ class WarpingPatterns:
         ''', re.VERBOSE | re.IGNORECASE
     )
     AMBIGUOUS_CONTRACTION: Final[re.Pattern[str]] = (
-        _create_words_regex(
-            AMBIGUOUS_CONTRACTIONS,
-            sort_by_length=True
-        )
+        _create_words_regex(AMBIGUOUS_CONTRACTIONS)
     )
     CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
@@ -331,31 +324,25 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
-        list(UNAMBIGUOUS_CONTRACTIONS_MAP.keys()) + AMBIGUOUS_CONTRACTIONS,
-        sort_by_length=True
+        list(UNAMBIGUOUS_CONTRACTIONS_MAP.keys()) + AMBIGUOUS_CONTRACTIONS
     )
     CONTRACTION_SUFFIX_TOKENS_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(CONTRACTION_SUFFIX_TOKENS, sort_by_length=True)
+        _create_words_regex(CONTRACTION_SUFFIX_TOKENS)
     )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
             MAP_SUFFIX_EXCEPTIONS,
-            boundary=RegexBoundary.END_ANCHOR,
-            sort_by_length=True
+            boundary=RegexBoundary.END_ANCHOR
         )
     )
     MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(
-            NAME_PREFIX_EXCEPTIONS,
-            sort_by_length=True
-        )
+        _create_words_regex(NAME_PREFIX_EXCEPTIONS)
     )
     NAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        NAME_PREFIXES,
-        sort_by_length=True
+        NAME_PREFIXES
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’‘]t$", re.IGNORECASE
