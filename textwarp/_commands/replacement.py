@@ -68,16 +68,16 @@ def _create_presence_validator(
             pattern = CASE_NAMES_REGEX_MAP.get(case_key)
 
             if pattern and not pattern.search(text):
-                raise CaseNotFoundError('Case not found.')
+                raise CaseNotFoundError('Case not found in text.')
         elif check_type is CheckType.REGEX:
             if not re.search(search_input, text):
                 raise RegexNotFoundError(
-                    'Regular expression not found.'
+                    'Regular expression not found in text.'
                 )
         elif check_type is CheckType.SUBSTRING:
             if search_input not in text:
                 raise TextToReplaceNotFoundError(
-                    'Text to replace not found.'
+                    'Text to replace not found in text.'
                 )
 
     return validator
