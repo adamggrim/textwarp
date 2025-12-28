@@ -14,7 +14,7 @@ __all__ = [
     'ENTER_REPLACEMENT_CASE_PROMPT',
     'ENTER_REPLACEMENT_TEXT_PROMPT',
     'ENTER_TEXT_TO_REPLACE_PROMPT',
-    'ENTER_VALID_CASE_NAME_PROMPT',
+    'ENTER_VALID_CASE_PROMPT',
     'ENTER_VALID_REGEX_PROMPT',
     'ENTER_VALID_RESPONSE_PROMPT',
     'ENTER_VALID_TEXT_PROMPT',
@@ -51,7 +51,7 @@ ENTER_REPLACEMENT_TEXT_PROMPT: Final = 'Enter replacement text:'
 ENTER_TEXT_TO_REPLACE_PROMPT: Final = 'Enter text to replace:'
 
 # Prompt for when the previous case name was invalid.
-ENTER_VALID_CASE_NAME_PROMPT: Final = 'Please enter a valid case name.'
+ENTER_VALID_CASE_PROMPT: Final = 'Please enter a valid case.'
 
 # Prompt for when the previous response was not a number.
 ENTER_VALID_NUMBER_PROMPT: Final = 'Please enter a valid number.'

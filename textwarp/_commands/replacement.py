@@ -8,7 +8,7 @@ from .._constants import (
     ENTER_REPLACEMENT_CASE_PROMPT,
     ENTER_REPLACEMENT_TEXT_PROMPT,
     ENTER_TEXT_TO_REPLACE_PROMPT,
-    ENTER_VALID_CASE_NAME_PROMPT,
+    ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT
 )
@@ -164,12 +164,12 @@ def replace_case(text: str) -> str:
     case_to_replace_name = _prompt_for_valid_input(
         ENTER_CASE_TO_REPLACE_PROMPT,
         presence_validator,
-        ENTER_VALID_CASE_NAME_PROMPT
+        ENTER_VALID_CASE_PROMPT
     ).lower()
     replacement_case_name = _prompt_for_valid_input(
         ENTER_REPLACEMENT_CASE_PROMPT,
         validate_case_name,
-        ENTER_VALID_CASE_NAME_PROMPT
+        ENTER_VALID_CASE_PROMPT
     ).lower()
 
     search_pattern = CASE_NAMES_REGEX_MAP[case_to_replace_name]
