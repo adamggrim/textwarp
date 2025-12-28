@@ -269,9 +269,9 @@ class WarpingPatterns:
 
         match boundary:
             case RegexBoundary.WORD_BOUNDARY:
-                final_pattern = rf'\b{pattern_string}\b'
+                final_pattern = rf'(?<!\w)(?:{pattern_string})(?!\w)'
             case RegexBoundary.END_ANCHOR:
-                final_pattern = rf'{pattern_string}$'
+                final_pattern = rf'(?:{pattern_string})$'
 
         return re.compile(final_pattern, re.IGNORECASE)
 
