@@ -9,7 +9,7 @@ from ..analysis import (
 )
 from .._constants import (
     ENTER_MFW_COUNT_PROMPT,
-    ENTER_NUMBER_PROMPT,
+    ENTER_VALID_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
 from .._enums import CountLabels
@@ -85,7 +85,7 @@ def mfws(text: str) -> None:
             if num_mfws_input.isdigit():
                 return int(num_mfws_input)
             else:
-                print(ENTER_NUMBER_PROMPT)
+                print(ENTER_VALID_NUMBER_PROMPT)
                 num_mfws_input = input().strip()
                 continue
 
@@ -141,7 +141,7 @@ def time_to_read(text: str) -> None:
             if wpm_input.isdigit():
                 break
             else:
-                print(ENTER_NUMBER_PROMPT)
+                print(ENTER_VALID_NUMBER_PROMPT)
                 wpm_input = input().strip()
                 continue
         return int(wpm_input)

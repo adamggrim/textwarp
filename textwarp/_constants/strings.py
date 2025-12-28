@@ -9,7 +9,7 @@ __all__ = [
     'CLIPBOARD_CLEARED_MESSAGE',
     'ENTER_CASE_TO_REPLACE_PROMPT',
     'ENTER_MFW_COUNT_PROMPT',
-    'ENTER_NUMBER_PROMPT',
+    'ENTER_VALID_NUMBER_PROMPT',
     'ENTER_REGEX_PROMPT',
     'ENTER_REPLACEMENT_CASE_PROMPT',
     'ENTER_REPLACEMENT_TEXT_PROMPT',
@@ -38,9 +38,6 @@ ENTER_CASE_TO_REPLACE_PROMPT: Final = 'Enter the case to replace:'
 # Prompt for the user to enter the number of most frequent words.
 ENTER_MFW_COUNT_PROMPT: Final = 'How many most frequent words?'
 
-# Prompt for when the previous response was not a number.
-ENTER_NUMBER_PROMPT: Final = 'Please enter a number.'
-
 # Prompt for the user to enter a regular expression to find.
 ENTER_REGEX_PROMPT: Final = 'Enter a regular expression to replace:'
 
@@ -55,6 +52,9 @@ ENTER_TEXT_TO_REPLACE_PROMPT: Final = 'Enter text to replace:'
 
 # Prompt for when the previous case name was invalid.
 ENTER_VALID_CASE_NAME_PROMPT: Final = 'Please enter a valid case name.'
+
+# Prompt for when the previous response was not a number.
+ENTER_VALID_NUMBER_PROMPT: Final = 'Please enter a valid number.'
 
 # Prompt for when the previous regex was invalid.
 ENTER_VALID_REGEX_PROMPT: Final = 'Please enter a valid regular expression.'
