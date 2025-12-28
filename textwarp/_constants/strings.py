@@ -5,6 +5,7 @@ This module contains strings used across the package.
 from typing import Final
 
 __all__ = [
+    'ANY_OTHER_TEXT_PROMPT',
     'CLIPBOARD_ACCESS_ERROR_MESSAGE',
     'CLIPBOARD_CLEARED_MESSAGE',
     'ENTER_CASE_TO_REPLACE_PROMPT',
@@ -25,6 +26,10 @@ __all__ = [
     'TEXT_TO_REPLACE_NOT_FOUND_MESSAGE'
 ]
 
+# Prompt for the user to enter any other text.
+ANY_OTHER_TEXT_PROMPT: Final = (
+    'Any other text? (y/n) (Copy text to clipboard):'
+)
 
 # Message for any error accessing the clipboard.
 CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = 'Error accessing clipboard: '
