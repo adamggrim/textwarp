@@ -61,7 +61,7 @@ def _should_always_lowercase(token: Token) -> bool:
             ``False``.
     """
     return (token.text.lower() in LOWERCASE_PARTICLES or
-        WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+        WarpingPatterns.CONTRACTION_SUFFIXES_PATTERN
         .fullmatch(token.text))
 
 
@@ -102,7 +102,7 @@ def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
     # Preserve the token if it contains only whitespace or is a
     # contraction suffix.
     if token.is_space or (
-        WarpingPatterns.CONTRACTION_SUFFIX_TOKENS_PATTERN
+        WarpingPatterns.CONTRACTION_SUFFIXES_PATTERN
         .fullmatch(token.text)
     ):
         return token.text

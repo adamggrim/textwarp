@@ -72,10 +72,10 @@ CONTEXTUAL_CAPITALIZATIONS: Final[dict[str, list[dict[str, Any]]]] = cast(
 )
 
 # Suffix tokens derived from contractions.
-CONTRACTION_SUFFIX_TOKENS: Final[list[str]] = cast(
+CONTRACTION_SUFFIXES: Final[list[str]] = cast(
     list[str],
     _load_json_from_data(
-        ENTITY_CAPITALIZATION_DIR / 'contraction_suffix_tokens.json'
+        ENTITY_CAPITALIZATION_DIR / 'contraction_suffixes.json'
     )
 )
 

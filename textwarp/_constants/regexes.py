@@ -11,7 +11,7 @@ from typing import (
 
 from .._config import (
     AMBIGUOUS_CONTRACTIONS,
-    CONTRACTION_SUFFIX_TOKENS,
+    CONTRACTION_SUFFIXES,
     ELISION_WORDS,
     NAME_PREFIX_EXCEPTIONS,
     NAME_PREFIXES,
@@ -204,8 +204,8 @@ class WarpingPatterns:
             to multiple phrases (e.g., "it's" -> "it is" or "it has").
         CARDINAL: Matches a cardinal number (e.g., "525,600" or "13").
         CONTRACTION: Matches any expandable contraction (e.g., "don't").
-        CONTRACTION_SUFFIX_TOKENS_PATTERN: Matches any contraction
-            suffix (e.g., "'s", "'ll").
+        CONTRACTION_SUFFIXES_PATTERN: Matches any contraction suffix
+            (e.g., "'s", "'ll").
         DASH: Matches an en (``–``) or em (``—``) dash.
         EM_DASH_STAND_IN: Matches characters that function as an em
             dash (e.g., ``--``).
@@ -326,8 +326,8 @@ class WarpingPatterns:
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
         list(UNAMBIGUOUS_CONTRACTIONS_MAP.keys()) + AMBIGUOUS_CONTRACTIONS
     )
-    CONTRACTION_SUFFIX_TOKENS_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(CONTRACTION_SUFFIX_TOKENS)
+    CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
+        _create_words_regex(CONTRACTION_SUFFIXES)
     )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
