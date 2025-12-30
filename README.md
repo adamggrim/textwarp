@@ -4,14 +4,14 @@
 
 ## Requirements
 
-- Python 3.9
+- Python 3.10+
 
 ## Dependencies
 
 `textwarp` requires the following Python libraries:
 
 - `pyperclip`: For accessing and copying to the clipboard
-- `regex`: For expanded regular expression functionality
+- `regex`: For regular expressions with variable-width lookbehinds
 - `spaCy`: For identifying word context
 
 ## Example
@@ -96,25 +96,66 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 ```
 textwarp/
-└── data/
-|   └──common_intialisms.json: Lists common initialisms to uppercase
-|   └──contractions_map.json: Maps contractions to their expanded versions
-|   └──contraction_suffixes.json: Lists suffixes derived from contractions
-|   └──lowercase_particles.json: Lists lowercase particles that should not be capitalized
-|   └──morse_map.json: Maps characters to their Morse code equivalents
-└── __init__.py: File for recognizing textwarp as a package
-├── __main__.py: Runs the textwarp command
-├── analyzing.py: Defines functions for analyzing text
-├── args.py: Maps command-line arguments to functions and help messages
-├── config.py: Loads JSON files for use in the package
-├── constants.py: Defines constants used throughout the package
-├── enums.py: Defines enum for separator cases
-├── input_output.py: Handles user input and console output
-├── parsing.py: Parses command-line arguments
-├── regexes.py: Defines regular expressions for text parsing
-├── setup.py: Loads spaCy model for use in the package
-├── validation.py: Defines class and function for clipboard validation
-└── warping.py: Defines functions for modifying text
+├── _commands/
+│   ├── __init__.py: Exposes analysis and replacement commands for use across the package
+│   ├── analysis.py: Implements runners for analysis commands
+│   └── replacement.py: Implements runners for replacement commands
+├── _constants/
+│   ├── __init__.py: Exposes constants for use across the package
+│   ├── definitions.py: Defines sets and tuples used across the package
+│   ├── regexes.py: Defines regular expressions used across the package
+│   └── strings.py: Defines strings used across the package
+├── _data/
+│   ├── contraction_expansion/
+│   │   ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
+│   │   └── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+│   ├── entity_capitalization/
+│   │   ├── absolute_capitalizations_map.json: Maps entities that are always capitalized the same way
+│   │   ├── contextual_capitalizations_map.json: Maps entities that require context (casing, part of speech, ngrams) to capitalize
+│   │   ├── contraction_suffixes.json: Lists suffixes derived from contractions
+│   │   └── lowercase_particles.json: List of name particles (e.g., "von") to keep lowercase
+│   ├── string_capitalization/
+│   │   ├── capitalized_abbreviations_map.json: Lists abbreviations that should always be capitalized
+│   │   ├── initialisms_map.json: Maps common initialisms to their uppercase version
+│   │   ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
+│   │   ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
+│   │   ├── mixed_case_words_map.json: Maps words to special mixed casing (e.g., "eBay")
+│   │   ├── name_prefix_exceptions.json: Lists words that start with name prefixes but are not names (e.g., "macabre")
+│   │   ├── name_prefixes.json: Lists common name prefixes (e.g., "Mac", "O'")
+│   │   └── other_prefixed_names_map.json: Maps prefixed names that cannot be capitalized by a general rule to their capitalized version
+│   ├── elision_words.json: Lists commonly elided words
+│   └── morse_map.json: Maps characters to their Morse code equivalent
+├── _helpers/
+│   ├── contraction_expansion/
+│   │   ├── __init__.py: Exposes contraction expansion logic for use across the package
+│   │   ├── core.py: Defines the main logic for expanding contractions
+│   │   ├── disambiguation.py: Defines functions for resolving ambiguous contractions based on context
+│   │   ├── handlers.py: Defines functions for handling specific types of contractions (negation, "'s", "'d", "whatcha")
+│   │   └── utils.py: Defines utilities for applying casing and finding contraction subjects and verbs
+│   ├── __init__.py: Exposes helper modules for use across the package
+│   ├── apostrophes.py: Defines function for removing apostrophes from text
+│   ├── case_conversion.py: Defines functions for converting between cases (title, Pascal, etc.)
+│   ├── entity_capitalization.py: Defines functions for spaCy-based entity capitalization
+│   ├── nlp_processing.py: Defines functions for extracting words and processing text as a spaCy ``Doc``
+│   ├── quote_conversion.py: Defines functions for converting between straight and curly quotes
+│   └── string_capitalization.py: Defines functions for capitalizing strings through dictionary lookup
+├── __init__.py: Initializes the package and exposes public functions
+├── __main__.py: The main entry point for the package, containing the main loop
+├── _args.py: Maps command-line arguments to functions and help messages
+├── _config.py: Handles lazy loading of JSON data
+├── _decorators.py: Defines a custom decorator function for non-instantiable classes
+├── _dispatch.py: Maps string inputs to case conversion functions
+├── _enums.py: Defines enumerations for casing, count labels, presence checking and regular expression boundaries
+├── _exceptions.py: Defines custom exceptions for clipboard and validation errors
+├── _formatting.py: Defines functions for formatting analysis into readable strings
+├── _models.py: Defines classes for part-of-speech counts and word counts
+├── _nlp.py: Defines function for lazy loading of the spaCy model
+├── _parsing.py: Parses command-line arguments using argparse
+├── _runners.py: Defines main loop logic for executing commands
+├── _ui.py: Defines functions for handling console input and output
+├── _validation.py: Defines validators for text, clipboard, and regular expression content
+├── analysis.py: Defines public functions for analyzing text
+└── warping.py: Defines public functions for warping text
 ```
 
 ## Usage
