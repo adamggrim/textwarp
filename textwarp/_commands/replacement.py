@@ -1,3 +1,5 @@
+"""Runners for replacement commands."""
+
 import regex as re
 from typing import Callable
 
@@ -13,7 +15,7 @@ from .._constants import (
     ENTER_VALID_TEXT_PROMPT
 )
 from .._dispatch import CASE_NAMES_FUNC_MAP
-from .._enums import CheckType
+from .._enums import PresenceCheckType
 from .._exceptions import (
     CaseNotFoundError,
     RegexNotFoundError,
@@ -37,7 +39,7 @@ __all__ = [
 def _create_presence_validator(
     base_validator: Callable[[str], None],
     text: str,
-    check_type: CheckType
+    check_type: PresenceCheckType
 ) -> Callable[[str], None]:
     """
     Create a validator function that checks for the presence and
@@ -63,18 +65,18 @@ def _create_presence_validator(
         """
         base_validator(search_input)
 
-        if check_type is CheckType.CASE_NAME:
+        if check_type is PresenceCheckType.CASE_NAME:
             case_key = search_input.lower()
             pattern = CASE_NAMES_REGEX_MAP.get(case_key)
 
             if pattern and not pattern.search(text):
                 raise CaseNotFoundError('Case not found in text.')
-        elif check_type is CheckType.REGEX:
+        elif check_type is PresenceCheckType.REGEX:
             if not re.search(search_input, text):
                 raise RegexNotFoundError(
                     'Regular expression not found in text.'
                 )
-        elif check_type is CheckType.SUBSTRING:
+        elif check_type is PresenceCheckType.SUBSTRING:
             if search_input not in text:
                 raise TextToReplaceNotFoundError(
                     'Text to replace not found in text.'
@@ -127,7 +129,7 @@ def replace(text: str) -> str:
     presence_validator = _create_presence_validator(
         validate_text,
         text,
-        CheckType.SUBSTRING
+        PresenceCheckType.SUBSTRING
     )
 
     text_to_replace = _prompt_for_valid_input(
@@ -158,7 +160,7 @@ def replace_case(text: str) -> str:
     presence_validator = _create_presence_validator(
         validate_case_name,
         text,
-        CheckType.CASE_NAME
+        PresenceCheckType.CASE_NAME
     )
 
     case_to_replace_name = _prompt_for_valid_input(
@@ -193,7 +195,7 @@ def replace_regex(text: str) -> str:
         str: The transformed text.
     """
     presence_validator = _create_presence_validator(
-        validate_regex, text, CheckType.REGEX
+        validate_regex, text, PresenceCheckType.REGEX
     )
 
     regex_text = _prompt_for_valid_input(

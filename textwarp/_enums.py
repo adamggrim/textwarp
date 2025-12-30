@@ -35,23 +35,6 @@ class Casing(Enum):
 
 
 @final
-class CheckType(Enum):
-    """
-    Specify whether to check for the presence of a case, regular
-    expression or substring in a given string.
-
-    Attributes:
-        CASE: Check for the presence of a specific case (e.g., camel
-            case or snake case).
-        REGEX: Check for a regular expression match.
-        SUBSTRING: Check for the presence of a substring.
-    """
-    CASE_NAME = auto()
-    REGEX = auto()
-    SUBSTRING = auto()
-
-
-@final
 class CountLabels(str, Enum):
     """
     Label strings for count formatting.
@@ -66,6 +49,23 @@ class CountLabels(str, Enum):
     LINE = 'Line'
     SENTENCE = 'Sentence'
     WORD = 'Word'
+
+
+@final
+class PresenceCheckType(Enum):
+    """
+    Specify whether to check for the presence of a case, regular
+    expression or substring in a given string.
+
+    Attributes:
+        CASE: Check for the presence of a specific case (e.g., camel
+            case or snake case).
+        REGEX: Check for a regular expression match.
+        SUBSTRING: Check for the presence of a substring.
+    """
+    CASE_NAME = auto()
+    REGEX = auto()
+    SUBSTRING = auto()
 
 
 @final
