@@ -81,7 +81,7 @@ CONTRACTION_SUFFIXES: Final[list[str]] = cast(
     )
 )
 
-# Words that are elided for certain contractions.
+# Words that are commonly elided.
 ELISION_WORDS: Final[set[str]] = set(
     cast(list[str], _load_json_from_data('elision_words.json'))
 )

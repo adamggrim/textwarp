@@ -188,7 +188,7 @@ class CasePatterns:
 @non_instantiable
 class WarpingPatterns:
     """
-    A namespace for compiled regular expressions for warping text.
+    A namespace for compiled regular expressions used for warping text.
 
     Attributes:
         ANY_APOSTROPHE: Matches any straight (``'``) or curly (``’`` or
