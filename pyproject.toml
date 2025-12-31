@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "textwarp"
 version = "0.6"
-description = "Package for modifying clipboard text"
+description = "Package for analyzing and transforming text"
 readme = "README.md"
 keywords = ["text", "clipboard"]
 license = {text = "MIT"}

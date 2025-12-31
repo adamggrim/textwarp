@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for analyzing and transforming clipboard text from the console. For the given clipboard text, `textwarp` applies a transformation or analysis function and copies any modified text to the clipboard.
+`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` applies a transformation or analysis function and copies any modified text to the clipboard.
 
 ## Requirements
 
