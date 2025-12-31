@@ -1,3 +1,5 @@
+"""Main logic for expanding contractions."""
+
 from spacy.tokens import (
     Doc,
     Span

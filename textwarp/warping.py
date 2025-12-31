@@ -1,3 +1,5 @@
+"""Public functions for warping text."""
+
 from collections.abc import Generator
 from random import (
     choice,

@@ -1,3 +1,5 @@
+"""Functions for capitalizing strings through dictionary lookup."""
+
 from typing import Callable
 
 from .._config import (

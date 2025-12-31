@@ -1,3 +1,8 @@
+"""
+Functions for handling specific types of contractions (negation, "'s",
+"'d", "whatcha").
+"""
+
 from spacy.tokens import Span
 
 from ..._constants import AIN_T_SUFFIX_VARIANTS

@@ -1,3 +1,5 @@
+"""Functions for spaCy-based entity capitalization."""
+
 from spacy.tokens import (
     Doc,
     Span,

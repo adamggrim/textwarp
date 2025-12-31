@@ -1,3 +1,5 @@
+"""Command-line argument parsing using argparse."""
+
 import argparse
 import sys
 from typing import (

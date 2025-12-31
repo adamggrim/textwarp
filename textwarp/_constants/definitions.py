@@ -1,6 +1,5 @@
-"""
-This module contains sets and tuples used across the package.
-"""
+"""Sets and tuples used across the package."""
+
 from typing import Final
 
 import regex as re

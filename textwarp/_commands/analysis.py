@@ -1,3 +1,5 @@
+"""Runners for analysis commands."""
+
 from ..analysis import (
     calculate_time_to_read,
     count_chars,

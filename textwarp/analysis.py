@@ -1,3 +1,5 @@
+"""Public functions for analyzing text."""
+
 from collections import Counter
 from math import ceil
 

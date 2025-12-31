@@ -1,12 +1,4 @@
-"""
-The main entry point for the package.
-
-This module is responsible for:
-1. Parsing command-line arguments.
-2. Defining command groups (warping, analysis, replacement and
-    clearing).
-3. Dispatching the parsed command to the relevant runner function.
-"""
+"""The main entry point for the package, containing the main loop."""
 
 from ._args import ARGS_MAP
 from ._commands import analysis

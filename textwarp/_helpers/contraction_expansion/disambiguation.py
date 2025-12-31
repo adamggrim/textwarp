@@ -1,3 +1,5 @@
+"""Functions for resolving ambiguous contractions based on context."""
+
 from spacy.tokens import Span
 
 from ..._constants import (

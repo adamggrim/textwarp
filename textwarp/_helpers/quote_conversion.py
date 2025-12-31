@@ -1,3 +1,5 @@
+"""Functions for converting between straight and curly quotes."""
+
 import regex as re
 
 from .._constants import WarpingPatterns

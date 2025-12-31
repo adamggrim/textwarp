@@ -1,3 +1,5 @@
+"""A configuration module handling lazy loading of JSON data."""
+
 import json
 from typing import (
     Any,

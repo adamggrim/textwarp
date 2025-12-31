@@ -1,3 +1,5 @@
+"""Functions for handling console input and output."""
+
 import os
 import textwrap
 from typing import NoReturn

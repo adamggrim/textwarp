@@ -1,3 +1,8 @@
+"""
+Utilities for applying casing and finding contraction subjects and
+verbs.
+"""
+
 from spacy.tokens import Token
 
 from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP

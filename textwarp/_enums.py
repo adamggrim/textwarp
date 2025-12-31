@@ -1,4 +1,7 @@
-"""Defines enums for text warping and analysis."""
+"""
+Enumerations for casing, count labels, presence checking and regular
+expression boundaries.
+"""
 
 from enum import Enum, auto
 from typing import final

@@ -1,3 +1,5 @@
+"""Function for removing apostrophes from text."""
+
 from .._constants import WarpingPatterns
 
 __all__ = ['remove_apostrophes']

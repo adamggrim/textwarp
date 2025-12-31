@@ -1,4 +1,4 @@
-"""Functions for formatting text analysis into human-readable output."""
+"""Functions for formatting analysis into readable strings."""
 
 from ._models import (
     POSCounts,

@@ -1,3 +1,5 @@
+"""Validators for text, clipboard, and regular expression content."""
+
 import regex as re
 
 from ._dispatch import CASE_NAMES_FUNC_MAP

@@ -1,6 +1,4 @@
-"""
-This module contains strings used across the package.
-"""
+"""Strings used across the package."""
 
 from typing import Final
 

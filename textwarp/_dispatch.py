@@ -1,3 +1,5 @@
+"""A mapping of string inputs to case conversion functions."""
+
 from typing import (
     Final,
     Callable

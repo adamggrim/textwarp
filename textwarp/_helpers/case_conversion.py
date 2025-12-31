@@ -1,3 +1,5 @@
+"""Functions for converting between cases (title, Pascal, etc.)."""
+
 from typing import Callable
 
 import regex as re

@@ -1,3 +1,5 @@
+"""Function for lazy loading of the spaCy model."""
+
 import spacy
 
 from ._ui import print_wrapped

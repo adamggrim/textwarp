@@ -1,3 +1,7 @@
+"""
+Functions for extracting words and processing text as a spaCy ``Doc``.
+"""
+
 from spacy.tokens import Doc
 
 from .._constants import POS_WORD_TAGS

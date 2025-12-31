@@ -1,7 +1,4 @@
-"""
-This module contains regular expressions used across the
-package.
-"""
+"""Regular expressions used across the package."""
 
 import regex as re
 from typing import (

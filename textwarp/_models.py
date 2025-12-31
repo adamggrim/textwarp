@@ -1,3 +1,5 @@
+"""Classes for part-of-speech counts and word counts."""
+
 from dataclasses import (
     dataclass,
     field

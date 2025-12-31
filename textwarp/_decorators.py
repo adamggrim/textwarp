@@ -1,6 +1,4 @@
-"""
-Provides a custom decorator function to denote non-instantiable classes.
-"""
+"""A custom decorator function for non-instantiable classes."""
 
 from typing import TypeVar
 

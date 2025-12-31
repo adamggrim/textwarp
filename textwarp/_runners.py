@@ -1,3 +1,5 @@
+"""Main loop logic for executing commands."""
+
 from typing import (
     Callable,
     Final,

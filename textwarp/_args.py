@@ -1,6 +1,5 @@
 """
-This module contains a central registry for all warping, analysis,
-replacement and clearing commands.
+A mapping of command-line arguments to functions and help messages.
 """
 
 from typing import (

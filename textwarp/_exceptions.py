@@ -1,3 +1,5 @@
+"""Custom exceptions for clipboard and validation errors."""
+
 class CaseNotFoundError(Exception):
     """Exception raised when the provided case is not found in the
     searched text."""
