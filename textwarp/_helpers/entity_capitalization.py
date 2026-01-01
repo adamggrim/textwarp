@@ -24,12 +24,12 @@ __all__ = [
 ]
 
 
-def _find_next_word_token_idx(
+def _find_first_word_token_idx(
     start_idx: int,
     text_container: Doc | Span
 ) -> int | None:
     """
-    Find the index of the next non-space, non-punctuation token in a
+    Find the index of the first non-space, non-punctuation token in a
     spaCy ``Doc`` or ``Span``.
 
     Args:
@@ -37,7 +37,7 @@ def _find_next_word_token_idx(
             start the search from.
 
     Returns:
-        int | None: The doc index of the next word token, or
+        int | None: The doc index of the first word token, or
             ``None`` if no non-space, non-punctuation token is
             found.
     """
@@ -130,12 +130,8 @@ def find_sentence_case_indices(
     """
     position_indices: set[int] = set()
 
-    for i, token in enumerate(text_container):
-        # Find the first word token in each sentence.
-        if token.is_sent_start:
-            next_word_idx = _find_next_word_token_idx(i, text_container)
-            if next_word_idx is not None:
-                position_indices.add(next_word_idx)
+    for sent in text_container.sents:
+        first_word_idx = _find_first_word_token_idx(0, sent)
 
     return position_indices
 
@@ -181,13 +177,13 @@ def find_title_case_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
-            next_word_idx: int | None = _find_next_word_token_idx(i, text_container)
             if next_word_idx is not None:
                 position_indices.add(next_word_idx)
+            first_word_idx: int | None = _find_first_word_token_idx(i, text_container)
         # Find the first word token after a colon or opening quote.
         elif (token.text in {':'} | OPEN_QUOTES
               and token.i + 1 < len(text_container)):
-            next_word_idx = _find_next_word_token_idx(
+            first_word_idx = _find_first_word_token_idx(
                 i + 1, text_container
             )
             if next_word_idx is not None:
