@@ -121,22 +121,50 @@ def find_sentence_case_indices(
     text_container: Doc | Span
 ) -> tuple[set[int], set[int]]:
     """
-    Find the indices of tokens that should be capitalized for sentence
-    case.
+    Find the indices of tokens that should be capitalized or force-
+    lowercased for sentence case.
 
     Args:
         text_container: The spaCy ``Doc`` or ``Span`` to analyze.
 
     Returns:
-        set[int]: A set containing the indices of the first token of
-            each sentence.
+        tuple[set[int], set[int]]:
+            1. sent_start_indices: A list of the first token in each
+                sentence.
+            2. force_lowercase_indices: A list of words after the first
+                word that are currently capitalized or uppercase,
+                provided that all words in the text follow the same
+                casing (i.e., all capitalized or all uppercase).
     """
-    position_indices: set[int] = set()
+    sent_start_indices: set[int] = set()
+    force_lowercase_indices: set[int] = set()
 
     for sent in text_container.sents:
         first_word_idx = _find_first_word_token_idx(0, sent)
 
-    return position_indices
+        if first_word_idx is None:
+            continue
+
+        sent_start_indices.add(first_word_idx)
+
+        words = [token for token in sent if token.is_alpha]
+
+        if not words:
+            continue
+
+        is_all_upper = all(w.text.isupper() for w in words)
+        is_all_title = len(words) > 1 and all(
+            w.text.istitle() for w in words
+        )
+
+        if is_all_upper or is_all_title:
+            for token in sent:
+                # The first word token of each sentence is always
+                # capitalized.
+                if token.i != first_word_idx and token.is_alpha:
+                    force_lowercase_indices.add(token.i)
+
+    return sent_start_indices, force_lowercase_indices
 
 
 def find_start_case_indices(text_container: Doc | Span) -> set[int]:
