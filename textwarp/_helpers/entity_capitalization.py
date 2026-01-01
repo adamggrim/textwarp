@@ -180,17 +180,17 @@ def find_title_case_indices(text_container: Doc | Span) -> set[int]:
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
-            if next_word_idx is not None:
-                position_indices.add(next_word_idx)
             first_word_idx: int | None = _find_first_word_token_idx(i, text_container)
+            if first_word_idx is not None:
+                position_indices.add(first_word_idx)
         # Find the first word token after a colon or opening quote.
         elif (token.text in {':'} | OPEN_QUOTES
               and token.i + 1 < len(text_container)):
             first_word_idx = _find_first_word_token_idx(
                 i + 1, text_container
             )
-            if next_word_idx is not None:
-                position_indices.add(next_word_idx)
+            if first_word_idx is not None:
+                position_indices.add(first_word_idx)
         # Find tokens that should be capitalized based on POS or length.
         elif _should_capitalize_pos_or_length(token):
             position_indices.add(token.i)
