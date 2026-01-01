@@ -16,7 +16,7 @@ from .._constants import WarpingPatterns
 from .string_capitalization import capitalize_from_string
 
 __all__ = [
-    'find_sentence_start_indices',
+    'find_sentence_case_indices',
     'find_start_case_indices',
     'find_title_case_indices',
     'map_proper_noun_entities',
@@ -114,7 +114,9 @@ def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
         return token.text.lower()
 
 
-def find_sentence_start_indices(text_container: Doc | Span) -> set[int]:
+def find_sentence_case_indices(
+    text_container: Doc | Span
+) -> tuple[set[int], set[int]]:
     """
     Find the indices of tokens that should be capitalized for sentence
     case.
