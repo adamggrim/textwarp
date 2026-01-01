@@ -18,9 +18,9 @@ from .._constants import (
 )
 from .apostrophes import remove_apostrophes
 from .entity_capitalization import (
-    locate_sentence_start_indices,
-    locate_start_case_indices,
-    locate_title_case_indices,
+    find_sentence_start_indices,
+    find_start_case_indices,
+    find_title_case_indices,
     map_proper_noun_entities,
     to_title_case_from_doc
 )
@@ -81,13 +81,13 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     i = 0
 
     if casing == Casing.SENTENCE:
-        token_indices = locate_sentence_start_indices(doc)
+        token_indices = find_sentence_start_indices(doc)
         lowercase_by_default = True
     elif casing == Casing.START:
-        token_indices = locate_start_case_indices(doc)
+        token_indices = find_start_case_indices(doc)
         lowercase_by_default = False
     elif casing == Casing.TITLE:
-        token_indices = locate_title_case_indices(doc)
+        token_indices = find_title_case_indices(doc)
         lowercase_by_default = True
 
     # Loop through each token in the `Doc` to find any indices that
