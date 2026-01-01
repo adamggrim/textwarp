@@ -88,7 +88,10 @@ def _should_capitalize_pos_or_length(token: Token) -> bool:
     return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
 
 
-def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
+def _to_title_case_from_token(
+    token: Token,
+    should_capitalize_for_title: bool
+) -> str:
     """
     Convert a spaCy token to title case, handling special name prefixes
     and preserving other mid-word capitalizations.
@@ -108,7 +111,7 @@ def _to_title_case_from_token(token: Token, should_capitalize: bool) -> str:
         .fullmatch(token.text)
     ):
         return token.text
-    elif should_capitalize:
+    elif should_capitalize_for_title:
         return capitalize_from_string(token.text)
     else:
         return token.text.lower()
@@ -238,9 +241,9 @@ def to_title_case_from_doc(text_container: Doc | Span) -> str:
     processed_parts: list[str] = []
 
     for token in text_container:
-        should_capitalize = token.i in position_indices
+        should_capitalize_for_title = token.i in position_indices
         processed_token = _to_title_case_from_token(
-            token, should_capitalize=should_capitalize
+            token, should_capitalize_for_title=should_capitalize_for_title
         )
         processed_parts.append(processed_token + token.whitespace_)
 
