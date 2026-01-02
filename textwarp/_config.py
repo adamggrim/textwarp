@@ -66,7 +66,7 @@ CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = cast(
 
 # Capitalization mappings for entities with multiple possible
 # capitalizations depending on context.
-CONTEXTUAL_CAPITALIZATIONS: Final[dict[str, list[dict[str, Any]]]] = cast(
+CONTEXTUAL_CAPITALIZATIONS_MAP: Final[dict[str, list[dict[str, Any]]]] = cast(
     dict[str, list[dict[str, Any]]],
     _load_json_from_data(
         ENTITY_CAPITALIZATION_DIR / 'contextual_capitalizations_map.json'
