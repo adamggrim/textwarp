@@ -2,25 +2,25 @@
     "aids": [
         {
             "casing": "AIDS",
-            "pos": ["PROPN"],
-            "ngrams": ["crisis", "epidemic", "hiv", "patient", "research", "virus"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["crisis", "epidemic", "hiv", "living with", "patient", "prevention", "research", "treatment", "virus"]
         },
         {
             "casing": "Aids",
-            "pos": ["NOUN", "VERB"],
-            "ngrams": ["first", "hearing", "visual"]
+            "pos_sequences": [["NOUN"], ["VERB"]],
+            "ngrams": ["first", "hearing", "memory", "teaching", "visual", "walking"]
         }
     ],
 
     "art": [
         {
             "casing": "ART",
-            "pos": ["PROPN"],
+            "pos_sequences": [["PROPN"]],
             "ngrams": ["assisted reproductive", "clinic", "technology", "treatment"]
         },
         {
             "casing": "Art",
-            "pos": ["NOUN"],
+            "pos_sequences": [["NOUN"]],
             "ngrams": ["gallery", "history", "museum", "piece of"]
         }
     ],
@@ -28,12 +28,12 @@
     "cat": [
         {
             "casing": "CAT",
-            "pos": ["PROPN"],
-            "ngrams": ["imaging", "machine", "scan"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["axial", "computerized", "imaging", "machine", "radiology", "scan"]
         },
         {
             "casing": "Cat",
-            "pos": ["NOUN"],
+            "pos_sequences": [["NOUN"]],
             "ngrams": ["animal", "black", "feed the", "meow", "pet"]
         }
     ],
@@ -41,12 +41,12 @@
     "cod": [
         {
             "casing": "COD",
-            "pos": ["PROPN"],
-            "ngrams": ["call of duty", "game", "online", "play"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["call of duty", "cash", "game", "online", "payment", "play"]
         },
         {
             "casing": "Cod",
-            "pos": ["NOUN"],
+            "pos_sequences": [["NOUN"]],
             "ngrams": ["atlantic", "cape", "fish", "fresh"]
         }
     ],
@@ -54,12 +54,12 @@
     "coo": [
         {
             "casing": "COO",
-            "pos": ["PROPN"],
+            "pos_sequences": [["PROPN"]],
             "ngrams": ["chief operating", "company", "new", "officer", "our"]
         },
         {
             "casing": "Coo",
-            "pos": ["VERB", "NOUN"],
+            "pos_sequences": [["VERB"], ["NOUN"]],
             "ngrams": ["baby", "dove", "pigeon"]
         }
     ],
@@ -67,12 +67,12 @@
     "q-tip": [
         {
             "casing": "Q-tip",
-            "pos": ["PROPN", "NOUN"],
+            "pos_sequences": [["PROPN", "NOUN"]],
             "ngrams": ["cotton", "ear", "swab"]
         },
         {
             "casing": "Q-Tip",
-            "pos": ["PROPN"],
+            "pos_sequences": [["PROPN"]],
             "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
         }
     ],
@@ -80,12 +80,12 @@
     "go": [
         {
             "casing": "GO",
-            "pos": ["PROPN", "NOUN"],
+            "pos_sequences": [["PROPN", "NOUN"]],
             "ngrams": ["general order", "import", "status"]
         },
         {
             "casing": "Go",
-            "pos": ["VERB"],
+            "pos_sequences": [["VERB"]],
             "ngrams": ["board", "game", "let's", "to"]
         }
     ],
@@ -93,12 +93,12 @@
     "it": [
         {
             "casing": "IT",
-            "pos": ["PROPN"],
-            "ngrams": ["consultant", "department", "help desk", "industry", "sector", "support"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["administrator", "consultant", "department", "help desk", "industry", "information technology", "sector", "support", "systems"]
         },
         {
             "casing": "It",
-            "pos": ["PRON"],
+            "pos_sequences": [["PRON"]],
             "ngrams": []
         }
     ],
@@ -106,12 +106,12 @@
     "now": [
         {
             "casing": "NOW",
-            "pos": ["PROPN"],
+            "pos_sequences": [["PROPN"]],
             "ngrams": ["national organization for women", "organization"]
         },
         {
             "casing": "Now",
-            "pos": ["ADV"],
+            "pos_sequences": [["ADV"]],
             "ngrams": ["is", "right", "we are"]
         }
     ],
@@ -119,12 +119,12 @@
     "pin": [
         {
             "casing": "PIN",
-            "pos": ["PROPN", "NOUN"],
-            "ngrams": ["atm", "code", "enter", "number", "personal identification"]
+            "pos_sequences": [["PROPN", "NOUN"]],
+            "ngrams": ["atm", "code", "credit", "debit", "enter", "number", "personal identification", "reset", "security"]
         },
         {
             "casing": "Pin",
-            "pos": ["NOUN", "VERB"],
+            "pos_sequences": [["NOUN", "VERB"]],
             "ngrams": ["bowling", "on", "rolling", "safety", "sewing"]
         }
     ],
@@ -132,25 +132,25 @@
     "ram": [
         {
             "casing": "RAM",
-            "pos": ["PROPN", "NOUN"],
+            "pos_sequences": [["PROPN", "NOUN"]],
             "ngrams": ["8gb of", "computer", "gb", "memory", "upgrade"]
         },
         {
             "casing": "Ram",
-            "pos": ["NOUN", "VERB"],
-            "ngrams": ["animal", "dodge", "into", "sheep", "truck"]
+            "pos_sequences": [["NOUN", "VERB"]],
+            "ngrams": ["1500", "animal", "dodge", "football", "into", "nfl", "pickup", "player", "sheep", "team", "truck"]
         }
     ],
 
     "us": [
         {
             "casing": "US",
-            "pos": ["PROPN"],
-            "ngrams": ["government", "in the", "military", "the", "visit the"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["citizen", "department", "dollar", "government", "in the", "military", "the", "visit the"]
         },
         {
             "casing": "Us",
-            "pos": ["PRON"],
+            "pos_sequences": [["PRON"]],
             "ngrams": ["among", "between", "for", "let", "told", "with"]
         }
     ],
@@ -158,25 +158,25 @@
     "vet": [
         {
             "casing": "VET",
-            "pos": ["PROPN", "NOUN"],
+            "pos_sequences": [["PROPN", "NOUN"]],
             "ngrams": ["military", "veteran", "war"]
         },
         {
             "casing": "Vet",
-            "pos": ["NOUN", "VERB"],
-            "ngrams": ["animal", "cat", "dog", "pet", "veterinarian"]
+            "pos_sequences": [["NOUN", "VERB"]],
+            "ngrams": ["animal", "cat", "dog", "medicine", "pet", "veterinarian"]
         }
     ],
 
     "who": [
         {
             "casing": "WHO",
-            "pos": ["PROPN"],
+            "pos_sequences": [["PROPN"]],
             "ngrams": ["chief", "declares", "health", "organization", "report"]
         },
         {
             "casing": "Who",
-            "pos": ["PRON"],
+            "pos_sequences": [["PRON"]],
             "ngrams": ["are", "did", "is", "was"]
         }
     ]
