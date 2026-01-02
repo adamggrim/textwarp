@@ -20,6 +20,9 @@ from .handlers import (
 )
 from .utils import apply_expansion_casing
 
+__all__ = [
+    "expand_contractions_from_doc"
+]
 
 def _expand_ambiguous_contraction(
     contraction: str,
