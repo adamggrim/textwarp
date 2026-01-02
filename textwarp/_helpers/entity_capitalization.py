@@ -40,8 +40,8 @@ def _should_always_lowercase(token: Token) -> bool:
 
 def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     """
-    Create a map of specific proper noun entity indices and Span objects
-    from a spaCy ``Doc``.
+    Create a map of specific indices for proper noun entities to Span objects
+    and end indices from a spaCy ``Doc``.
 
     Args:
         doc: The spaCy ``Doc`` to convert.
