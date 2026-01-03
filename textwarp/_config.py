@@ -5,9 +5,17 @@ from typing import (
     Any,
     Final,
     TypeAlias,
+    TypedDict,
     cast
 )
 from pathlib import Path
+
+
+class CapitalizationContext(TypedDict):
+    casing: str
+    pos_sequences: list[list[str]]
+    ngrams: list[str]
+
 
 # A type for JSON data.
 JSONType: TypeAlias = (
@@ -66,8 +74,10 @@ CAPITALIZED_ABBREVIATIONS_MAP: Final[dict[str, str]] = cast(
 
 # Capitalization mappings for entities with multiple possible
 # capitalizations depending on context.
-CONTEXTUAL_CAPITALIZATIONS_MAP: Final[dict[str, list[dict[str, Any]]]] = cast(
-    dict[str, list[dict[str, Any]]],
+CONTEXTUAL_CAPITALIZATIONS_MAP: Final[
+    dict[str, list[CapitalizationContext]]
+] = cast(
+    dict[str, list[CapitalizationContext]],
     _load_json_from_data(
         ENTITY_CAPITALIZATION_DIR / 'contextual_capitalizations_map.json'
     )
