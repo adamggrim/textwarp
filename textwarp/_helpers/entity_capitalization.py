@@ -1,5 +1,6 @@
 """Functions for spaCy-based entity capitalization."""
 
+import regex as re
 from spacy.tokens import (
     Doc,
     Span,
@@ -17,6 +18,39 @@ __all__ = [
     'map_proper_noun_entities',
     'should_capitalize_pos_or_length'
 ]
+
+
+def _check_for_ngrams(
+    doc: Doc,
+    index: int,
+    ngrams: list[str],
+    context_window: int = 5
+) -> bool:
+    """
+    Check if any of a given list of ngrams are present around a
+    specific index in the Doc.
+
+    Args:
+        doc: The spaCy ``Doc`` to check.
+        index: The index around which to check for ngrams.
+        ngrams: A list of ngrams to check for.
+        context_window: The size of the window around the index to
+            check. Defaults to 5.
+
+    Returns:
+        bool: ``True`` if any ngram is found, otherwise ``False``.
+    """
+    start = max(0, index - context_window)
+    end = min(len(doc), index + context_window + 1)
+    context_text = doc[start:end].text.lower()
+
+    for ngram in ngrams:
+        # Avoid matching ngrams that occur within larger words.
+        pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
+        if re.search(pattern, context_text):
+            return True
+
+    return False
 
 
 def _should_always_lowercase(token: Token) -> bool:
