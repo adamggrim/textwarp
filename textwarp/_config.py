@@ -12,6 +12,16 @@ from pathlib import Path
 
 
 class CapitalizationContext(TypedDict):
+    """
+    The capitalization context for a custom entity.
+
+    Attributes:
+        casing: The capitalization to apply.
+        pos_sequences: A list of parts-of-speech sequences for the
+            entity.
+        ngrams: A list of ngrams to check for.
+
+    """
     casing: str
     pos_sequences: list[list[str]]
     ngrams: list[str]
