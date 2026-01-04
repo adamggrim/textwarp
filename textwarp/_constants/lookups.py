@@ -1,38 +1,18 @@
-"""Sets and tuples used across the package."""
+"""Sets, tuples and dictionaries used across the package for lookups."""
 
 from typing import Final
 
 import regex as re
 
-from .._constants import CasePatterns
+from . import CasePatterns
 
 __all__ = [
-    'AIN_T_SUFFIX_VARIANTS',
-    'APOSTROPHE_D_VARIANTS',
-    'APOSTROPHE_S_VARIANTS',
-    'APOSTROPHE_VARIANTS',
     'CASE_NAMES_REGEX_MAP',
-    'EXIT_INPUTS',
-    'NO_INPUTS',
-    'OPEN_QUOTES',
     'POS_TAGS',
     'POS_WORD_TAGS',
     'PROPER_NOUN_ENTITIES',
-    'TITLE_CASE_TAG_EXCEPTIONS',
-    'YES_INPUTS'
+    'TITLE_CASE_TAG_EXCEPTIONS'
 ]
-
-# Variants of 's for contractions.
-AIN_T_SUFFIX_VARIANTS: Final = {"n't", 'n’t', 'n‘t'}
-
-# Variants of 'd for contractions.
-APOSTROPHE_D_VARIANTS: Final = {"'d", '’d', '‘d'}
-
-# Variants of 's for contractions.
-APOSTROPHE_S_VARIANTS: Final = {"'s", '’s', '‘s'}
-
-# Variants of apostrophes.
-APOSTROPHE_VARIANTS: Final = {"'", '’', '‘'}
 
 CASE_NAMES_REGEX_MAP: Final[dict[str, re.Pattern[str]]] = {
     'camel': CasePatterns.CAMEL_WORD,
@@ -50,15 +30,6 @@ CASE_NAMES_REGEX_MAP: Final[dict[str, re.Pattern[str]]] = {
     'upper': CasePatterns.UPPER_WORD,
     'uppercase': CasePatterns.UPPER_WORD,
 }
-
-# Inputs for exiting the program.
-EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
-
-# Inputs for indicating a negative response.
-NO_INPUTS: Final = {'no', 'n'}
-
-# Opening quote characters.
-OPEN_QUOTES: Final = {'"', '“', "'", '‘'}
 
 # Tuple of tuples for all part-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
@@ -105,6 +76,3 @@ TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'TO',   # to (infinitive marker)
     'WDT',  # Wh-determiner (e.g., 'what')
 }
-
-# Inputs for indicating an affirmative response.
-YES_INPUTS: Final = {'yes', 'y'}

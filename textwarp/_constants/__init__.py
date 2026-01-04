@@ -1,3 +1,4 @@
-from .regexes import *
-from .definitions import *
+from .lookups import *
 from .messages import *
+from .regexes import *
+from .variants import *
