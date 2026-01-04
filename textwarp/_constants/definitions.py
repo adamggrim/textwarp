@@ -91,6 +91,7 @@ PROPER_NOUN_ENTITIES: Final = {
     'PRODUCT',
     'EVENT',
     'WORK_OF_ART',
+    'LANGUAGE',
     'LAW'
 }
 
