@@ -1,4 +1,4 @@
-"""Strings used across the package."""
+"""Strings for displaying messages to the user."""
 
 from typing import Final
 

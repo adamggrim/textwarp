@@ -104,7 +104,7 @@ textwarp/
 │   ├── __init__.py: Exposes constants for use across the package
 │   ├── definitions.py: Defines sets and tuples used across the package
 │   ├── regexes.py: Defines regular expressions used across the package
-│   └── strings.py: Defines strings used across the package
+│   └── strings.py: Defines strings for displaying messages to the user
 ├── _data/
 │   ├── contraction_expansion/
 │   │   ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
