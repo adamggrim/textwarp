@@ -14,7 +14,7 @@ def disambiguate_ain_t(span: Span) -> str | None:
     """
     Disambiguate the base verb for a matched "ain't" contraction.
 
-    This function assumes the "n't" span has already been identified as
+    This function assumes the "n't" ``Span`` has already been identified as
     an "ain't" contraction (preceded by "ai").
 
     Args:
@@ -74,7 +74,7 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     """
     Disambiguate the base verb for a matched "'s" or "'d" contraction.
 
-    This function assumes the span has already been identified as an
+    This function assumes the ``Span`` has already been identified as an
     "'s" or "'d" contraction.
 
     Args:
@@ -85,16 +85,14 @@ def disambiguate_s_or_d(span: Span) -> str | None:
             ``None``.
     """
     doc = span.doc
-
     suffix_token = span[-1]
-
     next_token = (
         doc[suffix_token.i + 1]
         if suffix_token.i < len(doc) - 1
         else None
     )
-
     prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
+
     if (prev_token and prev_token.lower_ == 'let' and
             suffix_token.lower_ in APOSTROPHE_S_VARIANTS):
         return 'us'
@@ -124,7 +122,7 @@ def disambiguate_whatcha(span: Span) -> str | None:
     """
     Disambiguate the base verb for a matched "whatcha" contraction.
 
-    This function assumes the span has already been identified as a
+    This function assumes the ``Span`` has already been identified as a
     "whatcha" contraction.
 
     Args:

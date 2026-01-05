@@ -45,7 +45,6 @@ def _check_for_ngrams(
     context_text = doc[start:end].text.lower()
 
     for ngram in ngrams:
-        # Avoid matching ngrams that occur within larger words.
         pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
         if re.search(pattern, context_text):
             return True
@@ -74,17 +73,19 @@ def _should_always_lowercase(token: Token) -> bool:
 
 def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     """
-    Create a map of specific indices for proper noun entities to Span objects
-    and end indices from a spaCy ``Doc``.
+    Map standard entities in a spaCy ``Doc``.
 
     Args:
         doc: The spaCy ``Doc`` to convert.
 
     Returns:
-        dict[int, tuple[Span, int]]: A dictionary where each key is an
-            entity's start token index and each value is a tuple
-            containing the entity's spaCy Span object and its end token
-            index.
+        dict[int, tuple[Span, int, None]]: A dictionary where each key
+            is an entity's start token index and each value is a tuple
+            containing:
+                1. The entity's spaCy ``Span`` object.
+                2. The entity's end token index.
+                3. ``None`` (no forced casing).
+
     """
     return {
         ent.start: (ent, ent.end) for ent in doc.ents

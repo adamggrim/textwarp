@@ -287,7 +287,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         token_indices = _find_title_case_indices(doc)
         lowercase_by_default = True
 
-    # Loop through each token in the `Doc` to find any indices that
+    # Loop through each token in the ``Doc`` to find any indices that
     # should be cased.
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
