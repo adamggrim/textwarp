@@ -1,24 +1,29 @@
 """Function for lazy loading of the spaCy model."""
 
+from typing import Optional
+
 import spacy
 
 from ._ui import print_wrapped
 
+_nlp_instance: Optional[spacy.language.Language] = None
 
-def _load_spacy_model(model_name: str):
+def get_nlp():
     """
-    Loads a spaCy model, downloading it if not found.
+    Returns the loaded spaCy model instance, downloading it if not
+    found.
 
-    Args:
-        model_name (str): The name of the spaCy model to load.
+    Returns:
+        spacy.language.Language: The loaded spaCy model instance.
     """
-    try:
-        nlp = spacy.load(model_name)
-    except OSError:
-        print_wrapped(f"Downloading spaCy model '{model_name}'...")
-        spacy.cli.download(model_name)
-        nlp = spacy.load(model_name)
-    return nlp
+    global _nlp_instance
+    if _nlp_instance is None:
+        model_name = 'en_core_web_trf'
+        try:
+            _nlp_instance = spacy.load(model_name)
+        except OSError:
+            print_wrapped(f"Downloading spaCy model '{model_name}'...")
+            spacy.cli.download(model_name)
+            _nlp_instance = spacy.load(model_name)
 
-
-nlp = _load_spacy_model('en_core_web_trf')
+    return _nlp_instance

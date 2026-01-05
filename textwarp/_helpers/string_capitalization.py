@@ -3,11 +3,11 @@
 from typing import Callable
 
 from .._config import (
-    CAPITALIZED_ABBREVIATIONS_MAP,
-    INITIALISMS_MAP,
-    LOWERCASE_ABBREVIATIONS,
-    MIXED_CASE_WORDS_MAP,
-    OTHER_PREFIXED_NAMES_MAP
+    get_capitalized_abbreviations_map,
+    get_initialisms_map,
+    get_lowercase_abbreviations,
+    get_mixed_case_words_map,
+    get_other_prefixed_names_map
 )
 from .._constants import WarpingPatterns
 
@@ -63,17 +63,18 @@ def _handle_capitalized_abbreviation(
 
     Returns:
         str | None: The capitalized abbreviation, or ``None`` if
-            ``lower_word`` is not in ``CAPITALIZED_ABBREVIATIONS_MAP``.
+            ``lower_word`` is not in the capitalized abbreviations map.
     """
     capitalized_word = _capitalize_from_map(
-        lower_word.removesuffix('.'), CAPITALIZED_ABBREVIATIONS_MAP
+        lower_word.removesuffix('.'), get_capitalized_abbreviations_map()
     )
     return capitalized_word if capitalized_word else None
 
 
 def _handle_initialism(_word: str, lower_word: str) -> str | None:
     """
-    Handle the capitalization of an initialism without hyphens or periods.
+    Handle the capitalization of an initialism without hyphens or
+    periods.
 
     Args:
         _word: The word to capitalize (unused).
@@ -81,9 +82,9 @@ def _handle_initialism(_word: str, lower_word: str) -> str | None:
 
     Returns:
         str | None: The capitalized initialism, or ``None`` if
-            ``lower_word`` is not in ``INITIALISMS_MAP``.
+            ``lower_word`` is not in the initialisms map.
     """
-    return _capitalize_from_map(lower_word, INITIALISMS_MAP)
+    return _capitalize_from_map(lower_word, get_initialisms_map())
 
 
 def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
@@ -113,9 +114,9 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
 
     Returns:
         str | None: The lowercase abbreviation, or ``None`` if
-            ``lower_word`` is not in ``LOWERCASE_ABBREVIATIONS``.
+            ``lower_word`` is not in the lowercase abbreviations set.
     """
-    if lower_word.removesuffix('.') in LOWERCASE_ABBREVIATIONS:
+    if lower_word.removesuffix('.') in get_lowercase_abbreviations():
         return lower_word
     return None
 
@@ -130,9 +131,9 @@ def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
 
     Returns:
         str | None: The mixed-case word, or ``None`` if ``lower_word``
-            is not in ``MIXED_CASE_WORDS_MAP``.
+            is not in the mixed-case words map.
     """
-    return _capitalize_from_map(lower_word, MIXED_CASE_WORDS_MAP)
+    return _capitalize_from_map(lower_word, get_mixed_case_words_map())
 
 
 def _handle_period_separated_initialism(
@@ -178,7 +179,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
         return (lower_word[:prefix_len].capitalize() +
                 lower_word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
-        return _capitalize_from_map(lower_word, OTHER_PREFIXED_NAMES_MAP)
+        return _capitalize_from_map(lower_word, get_other_prefixed_names_map())
     return None
 
 

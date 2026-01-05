@@ -7,14 +7,14 @@ from typing import (
 )
 
 from .._config import (
-    AMBIGUOUS_CONTRACTIONS,
-    CONTRACTION_SUFFIXES,
-    ELISION_WORDS,
-    NAME_PREFIX_EXCEPTIONS,
-    NAME_PREFIXES,
-    MAP_SUFFIX_EXCEPTIONS,
-    OTHER_PREFIXED_NAMES_MAP,
-    UNAMBIGUOUS_CONTRACTIONS_MAP
+    get_ambiguous_contractions,
+    get_contraction_suffixes,
+    get_elision_words,
+    get_name_prefix_exceptions,
+    get_name_prefixes,
+    get_map_suffix_exceptions,
+    get_other_prefixed_names_map,
+    get_unambiguous_contractions_map
 )
 from .._decorators import non_instantiable
 from .._enums import RegexBoundary
@@ -290,25 +290,25 @@ class WarpingPatterns:
     ANY_APOSTROPHE_LOOKAHEAD: Final[re.Pattern[str]] = re.compile(r"(?=['’‘])")
     APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
-        (?<=                            # Preceded by...
-            [a-z]                       # An alphabetical letter.
+        (?<=                                # Preceded by...
+            [a-z]                           # An alphabetical letter.
         )
-        ['’‘]                           # An apostrophe.
-        (?=                             # Followed by...
-            [a-z]                       # An alphabetical letter.
+        ['’‘]                               # An apostrophe.
+        (?=                                 # Followed by...
+            [a-z]                           # An alphabetical letter.
         )
-        |                               # OR
+        |                                   # OR
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
-        ['’‘]                           # An apostrophe.
-        (?=                             # Followed by...
-            {'|'.join(ELISION_WORDS)}   # An elision.
-            |                           # OR
-            \d{{2}}s                    # An abbreviation for a
-        )                               # decade.
+        ['’‘]                               # An apostrophe.
+        (?=                                 # Followed by...
+            {'|'.join(get_elision_words())} # An elision.
+            |                               # OR
+            \d{{2}}s                        # An abbreviation for a
+        )                                   # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
     AMBIGUOUS_CONTRACTION: Final[re.Pattern[str]] = (
-        _create_words_regex(AMBIGUOUS_CONTRACTIONS)
+        _create_words_regex(get_ambiguous_contractions())
     )
     CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
@@ -321,25 +321,25 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
-        list(UNAMBIGUOUS_CONTRACTIONS_MAP.keys()) + AMBIGUOUS_CONTRACTIONS
+        list(get_unambiguous_contractions_map().keys()) + get_ambiguous_contractions()
     )
     CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(CONTRACTION_SUFFIXES)
+        _create_words_regex(get_contraction_suffixes())
     )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
-            MAP_SUFFIX_EXCEPTIONS,
+            get_map_suffix_exceptions(),
             boundary=RegexBoundary.END_ANCHOR
         )
     )
     MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(NAME_PREFIX_EXCEPTIONS)
+        _create_words_regex(get_name_prefix_exceptions())
     )
     NAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        NAME_PREFIXES
+        get_name_prefixes()
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’‘]t$", re.IGNORECASE
@@ -390,7 +390,7 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     OTHER_PREFIXED_NAMES_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        list(OTHER_PREFIXED_NAMES_MAP.keys())
+        list(get_other_prefixed_names_map().keys())
     )
     PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
         r'\b(?:[A-Za-z]\.){2,}'

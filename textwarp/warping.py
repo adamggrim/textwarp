@@ -22,8 +22,8 @@ from ._helpers import (
     word_to_pascal
 )
 from ._config import (
-    MORSE_MAP,
-    REVERSED_MORSE_MAP
+    get_morse_map,
+    get_reversed_morse_map
 )
 from ._enums import CaseSeparator
 from ._constants import (
@@ -174,10 +174,12 @@ def from_morse(text: str) -> str:
     words = text.strip().split('   ')
     decoded_words: list[str] = []
 
+    reversed_morse_map = get_reversed_morse_map()
+
     for w in words:
         char_codes: list[str] = w.split()
         decoded_word = ''.join(
-            REVERSED_MORSE_MAP.get(code, '') for code in char_codes
+            reversed_morse_map.get(code, '') for code in char_codes
         )
         decoded_words.append(decoded_word)
 
@@ -490,9 +492,10 @@ def to_morse(text: str) -> str:
         return hyphenated_text.replace('…', '...')
 
     normalized_text = _normalize_for_morse(text)
+    morse_map = get_morse_map()
 
     morse_words: Generator[str, None, None] = (
-        ' '.join(MORSE_MAP[char] for char in word if char in MORSE_MAP)
+        ' '.join(morse_map[char] for char in word if char in morse_map)
         for word in normalized_text.split()
     )
 

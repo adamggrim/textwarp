@@ -5,7 +5,7 @@ Functions for extracting words and processing text as a spaCy ``Doc``.
 from spacy.tokens import Doc
 
 from .._constants import POS_WORD_TAGS
-from .._nlp import nlp
+from .._nlp import get_nlp
 
 __all__ = [
     'extract_words_from_doc',
@@ -42,4 +42,5 @@ def process_as_doc(content: str | Doc) -> Doc:
     """
     if isinstance(content, Doc):
         return content
+    nlp = get_nlp()
     return nlp(content)
