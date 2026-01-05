@@ -6,31 +6,13 @@ from typing import (
     Any,
     Final,
     TypeAlias,
-    TypedDict,
     cast
 )
 from pathlib import Path
 
-
-class CapitalizationContext(TypedDict):
-    """
-    The capitalization context for a custom entity.
-
-    Attributes:
-        casing: The capitalization to apply.
-        pos_sequences: A list of parts-of-speech sequences for the
-            entity.
-        ngrams: A list of ngrams to check for.
-
-    """
-    casing: str
-    pos_sequences: list[list[str]]
-    ngrams: list[str]
-
-
-# A type for JSON data.
-JSONType: TypeAlias = (
-    dict[str, Any] | list[Any] | str | int | float | bool | None
+from ._types import (
+    CapitalizationContext,
+    JSONType
 )
 
 DATA_ROOT: Final = Path(__file__).parent / '_data'
