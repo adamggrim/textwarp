@@ -4,7 +4,7 @@ from typing import Final
 
 import regex as re
 
-from . import CasePatterns
+from .regexes import CasePatterns
 
 __all__ = [
     'CASE_NAMES_REGEX_MAP',
