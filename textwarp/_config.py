@@ -41,9 +41,9 @@ def _load_json_from_data(relative_path: Path | str) -> JSONType:
 
 
 @lru_cache(maxsize=1)
-def get_absolute_capitalizations_map() -> dict[str, str]:
+def get_absolute_entities_map() -> dict[str, str]:
     return cast(dict[str, str], _load_json_from_data(
-        ENTITY_CAPITALIZATION_DIR / 'absolute_capitalizations_map.json'
+        ENTITY_CAPITALIZATION_DIR / 'absolute_entities_map.json'
     ))
 
 @lru_cache(maxsize=1)
@@ -59,11 +59,11 @@ def get_capitalized_abbreviations_map() -> dict[str, str]:
     ))
 
 @lru_cache(maxsize=1)
-def get_contextual_capitalizations_map() -> (
+def get_contextual_entities_map() -> (
     dict[str, list[CapitalizationContext]]
 ):
     return cast(dict[str, list[CapitalizationContext]], _load_json_from_data(
-        ENTITY_CAPITALIZATION_DIR / 'contextual_capitalizations_map.json'
+        ENTITY_CAPITALIZATION_DIR / 'contextual_entities_map.json'
     ))
 
 @lru_cache(maxsize=1)
