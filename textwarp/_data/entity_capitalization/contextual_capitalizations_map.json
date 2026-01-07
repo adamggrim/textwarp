@@ -54,7 +54,7 @@
     "coo": [
         {
             "casing": "COO",
-            "pos_sequences": [["PROPN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["chief operating", "company", "new", "officer", "our"]
         },
         {
@@ -64,28 +64,15 @@
         }
     ],
 
-    "q-tip": [
-        {
-            "casing": "Q-tip",
-            "pos_sequences": [["PROPN", "NOUN"]],
-            "ngrams": ["cotton", "ear", "swab"]
-        },
-        {
-            "casing": "Q-Tip",
-            "pos_sequences": [["PROPN"]],
-            "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
-        }
-    ],
-
     "go": [
         {
             "casing": "GO",
-            "pos_sequences": [["PROPN", "NOUN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["general order", "import", "status"]
         },
         {
             "casing": "Go",
-            "pos_sequences": [["VERB"]],
+            "pos_sequences": [["VERB"], ["NOUN"]],
             "ngrams": ["board", "game", "let's", "to"]
         }
     ],
@@ -93,7 +80,7 @@
     "it": [
         {
             "casing": "IT",
-            "pos_sequences": [["PROPN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["administrator", "consultant", "department", "help desk", "industry", "information technology", "sector", "support", "systems"]
         },
         {
@@ -119,25 +106,43 @@
     "pin": [
         {
             "casing": "PIN",
-            "pos_sequences": [["PROPN", "NOUN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["atm", "code", "credit", "debit", "enter", "number", "personal identification", "reset", "security"]
         },
         {
             "casing": "Pin",
-            "pos_sequences": [["NOUN", "VERB"]],
-            "ngrams": ["bowling", "on", "rolling", "safety", "sewing"]
+            "pos_sequences": [["NOUN"], ["VERB"]],
+            "ngrams": ["bowling", "in it", "on", "rolling", "safety", "sewing"]
+        }
+    ],
+
+    "q-tip": [
+        {
+            "casing": "Q-tip",
+            "pos_sequences": [
+		["PROPN", "PUNCT", "NOUN"],
+                ["NOUN", "PUNCT", "NOUN"]
+            ],
+            "ngrams": ["cotton", "ear", "swab"]
+        },
+        {
+            "casing": "Q-Tip",
+            "pos_sequences": [
+                ["PROPN", "PUNCT", "PROPN"]
+            ],
+            "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
         }
     ],
 
     "ram": [
         {
             "casing": "RAM",
-            "pos_sequences": [["PROPN", "NOUN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["8gb of", "computer", "gb", "memory", "upgrade"]
         },
         {
             "casing": "Ram",
-            "pos_sequences": [["NOUN", "VERB"]],
+            "pos_sequences": [["NOUN"], ["VERB"]],
             "ngrams": ["1500", "animal", "dodge", "football", "into", "nfl", "pickup", "player", "sheep", "team", "truck"]
         }
     ],
@@ -158,12 +163,12 @@
     "vet": [
         {
             "casing": "VET",
-            "pos_sequences": [["PROPN", "NOUN"]],
+            "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["military", "veteran", "war"]
         },
         {
             "casing": "Vet",
-            "pos_sequences": [["NOUN", "VERB"]],
+            "pos_sequences": [["NOUN"], ["VERB"]],
             "ngrams": ["animal", "cat", "dog", "medicine", "pet", "veterinarian"]
         }
     ],
