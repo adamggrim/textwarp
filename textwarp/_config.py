@@ -3,9 +3,7 @@
 import json
 from functools import lru_cache
 from typing import (
-    Any,
     Final,
-    TypeAlias,
     cast
 )
 from pathlib import Path

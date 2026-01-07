@@ -3,16 +3,15 @@
 import regex as re
 from spacy.tokens import (
     Doc,
-    Span,
-    Token
+    Span
 )
 
-from .._config import LOWERCASE_PARTICLES
-from .._constants import (
-    PROPER_NOUN_ENTITIES,
-    TITLE_CASE_TAG_EXCEPTIONS
+from .._config import (
+    get_absolute_entities_map,
+    get_contextual_entities_map,
 )
-from .._constants import WarpingPatterns
+from .._constants import PROPER_NOUN_ENTITIES
+from .._types import CapitalizationContext
 
 __all__ = [
     'map_proper_noun_entities',

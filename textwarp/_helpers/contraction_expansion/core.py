@@ -7,7 +7,7 @@ from spacy.tokens import (
 
 from ..._constants import WarpingPatterns
 
-from ..._config import UNAMBIGUOUS_CONTRACTIONS_MAP
+from ..._config import get_unambiguous_contractions_map
 from ..._constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS

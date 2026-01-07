@@ -9,7 +9,7 @@ from spacy.tokens import (
     Span
 )
 
-from .._constants.definitions import OPEN_QUOTES
+from .._constants.variants import OPEN_QUOTES
 from .._constants.regexes import WarpingPatterns
 
 from .._enums import (
@@ -21,11 +21,9 @@ from .._constants import (
     CasePatterns
 )
 from .apostrophes import remove_apostrophes
-from .entity_capitalization import (
-    map_proper_noun_entities,
-    should_capitalize_pos_or_length
-)
+from .entity_capitalization import map_all_entities
 from .string_capitalization import capitalize_from_string
+from .token_capitalization import should_capitalize_pos_or_length
 
 __all__ = [
     'change_first_letter_case',
