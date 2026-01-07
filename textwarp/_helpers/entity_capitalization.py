@@ -84,6 +84,9 @@ def _get_contextual_entity_casing(
             if _check_for_ngrams(span, context_ngrams):
                 return context['casing']
 
+        if not context_pos_seqs and not context_ngrams:
+            return context['casing']
+
     return None
 
 
