@@ -14,14 +14,12 @@ from .._constants import PROPER_NOUN_ENTITIES
 from .._types import CapitalizationContext
 
 __all__ = [
-    'map_proper_noun_entities',
-    'should_capitalize_pos_or_length'
+    'map_all_entities'
 ]
 
 
 def _check_for_ngrams(
-    doc: Doc,
-    index: int,
+    span: Span,
     ngrams: list[str],
     context_window: int = 5
 ) -> bool:
@@ -30,18 +28,21 @@ def _check_for_ngrams(
     specific index in the Doc.
 
     Args:
-        doc: The spaCy ``Doc`` to check.
-        index: The index around which to check for ngrams.
+        span: The spaCy ``Span`` to check.
         ngrams: A list of ngrams to check for.
-        context_window: The size of the window around the index to
+        context_window: The number of tokens around the ``Span`` to
             check. Defaults to 5.
 
     Returns:
         bool: ``True`` if any ngram is found, otherwise ``False``.
     """
-    start = max(0, index - context_window)
-    end = min(len(doc), index + context_window + 1)
-    context_text = doc[start:end].text.lower()
+    doc = span.doc
+
+    window_start = max(0, span.start - context_window)
+    window_end = min(len(doc), span.end + context_window)
+
+    # The text of the entire window (context + entity + context).
+    context_text = doc[window_start:window_end].text.lower()
 
     for ngram in ngrams:
         pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
@@ -51,28 +52,106 @@ def _check_for_ngrams(
     return False
 
 
-def _should_always_lowercase(token: Token) -> bool:
+def _get_contextual_entity_casing(
+    span: Span,
+    key: str
+) -> str | None:
     """
-    Determine if a token should always be lowercase.
-
-    This occurs when it is a lowercase particle (e.g., "de", "von") or a
-    contraction suffix (e.g., "'ve", "n't").
+    Determine the casing for a contextual entity based on parts-of-
+    speech sequences and ngrams.
 
     Args:
-        token: The spaCy token to check.
+        span: The spaCy ``Span`` to case.
+        key: The key to look up in the context map.
 
     Returns:
-        bool: ``True`` if the token should always be lowercase, otherwise
-            ``False``.
+        str | None: The contextual casing, otherwise ``None``.
     """
-    return (token.text.lower() in LOWERCASE_PARTICLES or
-        WarpingPatterns.CONTRACTION_SUFFIXES_PATTERN
-        .fullmatch(token.text))
+    contextual_entities_map = get_contextual_entities_map()
+    contexts: list[CapitalizationContext] = contextual_entities_map.get(
+        key, []
+    )
+
+    current_pos_seq = [token.pos_ for token in span]
+    for context in contexts:
+        context_pos_seqs = context.get('pos_sequences', [])
+        for context_pos_seq in context_pos_seqs:
+            if current_pos_seq == context_pos_seq:
+                return context['casing']
+
+        context_ngrams = context.get('ngrams', [])
+        if context_ngrams:
+            if _check_for_ngrams(span, context_ngrams):
+                return context['casing']
+
+    return None
 
 
-def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
+def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     """
-    Map standard entities in a spaCy ``Doc``.
+    Map entities in a spaCy ``Doc`` to their correct contextual casing.
+
+    Args:
+        doc: The spaCy ``Doc`` to convert.
+
+    Returns:
+        dict[int, tuple[Span, int, str]]: A dictionary where each key is
+            an entity's start token index and each value is a tuple
+            containing:
+                1. The entity's spaCy ``Span`` object.
+                2. The entity's end token index.
+                3. The capitalized version of the entity.
+
+    """
+    custom_entities_map: dict[int, tuple[Span, int, str]] = {}
+
+    absolute_entities_map = get_absolute_entities_map()
+    contextual_entities_map = get_contextual_entities_map()
+
+    all_keys: set[str] = (
+        absolute_entities_map.keys()
+        | contextual_entities_map.keys()
+    )
+
+    # Sort words by length in descending order to prioritize longer
+    # matches.
+    sorted_keys = sorted(all_keys, key=len, reverse=True)
+
+    consumed_indices: set[int] = set()
+
+    for key in sorted_keys:
+        pattern = r'(?<!\w)' + re.escape(key) + r'(?!\w)'
+
+        for match in re.finditer(pattern, doc.text.lower()):
+            start_char, end_char = match.span()
+            span = doc.char_span(start_char, end_char)
+
+            # Skip the match if the ``Span`` does not align with a token.
+            if span is None:
+                continue
+
+            span_indices = set(range(span.start, span.end))
+            if not span_indices.isdisjoint(consumed_indices):
+                continue
+
+            cased_text: str | None = None
+
+            if key in absolute_entities_map:
+                cased_text = absolute_entities_map[key]
+            elif key in contextual_entities_map:
+                cased_text = _get_contextual_entity_casing(span, key)
+
+            if cased_text:
+                custom_entities_map[span.start] = (span, span.end, cased_text)
+                consumed_indices.update(span_indices)
+
+    return custom_entities_map
+
+
+def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
+    """
+    Map model entities in a spaCy ``Doc``. These entities are detected
+    by the underlying spaCy NLP model.
 
     Args:
         doc: The spaCy ``Doc`` to convert.
@@ -84,10 +163,9 @@ def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
                 1. The entity's spaCy ``Span`` object.
                 2. The entity's end token index.
                 3. ``None`` (no forced casing).
-
     """
     return {
-        ent.start: (ent, ent.end) for ent in doc.ents
+        ent.start: (ent, ent.end, None) for ent in doc.ents
         if ent.label_ in PROPER_NOUN_ENTITIES
     }
 
