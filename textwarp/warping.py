@@ -261,8 +261,8 @@ def punct_to_inside(text: str) -> str:
         Returns:
             str: The reordered string.
         """
-        punct, quote = match.groups()
-        return quote + punct
+        quote, punct = match.groups()
+        return punct + quote
 
     return WarpingPatterns.PUNCT_OUTSIDE.sub(_repl, text)
 
@@ -289,10 +289,11 @@ def punct_to_outside(text: str) -> str:
         Returns:
             str: The reordered string.
         """
-        quote, punct = match.groups()
-        return punct + quote
+        punct, quote = match.groups()
+        return quote + punct
 
     return WarpingPatterns.PUNCT_INSIDE.sub(_repl, text)
+
 
 def random_case(text: str) -> str:
     """
