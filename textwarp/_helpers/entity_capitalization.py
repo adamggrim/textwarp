@@ -92,22 +92,37 @@ def map_proper_noun_entities(doc: Doc) -> dict[int, tuple[Span, int]]:
     }
 
 
-def should_capitalize_pos_or_length(token: Token) -> bool:
+def map_all_entities(
+    doc: Doc
+) -> dict[int, tuple[str | Span, int, str | None]]:
     """
-    Determine whether a spaCy token should be capitalized for title
-    case based on its part of speech or length.
+    Create a prioritized map of all entities (absolute > contextual > model).
 
     Args:
-        token: The spaCy token to check.
+        doc: The spaCy ``Doc`` to convert.
 
     Returns:
-        bool: ``True`` if the tag should be capitalized, otherwise
-            ``False``.
+        dict[int, tuple[str | Span, int, None]]: A dictionary where each
+            key is an entity's start token index and each value is a
+            tuple containing:
+                1. The entity's spaCy ``Span`` object.
+                2. The entity's end token index.
+                3. The entity's end token index.
     """
-    if _should_always_lowercase(token):
-        return False
-    # Capitalize long words regardless of POS tag.
-    if len(token.text) >= 5:
-        return True
+    custom_map = _map_custom_entities(doc)
+    consumed_indices = set()
+    for span, _, _ in custom_map.values():
+        consumed_indices.update(range(span.start, span.end))
 
-    return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
+    standard_map = _map_model_entities(doc)
+
+    combined_map: dict[int, tuple[Span, int, str| None]] = dict(custom_map)
+
+    for start_idx, (span, end_idx, text) in standard_map.items():
+        span_indices = set(range(span.start, span.end))
+        # Only add standard indices if they don't overlap with custom
+        # indices.
+        if span_indices.isdisjoint(consumed_indices):
+            combined_map[start_idx] = (span, end_idx, text)
+
+    return combined_map

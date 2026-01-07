@@ -267,9 +267,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     Returns:
         str: The cased string.
     """
-    entity_map: dict[int, tuple[Span, int]] = (
-        map_proper_noun_entities(doc)
-    )
+    entity_map: dict[int, tuple[Span, int, str | None]] = map_all_entities(doc)
 
     processed_parts: list[str] = []
     token_indices: set[int] = set()
