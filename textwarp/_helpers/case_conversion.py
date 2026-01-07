@@ -61,8 +61,8 @@ def _find_sentence_case_indices(
     text_container: Doc | Span
 ) -> tuple[set[int], set[int]]:
     """
-    Find the indices of tokens that should be capitalized or force-
-    lowercased for sentence case.
+    Find the indices of tokens that should be capitalized or lowercased
+    for sentence case.
 
     Args:
         text_container: The spaCy ``Doc`` or ``Span`` to analyze.
@@ -71,13 +71,13 @@ def _find_sentence_case_indices(
         tuple[set[int], set[int]]:
             1. sent_start_indices: A list of the first token in each
                 sentence.
-            2. force_lowercase_indices: A list of words after the first
-                word that are currently capitalized or uppercase,
-                provided that all words in the text follow the same
-                casing (i.e., all capitalized or all uppercase).
+            2. indices_to_lowercase: A list of words after the first
+                word that are currently capitalized or uppercase, as
+                long as all words in the text follow the same casing
+                (i.e., all capitalized or all uppercase).
     """
     sent_start_indices: set[int] = set()
-    force_lowercase_indices: set[int] = set()
+    indices_to_lowercase: set[int] = set()
 
     for sent in text_container.sents:
         first_word_idx = _find_first_word_token_idx(0, sent)
@@ -102,9 +102,9 @@ def _find_sentence_case_indices(
                 # The first word token of each sentence is always
                 # capitalized.
                 if token.i != first_word_idx and token.is_alpha:
-                    force_lowercase_indices.add(token.i)
+                    indices_to_lowercase.add(token.i)
 
-    return sent_start_indices, force_lowercase_indices
+    return sent_start_indices, indices_to_lowercase
 
 
 def _find_start_case_indices(text_container: Doc | Span) -> set[int]:
@@ -274,7 +274,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     i = 0
 
     if casing == Casing.SENTENCE:
-        token_indices = _find_sentence_case_indices(doc)
+        token_indices, indices_to_lowercase = _find_sentence_case_indices(doc)
         lowercase_by_default = True
     elif casing == Casing.START:
         token_indices = _find_start_case_indices(doc)
@@ -288,13 +288,23 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
         if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
-            entity_span, end_idx = entity_map[i]
+            entity_span, end_idx, absolute_capitalization = entity_map[i]
 
-            title_cased_entity_text: str = _to_title_case_from_doc(
-                entity_span
-            )
-            processed_parts.append(title_cased_entity_text)
-            # Jump the index to the end of the entity.
+            # If the entity has an absolute capitalization, use it
+            # directly.
+            if absolute_capitalization:
+                trailing_whitespace = entity_span[-1].whitespace_
+                processed_parts.append(
+                    absolute_capitalization + trailing_whitespace
+                )
+            # Otherwise, convert the entity to title case.
+            else:
+                title_cased_entity_text: str = _to_title_case_from_doc(
+                    entity_span
+                )
+                processed_parts.append(title_cased_entity_text)
+
+            # Jump to the end index of the entity.
             i = end_idx
             continue
 
@@ -307,6 +317,8 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             processed_parts.append(
                 capitalize_from_string(token_text)
             )
+        elif casing == Casing.SENTENCE and i in indices_to_lowercase:
+            processed_parts.append(token_text.lower())
         else:
             processed_parts.append(
                 capitalize_from_string(token_text, lowercase_by_default)
