@@ -7,8 +7,8 @@
         },
         {
             "casing": "Aids",
-            "pos_sequences": [["NOUN"], ["VERB"]],
-            "ngrams": ["first", "hearing", "memory", "teaching", "visual", "walking"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -20,8 +20,8 @@
         },
         {
             "casing": "Art",
-            "pos_sequences": [["NOUN"]],
-            "ngrams": ["gallery", "history", "museum", "piece of"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -33,8 +33,8 @@
         },
         {
             "casing": "Cat",
-            "pos_sequences": [["NOUN"]],
-            "ngrams": ["animal", "black", "feed the", "meow", "pet"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -46,8 +46,8 @@
         },
         {
             "casing": "Cod",
-            "pos_sequences": [["NOUN"]],
-            "ngrams": ["atlantic", "cape", "fish", "fresh"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -59,8 +59,8 @@
         },
         {
             "casing": "Coo",
-            "pos_sequences": [["VERB"], ["NOUN"]],
-            "ngrams": ["baby", "dove", "pigeon"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -72,8 +72,8 @@
         },
         {
             "casing": "Go",
-            "pos_sequences": [["VERB"], ["NOUN"]],
-            "ngrams": ["board", "game", "let's", "to"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -85,7 +85,7 @@
         },
         {
             "casing": "It",
-            "pos_sequences": [["PRON"]],
+            "pos_sequences": [],
             "ngrams": []
         }
     ],
@@ -98,8 +98,8 @@
         },
         {
             "casing": "Now",
-            "pos_sequences": [["ADV"]],
-            "ngrams": ["is", "right", "we are"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -111,26 +111,23 @@
         },
         {
             "casing": "Pin",
-            "pos_sequences": [["NOUN"], ["VERB"]],
-            "ngrams": ["bowling", "in it", "on", "rolling", "safety", "sewing"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
     "q-tip": [
-        {
-            "casing": "Q-tip",
-            "pos_sequences": [
-		["PROPN", "PUNCT", "NOUN"],
-                ["NOUN", "PUNCT", "NOUN"]
-            ],
-            "ngrams": ["cotton", "ear", "swab"]
-        },
         {
             "casing": "Q-Tip",
             "pos_sequences": [
                 ["PROPN", "PUNCT", "PROPN"]
             ],
             "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
+        },
+        {
+            "casing": "Q-tip",
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -142,8 +139,8 @@
         },
         {
             "casing": "Ram",
-            "pos_sequences": [["NOUN"], ["VERB"]],
-            "ngrams": ["1500", "animal", "dodge", "football", "into", "nfl", "pickup", "player", "sheep", "team", "truck"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -155,8 +152,8 @@
         },
         {
             "casing": "Us",
-            "pos_sequences": [["PRON"]],
-            "ngrams": ["among", "between", "for", "let", "told", "with"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -168,8 +165,8 @@
         },
         {
             "casing": "Vet",
-            "pos_sequences": [["NOUN"], ["VERB"]],
-            "ngrams": ["animal", "cat", "dog", "medicine", "pet", "veterinarian"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ],
 
@@ -181,8 +178,8 @@
         },
         {
             "casing": "Who",
-            "pos_sequences": [["PRON"]],
-            "ngrams": ["are", "did", "is", "was"]
+            "pos_sequences": [],
+            "ngrams": []
         }
     ]
 }
