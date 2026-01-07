@@ -4,6 +4,10 @@ from .._constants.lookups import TITLE_CASE_TAG_EXCEPTIONS
 from .._constants.regexes import WarpingPatterns
 from .._config import get_lowercase_particles
 
+__all__ = [
+    'should_capitalize_pos_or_length'
+]
+
 
 def _should_always_lowercase(token: Token) -> bool:
     """
