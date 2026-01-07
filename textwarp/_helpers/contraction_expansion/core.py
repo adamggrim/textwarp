@@ -24,6 +24,7 @@ __all__ = [
     "expand_contractions_from_doc"
 ]
 
+
 def _expand_ambiguous_contraction(
     contraction: str,
     span: Span
@@ -144,7 +145,7 @@ def expand_contractions_from_doc(doc: Doc) -> str:
         # map.
         cased_expansion: str = _expand_unambiguous_contraction(
             contraction,
-            UNAMBIGUOUS_CONTRACTIONS_MAP
+            get_unambiguous_contractions_map()
         )
 
         expanded_parts.append(cased_expansion)

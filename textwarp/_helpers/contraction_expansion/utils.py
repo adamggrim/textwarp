@@ -136,7 +136,7 @@ def negative_contraction_to_base_verb(contraction: str) -> str | None:
     straight_contraction = curly_to_straight(contraction).lower()
 
     # Look for the contraction in the unambiguous contractions map.
-    expanded_contraction = UNAMBIGUOUS_CONTRACTIONS_MAP.get(
+    expanded_contraction = get_unambiguous_contractions_map().get(
         straight_contraction
     )
 
