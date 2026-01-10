@@ -78,8 +78,8 @@ def _check_for_ngrams(
     """
     doc = span.doc
 
-    window_start = max(0, span.start - context_window)
-    window_end = min(len(doc), span.end + context_window)
+    start_idx = max(0, span.start - context_window)
+    end_idx = min(len(doc), span.end + context_window)
 
     # The text of the entire window (context + entity + context).
     context_text = doc[window_start:window_end].text.lower()
