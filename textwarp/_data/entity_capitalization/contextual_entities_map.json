@@ -2,9 +2,9 @@
     "act": [
         {
             "casing": "ACT",
-            "context_window_size": 6,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["activism", "activist", "activists", "admissions", "aids", "chapter", "coalition", "college", "composite", "death", "demonstration", "exam", "exams", "founder", "hiv",  "larry kramer", "meeting", "power", "prep", "preparation", "protest", "score", "scores", "silence", "student", "students", "test", "testing", "tests", "tutor", "tutors", "unleash", "up", "up's"]
+            "ngrams": ["activism", "activist", "activists", "admissions", "aids", "chapter", "coalition", "college", "composite", "death", "demonstration", "exam", "exams", "founder", "hiv",  "larry kramer", "meeting", "power", "prep", "preparation", "protest", "score", "scores", "silence", "student", "students", "test", "testing", "tests", "tutor", "tutors", "unleash", "up", "up's"],
+            "context_window": 6
         },
         {
             "casing": "Act",
@@ -16,9 +16,9 @@
     "aids": [
         {
             "casing": "AIDS",
-            "context_window_size": 6,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["activist", "activists", "act up", "bai", "crises", "crisis", "epidemic", "epidemics", "gmhc", "hiv", "living with", "patient", "patients", "pepfar", "prep", "prevention", "protease inhibitor", "protease inhibitors", "research", "treatment", "treatments", "virus", "viruses"]
+            "ngrams": ["activist", "activists", "act up", "bai", "crises", "crisis", "epidemic", "epidemics", "gmhc", "hiv", "living with", "patient", "patients", "pepfar", "prep", "prevention", "protease inhibitor", "protease inhibitors", "research", "treatment", "treatments", "virus", "viruses"],
+            "context_window": 6
         },
         {
             "casing": "Aids",
@@ -43,9 +43,9 @@
     "cat": [
         {
             "casing": "CAT",
-            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["axial", "computerized", "imaging", "machine", "machines", "radiology", "scan", "scans"]
+            "ngrams": ["axial", "computerized", "imaging", "machine", "machines", "radiology", "scan", "scans"],
+            "context_window": 2
         },
         {
             "casing": "Cat",
@@ -96,9 +96,9 @@
     "go": [
         {
             "casing": "GO",
-            "context_window_size": 8,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["annotation", "annotations", "database", "databases", "function", "functions", "gene ontologies", "gene ontology", "general order", "general orders", "import", "imports", "number", "numbers", "status", "statuses", "term", "terms"]
+            "ngrams": ["annotation", "annotations", "database", "databases", "function", "functions", "gene ontologies", "gene ontology", "general order", "general orders", "import", "imports", "number", "numbers", "status", "statuses", "term", "terms"],
+            "context_window": 8
         },
         {
             "casing": "Go",
@@ -110,9 +110,9 @@
     "it": [
         {
             "casing": "IT",
-            "context_window_size": 6,
             "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["administrator", "administrators", "budget", "budgets", "career", "careers", "certification", "certifications", "companies", "company", "consultant", "consultants", "department", "departments", "director", "directors", "help desk", "help desks", "industries", "industry", "information", "infrastructure", "infrastructures", "insourcing", "job", "jobs", "manager", "managers", "network", "networks", "operations", "outsourcing", "professional", "professionals", "project", "projects", "sector", "sectors", "security", "services", "software", "solution", "solutions", "staff", "staffs", "support", "systems", "team", "teams", "technologies", "technology"]
+            "ngrams": ["administrator", "administrators", "budget", "budgets", "career", "careers", "certification", "certifications", "companies", "company", "consultant", "consultants", "department", "departments", "director", "directors", "help desk", "help desks", "industries", "industry", "information", "infrastructure", "infrastructures", "insourcing", "job", "jobs", "manager", "managers", "network", "networks", "operations", "outsourcing", "professional", "professionals", "project", "projects", "sector", "sectors", "security", "services", "software", "solution", "solutions", "staff", "staffs", "support", "systems", "team", "teams", "technologies", "technology"],
+            "context_window": 6
         },
         {
             "casing": "It",
@@ -124,9 +124,9 @@
     "now": [
         {
             "casing": "NOW",
-            "context_window_size": 6,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["feminist", "feminists", "national", "organization", "organizations", "women"]
+            "ngrams": ["feminist", "feminists", "national", "organization", "organizations", "women"],
+            "context_window": 6
         },
         {
             "casing": "Now",
@@ -138,9 +138,9 @@
     "pin": [
         {
             "casing": "PIN",
-            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
+            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"],
+            "context_window": 2
         },
         {
             "casing": "Pin",
@@ -152,9 +152,9 @@
     "pins": [
         {
             "casing": "PINs",
-            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
+            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"],
+            "context_window": 2
         },
         {
             "casing": "Pins",
@@ -166,10 +166,8 @@
     "q-tip": [
         {
             "casing": "Q-Tip",
-            "pos_sequences": [
-                ["PROPN", "PUNCT", "PROPN"]
-            ],
-            "ngrams": ["a tribe called quest", "album", "albums", "artist", "artists", "cd", "cds", "concert", "concerts", "discographies", "discography", "producer", "producers", "rapper", "rappers", "vinyl", "vinyls"]
+            "pos_sequences": [["PROPN", "PUNCT", "PROPN"]],
+            "ngrams": ["a tribe called quest", "album", "albums", "artist", "artists", "cd", "cds", "concert", "concerts", "discographies", "discography", "performance", "performances", "producer", "producers", "rapper", "rappers", "vinyl", "vinyls"]
         },
         {
             "casing": "Q-tip",
@@ -194,9 +192,9 @@
     "sat": [
         {
             "casing": "SAT",
-            "context_window_size": 5,
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["admission", "admissions", "board", "college", "exam", "exams", "math", "mathematics", "prep", "preparation", "reading", "scholastic", "score", "scores", "student", "students", "subject", "subjects", "test", "testing", "tests", "tutor", "tutors", "verbal", "writing"]
+            "ngrams": ["admission", "admissions", "board", "college", "exam", "exams", "math", "mathematics", "prep", "preparation", "reading", "scholastic", "score", "scores", "student", "students", "subject", "subjects", "test", "testing", "tests", "tutor", "tutors", "verbal", "writing"],
+            "context_window": 5
         },
         {
             "casing": "Sat",
@@ -208,9 +206,9 @@
     "us": [
         {
             "casing": "US",
-            "context_window_size": 7,
             "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["armies", "army", "border", "borders", "citizen", "citizens", "congress", "congresses", "constitution", "constitutions", "court", "courts", "customs", "department", "departments", "dollar", "dollars", "economies", "economy", "embassies", "embassy", "government", "governments", "histories", "history", "in the", "law", "laws", "marine", "marines", "market", "markets", "militaries", "military", "navies", "navy", "open", "passport", "passports", "population", "populations", "president", "presidents", "senate", "senates", "state", "states", "treasuries", "treasury", "visa", "visas", "visit", "visits"]
+            "ngrams": ["armies", "army", "border", "borders", "citizen", "citizens", "congress", "congresses", "constitution", "constitutions", "court", "courts", "customs", "department", "departments", "dollar", "dollars", "economies", "economy", "embassies", "embassy", "government", "governments", "histories", "history", "in the", "law", "laws", "marine", "marines", "market", "markets", "militaries", "military", "navies", "navy", "open", "passport", "passports", "population", "populations", "president", "presidents", "senate", "senates", "state", "states", "treasuries", "treasury", "visa", "visas", "visit", "visits"],
+            "context_window": 7
         },
         {
             "casing": "Us",
@@ -222,9 +220,9 @@
     "vet": [
         {
             "casing": "VET",
-            "context_window_size": 2,
             "pos_sequences": [],
-            "ngrams": ["education", "educational", "employment", "service", "services", "training", "trainings", "vocational"]
+            "ngrams": ["education", "educational", "employment", "service", "services", "training", "trainings", "vocational"],
+            "context_window": 2
         },
         {
             "casing": "Vet",
@@ -236,9 +234,9 @@
     "who": [
         {
             "casing": "WHO",
-            "context_window_size": 7,
             "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["announce", "approval", "approvals", "chief", "chiefs", "data", "declares", "director-general", "directors-general", "estimate", "estimates", "global", "guidelines", "health", "meeting", "meetings", "official", "officials", "organization", "organizations", "pandemic", "pandemics", "recommendation", "recommendations", "report", "reports", "response", "responses", "study", "studies", "warns"]
+            "ngrams": ["announce", "approval", "approvals", "chief", "chiefs", "data", "declares", "director-general", "directors-general", "estimate", "estimates", "global", "guidelines", "health", "meeting", "meetings", "official", "officials", "organization", "organizations", "pandemic", "pandemics", "recommendation", "recommendations", "report", "reports", "response", "responses", "study", "studies", "warns"],
+            "context_window": 7
         },
         {
             "casing": "Who",
