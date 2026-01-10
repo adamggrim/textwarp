@@ -1,4 +1,18 @@
 {
+    "act": [
+        {
+            "casing": "ACT",
+            "context_window_size": 6,
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["activism", "activist", "activists", "admissions", "aids", "chapter", "coalition", "college", "composite", "death", "demonstration", "exam", "exams", "founder", "hiv",  "larry kramer", "meeting", "power", "prep", "preparation", "protest", "score", "scores", "silence", "student", "students", "test", "testing", "tests", "tutor", "tutors", "unleash", "up", "up's"]
+        },
+        {
+            "casing": "Act",
+            "pos_sequences": [],
+            "ngrams": []
+        }
+    ],
+
     "aids": [
         {
             "casing": "AIDS",
@@ -172,6 +186,20 @@
         },
         {
             "casing": "Ram",
+            "pos_sequences": [],
+            "ngrams": []
+        }
+    ],
+
+    "sat": [
+        {
+            "casing": "SAT",
+            "context_window_size": 5,
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["admission", "admissions", "board", "college", "exam", "exams", "math", "mathematics", "prep", "preparation", "reading", "scholastic", "score", "scores", "student", "students", "subject", "subjects", "test", "testing", "tests", "tutor", "tutors", "verbal", "writing"]
+        },
+        {
+            "casing": "Sat",
             "pos_sequences": [],
             "ngrams": []
         }
