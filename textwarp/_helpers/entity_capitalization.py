@@ -81,12 +81,14 @@ def _check_for_ngrams(
     start_idx = max(0, span.start - context_window)
     end_idx = min(len(doc), span.end + context_window)
 
-    # The text of the entire window (context + entity + context).
-    context_text = doc[window_start:window_end].text.lower()
+    # The text of the window around the entity.
+    left_context = doc[start_idx : span.start].text.lower()
+    right_context = doc[span.end : end_idx].text.lower()
 
     for ngram in ngrams:
         pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
-        if re.search(pattern, context_text):
+        if (re.search(pattern, left_context) or
+            re.search(pattern, right_context)):
             return True
 
     return False
