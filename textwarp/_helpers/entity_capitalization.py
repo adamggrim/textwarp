@@ -18,41 +18,7 @@ __all__ = [
 ]
 
 
-def _check_for_ngrams(
-    span: Span,
-    ngrams: list[str],
-    context_window: int = 5
-) -> bool:
-    """
-    Check if any of a given list of ngrams are present around a
-    specific index in the Doc.
-
-    Args:
-        span: The spaCy ``Span`` to check.
-        ngrams: A list of ngrams to check for.
-        context_window: The number of tokens around the ``Span`` to
-            check. Defaults to 5.
-
-    Returns:
-        bool: ``True`` if any ngram is found, otherwise ``False``.
-    """
-    doc = span.doc
-
-    window_start = max(0, span.start - context_window)
-    window_end = min(len(doc), span.end + context_window)
-
-    # The text of the entire window (context + entity + context).
-    context_text = doc[window_start:window_end].text.lower()
-
-    for ngram in ngrams:
-        pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
-        if re.search(pattern, context_text):
-            return True
-
-    return False
-
-
-def _get_contextual_entity_casing(
+def _case_contextual_entity(
     span: Span,
     key: str
 ) -> str | None:
@@ -90,6 +56,40 @@ def _get_contextual_entity_casing(
     return None
 
 
+def _check_for_ngrams(
+    span: Span,
+    ngrams: list[str],
+    context_window: int = 5
+) -> bool:
+    """
+    Check if any of a given list of ngrams are present around a
+    specific index in the Doc.
+
+    Args:
+        span: The spaCy ``Span`` to check.
+        ngrams: A list of ngrams to check for.
+        context_window: The number of tokens around the ``Span`` to
+            check. Defaults to 5.
+
+    Returns:
+        bool: ``True`` if any ngram is found, otherwise ``False``.
+    """
+    doc = span.doc
+
+    window_start = max(0, span.start - context_window)
+    window_end = min(len(doc), span.end + context_window)
+
+    # The text of the entire window (context + entity + context).
+    context_text = doc[window_start:window_end].text.lower()
+
+    for ngram in ngrams:
+        pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
+        if re.search(pattern, context_text):
+            return True
+
+    return False
+
+
 def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     """
     Map entities in a spaCy ``Doc`` to their correct contextual casing.
@@ -104,7 +104,6 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
                 1. The entity's spaCy ``Span`` object.
                 2. The entity's end token index.
                 3. The capitalized version of the entity.
-
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
 
@@ -142,7 +141,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
             if key in absolute_entities_map:
                 cased_text = absolute_entities_map[key]
             elif key in contextual_entities_map:
-                cased_text = _get_contextual_entity_casing(span, key)
+                cased_text = _case_contextual_entity(span, key)
 
             if cased_text:
                 custom_entities_map[span.start] = (span, span.end, cased_text)
