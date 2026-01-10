@@ -2,6 +2,7 @@
     "aids": [
         {
             "casing": "AIDS",
+            "context_window_size": 6,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["activist", "activists", "act up", "bai", "crises", "crisis", "epidemic", "epidemics", "gmhc", "hiv", "living with", "patient", "patients", "pepfar", "prep", "prevention", "protease inhibitor", "protease inhibitors", "research", "treatment", "treatments", "virus", "viruses"]
         },
@@ -28,6 +29,7 @@
     "cat": [
         {
             "casing": "CAT",
+            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["axial", "computerized", "imaging", "machine", "machines", "radiology", "scan", "scans"]
         },
@@ -80,6 +82,7 @@
     "go": [
         {
             "casing": "GO",
+            "context_window_size": 8,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["annotation", "annotations", "database", "databases", "function", "functions", "gene ontologies", "gene ontology", "general order", "general orders", "import", "imports", "number", "numbers", "status", "statuses", "term", "terms"]
         },
@@ -93,6 +96,7 @@
     "it": [
         {
             "casing": "IT",
+            "context_window_size": 6,
             "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["administrator", "administrators", "budget", "budgets", "career", "careers", "certification", "certifications", "companies", "company", "consultant", "consultants", "department", "departments", "director", "directors", "help desk", "help desks", "industries", "industry", "information", "infrastructure", "infrastructures", "insourcing", "job", "jobs", "manager", "managers", "network", "networks", "operations", "outsourcing", "professional", "professionals", "project", "projects", "sector", "sectors", "security", "services", "software", "solution", "solutions", "staff", "staffs", "support", "systems", "team", "teams", "technologies", "technology"]
         },
@@ -106,6 +110,7 @@
     "now": [
         {
             "casing": "NOW",
+            "context_window_size": 6,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["feminist", "feminists", "national", "organization", "organizations", "women"]
         },
@@ -119,6 +124,7 @@
     "pin": [
         {
             "casing": "PIN",
+            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
         },
@@ -132,6 +138,7 @@
     "pins": [
         {
             "casing": "PINs",
+            "context_window_size": 2,
             "pos_sequences": [["PROPN"]],
             "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
         },
@@ -173,6 +180,7 @@
     "us": [
         {
             "casing": "US",
+            "context_window_size": 7,
             "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["armies", "army", "border", "borders", "citizen", "citizens", "congress", "congresses", "constitution", "constitutions", "court", "courts", "customs", "department", "departments", "dollar", "dollars", "economies", "economy", "embassies", "embassy", "government", "governments", "histories", "history", "in the", "law", "laws", "marine", "marines", "market", "markets", "militaries", "military", "navies", "navy", "open", "passport", "passports", "population", "populations", "president", "presidents", "senate", "senates", "state", "states", "treasuries", "treasury", "visa", "visas", "visit", "visits"]
         },
@@ -186,6 +194,7 @@
     "vet": [
         {
             "casing": "VET",
+            "context_window_size": 2,
             "pos_sequences": [],
             "ngrams": ["education", "educational", "employment", "service", "services", "training", "trainings", "vocational"]
         },
@@ -199,6 +208,7 @@
     "who": [
         {
             "casing": "WHO",
+            "context_window_size": 7,
             "pos_sequences": [["PROPN"], ["NOUN"]],
             "ngrams": ["announce", "approval", "approvals", "chief", "chiefs", "data", "declares", "director-general", "directors-general", "estimate", "estimates", "global", "guidelines", "health", "meeting", "meetings", "official", "officials", "organization", "organizations", "pandemic", "pandemics", "recommendation", "recommendations", "report", "reports", "response", "responses", "study", "studies", "warns"]
         },
