@@ -3,7 +3,7 @@
         {
             "casing": "AIDS",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["crisis", "epidemic", "hiv", "living with", "patient", "prevention", "research", "treatment", "virus"]
+            "ngrams": ["activist", "activists", "act up", "bai", "crises", "crisis", "epidemic", "epidemics", "gmhc", "hiv", "living with", "patient", "patients", "pepfar", "prep", "prevention", "protease inhibitor", "protease inhibitors", "research", "treatment", "treatments", "virus", "viruses"]
         },
         {
             "casing": "Aids",
@@ -16,7 +16,7 @@
         {
             "casing": "ART",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["assisted reproductive", "clinic", "technology", "treatment"]
+            "ngrams": ["assisted reproductive", "clinic", "clinics", "technologies", "technology", "treatment", "treatments"]
         },
         {
             "casing": "Art",
@@ -29,7 +29,7 @@
         {
             "casing": "CAT",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["axial", "computerized", "imaging", "machine", "radiology", "scan"]
+            "ngrams": ["axial", "computerized", "imaging", "machine", "machines", "radiology", "scan", "scans"]
         },
         {
             "casing": "Cat",
@@ -42,7 +42,7 @@
         {
             "casing": "COD",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["call of duty", "cash", "game", "online", "payment", "play"]
+            "ngrams": ["account", "accounts", "black ops", "call of duty", "cash", "fee", "fees", "game", "games", "multiplayer", "online", "payment", "payments", "play", "server", "servers", "shipping", "stream", "streams", "streamer", "streamers", "streaming", "war", "warcraft", "wars", "warzone", "warzones"]
         },
         {
             "casing": "Cod",
@@ -54,8 +54,8 @@
     "coo": [
         {
             "casing": "COO",
-            "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["chief operating", "company", "new", "officer", "our"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["chief operating", "companies", "company", "new", "officer", "officers", "our"]
         },
         {
             "casing": "Coo",
@@ -67,8 +67,8 @@
     "go": [
         {
             "casing": "GO",
-            "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["general order", "import", "status"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["annotation", "annotations", "database", "databases", "function", "functions", "gene ontologies", "gene ontology", "general order", "general orders", "import", "imports", "number", "numbers", "status", "statuses", "term", "terms"]
         },
         {
             "casing": "Go",
@@ -81,7 +81,7 @@
         {
             "casing": "IT",
             "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["administrator", "consultant", "department", "help desk", "industry", "information technology", "sector", "support", "systems"]
+            "ngrams": ["administrator", "administrators", "budget", "budgets", "career", "careers", "certification", "certifications", "companies", "company", "consultant", "consultants", "department", "departments", "director", "directors", "help desk", "help desks", "industries", "industry", "information", "infrastructure", "infrastructures", "insourcing", "job", "jobs", "manager", "managers", "network", "networks", "operations", "outsourcing", "professional", "professionals", "project", "projects", "sector", "sectors", "security", "services", "software", "solution", "solutions", "staff", "staffs", "support", "systems", "team", "teams", "technologies", "technology"]
         },
         {
             "casing": "It",
@@ -94,7 +94,7 @@
         {
             "casing": "NOW",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["national organization for women", "organization"]
+            "ngrams": ["feminist", "feminists", "national", "organization", "organizations", "women"]
         },
         {
             "casing": "Now",
@@ -106,8 +106,8 @@
     "pin": [
         {
             "casing": "PIN",
-            "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["atm", "code", "credit", "debit", "enter", "number", "personal identification", "reset", "security"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
         },
         {
             "casing": "Pin",
@@ -122,7 +122,7 @@
             "pos_sequences": [
                 ["PROPN", "PUNCT", "PROPN"]
             ],
-            "ngrams": ["album", "artist", "a tribe called quest", "producer", "rapper"]
+            "ngrams": ["a tribe called quest", "album", "albums", "artist", "artists", "cd", "cds", "concert", "concerts", "discographies", "discography", "producer", "producers", "rapper", "rappers", "vinyl", "vinyls"]
         },
         {
             "casing": "Q-tip",
@@ -134,8 +134,8 @@
     "ram": [
         {
             "casing": "RAM",
-            "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["8gb of", "computer", "gb", "memory", "upgrade"]
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["computer", "computers", "gb", "gbs", "gigabyte", "gigabytes", "memory", "upgrade", "upgrades"]
         },
         {
             "casing": "Ram",
@@ -147,8 +147,8 @@
     "us": [
         {
             "casing": "US",
-            "pos_sequences": [["PROPN"]],
-            "ngrams": ["citizen", "department", "dollar", "government", "in the", "military", "the", "visit the"]
+            "pos_sequences": [["PROPN"], ["NOUN"]],
+            "ngrams": ["armies", "army", "border", "borders", "citizen", "citizens", "congress", "congresses", "constitution", "constitutions", "court", "courts", "customs", "department", "departments", "dollar", "dollars", "economies", "economy", "embassies", "embassy", "government", "governments", "histories", "history", "in the", "law", "laws", "marine", "marines", "market", "markets", "militaries", "military", "navies", "navy", "open", "passport", "passports", "population", "populations", "president", "presidents", "senate", "senates", "state", "states", "treasuries", "treasury", "visa", "visas", "visit", "visits"]
         },
         {
             "casing": "Us",
@@ -160,8 +160,8 @@
     "vet": [
         {
             "casing": "VET",
-            "pos_sequences": [["PROPN"], ["NOUN"]],
-            "ngrams": ["military", "veteran", "war"]
+            "pos_sequences": [],
+            "ngrams": ["education", "educational", "employment", "service", "services", "training", "trainings", "vocational"]
         },
         {
             "casing": "Vet",
@@ -173,8 +173,8 @@
     "who": [
         {
             "casing": "WHO",
-            "pos_sequences": [["PROPN"]],
-            "ngrams": ["chief", "declares", "health", "organization", "report"]
+            "pos_sequences": [["PROPN"], ["NOUN"]],
+            "ngrams": ["announce", "approval", "approvals", "chief", "chiefs", "data", "declares", "director-general", "directors-general", "estimate", "estimates", "global", "guidelines", "health", "meeting", "meetings", "official", "officials", "organization", "organizations", "pandemic", "pandemics", "recommendation", "recommendations", "report", "reports", "response", "responses", "study", "studies", "warns"]
         },
         {
             "casing": "Who",
