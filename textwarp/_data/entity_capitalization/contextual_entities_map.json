@@ -182,7 +182,7 @@
         {
             "casing": "RAM",
             "pos_sequences": [["PROPN"]],
-            "ngrams": ["computer", "computers", "gb", "gbs", "gigabyte", "gigabytes", "memory", "upgrade", "upgrades"]
+            "ngrams": ["computer", "computers", "drive", "drives", "gb", "gbs", "gigabyte", "gigabytes", "memory", "upgrade", "upgrades"]
         },
         {
             "casing": "Ram",
