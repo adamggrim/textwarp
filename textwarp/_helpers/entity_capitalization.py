@@ -39,6 +39,7 @@ def _case_contextual_entity(
     )
 
     current_pos_seq = [token.pos_ for token in span]
+
     for context in contexts:
         context_pos_seqs = context.get('pos_sequences', [])
         for context_pos_seq in context_pos_seqs:
@@ -47,7 +48,8 @@ def _case_contextual_entity(
 
         context_ngrams = context.get('ngrams', [])
         if context_ngrams:
-            if _check_for_ngrams(span, context_ngrams):
+            context_window = context.get('context_window', 4)
+            if _check_for_ngrams(span, context_ngrams, context_window):
                 return context['casing']
 
         if not context_pos_seqs and not context_ngrams:
@@ -59,7 +61,7 @@ def _case_contextual_entity(
 def _check_for_ngrams(
     span: Span,
     ngrams: list[str],
-    context_window: int = 5
+    context_window: int
 ) -> bool:
     """
     Check if any of a given list of ngrams are present around a
@@ -69,7 +71,7 @@ def _check_for_ngrams(
         span: The spaCy ``Span`` to check.
         ngrams: A list of ngrams to check for.
         context_window: The number of tokens around the ``Span`` to
-            check. Defaults to 5.
+            check.
 
     Returns:
         bool: ``True`` if any ngram is found, otherwise ``False``.
@@ -190,6 +192,7 @@ def map_all_entities(
                 3. The entity's end token index.
     """
     custom_map = _map_custom_entities(doc)
+
     consumed_indices = set()
     for span, _, _ in custom_map.values():
         consumed_indices.update(range(span.start, span.end))
