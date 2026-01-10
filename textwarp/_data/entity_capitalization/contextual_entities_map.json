@@ -64,6 +64,19 @@
         }
     ],
 
+    "coos": [
+        {
+            "casing": "COOs",
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["chief operating", "companies", "company", "new", "officer", "officers", "our"]
+        },
+        {
+            "casing": "Coos",
+            "pos_sequences": [],
+            "ngrams": []
+        }
+    ],
+
     "go": [
         {
             "casing": "GO",
@@ -111,6 +124,19 @@
         },
         {
             "casing": "Pin",
+            "pos_sequences": [],
+            "ngrams": []
+        }
+    ],
+
+    "pins": [
+        {
+            "casing": "PINs",
+            "pos_sequences": [["PROPN"]],
+            "ngrams": ["atm", "atms", "code", "codes", "credit", "credits", "debit", "debits", "enter", "number", "numbers", "personal identification", "reset", "resets", "security"]
+        },
+        {
+            "casing": "Pins",
             "pos_sequences": [],
             "ngrams": []
         }
