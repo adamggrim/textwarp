@@ -7,7 +7,7 @@ from spacy.tokens import Token
 
 from ..._config import get_unambiguous_contractions_map
 from ..quote_conversion import curly_to_straight
-from ..string_capitalization import capitalize_from_string
+from ..string_casing import capitalize_from_string
 
 
 def apply_expansion_casing(

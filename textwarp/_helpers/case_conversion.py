@@ -21,8 +21,8 @@ from .._constants import (
     CasePatterns
 )
 from .apostrophes import remove_apostrophes
-from .entity_capitalization import map_all_entities
-from .string_capitalization import capitalize_from_string
+from .entity_casing import map_all_entities
+from .string_casing import capitalize_from_string
 from .token_capitalization import should_capitalize_pos_or_length
 
 __all__ = [
