@@ -10,12 +10,12 @@ from typing import (
 
 @final
 @dataclass
-class CapitalizationContext(TypedDict):
+class EntityCasingContext(TypedDict):
     """
-    The capitalization context for a custom entity.
+    The casing context for a custom entity.
 
     Attributes:
-        casing: The capitalization to apply.
+        casing: The casing to apply.
         pos_sequences: A list of parts-of-speech sequences for the
             entity.
         ngrams: A list of ngrams to check for.

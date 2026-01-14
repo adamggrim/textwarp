@@ -11,7 +11,7 @@ from .._config import (
     get_contextual_entities_map,
 )
 from .._constants import PROPER_NOUN_ENTITIES
-from .._types import CapitalizationContext
+from .._types import EntityCasingContext
 
 __all__ = [
     'map_all_entities'
@@ -34,7 +34,7 @@ def _case_contextual_entity(
         str | None: The contextual casing, otherwise ``None``.
     """
     contextual_entities_map = get_contextual_entities_map()
-    contexts: list[CapitalizationContext] = contextual_entities_map.get(
+    contexts: list[EntityCasingContext] = contextual_entities_map.get(
         key, []
     )
 

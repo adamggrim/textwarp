@@ -9,7 +9,7 @@ from typing import (
 from pathlib import Path
 
 from ._types import (
-    CapitalizationContext,
+    EntityCasingContext,
     JSONType
 )
 
@@ -61,9 +61,9 @@ def get_capitalized_abbreviations_map() -> dict[str, str]:
 
 @lru_cache(maxsize=1)
 def get_contextual_entities_map() -> (
-    dict[str, list[CapitalizationContext]]
+    dict[str, list[EntityCasingContext]]
 ):
-    return cast(dict[str, list[CapitalizationContext]], _load_json_from_data(
+    return cast(dict[str, list[EntityCasingContext]], _load_json_from_data(
         ENTITY_CASING_DIR / 'contextual_entities_map.json'
     ))
 

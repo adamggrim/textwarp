@@ -22,7 +22,7 @@ from .._constants import (
 )
 from .apostrophes import remove_apostrophes
 from .entity_casing import map_all_entities
-from .string_casing import capitalize_from_string
+from .string_casing import case_from_string
 from .token_capitalization import should_capitalize_pos_or_length
 
 __all__ = [
@@ -224,7 +224,7 @@ def _to_title_case_from_token(
     ):
         return token.text
     elif should_capitalize_for_title:
-        return capitalize_from_string(token.text)
+        return case_from_string(token.text)
     else:
         return token.text.lower()
 
@@ -323,7 +323,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
             processed_parts.append(
                 capitalize_from_string(token_text, lowercase_by_default)
             )
-
+        )
         processed_parts.append(token.whitespace_)
         i += 1
 
@@ -431,4 +431,4 @@ def word_to_pascal(word: str) -> str:
     if CasePatterns.CAMEL_WORD.match(word):
         return change_first_letter_case(word, str.upper)
     # Word is not in Pascal or camel case.
-    return capitalize_from_string(word)
+    return case_from_string(word)

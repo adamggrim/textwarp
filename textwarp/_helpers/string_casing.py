@@ -11,7 +11,7 @@ from .._config import (
 )
 from .._constants import WarpingPatterns
 
-__all__ = ['capitalize_from_string']
+__all__ = ['case_from_string']
 
 
 def _capitalize_from_map(
@@ -203,9 +203,9 @@ def _preserve_existing_capitalization(
     return None
 
 
-def capitalize_from_string(
+def case_from_string(
     word: str,
-    lowercase_by_default: bool = False
+    lowercase_by_default: bool = False,
 ) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving
@@ -230,8 +230,7 @@ def capitalize_from_string(
         _handle_initialism,
         _handle_mixed_case_word,
         _handle_period_separated_initialism,
-        _handle_prefixed_name,
-        _preserve_existing_capitalization
+        _handle_prefixed_name
     ]
 
     if lowercase_by_default:

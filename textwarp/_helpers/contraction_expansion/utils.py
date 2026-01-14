@@ -7,7 +7,7 @@ from spacy.tokens import Token
 
 from ..._config import get_unambiguous_contractions_map
 from ..quote_conversion import curly_to_straight
-from ..string_casing import capitalize_from_string
+from ..string_casing import case_from_string
 
 
 def apply_expansion_casing(
@@ -43,15 +43,15 @@ def apply_expansion_casing(
     # Check for title case.
     if is_title_case:
         return ' '.join([
-            capitalize_from_string(part) for part in expanded_parts
+            case_from_string(part) for part in expanded_parts
         ])
 
     # Check for sentence case.
     elif original_text[0].isupper():
-        first_part: str = capitalize_from_string(expanded_parts[0])
+        first_part: str = case_from_string(expanded_parts[0])
 
         remaining_parts = [
-            capitalize_from_string(part, lowercase_by_default=True)
+            case_from_string(part, lowercase_by_default=True)
             for part in expanded_parts[1:]
         ]
 
