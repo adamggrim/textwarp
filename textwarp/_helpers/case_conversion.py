@@ -313,15 +313,17 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         token = doc[i]
         token_text = doc[i].text
 
-        if i in token_indices:
-            processed_parts.append(
-                capitalize_from_string(token_text)
-            )
-        elif casing == Casing.SENTENCE and i in indices_to_lowercase:
-            processed_parts.append(token_text.lower())
-        else:
-            processed_parts.append(
-                capitalize_from_string(token_text, lowercase_by_default)
+        preserve_mixed_case = (
+            casing == Casing.SENTENCE and i in indices_to_lowercase
+        )
+        is_sentence_start = (i in token_indices)
+        should_lowercase = lowercase_by_default and not is_sentence_start
+
+        processed_parts.append(
+            case_from_string(
+                token_text,
+                lowercase_by_default=should_lowercase,
+                preserve_mixed_case=preserve_mixed_case
             )
         )
         processed_parts.append(token.whitespace_)

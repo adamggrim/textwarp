@@ -183,7 +183,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     return None
 
 
-def _preserve_existing_capitalization(
+def _preserve_mixed_case(
     word: str,
     _lower_word: str
 ) -> str | None:
@@ -206,6 +206,7 @@ def _preserve_existing_capitalization(
 def case_from_string(
     word: str,
     lowercase_by_default: bool = False,
+    preserve_mixed_case: bool = True
 ) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving
@@ -215,6 +216,8 @@ def case_from_string(
         word: The word to capitalize.
         lowercase_by_default: Whether to lowercase the word if no
             capitalization strategy applies. Defaults to ``False``.
+        preserve_mixed_case: Whether to preserve mixed-case words.
+            Defaults to ``True``.
 
     Returns:
         str: The capitalized word.
@@ -232,6 +235,9 @@ def case_from_string(
         _handle_period_separated_initialism,
         _handle_prefixed_name
     ]
+
+    if preserve_mixed_case:
+        capitalization_strategies.append(_preserve_mixed_case)
 
     if lowercase_by_default:
         capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
