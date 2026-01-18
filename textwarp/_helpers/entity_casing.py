@@ -7,7 +7,7 @@ from spacy.tokens import (
 )
 
 from .._config import (
-    get_absolute_entities_map,
+    get_absolute_entity_casings_map,
     get_contextual_entities_map,
 )
 from .._constants import PROPER_NOUN_ENTITIES
@@ -111,7 +111,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
 
-    absolute_entities_map = get_absolute_entities_map()
+    absolute_entities_map = get_absolute_entity_casings_map()
     contextual_entities_map = get_contextual_entities_map()
 
     all_keys: set[str] = (
