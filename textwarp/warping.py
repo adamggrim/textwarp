@@ -1,14 +1,13 @@
 """Public functions for warping text."""
 
-from collections.abc import Generator
-from random import (
-    choice,
-    shuffle
-)
+from random import choice
 
 import regex as re
 from spacy.tokens import Doc
 
+from . import _encoding
+from . import _formatting
+from . import _numbers
 from ._enums import Casing
 from ._helpers import (
     change_first_letter_case,
@@ -20,10 +19,6 @@ from ._helpers import (
     straight_to_curly,
     to_separator_case,
     word_to_pascal
-)
-from ._config import (
-    get_morse_map,
-    get_reversed_morse_map
 )
 from ._enums import CaseSeparator
 from ._constants import (
@@ -92,30 +87,7 @@ def cardinal_to_ordinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _replace_cardinal(match: re.Match[str]) -> str:
-        """
-        Helper function to replace a matched cardinal number with an
-        ordinal.
-
-        Args:
-            match: A match object representing a cardinal
-                number found in the string.
-
-        Returns:
-            str: The ordinal version of the matched cardinal.
-        """
-        number_str = match.group(0)
-        number = int(number_str.replace(',', ''))
-
-        suffix: str
-        if 10 <= number % 100 <= 20:
-            suffix = 'th'
-        else:
-            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
-
-        return number_str + suffix
-
-    return WarpingPatterns.CARDINAL.sub(_replace_cardinal, text)
+    return _numbers.cardinal_to_ordinal(text)
 
 
 def expand_contractions(content: str | Doc) -> str:
@@ -142,9 +114,7 @@ def from_binary(binary_text: str) -> str:
     Returns:
         str: The converted string.
     """
-    binary_chars = binary_text.split()
-    decoded_chars = [chr(int(binary, 2)) for binary in binary_chars]
-    return ''.join(decoded_chars)
+    return _encoding.from_binary(binary_text)
 
 
 def from_hexadecimal(text: str) -> str:
@@ -157,8 +127,7 @@ def from_hexadecimal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    chars = [chr(int(hex_char, 16)) for hex_char in text.split()]
-    return ''.join(chars)
+    return _encoding.from_hexadecimal(text)
 
 
 def from_morse(text: str) -> str:
@@ -171,19 +140,7 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in all caps).
     """
-    words = text.strip().split('   ')
-    decoded_words: list[str] = []
-
-    reversed_morse_map = get_reversed_morse_map()
-
-    for w in words:
-        char_codes: list[str] = w.split()
-        decoded_word = ''.join(
-            reversed_morse_map.get(code, '') for code in char_codes
-        )
-        decoded_words.append(decoded_word)
-
-    return ' '.join(decoded_words)
+    return _encoding.from_morse(text)
 
 
 def hyphens_to_em(text: str) -> str:
@@ -222,22 +179,7 @@ def ordinal_to_cardinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    def _replace_ordinal(match: re.Match[str]) -> str:
-        """
-        Helper function to replace a matched ordinal number with its
-        cardinal equivalent.
-
-        Args:
-            match: A match object representing an ordinal number found
-                in the string.
-
-        Returns:
-            str: The cardinal version of the matched ordinal.
-        """
-        ordinal = match.group(0)
-        return ordinal[:-2]
-
-    return WarpingPatterns.ORDINAL.sub(_replace_ordinal, text)
+    return _numbers.ordinal_to_cardinal(text)
 
 
 def punct_to_inside(text: str) -> str:
@@ -329,10 +271,7 @@ def randomize(text: str) -> str:
     Returns:
         str: The randomized string.
     """
-    # Convert the string into a list of characters.
-    char_list = list(text)
-    shuffle(char_list)
-    return ''.join(char_list)
+    return _formatting.randomize(text)
 
 
 def redact(text: str) -> str:
@@ -359,7 +298,7 @@ def reverse(text: str) -> str:
     Returns:
         The reversed string.
     """
-    return text[::-1]
+    return _formatting.reverse(text)
 
 
 def to_alternating_caps(text: str) -> str:
@@ -400,8 +339,7 @@ def to_binary(text: str) -> str:
         str: The converted string in binary, with each character's
             binary value separated by a space.
     """
-    binary_chars = [format(ord(char), '08b') for char in text]
-    return ' '.join(binary_chars)
+    return _encoding.to_binary(text)
 
 
 def to_camel_case(text: str) -> str:
@@ -445,9 +383,7 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    straight_text = curly_to_straight(text)
-    hex_chars = [format(ord(char), '02x') for char in straight_text]
-    return ' '.join(hex_chars)
+    return _encoding.to_hexadecimal(text)
 
 
 def to_kebab_case(text: str) -> str:
@@ -477,30 +413,7 @@ def to_morse(text: str) -> str:
         str: The converted string, with a single space between
             character codes and three spaces between word codes.
     """
-    def _normalize_for_morse(text: str) -> str:
-        """
-        Normalize a string for Morse code by converting to all caps and
-        replacing non-Morse-compatible characters.
-
-        Args:
-            text: The string to normalize.
-
-        Returns:
-            str: The normalized string.
-        """
-        straight_text = curly_to_straight(text.upper())
-        hyphenated_text = WarpingPatterns.DASH.sub('-', straight_text)
-        return hyphenated_text.replace('…', '...')
-
-    normalized_text = _normalize_for_morse(text)
-    morse_map = get_morse_map()
-
-    morse_words: Generator[str, None, None] = (
-        ' '.join(morse_map[char] for char in word if char in morse_map)
-        for word in normalized_text.split()
-    )
-
-    return '   '.join(filter(None, morse_words))
+    return _encoding.to_morse(text)
 
 
 def to_pascal_case(text: str) -> str:
@@ -548,7 +461,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.MULTIPLE_SPACES.sub(' ', text)
+    return _formatting.to_single_spaces(text)
 
 
 def to_snake_case(text: str) -> str:
@@ -590,4 +503,4 @@ def widen(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return ' '.join(text)
+    return _formatting.widen(text)
