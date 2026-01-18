@@ -38,24 +38,35 @@ def _load_json_from_data(relative_path: Path | str) -> JSONType:
         return cast(JSONType, json.load(json_file))
 
 
-@lru_cache(maxsize=1)
-def get_absolute_entities_map() -> dict[str, str]:
+def _get_casings_map(directory: Path) -> dict[str, str]:
+    """
+    Load the absolute casings map from a given directory.
+
+    Args:
+        directory: The directory containing the JSON file.
+
+    Returns:
+        dict[str, str]: The absolute casings map.
+    """
     return cast(dict[str, str], _load_json_from_data(
-        ENTITY_CASING_DIR / 'absolute_entities_map.json'
+        directory / 'absolute_casings_map.json'
     ))
+
+
+@lru_cache(maxsize=1)
+def get_absolute_entity_casings_map() -> dict[str, str]:
+    return _get_casings_map(ENTITY_CASING_DIR)
+
+
+@lru_cache(maxsize=1)
+def get_absolute_string_casings_map() -> dict[str, str]:
+    return _get_casings_map(STRING_CASING_DIR)
 
 
 @lru_cache(maxsize=1)
 def get_ambiguous_contractions() -> list[str]:
     return cast(list[str], _load_json_from_data(
         CONTRACTION_EXPANSION_DIR / 'ambiguous_contractions.json'
-    ))
-
-
-@lru_cache(maxsize=1)
-def get_capitalized_abbreviations_map() -> dict[str, str]:
-    return cast(dict[str, str], _load_json_from_data(
-        STRING_CASING_DIR / 'capitalized_abbreviations_map.json'
     ))
 
 
