@@ -48,28 +48,6 @@ def _capitalize_from_map(
         return capitalization_map.get(lower_word)
 
 
-def _handle_capitalized_abbreviation(
-    _word: str,
-    lower_word: str
-) -> str | None:
-    """
-    Handle the capitalization of an abbreviation that should be
-    capitalized.
-
-    Args:
-        _word: The word to capitalize (unused).
-        lower_word: The lowercase word.
-
-    Returns:
-        str | None: The capitalized abbreviation, or ``None`` if
-            ``lower_word`` is not in the capitalized abbreviations map.
-    """
-    capitalized_word = _capitalize_from_map(
-        lower_word.removesuffix('.'), get_capitalized_abbreviations_map()
-    )
-    return capitalized_word if capitalized_word else None
-
-
 def _handle_initialism(_word: str, lower_word: str) -> str | None:
     """
     Handle the capitalization of an initialism without hyphens or
