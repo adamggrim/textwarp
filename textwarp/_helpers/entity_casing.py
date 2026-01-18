@@ -178,7 +178,7 @@ def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
 
 def map_all_entities(
     doc: Doc
-) -> dict[int, tuple[str | Span, int, str | None]]:
+) -> dict[int, tuple[Span, int, str | None]]:
     """
     Create a prioritized map of all entities (absolute > contextual > model).
 

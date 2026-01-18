@@ -209,8 +209,8 @@ def _to_title_case_from_token(
 
     Args:
         token: The spaCy token to convert.
-        should_capitalize: A flag indicating if the token should be
-            capitalized.
+        should_capitalize_for_title: A flag indicating whether the
+            token should be capitalized.
 
     Returns:
         str: The converted token.
