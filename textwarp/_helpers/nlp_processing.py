@@ -30,17 +30,18 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
     ]
 
 
-def process_as_doc(content: str | Doc) -> Doc:
+def process_as_doc(content: str | Doc, model_size: str = 'small') -> Doc:
     """
     Process the input as a spaCy ``Doc``.
 
     Args:
         content: The string or ``Doc`` to process.
+        model_size: The size of the spaCy model to use.
 
     Returns:
         Doc: The processed spaCy ``Doc``.
     """
     if isinstance(content, Doc):
         return content
-    nlp = get_nlp()
+    nlp = get_nlp(model_size)
     return nlp(content)

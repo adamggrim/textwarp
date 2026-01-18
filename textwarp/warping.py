@@ -575,7 +575,7 @@ def to_title_case(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, model_size='large')
     return doc_to_case(doc, Casing.TITLE)
 
 
