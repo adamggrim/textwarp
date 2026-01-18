@@ -6,7 +6,7 @@ verbs.
 from spacy.tokens import Token
 
 from ..._config import get_unambiguous_contractions_map
-from ..quote_conversion import curly_to_straight
+from ..punctuation import curly_to_straight
 from ..string_casing import case_from_string
 
 

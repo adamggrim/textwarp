@@ -9,19 +9,18 @@ from spacy.tokens import (
     Span
 )
 
-from .._constants.variants import OPEN_QUOTES
-from .._constants.regexes import WarpingPatterns
-
+from .._constants import (
+    CaseConversionPatterns,
+    CasePatterns,
+    OPEN_QUOTES,
+    WarpingPatterns
+)
+from .entity_casing import map_all_entities
 from .._enums import (
     CaseSeparator,
     Casing
 )
-from .._constants import (
-    CaseConversionPatterns,
-    CasePatterns
-)
-from .apostrophes import remove_apostrophes
-from .entity_casing import map_all_entities
+from .punctuation import remove_apostrophes
 from .string_casing import case_from_string
 from .token_capitalization import should_capitalize_pos_or_length
 

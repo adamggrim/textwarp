@@ -1,7 +1,9 @@
 from spacy.tokens import Token
 
-from .._constants.lookups import TITLE_CASE_TAG_EXCEPTIONS
-from .._constants.regexes import WarpingPatterns
+from .._constants import (
+    TITLE_CASE_TAG_EXCEPTIONS,
+    WarpingPatterns
+)
 from .._config import get_lowercase_particles
 
 __all__ = [

@@ -12,7 +12,7 @@ from ..._constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS
 )
-from ..quote_conversion import curly_to_straight
+from ..punctuation import curly_to_straight
 from .handlers import (
     handle_negation,
     handle_s_or_d,

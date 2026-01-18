@@ -3,7 +3,6 @@
 from typing import Callable
 
 from .._config import (
-    get_capitalized_abbreviations_map,
     get_initialisms_map,
     get_lowercase_abbreviations,
     get_mixed_case_words_map,
