@@ -2,12 +2,7 @@
 
 from typing import Callable
 
-from .._config import (
-    get_initialisms_map,
-    get_lowercase_abbreviations,
-    get_mixed_case_words_map,
-    get_other_prefixed_names_map
-)
+from .._config import StringCasing
 from .._constants import WarpingPatterns
 
 __all__ = ['case_from_string']
@@ -48,20 +43,21 @@ def _capitalize_from_map(
         return capitalization_map.get(lower_word)
 
 
-def _handle_initialism(_word: str, lower_word: str) -> str | None:
+def _handle_absolute_casing(_word: str, lower_word: str,) -> str | None:
     """
-    Handle the capitalization of an initialism without hyphens or
-    periods.
+    Handle an absolute casing (i.e., a mixed-case word or initialism).
 
     Args:
         _word: The word to capitalize (unused).
         lower_word: The lowercase word.
 
     Returns:
-        str | None: The capitalized initialism, or ``None`` if
-            ``lower_word`` is not in the initialisms map.
+        str | None: The cased word, or ``None`` if ``lower_word``
+            is not in the absolute casings map.
     """
-    return _capitalize_from_map(lower_word, get_initialisms_map())
+    return _capitalize_from_map(
+        lower_word, StringCasing.get_absolute_map()
+    )
 
 
 def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
@@ -96,21 +92,6 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
     if lower_word.removesuffix('.') in get_lowercase_abbreviations():
         return lower_word
     return None
-
-
-def _handle_mixed_case_word(_word: str, lower_word: str,) -> str | None:
-    """
-    Handle mixed-case capitalization.
-
-    Args:
-        _word: The word to capitalize (unused).
-        lower_word: The lowercase word.
-
-    Returns:
-        str | None: The mixed-case word, or ``None`` if ``lower_word``
-            is not in the mixed-case words map.
-    """
-    return _capitalize_from_map(lower_word, get_mixed_case_words_map())
 
 
 def _handle_period_separated_initialism(
@@ -205,10 +186,9 @@ def case_from_string(
     lower_word = word.lower()
 
     capitalization_strategies: list[Callable[[str, str], str | None]] = [
+        _handle_absolute_casing,
         _handle_i_pronoun,
-        _handle_capitalized_abbreviation,
-        _handle_initialism,
-        _handle_mixed_case_word,
+        _handle_lowercase_abbreviation,
         _handle_period_separated_initialism,
         _handle_prefixed_name
     ]
