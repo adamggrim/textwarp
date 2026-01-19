@@ -6,10 +6,7 @@ from spacy.tokens import (
     Span
 )
 
-from .._config import (
-    get_absolute_entity_casings_map,
-    get_contextual_entities_map,
-)
+from .._config import EntityCasing
 from .._constants import PROPER_NOUN_ENTITIES
 from .._types import EntityCasingContext
 
@@ -33,7 +30,7 @@ def _case_contextual_entity(
     Returns:
         str | None: The contextual casing, otherwise ``None``.
     """
-    contextual_entities_map = get_contextual_entities_map()
+    contextual_entities_map = EntityCasing.get_contextual_map()
     contexts: list[EntityCasingContext] = contextual_entities_map.get(
         key, []
     )
@@ -111,8 +108,8 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
 
-    absolute_entities_map = get_absolute_entity_casings_map()
-    contextual_entities_map = get_contextual_entities_map()
+    absolute_entities_map = EntityCasing.get_absolute_map()
+    contextual_entities_map = EntityCasing.get_contextual_map()
 
     all_keys: set[str] = (
         absolute_entities_map.keys()

@@ -3,10 +3,7 @@
 from collections.abc import Generator
 
 from ._helpers import curly_to_straight
-from ._config import (
-    get_morse_map,
-    get_reversed_morse_map
-)
+from ._config import Encoding
 from ._constants import WarpingPatterns
 
 
@@ -52,7 +49,7 @@ def from_morse(text: str) -> str:
     words = text.strip().split('   ')
     decoded_words: list[str] = []
 
-    reversed_morse_map = get_reversed_morse_map()
+    reversed_morse_map = Encoding.get_morse_reversed_map()
 
     for w in words:
         char_codes: list[str] = w.split()
@@ -125,7 +122,7 @@ def to_morse(text: str) -> str:
         return hyphenated_text.replace('…', '...')
 
     normalized_text = _normalize_for_morse(text)
-    morse_map = get_morse_map()
+    morse_map = Encoding.get_morse_map()
 
     morse_words: Generator[str, None, None] = (
         ' '.join(morse_map[char] for char in word if char in morse_map)

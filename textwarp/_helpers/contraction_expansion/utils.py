@@ -5,7 +5,7 @@ verbs.
 
 from spacy.tokens import Token
 
-from ..._config import get_unambiguous_contractions_map
+from ..._config import ContractionExpansion
 from ..punctuation import curly_to_straight
 from ..string_casing import case_from_string
 
@@ -136,7 +136,7 @@ def negative_contraction_to_base_verb(contraction: str) -> str | None:
     straight_contraction = curly_to_straight(contraction).lower()
 
     # Look for the contraction in the unambiguous contractions map.
-    expanded_contraction = get_unambiguous_contractions_map().get(
+    expanded_contraction = ContractionExpansion.get_unambiguous_map().get(
         straight_contraction
     )
 

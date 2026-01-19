@@ -7,14 +7,9 @@ from typing import (
 )
 
 from .._config import (
-    get_ambiguous_contractions,
-    get_contraction_suffixes,
-    get_elision_words,
-    get_name_prefix_exceptions,
-    get_name_prefixes,
-    get_map_suffix_exceptions,
-    get_other_prefixed_names_map,
-    get_unambiguous_contractions_map
+    ContractionExpansion,
+    EntityCasing,
+    StringCasing
 )
 from .._decorators import non_instantiable
 from .._enums import RegexBoundary
@@ -285,30 +280,31 @@ class WarpingPatterns:
             \d+         # One or more digits.
         )
     '''
+    elisions: Final[str] = '|'.join(ContractionExpansion.get_elision_words())
 
     ANY_APOSTROPHE: Final[re.Pattern[str]] = re.compile(r"['’‘]")
     ANY_APOSTROPHE_LOOKAHEAD: Final[re.Pattern[str]] = re.compile(r"(?=['’‘])")
     APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
-        (?<=                                # Preceded by...
-            [a-z]                           # An alphabetical letter.
+        (?<=            # Preceded by...
+            [a-z]       # An alphabetical letter.
         )
-        ['’‘]                               # An apostrophe.
-        (?=                                 # Followed by...
-            [a-z]                           # An alphabetical letter.
+        ['’‘]           # An apostrophe.
+        (?=             # Followed by...
+            [a-z]       # An alphabetical letter.
         )
-        |                                   # OR
+        |               # OR
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
-        ['’‘]                               # An apostrophe.
-        (?=                                 # Followed by...
-            {'|'.join(get_elision_words())} # An elision.
-            |                               # OR
-            \d{{2}}s                        # An abbreviation for a
-        )                                   # decade.
+        ['’‘]           # An apostrophe.
+        (?=             # Followed by...
+            {elisions}  # An elision.
+            |           # OR
+            \d{{2}}s    # An abbreviation for a
+        )               # decade.
         ''', re.VERBOSE | re.IGNORECASE
     )
     AMBIGUOUS_CONTRACTION: Final[re.Pattern[str]] = (
-        _create_words_regex(get_ambiguous_contractions())
+        _create_words_regex(ContractionExpansion.get_ambiguous_map())
     )
     CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
         {_NUMBER_BASE_PATTERN}  # A number with or without thousands
@@ -321,23 +317,23 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
-        list(get_unambiguous_contractions_map().keys()) + get_ambiguous_contractions()
+        list(ContractionExpansion.get_unambiguous_map().keys())
+        + ContractionExpansion.get_ambiguous_map()
     )
     CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(get_contraction_suffixes())
+        _create_words_regex(EntityCasing.get_contraction_suffixes())
     )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
-            get_map_suffix_exceptions(),
+            StringCasing.get_map_suffix_exceptions(),
             boundary=RegexBoundary.END_ANCHOR
         )
     )
     MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(get_name_prefix_exceptions())
-    )
+        _create_words_regex(StringCasing.get_name_prefix_exceptions())
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’‘]t$", re.IGNORECASE
@@ -388,7 +384,7 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     OTHER_PREFIXED_NAMES_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        list(get_other_prefixed_names_map().keys())
+        list(StringCasing.get_other_prefixed_names_map().keys())
     )
     PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
         r'\b(?:[A-Za-z]\.){2,}'

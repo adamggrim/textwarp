@@ -7,7 +7,7 @@ from spacy.tokens import (
 
 from ..._constants import WarpingPatterns
 
-from ..._config import get_unambiguous_contractions_map
+from ..._config import ContractionExpansion
 from ..._constants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS
@@ -145,7 +145,7 @@ def expand_contractions_from_doc(doc: Doc) -> str:
         # map.
         cased_expansion: str = _expand_unambiguous_contraction(
             contraction,
-            get_unambiguous_contractions_map()
+            ContractionExpansion.get_unambiguous_map()
         )
 
         expanded_parts.append(cased_expansion)

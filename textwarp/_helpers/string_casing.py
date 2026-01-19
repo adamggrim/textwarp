@@ -89,7 +89,10 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
         str | None: The lowercase abbreviation, or ``None`` if
             ``lower_word`` is not in the lowercase abbreviations set.
     """
-    if lower_word.removesuffix('.') in get_lowercase_abbreviations():
+    if (
+        lower_word.removesuffix('.')
+        in StringCasing.get_lowercase_abbreviations()
+    ):
         return lower_word
     return None
 
@@ -137,7 +140,9 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
         return (lower_word[:prefix_len].capitalize() +
                 lower_word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
-        return _capitalize_from_map(lower_word, get_other_prefixed_names_map())
+        return _capitalize_from_map(
+            lower_word, StringCasing.get_other_prefixed_names_map()
+        )
     return None
 
 
