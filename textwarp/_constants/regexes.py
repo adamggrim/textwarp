@@ -207,7 +207,7 @@ class WarpingPatterns:
         EM_DASH_STAND_IN: Matches characters that function as an em
             dash (e.g., ``--``).
         MULTIPLE_SPACES: Matches two or more consecutive spaces.
-        NAME_PREFIX_PATTERN: Matches any name prefix (e.g., "Mac",
+        SURNAME_PREFIX_PATTERN: Matches any surname prefix (e.g., "Mac",
             "O'").
         OPENING_STRAIGHT_QUOTES: Matches opening straight quotes.
         ORDINAL: Matches an ordinal number (e.g., "19th").
@@ -338,8 +338,6 @@ class WarpingPatterns:
     NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(get_name_prefix_exceptions())
     )
-    NAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        get_name_prefixes()
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’‘]t$", re.IGNORECASE
@@ -400,5 +398,8 @@ class WarpingPatterns:
     )
     PUNCT_OUTSIDE: Final[re.Pattern[str]] = re.compile(
         r'(["”\'’]?["”\'’])([.,])'
+    )
+    SURNAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
+        StringCasing.get_surname_prefixes()
     )
     WORD_CHARACTER: Final[re.Pattern[str]] = re.compile(r'\w')

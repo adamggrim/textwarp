@@ -151,7 +151,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
     """
     if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
         return None
-    elif (match := WarpingPatterns.NAME_PREFIX_PATTERN.match(lower_word)):
+    elif (match := WarpingPatterns.SURNAME_PREFIX_PATTERN.match(lower_word)):
         prefix_len = len(match.group(0))
         return (lower_word[:prefix_len].capitalize() +
                 lower_word[prefix_len:].capitalize())

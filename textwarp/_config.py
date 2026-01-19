@@ -139,13 +139,6 @@ def get_name_prefix_exceptions() -> list[str]:
 
 
 @lru_cache(maxsize=1)
-def get_name_prefixes() -> list[str]:
-    return cast(list[str], _load_json_from_data(
-        STRING_CASING_DIR / 'name_prefixes.json'
-    ))
-
-
-@lru_cache(maxsize=1)
 def get_other_prefixed_names_map() -> dict[str, str]:
     return cast(dict[str, str], _load_json_from_data(
         STRING_CASING_DIR / 'other_prefixed_names_map.json'
@@ -162,3 +155,8 @@ def get_unambiguous_contractions_map() -> dict[str, str]:
     return cast(dict[str, str], _load_json_from_data(
         CONTRACTION_EXPANSION_DIR / 'unambiguous_contractions_map.json'
     ))
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_surname_prefixes() -> list[str]:
+        return cast(list[str], _load(StringCasing.DIR / 'surname_prefixes.json'))
