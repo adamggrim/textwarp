@@ -1,13 +1,15 @@
 """Functions for lazy spaCy loading and text processing."""
 
-from typing import Literal
+from typing import Literal, TYPE_CHECKING
+if TYPE_CHECKING:
+    import spacy.language
 
-import spacy
 from spacy.tokens import Doc
 from .._core.constants import POS_WORD_TAGS
 
 ModelSize = Literal['small', 'large']
-_nlp_instances: dict[str, spacy.language.Language] = {}
+# Use string forward reference to support lazy spaCy loading.
+_nlp_instances: dict[str, 'spacy.language.Language'] = {}
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
@@ -44,7 +46,7 @@ def process_as_doc(content: str | Doc, model_size: str = 'small') -> Doc:
     return nlp(content)
 
 
-def get_nlp(size: ModelSize = 'small'):
+def get_nlp(size: ModelSize = 'small') -> 'spacy.language.Language':
     """
     Returns the loaded spaCy model instance, downloading it if not
     found.
@@ -56,6 +58,8 @@ def get_nlp(size: ModelSize = 'small'):
     Returns:
         spacy.language.Language: The loaded spaCy model instance.
     """
+    import spacy
+
     model_map = {
         'small': 'en_core_web_sm',
         'large': 'en_core_web_trf'
