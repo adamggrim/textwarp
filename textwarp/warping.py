@@ -5,26 +5,31 @@ from random import choice
 import regex as re
 from spacy.tokens import Doc
 
-from . import _encoding
-from . import _formatting
-from . import _numbers
-from ._enums import Casing
-from ._helpers import (
-    change_first_letter_case,
-    curly_to_straight,
-    doc_to_case,
-    expand_contractions_from_doc,
-    process_as_doc,
-    remove_apostrophes,
-    straight_to_curly,
-    to_separator_case,
-    word_to_pascal
-)
-from ._enums import CaseSeparator
-from ._constants import (
+from ._core.constants.regexes import (
     CaseConversionPatterns,
     CasePatterns,
     WarpingPatterns
+)
+from ._core.enums import (
+    CaseSeparator,
+    Casing
+)
+
+from ._lib import encoding
+from ._lib import manipulation
+from ._lib import numbers
+from ._lib.casing.case_conversion import (
+    change_first_letter_case,
+    doc_to_case,
+    to_separator_case,
+    word_to_pascal
+)
+from ._lib.contractions.core import expand_contractions_from_doc
+from ._lib.nlp import process_as_doc
+from ._lib.punctuation import (
+    curly_to_straight,
+    remove_apostrophes,
+    straight_to_curly
 )
 
 __all__ = [
@@ -87,7 +92,7 @@ def cardinal_to_ordinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _numbers.cardinal_to_ordinal(text)
+    return numbers.cardinal_to_ordinal(text)
 
 
 def expand_contractions(content: str | Doc) -> str:
@@ -114,7 +119,7 @@ def from_binary(binary_text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _encoding.from_binary(binary_text)
+    return encoding.from_binary(binary_text)
 
 
 def from_hexadecimal(text: str) -> str:
@@ -127,7 +132,7 @@ def from_hexadecimal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _encoding.from_hexadecimal(text)
+    return encoding.from_hexadecimal(text)
 
 
 def from_morse(text: str) -> str:
@@ -140,7 +145,7 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in all caps).
     """
-    return _encoding.from_morse(text)
+    return encoding.from_morse(text)
 
 
 def hyphens_to_em(text: str) -> str:
@@ -179,7 +184,7 @@ def ordinal_to_cardinal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _numbers.ordinal_to_cardinal(text)
+    return numbers.ordinal_to_cardinal(text)
 
 
 def punct_to_inside(text: str) -> str:
@@ -271,7 +276,7 @@ def randomize(text: str) -> str:
     Returns:
         str: The randomized string.
     """
-    return _formatting.randomize(text)
+    return manipulation.randomize(text)
 
 
 def redact(text: str) -> str:
@@ -298,7 +303,7 @@ def reverse(text: str) -> str:
     Returns:
         The reversed string.
     """
-    return _formatting.reverse(text)
+    return manipulation.reverse(text)
 
 
 def to_alternating_caps(text: str) -> str:
@@ -339,7 +344,7 @@ def to_binary(text: str) -> str:
         str: The converted string in binary, with each character's
             binary value separated by a space.
     """
-    return _encoding.to_binary(text)
+    return encoding.to_binary(text)
 
 
 def to_camel_case(text: str) -> str:
@@ -383,7 +388,7 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    return _encoding.to_hexadecimal(text)
+    return encoding.to_hexadecimal(text)
 
 
 def to_kebab_case(text: str) -> str:
@@ -413,7 +418,7 @@ def to_morse(text: str) -> str:
         str: The converted string, with a single space between
             character codes and three spaces between word codes.
     """
-    return _encoding.to_morse(text)
+    return encoding.to_morse(text)
 
 
 def to_pascal_case(text: str) -> str:
@@ -461,7 +466,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _formatting.to_single_spaces(text)
+    return manipulation.to_single_spaces(text)
 
 
 def to_snake_case(text: str) -> str:
@@ -503,4 +508,4 @@ def widen(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return _formatting.widen(text)
+    return manipulation.widen(text)

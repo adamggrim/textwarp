@@ -3,7 +3,7 @@
 import regex as re
 from typing import Callable
 
-from .._constants import (
+from .._core.constants import (
     CASE_NAMES_REGEX_MAP,
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
@@ -14,15 +14,15 @@ from .._constants import (
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT
 )
-from .._dispatch import CASE_NAMES_FUNC_MAP
-from .._enums import PresenceCheckType
-from .._exceptions import (
+from .._cli.dispatch import CASE_NAMES_FUNC_MAP
+from .._core.enums import PresenceCheckType
+from .._core.exceptions import (
     CaseNotFoundError,
     RegexNotFoundError,
     TextToReplaceNotFoundError
 )
-from .._ui import print_wrapped
-from .._validation import (
+from .._cli.ui import print_wrapped
+from .._cli.validation import (
     validate_any_text,
     validate_case_name,
     validate_regex,
