@@ -104,7 +104,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
             containing:
                 1. The entity's spaCy ``Span`` object.
                 2. The entity's end token index.
-                3. The capitalized version of the entity.
+                3. The cased entity.
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
 
@@ -188,7 +188,7 @@ def map_all_entities(
             tuple containing:
                 1. The entity's spaCy ``Span`` object.
                 2. The entity's end token index.
-                3. The entity's end token index.
+                3. The cased entity, otherwise ``None``.
     """
     custom_map = _map_custom_entities(doc)
 
