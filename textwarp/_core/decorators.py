@@ -1,6 +1,9 @@
 """A custom decorator function for non-instantiable classes."""
 
-from typing import TypeVar
+from typing import (
+    Any,
+    TypeVar
+)
 
 __all__ = [
     'non_instantiable'
@@ -25,7 +28,7 @@ def non_instantiable(cls: _T) -> _T:
         RuntimeError: When an attempt is made to instantiate the
             decorated class.
     """
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         raise RuntimeError(f'{cls.__name__} cannot be instantiated.')
 
     setattr(cls, '__init__', __init__)
