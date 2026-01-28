@@ -8,7 +8,12 @@ from typing import (
 )
 
 from .._core.constants import HELP_DESCRIPTION
-from .args import ARGS_MAP
+from .args import (
+    ARGS_MAP,
+    CASING_COMMANDS,
+    MUTUALLY_EXCLUSIVE_COMMANDS,
+    SEPARATOR_COMMANDS
+)
 
 __all__ = [
     'parse_args'
@@ -31,15 +36,16 @@ def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
     return max(len(key) + adjustment for key in commands.keys())
 
 
-def parse_args() -> tuple[str, str]:
+def parse_args() -> list[tuple[str, Callable[[str], str]]]:
     """
     Parse command-line arguments for a text warping or analysis
     function name.
 
     Returns:
-        tuple[str, str]: A tuple containing:
+        list[tuple[str, Callable[[str], str]]]: A list of tuples
+            containing:
             - The command-line argument string (e.g., 'word-count').
-            - The corresponding function name (e.g., 'word_count').
+            - The corresponding callable function (e.g., 'word_count').
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
@@ -59,25 +65,88 @@ def parse_args() -> tuple[str, str]:
         usage='%(prog)s [command]'
     )
 
-    group = (parser.add_mutually_exclusive_group(required=True))
-
     for arg_key, (_, help_message) in ARGS_MAP.items():
-        group.add_argument(
+        parser.add_argument(
             f'--{arg_key}',
             action='store_true',
             help=help_message
         )
 
-    # If the user enters the command with no arguments, print the help
-    # messages and exit.
-    if len(sys.argv) == 1:
+    # If there are no arguments or piped input, print the help messages
+    # and exit.
+    if len(sys.argv) == 1 and sys.stdin.isatty():
         parser.print_help(sys.stderr)
         sys.exit(1)
 
     args: argparse.Namespace = parser.parse_args()
 
-    for arg_key, _ in ARGS_MAP.items():
-        if getattr(args, arg_key.replace('-', '_')):
-            command_name: str = arg_key
-            func_name: str = command_name.replace('-', '_')
-            return command_name, func_name
+    active_cmds = [
+        key for key in ARGS_MAP
+        if getattr(args, key.replace('-', '_'), False)
+    ]
+
+    active_separators = [c for c in active_cmds if c in SEPARATOR_COMMANDS]
+    active_casings = [c for c in active_cmds if c in CASING_COMMANDS]
+    active_mutually_exclusives = [
+        c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
+    ]
+
+    # Commands available for combination.
+    free_cmds = [
+        c for c in active_cmds
+        if c not in SEPARATOR_COMMANDS
+        and c not in CASING_COMMANDS
+        and c not in MUTUALLY_EXCLUSIVE_COMMANDS
+    ]
+
+    if len(active_separators) > 1:
+        parser.error(
+            f'Cannot combine multiple separator styles: '
+            f"{', '.join(active_separators)}"
+        )
+
+    if len(active_casings) > 1:
+        parser.error(
+            f'Cannot combine multiple casing styles: '
+            f"{', '.join(active_casings)}"
+        )
+
+    if len(active_mutually_exclusives) > 1:
+        parser.error(
+            f'Cannot combine multiple exclusive commands: '
+            f"{', '.join(active_mutually_exclusives)}"
+        )
+
+    if active_mutually_exclusives and (active_separators or active_casings):
+        cmd = active_mutually_exclusives[0]
+        parser.error(
+        f"Command '{cmd}' cannot be combined with casing or separator "
+        f'commands.'
+    )
+
+    pipeline: list[tuple[str, Callable[[str], str]]] = []
+
+    # Priority 1: Free commands (e.g., 'reverse')
+    for cmd in free_cmds:
+        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+
+    # Priority 2: Separator commands (e.g., 'snake-case')
+    if active_separators:
+        cmd = active_separators[0]
+        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+
+    # Priority 3: Casing commands (e.g., 'uppercase')
+    if active_casings:
+        cmd = active_casings[0]
+        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+
+    # Priority 4: Mutually exclusive commands (e.g., 'word-count')
+    if active_mutually_exclusives:
+        cmd = active_mutually_exclusives[0]
+        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+
+    if not pipeline:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
+    return pipeline
