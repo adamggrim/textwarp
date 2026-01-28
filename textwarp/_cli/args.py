@@ -55,7 +55,10 @@ from ..warping import (
 )
 
 __all__ = [
-    'ARGS_MAP'
+    'ARGS_MAP',
+    'CASING_COMMANDS',
+    'MUTUALLY_EXCLUSIVE_COMMANDS',
+    'SEPARATOR_COMMANDS'
 ]
 
 # A dictionary for all warping, analysis, replacement and
@@ -250,4 +253,25 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         widen,
         'w i d e n  t e x t'
     )
+}
+
+# Can be combined with ``SEPARATOR_COMMANDS``. Mutually exclusive with
+# each other.
+CASING_COMMANDS: Final[set[str]] = {
+    'alternating-caps', 'capitalize', 'lowercase', 'random-case',
+    'sentence-case', 'swapcase', 'title-case', 'uppercase'
+}
+
+# Can be combined with ``CASING_COMMANDS``. Mutually exclusive with
+# each other.
+SEPARATOR_COMMANDS: Final[set[str]] = {
+    'camel-case', 'dot-case', 'kebab-case', 'pascal-case',
+    'snake-case', 'single-spaces', 'widen'
+}
+
+# Cannot be combined with any other warping or analysis commands.
+MUTUALLY_EXCLUSIVE_COMMANDS: Final[set[str]] = {
+    'binary', 'from-binary', 'hexadecimal', 'from-hexadecimal',
+    'morse', 'from-morse', 'char-count', 'line-count', 'mfws',
+    'pos-count', 'sentence-count', 'time-to-read', 'word-count'
 }
