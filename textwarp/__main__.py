@@ -58,10 +58,12 @@ def main() -> None:
             text = sys.stdin.read()
             if text.endswith('\n'):
                 text = text[:-1]
+            is_analysis = any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
 
-            result = apply_pipeline(text, pipeline)
-            if result is not None:
-                sys.stdout.write(result)
+            if is_analysis:
+                apply_pipeline(text, pipeline)
+            else:
+                warp_and_copy(lambda t: apply_pipeline(t, pipeline), text)
         except Exception:
             pass
         return
