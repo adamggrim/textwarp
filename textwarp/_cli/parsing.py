@@ -7,7 +7,7 @@ from typing import (
     Callable
 )
 
-from .._core.constants import HELP_DESCRIPTION
+from .._core import HELP_DESCRIPTION
 from .args import (
     ARGS_MAP,
     CASING_COMMANDS,

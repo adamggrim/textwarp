@@ -4,7 +4,7 @@ import os
 import textwrap
 from typing import NoReturn
 
-from .._core.constants import (
+from .._core import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_VALID_RESPONSE_PROMPT,
     EXIT_MESSAGE,

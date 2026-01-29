@@ -9,23 +9,21 @@ from ..analysis import (
     count_sents,
     count_words
 )
-from .._core.constants import (
+from .._core import (
+    CountLabels,
     ENTER_MFW_COUNT_PROMPT,
     ENTER_VALID_NUMBER_PROMPT,
-    ENTER_WPM_PROMPT
-)
-from .._core.enums import CountLabels
-from .._core.models import (
+    ENTER_WPM_PROMPT,
     POSCounts,
     WordCount
 )
-from .._cli.formatting import (
+from .._cli import (
     format_count,
     format_mfws,
     format_pos_count,
-    format_time_to_read
+    format_time_to_read,
+    print_wrapped
 )
-from .._cli.ui import print_wrapped
 
 __all__ = [
     'char_count',

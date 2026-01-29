@@ -9,15 +9,13 @@ from spacy.tokens import (
     Span
 )
 
-from ..._core.constants import (
+from ..._core import (
     CaseConversionPatterns,
     CasePatterns,
+    CaseSeparator,
+    Casing,
     OPEN_QUOTES,
     WarpingPatterns
-)
-from ..._core.enums import (
-    CaseSeparator,
-    Casing
 )
 
 from ..punctuation import remove_apostrophes

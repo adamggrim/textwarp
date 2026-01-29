@@ -3,7 +3,10 @@ Enumerations for casing, count labels, presence checking and regular
 expression boundaries.
 """
 
-from enum import Enum, auto
+from enum import (
+    Enum,
+    auto
+)
 from typing import final
 
 __all__ = [

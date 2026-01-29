@@ -3,7 +3,7 @@
 import regex as re
 
 from .dispatch import CASE_NAMES_FUNC_MAP
-from .._core.exceptions import (
+from .._core import (
     EmptyClipboardError,
     InvalidCaseNameError,
     NoCaseNameError,

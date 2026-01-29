@@ -2,18 +2,15 @@
 
 import sys
 
-from ._cli.parsing import parse_args
-from ._cli.runners import (
+from ._cli import (
     clear_clipboard,
+    parse_args,
+    print_padding,
+    program_exit,
     replace_text,
     run_command_loop,
     warp_and_copy
 )
-from ._cli.ui import (
-    print_padding,
-    program_exit
-)
-from ._commands import analysis
 from ._commands import replacement
 
 # Commands that print analysis and exit (cannot be looped easily or piped further)

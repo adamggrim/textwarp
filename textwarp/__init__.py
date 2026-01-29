@@ -1,6 +1,6 @@
 """A Python package for analyzing and transforming text."""
 
-from ._lib.punctuation import (
+from ._lib import (
     curly_to_straight,
     straight_to_curly
 )

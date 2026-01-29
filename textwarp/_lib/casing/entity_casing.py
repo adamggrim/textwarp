@@ -6,9 +6,11 @@ from spacy.tokens import (
     Span
 )
 
-from ..._core.config import EntityCasing
-from ..._core.constants import PROPER_NOUN_ENTITIES
-from ..._core.types import EntityCasingContext
+from ..._core import (
+    EntityCasing,
+    EntityCasingContext,
+    PROPER_NOUN_ENTITIES,
+)
 
 __all__ = [
     'map_all_entities'

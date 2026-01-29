@@ -1,6 +1,6 @@
 """Functions for formatting analysis into readable strings."""
 
-from .._core.models import (
+from .._core import (
     POSCounts,
     WordCount
 )

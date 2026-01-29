@@ -14,7 +14,7 @@ from .._commands import (
     analysis,
     replacement
 )
-from .._core.constants import (
+from .._core import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
