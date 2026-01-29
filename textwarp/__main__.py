@@ -1,12 +1,13 @@
 """The main entry point for the package, containing the main loop."""
 
-from ._cli.args import ARGS_MAP
+import sys
+
 from ._cli.parsing import parse_args
 from ._cli.runners import (
-    analyze_text,
     clear_clipboard,
     replace_text,
-    warp_text
+    run_command_loop,
+    warp_and_copy
 )
 from ._cli.ui import (
     print_padding,
@@ -15,45 +16,82 @@ from ._cli.ui import (
 from ._commands import analysis
 from ._commands import replacement
 
-# A set of all warping, analysis, replacement and clearing function
-# names, each converted from its hyphenated ARGS_MAP key to its
-# underscored version.
-_ALL_FUNC_NAMES: set[str] = {
-    key.replace('-', '_') for key in ARGS_MAP.keys()
+# Commands that print analysis and exit (cannot be looped easily or piped further)
+ANALYSIS_COMMANDS = {
+    'char-count', 'line-count', 'mfws', 'pos-count',
+    'sentence-count', 'time-to-read', 'word-count'
 }
-
-# All function names for analysis commands.
-_ANALYSIS_FUNC_NAMES: set[str] = set(analysis.__all__)
 
 # All function names for replacement commands.
 _REPLACEMENT_FUNC_NAMES: set[str] = set(replacement.__all__)
 
-# Signal set to represent the ``clear_clipboard`` function with the
-# ``clear`` command name.
-_CLEAR_FUNC_NAMES: set[str] = {'clear'}
+
+def apply_pipeline(text: str, pipeline: list) -> str | None:
+    """
+    Apply a list of pipeline functions to a given string.
+
+    Args:
+        text: The string to transform.
+        pipeline: A list of tuples containing:
+            - The command-line argument string (e.g., "word-count").
+            - The corresponding callable function (e.g., "word_count").
+
+    Returns:
+        str | None: The string after applying all functions from the
+            pipeline, or ``None`` if the pipeline executes an analysis
+            command.
+    """
+    for cmd_name, func in pipeline:
+        if cmd_name in ANALYSIS_COMMANDS:
+            func(text)
+            return None # Stop the pipeline.
+        else:
+            text = func(text)
+    return text
 
 
 def main() -> None:
     """Run the main loop for text transformation or analysis."""
-    command_name: str # Hyphenated command name
-    func_name: str # Underscored function name
-    command_name, func_name = parse_args()
+    pipeline = parse_args()
+    if not pipeline:
+        return
+
+    if not sys.stdin.isatty():
+        try:
+            text = sys.stdin.read()
+            if text.endswith('\n'):
+                text = text[:-1]
+
+            result = apply_pipeline(text, pipeline)
+            if result is not None:
+                sys.stdout.write(result)
+        except Exception:
+            pass
+        return
 
     try:
-        if func_name in _ANALYSIS_FUNC_NAMES:
-            analyze_text(func_name)
-        elif func_name in _REPLACEMENT_FUNC_NAMES:
-            replace_text(func_name)
-        elif func_name in _CLEAR_FUNC_NAMES:
+        first_cmd, _ = pipeline[0]
+
+        if first_cmd == 'clear':
             clear_clipboard()
-        # Any function that is not for analysis, replacement or clearing
-        # is for warping.
-        elif func_name in _ALL_FUNC_NAMES:
-            warp_text(func_name)
+            program_exit()
+
+        if first_cmd.replace('-', '_') in _REPLACEMENT_FUNC_NAMES:
+            replace_text(first_cmd.replace('-', '_'))
+            program_exit()
+
+        def pipeline_runner(text: str) -> str | None:
+            """Apply the pipeline function to the given text."""
+            return apply_pipeline(text, pipeline)
+
+        is_analysis = any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
+
+        if is_analysis:
+            run_command_loop(pipeline_runner, action_handler=None)
         else:
-            # Print the user-facing command name in the error.
-            print(f"\nCommand '{command_name}' not recognized.")
-        program_exit()
+            # Run and copy result to clipboard
+            run_command_loop(pipeline_runner, action_handler=warp_and_copy)
+
     except KeyboardInterrupt:
         print_padding()
         program_exit()
