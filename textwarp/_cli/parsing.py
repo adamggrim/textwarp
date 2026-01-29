@@ -91,59 +91,39 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
         c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
     ]
 
-    # Commands available for combination.
-    free_cmds = [
-        c for c in active_cmds
-        if c not in SEPARATOR_COMMANDS
-        and c not in CASING_COMMANDS
-        and c not in MUTUALLY_EXCLUSIVE_COMMANDS
-    ]
-
     if len(active_separators) > 1:
         parser.error(
             f'Cannot combine multiple separator styles: '
             f"{', '.join(active_separators)}"
         )
-
     if len(active_casings) > 1:
         parser.error(
             f'Cannot combine multiple casing styles: '
             f"{', '.join(active_casings)}"
         )
-
     if len(active_mutually_exclusives) > 1:
         parser.error(
             f'Cannot combine multiple exclusive commands: '
             f"{', '.join(active_mutually_exclusives)}"
         )
-
     if active_mutually_exclusives and (active_separators or active_casings):
         cmd = active_mutually_exclusives[0]
         parser.error(
-        f"Command '{cmd}' cannot be combined with casing or separator "
-        f'commands.'
-    )
+            f"Command '{cmd}' cannot be combined with casing or separator "
+            f'commands.'
+        )
 
     pipeline: list[tuple[str, Callable[[str], str]]] = []
 
-    # Priority 1: Free commands (e.g., 'reverse')
-    for cmd in free_cmds:
-        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+    for arg in sys.argv[1:]:
+        if not arg.startswith('-'):
+            continue
 
-    # Priority 2: Separator commands (e.g., 'snake-case')
-    if active_separators:
-        cmd = active_separators[0]
-        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+        cmd_key = arg.lstrip('-')
 
-    # Priority 3: Casing commands (e.g., 'uppercase')
-    if active_casings:
-        cmd = active_casings[0]
-        pipeline.append((cmd, ARGS_MAP[cmd][0]))
-
-    # Priority 4: Mutually exclusive commands (e.g., 'word-count')
-    if active_mutually_exclusives:
-        cmd = active_mutually_exclusives[0]
-        pipeline.append((cmd, ARGS_MAP[cmd][0]))
+        if cmd_key in ARGS_MAP:
+            func = ARGS_MAP[cmd_key][0]
+            pipeline.append((cmd_key, func))
 
     if not pipeline:
         parser.print_help(sys.stderr)
