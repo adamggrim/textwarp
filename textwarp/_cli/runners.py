@@ -34,6 +34,8 @@ __all__ = [
     'analyze_text',
     'clear_clipboard',
     'replace_text',
+    'run_command_loop',
+    'warp_and_copy',
     'warp_text'
 ]
 
@@ -89,24 +91,46 @@ def _replace_and_copy(
         print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
 
 
-def _warp_and_copy(
-    command_func: Callable[[str], str],
-    clipboard: str
-) -> None:
+def analyze_text(command_name: str) -> None:
     """
-    Transform text using a given command and copy the result back to the
-    clipboard.
+    Print the given text analysis and prompt the user for any other
+    clipboard input.
 
     Args:
-        command: The transformation function.
-        clipboard: The clipboard text to transform.
+        command_name: The name of the analysis function.
     """
-    transformation: str = command_func(clipboard)
-    pyperclip.copy(transformation)
-    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+    func_name = command_name.replace('-', '_')
+    command_func: Callable[[str], str] = getattr(analysis, func_name)
+
+    run_command_loop(command_func)
 
 
-def _run_command_loop(
+def clear_clipboard() -> None:
+    """Clear clipboard text."""
+    pyperclip.copy('')
+    print_wrapped(CLIPBOARD_CLEARED_MESSAGE)
+
+
+def replace_text(command_name: str) -> None:
+    """
+    Apply the selected replacement function to the clipboard and prompt
+    the user for any other clipboard input.
+
+    Args:
+        command_name: The name of the replacement function.
+    """
+    command_func: Callable[[str], str] = getattr(
+        replacement,
+        command_name
+    )
+
+    run_command_loop(
+        command_func,
+        _replace_and_copy
+    )
+
+
+def run_command_loop(
     command_func: Callable[[str], str],
     action_handler: _ActionHandler | None = None
 ) -> None:
@@ -135,43 +159,21 @@ def _run_command_loop(
             break
 
 
-def analyze_text(command_name: str) -> None:
+def warp_and_copy(
+    command_func: Callable[[str], str],
+    clipboard: str
+) -> None:
     """
-    Print the given text analysis and prompt the user for any other
-    clipboard input.
+    Transform text using a given command and copy the result back to the
+    clipboard.
 
     Args:
-        command_name: The name of the analysis function.
+        command: The transformation function.
+        clipboard: The clipboard text to transform.
     """
-    func_name = command_name.replace('-', '_')
-    command_func: Callable[[str], str] = getattr(analysis, func_name)
-
-    _run_command_loop(command_func)
-
-
-def clear_clipboard() -> None:
-    """Clear clipboard text."""
-    pyperclip.copy('')
-    print_wrapped(CLIPBOARD_CLEARED_MESSAGE)
-
-
-def replace_text(command_name: str) -> None:
-    """
-    Apply the selected replacement function to the clipboard and prompt
-    the user for any other clipboard input.
-
-    Args:
-        command_name: The name of the replacement function.
-    """
-    command_func: Callable[[str], str] = getattr(
-        replacement,
-        command_name
-    )
-
-    _run_command_loop(
-        command_func,
-        _replace_and_copy
-    )
+    transformation: str = command_func(clipboard)
+    pyperclip.copy(transformation)
+    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
 
 
 def warp_text(command_name: str) -> None:
@@ -188,7 +190,7 @@ def warp_text(command_name: str) -> None:
         func_name = command_name.replace('_', '-')
         command_func: Callable[[str], str] = ARGS_MAP[func_name][0]
 
-    _run_command_loop(
+    run_command_loop(
         command_func,
-        _warp_and_copy
+        warp_and_copy
     )
