@@ -42,9 +42,8 @@ def _create_presence_validator(
     check_type: PresenceCheckType
 ) -> Callable[[str], None]:
     """
-    Create a validator function that checks for the presence and
-    validity of a case, regular expression or substring in a given
-    string.
+    Create a function that checks for the presence and validity of a
+    case, regular expression or substring in a given string.
 
     Args:
         base_validator: A function that validates the input without
