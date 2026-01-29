@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     import spacy.language
 
 from spacy.tokens import Doc
-from .._core import POS_WORD_TAGS
+from .._core.constants import POS_WORD_TAGS
 
 ModelSize = Literal['small', 'large']
 # Use string forward reference to support lazy spaCy loading.

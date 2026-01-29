@@ -2,7 +2,7 @@
 
 import regex as re
 
-from .._core import WarpingPatterns
+from .._core.constants import WarpingPatterns
 
 
 __all__ = [

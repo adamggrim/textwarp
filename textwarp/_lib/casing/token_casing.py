@@ -2,11 +2,11 @@
 
 from spacy.tokens import Token
 
-from ..._core import (
+from ..._core.constants import (
     TITLE_CASE_TAG_EXCEPTIONS,
-    TokenCasing,
     WarpingPatterns
 )
+from ..._core.config import TokenCasing
 
 __all__ = [
     'should_capitalize_pos_or_length'

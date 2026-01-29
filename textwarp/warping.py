@@ -5,27 +5,31 @@ from random import choice
 import regex as re
 from spacy.tokens import Doc
 
-from ._core import (
+from ._core.constants.regexes import (
     CaseConversionPatterns,
     CasePatterns,
-    CaseSeparator,
-    Casing,
     WarpingPatterns
 )
+from ._core.enums import (
+    CaseSeparator,
+    Casing
+)
 
-from ._lib import (
+from ._lib import encoding
+from ._lib import manipulation
+from ._lib import numbers
+from ._lib.casing.case_conversion import (
     change_first_letter_case,
-    curly_to_straight,
     doc_to_case,
-    encoding,
-    expand_contractions_from_doc,
-    manipulation,
-    numbers,
-    process_as_doc,
-    remove_apostrophes,
-    straight_to_curly,
     to_separator_case,
     word_to_pascal
+)
+from ._lib.contractions.core import expand_contractions_from_doc
+from ._lib.nlp import process_as_doc
+from ._lib.punctuation import (
+    curly_to_straight,
+    remove_apostrophes,
+    straight_to_curly
 )
 
 __all__ = [

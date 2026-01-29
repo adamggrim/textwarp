@@ -19,7 +19,7 @@ from .._commands import (
     time_to_read,
     word_count
 )
-from .._lib import (
+from .._lib.punctuation import (
     curly_to_straight,
     straight_to_curly
 )

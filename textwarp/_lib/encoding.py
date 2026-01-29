@@ -3,10 +3,8 @@
 from collections.abc import Generator
 
 from .punctuation import curly_to_straight
-from .._core import (
-    Encoding,
-    WarpingPatterns
-)
+from .._core.config import Encoding
+from .._core.constants import WarpingPatterns
 
 __all__ = [
     'from_binary',
