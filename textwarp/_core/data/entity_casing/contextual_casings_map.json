@@ -50,6 +50,31 @@
 
     "aids": [
         {
+            "casing": "Aids",
+            "pos_sequences": [["NOUN"], ["VERB"]],
+            "ngrams": [
+                "dietary",
+                "digestive",
+                "electronic",
+                "hearing",
+                "instruction",
+                "instructional",
+                "memory",
+                "mobility",
+                "navigation",
+                "navigational",
+                "sleep",
+                "sleeping",
+                "speaking",
+                "study",
+                "teaching",
+                "vision",
+                "visual",
+                "walking"
+            ],
+            "context_window": 2
+        },
+        {
             "casing": "AIDS",
             "pos_sequences": [["PROPN"]],
             "ngrams": [
