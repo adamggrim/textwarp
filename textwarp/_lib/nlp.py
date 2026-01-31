@@ -53,7 +53,7 @@ def get_nlp(size: ModelSize = 'small') -> 'spacy.language.Language':
 
     Args:
         size: The size of the spaCy model to load. Can be either
-            "small" (speed) or "large" (accuracy).
+            "small" (for speed) or "large" (for accuracy).
 
     Returns:
         spacy.language.Language: The loaded spaCy model instance.
