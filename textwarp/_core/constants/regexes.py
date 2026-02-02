@@ -384,7 +384,7 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     OTHER_PREFIXED_NAMES_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        list(StringCasing.get_other_prefixed_names_map().keys())
+        list(StringCasing.get_prefixed_names_map().keys())
     )
     PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
         r'\b(?:[A-Za-z]\.){2,}'

@@ -43,9 +43,10 @@ def _capitalize_from_map(
         return capitalization_map.get(lower_word)
 
 
-def _handle_absolute_casing(_word: str, lower_word: str) -> str | None:
+def _handle_lookup(_word: str, lower_word: str) -> str | None:
     """
-    Handle an absolute casing (i.e., a mixed-case word or initialism).
+    Handle capitalization through a combined lookup of absolute
+    casings and other prefixed names.
 
     Args:
         _word: The word to capitalize (unused).
@@ -53,11 +54,9 @@ def _handle_absolute_casing(_word: str, lower_word: str) -> str | None:
 
     Returns:
         str | None: The cased word, or ``None`` if ``lower_word``
-            is not in the absolute casings map.
+            is not in the combined casings map.
     """
-    return _capitalize_from_map(
-        lower_word, StringCasing.get_absolute_map()
-    )
+    return _capitalize_from_map(lower_word, StringCasing.get_lookup_map())
 
 
 def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
@@ -141,7 +140,7 @@ def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
                 lower_word[prefix_len:].capitalize())
     elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
         return _capitalize_from_map(
-            lower_word, StringCasing.get_other_prefixed_names_map()
+            lower_word, StringCasing.get_prefixed_names_map()
         )
     return None
 
@@ -191,11 +190,10 @@ def case_from_string(
     lower_word = word.lower()
 
     capitalization_strategies: list[Callable[[str, str], str | None]] = [
-        _handle_absolute_casing,
         _handle_i_pronoun,
+        _handle_lookup,
         _handle_lowercase_abbreviation,
         _handle_period_separated_initialism,
-        _handle_prefixed_name
     ]
 
     if preserve_mixed_case:
