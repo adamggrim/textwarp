@@ -124,34 +124,29 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     # Sort words by length in descending order to prioritize longer
     # matches.
     sorted_keys = sorted(all_keys, key=len, reverse=True)
+    keys_pattern = re.compile(
+        rf'(?<!\w)(?:{"|".join(re.escape(key) for key in sorted_keys)})(?!\w)',
+        re.IGNORECASE
+    )
 
-    consumed_indices: set[int] = set()
+    for match in keys_pattern.finditer(doc.text):
+        start_char, end_char = match.span()
+        span = doc.char_span(start_char, end_char)
 
-    for key in sorted_keys:
-        pattern = r'(?<!\w)' + re.escape(key) + r'(?!\w)'
+        # Skip the match if the ``Span`` does not align with a token.
+        if span is None:
+            continue
 
-        for match in re.finditer(pattern, doc.text.lower()):
-            start_char, end_char = match.span()
-            span = doc.char_span(start_char, end_char)
+        key = match.group(0).lower()
+        cased_text: str | None = None
 
-            # Skip the match if the ``Span`` does not align with a token.
-            if span is None:
-                continue
+        if key in absolute_entities_map:
+            cased_text = absolute_entities_map[key]
+        elif key in contextual_entities_map:
+            cased_text = _case_contextual_entity(span, key)
 
-            span_indices = set(range(span.start, span.end))
-            if not span_indices.isdisjoint(consumed_indices):
-                continue
-
-            cased_text: str | None = None
-
-            if key in absolute_entities_map:
-                cased_text = absolute_entities_map[key]
-            elif key in contextual_entities_map:
-                cased_text = _case_contextual_entity(span, key)
-
-            if cased_text:
-                custom_entities_map[span.start] = (span, span.end, cased_text)
-                consumed_indices.update(span_indices)
+        if cased_text:
+            custom_entities_map[span.start] = (span, span.end, cased_text)
 
     return custom_entities_map
 
@@ -178,9 +173,7 @@ def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
     }
 
 
-def map_all_entities(
-    doc: Doc
-) -> dict[int, tuple[Span, int, str | None]]:
+def map_all_entities(doc: Doc) -> dict[int, tuple[Span, int, str | None]]:
     """
     Create a prioritized map of all entities (absolute > contextual > model).
 
