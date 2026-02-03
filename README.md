@@ -97,7 +97,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 ├── _cli/
-│ ├── init.py: Exposes command-line modules for formatting, argument parsing, function running and UI
+│ ├── __init__.py: Exposes command-line modules for formatting, argument parsing, function running and UI
 │ ├── args.py: A mapping of command-line arguments to functions and help messages
 │ ├── dispatch.py: A mapping of string inputs to case conversion functions
 │ ├── formatting.py: Functions for formatting analysis into readable strings
@@ -106,12 +106,12 @@ textwarp/
 │ ├── ui.py: Functions for handling console input and output
 │ └── validation.py: Validators for text, clipboard, and regular expression content
 ├── _commands/
-│ ├── init.py: Exposes analysis and replacement commands for use across the package
+│ ├── __init__.py: Exposes analysis and replacement commands for use across the package
 │ ├── analysis.py: Runners for analysis commands
 │ └── replacement.py: Runners for replacement commands
 ├── _core/
 │ ├── constants/
-│ │ ├── init.py: Exposes constants for use across the package
+│ │ ├── __init__.py: Exposes constants for use across the package
 │ │ ├── maps.py: Map used across the package for lookups
 │ │ ├── messages.py: Strings for displaying messages to the user
 │ │ ├── nlp.py: Sets and tuples used across the package for spaCy processing
@@ -127,15 +127,15 @@ textwarp/
 │ │ │ ├── contraction_suffixes.json: Lists suffixes derived from contractions
 │ │ │ └── lowercase_particles.json: List of name particles (e.g., "von") to keep lowercase
 │ │ ├── string_casing/
-│ │ │ ├── absolute_casings_map.json: Maps common initialisms/words to their absolute version
+│ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
 │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
 │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
 │ │ │ ├── name_prefix_exceptions.json: Lists words that start with name prefixes but are not names (e.g., "macabre")
-│ │ │ ├── other_prefixed_names_map.json: Maps prefixed names that cannot be capitalized by a general rule to their capitalized version
+│ │ │ ├── prefixed_names_map.json: Maps prefixed names (that cannot be capitalized by a general rule) to their capitalized version
 │ │ │ └── surname_prefixes.json: Lists common name prefixes (e.g., "Mac", "O'")
 │ │ ├── elision_words.json: Lists commonly elided words
 │ │ └── morse_map.json: Maps characters to their Morse code equivalent
-│ ├── init.py: Exposes core configuration, constants, and models
+│ ├── __init__.py: Exposes core configuration, constants, and models
 │ ├── config.py: A configuration module handling lazy loading of JSON data
 │ ├── decorators.py: A custom decorator function for non-instantiable classes
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
@@ -144,23 +144,25 @@ textwarp/
 │ └── types.py: Generic type definitions used across the package
 ├── _lib/
 │ ├── casing/
+│ │ ├── __init__.py: Exposes casing logic for use across the package
 │ │ ├── case_conversion.py: Functions for converting between cases (title, Pascal, etc.)
 │ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
 │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
 │ │ └── token_casing.py: Logic for spaCy-based token capitalization
 │ ├── contractions/
-│ │ ├── init.py: Exposes contraction expansion logic for use across the package
+│ │ ├── __init__.py: Exposes contraction expansion logic for use across the package
 │ │ ├── core.py: Main logic for expanding contractions
 │ │ ├── disambiguation.py: Functions for resolving ambiguous contractions based on context
 │ │ ├── handlers.py: Functions for handling specific types of contractions (negation, "'s", "'d", "whatcha")
 │ │ └── utils.py: Utilities for applying casing and finding contraction subjects and verbs
+│ ├── __init__.py: Exposes library functions for use across the package
 │ ├── encoding.py: Functions for removing encoding and decoding text
 │ ├── manipulation.py: Functions for manipulating a given string
 │ ├── nlp.py: Functions for lazy spaCy loading and text processing
 │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
 │ └── punctuation.py: Functions for converting between straight and curly quotes
-├── init.py: Initializes the package and exposes public functions
-├── main.py: The main entry point for the package, containing the main loop
+├── __init__.py: Initializes the package and exposes public functions
+├── __main__.py: The main entry point for the package, containing the main loop
 ├── analysis.py: Public functions for analyzing text
 └── warping.py: Public functions for warping text
 ```
