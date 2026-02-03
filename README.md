@@ -12,7 +12,7 @@
 
 - `pyperclip`: For accessing and copying to the clipboard
 - `regex`: For regular expressions with variable-width lookbehinds
-- `spaCy`: For identifying word context
+- `spacy[transformers]`: For identifying word context using transformer-based models
 
 ## Example
 
@@ -97,7 +97,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 ├── _cli/
-│ ├── __init__.py: Exposes command-line modules for formatting, argument parsing, function running and UI
+│ ├── __init__.py: Initializes the _cli sub-package
 │ ├── args.py: A mapping of command-line arguments to functions and help messages
 │ ├── dispatch.py: A mapping of string inputs to case conversion functions
 │ ├── formatting.py: Functions for formatting analysis into readable strings
