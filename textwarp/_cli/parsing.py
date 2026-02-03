@@ -49,14 +49,15 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
-    # A custom help formatter to align help messages neatly based on
-    # the maximum argument length.
-    formatter: Callable[[str], argparse.HelpFormatter] = (
+    def formatter(prog: str) -> argparse.HelpFormatter:
+        """
+        A custom help formatter to align help messages neatly based on
+        the maximum argument width.
+        """
         # Use RawTextHelpFormatter to preserve consecutive spaces.
-        lambda prog: argparse.RawTextHelpFormatter(
+        return argparse.RawTextHelpFormatter(
             prog, max_help_position=max_arg_width
         )
-    )
 
     parser = argparse.ArgumentParser(
         prog='textwarp',
