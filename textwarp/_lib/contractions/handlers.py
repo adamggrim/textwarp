@@ -165,9 +165,6 @@ def handle_whatcha(span: Span) -> tuple[str, int]:
     if not span:
         return span.text, span.end_char
 
-    doc = span.doc
-    suffix_token = span[-1]
-
     base_verb: str | None = disambiguate_whatcha(span)
 
     # Handle a failed disambiguation.
