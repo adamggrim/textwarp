@@ -6,7 +6,6 @@ __all__ = [
     'AIN_T_SUFFIX_VARIANTS',
     'APOSTROPHE_D_VARIANTS',
     'APOSTROPHE_S_VARIANTS',
-    'APOSTROPHE_VARIANTS',
     'EXIT_INPUTS',
     'NO_INPUTS',
     'OPEN_QUOTES',
@@ -21,9 +20,6 @@ APOSTROPHE_D_VARIANTS: Final = {"'d", '’d', '‘d'}
 
 # Variants of 's for contractions.
 APOSTROPHE_S_VARIANTS: Final = {"'s", '’s', '‘s'}
-
-# Variants of apostrophes.
-APOSTROPHE_VARIANTS: Final = {"'", '’', '‘'}
 
 # Inputs for exiting the program.
 EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
