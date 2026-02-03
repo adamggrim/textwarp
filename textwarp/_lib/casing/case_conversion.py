@@ -1,13 +1,16 @@
 """Functions for converting between cases (title, Pascal, etc.)."""
 
-from spacy.tokens import Token
-from typing import Callable
+from __future__ import annotations
+
+from typing import Callable, TYPE_CHECKING
 
 import regex as re
-from spacy.tokens import (
-    Doc,
-    Span
-)
+if TYPE_CHECKING:
+    from spacy.tokens import (
+        Doc,
+        Span,
+        Token
+    )
 
 from ..._core.constants import (
     CaseConversionPatterns,

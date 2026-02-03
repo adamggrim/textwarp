@@ -3,7 +3,12 @@ Utilities for applying casing and finding contraction subjects and
 verbs.
 """
 
-from spacy.tokens import Token
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Token
 
 from ..._core.config import ContractionExpansion
 from ..punctuation import curly_to_straight

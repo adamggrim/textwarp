@@ -1,10 +1,16 @@
 """Functions for lazy spaCy loading and text processing."""
 
-from typing import Literal, TYPE_CHECKING
+from __future__ import annotations
+
+from typing import (
+    Literal,
+    TYPE_CHECKING
+)
+
 if TYPE_CHECKING:
     import spacy.language
+    from spacy.tokens import Doc
 
-from spacy.tokens import Doc
 from .._core.constants import POS_WORD_TAGS
 
 ModelSize = Literal['small', 'large']

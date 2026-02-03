@@ -2,56 +2,11 @@
 A mapping of command-line arguments to functions and help messages.
 """
 
+import importlib
+from types import ModuleType
 from typing import (
     Callable,
     Final
-)
-
-from .._commands import (
-    char_count,
-    line_count,
-    mfws,
-    pos_count,
-    replace,
-    replace_case,
-    replace_regex,
-    sentence_count,
-    time_to_read,
-    word_count
-)
-from .._lib.punctuation import (
-    curly_to_straight,
-    straight_to_curly
-)
-from ..warping import (
-    capitalize,
-    cardinal_to_ordinal,
-    expand_contractions,
-    from_binary,
-    from_hexadecimal,
-    from_morse,
-    hyphens_to_em,
-    hyphen_to_en,
-    ordinal_to_cardinal,
-    punct_to_inside,
-    punct_to_outside,
-    random_case,
-    randomize,
-    redact,
-    reverse,
-    to_alternating_caps,
-    to_binary,
-    to_camel_case,
-    to_dot_case,
-    to_hexadecimal,
-    to_kebab_case,
-    to_morse,
-    to_pascal_case,
-    to_sentence_case,
-    to_single_spaces,
-    to_snake_case,
-    to_title_case,
-    widen
 )
 
 __all__ = [

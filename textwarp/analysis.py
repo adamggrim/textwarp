@@ -1,9 +1,13 @@
 """Public functions for analyzing text."""
 
+from __future__ import annotations
+
 from collections import Counter
 from math import ceil
+from typing import TYPE_CHECKING
 
-from spacy.tokens import Doc
+if TYPE_CHECKING:
+    from spacy.tokens import Doc
 
 from ._core.constants.nlp import POS_TAGS
 from ._core.models import (

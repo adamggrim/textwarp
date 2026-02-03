@@ -1,9 +1,14 @@
 """Public functions for warping text."""
 
+from __future__ import annotations
+
 from random import choice
+from typing import TYPE_CHECKING
 
 import regex as re
-from spacy.tokens import Doc
+
+if TYPE_CHECKING:
+    from spacy.tokens import Doc
 
 from ._core.constants.regexes import (
     CaseConversionPatterns,

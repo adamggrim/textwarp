@@ -1,6 +1,11 @@
 """Functions for resolving ambiguous contractions based on context."""
 
-from spacy.tokens import Span
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Span
 
 from ..._core.constants import (
     AIN_T_SUFFIX_VARIANTS,

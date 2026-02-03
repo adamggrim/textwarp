@@ -1,6 +1,11 @@
 """Logic for spaCy-based token capitalization."""
 
-from spacy.tokens import Token
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Token
 
 from ..._core.constants import (
     TITLE_CASE_TAG_EXCEPTIONS,

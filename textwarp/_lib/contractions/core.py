@@ -1,9 +1,14 @@
 """Main logic for expanding contractions."""
 
-from spacy.tokens import (
-    Doc,
-    Span
-)
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import (
+        Doc,
+        Span
+    )
 
 from ..._core.config import ContractionExpansion
 from ..._core.constants import (

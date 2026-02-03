@@ -3,7 +3,12 @@ Functions for handling specific types of contractions (negation, "'s",
 "'d", "whatcha").
 """
 
-from spacy.tokens import Span
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Span
 
 from ..._core.constants import (
     AIN_T_SUFFIX_VARIANTS,

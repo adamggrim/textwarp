@@ -1,5 +1,6 @@
 """A configuration module handling lazy loading of JSON data."""
 
+import importlib.resources
 import json
 from functools import lru_cache
 from typing import (
