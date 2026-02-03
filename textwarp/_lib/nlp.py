@@ -46,13 +46,13 @@ def process_as_doc(content: str | Doc, model_size: str = 'small') -> Doc:
     Returns:
         Doc: The processed spaCy ``Doc``.
     """
-    if isinstance(content, Doc):
+    if not isinstance(content, str):
         return content
     nlp = get_nlp(model_size)
     return nlp(content)
 
 
-def get_nlp(size: ModelSize = 'small') -> 'spacy.language.Language':
+def get_nlp(size: ModelSize = 'small') -> spacy.language.Language:
     """
     Returns the loaded spaCy model instance, downloading it if not
     found.
