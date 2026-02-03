@@ -120,31 +120,6 @@ def _handle_period_separated_initialism(
     return None
 
 
-def _handle_prefixed_name(_word: str, lower_word: str) -> str | None:
-    """
-    Handle the capitalization of a prefixed name.
-
-    Args:
-        _word: The name to capitalize (unused).
-        lower_word: The lowercase name.
-
-    Returns:
-        str | None: The capitalized name, or ``None`` if the
-            string starts with a name prefix exception.
-    """
-    if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
-        return None
-    elif (match := WarpingPatterns.SURNAME_PREFIX_PATTERN.match(lower_word)):
-        prefix_len = len(match.group(0))
-        return (lower_word[:prefix_len].capitalize() +
-                lower_word[prefix_len:].capitalize())
-    elif WarpingPatterns.OTHER_PREFIXED_NAMES_PATTERN.match(lower_word):
-        return _capitalize_from_map(
-            lower_word, StringCasing.get_prefixed_names_map()
-        )
-    return None
-
-
 def _preserve_mixed_case(
     word: str,
     _lower_word: str
