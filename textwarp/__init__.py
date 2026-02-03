@@ -5,11 +5,11 @@ from ._lib.punctuation import (
     straight_to_curly
 )
 from .analysis import (
+    calculate_time_to_read,
     count_chars,
     count_lines,
     count_mfws,
-    count_pos,
-    calculate_time_to_read
+    count_pos
 )
 from .warping import (
     capitalize,
@@ -17,13 +17,13 @@ from .warping import (
     expand_contractions,
     from_hexadecimal,
     from_morse,
-    hyphens_to_em,
     hyphen_to_en,
+    hyphens_to_em,
     ordinal_to_cardinal,
     punct_to_inside,
     punct_to_outside,
-    randomize,
     random_case,
+    randomize,
     redact,
     reverse,
     to_alternating_caps,

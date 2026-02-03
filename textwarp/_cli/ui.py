@@ -7,9 +7,9 @@ from typing import NoReturn
 from .._core.constants import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_INPUTS,
     EXIT_MESSAGE,
     NO_INPUTS,
-    EXIT_INPUTS,
     YES_INPUTS
 )
 

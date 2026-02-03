@@ -4,8 +4,8 @@ import importlib.resources
 import json
 from functools import lru_cache
 from typing import (
-    Final,
-    cast
+    cast,
+    Final
 )
 from pathlib import Path
 

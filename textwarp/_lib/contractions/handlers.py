@@ -16,8 +16,8 @@ from ..._core.constants import (
 )
 from .disambiguation import (
     disambiguate_ain_t,
-    disambiguate_whatcha,
-    disambiguate_s_or_d
+    disambiguate_s_or_d,
+    disambiguate_whatcha
 )
 from .utils import (
     apply_expansion_casing,
