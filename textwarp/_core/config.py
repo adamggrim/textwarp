@@ -22,13 +22,10 @@ __all__ = [
     'TokenCasing'
 ]
 
-_DATA_ROOT: Final = Path(__file__).parent / 'data'
 
-
-def _load(relative_path: Path | str) -> JSONType:
+def _load(relative_path: str | Path) -> JSONType:
     """
-    Build the path to a file relative to the base directory and
-    load its contents as a JSON object.
+    Load JSON content using importlib.resources for zip safety.
 
     Args:
         relative_path: The name of the JSON file.
@@ -36,12 +33,11 @@ def _load(relative_path: Path | str) -> JSONType:
     Returns:
         JSONType: The JSON file loaded as a Python object.
     """
-    # Build a platform-independent path to the JSON file.
-    json_file_path = _DATA_ROOT / relative_path
+    pkg_files = importlib.resources.files(__package__)
+    parts = Path(relative_path).parts
+    resource = pkg_files.joinpath('data', *parts)
 
-    # Load and return the JSON data.
-    with open(json_file_path, 'r') as json_file:
-        return cast(JSONType, json.load(json_file))
+    return cast(JSONType, json.loads(resource.read_text(encoding='utf-8')))
 
 
 class ContractionExpansion:
@@ -118,8 +114,12 @@ class StringCasing:
         """
         Merge absolute casings and other prefixed names into one map.
         """
-        absolute_map = StringCasing.get_absolute_map()
-        prefixed_names_map = StringCasing.get_prefixed_names_map()
+        absolute_map = cast(dict[str, str], _load(
+            StringCasing.DIR / 'absolute_casings_map.json'
+        ))
+        prefixed_names_map = cast(dict[str, str], _load(
+            StringCasing.DIR / 'prefixed_names_map.json'
+        ))
         # Absolute map overrides prefixed names map if there is a collision.
         return {**prefixed_names_map, **absolute_map}
 
