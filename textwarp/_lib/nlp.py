@@ -77,8 +77,15 @@ def get_nlp(size: ModelSize = 'small') -> spacy.language.Language:
             # Deferred import to avoid circular dependency.
             from .._cli.ui import print_wrapped
 
-            print_wrapped(f"Downloading spaCy model '{target_model}'...")
-            spacy.cli.download(target_model)
-            _nlp_instances[target_model] = spacy.load(target_model)
+            import sys
+            print_wrapped(
+                f"Error: The model '{target_model}' is not installed.",
+                file=sys.stderr
+            )
+            print_wrapped(
+                f"Run: python -m spacy download {target_model}",
+                file=sys.stderr
+            )
+            sys.exit(1)
 
     return _nlp_instances[target_model]
