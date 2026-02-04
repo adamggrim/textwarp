@@ -1,19 +1,12 @@
 """Main loop logic for executing commands."""
 
-from typing import (
-    Callable,
-    Final,
-    TypeAlias
-)
+from typing import Callable, Final, TypeAlias
 
 import pyperclip
 
 from .args import ARGS_MAP
 from .. import warping
-from .._commands import (
-    analysis,
-    replacement
-)
+from .._commands import analysis, replacement
 from .._core.constants import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
@@ -21,14 +14,8 @@ from .._core.constants import (
     TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
 
-from .ui import (
-    get_input,
-    print_wrapped
-)
-from .validation import (
-    EmptyClipboardError,
-    validate_clipboard
-)
+from .ui import get_input, print_wrapped
+from .validation import EmptyClipboardError, validate_clipboard
 
 __all__ = [
     'analyze_text',

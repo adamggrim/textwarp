@@ -18,10 +18,7 @@ from ..._core.constants import (
     OPEN_QUOTES,
     WarpingPatterns
 )
-from ..._core.enums import (
-    CaseSeparator,
-    Casing
-)
+from ..._core.enums import CaseSeparator, Casing
 
 from ..punctuation import remove_apostrophes
 

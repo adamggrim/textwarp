@@ -1,9 +1,6 @@
 """A custom decorator function for non-instantiable classes."""
 
-from typing import (
-    Any,
-    TypeVar
-)
+from typing import Any, TypeVar
 
 __all__ = [
     'non_instantiable'

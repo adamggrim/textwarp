@@ -4,10 +4,7 @@ A mapping of command-line arguments to functions and help messages.
 
 import importlib
 from types import ModuleType
-from typing import (
-    Callable,
-    Final
-)
+from typing import Callable, Final
 
 __all__ = [
     'ARGS_MAP',

@@ -1,9 +1,6 @@
 """Classes for part-of-speech counts and word counts."""
 
-from dataclasses import (
-    dataclass,
-    field
-)
+from dataclasses import dataclass, field
 from typing import final
 
 from .constants import POS_TAGS

@@ -5,10 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spacy.tokens import (
-        Doc,
-        Span
-    )
+    from spacy.tokens import Doc, Span
 
 from ..._core.config import ContractionExpansion
 from ..._core.constants import (
@@ -17,11 +14,7 @@ from ..._core.constants import (
     WarpingPatterns
 )
 from ..punctuation import curly_to_straight
-from .handlers import (
-    handle_negation,
-    handle_s_or_d,
-    handle_whatcha
-)
+from .handlers import handle_negation, handle_s_or_d, handle_whatcha
 from .utils import apply_expansion_casing
 
 __all__ = [

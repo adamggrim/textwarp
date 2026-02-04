@@ -10,10 +10,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from ..._core.constants import (
-    AIN_T_SUFFIX_VARIANTS,
-    WarpingPatterns
-)
+from ..._core.constants import AIN_T_SUFFIX_VARIANTS, WarpingPatterns
 from .disambiguation import (
     disambiguate_ain_t,
     disambiguate_s_or_d,

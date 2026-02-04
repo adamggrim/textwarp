@@ -10,14 +10,8 @@ if TYPE_CHECKING:
     from spacy.tokens import Doc
 
 from ._core.constants.nlp import POS_TAGS
-from ._core.models import (
-    POSCounts,
-    WordCount
-)
-from ._lib.nlp import (
-    extract_words_from_doc,
-    process_as_doc
-)
+from ._core.models import POSCounts, WordCount
+from ._lib.nlp import extract_words_from_doc, process_as_doc
 
 
 def calculate_time_to_read(text: str, wpm: int) -> int:

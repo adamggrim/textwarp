@@ -2,10 +2,7 @@
 
 import argparse
 import sys
-from typing import (
-    Any,
-    Callable
-)
+from typing import Any, Callable
 
 from .._core.constants import HELP_DESCRIPTION
 from .args import (

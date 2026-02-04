@@ -1,9 +1,6 @@
 """Functions for formatting analysis into readable strings."""
 
-from .._core.models import (
-    POSCounts,
-    WordCount
-)
+from .._core.models import POSCounts, WordCount
 
 __all__ = [
     'format_count',

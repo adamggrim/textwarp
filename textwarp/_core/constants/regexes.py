@@ -1,16 +1,9 @@
 """Regular expressions used across the package."""
 
 import regex as re
-from typing import (
-    Final,
-    final
-)
+from typing import Final, final
 
-from ..config import (
-    ContractionExpansion,
-    EntityCasing,
-    StringCasing
-)
+from ..config import ContractionExpansion, EntityCasing, StringCasing
 from ..decorators import non_instantiable
 from ..enums import RegexBoundary
 

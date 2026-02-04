@@ -15,10 +15,7 @@ from .._core.constants import (
     ENTER_WPM_PROMPT
 )
 from .._core.enums import CountLabels
-from .._core.models import (
-    POSCounts,
-    WordCount
-)
+from .._core.models import POSCounts, WordCount
 from .._cli.formatting import (
     format_count,
     format_mfws,

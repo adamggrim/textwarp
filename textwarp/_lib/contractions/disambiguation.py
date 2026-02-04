@@ -10,7 +10,8 @@ if TYPE_CHECKING:
 from ..._core.constants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS
+    APOSTROPHE_S_VARIANTS,
+    WarpingPatterns
 )
 from .utils import find_subject_token
 

@@ -1,9 +1,6 @@
 """A mapping of string inputs to case conversion functions."""
 
-from typing import (
-    Callable,
-    Final
-)
+from typing import Callable, Final
 
 from ..warping import (
     to_camel_case,

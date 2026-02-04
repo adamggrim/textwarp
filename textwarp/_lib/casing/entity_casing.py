@@ -6,10 +6,7 @@ from typing import TYPE_CHECKING
 
 import regex as re
 if TYPE_CHECKING:
-    from spacy.tokens import (
-        Doc,
-        Span
-    )
+    from spacy.tokens import Doc, Span
 
 from ..._core.config import EntityCasing
 from ..._core.constants import PROPER_NOUN_ENTITIES

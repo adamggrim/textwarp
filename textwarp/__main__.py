@@ -14,11 +14,7 @@ from ._cli.runners import (
     run_command_loop,
     warp_and_copy
 )
-from ._cli.ui import (
-    print_padding,
-    print_wrapped,
-    program_exit
-)
+from ._cli.ui import print_padding, print_wrapped, program_exit
 from ._commands import replacement
 
 PipelineItem: TypeAlias = tuple[str, Callable[[str], str]]
@@ -26,8 +22,13 @@ Pipeline: TypeAlias = list[PipelineItem]
 
 # Commands that print analysis and exit (cannot be looped easily or piped further)
 ANALYSIS_COMMANDS = {
-    'char-count', 'line-count', 'mfws', 'pos-count',
-    'sentence-count', 'time-to-read', 'word-count'
+    'char-count',
+    'line-count',
+    'mfws',
+    'pos-count',
+    'sentence-count',
+    'time-to-read',
+    'word-count'
 }
 
 # All function names for replacement commands.

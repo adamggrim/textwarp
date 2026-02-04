@@ -3,10 +3,7 @@
 import importlib.resources
 import json
 from functools import lru_cache
-from typing import (
-    cast,
-    Final
-)
+from typing import Final, cast
 from pathlib import Path
 
 from .types import (

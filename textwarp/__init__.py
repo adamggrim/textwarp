@@ -1,9 +1,6 @@
 """A Python package for analyzing and transforming text."""
 
-from ._lib.punctuation import (
-    curly_to_straight,
-    straight_to_curly
-)
+from ._lib.punctuation import curly_to_straight, straight_to_curly
 from .analysis import (
     calculate_time_to_read,
     count_chars,

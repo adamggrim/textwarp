@@ -7,10 +7,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Token
 
-from ..._core.constants import (
-    TITLE_CASE_TAG_EXCEPTIONS,
-    WarpingPatterns
-)
+from ..._core.constants import TITLE_CASE_TAG_EXCEPTIONS, WarpingPatterns
 from ..._core.config import TokenCasing
 
 __all__ = [
