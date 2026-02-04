@@ -60,6 +60,20 @@ class ContractionExpansion:
             ContractionExpansion.DIR / 'unambiguous_contractions_map.json'
         ))
 
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_whatcha_are_words() -> list[str]:
+        return cast(list[str], _load(
+            ContractionExpansion.DIR / 'whatcha' / 'are_words.json'
+        ))
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_whatcha_have_words() -> list[str]:
+        return cast(list[str], _load(
+            ContractionExpansion.DIR / 'whatcha' / 'have_words.json'
+        ))
+
 
 class Encoding:
     """A namespace for encoding and decoding translation data."""

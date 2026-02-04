@@ -160,10 +160,15 @@ def disambiguate_whatcha(span: Span) -> str | None:
             return ''
 
         # Disambiguate "are" vs. "has".
-        if (next_text_lower in ('gonna', 'tryna', 'goin', "goin'")
-                or tag == 'VBG'):
+        if (
+            WarpingPatterns.WHATCHA_ARE_WORDS.match(next_text_lower)
+            or tag == 'VBG'
+        ):
             return 'are'
-        elif next_text_lower == 'gotta' or tag in ('VBN', 'VBD'):
+        elif (
+            WarpingPatterns.WHATCHA_HAVE_WORDS.match(next_text_lower)
+            or tag in ('VBN', 'VBD')
+        ):
             return 'have'
 
         return 'do'

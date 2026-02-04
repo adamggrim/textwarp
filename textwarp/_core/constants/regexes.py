@@ -388,4 +388,10 @@ class WarpingPatterns:
     SURNAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
         StringCasing.get_surname_prefixes()
     )
+    WHATCHA_ARE_WORDS: Final[list[str]] = _create_words_regex(
+        ContractionExpansion.get_whatcha_are_words()
+    )
+    WHATCHA_HAVE_WORDS: Final[list[str]] = _create_words_regex(
+        ContractionExpansion.get_whatcha_have_words()
+    )
     WORD_CHARACTER: Final[re.Pattern[str]] = re.compile(r'\w')
