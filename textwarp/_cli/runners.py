@@ -50,7 +50,13 @@ def _paste_and_validate() -> str | None:
         print_wrapped(str(e))
         return None
     except pyperclip.PyperclipException as e:
-        print_wrapped(CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e))
+        msg = CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e)
+        if 'xclip' in str(e) or 'xsel' in str(e):
+            msg += (
+                "\nOn Linux, you may need to install 'xclip' or 'xsel' "
+                "(e.g., sudo apt install xclip)."
+            )
+        print_wrapped(msg)
         return None
     except Exception as e:
         print_wrapped(str(e))
