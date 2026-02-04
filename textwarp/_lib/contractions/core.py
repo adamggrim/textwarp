@@ -18,7 +18,7 @@ from .handlers import handle_negation, handle_s_or_d, handle_whatcha
 from .utils import apply_expansion_casing
 
 __all__ = [
-    'expand_contractions_from_doc'
+    'expand_contractions'
 ]
 
 
@@ -87,7 +87,7 @@ def _expand_unambiguous_contraction(
     return apply_expansion_casing(contraction, expanded_contraction)
 
 
-def expand_contractions_from_doc(doc: Doc) -> str:
+def expand_contractions(doc: Doc) -> str:
     """
     Expand all contractions in a given spaCy ``Doc``.
 

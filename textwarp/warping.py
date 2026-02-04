@@ -110,7 +110,7 @@ def expand_contractions(content: str | Doc) -> str:
         str: The converted string.
     """
     doc = process_as_doc(content)
-    return expand_contractions_from_doc(doc)
+    return contractions.expand_contractions(doc)
 
 
 def from_binary(binary_text: str) -> str:
