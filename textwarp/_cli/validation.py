@@ -32,27 +32,6 @@ def validate_any_text(text: str) -> None:
     pass
 
 
-def validate_clipboard(clipboard: str) -> None:
-    """
-    Validate the clipboard input.
-
-    This function checks if the clipboard content is an empty string or
-    contains only whitespace.
-
-    Args:
-        clipboard: A string representing the content of the clipboard.
-
-    Raises:
-        EmptyClipboardError: If the clipboard string is empty.
-        WhitespaceClipboardError: If the clipboard string contains only
-            whitespace.
-    """
-    if clipboard == '':
-        raise EmptyClipboardError('Clipboard is empty.')
-    elif clipboard.strip() == '':
-        raise WhitespaceClipboardError('Clipboard contains only whitespace.')
-
-
 def validate_case_name(case_name: str) -> None:
     """
     Validate a case name string.
@@ -76,6 +55,27 @@ def validate_case_name(case_name: str) -> None:
         raise WhitespaceCaseNameError('Case contains only whitespace.')
     elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
         raise InvalidCaseNameError('Invalid case.')
+
+
+def validate_clipboard(clipboard: str) -> None:
+    """
+    Validate the clipboard input.
+
+    This function checks if the clipboard content is an empty string or
+    contains only whitespace.
+
+    Args:
+        clipboard: A string representing the content of the clipboard.
+
+    Raises:
+        EmptyClipboardError: If the clipboard string is empty.
+        WhitespaceClipboardError: If the clipboard string contains only
+            whitespace.
+    """
+    if clipboard == '':
+        raise EmptyClipboardError('Clipboard is empty.')
+    elif clipboard.strip() == '':
+        raise WhitespaceClipboardError('Clipboard contains only whitespace.')
 
 
 def validate_regex(regex: str) -> None:
