@@ -4,7 +4,6 @@ import regex as re
 
 from .._core.constants import WarpingPatterns
 
-
 __all__ = [
     'cardinal_to_ordinal',
     'ordinal_to_cardinal'
@@ -69,7 +68,6 @@ def ordinal_to_cardinal(text: str) -> str:
         Returns:
             str: The cardinal version of the matched ordinal.
         """
-        ordinal = match.group(0)
-        return ordinal[:-2]
+        return match.group(1)
 
     return WarpingPatterns.ORDINAL.sub(_replace_ordinal, text)

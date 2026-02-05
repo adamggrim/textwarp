@@ -370,10 +370,10 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     ORDINAL: Final[re.Pattern[str]] = re.compile(rf'''
-        {_NUMBER_BASE_PATTERN}  # A number with or without thousands
-                                # separators.
-        (?:st|nd|rd|th)         # Followed by an ordinal suffix.
-        \b                      # Followed by a word boundary.
+        ({_NUMBER_BASE_PATTERN})    # GROUP 1 (NUMBER WITH OR WITHOUT
+                                    # SEPARATORS)
+        (?:st|nd|rd|th)             # Followed by an ordinal suffix.
+        \b                          # Followed by a word boundary.
         ''', re.VERBOSE
     )
     PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
