@@ -123,16 +123,18 @@ class StringCasing:
     @lru_cache(maxsize=1)
     def get_lookup_map() -> dict[str, str]:
         """
-        Merge absolute casings and other prefixed names into one map.
+        Merge absolute casings and mapped prefixed surnames into one
+        dictionary.
         """
         absolute_map = cast(dict[str, str], _load(
             StringCasing.DIR / 'absolute_casings_map.json'
         ))
-        prefixed_names_map = cast(dict[str, str], _load(
-            StringCasing.DIR / 'prefixed_names_map.json'
+        prefixed_surnames_map = cast(dict[str, str], _load(
+            StringCasing.DIR / 'prefixed_surnames_map.json'
         ))
-        # Absolute map overrides prefixed names map if there is a collision.
-        return {**prefixed_names_map, **absolute_map}
+        # Absolute map overrides the prefixed surnames map if there is a
+        # collision.
+        return {**prefixed_surnames_map, **absolute_map}
 
     @staticmethod
     @lru_cache(maxsize=1)
@@ -150,9 +152,9 @@ class StringCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_name_prefix_exceptions() -> list[str]:
+    def get_surname_prefix_exceptions() -> list[str]:
         return cast(list[str], _load(
-            StringCasing.DIR / 'name_prefix_exceptions.json'
+            StringCasing.DIR / 'surname_prefix_exceptions.json'
         ))
 
     @staticmethod

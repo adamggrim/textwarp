@@ -46,7 +46,7 @@ def _capitalize_from_map(
 def _handle_lookup(_word: str, lower_word: str) -> str | None:
     """
     Handle capitalization through a combined lookup of absolute
-    casings and other prefixed names.
+    casings and mapped prefixed surnames.
 
     Args:
         _word: The word to capitalize (unused).
