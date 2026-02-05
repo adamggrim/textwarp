@@ -119,6 +119,9 @@ textwarp/
 │ │ └── variants.py: Sets used across the package for variants and input
 │ ├── data/
 │ │ ├── contraction_expansion/
+│ │ │ ├── whatcha/
+│ │ │ │ ├── are_words.json: Lists words indicating "are" for "whatcha" disambiguation
+│ │ │ │ └── have_words.json: Lists words indicating "have" for "whatcha" disambiguation
 │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
 │ │ │ └── unambiguous_contractions_map.json: Maps each contraction to a single expansion
 │ │ ├── entity_casing/
@@ -130,8 +133,8 @@ textwarp/
 │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
 │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
 │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
-│ │ │ ├── name_prefix_exceptions.json: Lists words that start with name prefixes but are not names (e.g., "macabre")
-│ │ │ ├── prefixed_names_map.json: Maps prefixed names (that cannot be capitalized by a general rule) to their capitalized version
+│ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames (that cannot be capitalized by a general rule) to their capitalized version
+│ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames (e.g., "macabre")
 │ │ │ └── surname_prefixes.json: Lists common name prefixes (e.g., "Mac", "O'")
 │ │ ├── elision_words.json: Lists commonly elided words
 │ │ └── morse_map.json: Maps characters to their Morse code equivalent
