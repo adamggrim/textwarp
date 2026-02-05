@@ -4,11 +4,13 @@ import os
 import textwrap
 from typing import NoReturn
 
-from .._core.constants import (
+from textwarp._core.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_MESSAGE
+)
+from textwarp._core.constants.variants import (
     EXIT_INPUTS,
-    EXIT_MESSAGE,
     NO_INPUTS,
     YES_INPUTS
 )

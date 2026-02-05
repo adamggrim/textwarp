@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from typing import final
 
-from .constants import POS_TAGS
+from textwarp._core.constants.nlp import POS_TAGS
 
 __all__ = [
     'POSCounts',

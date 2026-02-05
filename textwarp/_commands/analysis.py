@@ -1,6 +1,6 @@
 """Runners for analysis commands."""
 
-from ..analysis import (
+from textwarp.analysis import (
     calculate_time_to_read,
     count_chars,
     count_lines,
@@ -9,20 +9,20 @@ from ..analysis import (
     count_sents,
     count_words
 )
-from .._core.constants import (
+from textwarp._core.constants.messages import (
     ENTER_MFW_COUNT_PROMPT,
     ENTER_VALID_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
 )
-from .._core.enums import CountLabels
-from .._core.models import POSCounts, WordCount
-from .._cli.formatting import (
+from textwarp._core.enums import CountLabels
+from textwarp._core.models import POSCounts, WordCount
+from textwarp._cli.formatting import (
     format_count,
     format_mfws,
     format_pos_count,
     format_time_to_read
 )
-from .._cli.ui import print_wrapped
+from textwarp._cli.ui import print_wrapped
 
 __all__ = [
     'char_count',
@@ -84,7 +84,7 @@ def mfws(text: str) -> None:
             if num_mfws_input.isdigit():
                 return int(num_mfws_input)
             else:
-                print(ENTER_VALID_NUMBER_PROMPT)
+                print_wrapped(ENTER_VALID_NUMBER_PROMPT)
                 num_mfws_input = input().strip()
                 continue
 

@@ -4,18 +4,18 @@ from typing import Callable, Final, TypeAlias
 
 import pyperclip
 
-from .args import ARGS_MAP
-from .. import warping
-from .._commands import analysis, replacement
-from .._core.constants import (
+from textwarp._cli.args import ARGS_MAP
+from textwarp import warping
+from textwarp._commands import analysis, replacement
+from textwarp._core.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE,
     TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
 
-from .ui import get_input, print_wrapped
-from .validation import EmptyClipboardError, validate_clipboard
+from textwarp._cli.ui import get_input, print_wrapped
+from textwarp._cli.validation import EmptyClipboardError, validate_clipboard
 
 __all__ = [
     'analyze_text',

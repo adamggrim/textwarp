@@ -7,15 +7,19 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
-from ..._core.config import ContractionExpansion
-from ..._core.constants import (
+from textwarp._core.config import ContractionExpansion
+from textwarp._core.constants.variants import (
     APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS,
-    WarpingPatterns
+    APOSTROPHE_S_VARIANTS
 )
-from ..punctuation import curly_to_straight
-from .handlers import handle_negation, handle_s_or_d, handle_whatcha
-from .utils import apply_expansion_casing
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._lib.punctuation import curly_to_straight
+from textwarp._lib.contractions.handlers import (
+    handle_negation,
+    handle_s_or_d,
+    handle_whatcha
+)
+from textwarp._lib.contractions.utils import apply_expansion_casing
 
 __all__ = [
     'expand_contractions'

@@ -3,8 +3,8 @@
 import regex as re
 from typing import Callable
 
-from .._core.constants import (
-    CASE_NAMES_REGEX_MAP,
+from textwarp._core.constants.maps import CASE_NAMES_REGEX_MAP
+from textwarp._core.constants.messages import (
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
     ENTER_REPLACEMENT_CASE_PROMPT,
@@ -14,15 +14,15 @@ from .._core.constants import (
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT
 )
-from .._cli.dispatch import CASE_NAMES_FUNC_MAP
-from .._core.enums import PresenceCheckType
-from .._core.exceptions import (
+from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
+from textwarp._core.enums import PresenceCheckType
+from textwarp._core.exceptions import (
     CaseNotFoundError,
     RegexNotFoundError,
     TextToReplaceNotFoundError
 )
-from .._cli.ui import print_wrapped
-from .._cli.validation import (
+from textwarp._cli.ui import print_wrapped
+from textwarp._cli.validation import (
     validate_any_text,
     validate_case_name,
     validate_regex,

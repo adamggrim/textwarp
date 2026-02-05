@@ -4,7 +4,7 @@ from typing import Final
 
 import regex as re
 
-from .regexes import CasePatterns
+from textwarp._core.constants.regexes import CasePatterns
 
 __all__ = [
     'CASE_NAMES_REGEX_MAP'

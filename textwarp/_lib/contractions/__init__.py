@@ -1,3 +1,3 @@
 """Exposes contraction expansion logic for use across the package."""
 
-from .core import *
+from textwarp._lib.contractions.core import *

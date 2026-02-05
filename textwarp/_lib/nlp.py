@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     import spacy.language
     from spacy.tokens import Doc
 
-from .._core.constants import POS_WORD_TAGS
+from textwarp._core.constants.nlp import POS_WORD_TAGS
 
 ModelSize = Literal['small', 'large']
 # Use string forward reference to support lazy spaCy loading.

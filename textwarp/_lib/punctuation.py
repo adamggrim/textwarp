@@ -2,7 +2,7 @@
 
 import regex as re
 
-from .._core.constants import WarpingPatterns
+from textwarp._core.constants.regexes import WarpingPatterns
 
 __all__ = [
     'curly_to_straight',

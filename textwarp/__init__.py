@@ -1,14 +1,14 @@
 """A Python package for analyzing and transforming text."""
 
-from ._lib.punctuation import curly_to_straight, straight_to_curly
-from .analysis import (
+from textwarp._lib.punctuation import curly_to_straight, straight_to_curly
+from textwarp.analysis import (
     calculate_time_to_read,
     count_chars,
     count_lines,
     count_mfws,
     count_pos
 )
-from .warping import (
+from textwarp.warping import (
     capitalize,
     cardinal_to_ordinal,
     expand_contractions,

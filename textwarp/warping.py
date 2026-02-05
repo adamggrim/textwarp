@@ -10,27 +10,27 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
-from ._core.constants.regexes import (
+from textwarp._core.constants.regexes import (
     CaseConversionPatterns,
     CasePatterns,
     WarpingPatterns
 )
-from ._core.enums import CaseSeparator, Casing
+from textwarp._core.enums import CaseSeparator, Casing
 
-from ._lib import (
+from textwarp._lib import (
     contractions,
     encoding,
     manipulation,
     numbers
 )
-from ._lib.casing.case_conversion import (
+from textwarp._lib.casing.case_conversion import (
     change_first_letter_case,
     doc_to_case,
     to_separator_case,
     word_to_pascal
 )
-from ._lib.nlp import process_as_doc
-from ._lib.punctuation import (
+from textwarp._lib.nlp import process_as_doc
+from textwarp._lib.punctuation import (
     curly_to_straight,
     remove_apostrophes,
     straight_to_curly

@@ -10,13 +10,14 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from ..._core.constants import AIN_T_SUFFIX_VARIANTS, WarpingPatterns
-from .disambiguation import (
+from textwarp._core.constants.variants import AIN_T_SUFFIX_VARIANTS
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._lib.contractions.disambiguation import (
     disambiguate_ain_t,
     disambiguate_s_or_d,
     disambiguate_whatcha
 )
-from .utils import (
+from textwarp._lib.contractions.utils import (
     apply_expansion_casing,
     find_subject_token,
     negative_contraction_to_base_verb

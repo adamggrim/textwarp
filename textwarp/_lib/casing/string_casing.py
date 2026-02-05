@@ -2,8 +2,8 @@
 
 from typing import Callable
 
-from ..._core.config import StringCasing
-from ..._core.constants import WarpingPatterns
+from textwarp._core.config import StringCasing
+from textwarp._core.constants.regexes import WarpingPatterns
 
 __all__ = ['case_from_string']
 

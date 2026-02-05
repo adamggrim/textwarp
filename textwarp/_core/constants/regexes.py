@@ -3,9 +3,13 @@
 import regex as re
 from typing import Final, final
 
-from ..config import ContractionExpansion, EntityCasing, StringCasing
-from ..decorators import non_instantiable
-from ..enums import RegexBoundary
+from textwarp._core.config import (
+    ContractionExpansion,
+    EntityCasing,
+    StringCasing
+)
+from textwarp._core.decorators import non_instantiable
+from textwarp._core.enums import RegexBoundary
 
 __all__ = [
     'CaseConversionPatterns',

@@ -4,8 +4,8 @@ import argparse
 import sys
 from typing import Any, Callable
 
-from .._core.constants import HELP_DESCRIPTION
-from .args import (
+from textwarp._core.constants.messages import HELP_DESCRIPTION
+from textwarp._cli.args import (
     ARGS_MAP,
     CASING_COMMANDS,
     MUTUALLY_EXCLUSIVE_COMMANDS,

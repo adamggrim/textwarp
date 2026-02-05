@@ -7,13 +7,13 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from ..._core.constants import (
+from textwarp._core.constants.variants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS,
-    WarpingPatterns
+    APOSTROPHE_S_VARIANTS
 )
-from .utils import find_subject_token
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._lib.contractions.utils import find_subject_token
 
 __all__ = [
     'disambiguate_ain_t',

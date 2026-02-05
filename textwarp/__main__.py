@@ -7,15 +7,15 @@ import sys
 from collections.abc import Callable
 from typing import TypeAlias
 
-from ._cli.parsing import parse_args
-from ._cli.runners import (
+from textwarp._cli.parsing import parse_args
+from textwarp._cli.runners import (
     clear_clipboard,
     replace_text,
     run_command_loop,
     warp_and_copy
 )
-from ._cli.ui import print_padding, print_wrapped, program_exit
-from ._commands import replacement
+from textwarp._cli.ui import print_padding, print_wrapped, program_exit
+from textwarp._commands import replacement
 
 PipelineItem: TypeAlias = tuple[str, Callable[[str], str]]
 Pipeline: TypeAlias = list[PipelineItem]

@@ -6,7 +6,7 @@ from functools import lru_cache
 from typing import Final, cast
 from pathlib import Path
 
-from .types import (
+from textwarp._core.types import (
     EntityCasingContext,
     JSONType
 )

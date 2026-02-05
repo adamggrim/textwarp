@@ -2,8 +2,8 @@
 
 import regex as re
 
-from .dispatch import CASE_NAMES_FUNC_MAP
-from .._core.exceptions import (
+from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
+from textwarp._core.exceptions import (
     EmptyClipboardError,
     InvalidCaseNameError,
     NoCaseNameError,

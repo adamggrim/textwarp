@@ -2,7 +2,7 @@
 
 from typing import Callable, Final
 
-from ..warping import (
+from textwarp.warping import (
     to_camel_case,
     to_dot_case,
     to_kebab_case,
@@ -29,5 +29,5 @@ CASE_NAMES_FUNC_MAP: Final[dict[str, Callable[[str], str]]]= {
     'snake': to_snake_case,
     'snake case': to_snake_case,
     'upper': str.upper,
-    'uppercase': str.upper,
+    'uppercase': str.upper
 }

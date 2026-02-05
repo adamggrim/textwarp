@@ -8,9 +8,9 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
-from ..._core.config import EntityCasing
-from ..._core.constants import PROPER_NOUN_ENTITIES
-from ..._core.types import EntityCasingContext
+from textwarp._core.config import EntityCasing
+from textwarp._core.constants.nlp import PROPER_NOUN_ENTITIES
+from textwarp._core.types import EntityCasingContext
 
 __all__ = [
     'map_all_entities'

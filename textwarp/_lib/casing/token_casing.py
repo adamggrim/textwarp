@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Token
 
-from ..._core.constants import TITLE_CASE_TAG_EXCEPTIONS, WarpingPatterns
-from ..._core.config import TokenCasing
+from textwarp._core.constants.nlp import TITLE_CASE_TAG_EXCEPTIONS
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._core.config import TokenCasing
 
 __all__ = [
     'should_capitalize_pos_or_length'

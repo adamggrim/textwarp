@@ -1,9 +1,9 @@
 """Exposes core configuration, constants, and models."""
 
-from .config import *
-from .constants import *
-from .decorators import *
-from .enums import *
-from .exceptions import *
-from .models import *
-from .types import *
+from textwarp._core.config import *
+from textwarp._core.constants import *
+from textwarp._core.decorators import *
+from textwarp._core.enums import *
+from textwarp._core.exceptions import *
+from textwarp._core.models import *
+from textwarp._core.types import *
