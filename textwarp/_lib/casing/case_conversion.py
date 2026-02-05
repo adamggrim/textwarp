@@ -395,8 +395,8 @@ def to_separator_case(
                 )
             )
         # Part is in camel or Pascal case.
-        elif (CasePatterns.CAMEL_WORD.match(part)
-              or CasePatterns.PASCAL_WORD.match(part)):
+        elif (CasePatterns.CAMEL_WORD.fullmatch(part)
+              or CasePatterns.PASCAL_WORD.fullmatch(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
                 CaseConversionPatterns.SPLIT_CAMEL_OR_PASCAL.split(part)

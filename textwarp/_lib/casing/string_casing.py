@@ -111,7 +111,7 @@ def _handle_period_separated_initialism(
         str | None: The capitalized initialism, or ``None`` if the
             word does not contain a period.
     """
-    if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.match(lower_word):
+    if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.fullmatch(lower_word):
         parts = lower_word.split('.')
         return '.'.join(
             [part.upper() if not WarpingPatterns.ANY_APOSTROPHE.search(part)
