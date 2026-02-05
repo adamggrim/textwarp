@@ -94,8 +94,8 @@ def _prompt_for_valid_input(
 
     Args:
         enter_text_prompt: The prompt to display to the user.
-        validation_func: A function that accepts a string as input,
-            returning ``None`` if the string is valid or raising an
+        validation_func: A function that accepts a string as input and
+            returns ``None`` if the string is valid or raises an
             exception if the string is invalid.
         enter_valid_text_prompt: The prompt to display when the input is
             invalid.

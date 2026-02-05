@@ -23,7 +23,7 @@ def _should_always_lowercase(token: Token) -> bool:
     contraction suffix (e.g., "'ve", "n't").
 
     Args:
-        token: The spaCy token to check.
+        token: The spaCy ``Token`` to check.
 
     Returns:
         bool: ``True`` if the token should always be lowercase, otherwise
@@ -36,11 +36,11 @@ def _should_always_lowercase(token: Token) -> bool:
 
 def should_capitalize_pos_or_length(token: Token) -> bool:
     """
-    Determine whether a spaCy token should be capitalized for title
+    Determine whether a spaCy ``Token`` should be capitalized for title
     case based on its part of speech or length.
 
     Args:
-        token: The spaCy token to check.
+        token: The spaCy ``Token`` to check.
 
     Returns:
         bool: ``True`` if the tag should be capitalized, otherwise

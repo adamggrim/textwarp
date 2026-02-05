@@ -44,13 +44,12 @@ def _find_first_word_token_idx(
     spaCy ``Doc`` or ``Span``.
 
     Args:
-        start_idx: The relative index in the text container to
-            start the search from.
+        start_idx: The relative index in the text container for
+            starting the search.
 
     Returns:
-        int | None: The doc index of the first word token, or
-            ``None`` if no non-space, non-punctuation token is
-            found.
+        int | None: The index of the first word token, or ``None`` if
+            there is no non-space, non-punctuation token.
     """
     for i in range(start_idx, len(text_container)):
         token = text_container[i]
@@ -67,7 +66,7 @@ def _find_sentence_case_idxs(
     for sentence case.
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
+        text_container: The spaCy ``Doc`` or ``Span`` to search.
 
     Returns:
         tuple[set[int], set[int]]:
@@ -115,7 +114,7 @@ def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     case (i.e., all word tokens).
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
+        text_container: The spaCy ``Doc`` or ``Span`` to search.
 
     Returns:
         set[int]: A set containing the indices of all word tokens.
@@ -139,7 +138,7 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     of speech or length.
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to analyze.
+        text_container: The spaCy ``Doc`` or ``Span`` to search.
 
     Returns:
         set[int]: A set containing the set of first word indices and the
@@ -207,11 +206,11 @@ def _to_title_case_from_token(
     should_capitalize_for_title: bool
 ) -> str:
     """
-    Convert a spaCy token to title case, handling special name prefixes
+    Convert a spaCy ``Token`` to title case, handling special name prefixes
     and preserving other mid-word capitalizations.
 
     Args:
-        token: The spaCy token to convert.
+        token: The spaCy ``Token`` to convert.
         should_capitalize_for_title: A flag indicating whether the
             token should be capitalized.
 
