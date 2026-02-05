@@ -29,6 +29,7 @@ from .token_casing import should_capitalize_pos_or_length
 __all__ = [
     'change_first_letter_case',
     'doc_to_case',
+    'find_first_alphabetical_idx',
     'to_separator_case',
     'word_to_pascal'
 ]
@@ -246,10 +247,11 @@ def change_first_letter_case(
     Returns:
         str: The converted text.
     """
-    for i, char in enumerate(text):
-        if char.isalpha():
-            # Modify the first letter and return the new text.
-            return text[:i] + casing_func(char) + text[i+1:]
+    idx = find_first_alphabetical_idx(text)
+
+    if idx is not None:
+        # Modify the first letter and return the new text.
+        return text[:idx] + casing_func(text[idx]) + text[idx+1:]
 
     # Return the original text if there are no letters in the string.
     return text
@@ -331,6 +333,23 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         i += 1
 
     return ''.join(processed_parts)
+
+
+def find_first_alphabetical_idx(text: str) -> int | None:
+    """
+    Find the index of the first alphabetical character in a string.
+
+    Args:
+        text: The string to search.
+
+    Returns:
+        int | None: The index of the first alphabetical character, or
+            ``None`` if there are no alphabetical characters.
+    """
+    for i, char in enumerate(text):
+        if char.isalpha():
+            return i
+    return None
 
 
 def to_separator_case(

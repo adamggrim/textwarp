@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Token
 
 from ..._core.config import ContractionExpansion
+from ..casing.case_conversion import find_first_alphabetical_idx
 from ..punctuation import curly_to_straight
 from ..casing.string_casing import case_from_string
 
@@ -36,6 +37,14 @@ def apply_expansion_casing(
     Returns:
         str: The expanded text in the original text's casing.
     """
+    def _starts_capitalized(text: str) -> bool:
+        """
+        Check if the first alphabetical character in the text is
+        uppercase.
+        """
+        idx = find_first_alphabetical_idx(text)
+        return idx is not None and text[idx].isupper()
+
     # Handle empty strings.
     if not original_text or not expanded_text:
         return expanded_text
@@ -49,7 +58,7 @@ def apply_expansion_casing(
 
     is_title_case = (
         len(original_parts) > 1 and
-        all(part and part[0].isupper() for part in original_parts)
+        all(_starts_capitalized(part) for part in original_parts)
     )
 
     # Check for title case.
@@ -59,7 +68,7 @@ def apply_expansion_casing(
         ])
 
     # Check for sentence case.
-    elif original_text[0].isupper():
+    if _starts_capitalized(original_text):
         first_part: str = case_from_string(expanded_parts[0])
 
         remaining_parts = [
