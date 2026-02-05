@@ -181,8 +181,6 @@ class WarpingPatterns:
     Attributes:
         ANY_APOSTROPHE: Matches any straight (``'``) or curly (``’`` or
             ``‘``) apostrophe.
-        ANY_APOSTROPHE_LOOKAHEAD: Matches the position before a straight
-            or curly apostrophe.
         APOSTROPHE_IN_WORD: Matches a straight apostrophe within a word
             (e.g., "it's", "'twas").
         AMBIGUOUS_CONTRACTION: Matches any contraction that can expand
@@ -276,7 +274,6 @@ class WarpingPatterns:
     elisions: Final[str] = '|'.join(ContractionExpansion.get_elision_words())
 
     ANY_APOSTROPHE: Final[re.Pattern[str]] = re.compile(r"['’‘]")
-    ANY_APOSTROPHE_LOOKAHEAD: Final[re.Pattern[str]] = re.compile(r"(?=['’‘])")
     APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=            # Preceded by...
