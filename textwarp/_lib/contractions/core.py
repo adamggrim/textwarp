@@ -44,7 +44,7 @@ def _expand_ambiguous_contraction(
             1. The expanded version of the matched contraction.
             2. The index where the next search should begin.
     """
-    original_end_char_index = span.end_char
+    original_end_char_idx = span.end_char
 
     # --- HANDLE "WHATCHA" ---
     if "whatcha" in contraction.lower():
@@ -52,7 +52,7 @@ def _expand_ambiguous_contraction(
 
     suffix_token = span[-1] if span else None
     if not suffix_token:
-        return contraction, original_end_char_index
+        return contraction, original_end_char_idx
 
     # --- HANDLE NEGATION ---
     if WarpingPatterns.N_T_SUFFIX.match(suffix_token.text):
@@ -63,7 +63,7 @@ def _expand_ambiguous_contraction(
             suffix_token.lower_ in APOSTROPHE_D_VARIANTS):
         return handle_s_or_d(span)
 
-    return contraction, original_end_char_index
+    return contraction, original_end_char_idx
 
 
 def _expand_unambiguous_contraction(

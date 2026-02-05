@@ -187,19 +187,19 @@ def map_all_entities(doc: Doc) -> dict[int, tuple[Span, int, str | None]]:
     """
     custom_map = _map_custom_entities(doc)
 
-    consumed_indices = set()
+    consumed_idxs = set()
     for span, _, _ in custom_map.values():
-        consumed_indices.update(range(span.start, span.end))
+        consumed_idxs.update(range(span.start, span.end))
 
     standard_map = _map_model_entities(doc)
 
     combined_map: dict[int, tuple[Span, int, str| None]] = dict(custom_map)
 
     for start_idx, (span, end_idx, text) in standard_map.items():
-        span_indices = set(range(span.start, span.end))
+        span_idxs = set(range(span.start, span.end))
         # Only add standard indices if they don't overlap with custom
         # indices.
-        if span_indices.isdisjoint(consumed_indices):
+        if span_idxs.isdisjoint(consumed_idxs):
             combined_map[start_idx] = (span, end_idx, text)
 
     return combined_map

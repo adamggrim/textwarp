@@ -59,7 +59,7 @@ def _find_first_word_token_idx(
     return None
 
 
-def _find_sentence_case_indices(
+def _find_sentence_case_idxs(
     text_container: Doc | Span
 ) -> tuple[set[int], set[int]]:
     """
@@ -71,14 +71,14 @@ def _find_sentence_case_indices(
 
     Returns:
         tuple[set[int], set[int]]:
-            1. sent_start_indices: A list of the first token in each
+            1. sent_start_idxs: A list of the first token in each
                 sentence.
             2. indices_to_lowercase: A list of words after the first
                 word that are currently capitalized or uppercase, as
                 long as all words in the text follow the same casing
                 (i.e., all capitalized or all uppercase).
     """
-    sent_start_indices: set[int] = set()
+    sent_start_idxs: set[int] = set()
     indices_to_lowercase: set[int] = set()
 
     for sent in text_container.sents:
@@ -87,7 +87,7 @@ def _find_sentence_case_indices(
         if first_word_idx is None:
             continue
 
-        sent_start_indices.add(first_word_idx)
+        sent_start_idxs.add(first_word_idx)
 
         words = [token for token in sent if token.is_alpha]
 
@@ -106,10 +106,10 @@ def _find_sentence_case_indices(
                 if token.i != first_word_idx and token.is_alpha:
                     indices_to_lowercase.add(token.i)
 
-    return sent_start_indices, indices_to_lowercase
+    return sent_start_idxs, indices_to_lowercase
 
 
-def _find_start_case_indices(text_container: Doc | Span) -> set[int]:
+def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for start
     case (i.e., all word tokens).
@@ -120,16 +120,16 @@ def _find_start_case_indices(text_container: Doc | Span) -> set[int]:
     Returns:
         set[int]: A set containing the indices of all word tokens.
     """
-    word_indices: set[int] = set()
+    word_idxs: set[int] = set()
 
     for token in text_container:
         if not token.is_space and not token.is_punct:
-            word_indices.add(token.i)
+            word_idxs.add(token.i)
 
-    return word_indices
+    return word_idxs
 
 
-def _find_title_case_indices(text_container: Doc | Span) -> set[int]:
+def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for title
     case.
@@ -145,7 +145,7 @@ def _find_title_case_indices(text_container: Doc | Span) -> set[int]:
         set[int]: A set containing the set of first word indices and the
             last word index.
     """
-    position_indices: set[int] = set()
+    position_idxs: set[int] = set()
 
     for i, token in enumerate(text_container):
         # Find the first word token in each sentence, `Doc` or `Span`.
@@ -154,7 +154,7 @@ def _find_title_case_indices(text_container: Doc | Span) -> set[int]:
                 i, text_container
             )
             if first_word_idx is not None:
-                position_indices.add(first_word_idx)
+                position_idxs.add(first_word_idx)
         # Find the first word token after a colon or opening quote.
         elif (token.text in {':'} | OPEN_QUOTES
               and token.i + 1 < len(text_container)):
@@ -162,18 +162,18 @@ def _find_title_case_indices(text_container: Doc | Span) -> set[int]:
                 i + 1, text_container
             )
             if first_word_idx is not None:
-                position_indices.add(first_word_idx)
+                position_idxs.add(first_word_idx)
         # Find tokens that should be capitalized based on POS or length.
         elif should_capitalize_pos_or_length(token):
-            position_indices.add(token.i)
+            position_idxs.add(token.i)
 
     # Find the index of the last word.
     for token in reversed(text_container):
         if not token.is_space and not token.is_punct:
-            position_indices.add(token.i)
+            position_idxs.add(token.i)
             break
 
-    return position_indices
+    return position_idxs
 
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
@@ -189,11 +189,11 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
-    position_indices = _find_title_case_indices(text_container)
+    position_idxs = _find_title_case_idxs(text_container)
     processed_parts: list[str] = []
 
     for token in text_container:
-        should_capitalize_for_title = token.i in position_indices
+        should_capitalize_for_title = token.i in position_idxs
         processed_token = _to_title_case_from_token(
             token, should_capitalize_for_title=should_capitalize_for_title
         )
@@ -273,17 +273,17 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     entity_map: dict[int, tuple[Span, int, str | None]] = map_all_entities(doc)
 
     processed_parts: list[str] = []
-    token_indices: set[int] = set()
+    token_idxs: set[int] = set()
     i = 0
 
     if casing == Casing.SENTENCE:
-        token_indices, indices_to_lowercase = _find_sentence_case_indices(doc)
+        token_idxs, indices_to_lowercase = _find_sentence_case_idxs(doc)
         lowercase_by_default = True
     elif casing == Casing.START:
-        token_indices = _find_start_case_indices(doc)
+        token_idxs = _find_start_case_idxs(doc)
         lowercase_by_default = False
     elif casing == Casing.TITLE:
-        token_indices = _find_title_case_indices(doc)
+        token_idxs = _find_title_case_idxs(doc)
         lowercase_by_default = True
 
     # Loop through each token in the ``Doc`` to find any indices that
@@ -319,7 +319,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         preserve_mixed_case = (
             casing == Casing.SENTENCE and i in indices_to_lowercase
         )
-        is_sentence_start = (i in token_indices)
+        is_sentence_start = (i in token_idxs)
         should_lowercase = lowercase_by_default and not is_sentence_start
 
         processed_parts.append(
