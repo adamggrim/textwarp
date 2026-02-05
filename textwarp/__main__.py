@@ -100,7 +100,7 @@ def _process_piped_mode(pipeline: Pipeline) -> None:
             warp_and_copy(lambda t: _apply_pipeline(t, pipeline), text)
 
     except Exception as e:
-        print(f"Error processing input: {e}", file=sys.stderr)
+        print_wrapped(f'Error processing input: {e}', file=sys.stderr)
         sys.exit(1)
 
 
