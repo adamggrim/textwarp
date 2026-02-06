@@ -8,9 +8,10 @@ if TYPE_CHECKING:
     import spacy.language
     from spacy.tokens import Doc
 
+from textwarp._cli.ui import print_wrapped
 from textwarp._core.constants.nlp import POS_WORD_TAGS
 
-ModelSize = Literal['small', 'large']
+ModelPriority = Literal['accuracy', 'speed']
 # Use string forward reference to support lazy spaCy loading.
 _nlp_instances: dict[str, 'spacy.language.Language'] = {}
 
@@ -32,60 +33,71 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
     ]
 
 
-def process_as_doc(content: str | Doc, model_size: str = 'small') -> Doc:
+def process_as_doc(content: str | Doc, model_priority: str = 'speed') -> Doc:
     """
     Process the input as a spaCy ``Doc``.
 
     Args:
         content: The string or ``Doc`` to process.
-        model_size: The size of the spaCy model to use.
+        model_priority: The size of the spaCy model to use.
 
     Returns:
         Doc: The processed spaCy ``Doc``.
     """
     if not isinstance(content, str):
         return content
-    nlp = get_nlp(model_size)
+    nlp = get_nlp(model_priority)
     return nlp(content)
 
 
-def get_nlp(size: ModelSize = 'small') -> spacy.language.Language:
+def get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language:
     """
-    Returns the loaded spaCy model instance, downloading it if not
-    found.
+    Returns the best available spaCy model instance based on speed or
+    accuracy.
 
     Args:
-        size: The size of the spaCy model to load. Can be either
-            "small" (for speed) or "large" (for accuracy).
+        model_priority: The spaCy model priority. Can be either "speed" or
+            "accuracy". Defaults to "speed".
 
     Returns:
         spacy.language.Language: The loaded spaCy model instance.
     """
     import spacy
+    import sys
 
-    model_map = {
-        'small': 'en_core_web_sm',
-        'large': 'en_core_web_trf'
-    }
+    # Priority is "speed".
+    model_priorities = [
+        'en_core_web_sm',
+        'en_core_web_md',
+        'en_core_web_lg',
+        'en_core_web_trf'
+    ]
 
-    target_model = model_map.get(size, 'en_core_web_sm')
+    if model_priority == 'accuracy':
+        model_priorities = model_priorities[::-1]
 
-    if target_model not in _nlp_instances:
-        try:
-            _nlp_instances[target_model] = spacy.load(target_model)
-        except OSError:
-            # Deferred import to avoid circular dependency.
-            from .._cli.ui import print_wrapped
+    for model_name in model_priorities:
+        if spacy.util.is_package(model_name):
+            if model_name not in _nlp_instances:
+                try:
+                    _nlp_instances[model_name] = spacy.load(model_name)
+                except ImportError:
+                    # Occurs when ``en_core_web_trf`` is installed but
+                    # ``spacy-transformers`` is missing.
+                    continue
+            return _nlp_instances[model_name]
 
-            import sys
-            print_wrapped(
-                f"Error: The model '{target_model}' is not installed.",
-                file=sys.stderr
-            )
-            print_wrapped(
-                f"Run: python -m spacy download {target_model}",
-                file=sys.stderr
-            )
-            sys.exit(1)
+    # Search for any other installed English model.
+    installed_models = spacy.util.get_installed_models()
+    for model_name in installed_models:
+        if model_name.startswith('en_'):
+            if model_name not in _nlp_instances:
+                _nlp_instances[model_name] = spacy.load(model_name)
+            return _nlp_instances[model_name]
 
-    return _nlp_instances[target_model]
+    priority_model_name = model_priorities[0]
+    print_wrapped('Error: No English spaCy models found.', file=sys.stderr)
+    print_wrapped(
+        f'Run: python -m spacy download {priority_model_name}', file=sys.stderr
+    )
+    sys.exit(1)
