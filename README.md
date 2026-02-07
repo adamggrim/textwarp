@@ -119,11 +119,10 @@ textwarp/
 │ │ └── variants.py: Sets used across the package for variants and input
 │ ├── data/
 │ │ ├── contraction_expansion/
-│ │ │ ├── whatcha/
-│ │ │ │ ├── are_words.json: Lists words indicating "are" for "whatcha" disambiguation
-│ │ │ │ └── have_words.json: Lists words indicating "have" for "whatcha" disambiguation
 │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
-│ │ │ └── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+│ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+│ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
+│ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
 │ │ ├── entity_casing/
 │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
 │ │ │ ├── contextual_casings_map.json: Maps entities that require context (casing, part of speech, ngrams) to capitalize
