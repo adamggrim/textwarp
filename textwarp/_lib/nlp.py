@@ -86,7 +86,7 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
     ]
 
 
-def process_as_doc(content: str | Doc, model_priority: str = 'speed') -> Doc:
+def process_as_doc(content: str | Doc, model_priority: ModelPriority = 'speed') -> Doc:
     """
     Process the input as a spaCy ``Doc``.
 
