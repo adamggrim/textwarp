@@ -31,7 +31,7 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
     import spacy
     import sys
 
-    # Priority is "speed".
+    # Ranked by "speed".
     model_priorities = [
         'en_core_web_sm',
         'en_core_web_md',
