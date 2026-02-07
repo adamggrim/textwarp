@@ -498,7 +498,7 @@ def to_title_case(content: str | Doc) -> str:
         str: The converted string.
     """
     # Use the large model for identifying titles within titles.
-    doc = process_as_doc(content, model_size='large')
+    doc = process_as_doc(content, model_priority='accuracy')
     return doc_to_case(doc, Casing.TITLE)
 
 
