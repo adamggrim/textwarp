@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
+from textwarp._core.constants.nlp import NOUN_TAGS, PARTICIPLE_TAGS, SINGULAR_PRONOUNS
 from textwarp._core.constants.variants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
@@ -57,7 +58,7 @@ def disambiguate_ain_t(span: Span) -> str | None:
     # (VBD), it functions as "have/has not". Otherwise, it functions
     # as "am/is/are not".
     is_perfect_tense: bool = (
-        next_token and next_token.tag_ in ('VBN', 'VBD')
+        next_token and next_token.tag_ in PARTICIPLE_TAGS
     )
 
     if not subject_token:
@@ -65,8 +66,8 @@ def disambiguate_ain_t(span: Span) -> str | None:
 
     if is_perfect_tense:
         # Disambiguate "has not" vs. "have not".
-        if (subject_text in ('he', 'she', 'it') or
-            subject_tag in ('NN', 'NNP')):
+        if (subject_text in SINGULAR_PRONOUNS or
+            subject_tag in NOUN_TAGS):
             return 'has'
         else:
             return 'have'
@@ -74,8 +75,8 @@ def disambiguate_ain_t(span: Span) -> str | None:
         # Disambiguate "am not" vs. "is not" vs. "are not".
         if subject_text == 'i':
             return 'am'
-        elif (subject_text in ('he', 'she', 'it') or
-            subject_tag in ('NN', 'NNP')):
+        elif (subject_text in SINGULAR_PRONOUNS or
+            subject_tag in NOUN_TAGS):
             return 'is'
         else:
             # e.g., "You ain't", "We ain't", "They ain't".
@@ -113,7 +114,7 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
         # If followed by a participle (VBN, sometimes tagged as
         # VBD), 's is "has". Otherwise, 's is "is".
-        if next_token and next_token.tag_ in ('VBN', 'VBD'):
+        if next_token and next_token.tag_ in PARTICIPLE_TAGS:
             return 'has'
         else:
             return 'is'
@@ -122,7 +123,7 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
         if next_token and next_token.lower_ == 'better':
             return 'had'
-        elif next_token and next_token.tag_ in ('VBN', 'VBD'):
+        elif next_token and next_token.tag_ in PARTICIPLE_TAGS:
             return 'had'
         else:
             return 'would'
@@ -167,7 +168,7 @@ def disambiguate_whatcha(span: Span) -> str | None:
             return 'are'
         elif (
             WarpingPatterns.WHATCHA_HAVE_WORDS.match(next_text_lower)
-            or tag in ('VBN', 'VBD')
+            or tag in PARTICIPLE_TAGS
         ):
             return 'have'
 

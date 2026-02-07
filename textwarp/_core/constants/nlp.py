@@ -18,6 +18,12 @@ MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_trf'
 ]
 
+# spaCy tags for singular and proper nouns.
+NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
+
+# spaCy tags for past and past participle verb forms.
+PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
+
 # Tuple of tuples for all part-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', 'Adjectives'),
@@ -52,6 +58,9 @@ PROPER_NOUN_ENTITIES: Final = {
     'LANGUAGE',
     'LAW'
 }
+
+# Singular pronouns for subject-verb agreement checks.
+SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
 
 # Part-of-speech tag exceptions for title case capitalization.
 TITLE_CASE_TAG_EXCEPTIONS: Final = {
