@@ -31,18 +31,14 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
     import spacy
     import sys
 
-    # Ranked by "speed".
-    model_priorities = [
-        'en_core_web_sm',
-        'en_core_web_md',
-        'en_core_web_lg',
-        'en_core_web_trf'
-    ]
+    from textwarp._core.constants.nlp import MODEL_RANKING_BY_SPEED
 
     if model_priority == 'accuracy':
-        model_priorities = model_priorities[::-1]
+        model_ranking = MODEL_RANKING_BY_SPEED[::-1]
+    else:
+        model_ranking = MODEL_RANKING_BY_SPEED
 
-    for model_name in model_priorities:
+    for model_name in model_ranking:
         if spacy.util.is_package(model_name):
             if model_name not in _nlp_instances:
                 try:
@@ -61,7 +57,7 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
                 _nlp_instances[model_name] = spacy.load(model_name)
             return _nlp_instances[model_name]
 
-    priority_model_name = model_priorities[0]
+    priority_model_name = model_ranking[0]
     print_wrapped('Error: No English spaCy models found.', file=sys.stderr)
     print_wrapped(
         f'Run: python -m spacy download {priority_model_name}', file=sys.stderr

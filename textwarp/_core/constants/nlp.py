@@ -3,10 +3,19 @@
 from typing import Final
 
 __all__ = [
+    'MODEL_RANKING_BY_SPEED',
     'POS_TAGS',
     'POS_WORD_TAGS',
     'PROPER_NOUN_ENTITIES',
     'TITLE_CASE_TAG_EXCEPTIONS'
+]
+
+# Ranking for spaCy models by speed.
+MODEL_RANKING_BY_SPEED: Final[list[str]] = [
+    'en_core_web_sm',
+    'en_core_web_md',
+    'en_core_web_lg',
+    'en_core_web_trf'
 ]
 
 # Tuple of tuples for all part-of-speech tags and their names.
