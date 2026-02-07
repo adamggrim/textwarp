@@ -16,41 +16,7 @@ ModelPriority = Literal['accuracy', 'speed']
 _nlp_instances: dict[str, 'spacy.language.Language'] = {}
 
 
-def extract_words_from_doc(doc: Doc) -> list[str]:
-    """
-    Extract a list of word strings from a spaCy ``Doc``.
-
-    Args:
-        doc: The spaCy ``Doc`` to analyze.
-
-    Returns:
-        list[str]: The list of word strings from the ``Doc``.
-    """
-    return [
-        token.text.lower()
-        for token in doc
-        if token.pos_ in POS_WORD_TAGS
-    ]
-
-
-def process_as_doc(content: str | Doc, model_priority: str = 'speed') -> Doc:
-    """
-    Process the input as a spaCy ``Doc``.
-
-    Args:
-        content: The string or ``Doc`` to process.
-        model_priority: The size of the spaCy model to use.
-
-    Returns:
-        Doc: The processed spaCy ``Doc``.
-    """
-    if not isinstance(content, str):
-        return content
-    nlp = get_nlp(model_priority)
-    return nlp(content)
-
-
-def get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language:
+def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language:
     """
     Returns the best available spaCy model instance based on speed or
     accuracy.
@@ -101,3 +67,37 @@ def get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language:
         f'Run: python -m spacy download {priority_model_name}', file=sys.stderr
     )
     sys.exit(1)
+
+
+def extract_words_from_doc(doc: Doc) -> list[str]:
+    """
+    Extract a list of word strings from a spaCy ``Doc``.
+
+    Args:
+        doc: The spaCy ``Doc`` to analyze.
+
+    Returns:
+        list[str]: The list of word strings from the ``Doc``.
+    """
+    return [
+        token.text.lower()
+        for token in doc
+        if token.pos_ in POS_WORD_TAGS
+    ]
+
+
+def process_as_doc(content: str | Doc, model_priority: str = 'speed') -> Doc:
+    """
+    Process the input as a spaCy ``Doc``.
+
+    Args:
+        content: The string or ``Doc`` to process.
+        model_priority: The size of the spaCy model to use.
+
+    Returns:
+        Doc: The processed spaCy ``Doc``.
+    """
+    if not isinstance(content, str):
+        return content
+    nlp = _get_nlp(model_priority)
+    return nlp(content)
