@@ -6,6 +6,7 @@ from typing import Final, final
 from textwarp._core.config import (
     ContractionExpansion,
     EntityCasing,
+    Punctuation,
     StringCasing
 )
 from textwarp._core.decorators import non_instantiable
@@ -275,7 +276,7 @@ class WarpingPatterns:
             \d+         # One or more digits.
         )
     '''
-    elisions: Final[str] = '|'.join(ContractionExpansion.get_elision_words())
+    elisions: Final[str] = '|'.join(Punctuation.get_elision_words())
 
     ANY_APOSTROPHE: Final[re.Pattern[str]] = re.compile(r"['’‘]")
     APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''

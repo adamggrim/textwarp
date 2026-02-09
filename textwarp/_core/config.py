@@ -115,6 +115,15 @@ class EntityCasing:
         ))
 
 
+class Punctuation:
+    """A namespace for loading punctuation data."""
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_elision_words() -> set[str]:
+        return set(cast(list[str], _load('elision_words.json')))
+
+
 class StringCasing:
     """A namespace for loading string casing data."""
     DIR: Final = Path('string_casing')
