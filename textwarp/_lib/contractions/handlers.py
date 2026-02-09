@@ -44,7 +44,7 @@ def handle_negation(span: Span) -> tuple[str, int]:
     Returns:
         tuple[str, int]: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The index at the end of the expanded contraction.
+            2. The end index of the expanded contraction.
     """
     # Verify a ``Span`` exists.
     if not span:
@@ -120,7 +120,7 @@ def handle_s_or_d(span: Span) -> tuple[str, int]:
     Returns:
         tuple[str, int]: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The index at the end of the expanded contraction.
+            2. The end index of the expanded contraction.
     """
     # Verify a ``Span`` exists.
     if not span:
@@ -157,7 +157,7 @@ def handle_whatcha(span: Span) -> tuple[str, int]:
     Returns:
         tuple[str, int]: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The index at the end of the expanded contraction.
+            2. The end index of the expanded contraction.
     """
     # Verify a ``Span`` exists.
     if not span:
