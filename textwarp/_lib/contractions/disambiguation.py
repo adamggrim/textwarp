@@ -7,7 +7,15 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from textwarp._core.constants.nlp import NOUN_TAGS, PARTICIPLE_TAGS, SINGULAR_PRONOUNS
+from textwarp._core.constants.nlp import (
+    NOUN_TAGS,
+    PARTICIPLE_TAGS,
+    PREFERENCE_ADVERBS,
+    PREFERENCE_VERBS,
+    SINGULAR_PRONOUNS,
+    SUBJECT_POS_TAGS,
+    WH_WORDS
+)
 from textwarp._core.constants.variants import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
@@ -111,24 +119,69 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     next_token = doc[suffix_token.i + 1]
     prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
 
-    if (prev_token and prev_token.lower_ == 'let' and
-            suffix_token.lower_ in APOSTROPHE_S_VARIANTS):
-        return 'us'
+    is_wh_question = prev_token and prev_token.lower_ in WH_WORDS
 
-    # Disambiguate "'s": "is" vs. "has".
+    main_verb_tag = None
+    main_verb_lemma = None
+
+    if is_wh_question:
+        # Skip the subject if the question begins with a "wh" word.
+        target_token = next_token
+        if next_token.pos_ in SUBJECT_POS_TAGS:
+            if suffix_token.i + 2 < len(doc):
+                target_token = doc[suffix_token.i + 2]
+
+        main_verb_tag = target_token.tag_
+        main_verb_lemma = target_token.lemma_
+
+    # Disambiguate "'s" ("does", "has", "is", "us").
     if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
-        # If followed by a participle (VBN, sometimes tagged as
-        # VBD), 's is "has". Otherwise, 's is "is".
-        if next_token and next_token.tag_ in PARTICIPLE_TAGS:
+        # "Let's" -> "us"
+        if prev_token and prev_token.lower_ == 'let':
+            return 'us'
+
+        # "Wh" context ("does", "has")
+        if is_wh_question and main_verb_tag:
+            # "What's she want?" (VB) -> "does"
+            if main_verb_tag == 'VB':
+                return 'does'
+            # "What's she done?" (VBN) -> "has"
+            if main_verb_tag in PARTICIPLE_TAGS:
+                return 'has'
+
+        # Standard context ("has", "is")
+        if next_token.tag_ in PARTICIPLE_TAGS:
             return 'has'
+        # Default for "wh" questions and other contexts
         else:
             return 'is'
 
-    # Disambiguate "'d": "would" vs. "had".
+    # Disambiguate "'d" ("did", "had", "would", "us").
     elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-        if next_token and next_token.lower_ == 'better':
+        # Idioms ("I'd better", "I'd rather", "I'd sooner")
+        if next_token.lower_ == 'better':
             return 'had'
-        elif next_token and next_token.tag_ in PARTICIPLE_TAGS:
+        if next_token.lower_ in PREFERENCE_ADVERBS:
+            return 'would'
+
+        # "Wh" context ("did", "had")
+        if is_wh_question and main_verb_tag:
+            # "Where'd they gone?" (VBN) -> "had"
+            if main_verb_tag in PARTICIPLE_TAGS:
+                return 'had'
+
+            # "Where'd they go?" (VB) -> "did"
+            if main_verb_tag == 'VB':
+                # Exception: "How'd you like..." -> "would"
+                if main_verb_lemma in PREFERENCE_VERBS:
+                    return 'would'
+                return 'did'
+
+            # Fallback for ambiguous tags
+            return 'did'
+
+        # Standard context ("had", "would")
+        if next_token.tag_ in PARTICIPLE_TAGS:
             return 'had'
         else:
             return 'would'
