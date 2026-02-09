@@ -81,3 +81,5 @@ TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'TO',   # to (infinitive marker)
     'WDT',  # Wh-determiner (e.g., 'what')
 }
+
+WH_WORDS: Final[set[str]] = {'how', 'where', 'what', 'who', 'why', 'when'}
