@@ -99,11 +99,16 @@ def disambiguate_s_or_d(span: Span) -> str | None:
     """
     doc = span.doc
     suffix_token = span[-1]
-    next_token = (
-        doc[suffix_token.i + 1]
-        if suffix_token.i < len(doc) - 1
-        else None
-    )
+
+    if suffix_token.i >= len(doc) - 1:
+        # Defaults for end-of-sentence tokens.
+        if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
+            return 'is'
+        if suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
+            return 'would'
+        return None
+
+    next_token = doc[suffix_token.i + 1]
     prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
 
     if (prev_token and prev_token.lower_ == 'let' and
