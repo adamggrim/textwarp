@@ -68,6 +68,9 @@ PROPER_NOUN_ENTITIES: Final = {
 # Singular pronouns for subject-verb agreement checks.
 SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
 
+# spaCy tags for pronouns, proper nouns, and nouns.
+SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
+
 # Part-of-speech tag exceptions for title case capitalization.
 TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'CC',   # Coordinating conjunction (e.g., 'and', 'but')
