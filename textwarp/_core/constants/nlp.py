@@ -1,4 +1,4 @@
-"""Sets and tuples used across the package for spaCy processing."""
+"""Objects used across the package for spaCy processing."""
 
 from typing import Final
 
@@ -43,6 +43,12 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
+
+# Strings for adverbs modifying verbs that expand to "would".
+PREFERENCE_ADVERBS: Final[set[str]] = {'rather', 'sooner'}
+
+# Strings for verbs that expand to "would".
+PREFERENCE_VERBS: Final[set[str]] = {'care', 'mind', 'prefer'}
 
 # Named entities that are typically proper nouns.
 PROPER_NOUN_ENTITIES: Final = {
