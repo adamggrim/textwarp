@@ -5,10 +5,17 @@ from typing import Final
 __all__ = [
     'MODEL_RANKING_BY_SPEED',
     'NOUN_PHRASE_TAGS',
+    'NOUN_TAGS',
+    'PARTICIPLE_TAGS',
     'POS_TAGS',
     'POS_WORD_TAGS',
+    'PREFERENCE_ADVERBS',
+    'PREFERENCE_VERBS',
     'PROPER_NOUN_ENTITIES',
-    'TITLE_CASE_TAG_EXCEPTIONS'
+    'SINGULAR_PRONOUNS',
+    'SUBJECT_POS_TAGS',
+    'TITLE_CASE_TAG_EXCEPTIONS',
+    'WH_WORDS'
 ]
 
 # Ranking for spaCy models by speed.
