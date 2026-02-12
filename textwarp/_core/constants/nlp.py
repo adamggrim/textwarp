@@ -23,7 +23,7 @@ MODEL_RANKING_BY_SPEED: Final[list[str]] = [
 NOUN_PHRASE_TAGS: Final[set[str]] = {'ADJ', 'DET', 'PRON', 'PROPN', 'NOUN'}
 
 # spaCy tags for singular and proper nouns.
-NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
+NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
 
 # spaCy tags for past and past participle verb forms.
 PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
