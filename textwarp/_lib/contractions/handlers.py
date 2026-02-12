@@ -10,7 +10,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from textwarp._core.constants.variants import AIN_T_SUFFIX_VARIANTS
+from textwarp._core.constants.apostrophes import (
+    AIN_T_SUFFIX_VARIANTS,
+    APOSTROPHE_D_VARIANTS,
+    APOSTROPHE_S_VARIANTS
+)
 from textwarp._core.constants.regexes import WarpingPatterns
 from textwarp._lib.contractions.disambiguation import (
     disambiguate_ain_t,

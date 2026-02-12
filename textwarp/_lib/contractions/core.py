@@ -8,18 +8,18 @@ if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
 from textwarp._core.config import ContractionExpansion
-from textwarp._core.constants.variants import (
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._core.constants.apostrophes import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS
 )
-from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._lib.punctuation import curly_to_straight
 from textwarp._lib.contractions.handlers import (
     handle_negation,
     handle_s_or_d,
     handle_whatcha
 )
 from textwarp._lib.contractions.utils import apply_expansion_casing
+from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = [
     'expand_contractions'

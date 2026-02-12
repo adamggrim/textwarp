@@ -12,9 +12,8 @@ if TYPE_CHECKING:
 
 from textwarp._core.config import ContractionExpansion
 from textwarp._lib.casing.case_conversion import find_first_alphabetical_idx
-from textwarp._lib.punctuation import curly_to_straight
 from textwarp._lib.casing.string_casing import case_from_string
-
+from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = [
     'apply_expansion_casing',

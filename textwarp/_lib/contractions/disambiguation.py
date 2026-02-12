@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Span
 
 from textwarp._core.constants.nlp import (
+    NOUN_PHRASE_TAGS,
     NOUN_TAGS,
     PARTICIPLE_TAGS,
     PREFERENCE_ADVERBS,
@@ -16,7 +17,7 @@ from textwarp._core.constants.nlp import (
     SUBJECT_POS_TAGS,
     WH_WORDS
 )
-from textwarp._core.constants.variants import (
+from textwarp._core.constants.typography import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS

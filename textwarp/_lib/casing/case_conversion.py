@@ -17,14 +17,12 @@ from textwarp._core.constants.regexes import (
     CasePatterns,
     WarpingPatterns
 )
-from textwarp._core.constants.variants import OPEN_QUOTES
+from textwarp._core.constants.typography import OPEN_QUOTES
 from textwarp._core.enums import CaseSeparator, Casing
-
-from textwarp._lib.punctuation import remove_apostrophes
-
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
 from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
+from textwarp._lib.punctuation import remove_apostrophes
 
 __all__ = [
     'change_first_letter_case',
