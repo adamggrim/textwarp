@@ -4,6 +4,7 @@ from typing import Final
 
 __all__ = [
     'MODEL_RANKING_BY_SPEED',
+    'NOUN_PHRASE_TAGS',
     'POS_TAGS',
     'POS_WORD_TAGS',
     'PROPER_NOUN_ENTITIES',
@@ -17,6 +18,9 @@ MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_lg',
     'en_core_web_trf'
 ]
+
+# spaCy tags for the first word of a noun phrase.
+NOUN_PHRASE_TAGS: Final[set[str]] = {'ADJ', 'DET', 'PRON', 'PROPN', 'NOUN'}
 
 # spaCy tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
