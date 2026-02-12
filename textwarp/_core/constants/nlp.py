@@ -56,17 +56,17 @@ PREFERENCE_VERBS: Final[set[str]] = {'care', 'mind', 'prefer'}
 
 # Named entities that are typically proper nouns.
 PROPER_NOUN_ENTITIES: Final = {
-    'PERSON',
-    'GPE',
-    'ORG',
-    'NORP',
-    'FAC',
-    'LOC',
-    'PRODUCT',
     'EVENT',
-    'WORK_OF_ART',
+    'FAC',
+    'GPE',
     'LANGUAGE',
-    'LAW'
+    'LAW',
+    'LOC',
+    'NORP',
+    'ORG',
+    'PERSON',
+    'PRODUCT',
+    'WORK_OF_ART'
 }
 
 # Singular pronouns for subject-verb agreement checks.
@@ -86,4 +86,4 @@ TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'WDT',  # Wh-determiner (e.g., 'what')
 }
 
-WH_WORDS: Final[set[str]] = {'how', 'where', 'what', 'who', 'why', 'when'}
+WH_WORDS: Final[set[str]] = {'how', 'what', 'when', 'where', 'who', 'why'}
