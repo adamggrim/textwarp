@@ -50,11 +50,6 @@ class ContractionExpansion:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_elision_words() -> set[str]:
-        return set(cast(list[str], _load('elision_words.json')))
-
-    @staticmethod
-    @lru_cache(maxsize=1)
     def get_unambiguous_map() -> dict[str, str]:
         return cast(dict[str, str], _load(
             ContractionExpansion.DIR / 'unambiguous_contractions_map.json'
