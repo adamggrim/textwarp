@@ -25,7 +25,8 @@ NOUN_PHRASE_TAGS: Final[set[str]] = {'ADJ', 'DET', 'PRON', 'PROPN', 'NOUN'}
 # spaCy tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
 
-# spaCy tags for past and past participle verb forms.
+# spaCy tags for past and past participle verb forms. (Fine-grained tags
+# used to distinguish verb tense.)
 PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
 
 # Tuple of tuples for all part-of-speech tags and their names.
@@ -75,7 +76,8 @@ SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
 # spaCy tags for pronouns, proper nouns, and nouns.
 SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
 
-# Part-of-speech tag exceptions for title case capitalization.
+# Part-of-speech tag exceptions for title case capitalization. (Fine-
+# grained tags used to distinguish articles from possessives.)
 TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'CC',   # Coordinating conjunction (e.g., 'and', 'but')
     'DT',   # Determiner (e.g., 'a', 'an', 'the')
