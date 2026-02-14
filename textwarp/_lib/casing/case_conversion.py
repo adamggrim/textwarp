@@ -17,7 +17,7 @@ from textwarp._core.constants.regexes import (
     CasePatterns,
     WarpingPatterns
 )
-from textwarp._core.constants.typography import OPEN_QUOTES
+from textwarp._core.constants.apostrophes import OPEN_QUOTES
 from textwarp._core.enums import CaseSeparator, Casing
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string

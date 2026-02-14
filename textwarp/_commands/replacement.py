@@ -3,8 +3,7 @@
 import regex as re
 from typing import Callable
 
-from textwarp._core.constants.maps import CASE_NAMES_REGEX_MAP
-from textwarp._core.constants.messages import (
+from textwarp._cli.constants.messages import (
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
     ENTER_REPLACEMENT_CASE_PROMPT,
@@ -15,6 +14,7 @@ from textwarp._core.constants.messages import (
     ENTER_VALID_TEXT_PROMPT
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
+from textwarp._core.constants.maps import CASE_NAMES_REGEX_MAP
 from textwarp._core.enums import PresenceCheckType
 from textwarp._core.exceptions import (
     CaseNotFoundError,

@@ -8,7 +8,6 @@ if TYPE_CHECKING:
     import spacy.language
     from spacy.tokens import Doc
 
-from textwarp._cli.ui import print_wrapped
 from textwarp._core.constants.nlp import POS_WORD_TAGS
 
 ModelPriority = Literal['accuracy', 'speed']

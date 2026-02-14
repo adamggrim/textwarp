@@ -2,20 +2,19 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
 from textwarp._core.config import ContractionExpansion
 from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._core.constants.apostrophes import (
-    APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS
-)
 from textwarp._lib.contractions.handlers import (
+    handle_d,
+    handle_gotta,
     handle_negation,
-    handle_s_or_d,
+    handle_s,
+    handle_wanna,
     handle_whatcha
 )
 from textwarp._lib.contractions.utils import apply_expansion_casing

@@ -4,15 +4,15 @@ import os
 import textwrap
 from typing import NoReturn
 
-from textwarp._core.constants.messages import (
-    ANY_OTHER_TEXT_PROMPT,
-    ENTER_VALID_RESPONSE_PROMPT,
-    EXIT_MESSAGE
-)
-from textwarp._core.constants.variants import (
+from textwarp._cli.constants.inputs import (
     EXIT_INPUTS,
     NO_INPUTS,
     YES_INPUTS
+)
+from textwarp._cli.constants.messages import (
+    ANY_OTHER_TEXT_PROMPT,
+    ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_MESSAGE
 )
 
 __all__ = [

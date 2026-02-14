@@ -18,7 +18,10 @@ from textwarp._core.constants.apostrophes import (
 from textwarp._core.constants.regexes import WarpingPatterns
 from textwarp._lib.contractions.disambiguation import (
     disambiguate_ain_t,
-    disambiguate_s_or_d,
+    disambiguate_d,
+    disambiguate_gotta,
+    disambiguate_s,
+    disambiguate_wanna,
     disambiguate_whatcha
 )
 from textwarp._lib.contractions.utils import (
