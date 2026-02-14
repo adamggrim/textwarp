@@ -115,7 +115,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
-        # Stop if the loop hits a determiner, verb, or punctuation.
         if candidate.pos_ in ('DET', 'VERB', 'PUNCT'):
             break
 
@@ -134,7 +133,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
         if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
             return candidate
-        # Stop if the loop hits a verb or punctuation.
         if candidate.pos_ in ('VERB', 'PUNCT'):
             break
 
