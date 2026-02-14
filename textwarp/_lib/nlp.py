@@ -57,11 +57,10 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
             return _nlp_instances[model_name]
 
     priority_model_name = model_ranking[0]
-    print_wrapped('Error: No English spaCy models found.', file=sys.stderr)
-    print_wrapped(
-        f'Run: python -m spacy download {priority_model_name}', file=sys.stderr
+    raise RuntimeError(
+        f'Error: No English spaCy models found. Run: python -m spacy download '
+        f'{priority_model_name}'
     )
-    sys.exit(1)
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
