@@ -49,22 +49,21 @@ def _expand_ambiguous_contraction(
     """
     original_end_char_idx = span.end_char
 
-    # --- HANDLE "WHATCHA" ---
-    if "whatcha" in contraction.lower():
-        return handle_whatcha(span)
+    expansion_strategies: list[Callable[[Span], tuple[str, int] | None]] = [
+        handle_d,
+        handle_gotta,
+        handle_negation,
+        handle_s,
+        handle_wanna,
+        handle_whatcha,
+    ]
 
-    suffix_token = span[-1] if span else None
-    if not suffix_token:
-        return contraction, original_end_char_idx
+    for strategy in expansion_strategies:
+        result = strategy(span)
 
-    # --- HANDLE NEGATION ---
-    if WarpingPatterns.N_T_SUFFIX.match(suffix_token.text):
-        return handle_negation(span)
-
-    # --- HANDLE "'S" OR "'D" ---
-    if (suffix_token.lower_ in APOSTROPHE_S_VARIANTS or
-            suffix_token.lower_ in APOSTROPHE_D_VARIANTS):
-        return handle_s_or_d(span)
+        if result is not None:
+            expansion, end_idx = result
+            return expansion, end_idx
 
     return contraction, original_end_char_idx
 
