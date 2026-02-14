@@ -92,7 +92,7 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     positional heuristics.
 
     Args:
-        verb_token | None: The token for the verb that predicates the subject,
+        verb_token | None: The token for the verb that predicates the subject;
             otherwise ``None``.
 
     Returns:
@@ -148,7 +148,7 @@ def negative_contraction_to_base_verb(contraction: str) -> str | None:
         contraction: The contraction to analyze.
 
     Returns:
-        str | None: The base verb corresponding to the contraction,
+        str | None: The base verb corresponding to the contraction;
             otherwise ``None``.
     """
     straight_contraction = curly_to_straight(contraction).lower()
