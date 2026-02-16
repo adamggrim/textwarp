@@ -70,9 +70,6 @@ POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
 
-# Strings for adverbs modifying verbs that expand to "would".
-PREFERENCE_ADVERBS: Final[set[str]] = {'rather', 'sooner'}
-
 # Strings for verbs that expand to "would".
 PREFERENCE_VERBS: Final[set[str]] = {'care', 'mind', 'prefer'}
 
