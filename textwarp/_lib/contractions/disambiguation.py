@@ -23,7 +23,10 @@ from textwarp._lib.contractions.utils import find_subject_token
 
 __all__ = [
     'disambiguate_ain_t',
-    'disambiguate_s_or_d',
+    'disambiguate_d',
+    'disambiguate_gotta',
+    'disambiguate_s',
+    'disambiguate_wanna',
     'disambiguate_whatcha'
 ]
 
@@ -115,102 +118,112 @@ def disambiguate_ain_t(span: Span) -> str:
     return 'have' if is_perfect_tense else 'is'
 
 
-def disambiguate_s_or_d(span: Span) -> str | None:
+def disambiguate_d(span: Span) -> str:
     """
-    Disambiguate the base verb for a matched "'s" or "'d" contraction.
+    Disambiguate the base verb for an "'d" contraction.
 
-    This function assumes the ``Span`` has already been identified as an
-    "'s" or "'d" contraction.
+    This function assumes the ``Span`` is already a "'d" contraction.
 
     Args:
         span: The spaCy ``Span`` containing the contraction.
 
     Returns:
-        str | None: The expanded version of the matched contraction, otherwise
-            ``None``.
+        str: The base verb for the contraction.
     """
     doc = span.doc
     suffix_token = span[-1]
 
+    # Check for end-of-sentence token.
     if suffix_token.i >= len(doc) - 1:
-        # Defaults for end-of-sentence tokens.
-        if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
-            return 'is'
-        if suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-            return 'would'
-        return None
+        return 'would'
+
+    wh_verb_token = _get_wh_verb_token(span)
+
+    if wh_verb_token:
+        if wh_verb_token.tag_ in PARTICIPLE_TAGS:
+            return 'had'
+        if (wh_verb_token.tag_ == 'VB' and
+            wh_verb_token.lemma_ in PREFERENCE_VERBS):
+                return 'would'
+        return 'did'
 
     next_token = doc[suffix_token.i + 1]
+
+    if next_token.tag_ in PARTICIPLE_TAGS or next_token.lower_ == 'better':
+        return 'had'
+
+    return 'would'
+
+
+def disambiguate_gotta(span: Span) -> str:
+    """
+    Disambiguate the suffix for a "gotta" contraction.
+
+    This function assumes the ``Span`` has already been identified as a
+    "gotta" contraction.
+
+    Args:
+        span: The spaCy ``Span`` containing the contraction.
+
+    Returns:
+        str: The base verb for the contraction.
+    """
+    doc = span.doc
+    next_token = (doc[span.end] if span.end + 1 < len(doc) else None)
+
+    if next_token:
+        if next_token.pos_ in ACTION_POS_TAGS or next_token.tag_ == 'VB':
+            return 'to'
+        if next_token.tag_ in NOUN_PHRASE_TAGS:
+            return 'a'
+
+    return 'to'
+
+
+def disambiguate_s(span: Span) -> str:
+    """
+    Disambiguate the base verb for an "'s" contraction.
+
+    This function assumes the ``Span`` is already an "'s" contraction.
+
+    Args:
+        span: The spaCy ``Span`` containing the contraction.
+
+    Returns:
+        str: The base verb for the contraction.
+    """
+    doc = span.doc
+    suffix_token = span[-1]
+
+    # Check for end-of-sentence tokens.
+    if suffix_token.i >= len(doc) - 1:
+        return 'is'
+
     prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
-
-    is_wh_question = prev_token and prev_token.lower_ in WH_WORDS
-
-    main_verb_tag = None
-    main_verb_lemma = None
-
-    if is_wh_question:
-        # Skip the subject if the question begins with a "wh" word.
-        target_token = next_token
-        if next_token.pos_ in SUBJECT_POS_TAGS:
-            if suffix_token.i + 2 < len(doc):
-                target_token = doc[suffix_token.i + 2]
-
-        main_verb_tag = target_token.tag_
-        main_verb_lemma = target_token.lemma_
+    next_token = doc[suffix_token.i + 1]
+    wh_verb_token = _get_wh_verb_token(span)
 
     # Disambiguate "'s" ("does", "has", "is", "us").
-    if suffix_token.lower_ in APOSTROPHE_S_VARIANTS:
-        # "Let's" -> "us"
-        if prev_token and prev_token.lower_ == 'let':
-            return 'us'
+    # "Let's" -> "us"
+    if prev_token and prev_token.lower_ == 'let':
+        return 'us'
 
-        # "Wh" context ("does", "has")
-        if is_wh_question and main_verb_tag:
-            # "What's she want?" (VB) -> "does"
-            if main_verb_tag == 'VB':
-                return 'does'
-            # "What's she done?" (VBN) -> "has"
-            if main_verb_tag in PARTICIPLE_TAGS:
-                return 'has'
-
-        # Standard context ("has", "is")
-        if next_token.tag_ in PARTICIPLE_TAGS:
+    # "Wh" context ("does", "has")
+    if wh_verb_token:
+        # "What's she want?" (VB) -> "does"
+        if wh_verb_token.tag_ == 'VB':
+            return 'does'
+        # "What's she done?" (VBN) -> "has"
+        if wh_verb_token.tag_ in PARTICIPLE_TAGS:
             return 'has'
-        # Default for "wh" questions and other contexts
-        else:
-            return 'is'
 
-    # Disambiguate "'d" ("did", "had", "would", "us").
-    elif suffix_token.lower_ in APOSTROPHE_D_VARIANTS:
-        # Idioms ("I'd better", "I'd rather", "I'd sooner")
-        if next_token.lower_ == 'better':
-            return 'had'
-        if next_token.lower_ in PREFERENCE_ADVERBS:
-            return 'would'
+    # Standard context ("has", "is")
+    if next_token.tag_ in PARTICIPLE_TAGS:
+        return 'has'
 
-        # "Wh" context ("did", "had")
-        if is_wh_question and main_verb_tag:
-            # "Where'd they gone?" (VBN) -> "had"
-            if main_verb_tag in PARTICIPLE_TAGS:
-                return 'had'
+    return 'is'
 
-            # "Where'd they go?" (VB) -> "did"
-            if main_verb_tag == 'VB':
-                # Exception: "How'd you like..." -> "would"
-                if main_verb_lemma in PREFERENCE_VERBS:
-                    return 'would'
-                return 'did'
 
-            # Fallback for ambiguous tags
-            return 'did'
-
-        # Standard context ("had", "would")
-        if next_token.tag_ in PARTICIPLE_TAGS:
-            return 'had'
-        else:
-            return 'would'
-
-    return None
 
 
 def disambiguate_whatcha(span: Span) -> str | None:
