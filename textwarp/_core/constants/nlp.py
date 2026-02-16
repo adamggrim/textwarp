@@ -43,11 +43,11 @@ NOUN_PHRASE_TAGS: Final[set[str]] = {
     'NNP', 'NNPS'            # Proper nouns
 }
 
-# spaCy tags for singular and proper nouns.
+# Coarse-grained part-of-speech tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
 
-# spaCy tags for past and past participle verb forms. (Fine-grained tags
-# used to distinguish verb tense.)
+# Fine-grained part-of-speech tags for past tense and past participle 
+# verb forms. (Fine-grained tags used to distinguish verb tense.)
 PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
 
 # Tuple of tuples for all part-of-speech tags and their names.
@@ -65,7 +65,8 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('X', 'Other')
 )
 
-# Tuple of strings for all part-of-speech tags representing words.
+# Tuple of strings for all coarse-grained part-of-speech tags
+# representing words.
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
@@ -88,14 +89,18 @@ PROPER_NOUN_ENTITIES: Final = {
     'WORK_OF_ART'
 }
 
-# Singular pronouns for subject-verb agreement checks.
-SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
+# Fine-grained part-of-speech tags for singular nouns and proper nouns.
+SINGULAR_NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
 
-# spaCy tags for pronouns, proper nouns, and nouns.
+# Coarse-grained part-of-speech tags for pronouns, proper nouns, and
+# nouns.
 SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
 
 # Part-of-speech tag exceptions for title case capitalization. (Fine-
 # grained tags used to distinguish articles from possessives.)
+# Fine-grained part-of-speech tag exceptions for title case
+# capitalization. (Fine-grained tags used to distinguish articles
+# from possessives.)
 TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'CC',   # Coordinating conjunction (e.g., 'and', 'but')
     'DT',   # Determiner (e.g., 'a', 'an', 'the')
@@ -106,4 +111,5 @@ TITLE_CASE_TAG_EXCEPTIONS: Final = {
     'WDT',  # Wh-determiner (e.g., 'what')
 }
 
+# Wh-words that start questions.
 WH_WORDS: Final[set[str]] = {'how', 'what', 'when', 'where', 'who', 'why'}
