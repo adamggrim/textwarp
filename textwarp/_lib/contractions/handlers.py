@@ -7,6 +7,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from textwarp._core.constants.nlp import (
+    HAVE_AUXILIARIES,
+    SINGULAR_NOUN_TAGS,
+    THIRD_PERSON_SINGULAR_PRONOUNS
+)
+
 if TYPE_CHECKING:
     from spacy.tokens import Span
 

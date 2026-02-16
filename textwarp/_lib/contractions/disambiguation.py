@@ -5,23 +5,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spacy.tokens import Span
+    from spacy.tokens import Span, Token
 
 from textwarp._core.constants.nlp import (
+    ACTION_POS_TAGS,
     NOUN_PHRASE_TAGS,
     NOUN_TAGS,
     PARTICIPLE_TAGS,
-    PREFERENCE_ADVERBS,
     PREFERENCE_VERBS,
-    SINGULAR_PRONOUNS,
+    THIRD_PERSON_SINGULAR_PRONOUNS,
     SUBJECT_POS_TAGS,
     WH_WORDS
 )
-from textwarp._core.constants.typography import (
-    AIN_T_SUFFIX_VARIANTS,
-    APOSTROPHE_D_VARIANTS,
-    APOSTROPHE_S_VARIANTS
-)
+from textwarp._core.constants.apostrophes import AIN_T_SUFFIX_VARIANTS
 from textwarp._core.constants.regexes import WarpingPatterns
 from textwarp._lib.contractions.utils import find_subject_token
 
