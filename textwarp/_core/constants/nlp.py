@@ -34,8 +34,14 @@ MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_trf'
 ]
 
-# spaCy tags for the first word of a noun phrase.
-NOUN_PHRASE_TAGS: Final[set[str]] = {'ADJ', 'DET', 'PRON', 'PROPN', 'NOUN'}
+# Fine-grained part-of-speech tags for the first word of a noun phrase.
+NOUN_PHRASE_TAGS: Final[set[str]] = {
+    'JJ', 'JJR', 'JJS',      # Adjectives
+    'DT', 'PDT', 'WDT',      # Determiners
+    'PRP', 'PRP$', 'WP',     # Pronouns
+    'NN', 'NNS',             # Common nouns
+    'NNP', 'NNPS'            # Proper nouns
+}
 
 # spaCy tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
