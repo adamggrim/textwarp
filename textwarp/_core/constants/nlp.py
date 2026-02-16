@@ -6,7 +6,6 @@ __all__ = [
     'ACTION_POS_TAGS',
     'HAVE_AUXILIARIES',
     'MODEL_RANKING_BY_SPEED',
-    'NOMINAL_POS_TAGS',
     'NOUN_PHRASE_TAGS',
     'NOUN_TAGS',
     'PARTICIPLE_TAGS',
@@ -96,8 +95,9 @@ SINGULAR_NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
 # nouns.
 SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
 
-# Part-of-speech tag exceptions for title case capitalization. (Fine-
-# grained tags used to distinguish articles from possessives.)
+# Third-person singular pronouns for subject-verb agreement checks.
+THIRD_PERSON_SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
+
 # Fine-grained part-of-speech tag exceptions for title case
 # capitalization. (Fine-grained tags used to distinguish articles
 # from possessives.)
