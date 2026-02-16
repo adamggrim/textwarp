@@ -249,21 +249,23 @@ def disambiguate_wanna(span: Span) -> str:
     return 'to'
 
 
+def disambiguate_whatcha(span: Span) -> str:
+    """
+    Disambiguate the base verb for a "whatcha" contraction.
 
     This function assumes the ``Span`` has already been identified as a
     "whatcha" contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the "whatcha" contraction.
+        span: The spaCy ``Span`` containing the contraction.
 
     Returns:
-        str | None: The base verb for the "whatcha" contraction,
-            otherwise ``None``.
+        str: The base verb for the contraction.
     """
     doc = span.doc
-    next_token = (doc[span.start + 1] if span.start + 1 < len(doc) else None)
+    next_token = (doc[span.end] if span.end + 1 < len(doc) else None)
     after_next_token = (
-        doc[span.start + 2] if span.start + 2 < len(doc) else None
+        doc[span.end + 1] if span.end + 1 < len(doc) else None
     )
 
     if next_token:
@@ -289,4 +291,4 @@ def disambiguate_wanna(span: Span) -> str:
 
         return 'do'
 
-    return None
+    return 'are'
