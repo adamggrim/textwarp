@@ -254,7 +254,22 @@ def handle_wanna(span: Span) -> tuple[str, int] | None:
 
 
 def handle_whatcha(span: Span) -> tuple[str, int] | None:
+    """
+    Replace a matched "whatcha" contraction with its expanded version.
 
+    Args:
+        span: The spaCy ``Span`` containing the contraction.
+
+    Returns:
+        tuple[str, int] | None: A tuple containing:
+            1. The expanded version of the matched contraction.
+            2. The end index of the expanded contraction; otherwise
+                ``None``.
+    """
+    if span.text.lower() != 'whatcha':
+        return None
+
+    base_verb: str = disambiguate_whatcha(span)
     expanded_text: str = f'what {base_verb} you'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
