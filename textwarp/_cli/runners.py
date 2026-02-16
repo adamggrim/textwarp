@@ -4,7 +4,6 @@ from typing import Callable, Final, TypeAlias
 
 import pyperclip
 
-from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
@@ -12,22 +11,17 @@ from textwarp._cli.constants.messages import (
     TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
 from textwarp import warping
-from textwarp._commands import analysis, replacement
+from textwarp._commands import replacement
 
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import EmptyClipboardError, validate_clipboard
 
 __all__ = [
-    'analyze_text',
     'clear_clipboard',
     'replace_text',
     'run_command_loop',
-    'warp_and_copy',
-    'warp_text'
+    'warp_and_copy'
 ]
-
-# Set of warping module command names.
-_WARPING_MODULE_COMMANDS: Final[set[str]] = set(warping.__all__)
 
 # Type alias for a function defining what to do with a command and
 # clipboard text.
@@ -82,20 +76,6 @@ def _replace_and_copy(
     else:
         pyperclip.copy(transformation)
         print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
-
-
-def analyze_text(command_name: str) -> None:
-    """
-    Print the given text analysis and prompt the user for any other
-    clipboard input.
-
-    Args:
-        command_name: The name of the analysis function.
-    """
-    func_name = command_name.replace('-', '_')
-    command_func: Callable[[str], str] = getattr(analysis, func_name)
-
-    run_command_loop(command_func)
 
 
 def clear_clipboard() -> None:
@@ -167,23 +147,3 @@ def warp_and_copy(
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
-
-
-def warp_text(command_name: str) -> None:
-    """
-    Apply the selected warping function to the clipboard and prompt the
-    user for any other clipboard input.
-
-    Args:
-        command_name: The name of the warping function.
-    """
-    if command_name in _WARPING_MODULE_COMMANDS:
-        command_func: Callable[[str], str] = getattr(warping, command_name)
-    else:
-        func_name = command_name.replace('_', '-')
-        command_func: Callable[[str], str] = ARGS_MAP[func_name][0]
-
-    run_command_loop(
-        command_func,
-        warp_and_copy
-    )
