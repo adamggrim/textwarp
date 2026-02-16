@@ -38,6 +38,7 @@ from textwarp._lib.contractions.utils import (
 
 __all__ = [
     'handle_d',
+    'handle_gotta',
     'handle_negation',
     'handle_s',
     'handle_whatcha'
@@ -68,6 +69,52 @@ def handle_d(span: Span) -> tuple[str, int] | None:
     base_verb: str = disambiguate_d(span)
     subject_token = doc[suffix_token.i - 1]
     expanded_text: str = f'{subject_token.text} {base_verb}'
+    cased_text: str = apply_expansion_casing(span.text, expanded_text)
+
+    return cased_text, span.end_char
+
+
+def handle_gotta(span: Span) -> tuple[str, int] | None:
+    """
+    Replace a matched "gotta" contraction with its expanded version.
+
+    Args:
+        span: The spaCy ``Span`` containing the contraction.
+
+    Returns:
+        tuple[str, int] | None: A tuple containing:
+            1. The expanded version of the matched contraction.
+            2. The end index of the expanded contraction; otherwise ``None``.
+    """
+    if span.text.lower() != 'gotta':
+        return None
+
+    suffix = disambiguate_gotta(span)
+    prefix = ''
+
+    # Check for "have" or "has" word prefix.
+    if suffix == 'to':
+        doc = span.doc
+        prev_token = doc[span.start - 1] if span.start > 0 else None
+
+        has_aux = False
+        if prev_token:
+            if prev_token.lower_ in HAVE_AUXILIARIES:
+                has_aux = True
+            elif prev_token.lower_ == "'s":
+                has_aux = True
+
+        if not has_aux:
+            subject = find_subject_token(span[0])
+            if subject and (
+                subject.text.lower() in THIRD_PERSON_SINGULAR_PRONOUNS
+                or subject.tag_ in SINGULAR_NOUN_TAGS
+            ):
+                prefix = 'has '
+            else:
+                prefix = 'have '
+
+    expanded_text: str = f'{prefix}got {suffix}'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
     return cased_text, span.end_char
