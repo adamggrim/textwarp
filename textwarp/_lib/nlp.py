@@ -28,7 +28,6 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
         spacy.language.Language: The loaded spaCy model instance.
     """
     import spacy
-    import sys
 
     from textwarp._core.constants.nlp import MODEL_RANKING_BY_SPEED
 
