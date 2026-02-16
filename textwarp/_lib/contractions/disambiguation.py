@@ -32,28 +32,36 @@ __all__ = [
 ]
 
 
-def disambiguate_ain_t(span: Span) -> str | None:
+def _get_wh_verb_token(span: Span) -> Token | None:
     """
-    Disambiguate the base verb for a matched "ain't" contraction.
-
-    This function assumes the "n't" ``Span`` has already been identified as
-    an "ain't" contraction (preceded by "ai").
+    Identify the main verb in a "wh-" question.
 
     Args:
-        span: The spaCy ``Span`` containing the negation ("n't").
+        span: The spaCy ``Span`` containing the contraction.
 
     Returns:
-        str | None : The base verb for the "ain't" contraction.
+        Token | None: The token of the main verb, or ``None`` if there
+            is no verb or the context is not a "wh-" question.
     """
     doc = span.doc
     suffix_token = span[-1]
+    prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
 
-    verb_token = (doc[suffix_token.i - 1] if suffix_token.i > 0 else None)
-
-    if verb_token is None:
+    if not prev_token or prev_token.lower_ not in WH_WORDS:
+        return None
+    if suffix_token.i + 1 >= len(doc):
         return None
 
-    subject_token = find_subject_token(verb_token)
+    next_token = doc[suffix_token.i + 1]
+    target_token = next_token
+
+    # Skip the subject if necessary.
+    if next_token.pos_ in SUBJECT_POS_TAGS:
+        if suffix_token.i + 2 < len(doc):
+            target_token = doc[suffix_token.i + 2]
+
+    return target_token
+
 
 def disambiguate_ain_t(span: Span) -> str:
     """
