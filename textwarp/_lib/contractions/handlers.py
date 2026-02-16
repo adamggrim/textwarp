@@ -37,15 +37,43 @@ from textwarp._lib.contractions.utils import (
 )
 
 __all__ = [
+    'handle_d',
     'handle_negation',
-    'handle_s_or_d',
+    'handle_s',
     'handle_whatcha'
 ]
 
 
-def handle_negation(span: Span) -> tuple[str, int]:
+def handle_d(span: Span) -> tuple[str, int] | None:
     """
-    Replace a matched negative contraction with its
+    Replace a matched "'d" contraction with its expanded version.
+
+    Args:
+        span: The spaCy ``Span`` containing the contraction.
+
+    Returns:
+        tuple[str, int] | None: A tuple containing:
+            1. The expanded version of the matched contraction.
+            2. The end index of the expanded contraction; otherwise ``None``.
+    """
+    if span.text.lower() not in APOSTROPHE_D_VARIANTS:
+        return None
+
+    doc = span.doc
+    suffix_token = span[-1]
+
+    if suffix_token.i == 0:
+        return span.text, span.end_char
+
+    base_verb: str = disambiguate_d(span)
+    subject_token = doc[suffix_token.i - 1]
+    expanded_text: str = f'{subject_token.text} {base_verb}'
+    cased_text: str = apply_expansion_casing(span.text, expanded_text)
+
+    return cased_text, span.end_char
+
+
+def handle_negation(span: Span) -> tuple[str, int] | None:
     expanded version.
 
     This function handles "ain't", standard-order contractions and
@@ -122,22 +150,21 @@ def handle_negation(span: Span) -> tuple[str, int]:
         return cased_text, span.end_char
 
 
-def handle_s_or_d(span: Span) -> tuple[str, int]:
+def handle_s(span: Span) -> tuple[str, int] | None:
     """
-    Replace a matched "'s" or "'d" contraction with its expanded
-    version.
+    Replace a matched "'s" contraction with its expanded version.
 
     Args:
         span: The spaCy ``Span`` containing the contraction.
 
     Returns:
-        tuple[str, int]: A tuple containing:
+        tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction.
+            2. The end index of the expanded contraction; otherwise
+                ``None``.
     """
-    # Verify a ``Span`` exists.
-    if not span:
-        return span.text, span.end_char
+    if span.text.lower() not in APOSTROPHE_S_VARIANTS:
+        return None
 
     doc = span.doc
     suffix_token = span[-1]
@@ -146,14 +173,9 @@ def handle_s_or_d(span: Span) -> tuple[str, int]:
     if suffix_token.i == 0:
         return span.text, span.end_char
 
-    base_verb: str | None = disambiguate_s_or_d(span)
-
-    # Handle a failed disambiguation.
-    if not base_verb:
-        return span.text, span.end_char
+    base_verb: str = disambiguate_s(span)
 
     subject_token = doc[suffix_token.i - 1]
-
     expanded_text: str = f'{subject_token.text} {base_verb}'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
