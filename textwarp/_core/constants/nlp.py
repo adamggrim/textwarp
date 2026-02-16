@@ -4,6 +4,7 @@ from typing import Final
 
 __all__ = [
     'ACTION_POS_TAGS',
+    'HAVE_AUXILIARIES',
     'MODEL_RANKING_BY_SPEED',
     'NOMINAL_POS_TAGS',
     'NOUN_PHRASE_TAGS',
@@ -19,7 +20,13 @@ __all__ = [
     'WH_WORDS'
 ]
 
-# Ranking for spaCy models by speed.
+# Coarse-grained part-of-speech tags for verbs and auxiliaries.
+ACTION_POS_TAGS: Final[set[str]] = {'VERB', 'AUX'}
+
+# Auxiliary verbs forms of "have".
+HAVE_AUXILIARIES: Final[set[str]] = {'have', 'has', 'had', "'ve", "'d"}
+
+# Ranking of spaCy models by speed.
 MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_sm',
     'en_core_web_md',
