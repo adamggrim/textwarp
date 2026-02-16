@@ -168,6 +168,8 @@ def handle_whatcha(span: Span) -> tuple[str, int] | None:
 
 
 def handle_negation(span: Span) -> tuple[str, int] | None:
+    """
+    Replace a matched negative contraction (including "ain't") with its
     expanded version.
 
     This function handles "ain't", standard-order contractions and
@@ -177,13 +179,13 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
         span: The spaCy ``Span`` containing the contraction.
 
     Returns:
-        tuple[str, int]: A tuple containing:
+        tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction.
+            2. The end index of the expanded contraction; otherwise
+                ``None``.
     """
-    # Verify a ``Span`` exists.
-    if not span:
-        return span.text, span.end_char
+    if not WarpingPatterns.N_T_SUFFIX.fullmatch(span.text.lower()):
+        return None
 
     doc = span.doc
     suffix_token = span[-1]
@@ -198,18 +200,16 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     base_verb: str | None = None
 
-    if WarpingPatterns.N_T_SUFFIX.match(suffix_token.text):
+    # --- "AIN'T" ---
+    if (prev_token and prev_token.lower_ == 'ai' and
+            suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+        base_verb = disambiguate_ain_t(span)
 
-        # --- "AIN'T" ---
-        if (prev_token and prev_token.lower_ == 'ai' and
-                suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
-            base_verb = disambiguate_ain_t(span)
-
-        # --- STANDARD NEGATION ---
-        # (e.g., "couldn't", "wouldn't", "shouldn't")
-        else:
-            # The token before "n't" is the base verb.
-            base_verb = negative_contraction_to_base_verb(span.text)
+    # --- STANDARD NEGATION ---
+    # (e.g., "couldn't", "wouldn't", "shouldn't")
+    else:
+        # The token before "n't" is the base verb.
+        base_verb = negative_contraction_to_base_verb(span.text)
 
     # Handle a failed disambiguation.
     if base_verb is None:
@@ -225,9 +225,11 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
         subject_phrase_end_idx = (
             subject_end_token.idx + len(subject_end_token)
         )
-        # Everything between the end of the contraction and the end of the
-        # subject phrase.
-        intermediate_text = doc.text[span.end_char : subject_phrase_end_idx]
+        # Everything between the end of the contraction and the end
+        # of the subject phrase.
+        intermediate_text = doc.text[
+            span.end_char : subject_phrase_end_idx
+        ]
 
         expanded_text: str = f'{base_verb}{intermediate_text} not'
         cased_text: str = apply_expansion_casing(span.text, expanded_text)
