@@ -45,7 +45,7 @@ NOUN_PHRASE_TAGS: Final[set[str]] = {
 # Coarse-grained part-of-speech tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
 
-# Fine-grained part-of-speech tags for past tense and past participle 
+# Fine-grained part-of-speech tags for past tense and past participle
 # verb forms. (Fine-grained tags used to distinguish verb tense.)
 PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
 
