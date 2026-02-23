@@ -197,17 +197,15 @@ def disambiguate_s(span: Span) -> str:
     if prev_token and prev_token.lower_ == 'let':
         return 'us'
 
-    # "Wh" context ("does", "has")
-    if wh_verb_token:
-        # "What's she want?" (VB) -> "does"
-        if wh_verb_token.tag_ == 'VB':
-            return 'does'
-        # "What's she done?" (VBN) -> "has"
-        if wh_verb_token.tag_ in PARTICIPLE_TAGS:
-            return 'has'
+    # Standard context
+    if not wh_verb_token:
+        return 'has' if next_token.tag_ in PARTICIPLE_TAGS else 'is'
 
-    # Standard context ("has", "is")
-    if next_token.tag_ in PARTICIPLE_TAGS:
+    # "Wh-" context ("What's she want?" vs. "What's she done?")
+    if wh_verb_token.tag_ == 'VB':
+        return 'does'
+
+    if wh_verb_token.tag_ in PARTICIPLE_TAGS:
         return 'has'
 
     return 'is'
@@ -227,13 +225,13 @@ def disambiguate_wanna(span: Span) -> str:
         str: The base verb for the contraction.
     """
     doc = span.doc
-    next_token = (doc[span.end] if span.end + 1 < len(doc) else None)
+    next_token = doc[span.end] if span.end < len(doc) else None
 
-    if next_token:
-        if next_token.pos_ in ACTION_POS_TAGS or next_token.tag_ == 'VB':
-            return 'to'
-        if next_token.tag_ in NOUN_PHRASE_TAGS:
-            return 'a'
+    if not next_token:
+        return 'to'
+
+    if next_token.tag_ in NOUN_PHRASE_TAGS and next_token.tag_ != 'VB':
+        return 'a'
 
     return 'to'
 
