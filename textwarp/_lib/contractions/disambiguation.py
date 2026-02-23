@@ -8,7 +8,6 @@ if TYPE_CHECKING:
     from spacy.tokens import Span, Token
 
 from textwarp._core.constants.nlp import (
-    ACTION_POS_TAGS,
     NOUN_PHRASE_TAGS,
     NOUN_TAGS,
     PARTICIPLE_TAGS,
