@@ -190,7 +190,6 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     doc = span.doc
     suffix_token = span[-1]
 
-    # Check the bounds.
     prev_token = (
         doc[suffix_token.i - 1] if suffix_token.i > 0 else None
     )
