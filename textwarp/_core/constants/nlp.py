@@ -21,6 +21,10 @@ __all__ = [
 # Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: Final[set[str]] = {'have', 'has', 'had', "'ve", "'d"}
 
+# Coarse-grained part-of-speech tags for stopping a subject search when
+# looking left.
+LEFT_SEARCH_STOP_TAGS: Final[set[str]] = {'DET', 'VERB', 'PUNCT'}
+
 # Ranking of spaCy models by speed.
 MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_sm',
@@ -65,6 +69,10 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
+
+# Coarse-grained part-of-speech tags for stopping a subject search when
+# looking right.
+RIGHT_SEARCH_STOP_TAGS: Final[set[str]] = {'VERB', 'PUNCT'}
 
 # Strings for verbs that expand to "would".
 PREFERENCE_VERBS: Final[set[str]] = {'care', 'mind', 'prefer'}
