@@ -43,21 +43,20 @@ def _get_wh_verb_token(span: Span) -> Token | None:
             is no verb or the context is not a "wh-" question.
     """
     doc = span.doc
-    suffix_token = span[-1]
-    prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
+    prev_token = doc[span.start - 1] if span.start > 0 else None
 
     if not prev_token or prev_token.lower_ not in WH_WORDS:
         return None
-    if suffix_token.i + 1 >= len(doc):
+    if span.end >= len(doc):
         return None
 
-    next_token = doc[suffix_token.i + 1]
+    next_token = doc[span.end]
     target_token = next_token
 
     # Skip the subject if necessary.
     if next_token.pos_ in SUBJECT_POS_TAGS:
-        if suffix_token.i + 2 < len(doc):
-            target_token = doc[suffix_token.i + 2]
+        if span.end + 2 < len(doc):
+            target_token = doc[span.end + 2]
 
     return target_token
 
@@ -158,13 +157,13 @@ def disambiguate_gotta(span: Span) -> str:
         str: The base verb for the contraction.
     """
     doc = span.doc
-    next_token = (doc[span.end] if span.end + 1 < len(doc) else None)
+    next_token = doc[span.end] if span.end < len(doc) else None
 
-    if next_token:
-        if next_token.pos_ in ACTION_POS_TAGS or next_token.tag_ == 'VB':
-            return 'to'
-        if next_token.tag_ in NOUN_PHRASE_TAGS:
-            return 'a'
+    if not next_token:
+        return 'to'
+
+    if next_token.dep_ == 'dobj' and next_token.tag_ in NOUN_PHRASE_TAGS:
+        return 'a'
 
     return 'to'
 
