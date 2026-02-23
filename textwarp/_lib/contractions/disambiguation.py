@@ -139,20 +139,20 @@ def disambiguate_d(span: Span) -> str:
 
     wh_verb_token = _get_wh_verb_token(span)
 
-    if wh_verb_token:
-        if wh_verb_token.tag_ in PARTICIPLE_TAGS:
+    if not wh_verb_token:
+        # Check for "d better" -> "had better".
+        next_token = doc[suffix_token.i + 1]
+        if next_token.lower_ == 'better' or next_token.tag_ in PARTICIPLE_TAGS:
             return 'had'
-        if (wh_verb_token.tag_ == 'VB' and
-            wh_verb_token.lemma_ in PREFERENCE_VERBS):
-                return 'would'
-        return 'did'
+        return 'would'
 
-    next_token = doc[suffix_token.i + 1]
-
-    if next_token.tag_ in PARTICIPLE_TAGS or next_token.lower_ == 'better':
+    if wh_verb_token.tag_ in PARTICIPLE_TAGS:
         return 'had'
+    if (wh_verb_token.tag_ == 'VB' and
+        wh_verb_token.lemma_ in PREFERENCE_VERBS):
+            return 'would'
 
-    return 'would'
+    return 'did'
 
 
 def disambiguate_gotta(span: Span) -> str:
