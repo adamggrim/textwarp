@@ -3,7 +3,6 @@
 from typing import Final
 
 __all__ = [
-    'ACTION_POS_TAGS',
     'HAVE_AUXILIARIES',
     'MODEL_RANKING_BY_SPEED',
     'NOUN_PHRASE_TAGS',
@@ -18,9 +17,6 @@ __all__ = [
     'TITLE_CASE_TAG_EXCEPTIONS',
     'WH_WORDS'
 ]
-
-# Coarse-grained part-of-speech tags for verbs and auxiliaries.
-ACTION_POS_TAGS: Final[set[str]] = {'VERB', 'AUX'}
 
 # Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: Final[set[str]] = {'have', 'has', 'had', "'ve", "'d"}
