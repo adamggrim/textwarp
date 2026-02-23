@@ -263,32 +263,32 @@ def disambiguate_whatcha(span: Span) -> str:
         str: The base verb for the contraction.
     """
     doc = span.doc
-    next_token = (doc[span.end] if span.end + 1 < len(doc) else None)
+    next_token = doc[span.end] if span.end < len(doc) else None
     after_next_token = (
         doc[span.end + 1] if span.end + 1 < len(doc) else None
     )
 
-    if next_token:
-        next_text_lower = next_token.lower_
-        tag = next_token.tag_
+    if not next_token:
+        return 'are'
 
-        # Check for the special case of "whatcha ain't".
-        if after_next_token and (next_text_lower == 'ai' and
-                after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
-            return ''
+    next_text_lower = next_token.lower_
+    tag = next_token.tag_
 
-        # Disambiguate "are" vs. "has".
-        if (
-            WarpingPatterns.WHATCHA_ARE_WORDS.match(next_text_lower)
-            or tag == 'VBG'
-        ):
-            return 'are'
-        elif (
-            WarpingPatterns.WHATCHA_HAVE_WORDS.match(next_text_lower)
-            or tag in PARTICIPLE_TAGS
-        ):
-            return 'have'
+    # Check for the special case of "whatcha ain't".
+    if after_next_token and (next_text_lower == 'ai' and
+            after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+        return ''
 
-        return 'do'
+    # Disambiguate "are" vs. "has".
+    if (
+        WarpingPatterns.WHATCHA_ARE_WORDS.match(next_text_lower)
+        or tag == 'VBG'
+    ):
+        return 'are'
+    elif (
+        WarpingPatterns.WHATCHA_HAVE_WORDS.match(next_text_lower)
+        or tag in PARTICIPLE_TAGS
+    ):
+        return 'have'
 
-    return 'are'
+    return 'do'
