@@ -97,6 +97,10 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 ```
 textwarp/
 ├── _cli/
+│ ├── constants/
+│ │ ├── __init__.py: Exposes core configuration, constants, and models
+│ │ ├── inputs.py: Sets for command-line input
+│ │ └── messages.py: Strings for displaying command-line messages
 │ ├── __init__.py: Initializes the _cli sub-package
 │ ├── args.py: A mapping of command-line arguments to functions and help messages
 │ ├── dispatch.py: A mapping of string inputs to case conversion functions
@@ -112,11 +116,10 @@ textwarp/
 ├── _core/
 │ ├── constants/
 │ │ ├── __init__.py: Exposes constants for use across the package
+│ │ ├── apostrophes.py: Sets used across the package for variants and input
 │ │ ├── maps.py: Map used across the package for lookups
-│ │ ├── messages.py: Strings for displaying messages to the user
-│ │ ├── nlp.py: Sets and tuples used across the package for spaCy processing
-│ │ ├── regexes.py: Regular expressions used across the package
-│ │ └── variants.py: Sets used across the package for variants and input
+│ │ ├── nlp.py: Objects used across the package for spaCy processing
+│ │ └── regexes.py: Regular expressions used across the package
 │ ├── data/
 │ │ ├── contraction_expansion/
 │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
