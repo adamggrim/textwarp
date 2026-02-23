@@ -1,4 +1,4 @@
-"""Sets used for command-line input."""
+"""Sets for command-line input."""
 
 from typing import Final
 
