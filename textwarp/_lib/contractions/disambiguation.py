@@ -76,46 +76,35 @@ def disambiguate_ain_t(span: Span) -> str:
         str : The base verb for the contraction.
     """
     doc = span.doc
-    suffix_token = span[-1]
 
     # If "ain't" is followed by a participle (VBN) or past tense
     # (VBD), it functions as "have/has not". Otherwise, it functions
     # as "am/is/are not".
-    next_token = (
-        doc[suffix_token.i + 1]
-        if suffix_token.i < len(doc) - 1
-        else None
-    )
+    next_token = doc[span.end] if span.end < len(doc) else None
+    verb_token = span[0]
+    subject_token = find_subject_token(verb_token)
+
     is_perfect_tense: bool = (
         next_token and next_token.tag_ in PARTICIPLE_TAGS
     )
 
-    verb_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
-    subject_token = find_subject_token(verb_token)
+    if not subject_token:
+        return 'have' if is_perfect_tense else 'is'
 
-    if subject_token:
-        subject_text: str = subject_token.lower_ if subject_token else ''
-        subject_tag: str = subject_token.tag_ if subject_token else ''
+    subject_text = subject_token.lower_
+    subject_tag = subject_token.tag_
 
-        if is_perfect_tense:
-            # Disambiguate "has not" vs. "have not".
-            if (subject_text in THIRD_PERSON_SINGULAR_PRONOUNS or
-                subject_tag in NOUN_TAGS):
-                return 'has'
-            else:
-                return 'have'
-        else:
-            # Disambiguate "am not" vs. "is not" vs. "are not".
-            if subject_text == 'i':
-                return 'am'
-            elif (subject_text in THIRD_PERSON_SINGULAR_PRONOUNS or
-                subject_tag in NOUN_TAGS):
-                return 'is'
-            else:
-                # e.g., "You ain't", "We ain't", "They ain't".
-                return 'are'
+    is_singular = (
+        subject_text in THIRD_PERSON_SINGULAR_PRONOUNS or
+        subject_tag in NOUN_TAGS
+    )
 
-    return 'have' if is_perfect_tense else 'is'
+    if is_perfect_tense:
+        return 'has' if is_singular else 'have'
+
+    if subject_text == 'i':
+        return 'am'
+    return 'is' if is_singular else 'are'
 
 
 def disambiguate_d(span: Span) -> str:
