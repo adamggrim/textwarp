@@ -7,6 +7,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from textwarp._core.constants.nlp import (
+    LEFT_SEARCH_STOP_TAGS,
+    RIGHT_SEARCH_STOP_TAGS,
+    SUBJECT_POS_TAGS
+)
+
 if TYPE_CHECKING:
     from spacy.tokens import Token
 
@@ -110,12 +116,12 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
     # Fallback A: Look immediately before the verb (standard order).
     curr_idx = verb_token.i - 1
-    while curr_idx >= 0:
-        candidate = doc[curr_idx]
 
-        if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
+    for curr_idx in range(verb_token.i - 1, -1, -1):
+        candidate = doc[curr_idx]
+        if candidate.pos_ in SUBJECT_POS_TAGS:
             return candidate
-        if candidate.pos_ in ('DET', 'VERB', 'PUNCT'):
+        if candidate.pos_ in LEFT_SEARCH_STOP_TAGS:
             break
 
         # Otherwise, move one step left to skip adverbs.
@@ -131,9 +137,9 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     for j in range(start_idx, end_idx):
         candidate = doc[j]
 
-        if candidate.pos_ in ('PRON', 'PROPN', 'NOUN'):
+        if candidate.pos_ in SUBJECT_POS_TAGS:
             return candidate
-        if candidate.pos_ in ('VERB', 'PUNCT'):
+        if candidate.pos_ in RIGHT_SEARCH_STOP_TAGS:
             break
 
     return None
