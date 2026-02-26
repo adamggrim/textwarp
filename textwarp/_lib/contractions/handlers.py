@@ -58,7 +58,9 @@ def handle_d(span: Span) -> tuple[str, int] | None:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise ``None``.
     """
-    if span.text.lower() not in APOSTROPHE_D_VARIANTS:
+    if not any(
+        span.text.lower().endswith(suffix) for suffix in APOSTROPHE_D_VARIANTS
+    ):
         return None
 
     doc = span.doc
@@ -138,7 +140,7 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise
                 ``None``.
     """
-    if not WarpingPatterns.N_T_SUFFIX.fullmatch(span.text.lower()):
+    if not WarpingPatterns.N_T_SUFFIX.search(span.text.lower()):
         return None
 
     doc = span.doc
@@ -212,7 +214,9 @@ def handle_s(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise
                 ``None``.
     """
-    if span.text.lower() not in APOSTROPHE_S_VARIANTS:
+    if not any(
+        span.text.lower().endswith(suffix) for suffix in APOSTROPHE_S_VARIANTS
+    ):
         return None
 
     doc = span.doc
@@ -229,7 +233,6 @@ def handle_s(span: Span) -> tuple[str, int] | None:
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 
     return cased_text, span.end_char
-
 
 
 def handle_wanna(span: Span) -> tuple[str, int] | None:
