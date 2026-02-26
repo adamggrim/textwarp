@@ -73,7 +73,8 @@ def _find_sentence_case_idxs(
             2. indices_to_lowercase: A list of words after the first
                 word that are currently capitalized or uppercase, as
                 long as all words in the text follow the same casing
-                (i.e., all capitalized or all uppercase).
+                (i.e., all capitalized words or all uppercase
+                characters).
     """
     sent_start_idxs: set[int] = set()
     indices_to_lowercase: set[int] = set()
@@ -81,26 +82,22 @@ def _find_sentence_case_idxs(
     for sent in text_container.sents:
         first_word_idx = _find_first_word_token_idx(0, sent)
 
-        if first_word_idx is None:
-            continue
-
-        sent_start_idxs.add(first_word_idx)
+        if first_word_idx is not None:
+            sent_start_idxs.add(first_word_idx)
 
         words = [token for token in sent if token.is_alpha]
-
         if not words:
             continue
 
-        is_all_upper = all(w.text.isupper() for w in words)
-        is_all_title = len(words) > 1 and all(
+        all_upper: bool = all(w.text.isupper() for w in words)
+        all_capitalized: bool = len(words) > 1 and all(
             w.text.istitle() for w in words
         )
 
-        if is_all_upper or is_all_title:
+        if all_upper or all_capitalized:
             for token in sent:
-                # The first word token of each sentence is always
-                # capitalized.
-                if token.i != first_word_idx and token.is_alpha:
+                # Mark everything except the first word for lowercasing.
+                if token.is_alpha:
                     indices_to_lowercase.add(token.i)
 
     return sent_start_idxs, indices_to_lowercase
@@ -275,7 +272,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
 
     if casing == Casing.SENTENCE:
         token_idxs, indices_to_lowercase = _find_sentence_case_idxs(doc)
-        lowercase_by_default = True
+        lowercase_by_default = False
     elif casing == Casing.START:
         token_idxs = _find_start_case_idxs(doc)
         lowercase_by_default = False
@@ -287,7 +284,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     # should be cased.
     while i < len(doc):
         # Check if the current token is part of a proper noun entity.
-        if i in entity_map and casing in {Casing.SENTENCE, Casing.TITLE}:
+        if i in entity_map and casing == Casing.TITLE:
             entity_span, end_idx, absolute_capitalization = entity_map[i]
 
             # If the entity has an absolute capitalization, use it
@@ -312,20 +309,33 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         # process it as a normal string.
         token = doc[i]
         token_text = doc[i].text
+        is_sentence_start = i in token_idxs
 
-        preserve_mixed_case = (
-            casing == Casing.SENTENCE and i in indices_to_lowercase
-        )
-        is_sentence_start = (i in token_idxs)
-        should_lowercase = lowercase_by_default and not is_sentence_start
+        if casing == Casing.SENTENCE:
+            if is_sentence_start:
+                if i in indices_to_lowercase:
+                    processed_parts.append(token_text.capitalize())
+                else:
+                    processed_parts.append(change_first_letter_case(
+                        token_text, str.upper
+                    ))
 
-        processed_parts.append(
-            case_from_string(
-                token_text,
-                lowercase_by_default=should_lowercase,
-                preserve_mixed_case=preserve_mixed_case
+            elif i in indices_to_lowercase:
+                processed_parts.append(token_text.lower())
+
+            else:
+                processed_parts.append(token_text)
+
+        else:
+            should_lowercase = lowercase_by_default and not is_sentence_start
+            processed_parts.append(
+                case_from_string(
+                    token_text,
+                    lowercase_by_default=should_lowercase,
+                    preserve_mixed_case=(not lowercase_by_default)
+                )
             )
-        )
+
         processed_parts.append(token.whitespace_)
         i += 1
 
