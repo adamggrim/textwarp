@@ -272,6 +272,7 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
 
     processed_parts: list[str] = []
     token_idxs: set[int] = set()
+    indices_to_lowercase: set[int] = set()
     i = 0
 
     if casing == Casing.SENTENCE:
