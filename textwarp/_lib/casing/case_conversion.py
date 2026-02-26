@@ -76,6 +76,10 @@ def _find_sentence_case_idxs(
                 (i.e., all capitalized words or all uppercase
                 characters).
     """
+    def is_capitalized(word: str) -> bool:
+        """Check whether a word is capitalized."""
+        return word[0].isupper() and word[1:].islower()
+
     sent_start_idxs: set[int] = set()
     indices_to_lowercase: set[int] = set()
 
@@ -91,7 +95,7 @@ def _find_sentence_case_idxs(
 
         all_upper: bool = all(w.text.isupper() for w in words)
         all_capitalized: bool = len(words) > 1 and all(
-            w.text.istitle() for w in words
+            is_capitalized(w.text) for w in words
         )
 
         if all_upper or all_capitalized:
