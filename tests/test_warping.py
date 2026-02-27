@@ -92,30 +92,28 @@ from textwarp.warping import (
 ])
 def test_deterministic_warping_functions(func, input_str, expected):
     """
-    Test standard warping functions that have deterministic outputs.
+    Test warping functions that have deterministic outputs.
     """
     assert func(input_str) == expected
 
 
 def test_random_case():
-    """
-    Test that random_case changes casing but preserves length and
-    characters.
-    """
+    """Test random casing."""
     input_str = 'random case'
     result = random_case(input_str)
 
+    # Check that the function changes casing while preserving length and
+    # characters.
     assert len(result) == len(input_str)
     assert result.lower() == input_str.lower()
 
 
 def test_randomize():
-    """
-    Test that randomize shuffles character order while preserving the
-    characters.
-    """
+    """Test randomization."""
     input_str = 'randomize'
     result = randomize(input_str)
 
+    # Check that the function shuffles character order while preserving
+    # the characters.
     assert len(result) == len(input_str)
     assert sorted(result) == sorted(input_str)
