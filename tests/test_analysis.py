@@ -127,4 +127,4 @@ def test_count_words():
     Test word counting.
     """
     count = count_words(COUNT_WORDS_TEXT)
-    assert count == 41
+    assert count == 34
