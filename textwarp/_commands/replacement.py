@@ -109,6 +109,12 @@ def _prompt_for_valid_input(
         try:
             validation_func(user_input)
             return user_input
+        except (
+            CaseNotFoundError,
+            RegexNotFoundError,
+            TextToReplaceNotFoundError
+        ):
+            raise
         except Exception as e:
             print_wrapped(str(e))
             current_prompt = enter_valid_text_prompt
@@ -131,17 +137,23 @@ def replace(text: str) -> str:
         PresenceCheckType.SUBSTRING
     )
 
-    text_to_replace = _prompt_for_valid_input(
-        ENTER_TEXT_TO_REPLACE_PROMPT,
-        presence_validator,
-        ENTER_VALID_TEXT_PROMPT
-    )
+    try:
+        text_to_replace = _prompt_for_valid_input(
+            ENTER_TEXT_TO_REPLACE_PROMPT,
+            presence_validator,
+            ENTER_VALID_TEXT_PROMPT
+        )
+    except TextToReplaceNotFoundError:
+        # Return text to move to the "Any other text?" prompt.
+        return text
+
     replacement_text = _prompt_for_valid_input(
         ENTER_REPLACEMENT_TEXT_PROMPT,
         # Accept any text (including empty text) for replacement.
         validate_any_text,
         ENTER_VALID_TEXT_PROMPT
     )
+
     return text.replace(text_to_replace, replacement_text)
 
 
