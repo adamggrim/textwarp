@@ -117,9 +117,8 @@ def test_count_pos():
 def test_count_sents():
     """Test sentence counting."""
     count = count_sents(COUNT_SENTS_TEXT)
-    # Depending on the specific spaCy model version, the fragment
-    # "And one fine morning—" might be counted as a 4th sentence or attached.
-    # We accept 3 or 4.
+    # Depending on the specific spaCy version, "And one fine morning—"
+    # would count as three (3) or four (4) sentences.
     assert count in (3, 4)
 
 
