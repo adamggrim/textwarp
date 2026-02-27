@@ -50,7 +50,7 @@ def validate_case_name(case_name: str) -> None:
         InvalidCaseNameError: If the input is not a valid case name.
     """
     if case_name == '':
-        raise NoCaseNameError('Case string is empty.')
+        raise NoCaseNameError('Case input is empty.')
     elif case_name.strip() == '':
         raise WhitespaceCaseNameError('Case contains only whitespace.')
     elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
@@ -93,7 +93,7 @@ def validate_regex(regex: str) -> None:
         re.error: If the input string is not a valid regular expression.
     """
     if regex == '':
-        raise NoRegexError('Regex string is empty.')
+        raise NoRegexError('Regex input is empty.')
 
     re.compile(regex)
 
@@ -110,4 +110,4 @@ def validate_text(text: str) -> None:
         ValueError: If the text string is empty.
     """
     if text == '':
-        raise NoTextError('Text string is empty.')
+        raise NoTextError('Text input is empty.')
