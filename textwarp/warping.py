@@ -88,7 +88,7 @@ def capitalize(content: str | Doc) -> str:
 
 def cardinal_to_ordinal(text: str) -> str:
     """
-    Convert cardinal numbers to ordinal numbers in a given string.
+    Convert cardinal numbers in a given string to ordinal numbers.
 
     Args:
         text: The string to convert.
@@ -154,7 +154,7 @@ def from_morse(text: str) -> str:
 
 def hyphens_to_em(text: str) -> str:
     """
-    Convert em dash stand-ins to em dashes in a given string.
+    Convert em dash stand-ins in a given string to em dashes.
 
     Args:
         text: The string to convert.
@@ -167,7 +167,7 @@ def hyphens_to_em(text: str) -> str:
 
 def hyphen_to_en(text: str) -> str:
     """
-    Convert hyphens to en dashes in a given string.
+    Convert hyphens in a given string to en dashes.
 
     Args:
         text: The string to convert.
@@ -180,7 +180,7 @@ def hyphen_to_en(text: str) -> str:
 
 def ordinal_to_cardinal(text: str) -> str:
     """
-    Convert ordinal numbers to cardinal numbers in a given string.
+    Convert ordinal numbers in a given string to cardinal numbers.
 
     Args:
         text: The string to convert.

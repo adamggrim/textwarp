@@ -12,7 +12,7 @@ __all__ = [
 
 def cardinal_to_ordinal(text: str) -> str:
     """
-    Convert cardinal numbers to ordinal numbers in a given string.
+    Convert cardinal numbers in a given string to ordinal numbers.
 
     Args:
         text: The string to convert.
@@ -48,7 +48,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
 def ordinal_to_cardinal(text: str) -> str:
     """
-    Convert ordinal numbers to cardinal numbers in a given string.
+    Convert ordinal numbers in a given string to cardinal numbers.
 
     Args:
         text: The string to convert.
