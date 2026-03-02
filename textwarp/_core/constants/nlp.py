@@ -54,12 +54,16 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', 'Adjectives'),
     ('ADP', 'Adpositions'),
     ('ADV', 'Adverbs'),
-    ('CONJ', 'Conjunctions'),
+    ('AUX', 'Auxiliaries'),
+    ('CCONJ', 'Coordinating Conjunctions'),
     ('DET', 'Determiners'),
+    ('INTJ', 'Interjections'),
     ('NOUN', 'Nouns'),
     ('NUM', 'Numbers'),
     ('PART', 'Particles'),
     ('PRON', 'Pronouns'),
+    ('PROPN', 'Proper Nouns'),
+    ('SCONJ', 'Subordinating Conjunctions'),
     ('VERB', 'Verbs'),
     ('X', 'Other')
 )
