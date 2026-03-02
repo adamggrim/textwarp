@@ -100,9 +100,7 @@ def validate_regex(regex: str) -> None:
 
 def validate_text(text: str) -> None:
     """
-    Validate a text string.
-
-    This function applies when deletion of a string is invalid.
+    Validate a text string, excluding empty text.
 
     Args:
         text: A string of text.
