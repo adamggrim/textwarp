@@ -103,7 +103,7 @@ def test_count_mfws():
 
 
 def test_count_pos():
-    """Test part-of-speech counting."""
+    """Test parts-of-speech counting."""
     pos_counts = count_pos(COUNT_POS_TEXT)
 
     assert isinstance(pos_counts, POSCounts)

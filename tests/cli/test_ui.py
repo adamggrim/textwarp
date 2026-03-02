@@ -91,7 +91,7 @@ def test_print_wrapped(monkeypatch, capsys):
 def test_program_exit(capsys):
     """
     Test that program_exit prints the exit message and raises a
-    SystemExit.
+    ``SystemExit``.
     """
     with pytest.raises(SystemExit):
         program_exit()
