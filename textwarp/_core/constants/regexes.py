@@ -330,7 +330,10 @@ class WarpingPatterns:
     )
     MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
     NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(StringCasing.get_surname_prefix_exceptions())
+        _create_words_regex(
+            StringCasing.get_surname_prefix_exceptions(),
+            boundary=RegexBoundary.START_ANCHOR
+        )
     )
     N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
         r"n['’‘]t$", re.IGNORECASE
@@ -390,7 +393,8 @@ class WarpingPatterns:
         r'(["”\'’]?["”\'’])([.,])'
     )
     SURNAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        StringCasing.get_surname_prefixes()
+        StringCasing.get_surname_prefixes(),
+        boundary=RegexBoundary.START_ANCHOR
     )
     WHATCHA_ARE_WORDS: Final[re.Pattern[str]] = _create_words_regex(
         ContractionExpansion.get_whatcha_are_words()
