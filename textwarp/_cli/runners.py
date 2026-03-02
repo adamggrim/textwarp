@@ -1,6 +1,6 @@
 """Main loop logic for executing commands."""
 
-from typing import Callable, Final, TypeAlias
+from typing import Callable, TypeAlias
 
 import pyperclip
 
@@ -10,7 +10,6 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MESSAGE,
     TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
 )
-from textwarp import warping
 from textwarp._commands import replacement
 
 from textwarp._cli.ui import get_input, print_wrapped
