@@ -1,4 +1,4 @@
-"""Tests for CLI runner logic and clipboard interaction."""
+"""Tests for command-line runner logic and clipboard interaction."""
 
 import pyperclip
 

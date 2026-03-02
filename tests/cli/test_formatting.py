@@ -1,4 +1,4 @@
-"""Tests for CLI output formatting."""
+"""Tests for command-line output formatting."""
 
 from textwarp._cli.formatting import (
     _format_table,

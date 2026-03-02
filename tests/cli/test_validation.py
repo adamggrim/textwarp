@@ -1,4 +1,4 @@
-"""Tests for CLI input and clipboard validation."""
+"""Tests for command-line input and clipboard validation."""
 
 import pytest
 import regex as re

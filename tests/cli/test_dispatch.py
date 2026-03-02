@@ -1,4 +1,4 @@
-"""Tests for CLI case conversion dispatch mapping."""
+"""Tests for command-line case conversion dispatch mapping."""
 
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 
