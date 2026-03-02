@@ -145,7 +145,7 @@ textwarp/
 │ ├── decorators.py: A custom decorator function for non-instantiable classes
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
 │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
-│ ├── models.py: Classes for part-of-speech counts and word counts
+│ ├── models.py: Classes for parts-of-speech counts and word counts
 │ └── types.py: Generic type definitions used across the package
 ├── _lib/
 │ ├── casing/
