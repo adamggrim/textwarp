@@ -254,6 +254,8 @@ class WarpingPatterns:
         match boundary:
             case RegexBoundary.WORD_BOUNDARY:
                 final_pattern = rf'(?<!\w)(?:{pattern_string})(?!\w)'
+            case RegexBoundary.START_ANCHOR:
+                final_pattern = rf'(?<!\w)(?:{pattern_string})'
             case RegexBoundary.END_ANCHOR:
                 final_pattern = rf'(?:{pattern_string})$'
 

@@ -87,8 +87,11 @@ class RegexBoundary(Enum):
     Attributes:
         WORD_BOUNDARY: Matches the pattern only when it appears as a
             whole word.
+        START_ANCHOR: Matches the pattern only when it appears at the
+            start of a string.
         END_ANCHOR: Matches the pattern only when it appears at the end
             of a string.
     """
     WORD_BOUNDARY = auto()
+    START_ANCHOR = auto()
     END_ANCHOR = auto()
