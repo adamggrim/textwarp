@@ -1,6 +1,6 @@
 """Functions for handling console input and output."""
 
-import os
+import shutil
 import textwrap
 from typing import NoReturn
 
@@ -54,7 +54,7 @@ def print_wrapped(text: str) -> None:
     Args:
         text: The string to print.
     """
-    terminal_size = os.get_terminal_size()[0]
+    terminal_size = shutil.get_terminal_size(fallback=(80, 24)).columns
     print_size = terminal_size - 1
     wrapped_text = textwrap.fill(text, width=print_size)
     print('\n' + wrapped_text)
