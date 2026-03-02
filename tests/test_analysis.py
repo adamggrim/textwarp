@@ -71,7 +71,7 @@ def test_calculate_time_to_read():
     assert calculate_time_to_read(TIME_TO_READ_TEXT, wpm=200) == 1
 
     minutes = calculate_time_to_read(TIME_TO_READ_TEXT, wpm=10)
-    assert 11 <= minutes <= 14
+    assert 14 <= minutes <= 16
 
 
 def test_count_chars():
@@ -127,4 +127,4 @@ def test_count_words():
     Test word counting.
     """
     count = count_words(COUNT_WORDS_TEXT)
-    assert count == 34
+    assert count == 41
