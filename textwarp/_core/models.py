@@ -1,4 +1,4 @@
-"""Classes for part-of-speech counts and word counts."""
+"""Classes for parts-of-speech counts and word counts."""
 
 from dataclasses import dataclass, field
 from typing import final
@@ -23,13 +23,13 @@ class POSCounts:
 
     def get_pos_count(self, tag: str) -> int:
         """
-        Get the count for a given part-of-speech tag.
+        Get the count for a given parts-of-speech tag.
 
         Args:
-            tag: The part-of-speech tag (e.g., "ADJ", "NOUN").
+            tag: The parts-of-speech tag (e.g., "ADJ", "NOUN").
 
         Returns:
-            int: The count for the given part-of-speech tag, or 0 if not
+            int: The count for the given parts-of-speech tag, or 0 if not
                 found.
         """
         return self.tag_counts.get(tag, 0)
@@ -40,7 +40,7 @@ class POSCounts:
         count.
 
         Args:
-            tag: The part-of-speech tag (e.g., "ADJ", "NOUN").
+            tag: The parts-of-speech tag (e.g., "ADJ", "NOUN").
 
         Returns:
             float: The calculated percentage, or 0.0 if self.word_count
@@ -51,12 +51,12 @@ class POSCounts:
 
     def get_pos_data(self) -> list[tuple[str, int, float]]:
         """
-        Get all part-of-speech data (count and percentage) as an
+        Get all parts-of-speech data (count and percentage) as an
         iterable list of tuples.
 
         Returns:
             list[tuple[str, int, float]]: A list where each tuple
-                contains the part-of-speech name, count and percentage.
+                contains the parts-of-speech name, count and percentage.
         """
         pos_data: list[tuple[str, int, float]] = []
 

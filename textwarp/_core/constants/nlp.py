@@ -21,7 +21,7 @@ __all__ = [
 # Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: Final[set[str]] = {'have', 'has', 'had', "'ve", "'d"}
 
-# Coarse-grained part-of-speech tags for stopping a subject search when
+# Coarse-grained parts-of-speech tags for stopping a subject search when
 # looking left.
 LEFT_SEARCH_STOP_TAGS: Final[set[str]] = {'DET', 'VERB', 'PUNCT'}
 
@@ -33,7 +33,7 @@ MODEL_RANKING_BY_SPEED: Final[list[str]] = [
     'en_core_web_trf'
 ]
 
-# Fine-grained part-of-speech tags for the first word of a noun phrase.
+# Fine-grained parts-of-speech tags for the first word of a noun phrase.
 NOUN_PHRASE_TAGS: Final[set[str]] = {
     'JJ', 'JJR', 'JJS',      # Adjectives
     'DT', 'PDT', 'WDT',      # Determiners
@@ -42,14 +42,14 @@ NOUN_PHRASE_TAGS: Final[set[str]] = {
     'NNP', 'NNPS'            # Proper nouns
 }
 
-# Coarse-grained part-of-speech tags for singular and proper nouns.
+# Coarse-grained parts-of-speech tags for singular and proper nouns.
 NOUN_TAGS: Final[set[str]] = {'NOUN', 'PROPN'}
 
-# Fine-grained part-of-speech tags for past tense and past participle
+# Fine-grained parts-of-speech tags for past tense and past participle
 # verb forms. (Fine-grained tags used to distinguish verb tense.)
 PARTICIPLE_TAGS: Final[set[str]] = {'VBN', 'VBD'}
 
-# Tuple of tuples for all part-of-speech tags and their names.
+# Tuple of tuples for all parts-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', 'Adjectives'),
     ('ADP', 'Adpositions'),
@@ -64,13 +64,13 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('X', 'Other')
 )
 
-# Tuple of strings for all coarse-grained part-of-speech tags
+# Tuple of strings for all coarse-grained parts-of-speech tags
 # representing words.
 POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
 
-# Coarse-grained part-of-speech tags for stopping a subject search when
+# Coarse-grained parts-of-speech tags for stopping a subject search when
 # looking right.
 RIGHT_SEARCH_STOP_TAGS: Final[set[str]] = {'VERB', 'PUNCT'}
 
@@ -92,17 +92,17 @@ PROPER_NOUN_ENTITIES: Final = {
     'WORK_OF_ART'
 }
 
-# Fine-grained part-of-speech tags for singular nouns and proper nouns.
+# Fine-grained parts-of-speech tags for singular nouns and proper nouns.
 SINGULAR_NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
 
-# Coarse-grained part-of-speech tags for pronouns, proper nouns, and
+# Coarse-grained parts-of-speech tags for pronouns, proper nouns, and
 # nouns.
 SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
 
 # Third-person singular pronouns for subject-verb agreement checks.
 THIRD_PERSON_SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
 
-# Fine-grained part-of-speech tag exceptions for title case
+# Fine-grained parts-of-speech tag exceptions for title case
 # capitalization. (Fine-grained tags used to distinguish articles
 # from possessives.)
 TITLE_CASE_TAG_EXCEPTIONS: Final = {
