@@ -42,9 +42,11 @@ def _get_wh_verb_token(span: Span) -> Token | None:
             is no verb or the context is not a "wh-" question.
     """
     doc = span.doc
-    prev_token = doc[span.start - 1] if span.start > 0 else None
+    wh_token = span[0] if span[0].lower_ in WH_WORDS else (
+        doc[span.start - 1] if span.start > 0 else None
+    )
 
-    if not prev_token or prev_token.lower_ not in WH_WORDS:
+    if not wh_token or wh_token.lower_ not in WH_WORDS:
         return None
     if span.end >= len(doc):
         return None
@@ -64,8 +66,8 @@ def disambiguate_ain_t(span: Span) -> str:
     """
     Disambiguate the base verb for an "ain't" contraction.
 
-    This function assumes the "n't" ``Span`` has already been identified as
-    an "ain't" contraction (preceded by "ai").
+    This function assumes the "n't" ``Span`` is already an identified
+    "ain't" contraction (preceded by "ai").
 
     Args:
         span: The spaCy ``Span`` containing the contraction.
@@ -77,6 +79,15 @@ def disambiguate_ain_t(span: Span) -> str:
     next_token = doc[span.end] if span.end < len(doc) else None
     verb_token = span[0]
     subject_token = find_subject_token(verb_token)
+
+    if next_token and next_token.lower_ == 'got':
+        if (
+            not subject_token
+            or subject_token.lower_ in THIRD_PERSON_SINGULAR_PRONOUNS
+            or subject_token.tag_ in NOUN_TAGS
+        ):
+             return 'has'
+        return 'have'
 
     is_perfect_tense: bool = (
         next_token and next_token.tag_ in PARTICIPLE_TAGS
@@ -95,9 +106,9 @@ def disambiguate_ain_t(span: Span) -> str:
 
     if is_perfect_tense:
         return 'has' if is_singular else 'have'
-
     if subject_text == 'i':
         return 'am'
+
     return 'is' if is_singular else 'are'
 
 
@@ -142,8 +153,8 @@ def disambiguate_gotta(span: Span) -> str:
     """
     Disambiguate the suffix for a "gotta" contraction.
 
-    This function assumes the ``Span`` has already been identified as a
-    "gotta" contraction.
+    This function assumes the ``Span`` is already an identified "gotta"
+    contraction.
 
     Args:
         span: The spaCy ``Span`` containing the contraction.
@@ -209,8 +220,8 @@ def disambiguate_wanna(span: Span) -> str:
     """
     Disambiguate the suffix for a "wanna" contraction.
 
-    This function assumes the ``Span`` has already been identified as a
-    "wanna" contraction.
+    This function assumes the ``Span`` is already an identified "wanna"
+    contraction.
 
     Args:
         span: The spaCy ``Span`` containing the contraction.
