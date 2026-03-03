@@ -163,7 +163,6 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     # --- STANDARD NEGATION ---
     # (e.g., "couldn't", "wouldn't", "shouldn't")
     else:
-        # The token before "n't" is the base verb.
         base_verb = negative_contraction_to_base_verb(span.text)
 
     # Handle a failed disambiguation.

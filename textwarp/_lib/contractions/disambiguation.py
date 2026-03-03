@@ -74,10 +74,6 @@ def disambiguate_ain_t(span: Span) -> str:
         str : The base verb for the contraction.
     """
     doc = span.doc
-
-    # If "ain't" is followed by a participle (VBN) or past tense
-    # (VBD), it functions as "have/has not". Otherwise, it functions
-    # as "am/is/are not".
     next_token = doc[span.end] if span.end < len(doc) else None
     verb_token = span[0]
     subject_token = find_subject_token(verb_token)
