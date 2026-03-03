@@ -194,7 +194,10 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     # --- STANDARD ORDER (NO INVERSION) ---
     # Verb comes after the subject (e.g., "I don't").
     else:
-        expanded_text = f'{base_verb} not'
+        if base_verb == 'can':
+            expanded_text = 'cannot'
+        else:
+            expanded_text = f'{base_verb} not'
         cased_text = (
             apply_expansion_casing(span.text, expanded_text)
         )
