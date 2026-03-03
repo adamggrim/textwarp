@@ -104,7 +104,10 @@ SINGULAR_NOUN_TAGS: Final[set[str]] = {'NN', 'NNP'}
 SUBJECT_POS_TAGS: Final[set[str]] = {'PRON', 'PROPN', 'NOUN'}
 
 # Third-person singular pronouns for subject-verb agreement checks.
-THIRD_PERSON_SINGULAR_PRONOUNS: Final[set[str]] = {'he', 'she', 'it'}
+THIRD_PERSON_SINGULAR_PRONOUNS: Final[set[str]] = {
+    'he', 'she', 'it', 'nobody', 'everyone', 'someone', 'anyone', 'no one',
+    'everybody', 'somebody', 'anybody'
+}
 
 # Fine-grained parts-of-speech tag exceptions for title case
 # capitalization. (Fine-grained tags used to distinguish articles
