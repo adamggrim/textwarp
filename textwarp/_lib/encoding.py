@@ -61,7 +61,7 @@ def from_morse(text: str) -> str:
     reversed_morse_map = Encoding.get_morse_reversed_map()
 
     for w in words:
-        char_codes: list[str] = w.split()
+        char_codes: list[str] = w.split(' ')
         decoded_word = ''.join(
             reversed_morse_map.get(code, '') for code in char_codes
         )
