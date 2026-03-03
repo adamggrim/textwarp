@@ -25,7 +25,10 @@ def _capitalize_from_map(
         str | None: The capitalized initialism, or ``None`` if
             ``lower_word`` is not in the map.
     """
-    match = (WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word))
+    if lower_word in capitalization_map:
+        return capitalization_map[lower_word]
+
+    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
 
     if match:
         start_of_split = match.start()
