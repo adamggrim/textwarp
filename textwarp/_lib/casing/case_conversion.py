@@ -409,7 +409,7 @@ def to_separator_case(
             if i > 0 and i < len(parts) - 1:
                 prev_part = parts[i - 1]
                 next_part = parts[i + 1]
-                if (prev_part.isalpha() and next_part.isalpha()):
+                if prev_part.isalnum() and next_part.isalnum():
                     processed_part = separator.value
         # Part is already in the given separator case.
         elif separator_pattern.match(part):
