@@ -63,7 +63,7 @@ def test_morse_conversion_unsupported_chars():
 
 def test_morse_conversion_dashes():
     """
-    Test that em and en dashes are normalized to hyphens for Morse.
+    Test that dashes are normalized to hyphens for Morse.
     """
     text = 'A—Z'
     morse = to_morse(text)
