@@ -3,6 +3,7 @@
 from typing import Final
 
 __all__ = [
+    'BASE_VERB_TAGS',
     'HAVE_AUXILIARIES',
     'MODEL_RANKING_BY_SPEED',
     'NOUN_PHRASE_TAGS',
@@ -17,6 +18,9 @@ __all__ = [
     'TITLE_CASE_TAG_EXCEPTIONS',
     'WH_WORDS'
 ]
+
+# Fine-grained parts-of-speech tags for base verb forms.
+BASE_VERB_TAGS: Final[frozenset[str]] = frozenset({'VB', 'VBP'})
 
 # Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: Final[frozenset[str]] = frozenset(
