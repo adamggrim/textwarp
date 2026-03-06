@@ -11,7 +11,6 @@ from textwarp._core.constants.nlp import (
     NOUN_PHRASE_TAGS,
     NOUN_TAGS,
     PARTICIPLE_TAGS,
-    PREFERENCE_VERBS,
     THIRD_PERSON_SINGULAR_PRONOUNS,
     SUBJECT_POS_TAGS,
     WH_WORDS
@@ -29,6 +28,8 @@ __all__ = [
     'disambiguate_whatcha'
 ]
 
+# Strings for verbs that expand to "would".
+_PREFERENCE_VERBS: Final[frozenset[str]] = frozenset({'care', 'mind', 'prefer'})
 
 def _get_wh_verb_token(span: Span) -> Token | None:
     """

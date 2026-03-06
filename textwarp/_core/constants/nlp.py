@@ -11,7 +11,6 @@ __all__ = [
     'PARTICIPLE_TAGS',
     'POS_TAGS',
     'POS_WORD_TAGS',
-    'PREFERENCE_VERBS',
     'PROPER_NOUN_ENTITIES',
     'SUBJECT_POS_TAGS',
     'THIRD_PERSON_SINGULAR_PRONOUNS',
@@ -84,8 +83,6 @@ POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
 
 # Coarse-grained parts-of-speech tags for stopping a subject search when
 # looking right.
-# Strings for verbs that expand to "would".
-PREFERENCE_VERBS: Final[set[str]] = {'care', 'mind', 'prefer'}
 RIGHT_SEARCH_STOP_TAGS: Final[frozenset[str]] = frozenset({'VERB', 'PUNCT'})
 
 # Named entities that are typically proper nouns.
