@@ -84,8 +84,8 @@ def from_hexadecimal(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    chars = [chr(int(hex_char, 16)) for hex_char in text.split()]
-    return ''.join(chars)
+    normalized_text = text.replace(' ', '')
+    return bytes.fromhex(normalized_text).decode('utf-8')
 
 
 def from_morse(text: str) -> str:
@@ -139,9 +139,7 @@ def to_hexadecimal(text: str) -> str:
         str: The converted string in hexadecimal, with each character's
             hex value separated by a space.
     """
-    straight_text = curly_to_straight(text)
-    hex_chars = [format(ord(char), '02x') for char in straight_text]
-    return ' '.join(hex_chars)
+    return text.encode('utf-8').hex(' ')
 
 
 def to_morse(text: str) -> str:
