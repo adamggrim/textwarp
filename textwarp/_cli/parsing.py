@@ -4,6 +4,7 @@ import argparse
 import sys
 from typing import Any, Callable
 
+from textwarp.__main__ import Pipeline
 from textwarp._cli.args import (
     ARGS_MAP,
     CASING_COMMANDS,
@@ -111,7 +112,7 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
             f'commands.'
         )
 
-    pipeline: list[tuple[str, Callable[[str], str]]] = []
+    pipeline: Pipeline = []
 
     for arg in sys.argv[1:]:
         if not arg.startswith('-'):

@@ -14,6 +14,7 @@ from textwarp._cli.runners import (
 )
 from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
+from textwarp._core.types import Pipeline
 
 # Commands that print analysis and exit (cannot be looped easily or piped further)
 ANALYSIS_COMMANDS = {
@@ -30,7 +31,7 @@ ANALYSIS_COMMANDS = {
 _REPLACEMENT_FUNC_NAMES: set[str] = set(replacement.__all__)
 
 
-def _apply_pipeline(text: str, pipeline: list) -> str | None:
+def _apply_pipeline(text: str, pipeline: Pipeline) -> str | None:
     """
     Apply a list of pipeline functions to a given string.
 
