@@ -6,7 +6,6 @@ import sys
 from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Callable
 
-from textwarp.__main__ import Pipeline
 from textwarp._cli.args import (
     ARGS_MAP,
     CASING_COMMANDS,
@@ -14,6 +13,7 @@ from textwarp._cli.args import (
     SEPARATOR_COMMANDS
 )
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
+from textwarp._core.types import Pipeline
 
 __all__ = [
     'parse_args'
