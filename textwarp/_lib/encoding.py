@@ -1,8 +1,10 @@
 """Functions for removing encoding and decoding text."""
 
+import statistics
 from collections.abc import Generator
 
-from textwarp._lib.punctuation import curly_to_straight
+import regex as re
+
 from textwarp._core.config import Encoding
 from textwarp._core.constants.regexes import WarpingPatterns
 
@@ -14,6 +16,47 @@ __all__ = [
     'to_hexadecimal',
     'to_morse'
 ]
+
+
+def _get_morse_spacing_patterns(text: str) -> tuple[
+    re.Pattern[str], re.Pattern[str]
+]:
+    """
+    Determine the number of spaces for character and word separators in
+    a given Morse string.
+
+    Args:
+        text: The Morse string to analyze.
+
+    Returns:
+        A tuple containing the compiled word separator pattern and
+        the compiled character separator pattern.
+    """
+    space_matches = re.findall(r' +', text)
+
+    if not space_matches:
+        word_threshold = 3
+    else:
+        gap_lengths = [len(s) for s in space_matches]
+
+        try:
+            char_gap_length = statistics.mode(gap_lengths)
+        except statistics.StatisticsError:
+            char_gap_length = statistics.median(gap_lengths)
+
+        long_gap_lengths = [L for L in gap_lengths if L > char_gap_length]
+
+        if long_gap_lengths:
+            word_gap_length = statistics.median(long_gap_lengths)
+            gap_midpoint = (char_gap_length + word_gap_length) / 2
+            word_threshold = int(gap_midpoint + 0.5)
+        else:
+            word_threshold = int(char_gap_length + 2)
+
+    word_gap_pattern = re.compile(rf' {{{word_threshold},}}')
+    char_gap_pattern = re.compile(rf' {{1,{max(1, word_threshold - 1)}}}')
+
+    return word_gap_pattern, char_gap_pattern
 
 
 def from_binary(binary_text: str) -> str:
