@@ -24,7 +24,7 @@ from textwarp._lib.punctuation import curly_to_straight
 __all__ = [
     'apply_expansion_casing',
     'find_subject_token',
-    'negative_contraction_to_base_verb'
+    'get_negative_contraction_base_verb'
 ]
 
 
@@ -145,7 +145,7 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     return None
 
 
-def negative_contraction_to_base_verb(contraction: str) -> str | None:
+def get_negative_contraction_base_verb(contraction: str) -> str | None:
     """
     Determine the base verb from a standard negative contraction (e.g.,
     "won't" -> "will").
