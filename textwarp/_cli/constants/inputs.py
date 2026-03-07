@@ -9,10 +9,10 @@ __all__ = [
 ]
 
 # Inputs for exiting the program.
-EXIT_INPUTS: Final = {'quit', 'q', 'exit', 'e'}
+EXIT_INPUTS: Final[frozenset[str]] = frozenset({'quit', 'q', 'exit', 'e'})
 
 # Inputs for indicating a negative response.
-NO_INPUTS: Final = {'no', 'n'}
+NO_INPUTS: Final[frozenset[str]] = frozenset({'no', 'n'})
 
 # Inputs for indicating an affirmative response.
-YES_INPUTS: Final = {'yes', 'y'}
+YES_INPUTS: Final[frozenset[str]] = frozenset({'yes', 'y'})
