@@ -4,8 +4,6 @@ associated functions.
 """
 
 import sys
-from collections.abc import Callable
-from typing import TypeAlias
 
 from textwarp._cli.parsing import parse_args
 from textwarp._cli.runners import (
@@ -16,9 +14,6 @@ from textwarp._cli.runners import (
 )
 from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
-
-PipelineItem: TypeAlias = tuple[str, Callable[[str], str]]
-Pipeline: TypeAlias = list[PipelineItem]
 
 # Commands that print analysis and exit (cannot be looped easily or piped further)
 ANALYSIS_COMMANDS = {
