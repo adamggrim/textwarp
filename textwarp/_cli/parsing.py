@@ -2,6 +2,8 @@
 
 import argparse
 import sys
+
+from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Callable
 
 from textwarp.__main__ import Pipeline
@@ -57,12 +59,19 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
             prog, max_help_position=max_arg_width
         )
 
+    try:
+        __version__ = version('textwarp')
+    except PackageNotFoundError:
+        __version__ = 'unknown (not installed)'
+
     parser = argparse.ArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
         description=HELP_DESCRIPTION,
         usage='%(prog)s [command]'
     )
+
+    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
 
     for arg_key, (_, help_message) in ARGS_MAP.items():
         parser.add_argument(
