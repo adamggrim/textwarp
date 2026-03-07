@@ -98,17 +98,22 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in all caps).
     """
-    words = text.strip().split('   ')
+    text = text.strip()
+    word_gap_pattern, char_gap_pattern = _get_morse_spacing_patterns(text)
+
+    words = word_gap_pattern.split(text)
     decoded_words: list[str] = []
 
     reversed_morse_map = Encoding.get_morse_reversed_map()
 
     for w in words:
-        char_codes: list[str] = w.split(' ')
+        char_codes: list[str] = char_gap_pattern.split(w)
+
         decoded_word = ''.join(
             reversed_morse_map.get(code, '') for code in char_codes
         )
-        decoded_words.append(decoded_word)
+        if decoded_word:
+            decoded_words.append(decoded_word)
 
     return ' '.join(decoded_words)
 
