@@ -1,7 +1,7 @@
 """Regular expressions used across the package."""
 
 import regex as re
-from typing import Final, final
+from typing import Final, Iterable, final
 
 from textwarp._core.config import (
     ContractionExpansion,
@@ -211,7 +211,7 @@ class WarpingPatterns:
     """
     @staticmethod
     def _create_words_regex(
-        words: str | list[str],
+        words: str | Iterable[str],
         boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
     ) -> re.Pattern[str]:
         """
@@ -219,7 +219,7 @@ class WarpingPatterns:
         word in the given list.
 
         Args:
-            words: A word or list of words.
+            words: A word or iterable of words.
             boundary: The boundary-matching strategy to use. Defaults to
                 ``RegexBoundary.WORD_BOUNDARY``.
 
