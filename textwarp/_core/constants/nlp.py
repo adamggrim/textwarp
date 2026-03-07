@@ -33,12 +33,12 @@ LEFT_SEARCH_STOP_TAGS: Final[frozenset[str]] = frozenset(
 )
 
 # Ranking of spaCy models by speed.
-MODEL_RANKING_BY_SPEED: Final[list[str]] = [
+MODEL_RANKING_BY_SPEED: Final[tuple[str, ...]] = (
     'en_core_web_sm',
     'en_core_web_md',
     'en_core_web_lg',
     'en_core_web_trf'
-]
+)
 
 # Fine-grained parts-of-speech tags for the first word of a noun phrase.
 NOUN_PHRASE_TAGS: Final[frozenset[str]] = frozenset({
