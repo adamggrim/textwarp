@@ -4,6 +4,7 @@ associated functions.
 """
 
 import sys
+from typing import Final
 
 from textwarp._cli.parsing import parse_args
 from textwarp._cli.runners import (
@@ -16,8 +17,8 @@ from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
 from textwarp._core.types import Pipeline
 
-# Commands that print analysis and exit (cannot be looped easily or piped further)
-ANALYSIS_COMMANDS = {
+# Commands that print analysis and exit.
+ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'char-count',
     'line-count',
     'mfws',
@@ -25,10 +26,10 @@ ANALYSIS_COMMANDS = {
     'sentence-count',
     'time-to-read',
     'word-count'
-}
+})
 
 # All function names for replacement commands.
-_REPLACEMENT_FUNC_NAMES: set[str] = set(replacement.__all__)
+_REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
 
 def _apply_pipeline(text: str, pipeline: Pipeline) -> str | None:
