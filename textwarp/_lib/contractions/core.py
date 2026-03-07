@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable
 
+import regex as re
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
@@ -68,6 +70,28 @@ def _expand_ambiguous_contraction(
     return contraction, original_end_char_idx
 
 
+def _expand_idiomatic_phrases(phrase: str) -> str:
+    """
+    Expand multi-word idiomatic phrases before expanding standard
+    contractions.
+
+    Args:
+        phrase: The idiomatic phrase to expand.
+
+    Returns:
+        str: The expanded phrase.
+    """
+    idiom_map = ContractionExpansion.get_idiomatic_map()
+
+    def _replace_idiom(match: re.Match[str]) -> str:
+        original_phrase = match.group(0)
+        straight_match = curly_to_straight(original_phrase).lower()
+        expanded_text = idiom_map.get(straight_match, original_phrase)
+        return apply_expansion_casing(original_phrase, expanded_text)
+
+    return WarpingPatterns.IDIOMATIC_PHRASES.sub(_replace_idiom, phrase)
+
+
 def _expand_unambiguous_contraction(
     contraction: str,
     contractions_map: dict[str, str]
@@ -99,6 +123,12 @@ def expand_contractions(doc: Doc) -> str:
     Returns:
         str: The converted ``Doc`` text.
     """
+    text_with_idioms_expanded = _expand_idiomatic_phrases(doc.text)
+
+    if text_with_idioms_expanded != doc.text:
+        from textwarp._lib.nlp import process_as_doc
+        doc = process_as_doc(text_with_idioms_expanded)
+
     matches = list(WarpingPatterns.CONTRACTION.finditer(doc.text))
     if not matches:
         return doc.text
