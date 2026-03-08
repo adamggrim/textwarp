@@ -32,26 +32,18 @@ __all__ = [
 _PREFERENCE_VERBS: Final[frozenset[str]] = frozenset({'care', 'mind', 'prefer'})
 
 
+def _disambiguate_a_or_to(span: Span) -> str:
+    """
+    Shared logic for 'gotta' and 'wanna' to disambiguate 'a' or 'to'.
     """
     doc = span.doc
-    wh_token = span[0] if span[0].lower_ in WH_WORDS else (
-        doc[span.start - 1] if span.start > 0 else None
-    )
+    next_token = doc[span.end] if span.end < len(doc) else None
 
-    if not wh_token or wh_token.lower_ not in WH_WORDS:
-        return None
-    if span.end >= len(doc):
-        return None
+    if (next_token and next_token.tag_ in NOUN_PHRASE_TAGS
+        and next_token.tag_ != 'VB'):
+        return 'a'
 
-    next_token = doc[span.end]
-    target_token = next_token
-
-    # Skip the subject if necessary.
-    if next_token.pos_ in SUBJECT_POS_TAGS:
-        if span.end + 2 < len(doc):
-            target_token = doc[span.end + 2]
-
-    return target_token
+    return 'to'
 
 
 def disambiguate_ain_t(span: Span) -> str:
