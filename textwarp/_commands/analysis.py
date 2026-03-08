@@ -137,7 +137,7 @@ def time_to_read(text: str) -> None:
         print_wrapped(ENTER_WPM_PROMPT)
         wpm_input: str = input().strip()
         while True:
-            if wpm_input.isdigit():
+            if wpm_input.isdigit() and int(wpm_input) > 0:
                 break
             else:
                 print(ENTER_VALID_NUMBER_PROMPT)
