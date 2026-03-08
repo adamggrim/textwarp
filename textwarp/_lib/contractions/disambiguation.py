@@ -146,16 +146,7 @@ def disambiguate_gotta(span: Span) -> str:
     Returns:
         str: The base verb for the contraction.
     """
-    doc = span.doc
-    next_token = doc[span.end] if span.end < len(doc) else None
-
-    if not next_token:
-        return 'to'
-
-    if next_token.dep_ == 'dobj' and next_token.tag_ in NOUN_PHRASE_TAGS:
-        return 'a'
-
-    return 'to'
+    return _disambiguate_a_or_to(span)
 
 
 def disambiguate_s(span: Span) -> str:
@@ -213,16 +204,7 @@ def disambiguate_wanna(span: Span) -> str:
     Returns:
         str: The base verb for the contraction.
     """
-    doc = span.doc
-    next_token = doc[span.end] if span.end < len(doc) else None
-
-    if not next_token:
-        return 'to'
-
-    if next_token.tag_ in NOUN_PHRASE_TAGS and next_token.tag_ != 'VB':
-        return 'a'
-
-    return 'to'
+    return _disambiguate_a_or_to(span)
 
 
 def disambiguate_whatcha(span: Span) -> str:
