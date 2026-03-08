@@ -104,26 +104,26 @@ def disambiguate_d(span: Span) -> str:
     doc = span.doc
     suffix_token = span[-1]
 
-    # Check for end-of-sentence token.
     if suffix_token.i >= len(doc) - 1:
         return 'would'
 
-    wh_verb_token = _get_wh_verb_token(span)
+    is_wh_question = (
+        span[0].lower_ in WH_WORDS or
+        (span.start > 0 and doc[span.start - 1].lower_ in WH_WORDS)
+    )
 
-    if not wh_verb_token:
-        # Check for "d better" -> "had better".
-        next_token = doc[suffix_token.i + 1]
-        if next_token.lower_ == 'better' or next_token.tag_ in PARTICIPLE_TAGS:
+    for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
+        token = doc[i]
+
+        if token.lower_ == 'better' or token.tag_ in PARTICIPLE_TAGS:
             return 'had'
-        return 'would'
 
-    if wh_verb_token.tag_ in PARTICIPLE_TAGS:
-        return 'had'
-    if (wh_verb_token.tag_ == 'VB' and
-        wh_verb_token.lemma_ in PREFERENCE_VERBS):
-            return 'would'
+        if token.tag_ in BASE_VERB_TAGS:
+            if token.lemma_ in _PREFERENCE_VERBS:
+                return 'would'
+            return 'did' if is_wh_question else 'would'
 
-    return 'did'
+    return 'would'
 
 
 def disambiguate_gotta(span: Span) -> str:
