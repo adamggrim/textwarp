@@ -159,7 +159,9 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
     """
     straight_contraction = curly_to_straight(contraction).lower()
 
-    # Look for the contraction in the unambiguous contractions map.
+    if straight_contraction == 'cannot':
+        return 'can'
+
     expanded_contraction = ContractionExpansion.get_unambiguous_map().get(
         straight_contraction
     )
