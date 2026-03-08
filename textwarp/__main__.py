@@ -131,5 +131,5 @@ def main() -> None:
         program_exit()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
