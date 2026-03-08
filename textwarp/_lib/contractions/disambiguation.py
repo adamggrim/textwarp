@@ -164,29 +164,17 @@ def disambiguate_s(span: Span) -> str:
     doc = span.doc
     suffix_token = span[-1]
 
-    # Check for end-of-sentence tokens.
-    if suffix_token.i >= len(doc) - 1:
-        return 'is'
-
-    prev_token = doc[suffix_token.i - 1] if suffix_token.i > 0 else None
-    next_token = doc[suffix_token.i + 1]
-    wh_verb_token = _get_wh_verb_token(span)
-
-    # Disambiguate "'s" ("does", "has", "is", "us").
-    # "Let's" -> "us"
-    if prev_token and prev_token.lower_ == 'let':
+    if suffix_token.i > 0 and doc[suffix_token.i - 1].lower_ == 'let':
         return 'us'
 
-    # Standard context
-    if not wh_verb_token:
-        return 'has' if next_token.tag_ in PARTICIPLE_TAGS else 'is'
-
-    # "Wh-" context ("What's she want?" vs. "What's she done?")
-    if wh_verb_token.tag_ == 'VB':
-        return 'does'
-
-    if wh_verb_token.tag_ in PARTICIPLE_TAGS:
-        return 'has'
+    for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
+        tag = doc[i].tag_
+        if tag in BASE_VERB_TAGS:
+            return 'does'
+        if tag in PARTICIPLE_TAGS:
+            return 'has'
+        if tag == 'VBG':
+            return 'is'
 
     return 'is'
 
