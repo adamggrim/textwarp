@@ -60,37 +60,30 @@ def disambiguate_ain_t(span: Span) -> str:
         str : The base verb for the contraction.
     """
     doc = span.doc
-    next_token = doc[span.end] if span.end < len(doc) else None
     verb_token = span[0]
     subject_token = find_subject_token(verb_token)
+    next_token = doc[span.end] if span.end < len(doc) else None
 
-    if next_token and next_token.lower_ == 'got':
-        if (
-            not subject_token
-            or subject_token.lower_ in THIRD_PERSON_SINGULAR_PRONOUNS
-            or subject_token.tag_ in NOUN_TAGS
-        ):
-             return 'has'
-        return 'have'
+    action_verb = next_token
+    if next_token and subject_token and next_token.i == subject_token.i:
+        action_verb = doc[span.end + 1] if span.end + 1 < len(doc) else None
 
-    is_perfect_tense: bool = (
-        next_token and next_token.tag_ in PARTICIPLE_TAGS
-    )
+    is_singular = True
+    is_first_person_i = False
 
-    if not subject_token:
-        return 'have' if is_perfect_tense else 'is'
+    if subject_token:
+        subj_text = subject_token.lower_
+        is_singular = (
+            subj_text in THIRD_PERSON_SINGULAR_PRONOUNS or
+            subject_token.tag_ in NOUN_TAGS
+        )
+        is_first_person_i = (subj_text == 'i')
 
-    subject_text = subject_token.lower_
-    subject_tag = subject_token.tag_
+    if action_verb:
+        if action_verb.lower_ == 'got' or action_verb.tag_ in PARTICIPLE_TAGS:
+            return 'has' if is_singular else 'have'
 
-    is_singular = (
-        subject_text in THIRD_PERSON_SINGULAR_PRONOUNS or
-        subject_tag in NOUN_TAGS
-    )
-
-    if is_perfect_tense:
-        return 'has' if is_singular else 'have'
-    if subject_text == 'i':
+    if is_first_person_i:
         return 'am'
 
     return 'is' if is_singular else 'are'
