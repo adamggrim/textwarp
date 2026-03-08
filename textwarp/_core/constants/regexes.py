@@ -317,7 +317,7 @@ class WarpingPatterns:
     )
     CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
         list(ContractionExpansion.get_unambiguous_map().keys())
-        + ContractionExpansion.get_ambiguous_map()
+        + list(ContractionExpansion.get_ambiguous_map())
     )
     CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(EntityCasing.get_contraction_suffixes())
