@@ -31,16 +31,7 @@ __all__ = [
 # Strings for verbs that expand to "would".
 _PREFERENCE_VERBS: Final[frozenset[str]] = frozenset({'care', 'mind', 'prefer'})
 
-def _get_wh_verb_token(span: Span) -> Token | None:
-    """
-    Identify the main verb in a "wh-" question.
 
-    Args:
-        span: The spaCy ``Span`` containing the contraction.
-
-    Returns:
-        Token | None: The token of the main verb, or ``None`` if there
-            is no verb or the context is not a "wh-" question.
     """
     doc = span.doc
     wh_token = span[0] if span[0].lower_ in WH_WORDS else (
