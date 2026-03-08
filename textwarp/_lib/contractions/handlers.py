@@ -95,7 +95,6 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     suffix = disambiguate_gotta(span)
     prefix = ''
 
-    # Check for "have" or "has" word prefix.
     if suffix == 'to':
         doc = span.doc
         prev_token = doc[span.start - 1] if span.start > 0 else None
@@ -155,24 +154,18 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     base_verb: str | None = None
 
-    # --- "AIN'T" ---
     if (prev_token and prev_token.lower_ == 'ai' and
             suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
         base_verb = disambiguate_ain_t(span)
-
-    # --- STANDARD NEGATION ---
-    # (e.g., "couldn't", "wouldn't", "shouldn't")
     else:
         base_verb = get_negative_contraction_base_verb(span.text)
 
-    # Handle a failed disambiguation.
     if base_verb is None:
         return span.text, span.end_char
 
     verb_token = prev_token
     subject_token = find_subject_token(verb_token)
 
-    # --- INVERSION CHECK ---
     # Verb comes before the subject (e.g., "Don't I").
     if subject_token and subject_token.i > verb_token.i:
         subject_end_token = subject_token.right_edge
@@ -190,7 +183,6 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
         return cased_text, subject_phrase_end_idx
 
-    # --- STANDARD ORDER (NO INVERSION) ---
     # Verb comes after the subject (e.g., "I don't").
     else:
         if base_verb == 'can':
@@ -224,7 +216,6 @@ def handle_s(span: Span) -> tuple[str, int] | None:
     doc = span.doc
     suffix_token = span[-1]
 
-    # Check the bounds.
     if suffix_token.i == 0:
         return span.text, span.end_char
 

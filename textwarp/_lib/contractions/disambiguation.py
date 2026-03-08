@@ -267,12 +267,10 @@ def disambiguate_whatcha(span: Span) -> str:
     next_text_lower = next_token.lower_
     tag = next_token.tag_
 
-    # Check for the special case of "whatcha ain't".
     if after_next_token and (next_text_lower == 'ai' and
             after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
         return ''
 
-    # Disambiguate "are" vs. "has".
     if (
         WarpingPatterns.WHATCHA_ARE_WORDS.match(next_text_lower)
         or tag == 'VBG'

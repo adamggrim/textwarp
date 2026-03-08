@@ -170,12 +170,10 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
         # "Cannot" is a special case.
         if expanded_contraction == 'cannot':
             return 'can'
-        # Return the first word of the expansion.
         return expanded_contraction.split()[0]
 
     # Only attempt to strip if "n't" is actually present.
     if straight_contraction.endswith("n't"):
-        # Fallback for edge cases: strip n't
         return straight_contraction.replace("n't", '')
 
     return None

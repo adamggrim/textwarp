@@ -140,17 +140,12 @@ def expand_contractions(doc: Doc) -> str:
     for match in matches:
         start_idx, end_idx = match.span()
 
-        # If a previous inverted expansion already consumed this token,
-        # skip it.
         if start_idx < skip_until_idx:
             continue
 
-        # Append all text from the previous contraction (or beginning)
-        # to the current contraction.
         expanded_parts.append(doc.text[last_idx:start_idx])
         contraction: str = match.group(0)
 
-        # Check if complex negation/ambiguity logic is needed.
         is_negation: bool = bool(WarpingPatterns.N_T_SUFFIX.search(contraction))
         is_ambiguous: bool = bool(
             WarpingPatterns.AMBIGUOUS_CONTRACTION.match(contraction)
@@ -170,8 +165,6 @@ def expand_contractions(doc: Doc) -> str:
                 skip_until_idx = new_end_idx
                 continue
 
-        # For unambiguous contractions, use the unambiguous contractions
-        # map.
         cased_expansion: str = _expand_unambiguous_contraction(
             contraction,
             ContractionExpansion.get_unambiguous_map()
