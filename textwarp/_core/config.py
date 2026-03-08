@@ -3,7 +3,8 @@
 import importlib.resources
 import json
 from functools import lru_cache
-from typing import Final, cast
+from types import MappingProxyType
+from typing import Final, Mapping, cast
 from pathlib import Path
 
 from textwarp._core.types import (

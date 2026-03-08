@@ -7,6 +7,7 @@ import regex as re
 
 from textwarp._core.config import Encoding
 from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = [
     'from_binary',
