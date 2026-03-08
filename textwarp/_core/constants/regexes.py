@@ -197,6 +197,8 @@ class WarpingPatterns:
         DASH: Matches an en (``–``) or em (``—``) dash.
         EM_DASH_STAND_IN: Matches characters that function as an em
             dash (e.g., ``--``).
+        IDIOMATIC_PHRASES: Matches any idiomatic phrase with a
+            corresponding expansion.
         MULTIPLE_SPACES: Matches two or more consecutive spaces.
         SURNAME_PREFIX_PATTERN: Matches any surname prefix (e.g., "Mac",
             "O'").
@@ -322,6 +324,9 @@ class WarpingPatterns:
     )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
+    IDIOMATIC_PHRASES: Final[re.Pattern[str]] = _create_words_regex(
+        ContractionExpansion.get_idiomatic_map().keys()
+    )
     MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(
             StringCasing.get_map_suffix_exceptions(),
