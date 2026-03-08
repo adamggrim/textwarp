@@ -33,7 +33,7 @@ from textwarp._lib.contractions.disambiguation import (
 from textwarp._lib.contractions.utils import (
     apply_expansion_casing,
     find_subject_token,
-    negative_contraction_to_base_verb
+    get_negative_contraction_base_verb
 )
 
 __all__ = [
@@ -163,7 +163,7 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     # --- STANDARD NEGATION ---
     # (e.g., "couldn't", "wouldn't", "shouldn't")
     else:
-        base_verb = negative_contraction_to_base_verb(span.text)
+        base_verb = get_negative_contraction_base_verb(span.text)
 
     # Handle a failed disambiguation.
     if base_verb is None:
