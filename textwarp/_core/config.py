@@ -47,7 +47,14 @@ class ContractionExpansion:
     def get_ambiguous_map() -> list[str]:
         return cast(list[str], _load(
             ContractionExpansion.DIR / 'ambiguous_contractions.json'
-        ))
+        )))
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_idiomatic_map() -> Mapping[str, str]:
+        return MappingProxyType(cast(dict[str, str], _load(
+            ContractionExpansion.DIR / 'idiomatic_phrases.json'
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
