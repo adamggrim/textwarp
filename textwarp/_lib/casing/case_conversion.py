@@ -154,7 +154,7 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
             if first_word_idx is not None:
                 position_idxs.add(first_word_idx)
         # Find the first word token after a colon or opening quote.
-        elif (token.text in {':'} | OPEN_QUOTES
+        elif ((token.text == ':' or token.text in OPEN_QUOTES)
               and token.i + 1 < len(text_container)):
             first_word_idx = _find_first_word_token_idx(
                 i + 1, text_container
