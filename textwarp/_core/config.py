@@ -16,6 +16,7 @@ __all__ = [
     'ContractionExpansion',
     'Encoding',
     'EntityCasing',
+    'Punctuation',
     'StringCasing',
     'TokenCasing'
 ]
@@ -44,8 +45,8 @@ class ContractionExpansion:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_ambiguous_map() -> list[str]:
-        return cast(list[str], _load(
+    def get_ambiguous_map() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             ContractionExpansion.DIR / 'ambiguous_contractions.json'
         )))
 
@@ -58,24 +59,24 @@ class ContractionExpansion:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_unambiguous_map() -> dict[str, str]:
-        return cast(dict[str, str], _load(
+    def get_unambiguous_map() -> Mapping[str, str]:
+        return MappingProxyType(cast(dict[str, str], _load(
             ContractionExpansion.DIR / 'unambiguous_contractions_map.json'
-        ))
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_whatcha_are_words() -> list[str]:
-        return cast(list[str], _load(
+    def get_whatcha_are_words() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             ContractionExpansion.DIR / 'whatcha_are_words.json'
-        ))
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_whatcha_have_words() -> list[str]:
-        return cast(list[str], _load(
+    def get_whatcha_have_words() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             ContractionExpansion.DIR / 'whatcha_have_words.json'
-        ))
+        )))
 
 
 class Encoding:
@@ -83,13 +84,15 @@ class Encoding:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_morse_map() -> dict[str, str]:
-        return cast(dict[str, str], _load('morse_map.json'))
+    def get_morse_map() -> Mapping[str, str]:
+        return MappingProxyType(cast(dict[str, str], _load('morse_map.json')))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_morse_reversed_map() -> dict[str, str]:
-        return {value: key for key, value in Encoding.get_morse_map().items()}
+    def get_morse_reversed_map() -> Mapping[str, str]:
+        return MappingProxyType({
+            value: key for key, value in Encoding.get_morse_map().items()
+        })
 
 
 class EntityCasing:
@@ -98,24 +101,27 @@ class EntityCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_absolute_map() -> dict[str, str]:
-        return cast(dict[str, str], _load(
+    def get_absolute_map() -> Mapping[str, str]:
+        return MappingProxyType(cast(dict[str, str], _load(
             EntityCasing.DIR / 'absolute_casings_map.json'
-        ))
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_contextual_map() -> dict[str, list[EntityCasingContext]]:
-        return cast(dict[str, list[EntityCasingContext]], _load(
+    def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
+        raw_map = cast(dict[str, list[EntityCasingContext]], _load(
             EntityCasing.DIR / 'contextual_casings_map.json'
         ))
+        return MappingProxyType({
+            key: tuple(contexts) for key, contexts in raw_map.items()
+        })
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_contraction_suffixes() -> list[str]:
-        return cast(list[str], _load(
+    def get_contraction_suffixes() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             EntityCasing.DIR / 'contraction_suffixes.json'
-        ))
+        )))
 
 
 class Punctuation:
@@ -123,8 +129,8 @@ class Punctuation:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_elision_words() -> set[str]:
-        return set(cast(list[str], _load('elision_words.json')))
+    def get_elision_words() -> frozenset[str]:
+        return frozenset(cast(list[str], _load('elision_words.json')))
 
 
 class StringCasing:
@@ -133,53 +139,49 @@ class StringCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_lookup_map() -> dict[str, str]:
-        """
-        Merge absolute casings and mapped prefixed surnames into one
-        dictionary.
-        """
+    def get_lookup_map() -> Mapping[str, str]:
         absolute_map = cast(dict[str, str], _load(
             StringCasing.DIR / 'absolute_casings_map.json'
         ))
         prefixed_surnames_map = cast(dict[str, str], _load(
             StringCasing.DIR / 'prefixed_surnames_map.json'
         ))
-        # Absolute map overrides the prefixed surnames map if there is a
-        # collision.
-        return {**prefixed_surnames_map, **absolute_map}
+        return MappingProxyType({**prefixed_surnames_map, **absolute_map})
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_lowercase_abbreviations() -> set[str]:
-        return set(cast(list[str], _load(
+    def get_lowercase_abbreviations() -> frozenset[str]:
+        return frozenset(cast(list[str], _load(
             StringCasing.DIR / 'lowercase_abbreviations.json'
         )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_map_suffix_exceptions() -> list[str]:
-        return cast(list[str], _load(
+    def get_map_suffix_exceptions() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             StringCasing.DIR / 'map_suffix_exceptions.json'
-        ))
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_surname_prefix_exceptions() -> list[str]:
-        return cast(list[str], _load(
+    def get_surname_prefix_exceptions() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
             StringCasing.DIR / 'surname_prefix_exceptions.json'
-        ))
+        )))
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_surname_prefixes() -> list[str]:
-        return cast(list[str], _load(StringCasing.DIR / 'surname_prefixes.json'))
+    def get_surname_prefixes() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
+            StringCasing.DIR / 'surname_prefixes.json'
+        )))
 
 
 class TokenCasing:
     """A namespace for loading token casing data."""
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_lowercase_particles() -> set[str]:
-        return set(cast(list[str], _load(
+    def get_lowercase_particles() -> frozenset[str]:
+        return frozenset(cast(list[str], _load(
             EntityCasing.DIR / 'lowercase_particles.json'
         )))
