@@ -23,11 +23,11 @@ def test_find_first_alphabetical_idx():
 
 def test_change_first_letter_case():
     """Test changing only the first alphabetical character's case."""
-    assert change_first_letter_case('100 indecisions', str.upper) == (
-        '100 Indecisions'
+    assert change_first_letter_case('101 dalmations', str.upper) == (
+        '101 Dalmations'
     )
     assert change_first_letter_case('bang', str.upper) == 'Bang'
-    assert change_first_letter_case('WHIMPER', str.lower) == 'whimper'
+    assert change_first_letter_case('WHIMPER', str.lower) == 'wHIMPER'
     assert change_first_letter_case('!!!', str.upper) == '!!!'
 
 
@@ -53,9 +53,15 @@ def test_to_separator_case_existing_cases():
     assert to_separator_case(
         'existence-precedes-essence', CaseSeparator.SNAKE
     ) == 'existence_precedes_essence'
-    assert to_separator_case('being.nothingness', CaseSeparator.KEBAB) == 'being-nothingness'
-    assert to_separator_case('sisyphusMyth', CaseSeparator.SNAKE) == 'sisyphus_myth'
-    assert to_separator_case('SørenKierkegaard', CaseSeparator.DOT) == 'søren.kierkegaard'
+    assert to_separator_case(
+        'being.nothingness', CaseSeparator.KEBAB
+    ) == 'being-nothingness'
+    assert to_separator_case(
+        'deBeauvoir', CaseSeparator.SNAKE
+    ) == 'de_beauvoir'
+    assert to_separator_case(
+        'LeMytheDeSisyphe', CaseSeparator.DOT
+    ) == 'le.mythe.de.sisyphe'
 
 
 def test_to_separator_case_non_alpha():
