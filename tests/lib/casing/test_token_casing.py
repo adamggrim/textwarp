@@ -20,7 +20,7 @@ def test_should_capitalize_contraction_suffixes():
     Test that contraction suffixes are flagged to stay lowercase.
     """
     doc = process_as_doc("don't, don't")
-    nt_token = doc[3]
+    nt_token = doc[4]
 
     assert nt_token.text.lower() == "n't"
     assert should_capitalize_pos_or_length(nt_token) is False
