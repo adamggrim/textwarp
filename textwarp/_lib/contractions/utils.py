@@ -172,7 +172,6 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
             return 'can'
         return expanded_contraction.split()[0]
 
-    # Only attempt to strip if "n't" is actually present.
     if straight_contraction.endswith("n't"):
         return straight_contraction.replace("n't", '')
 

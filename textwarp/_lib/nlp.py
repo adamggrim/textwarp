@@ -85,7 +85,8 @@ def process_as_doc(content: str | Doc, model_priority: ModelPriority = 'speed') 
 
     Args:
         content: The string or ``Doc`` to process.
-        model_priority: The size of the spaCy model to use.
+        model_priority: The size of the spaCy model to use. Defaults to
+            "speed".
 
     Returns:
         Doc: The processed spaCy ``Doc``.
