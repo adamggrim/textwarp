@@ -52,6 +52,13 @@ class ContractionExpansion:
 
     @staticmethod
     @lru_cache(maxsize=1)
+    def get_common_stateless_participles() -> tuple[str, ...]:
+        return tuple(cast(list[str], _load(
+            ContractionExpansion.DIR / 'common_stateless_participles.json'
+        )))
+
+    @staticmethod
+    @lru_cache(maxsize=1)
     def get_idiomatic_map() -> Mapping[str, str]:
         return MappingProxyType(cast(dict[str, str], _load(
             ContractionExpansion.DIR / 'idiomatic_phrases.json'
