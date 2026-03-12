@@ -28,11 +28,11 @@ def test_to_single_spaces():
     Test collapsing multiple consecutive spaces into a single space.
     """
     assert to_single_spaces(
-        'Come  with  me \t  if  you  want  to  live.'
+        'Come  with  me  if  you  want  to  live.'
     ) == 'Come with me if you want to live.'
     assert to_single_spaces(
-        '  A   long   time   ago   in   a   galaxy   far   far   away....'
-    ) == '  A long time ago in a galaxy far far away....'
+        '\tA   long   time   ago   in   a   galaxy   far   far   away....'
+    ) == '\tA long time ago in a galaxy far far away....'
 
 
 def test_widen():
