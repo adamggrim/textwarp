@@ -71,7 +71,9 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
         usage='%(prog)s [command]'
     )
 
-    parser.add_argument('--version', action='version', version=f'%(prog)s {__version__}')
+    parser.add_argument(
+        '--version', action='version', version=f'%(prog)s {__version__}'
+    )
 
     for arg_key, (_, help_message) in ARGS_MAP.items():
         parser.add_argument(
