@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from spacy.tokens import Token
 from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
@@ -191,12 +192,14 @@ def disambiguate_s(span: Span) -> str:
         return 'us'
 
     for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
-        tag = doc[i].tag_
+        token = doc[i]
+        tag = token.tag_
+
         if tag in BASE_VERB_TAGS:
             return 'does'
         if tag in PARTICIPLE_TAGS:
             return 'has'
-        if tag == 'VBG':
+        if _is_present_participle(token):
             return 'is'
 
     return 'is'
@@ -249,7 +252,7 @@ def disambiguate_whatcha(span: Span) -> str:
 
     if (
         WarpingPatterns.WHATCHA_ARE_WORDS.match(next_text_lower)
-        or tag == 'VBG'
+        or _is_present_participle(next_token)
     ):
         return 'are'
     elif (
