@@ -29,6 +29,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
     -h, --help             show this help message and exit
+    --version              show version number and exit
     --alternating-caps     cOnVeRt To AlTeRnAtInG cApS
     --binary               convert to binary
     --camel-case           convertToCamelCase
@@ -176,67 +177,21 @@ textwarp/
 
 Follow these steps to run `textwarp`:
 
-1. **Install Python**: Verify that you have Python 3.9 or later. You can install Python at `https://www.python.org/downloads/`.
-2. **Review dependencies**: Make sure the required Python packages are installed: `pyperclip`, `spaCy` and `regex`.
+1. **Prerequisites**: Verify that you have Python 3.10 or later. You can install Python at `https://www.python.org/downloads/`. Install Git at `https://git-scm.com/install/`.
 
-    You can check whether these packages are installed using pip's `show` command on each package.
+2. **Install the package**: Install `textwarp` and its dependencies using pip.
 
-    On macOS:
-    ```
-    pip3 show spacy
-    ```
-
-    If the package is not installed, you will receive a warning: `WARNING: Package(s) not found`. You can install a missing package using pip.
-
-    On macOS:
-    ```
-    pip3 install spacy
-    ```
-
-3. **Install the package**: Install `textwarp` using pip.
-
-    On macOS:
-
+    On macOS/Linux:
     ```
     pip3 install git+https://github.com/adamggrim/textwarp.git
     ```
 
-4. **Run the program**: Execute the program by calling `textwarp` from the command line with a required argument. For example: `textwarp --camel-case`
-
-## Troubleshooting
-
-If the console cannot find the `textwarp` command when you try to run it from the command line, it was not installed on your system PATH.
-
-To resolve this, follow these steps:
-
-1. Find the installed location of the `textwarp` package using pip's `show` command.
-
-    On macOS:
+    On Windows:
     ```
-    pip3 show textwarp
+    pip install git+https://github.com/adamggrim/textwarp.git
     ```
 
-    The location of `textwarp` will be listed in the command's output. For example:
-    ```
-    Location: /Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages
-    ```
-
-2. Once you have determined the location of `textwarp`, find the installed location of the `textwarp` command file in your parent Python folder.
-
-    On macOS:
-    ```
-    find /Library/Frameworks/Python.framework/Versions/3.12/ -name textwarp
-    ```
-
-3. Create a symbolic link to the underlying `textwarp` command file and place it in the local directory on your system PATH.
-
-    On macOS:
-
-    ```
-    sudo ln -s /Library/Frameworks/Python.framework/Versions/3.12/bin/textwarp /usr/local/bin/
-    ```
-
-    To find the system PATH, you can type `echo $PATH` into the console (macOS).
+3. **Run the program**: Run the program by calling `textwarp` from the command line with a required argument: `textwarp --camel-case`
 
 ## License
 
