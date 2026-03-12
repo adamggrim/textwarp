@@ -322,6 +322,11 @@ class WarpingPatterns:
     CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
         _create_words_regex(EntityCasing.get_contraction_suffixes())
     )
+    COMMON_STATELESS_PARTICIPLES: Final[re.Pattern[str]] = (
+        _create_words_regex(
+            ContractionExpansion.get_common_stateless_participles()
+        )
+    )
     DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
     EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
     IDIOMATIC_PHRASES: Final[re.Pattern[str]] = _create_words_regex(
