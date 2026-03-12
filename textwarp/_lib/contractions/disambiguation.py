@@ -30,6 +30,36 @@ __all__ = [
 
 # Strings for verbs that expand to "would".
 _PREFERENCE_VERBS: Final[frozenset[str]] = frozenset({'care', 'mind', 'prefer'})
+def _is_present_participle(token: Token) -> bool:
+    """
+    Check if a token is a present participle (VBG), accounting for
+    words that end in "in'".
+
+    Args:
+        token: The spaCy ``Token`` to check.
+
+    Returns:
+        bool: ``True`` if the token is a present participle, otherwise
+            ``False``.
+    """
+    if token.tag_ == 'VBG':
+        return True
+
+    text_lower = token.lower_
+
+    if WarpingPatterns.COMMON_STATELESS_PARTICIPLES.match(text_lower):
+        return True
+
+    if text_lower.endswith(("in'", 'in’')):
+        return True
+
+    doc = token.doc
+    if text_lower.endswith('in') and token.i + 1 < len(doc):
+        next_token_text = doc[token.i + 1].text
+        if next_token_text in ("'", '’'):
+            return True
+
+    return False
 
 
 def _disambiguate_a_or_to(span: Span) -> str:
