@@ -30,7 +30,11 @@ __all__ = [
 ]
 
 # Strings for verbs that expand to "would".
-_PREFERENCE_VERBS: Final[frozenset[str]] = frozenset({'care', 'mind', 'prefer'})
+_PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
+    {'care', 'mind', 'prefer'}
+)
+
+
 def _is_present_participle(token: Token) -> bool:
     """
     Check if a token is a present participle (VBG), accounting for
