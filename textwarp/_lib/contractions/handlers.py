@@ -97,14 +97,19 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
 
     if suffix == 'to':
         doc = span.doc
-        prev_token = doc[span.start - 1] if span.start > 0 else None
 
         has_aux = False
-        if prev_token:
-            if prev_token.lower_ in HAVE_AUXILIARIES:
+        curr_idx = span.start - 1
+        while curr_idx >= 0:
+            prev_token = doc[curr_idx]
+            if (prev_token.lower_ in HAVE_AUXILIARIES or
+                prev_token.lower_ == "'s"):
                 has_aux = True
-            elif prev_token.lower_ == "'s":
-                has_aux = True
+                break
+            elif prev_token.pos_ == 'ADV':
+                curr_idx -= 1
+            else:
+                break
 
         if not has_aux:
             subject = find_subject_token(span[0])
