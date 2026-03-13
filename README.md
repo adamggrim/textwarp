@@ -99,7 +99,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 textwarp/
 ├── _cli/
 │ ├── constants/
-│ │ ├── __init__.py: Exposes core configuration, constants, and models
+│ │ ├── __init__.py: Exposes command-line inputs and messages
 │ │ ├── inputs.py: Sets for command-line input
 │ │ └── messages.py: Strings for displaying command-line messages
 │ ├── __init__.py: Initializes the _cli sub-package
@@ -162,7 +162,7 @@ textwarp/
 │ │ ├── handlers.py: Functions for handling specific types of contractions (negation, "'s", "'d", "whatcha")
 │ │ └── utils.py: Utilities for applying casing and finding contraction subjects and verbs
 │ ├── __init__.py: Exposes library functions for use across the package
-│ ├── encoding.py: Functions for removing encoding and decoding text
+│ ├── encoding.py: Functions for encoding and decoding text
 │ ├── manipulation.py: Functions for manipulating a given string
 │ ├── nlp.py: Functions for lazy spaCy loading and text processing
 │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
