@@ -148,7 +148,7 @@ def expand_contractions(doc: Doc) -> str:
 
         is_negation: bool = bool(WarpingPatterns.N_T_SUFFIX.search(contraction))
         is_ambiguous: bool = bool(
-            WarpingPatterns.AMBIGUOUS_CONTRACTION.match(contraction)
+            WarpingPatterns.AMBIGUOUS_CONTRACTION.fullmatch(contraction)
         )
 
         if is_negation or is_ambiguous:
