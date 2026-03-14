@@ -77,7 +77,7 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
 
 # Tuple of strings for all coarse-grained parts-of-speech tags
 # representing words.
-POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
+POS_WORD_TAGS: Final[frozenset[str]] = frozenset(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
 
