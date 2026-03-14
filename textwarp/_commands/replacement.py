@@ -1,7 +1,8 @@
 """Runners for replacement commands."""
 
-import regex as re
 from typing import Callable
+
+import regex as re
 
 from textwarp._cli.constants.messages import (
     ENTER_CASE_TO_REPLACE_PROMPT,
@@ -11,17 +12,21 @@ from textwarp._cli.constants.messages import (
     ENTER_TEXT_TO_REPLACE_PROMPT,
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
-    ENTER_VALID_TEXT_PROMPT
+    ENTER_VALID_TEXT_PROMPT,
+    CASE_NOT_FOUND_MESSAGE,
+    REGEX_NOT_FOUND_MESSAGE,
+    TEXT_NOT_FOUND_MESSAGE
 )
+from textwarp._cli.constants.inputs import EXIT_INPUTS, NO_INPUTS
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.constants.maps import CASE_NAMES_REGEX_MAP
 from textwarp._core.enums import PresenceCheckType
 from textwarp._core.exceptions import (
     CaseNotFoundError,
     RegexNotFoundError,
-    TextToReplaceNotFoundError
+    TextNotFoundError
 )
-from textwarp._cli.ui import print_wrapped
+from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._cli.validation import (
     validate_any_text,
     validate_case_name,

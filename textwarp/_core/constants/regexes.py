@@ -1,7 +1,8 @@
 """Regular expressions used across the package."""
 
-import regex as re
 from typing import Final, Iterable, final
+
+import regex as re
 
 from textwarp._core.config import (
     ContractionExpansion,

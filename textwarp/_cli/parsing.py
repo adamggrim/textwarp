@@ -1,9 +1,8 @@
 """Command-line argument parsing using argparse."""
 
 import argparse
-import sys
-
 from importlib.metadata import PackageNotFoundError, version
+import sys
 from typing import Any, Callable
 
 from textwarp._cli.args import (

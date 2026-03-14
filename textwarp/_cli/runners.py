@@ -7,8 +7,7 @@ import pyperclip
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
-    MODIFIED_TEXT_COPIED_MESSAGE,
-    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
+    MODIFIED_TEXT_COPIED_MESSAGE
 )
 from textwarp._commands import replacement
 
