@@ -239,9 +239,14 @@ def disambiguate_whatcha(span: Span) -> str:
         str: The base verb for the contraction.
     """
     doc = span.doc
-    next_token = doc[span.end] if span.end < len(doc) else None
+
+    curr_idx = span.end
+    while curr_idx < len(doc) and doc[curr_idx].pos_ == 'ADV':
+        curr_idx += 1
+
+    next_token = doc[curr_idx] if curr_idx < len(doc) else None
     after_next_token = (
-        doc[span.end + 1] if span.end + 1 < len(doc) else None
+        doc[curr_idx + 1] if curr_idx + 1 < len(doc) else None
     )
 
     if not next_token:
