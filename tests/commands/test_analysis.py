@@ -51,9 +51,9 @@ def test_pos_count(capsys):
 def test_sentence_count(capsys):
     """Test that sentence_count prints the formatted sentence count."""
     analysis.sentence_count(
-        'The best lack all conviction, while the worst'
-        'Are full of passionate intensity.'
-        'Surely some revelation is at hand;'
+        'The best lack all conviction, while the worst\n'
+        'Are full of passionate intensity.\n'
+        'Surely some revelation is at hand;\n'
         'Surely the Second Coming is at hand.'
     )
     captured = capsys.readouterr()
