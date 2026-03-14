@@ -43,7 +43,7 @@ def test_should_capitalize_pos_exception():
     doc = process_as_doc('and')
     token = doc[0]
 
-    assert token.pos_ in ('CCONJ', 'CONJ') or token.tag_ == 'CC'
+    assert token.pos_ in {'CCONJ', 'CONJ'} or token.tag_ == 'CC'
     assert should_capitalize_pos_or_length(token) is False
 
 

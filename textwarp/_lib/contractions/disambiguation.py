@@ -61,7 +61,7 @@ def _is_present_participle(token: Token) -> bool:
     doc = token.doc
     if text_lower.endswith('in') and token.i + 1 < len(doc):
         next_token_text = doc[token.i + 1].text
-        if next_token_text in ("'", '’'):
+        if next_token_text in {'"', "'"}:
             return True
 
     return False

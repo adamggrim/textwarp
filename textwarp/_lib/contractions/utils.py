@@ -110,7 +110,7 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     doc = verb_token.doc
 
     for child in verb_token.children:
-        if child.dep_ in ('nsubj', 'nsubjpass'):
+        if child.dep_ in {'nsubj', 'nsubjpass'}:
             return child
 
     # Fallback A: Look immediately before the verb (standard order).

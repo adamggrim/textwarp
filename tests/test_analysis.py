@@ -119,7 +119,7 @@ def test_count_sents():
     count = count_sents(COUNT_SENTS_TEXT)
     # Depending on the specific spaCy version, "And one fine morning—"
     # would count as three or four sentences.
-    assert count in (3, 4)
+    assert count in {3, 4}
 
 
 def test_count_words():
