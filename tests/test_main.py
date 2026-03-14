@@ -1,7 +1,8 @@
 """Tests for pipeline processing and commands."""
 
-import pytest
 import sys
+
+import pytest
 
 from textwarp import __main__ as main_module
 
@@ -22,7 +23,7 @@ def test_apply_pipeline_warping():
         ('lowercase', _dummy_lower),
         ('reverse', _dummy_reverse)
     ]
-    result = main_module._apply_pipeline("HELLO WORLD", pipeline)
+    result = main_module._apply_pipeline('HELLO WORLD', pipeline)
     assert result == 'dlrow olleh'
 
 
