@@ -113,6 +113,11 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
         if child.dep_ in {'nsubj', 'nsubjpass'}:
             return child
 
+    if verb_token.dep_ in {'aux', 'auxpass'}:
+        for child in verb_token.head.children:
+            if child.dep_ in {'nsubj', 'nsubjpass'}:
+                return child
+
     # Fallback A: Look immediately before the verb (standard order).
     curr_idx = verb_token.i - 1
 
