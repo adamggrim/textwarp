@@ -1,4 +1,4 @@
-"""Functions for removing encoding and decoding text."""
+"""Functions for encoding and decoding text."""
 
 import statistics
 from collections.abc import Generator
