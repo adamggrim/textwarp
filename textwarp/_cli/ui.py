@@ -34,7 +34,7 @@ def get_input() -> bool:
     print_wrapped(ANY_OTHER_TEXT_PROMPT)
     while True:
         response = input().strip().lower()
-        if response in (YES_INPUTS):
+        if response in YES_INPUTS:
             return True
         if response in (NO_INPUTS | EXIT_INPUTS):
             return False
