@@ -74,17 +74,13 @@ def _create_presence_validator(
             pattern = CASE_NAMES_REGEX_MAP.get(case_key)
 
             if pattern and not pattern.search(text):
-                raise CaseNotFoundError('Case not found in text.')
+                raise CaseNotFoundError(CASE_NOT_FOUND_MESSAGE)
         elif check_type is PresenceCheckType.REGEX:
             if not re.search(search_input, text):
-                raise RegexNotFoundError(
-                    'Regular expression not found in text.'
-                )
+                raise RegexNotFoundError(REGEX_NOT_FOUND_MESSAGE)
         elif check_type is PresenceCheckType.SUBSTRING:
             if search_input not in text:
-                raise TextToReplaceNotFoundError(
-                    'Text to replace not found in text.'
-                )
+                raise TextNotFoundError(TEXT_NOT_FOUND_MESSAGE)
 
     return validator
 
@@ -92,7 +88,8 @@ def _create_presence_validator(
 def _prompt_for_valid_input(
     enter_text_prompt: str,
     validation_func: Callable[[str], None],
-    enter_valid_text_prompt: str
+    enter_valid_text_prompt: str,
+    allow_early_exit: bool = False
 ) -> str:
     """
     Prompt the user for input until the input is valid.
@@ -104,6 +101,8 @@ def _prompt_for_valid_input(
             exception if the string is invalid.
         enter_valid_text_prompt: The prompt to display when the input is
             invalid.
+        allow_early_exit: Whether to allow the user to exit early by
+            entering an exit input.
     """
     current_prompt = enter_text_prompt
 
@@ -111,15 +110,13 @@ def _prompt_for_valid_input(
         print_wrapped(current_prompt)
         user_input = input().rstrip('\n')
 
+        if (allow_early_exit and
+            user_input.strip().lower() in (EXIT_INPUTS | NO_INPUTS)):
+            program_exit()
+
         try:
             validation_func(user_input)
             return user_input
-        except (
-            CaseNotFoundError,
-            RegexNotFoundError,
-            TextToReplaceNotFoundError
-        ):
-            raise
         except Exception as e:
             print_wrapped(str(e))
             current_prompt = enter_valid_text_prompt
@@ -142,15 +139,11 @@ def replace(text: str) -> str:
         PresenceCheckType.SUBSTRING
     )
 
-    try:
-        text_to_replace = _prompt_for_valid_input(
-            ENTER_TEXT_TO_REPLACE_PROMPT,
-            presence_validator,
-            ENTER_VALID_TEXT_PROMPT
-        )
-    except TextToReplaceNotFoundError:
-        # Return text to move to the "Any other text?" prompt.
-        return text
+    text_to_replace = _prompt_for_valid_input(
+        ENTER_TEXT_TO_REPLACE_PROMPT,
+        presence_validator,
+        ENTER_VALID_TEXT_PROMPT
+    )
 
     replacement_text = _prompt_for_valid_input(
         ENTER_REPLACEMENT_TEXT_PROMPT,
@@ -182,12 +175,14 @@ def replace_case(text: str) -> str:
     case_to_replace_name = _prompt_for_valid_input(
         ENTER_CASE_TO_REPLACE_PROMPT,
         presence_validator,
-        ENTER_VALID_CASE_PROMPT
+        ENTER_VALID_CASE_PROMPT,
+        allow_early_exit=True
     ).lower()
     replacement_case_name = _prompt_for_valid_input(
         ENTER_REPLACEMENT_CASE_PROMPT,
         validate_case_name,
-        ENTER_VALID_CASE_PROMPT
+        ENTER_VALID_CASE_PROMPT,
+        allow_early_exit=True
     ).lower()
 
     search_pattern = CASE_NAMES_REGEX_MAP[case_to_replace_name]
@@ -225,4 +220,5 @@ def replace_regex(text: str) -> str:
         validate_any_text,
         ENTER_VALID_TEXT_PROMPT
     )
+
     return re.sub(regex_text, replacement_text, text)

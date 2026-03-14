@@ -68,12 +68,8 @@ def _replace_and_copy(
         clipboard: The clipboard text to transform.
     """
     transformation: str = command_func(clipboard)
-
-    if transformation == clipboard:
-        print_wrapped(TEXT_TO_REPLACE_NOT_FOUND_MESSAGE)
-    else:
-        pyperclip.copy(transformation)
-        print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+    pyperclip.copy(transformation)
+    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
 
 
 def clear_clipboard() -> None:
