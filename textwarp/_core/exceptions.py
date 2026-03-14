@@ -8,7 +8,7 @@ __all__ = [
     'NoRegexError',
     'NoTextError',
     'RegexNotFoundError',
-    'TextToReplaceNotFoundError',
+    'TextNotFoundError',
     'WhitespaceCaseNameError',
     'WhitespaceClipboardError'
 ]
@@ -45,7 +45,7 @@ class RegexNotFoundError(Exception):
     the searched text."""
 
 
-class TextToReplaceNotFoundError(Exception):
+class TextNotFoundError(Exception):
     """Exception raised when the provided text to replace is not found
     in the searched text."""
 
