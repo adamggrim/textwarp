@@ -44,35 +44,35 @@ class CaseConversionPatterns:
     SPLIT_CAMEL_OR_PASCAL: Final[re.Pattern[str]] = re.compile(r'''
         # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
         (?<=            # Preceded by...
-            [a-z]       # A lowercase letter.
+            \p{Ll}      # A lowercase letter.
         )
         (?=             # Followed by...
-            [A-Z]       # An uppercase letter.
+            \p{Lu}      # An uppercase letter.
         )
         |               # OR
         # PART 2: POSITION AFTER AN ACRYONYM
         (?<=            # Preceded by...
-            [A-Z]       # An uppercase letter.
+            \p{Lu}      # An uppercase letter.
         )
         (?=             # Followed by...
-            [A-Z][a-z]  # An uppercase letter followed by a lowercase
+            \p{Lu}\p{Ll} # An uppercase letter followed by a lowercase
                         # letter.
         )
         |               # OR
         # PART 3: POSITION BETWEEN A LETTER AND A DIGIT
         (?<=            # Preceded by...
-            [A-Za-z]    # A letter.
+            \p{L}       # A letter.
         )
         (?=             # Followed by...
-            [0-9]       # A digit.
+            \d          # A digit.
         )
         |               # OR
         # PART 4: POSITION BETWEEN A DIGIT AND A LETTER
         (?<=            # Preceded by...
-            [0-9]       # A digit.
+            \d          # A digit.
         )
         (?=             # Followed by...
-            [A-Za-z]    # A letter.
+            \p{L}       # A letter.
         )
         ''', re.VERBOSE
     )
@@ -91,12 +91,12 @@ class CaseConversionPatterns:
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
         (?<=                            # Preceded by...
-            [a-zA-Z][a-zA-Z0-9]*        # A letter followed by zero or
+            \p{{L}}[\p{{L}}\d]*         # A letter followed by zero or
                                         # more letters or digits.
         )
         [.\-]                           # A hyphen or period.
         (?=                             # Followed by...
-            [A-Za-z0-9]                 # A letter or digit.
+            [\p{{L}}\d]                 # A letter or digit.
         )
         |                               # OR
         # PART 3: SNAKE CASE SEPARATOR
@@ -140,38 +140,38 @@ class CasePatterns:
             any optional separators (i.e., ``.``, ``-`` or ``_``).
     """
     CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-z][a-z0-9]*[A-Z][A-Za-z0-9]*\b'
+        r'\b\p{Ll}[\p{Ll}\d]*\p{Lu}[\p{L}\d]*\b'
     )
     DOT_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-zA-Z][a-zA-Z0-9]*(?:\.[a-zA-Z0-9]+)+\b'
+        r'\b\p{L}[\p{L}\d]*(?:\.[\p{L}\d]+)+\b'
     )
     KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[a-zA-Z][a-zA-Z0-9]*(?:\-[a-zA-Z0-9]+)+\b'
+        r'\b\p{L}[\p{L}\d]*(?:\-[\p{L}\d]+)+\b'
     )
     LOWER_WORD: Final[re.Pattern[str]] = re.compile(r'''
         \b                      # A word boundary.
         (?=                     # Followed by...
-            [0-9.\-_]*          # Zero or more digits or separators.
-            [a-z]               # And a lowercase letter.
+            [\d.\-_]*           # Zero or more digits or separators.
+            \p{Ll}              # And a lowercase letter.
         )
-        [a-z0-9.\-_]+           # One or more lowercase letters, digits
+        [\p{Ll}\d.\-_]+         # One or more lowercase letters, digits
                                 # or separators.
         \b                      # Followed by a word boundary.
         ''', re.VERBOSE
     )
     PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b[A-Z][A-Z0-9]*[a-z][A-Za-z0-9]*\b'
+        r'\b\p{Lu}[\p{Lu}\d]*\p{Ll}[\p{L}\d]*\b'
     )
     SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b_?[a-zA-Z][a-zA-Z0-9]*(?:_[a-zA-Z0-9]+)+\b'
+        r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b'
     )
     UPPER_WORD: Final[re.Pattern[str]] = re.compile(r'''
         \b                      # A word boundary.
         (?=                     # Followed by...
-            [0-9.\-_]*          # Zero or more digits or separators.
-            [A-Z]               # And an uppercase letter.
+            [\d.\-_]*           # Zero or more digits or separators.
+            \p{Lu}              # And an uppercase letter.
         )
-        [A-Z0-9.\-_]+           # One or more uppercase letters, digits or
+        [\p{Lu}\d.\-_]+         # One or more uppercase letters, digits or
                                 # separators.
         \b                      # Followed by a word boundary.
         ''', re.VERBOSE
@@ -287,11 +287,11 @@ class WarpingPatterns:
     APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=            # Preceded by...
-            [a-z]       # An alphabetical letter.
+            \p{{L}}       # An alphabetical letter.
         )
         ['’‘]           # An apostrophe.
         (?=             # Followed by...
-            [a-z]       # An alphabetical letter.
+            \p{{L}}       # An alphabetical letter.
         )
         |               # OR
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
@@ -395,7 +395,7 @@ class WarpingPatterns:
         ''', re.VERBOSE
     )
     PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
-        r'\b(?:[A-Za-z]\.){2,}'
+        r'\b(?:\p{L}\.){2,}'
     )
     PUNCT_INSIDE: Final[re.Pattern[str]] = re.compile(
         r'([.,])(["”\'’]?["”\'’])'
