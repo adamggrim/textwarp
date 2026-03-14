@@ -109,8 +109,8 @@ def disambiguate_ain_t(span: Span) -> str:
     if subject_token:
         subj_text = subject_token.lower_
         is_singular = (
-            subj_text in THIRD_PERSON_SINGULAR_PRONOUNS or
-            subject_token.tag_ in NOUN_TAGS
+            subj_text in THIRD_PERSON_SINGULAR_PRONOUNS
+            or subject_token.tag_ in NOUN_TAGS
         )
         is_first_person_i = (subj_text == 'i')
 
@@ -143,8 +143,8 @@ def disambiguate_d(span: Span) -> str:
         return 'would'
 
     is_wh_question = (
-        span[0].lower_ in WH_WORDS or
-        (span.start > 0 and doc[span.start - 1].lower_ in WH_WORDS)
+        span[0].lower_ in WH_WORDS
+        or (span.start > 0 and doc[span.start - 1].lower_ in WH_WORDS)
     )
 
     for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
@@ -257,8 +257,8 @@ def disambiguate_whatcha(span: Span) -> str:
     next_text_lower = next_token.lower_
     tag = next_token.tag_
 
-    if after_next_token and (next_text_lower == 'ai' and
-            after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+    if after_next_token and (next_text_lower == 'ai'
+            and after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
         return ''
 
     if (

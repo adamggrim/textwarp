@@ -110,8 +110,8 @@ def _prompt_for_valid_input(
         print_wrapped(current_prompt)
         user_input = input().rstrip('\n')
 
-        if (allow_early_exit and
-            user_input.strip().lower() in (EXIT_INPUTS | NO_INPUTS)):
+        if (allow_early_exit
+            and user_input.strip().lower() in (EXIT_INPUTS | NO_INPUTS)):
             program_exit()
 
         try:

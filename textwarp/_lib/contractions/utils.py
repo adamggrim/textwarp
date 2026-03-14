@@ -62,8 +62,8 @@ def apply_expansion_casing(
     expanded_parts: list[str] = expanded_text.split()
 
     is_title_case = (
-        len(original_parts) > 1 and
-        all(_starts_capitalized(part) for part in original_parts)
+        len(original_parts) > 1
+        and all(_starts_capitalized(part) for part in original_parts)
     )
 
     # Check for title case.

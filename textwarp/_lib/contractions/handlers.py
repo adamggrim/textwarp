@@ -102,8 +102,8 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
         curr_idx = span.start - 1
         while curr_idx >= 0:
             prev_token = doc[curr_idx]
-            if (prev_token.lower_ in HAVE_AUXILIARIES or
-                prev_token.lower_ == "'s"):
+            if (prev_token.lower_ in HAVE_AUXILIARIES
+                or prev_token.lower_ == "'s"):
                 has_aux = True
                 break
             elif prev_token.pos_ == 'ADV':
@@ -159,8 +159,8 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     base_verb: str | None = None
 
-    if (prev_token and prev_token.lower_ == 'ai' and
-            suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+    if (prev_token and prev_token.lower_ == 'ai'
+            and suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
         base_verb = disambiguate_ain_t(span)
     else:
         base_verb = get_negative_contraction_base_verb(span.text)

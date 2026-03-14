@@ -86,8 +86,8 @@ def _check_for_ngrams(
 
     for ngram in ngrams:
         pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
-        if (re.search(pattern, left_context) or
-            re.search(pattern, right_context)):
+        if (re.search(pattern, left_context)
+            or re.search(pattern, right_context)):
             return True
 
     return False
