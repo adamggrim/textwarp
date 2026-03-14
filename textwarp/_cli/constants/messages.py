@@ -4,6 +4,7 @@ from typing import Final
 
 __all__ = [
     'ANY_OTHER_TEXT_PROMPT',
+    'CASE_NOT_FOUND_MESSAGE',
     'CLIPBOARD_ACCESS_ERROR_MESSAGE',
     'CLIPBOARD_CLEARED_MESSAGE',
     'ENTER_CASE_TO_REPLACE_PROMPT',
@@ -21,13 +22,17 @@ __all__ = [
     'EXIT_MESSAGE',
     'HELP_DESCRIPTION',
     'MODIFIED_TEXT_COPIED_MESSAGE',
-    'TEXT_TO_REPLACE_NOT_FOUND_MESSAGE'
+    'REGEX_NOT_FOUND_MESSAGE',
+    'TEXT_NOT_FOUND_MESSAGE'
 ]
 
 # Prompt for the user to enter any other text.
 ANY_OTHER_TEXT_PROMPT: Final = (
     'Any other text? (y/n) (Copy text to clipboard):'
 )
+
+# Message for when the case is not found in the text.
+CASE_NOT_FOUND_MESSAGE: Final = 'Case not found.'
 
 # Message for any error accessing the clipboard.
 CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = 'Error accessing clipboard: '
@@ -82,5 +87,8 @@ HELP_DESCRIPTION: Final = (
 # Message for when the program copies modified text to the clipboard.
 MODIFIED_TEXT_COPIED_MESSAGE: Final = 'Modified text copied to clipboard.'
 
+# Message for when the regular expression is not found in the text.
+REGEX_NOT_FOUND_MESSAGE: Final = 'Regular expression not found.'
+
 # Message for when the text to replace is not found in the text.
-TEXT_TO_REPLACE_NOT_FOUND_MESSAGE: Final = 'Text to replace not found.'
+TEXT_NOT_FOUND_MESSAGE: Final = 'Text not found.'
