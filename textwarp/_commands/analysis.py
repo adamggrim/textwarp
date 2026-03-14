@@ -108,7 +108,7 @@ def pos_count(text: str) -> None:
 
 def sentence_count(text: str) -> None:
     """
-    Analyze, format and print line count output.
+    Analyze, format and print sentence count output.
 
     Args:
         text: The string to process.

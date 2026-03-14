@@ -109,7 +109,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
     doc = verb_token.doc
 
-    # Try to find the subject using the dependency parser.
     for child in verb_token.children:
         if child.dep_ in ('nsubj', 'nsubjpass'):
             return child
@@ -124,7 +123,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
         if candidate.pos_ in LEFT_SEARCH_STOP_TAGS:
             break
 
-        # Otherwise, move one step left to skip adverbs.
         curr_idx -= 1
 
     # Fallback B: Look immediately after the suffix (inverted order).

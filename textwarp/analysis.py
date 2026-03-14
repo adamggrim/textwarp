@@ -137,10 +137,10 @@ def count_words(content: str | Doc) -> int:
     Count the number of words in a given string.
 
     Args:
-        text: The string to analyze.
+        content: The string or spaCy ``Doc`` to analyze.
 
     Returns:
-        word_count: The number of words in the string.
+        int: The number of words in the string.
     """
     doc = process_as_doc(content)
     return len(extract_words_from_doc(doc))

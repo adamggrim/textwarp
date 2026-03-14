@@ -32,7 +32,7 @@ def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
         int: The length of the longest command string, adjusted for
             formatting.
     """
-    adjustment = 6 # Account for both the '--' prefix and whitespace.
+    adjustment = 6 # Account for both the "--" prefix and whitespace.
     return max(len(key) + adjustment for key in commands.keys())
 
 
