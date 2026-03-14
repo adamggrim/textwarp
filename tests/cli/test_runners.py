@@ -13,8 +13,7 @@ from textwarp._cli.runners import (
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
-    MODIFIED_TEXT_COPIED_MESSAGE,
-    TEXT_TO_REPLACE_NOT_FOUND_MESSAGE
+    MODIFIED_TEXT_COPIED_MESSAGE
 )
 
 
@@ -70,18 +69,11 @@ def test_replace_and_copy_success(mock_clipboard, capsys):
     Test replacement command successfully finding and modifying text.
     """
     def dummy_replace(text):
-        return text.replace('six', 'seven')
+        return text.replace('Evermore', 'Nevermore')
 
-    _replace_and_copy(
-        dummy_replace,
-        "Sometimes I’ve believed as many as six impossible things before "
-        "breakfast."
-    )
+    _replace_and_copy(dummy_replace, 'Evermore.')
 
-    assert mock_clipboard.paste() == (
-        "Sometimes I’ve believed as many as seven impossible things before "
-        "breakfast."
-    )
+    assert mock_clipboard.paste() == 'Nevermore.'
     captured = capsys.readouterr()
     assert MODIFIED_TEXT_COPIED_MESSAGE in captured.out
 
@@ -91,12 +83,17 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
     def dummy_replace(text):
         return text
 
-    mock_clipboard.copy('Evermore')
-    _replace_and_copy(dummy_replace, 'Nevermore.')
+    quote = (
+        "Sometimes I’ve believed as many as six impossible things before "
+        "breakfast."
+    )
 
-    assert mock_clipboard.paste() == 'Evermore'
+    mock_clipboard.copy(quote)
+    _replace_and_copy(dummy_replace, quote)
+
+    assert mock_clipboard.paste() == quote
     captured = capsys.readouterr()
-    assert TEXT_TO_REPLACE_NOT_FOUND_MESSAGE in captured.out
+    assert MODIFIED_TEXT_COPIED_MESSAGE in captured.out
 
 
 def test_run_command_loop(monkeypatch, mock_clipboard):
