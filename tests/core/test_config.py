@@ -16,6 +16,12 @@ def test_contraction_expansion_config():
     """Test that contraction mappings load with the expected types."""
     assert isinstance(ContractionExpansion.get_ambiguous_map(), tuple)
     assert isinstance(
+        ContractionExpansion.get_common_stateless_participles(), tuple
+    )
+    assert isinstance(
+        ContractionExpansion.get_idiomatic_map(), MappingProxyType
+    )
+    assert isinstance(
         ContractionExpansion.get_unambiguous_map(), MappingProxyType
     )
     assert isinstance(ContractionExpansion.get_whatcha_are_words(), tuple)
