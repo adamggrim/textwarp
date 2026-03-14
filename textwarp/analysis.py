@@ -13,6 +13,16 @@ from textwarp._core.constants.nlp import POS_TAGS
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib.nlp import extract_words_from_doc, process_as_doc
 
+__all__ = [
+    'calculate_time_to_read',
+    'count_chars',
+    'count_lines',
+    'count_mfws',
+    'count_pos',
+    'count_sents',
+    'count_words'
+]
+
 
 def calculate_time_to_read(text: str, wpm: int) -> int:
     """
