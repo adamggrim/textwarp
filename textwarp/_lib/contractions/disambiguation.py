@@ -199,6 +199,8 @@ def disambiguate_s(span: Span) -> str:
         token = doc[i]
         tag = token.tag_
 
+        if token.lower_ == 'gotta':
+            return 'has'
         if tag in BASE_VERB_TAGS:
             return 'does'
         if tag in PARTICIPLE_TAGS:
