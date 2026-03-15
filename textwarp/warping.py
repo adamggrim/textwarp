@@ -162,7 +162,7 @@ def hyphens_to_em(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.EM_DASH_STAND_IN.sub('—', text)
+    return WarpingPatterns.get_em_dash_stand_in().sub('—', text)
 
 
 def hyphen_to_en(text: str) -> str:
@@ -215,7 +215,7 @@ def punct_to_inside(text: str) -> str:
         quote, punct = match.groups()
         return punct + quote
 
-    return WarpingPatterns.PUNCT_OUTSIDE.sub(_repl, text)
+    return WarpingPatterns.get_punct_outside().sub(_repl, text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -243,7 +243,7 @@ def punct_to_outside(text: str) -> str:
         punct, quote = match.groups()
         return quote + punct
 
-    return WarpingPatterns.PUNCT_INSIDE.sub(_repl, text)
+    return WarpingPatterns.get_punct_inside().sub(_repl, text)
 
 
 def random_case(text: str) -> str:
@@ -294,7 +294,7 @@ def redact(text: str) -> str:
     Returns:
         str: The redacted string.
     """
-    return WarpingPatterns.WORD_CHARACTER.sub('█', text)
+    return WarpingPatterns.get_word_character().sub('█', text)
 
 
 def reverse(text: str) -> str:
@@ -362,7 +362,7 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text = to_pascal_case(text)
-    return CasePatterns.PASCAL_WORD.sub(
+    return CasePatterns.get_pascal_word().sub(
         lambda m: change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
@@ -437,7 +437,7 @@ def to_pascal_case(text: str) -> str:
     """
     no_apostrophes_text: str = remove_apostrophes(text)
     words: list[str] = (
-        CaseConversionPatterns.SPLIT_FOR_PASCAL_CONVERSION.split(
+        CaseConversionPatterns.get_split_for_pascal_conversion().split(
             no_apostrophes_text
         )
     )

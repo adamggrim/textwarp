@@ -19,7 +19,7 @@ from textwarp._cli.constants.messages import (
 )
 from textwarp._cli.constants.inputs import EXIT_INPUTS, NO_INPUTS
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
-from textwarp._core.constants.maps import CASE_NAMES_REGEX_MAP
+from textwarp._core.constants.maps import get_case_names_regex_map
 from textwarp._core.enums import PresenceCheckType
 from textwarp._core.exceptions import (
     CaseNotFoundError,
@@ -71,7 +71,7 @@ def _create_presence_validator(
 
         if check_type is PresenceCheckType.CASE_NAME:
             case_key = search_input.lower()
-            pattern = CASE_NAMES_REGEX_MAP.get(case_key)
+            pattern = get_case_names_regex_map().get(case_key)
 
             if pattern and not pattern.search(text):
                 raise CaseNotFoundError(CASE_NOT_FOUND_MESSAGE)
@@ -185,7 +185,7 @@ def replace_case(text: str) -> str:
         allow_early_exit=True
     ).lower()
 
-    search_pattern = CASE_NAMES_REGEX_MAP[case_to_replace_name]
+    search_pattern = get_case_names_regex_map()[case_to_replace_name]
     conversion_func = CASE_NAMES_FUNC_MAP[replacement_case_name]
 
     return search_pattern.sub(

@@ -1,28 +1,40 @@
 """Map used across the package for lookups."""
 
-from typing import Final
+from functools import lru_cache
+from types import MappingProxyType
 
 import regex as re
 
 from textwarp._core.constants.regexes import CasePatterns
 
 __all__ = [
-    'CASE_NAMES_REGEX_MAP'
+    'get_case_names_regex_map'
 ]
 
-CASE_NAMES_REGEX_MAP: Final[dict[str, re.Pattern[str]]] = {
-    'camel': CasePatterns.CAMEL_WORD,
-    'camel case': CasePatterns.CAMEL_WORD,
-    'dot': CasePatterns.DOT_WORD,
-    'dot case': CasePatterns.DOT_WORD,
-    'kebab': CasePatterns.KEBAB_WORD,
-    'kebab case': CasePatterns.KEBAB_WORD,
-    'lower': CasePatterns.LOWER_WORD,
-    'lowercase': CasePatterns.LOWER_WORD,
-    'pascal': CasePatterns.PASCAL_WORD,
-    'pascal case': CasePatterns.PASCAL_WORD,
-    'snake': CasePatterns.SNAKE_WORD,
-    'snake case': CasePatterns.SNAKE_WORD,
-    'upper': CasePatterns.UPPER_WORD,
-    'uppercase': CasePatterns.UPPER_WORD,
-}
+
+@lru_cache(maxsize=1)
+def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
+    """
+    Get a mapping of valid case name inputs to their corresponding
+    compiled regular expressions.
+
+    Returns:
+        MappingProxyType[str, re.Pattern[str]]: A read-only dictionary
+            mapping string inputs to regex patterns.
+    """
+    return MappingProxyType({
+        'camel': CasePatterns.get_camel_word(),
+        'camel case': CasePatterns.get_camel_word(),
+        'dot': CasePatterns.get_dot_word(),
+        'dot case': CasePatterns.get_dot_word(),
+        'kebab': CasePatterns.get_kebab_word(),
+        'kebab case': CasePatterns.get_kebab_word(),
+        'lower': CasePatterns.get_lower_word(),
+        'lowercase': CasePatterns.get_lower_word(),
+        'pascal': CasePatterns.get_pascal_word(),
+        'pascal case': CasePatterns.get_pascal_word(),
+        'snake': CasePatterns.get_snake_word(),
+        'snake case': CasePatterns.get_snake_word(),
+        'upper': CasePatterns.get_upper_word(),
+        'uppercase': CasePatterns.get_upper_word(),
+    })

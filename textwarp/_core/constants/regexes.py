@@ -1,5 +1,6 @@
 """Regular expressions used across the package."""
 
+from functools import lru_cache
 from typing import Final, Iterable, final
 
 import regex as re
@@ -26,22 +27,19 @@ class CaseConversionPatterns:
     """
     A namespace for compiled regular expressions that convert between
     cases.
-
-    Attributes:
-        ANY_SEPARATOR: Matches any separator used in dot, kebab or
-            snake case (i.e., ``.``, ``-`` or ``_``).
-        SPLIT_CAMEL_OR_PASCAL: Splits camel or Pascal case strings
-            into constituent words, correctly handling initialisms
-            (e.g., ``URLSuffix -> ['URL', 'Suffix']``).
-        SPLIT_FOR_PASCAL_CONVERSION: Removes select characters
-            (i.e., a single space, ``.``, ``-``, ``_`` or a word
-            boundary) before conversion to Pascal case.
-        SPLIT_FOR_SEPARATOR_CONVERSION: Splits strings on non-
-            separator word boundaries before converting to dot,
-            kebab or snake case.
     """
-    ANY_SEPARATOR: Final[re.Pattern[str]] = re.compile(r'[.\-_]')
-    SPLIT_CAMEL_OR_PASCAL: Final[re.Pattern[str]] = re.compile(r'''
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_any_separator() -> re.Pattern[str]:
+        """Matches any separator used in dot, kebab or snake case."""
+        return re.compile(r'[.\-_]')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_split_camel_or_pascal() -> re.Pattern[str]:
+        """Splits camel or Pascal case strings into constituent words."""
+        return re.compile(r'''
         # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
         (?<=            # Preceded by...
             \p{Ll}      # A lowercase letter.
@@ -74,9 +72,13 @@ class CaseConversionPatterns:
         (?=             # Followed by...
             \p{L}       # A letter.
         )
-        ''', re.VERBOSE
-    )
-    SPLIT_FOR_PASCAL_CONVERSION: Final[re.Pattern[str]] = re.compile(rf'''
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_split_for_pascal_conversion() -> re.Pattern[str]:
+        """Removes select characters before conversion to Pascal case."""
+        return re.compile(rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE OR
         # PUNCTUATION
         (?<!                            # Not preceded by...
@@ -91,7 +93,7 @@ class CaseConversionPatterns:
         |                               # OR
         # PART 2: DOT OR KEBAB CASE SEPARATOR
         (?<=                            # Preceded by...
-            \p{{L}}[\p{{L}}\d]*         # A letter followed by zero or
+            \p{{L}}[\p{{L}}\d]* # A letter followed by zero or
                                         # more letters or digits.
         )
         [.\-]                           # A hyphen or period.
@@ -104,9 +106,13 @@ class CaseConversionPatterns:
         |                               # OR
         # PART 4: WORD BOUNDARY
         \b                              # A word boundary.
-        ''', re.VERBOSE
-    )
-    SPLIT_FOR_SEPARATOR_CONVERSION: Final[re.Pattern[str]] = re.compile(r'''
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_split_for_separator_conversion() -> re.Pattern[str]:
+        """Splits strings on non-separator word boundaries."""
+        return re.compile(r'''
         # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
         (?<!        # Not preceded by...
             [.\-]   # A period or hyphen.
@@ -115,8 +121,7 @@ class CaseConversionPatterns:
         (?!         # Not followed by...
             [.\-]   # A period or hyphen.
         )
-        ''', re.VERBOSE
-    )
+        ''', re.VERBOSE)
 
 
 @final
@@ -124,58 +129,67 @@ class CaseConversionPatterns:
 class CasePatterns:
     """
     A namespace for compiled regular expressions that identify cases.
-
-    Attributes:
-        CAMEL_WORD: Matches a camel case word (e.g., ``camelWord``).
-        DOT_WORD: Matches a dot case word (e.g., ``dot.word``).
-        KEBAB_WORD: Matches a kebab case word (e.g.,
-            ``kebab-word``).
-        LOWER_WORD: Matches a lowercase word (e.g., ``lowercase``) and
-            any optional separators (i.e., ``.``, ``-`` or ``_``).
-        PASCAL_WORD: Matches a Pascal case word (e.g.,
-            ``PascalWord``).
-        SNAKE_WORD: Matches a snake case word (e.g.,
-            ``snake_word``).
-        UPPER_WORD: Matches an uppercase word (e.g., ``UPPERCASE``) and
-            any optional separators (i.e., ``.``, ``-`` or ``_``).
     """
-    CAMEL_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b\p{Ll}[\p{Ll}\d]*\p{Lu}[\p{L}\d]*\b'
-    )
-    DOT_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b\p{L}[\p{L}\d]*(?:\.[\p{L}\d]+)+\b'
-    )
-    KEBAB_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b\p{L}[\p{L}\d]*(?:\-[\p{L}\d]+)+\b'
-    )
-    LOWER_WORD: Final[re.Pattern[str]] = re.compile(r'''
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_camel_word() -> re.Pattern[str]:
+        """Matches a camel case word (e.g., ``camelWord``)."""
+        return re.compile(r'\b\p{Ll}[\p{Ll}\d]*\p{Lu}[\p{L}\d]*\b')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_dot_word() -> re.Pattern[str]:
+        """Matches a dot case word (e.g., ``dot.word``)."""
+        return re.compile(r'\b\p{L}[\p{L}\d]*(?:\.[\p{L}\d]+)+\b')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_kebab_word() -> re.Pattern[str]:
+        """Matches a kebab case word (e.g., ``kebab-word``)."""
+        return re.compile(r'\b\p{L}[\p{L}\d]*(?:\-[\p{L}\d]+)+\b')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_lower_word() -> re.Pattern[str]:
+        """Matches a lowercase word and any optional separators."""
+        return re.compile(r'''
         \b                      # A word boundary.
         (?=                     # Followed by...
-            [\d.\-_]*           # Zero or more digits or separators.
+            [\d.\-_]* # Zero or more digits or separators.
             \p{Ll}              # And a lowercase letter.
         )
         [\p{Ll}\d.\-_]+         # One or more lowercase letters, digits
                                 # or separators.
         \b                      # Followed by a word boundary.
-        ''', re.VERBOSE
-    )
-    PASCAL_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b\p{Lu}[\p{Lu}\d]*\p{Ll}[\p{L}\d]*\b'
-    )
-    SNAKE_WORD: Final[re.Pattern[str]] = re.compile(
-        r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b'
-    )
-    UPPER_WORD: Final[re.Pattern[str]] = re.compile(r'''
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_pascal_word() -> re.Pattern[str]:
+        """Matches a Pascal case word (e.g., ``PascalWord``)."""
+        return re.compile(r'\b\p{Lu}[\p{Lu}\d]*\p{Ll}[\p{L}\d]*\b')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_snake_word() -> re.Pattern[str]:
+        """Matches a snake case word (e.g., ``snake_word``)."""
+        return re.compile(r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_upper_word() -> re.Pattern[str]:
+        """Matches an uppercase word and any optional separators."""
+        return re.compile(r'''
         \b                      # A word boundary.
         (?=                     # Followed by...
-            [\d.\-_]*           # Zero or more digits or separators.
+            [\d.\-_]* # Zero or more digits or separators.
             \p{Lu}              # And an uppercase letter.
         )
         [\p{Lu}\d.\-_]+         # One or more uppercase letters, digits or
                                 # separators.
         \b                      # Followed by a word boundary.
-        ''', re.VERBOSE
-    )
+        ''', re.VERBOSE)
 
 
 @final
@@ -183,87 +197,7 @@ class CasePatterns:
 class WarpingPatterns:
     """
     A namespace for compiled regular expressions used for warping text.
-
-    Attributes:
-        ANY_APOSTROPHE: Matches any straight (``'``) or curly (``’`` or
-            ``‘``) apostrophe.
-        APOSTROPHE_IN_WORD: Matches a straight apostrophe within a word
-            (e.g., "it's", "'twas").
-        AMBIGUOUS_CONTRACTION: Matches any contraction that can expand
-            to multiple phrases (e.g., "it's" -> "it is" or "it has").
-        CARDINAL: Matches a cardinal number (e.g., "525,600" or "13").
-        CONTRACTION: Matches any expandable contraction (e.g., "don't").
-        CONTRACTION_SUFFIXES_PATTERN: Matches any contraction suffix
-            (e.g., "'s", "'ll").
-        DASH: Matches an en (``–``) or em (``—``) dash.
-        EM_DASH_STAND_IN: Matches characters that function as an em
-            dash (e.g., ``--``).
-        IDIOMATIC_PHRASES: Matches any idiomatic phrase with a
-            corresponding expansion.
-        MULTIPLE_SPACES: Matches two or more consecutive spaces.
-        SURNAME_PREFIX_PATTERN: Matches any surname prefix (e.g., "Mac",
-            "O'").
-        OPENING_STRAIGHT_QUOTES: Matches opening straight quotes.
-        ORDINAL: Matches an ordinal number (e.g., "19th").
-        PERIOD_SEPARATED_INITIALISM: Matches a period-separated
-            initialism (e.g., ``U.S.A.``).
-        PUNCT_INSIDE: Matches punctuation inside quotes (e.g., ``."``).
-        PUNCT_OUTSIDE: Matches punctuation outside quotes (e.g.,
-            ``".``).
-        WORD_CHARACTER: Matches any word character.
     """
-    @staticmethod
-    def _create_words_regex(
-        words: str | Iterable[str],
-        boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
-    ) -> re.Pattern[str]:
-        """
-        Create a compiled regular expression object that matches any
-        word in the given list.
-
-        Args:
-            words: A word or iterable of words.
-            boundary: The boundary-matching strategy to use. Defaults to
-                ``RegexBoundary.WORD_BOUNDARY``.
-
-        Returns:
-            A compiled regular expression object.
-        """
-        def _add_escaped_apostrophes(word: str) -> str:
-            """
-            Add escaped apostrophes to a word.
-
-            Args:
-                word: The word to process.
-            """
-            return re.escape(word).replace("'", "['’‘]")
-        if isinstance(words, str):
-            pattern_string = _add_escaped_apostrophes(words)
-        else:
-            # Sort words by length in descending order, so that longer
-            # words containing other words from the set are matched
-            # first (e.g., "can't've" before "can't").
-            sorted_words: list[str] = sorted(
-                words,
-                key=len,
-                reverse=True
-            )
-
-            escaped_patterns: list[str] = [
-                _add_escaped_apostrophes(w) for w in sorted_words
-            ]
-            pattern_string = '|'.join(escaped_patterns)
-
-        match boundary:
-            case RegexBoundary.WORD_BOUNDARY:
-                final_pattern = rf'(?<!\w)(?:{pattern_string})(?!\w)'
-            case RegexBoundary.START_ANCHOR:
-                final_pattern = rf'(?<!\w)(?:{pattern_string})'
-            case RegexBoundary.END_ANCHOR:
-                final_pattern = rf'(?:{pattern_string})$'
-
-        return re.compile(final_pattern, re.IGNORECASE)
-
     _NUMBER_BASE_PATTERN: Final[str] = r'''
         (?<!            # Not preceded by...
             \d          # A digit.
@@ -281,17 +215,65 @@ class WarpingPatterns:
             \d+         # One or more digits.
         )
     '''
-    elisions: Final[str] = '|'.join(Punctuation.get_elision_words())
 
-    ANY_APOSTROPHE: Final[re.Pattern[str]] = re.compile(r"['’‘]")
-    APOSTROPHE_IN_WORD: Final[re.Pattern[str]] = re.compile(rf'''
+    @staticmethod
+    def _create_words_regex(
+        words: str | Iterable[str],
+        boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
+    ) -> re.Pattern[str]:
+        """
+        Create a compiled regular expression object that matches any
+        word in the given list.
+        """
+        def _add_escaped_apostrophes(word: str) -> str:
+            """Add escaped apostrophes to a word."""
+            return re.escape(word).replace("'", "['’‘]")
+
+        if isinstance(words, str):
+            pattern_string = _add_escaped_apostrophes(words)
+        else:
+            # Sort words by length in descending order, so that longer
+            # words containing other words from the set are matched
+            # first (e.g., "can't've" before "can't").
+            sorted_words: list[str] = sorted(
+                words,
+                key=len,
+                reverse=True
+            )
+            escaped_patterns: list[str] = [
+                _add_escaped_apostrophes(w) for w in sorted_words
+            ]
+            pattern_string = '|'.join(escaped_patterns)
+
+        match boundary:
+            case RegexBoundary.WORD_BOUNDARY:
+                final_pattern = rf'(?<!\w)(?:{pattern_string})(?!\w)'
+            case RegexBoundary.START_ANCHOR:
+                final_pattern = rf'(?<!\w)(?:{pattern_string})'
+            case RegexBoundary.END_ANCHOR:
+                final_pattern = rf'(?:{pattern_string})$'
+
+        return re.compile(final_pattern, re.IGNORECASE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_any_apostrophe() -> re.Pattern[str]:
+        """Matches any straight or curly apostrophe."""
+        return re.compile(r"['’‘]")
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_apostrophe_in_word() -> re.Pattern[str]:
+        """Matches a straight apostrophe within a word."""
+        elisions: str = '|'.join(Punctuation.get_elision_words())
+        return re.compile(rf'''
         # PART 1: APOSTROPHE SURROUNDED BY LETTERS
         (?<=            # Preceded by...
-            \p{{L}}       # An alphabetical letter.
+            \p{{L}}     # An alphabetical letter.
         )
         ['’‘]           # An apostrophe.
         (?=             # Followed by...
-            \p{{L}}       # An alphabetical letter.
+            \p{{L}}     # An alphabetical letter.
         )
         |               # OR
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
@@ -301,55 +283,110 @@ class WarpingPatterns:
             |           # OR
             \d{{2}}s    # An abbreviation for a
         )               # decade.
-        ''', re.VERBOSE | re.IGNORECASE
-    )
-    AMBIGUOUS_CONTRACTION: Final[re.Pattern[str]] = (
-        _create_words_regex(ContractionExpansion.get_ambiguous_map())
-    )
-    CARDINAL: Final[re.Pattern[str]] = re.compile(rf'''
-        {_NUMBER_BASE_PATTERN}  # A number with or without thousands
-                                # separators.
-        \b                      # Followed by a word boundary.
-        (?!                     # Not followed by...
-            \.                  # A period.
-            \d                  # Followed by a digit.
+        ''', re.VERBOSE | re.IGNORECASE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_ambiguous_contraction() -> re.Pattern[str]:
+        """Matches any contraction that can expand to multiple phrases."""
+        return WarpingPatterns._create_words_regex(
+            ContractionExpansion.get_ambiguous_map()
         )
-        ''', re.VERBOSE
-    )
-    CONTRACTION: Final[re.Pattern[str]] = _create_words_regex(
-        list(ContractionExpansion.get_unambiguous_map().keys())
-        + list(ContractionExpansion.get_ambiguous_map())
-    )
-    CONTRACTION_SUFFIXES_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(EntityCasing.get_contraction_suffixes())
-    )
-    COMMON_STATELESS_PARTICIPLES: Final[re.Pattern[str]] = (
-        _create_words_regex(
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_cardinal() -> re.Pattern[str]:
+        """Matches a cardinal number."""
+        return re.compile(rf'''
+        {WarpingPatterns._NUMBER_BASE_PATTERN}  # A number with or without thousands
+                                                # separators.
+        \b                                      # Followed by a word boundary.
+        (?!                                     # Not followed by...
+            \.                                  # A period.
+            \d                                  # Followed by a digit.
+        )
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_contraction() -> re.Pattern[str]:
+        """Matches any expandable contraction."""
+        return WarpingPatterns._create_words_regex(
+            list(ContractionExpansion.get_unambiguous_map().keys())
+            + list(ContractionExpansion.get_ambiguous_map())
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_contraction_suffixes_pattern() -> re.Pattern[str]:
+        """Matches any contraction suffix (e.g., "'s", "'ll")."""
+        return WarpingPatterns._create_words_regex(
+            EntityCasing.get_contraction_suffixes()
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_common_stateless_participles() -> re.Pattern[str]:
+        """Matches common participles like "doin" or "makin"."""
+        return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_common_stateless_participles()
         )
-    )
-    DASH: Final[re.Pattern[str]] = re.compile(r'[–—]')
-    EM_DASH_STAND_IN: Final[re.Pattern[str]] = re.compile(r'\s?--?\s?')
-    IDIOMATIC_PHRASES: Final[re.Pattern[str]] = _create_words_regex(
-        ContractionExpansion.get_idiomatic_map().keys()
-    )
-    MAP_SUFFIX_EXCEPTIONS_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_dash() -> re.Pattern[str]:
+        """Matches an en (–) or em (—) dash."""
+        return re.compile(r'[–—]')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_em_dash_stand_in() -> re.Pattern[str]:
+        """Matches characters that function as an em dash (e.g., --)."""
+        return re.compile(r'\s?--?\s?')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_idiomatic_phrases() -> re.Pattern[str]:
+        """Matches any idiomatic phrase with a corresponding expansion."""
+        return WarpingPatterns._create_words_regex(
+            ContractionExpansion.get_idiomatic_map().keys()
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_map_suffix_exceptions_pattern() -> re.Pattern[str]:
+        """Matches exception suffixes tied to the end of words."""
+        return WarpingPatterns._create_words_regex(
             StringCasing.get_map_suffix_exceptions(),
             boundary=RegexBoundary.END_ANCHOR
         )
-    )
-    MULTIPLE_SPACES: Final[re.Pattern[str]] = re.compile(r'(?<=\S) {2,}')
-    NAME_PREFIX_EXCEPTION_PATTERN: Final[re.Pattern[str]] = (
-        _create_words_regex(
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_multiple_spaces() -> re.Pattern[str]:
+        """Matches two or more consecutive spaces."""
+        return re.compile(r'(?<=\S) {2,}')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_name_prefix_exception_pattern() -> re.Pattern[str]:
+        """Matches strings acting as prefix exceptions."""
+        return WarpingPatterns._create_words_regex(
             StringCasing.get_surname_prefix_exceptions(),
             boundary=RegexBoundary.START_ANCHOR
         )
-    )
-    N_T_SUFFIX: Final[re.Pattern[str]]  = re.compile(
-        r"n['’‘]t$", re.IGNORECASE
-    )
-    OPENING_STRAIGHT_QUOTES: Final[re.Pattern[str]] = re.compile(r'''
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_n_t_suffix() -> re.Pattern[str]:
+        """Matches negative contraction suffixes."""
+        return re.compile(r"n['’‘]t$", re.IGNORECASE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_opening_straight_quotes() -> re.Pattern[str]:
+        """Matches opening straight quotes."""
+        return re.compile(r'''
         # PART 1: SINGLE QUOTES
         (?:                 # OPENING CONTEXT (SINGLE QUOTES)
             ^               # The start of a string.
@@ -385,32 +422,64 @@ class WarpingPatterns:
             )
         "+                  # One or more straight double quotes.
         )
-        ''', re.VERBOSE
-    )
-    ORDINAL: Final[re.Pattern[str]] = re.compile(rf'''
-        ({_NUMBER_BASE_PATTERN})    # GROUP 1 (NUMBER WITH OR WITHOUT
-                                    # SEPARATORS)
-        (?:st|nd|rd|th)             # Followed by an ordinal suffix.
-        \b                          # Followed by a word boundary.
-        ''', re.VERBOSE
-    )
-    PERIOD_SEPARATED_INITIALISM: Final[re.Pattern[str]] = re.compile(
-        r'\b(?:\p{L}\.){2,}'
-    )
-    PUNCT_INSIDE: Final[re.Pattern[str]] = re.compile(
-        r'([.,])(["”\'’]?["”\'’])'
-    )
-    PUNCT_OUTSIDE: Final[re.Pattern[str]] = re.compile(
-        r'(["”\'’]?["”\'’])([.,])'
-    )
-    SURNAME_PREFIX_PATTERN: Final[re.Pattern[str]] = _create_words_regex(
-        StringCasing.get_surname_prefixes(),
-        boundary=RegexBoundary.START_ANCHOR
-    )
-    WHATCHA_ARE_WORDS: Final[re.Pattern[str]] = _create_words_regex(
-        ContractionExpansion.get_whatcha_are_words()
-    )
-    WHATCHA_HAVE_WORDS: Final[re.Pattern[str]] = _create_words_regex(
-        ContractionExpansion.get_whatcha_have_words()
-    )
-    WORD_CHARACTER: Final[re.Pattern[str]] = re.compile(r'\w')
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_ordinal() -> re.Pattern[str]:
+        """Matches an ordinal number."""
+        return re.compile(rf'''
+        ({WarpingPatterns._NUMBER_BASE_PATTERN})    # GROUP 1 (NUMBER WITH OR WITHOUT
+                                                    # SEPARATORS)
+        (?:st|nd|rd|th)                             # Followed by an ordinal suffix.
+        \b                                          # Followed by a word boundary.
+        ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_period_separated_initialism() -> re.Pattern[str]:
+        """Matches a period-separated initialism (e.g., U.S.A.)."""
+        return re.compile(r'\b(?:\p{L}\.){2,}')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_punct_inside() -> re.Pattern[str]:
+        """Matches punctuation inside quotes (e.g., .")."""
+        return re.compile(r'([.,])(["”\'’]?["”\'’])')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_punct_outside() -> re.Pattern[str]:
+        """Matches punctuation outside quotes (e.g., ".)."""
+        return re.compile(r'(["”\'’]?["”\'’])([.,])')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_surname_prefix_pattern() -> re.Pattern[str]:
+        """Matches any surname prefix."""
+        return WarpingPatterns._create_words_regex(
+            StringCasing.get_surname_prefixes(),
+            boundary=RegexBoundary.START_ANCHOR
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_whatcha_are_words() -> re.Pattern[str]:
+        """Matches words that expand 'whatcha' to 'what are you'."""
+        return WarpingPatterns._create_words_regex(
+            ContractionExpansion.get_whatcha_are_words()
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_whatcha_have_words() -> re.Pattern[str]:
+        """Matches words that expand 'whatcha' to 'what have you'."""
+        return WarpingPatterns._create_words_regex(
+            ContractionExpansion.get_whatcha_have_words()
+        )
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_word_character() -> re.Pattern[str]:
+        """Matches any word character."""
+        return re.compile(r'\w')

@@ -28,7 +28,7 @@ def _capitalize_from_map(
     if lower_word in capitalization_map:
         return capitalization_map[lower_word]
 
-    match = WarpingPatterns.MAP_SUFFIX_EXCEPTIONS_PATTERN.search(lower_word)
+    match = WarpingPatterns.get_map_suffix_exceptions_pattern().search(lower_word)
 
     if match:
         start_of_split = match.start()
@@ -114,10 +114,10 @@ def _handle_period_separated_initialism(
         str | None: The capitalized initialism, or ``None`` if the
             word does not contain a period.
     """
-    if WarpingPatterns.PERIOD_SEPARATED_INITIALISM.fullmatch(lower_word):
+    if WarpingPatterns.get_period_separated_initialism().fullmatch(lower_word):
         parts = lower_word.split('.')
         return '.'.join(
-            [part.upper() if not WarpingPatterns.ANY_APOSTROPHE.search(part)
+            [part.upper() if not WarpingPatterns.get_any_apostrophe().search(part)
              else part.lower() for part in parts]
         )
     return None
@@ -135,9 +135,14 @@ def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
         str | None: The capitalized name, or ``None`` if the
             string starts with a name prefix exception.
     """
-    if WarpingPatterns.NAME_PREFIX_EXCEPTION_PATTERN.match(lower_word):
+    surname_prefix_pattern = WarpingPatterns.get_surname_prefix_pattern()
+    name_prefix_exception_pattern = (
+        WarpingPatterns.get_name_prefix_exception_pattern()
+    )
+
+    if name_prefix_exception_pattern.match(lower_word):
         return None
-    elif (match := WarpingPatterns.SURNAME_PREFIX_PATTERN.match(lower_word)):
+    elif (match := surname_prefix_pattern.match(lower_word)):
         prefix_len = len(match.group(0))
         return (lower_word[:prefix_len].capitalize() +
                 lower_word[prefix_len:].capitalize())

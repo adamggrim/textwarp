@@ -31,7 +31,7 @@ def _should_always_lowercase(token: Token) -> bool:
             ``False``.
     """
     return (token.text.lower() in TokenCasing.get_lowercase_particles() or
-        WarpingPatterns.CONTRACTION_SUFFIXES_PATTERN
+        WarpingPatterns.get_contraction_suffixes_pattern()
         .fullmatch(token.text))
 
 

@@ -53,7 +53,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.MULTIPLE_SPACES.sub(' ', text)
+    return WarpingPatterns.get_multiple_spaces().sub(' ', text)
 
 
 def widen(text: str) -> str:

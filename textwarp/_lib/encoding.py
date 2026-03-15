@@ -174,7 +174,7 @@ def to_morse(text: str) -> str:
             str: The normalized string.
         """
         straight_text = curly_to_straight(text.upper())
-        hyphenated_text = WarpingPatterns.DASH.sub('-', straight_text)
+        hyphenated_text = WarpingPatterns.get_dash().sub('-', straight_text)
         return hyphenated_text.replace('…', '...')
 
     normalized_text = _normalize_for_morse(text)

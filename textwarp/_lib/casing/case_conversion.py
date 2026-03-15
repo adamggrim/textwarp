@@ -1,4 +1,4 @@
-"""Functions for converting between cases (title, Pascal, etc.)."""
+"""Functions for converting between cases."""
 
 from __future__ import annotations
 
@@ -219,7 +219,7 @@ def _to_title_case_from_token(
     # Preserve the token if it contains only whitespace or is a
     # contraction suffix.
     if token.is_space or (
-        WarpingPatterns.CONTRACTION_SUFFIXES_PATTERN
+        WarpingPatterns.get_contraction_suffixes_pattern()
         .fullmatch(token.text)
     ):
         return token.text
@@ -380,17 +380,17 @@ def to_separator_case(
     """
     no_apostrophes_text = remove_apostrophes(text)
     parts: list[str] = (
-        CaseConversionPatterns.SPLIT_FOR_SEPARATOR_CONVERSION.split(
+        CaseConversionPatterns.get_split_for_separator_conversion().split(
             no_apostrophes_text
         )
     )
     processed_parts: list[str] = []
 
-    separator_pattern_name = f'{separator.name}_WORD'
+    separator_pattern_name = f'get_{separator.name.lower()}_word'
     separator_pattern: re.Pattern[str] = getattr(
         CasePatterns,
         separator_pattern_name
-    )
+    )()
     other_separators: list[CaseSeparator] = [
         s for s in CaseSeparator if s != separator
     ]
@@ -416,21 +416,21 @@ def to_separator_case(
             processed_part = part
         # Part is in another separator case.
         elif any(
-            getattr(CasePatterns, f'{s.name}_WORD').match(part)
+            getattr(CasePatterns, f'get_{s.name.lower()}_word')().match(part)
             for s in other_separators
         ):
             processed_part = (
-                CaseConversionPatterns.ANY_SEPARATOR.sub(
+                CaseConversionPatterns.get_any_separator().sub(
                     separator.value,
                     part
                 )
             )
         # Part is in camel or Pascal case.
-        elif (CasePatterns.CAMEL_WORD.fullmatch(part)
-              or CasePatterns.PASCAL_WORD.fullmatch(part)):
+        elif (CasePatterns.get_camel_word().fullmatch(part)
+              or CasePatterns.get_pascal_word().fullmatch(part)):
             # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
-                CaseConversionPatterns.SPLIT_CAMEL_OR_PASCAL.split(part)
+                CaseConversionPatterns.get_split_camel_or_pascal().split(part)
             )
             lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
@@ -459,10 +459,10 @@ def word_to_pascal(word: str) -> str:
     if not any(char.isalpha() for char in word):
         return word
     # Word is already in Pascal case.
-    if CasePatterns.PASCAL_WORD.match(word):
+    if CasePatterns.get_pascal_word().match(word):
         return word
     # Word is in camel case.
-    if CasePatterns.CAMEL_WORD.match(word):
+    if CasePatterns.get_camel_word().match(word):
         return change_first_letter_case(word, str.upper)
     # Word is not in Pascal or camel case.
     return case_from_string(word)

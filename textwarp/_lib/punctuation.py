@@ -64,7 +64,7 @@ def remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.APOSTROPHE_IN_WORD.sub('', text)
+    return WarpingPatterns.get_apostrophe_in_word().sub('', text)
 
 
 def straight_to_curly(text: str) -> str:
@@ -78,10 +78,10 @@ def straight_to_curly(text: str) -> str:
         curly_text: The converted string.
     """
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = WarpingPatterns.APOSTROPHE_IN_WORD.sub('’', text)
+    curly_text = WarpingPatterns.get_apostrophe_in_word().sub('’', text)
 
     # Replace opening straight quotes with opening curly quotes.
-    curly_text = WarpingPatterns.OPENING_STRAIGHT_QUOTES.sub(
+    curly_text = WarpingPatterns.get_opening_straight_quotes().sub(
         _replace_opening_quote, curly_text
     )
 

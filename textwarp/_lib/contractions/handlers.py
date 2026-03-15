@@ -144,7 +144,7 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise
                 ``None``.
     """
-    if not WarpingPatterns.N_T_SUFFIX.search(span.text.lower()):
+    if not WarpingPatterns.get_n_t_suffix().search(span.text.lower()):
         return None
 
     doc = span.doc

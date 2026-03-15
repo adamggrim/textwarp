@@ -89,7 +89,7 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
         expanded_text = idiom_map.get(straight_match, original_phrase)
         return apply_expansion_casing(original_phrase, expanded_text)
 
-    return WarpingPatterns.IDIOMATIC_PHRASES.sub(_replace_idiom, phrase)
+    return WarpingPatterns.get_idiomatic_phrases().sub(_replace_idiom, phrase)
 
 
 def _expand_unambiguous_contraction(
@@ -129,7 +129,7 @@ def expand_contractions(doc: Doc) -> str:
         from textwarp._lib.nlp import process_as_doc
         doc = process_as_doc(text_with_idioms_expanded)
 
-    matches = list(WarpingPatterns.CONTRACTION.finditer(doc.text))
+    matches = list(WarpingPatterns.get_contraction().finditer(doc.text))
     if not matches:
         return doc.text
 
@@ -146,9 +146,11 @@ def expand_contractions(doc: Doc) -> str:
         expanded_parts.append(doc.text[last_idx:start_idx])
         contraction: str = match.group(0)
 
-        is_negation: bool = bool(WarpingPatterns.N_T_SUFFIX.search(contraction))
+        is_negation: bool = bool(
+            WarpingPatterns.get_n_t_suffix().search(contraction)
+        )
         is_ambiguous: bool = bool(
-            WarpingPatterns.AMBIGUOUS_CONTRACTION.fullmatch(contraction)
+            WarpingPatterns.get_ambiguous_contraction().fullmatch(contraction)
         )
 
         if is_negation or is_ambiguous:

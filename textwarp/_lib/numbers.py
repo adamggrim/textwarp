@@ -43,7 +43,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
         return number_str + suffix
 
-    return WarpingPatterns.CARDINAL.sub(_replace_cardinal, text)
+    return WarpingPatterns.get_cardinal().sub(_replace_cardinal, text)
 
 
 def ordinal_to_cardinal(text: str) -> str:
@@ -70,4 +70,4 @@ def ordinal_to_cardinal(text: str) -> str:
         """
         return match.group(1)
 
-    return WarpingPatterns.ORDINAL.sub(_replace_ordinal, text)
+    return WarpingPatterns.get_ordinal().sub(_replace_ordinal, text)
