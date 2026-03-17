@@ -16,6 +16,7 @@ from textwarp._cli.runners import (
 from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
 from textwarp._core.types import Pipeline
+from textwarp._core.context import ctx
 
 # Commands that print analysis and exit.
 ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
@@ -28,7 +29,7 @@ ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'word-count'
 })
 
-# All function names for replacement commands.
+# All the function names for replacement commands.
 _REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
 
@@ -117,9 +118,13 @@ def _validate_piped_commands(pipeline: Pipeline) -> None:
 def main() -> None:
     """Run the main loop for text transformation or analysis."""
     try:
-        pipeline = parse_args()
-        if not pipeline:
+        pipeline_data = parse_args()
+        if not pipeline_data:
             return
+
+        pipeline, lang_code = pipeline_data
+
+        ctx.set_locale(lang_code)
 
         if sys.stdin.isatty():
             _process_interactive_mode(pipeline)
