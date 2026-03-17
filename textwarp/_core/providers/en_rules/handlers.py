@@ -22,7 +22,7 @@ from textwarp._core.constants.apostrophes import (
     APOSTROPHE_S_VARIANTS
 )
 from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._lib.contractions.disambiguation import (
+from textwarp._core.providers.en_rules.disambiguation import (
     disambiguate_ain_t,
     disambiguate_d,
     disambiguate_gotta,
@@ -30,7 +30,7 @@ from textwarp._lib.contractions.disambiguation import (
     disambiguate_wanna,
     disambiguate_whatcha
 )
-from textwarp._lib.contractions.utils import (
+from textwarp._core.providers.en_rules.utils import (
     apply_expansion_casing,
     find_subject_token,
     get_negative_contraction_base_verb
