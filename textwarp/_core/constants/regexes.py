@@ -32,7 +32,13 @@ class CaseConversionPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_any_separator() -> re.Pattern[str]:
-        """Matches any separator used in dot, kebab or snake case."""
+        """
+        Get a regular expression matching any separator used in dot,
+        kebab or snake case.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'[.\-_]')
 
     @staticmethod
@@ -129,7 +135,13 @@ class CaseConversionPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_split_for_separator_conversion() -> re.Pattern[str]:
-        """Splits strings on non-separator word boundaries."""
+        """
+        Get a regular expression for splitting strings on non-separator
+        word boundaries.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(
             r'''
             # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
@@ -155,25 +167,46 @@ class CasePatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_camel_word() -> re.Pattern[str]:
-        """Matches a camel case word (e.g., ``camelWord``)."""
+        """
+        Get a regular expression matching any camel case word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b\p{Ll}[\p{Ll}\d]*\p{Lu}[\p{L}\d]*\b')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_dot_word() -> re.Pattern[str]:
-        """Matches a dot case word (e.g., ``dot.word``)."""
+        """
+        Get a regular expression matching a dot case word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b\p{L}[\p{L}\d]*(?:\.[\p{L}\d]+)+\b')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_kebab_word() -> re.Pattern[str]:
-        """Matches a kebab case word (e.g., ``kebab-word``)."""
+        """
+        Get a regular expression matching a kebab case word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b\p{L}[\p{L}\d]*(?:\-[\p{L}\d]+)+\b')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_lower_word() -> re.Pattern[str]:
-        """Matches a lowercase word and any optional separators."""
+        """
+        Get a regular expression matching a lowercase word and any
+        optional separators.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(
             r'''
             \b                  # A word boundary.
@@ -202,13 +235,24 @@ class CasePatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_snake_word() -> re.Pattern[str]:
-        """Matches a snake case word (e.g., ``snake_word``)."""
+        """
+        Get a regular expression matching a snake case word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_upper_word() -> re.Pattern[str]:
-        """Matches an uppercase word and any optional separators."""
+        """
+        Get a regular expression matching an uppercase word and any
+        optional separators.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(
             r'''
             \b                  # A word boundary.
@@ -254,11 +298,18 @@ class WarpingPatterns:
         boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
     ) -> re.Pattern[str]:
         """
-        Create a compiled regular expression object that matches any
-        word in the given list.
+        Create a regular expression that matches any word in the given
+        list.
+
+        Args:
+            words: A string or iterable of strings to match.
+            boundary: The boundary to use around the words.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
         """
         def _add_escaped_apostrophes(word: str) -> str:
-            """Add escaped apostrophes to a word."""
+            """Add escaped straight and curly apostrophes to a word."""
             return re.escape(word).replace("'", "['’‘]")
 
         if isinstance(words, str):
@@ -290,13 +341,25 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_any_apostrophe() -> re.Pattern[str]:
-        """Matches any straight or curly apostrophe."""
+        """
+        Get a regular expression matching any straight or curly
+        apostrophe.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r"['’‘]")
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_apostrophe_in_word() -> re.Pattern[str]:
-        """Matches a straight apostrophe within a word."""
+        """
+        Get a regular expression matching a straight apostrophe within a
+        word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         elisions: str = '|'.join(Punctuation.get_elision_words())
         return re.compile(
             rf'''
@@ -323,7 +386,13 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_ambiguous_contraction() -> re.Pattern[str]:
-        """Matches any contraction that can expand to multiple phrases."""
+        """
+        Get a regular expression matching any contraction that can
+        expand to multiple phrases.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_ambiguous_map()
         )
@@ -354,7 +423,12 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_contraction() -> re.Pattern[str]:
-        """Matches any expandable contraction."""
+        """
+        Get a regular expression matching any expandable contraction.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             list(ContractionExpansion.get_unambiguous_map().keys())
             + list(ContractionExpansion.get_ambiguous_map())
@@ -363,7 +437,13 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_contraction_suffixes_pattern() -> re.Pattern[str]:
-        """Matches any contraction suffix (e.g., "'s", "'ll")."""
+        """
+        Get a regular expression matching any contraction suffix (e.g.,
+        "'s", "'ll", etc.).
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             EntityCasing.get_contraction_suffixes()
         )
@@ -371,7 +451,13 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_common_stateless_participles() -> re.Pattern[str]:
-        """Matches common participles like "doin" or "makin"."""
+        """
+        Get a regular expression matching common stateless participles
+        (e.g., "doin", "makin", etc.).
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_common_stateless_participles()
         )
@@ -379,19 +465,36 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_dash() -> re.Pattern[str]:
-        """Matches an en (–) or em (—) dash."""
+        """
+        Get a regular expression matching an en (–) or em (—) dash.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'[–—]')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_em_dash_stand_in() -> re.Pattern[str]:
-        """Matches characters that function as an em dash (e.g., --)."""
+        """
+        Get a regular expression matching characters that function as
+        an em dash.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\s?--?\s?')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_idiomatic_phrases() -> re.Pattern[str]:
-        """Matches any idiomatic phrase with a corresponding expansion."""
+        """
+        Get a regular expression matching idiomatic phrases with their
+        corresponding expansion.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_idiomatic_map().keys()
         )
@@ -399,7 +502,12 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_map_suffix_exceptions_pattern() -> re.Pattern[str]:
-        """Matches exception suffixes tied to the end of words."""
+        """
+        Get a regular expression matching suffix exceptions.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             StringCasing.get_map_suffix_exceptions(),
             boundary=RegexBoundary.END_ANCHOR
@@ -408,13 +516,24 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_multiple_spaces() -> re.Pattern[str]:
-        """Matches two or more consecutive spaces."""
+        """
+        Get a regular expression matching two or more consecutive
+        spaces.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'(?<=\S) {2,}')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_name_prefix_exception_pattern() -> re.Pattern[str]:
-        """Matches strings acting as prefix exceptions."""
+        """
+        Get a regular expression matching prefix exceptions.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             StringCasing.get_surname_prefix_exceptions(),
             boundary=RegexBoundary.START_ANCHOR
@@ -423,13 +542,23 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_n_t_suffix() -> re.Pattern[str]:
-        """Matches negative contraction suffixes."""
+        """
+        Get a regular expression matching negative contraction suffixes.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r"n['’‘]t$", re.IGNORECASE)
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_opening_straight_quotes() -> re.Pattern[str]:
-        """Matches opening straight quotes."""
+        """
+        Get a regular expression matching opening straight quotes.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'''
             # PART 1: SINGLE QUOTES
             (?:                 # OPENING CONTEXT (SINGLE QUOTES)
@@ -471,7 +600,12 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_ordinal() -> re.Pattern[str]:
-        """Matches an ordinal number."""
+        """
+        Get a regular expression matching an ordinal number.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(rf'''
         ({WarpingPatterns._NUMBER_BASE_PATTERN})    # GROUP 1 (NUMBER WITH OR WITHOUT
                                                     # SEPARATORS)
@@ -482,25 +616,47 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_period_separated_initialism() -> re.Pattern[str]:
-        """Matches a period-separated initialism (e.g., U.S.A.)."""
+        """
+        Get a regular expression matching a period-separated initialism.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b(?:\p{L}\.){2,}')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_punct_inside() -> re.Pattern[str]:
-        """Matches punctuation inside quotes (e.g., .")."""
+        """
+        Get a regular expression matching punctuation inside quotation
+        marks.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'([.,])(["”\'’]?["”\'’])')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_punct_outside() -> re.Pattern[str]:
-        """Matches punctuation outside quotes (e.g., ".)."""
+        """
+        Get a regular expression matching punctuation outside quotation
+        marks.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'(["”\'’]?["”\'’])([.,])')
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_surname_prefix_pattern() -> re.Pattern[str]:
-        """Matches any surname prefix."""
+        """
+        Get a regular expression matching any surname prefix.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             StringCasing.get_surname_prefixes(),
             boundary=RegexBoundary.START_ANCHOR
@@ -509,7 +665,13 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_whatcha_are_words() -> re.Pattern[str]:
-        """Matches words that expand 'whatcha' to 'what are you'."""
+        """
+        Get a regular expression matching words where "whatcha" expands
+        to "what are you".
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_whatcha_are_words()
         )
@@ -517,7 +679,13 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_whatcha_have_words() -> re.Pattern[str]:
-        """Matches words that expand 'whatcha' to 'what have you'."""
+        """
+        Get a regular expression matching words where "whatcha" expands
+        to "what have you".
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return WarpingPatterns._create_words_regex(
             ContractionExpansion.get_whatcha_have_words()
         )
@@ -525,5 +693,10 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_word_character() -> re.Pattern[str]:
-        """Matches any word character."""
+        """
+        Get a regular expression matching any word character.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\w')
