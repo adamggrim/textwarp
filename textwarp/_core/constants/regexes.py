@@ -38,90 +38,111 @@ class CaseConversionPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_split_camel_or_pascal() -> re.Pattern[str]:
-        """Splits camel or Pascal case strings into constituent words."""
-        return re.compile(r'''
-        # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
-        (?<=            # Preceded by...
-            \p{Ll}      # A lowercase letter.
+        """
+        Get a regular expression for splitting camel or Pascal case
+        strings into constituent words.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
+        return re.compile(
+            r'''
+            # PART 1: POSITION BETWEEN AN UPPERCASE AND LOWERCASE LETTER
+            (?<=                # Preceded by...
+                \p{Ll}          # A lowercase letter.
+            )
+            (?=                 # Followed by...
+                \p{Lu}          # An uppercase letter.
+            )
+            |                   # OR
+            # PART 2: POSITION AFTER AN ACRYONYM
+            (?<=                # Preceded by...
+                \p{Lu}          # An uppercase letter.
+            )
+            (?=                 # Followed by...
+                \p{Lu}\p{Ll}    # An uppercase letter followed by a lowercase
+                                # letter.
+            )
+            |                   # OR
+            # PART 3: POSITION BETWEEN A LETTER AND A DIGIT
+            (?<=                # Preceded by...
+                \p{L}           # A letter.
+            )
+            (?=                 # Followed by...
+                \d              # A digit.
+            )
+            |                   # OR
+            # PART 4: POSITION BETWEEN A DIGIT AND A LETTER
+            (?<=                # Preceded by...
+                \d              # A digit.
+            )
+            (?=                 # Followed by...
+                \p{L}           # A letter.
+            )
+            ''',
+            re.VERBOSE
         )
-        (?=             # Followed by...
-            \p{Lu}      # An uppercase letter.
-        )
-        |               # OR
-        # PART 2: POSITION AFTER AN ACRYONYM
-        (?<=            # Preceded by...
-            \p{Lu}      # An uppercase letter.
-        )
-        (?=             # Followed by...
-            \p{Lu}\p{Ll} # An uppercase letter followed by a lowercase
-                        # letter.
-        )
-        |               # OR
-        # PART 3: POSITION BETWEEN A LETTER AND A DIGIT
-        (?<=            # Preceded by...
-            \p{L}       # A letter.
-        )
-        (?=             # Followed by...
-            \d          # A digit.
-        )
-        |               # OR
-        # PART 4: POSITION BETWEEN A DIGIT AND A LETTER
-        (?<=            # Preceded by...
-            \d          # A digit.
-        )
-        (?=             # Followed by...
-            \p{L}       # A letter.
-        )
-        ''', re.VERBOSE)
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_split_for_pascal_conversion() -> re.Pattern[str]:
-        """Removes select characters before conversion to Pascal case."""
-        return re.compile(rf'''
-        # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE OR
-        # PUNCTUATION
-        (?<!                            # Not preceded by...
-            [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
-                                        # closing punctuation.
+        """
+        Get a regular expression for splitting strings into words before
+        conversion to Pascal case.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
+        return re.compile(
+            rf'''
+            # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE OR
+            # PUNCTUATION
+            (?<!                            # Not preceded by...
+                [\s.!?—–\-,:;"”“\'’‘)\]}}]  # A space character or select
+                                            # closing punctuation.
+            )
+            [ ]                             # A single space.
+            (?!                             # Not followed by...
+                [\s—–\-"“”\'‘‘(\[{{]        # A space character or select
+                                            # opening punctuation.
+            )
+            |                               # OR
+            # PART 2: DOT OR KEBAB CASE SEPARATOR
+            (?<=                            # Preceded by...
+                \p{{L}}[\p{{L}}\d]*         # A letter followed by zero or
+                                            # more letters or digits.
+            )
+            [.\-]                           # A hyphen or period.
+            (?=                             # Followed by...
+                [\p{{L}}\d]                 # A letter or digit.
+            )
+            |                               # OR
+            # PART 3: SNAKE CASE SEPARATOR
+            _                               # An underscore.
+            |                               # OR
+            # PART 4: WORD BOUNDARY
+            \b                              # A word boundary.
+            ''',
+            re.VERBOSE
         )
-        [ ]                             # A single space.
-        (?!                             # Not followed by...
-            [\s—–\-"“”\'‘‘(\[{{]        # A space character or select
-                                        # opening punctuation.
-        )
-        |                               # OR
-        # PART 2: DOT OR KEBAB CASE SEPARATOR
-        (?<=                            # Preceded by...
-            \p{{L}}[\p{{L}}\d]* # A letter followed by zero or
-                                        # more letters or digits.
-        )
-        [.\-]                           # A hyphen or period.
-        (?=                             # Followed by...
-            [\p{{L}}\d]                 # A letter or digit.
-        )
-        |                               # OR
-        # PART 3: SNAKE CASE SEPARATOR
-        _                               # An underscore.
-        |                               # OR
-        # PART 4: WORD BOUNDARY
-        \b                              # A word boundary.
-        ''', re.VERBOSE)
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_split_for_separator_conversion() -> re.Pattern[str]:
         """Splits strings on non-separator word boundaries."""
-        return re.compile(r'''
-        # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
-        (?<!        # Not preceded by...
-            [.\-]   # A period or hyphen.
+        return re.compile(
+            r'''
+            # WORD BOUNDARY NOT PRECEDED OR FOLLOWED BY A PERIOD OR HYPHEN
+            (?<!        # Not preceded by...
+                [.\-]   # A period or hyphen.
+            )
+            \b          # A word boundary.
+            (?!         # Not followed by...
+                [.\-]   # A period or hyphen.
+            )
+            ''',
+            re.VERBOSE
         )
-        \b          # A word boundary.
-        (?!         # Not followed by...
-            [.\-]   # A period or hyphen.
-        )
-        ''', re.VERBOSE)
 
 
 @final
@@ -153,21 +174,29 @@ class CasePatterns:
     @lru_cache(maxsize=1)
     def get_lower_word() -> re.Pattern[str]:
         """Matches a lowercase word and any optional separators."""
-        return re.compile(r'''
-        \b                      # A word boundary.
-        (?=                     # Followed by...
-            [\d.\-_]* # Zero or more digits or separators.
-            \p{Ll}              # And a lowercase letter.
-        )
-        [\p{Ll}\d.\-_]+         # One or more lowercase letters, digits
+        return re.compile(
+            r'''
+            \b                  # A word boundary.
+            (?=                 # Followed by...
+                [\d.\-_]*       # Zero or more digits or separators.
+                \p{Ll}          # And a lowercase letter.
+            )
+            [\p{Ll}\d.\-_]+     # One or more lowercase letters, digits
                                 # or separators.
-        \b                      # Followed by a word boundary.
-        ''', re.VERBOSE)
+            \b                  # Followed by a word boundary.
+            ''',
+            re.VERBOSE
+        )
 
     @staticmethod
     @lru_cache(maxsize=1)
     def get_pascal_word() -> re.Pattern[str]:
-        """Matches a Pascal case word (e.g., ``PascalWord``)."""
+        """
+        Get a regular expression matching a Pascal case word.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
         return re.compile(r'\b\p{Lu}[\p{Lu}\d]*\p{Ll}[\p{L}\d]*\b')
 
     @staticmethod
@@ -180,16 +209,19 @@ class CasePatterns:
     @lru_cache(maxsize=1)
     def get_upper_word() -> re.Pattern[str]:
         """Matches an uppercase word and any optional separators."""
-        return re.compile(r'''
-        \b                      # A word boundary.
-        (?=                     # Followed by...
-            [\d.\-_]* # Zero or more digits or separators.
-            \p{Lu}              # And an uppercase letter.
-        )
-        [\p{Lu}\d.\-_]+         # One or more uppercase letters, digits or
+        return re.compile(
+            r'''
+            \b                  # A word boundary.
+            (?=                 # Followed by...
+                [\d.\-_]*       # Zero or more digits or separators.
+                \p{Lu}          # And an uppercase letter.
+            )
+            [\p{Lu}\d.\-_]+     # One or more uppercase letters, digits or
                                 # separators.
-        \b                      # Followed by a word boundary.
-        ''', re.VERBOSE)
+            \b                  # Followed by a word boundary.
+            ''',
+            re.VERBOSE
+        )
 
 
 @final
@@ -266,24 +298,27 @@ class WarpingPatterns:
     def get_apostrophe_in_word() -> re.Pattern[str]:
         """Matches a straight apostrophe within a word."""
         elisions: str = '|'.join(Punctuation.get_elision_words())
-        return re.compile(rf'''
-        # PART 1: APOSTROPHE SURROUNDED BY LETTERS
-        (?<=            # Preceded by...
-            \p{{L}}     # An alphabetical letter.
+        return re.compile(
+            rf'''
+            # PART 1: APOSTROPHE SURROUNDED BY LETTERS
+            (?<=            # Preceded by...
+                \p{{L}}     # An alphabetical letter.
+            )
+            ['’‘]           # An apostrophe.
+            (?=             # Followed by...
+                \p{{L}}     # An alphabetical letter.
+            )
+            |               # OR
+            # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
+            ['’‘]           # An apostrophe.
+            (?=             # Followed by...
+                {elisions}  # An elision.
+                |           # OR
+                \d{{2}}s    # An abbreviation for a
+            )               # decade.
+            ''',
+            re.VERBOSE | re.IGNORECASE
         )
-        ['’‘]           # An apostrophe.
-        (?=             # Followed by...
-            \p{{L}}     # An alphabetical letter.
-        )
-        |               # OR
-        # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
-        ['’‘]           # An apostrophe.
-        (?=             # Followed by...
-            {elisions}  # An elision.
-            |           # OR
-            \d{{2}}s    # An abbreviation for a
-        )               # decade.
-        ''', re.VERBOSE | re.IGNORECASE)
 
     @staticmethod
     @lru_cache(maxsize=1)
@@ -296,16 +331,25 @@ class WarpingPatterns:
     @staticmethod
     @lru_cache(maxsize=1)
     def get_cardinal() -> re.Pattern[str]:
-        """Matches a cardinal number."""
-        return re.compile(rf'''
-        {WarpingPatterns._NUMBER_BASE_PATTERN}  # A number with or without thousands
-                                                # separators.
-        \b                                      # Followed by a word boundary.
-        (?!                                     # Not followed by...
-            \.                                  # A period.
-            \d                                  # Followed by a digit.
+        """
+        Get a regular expression that matches a cardinal number.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
+        return re.compile(
+            rf'''
+            {WarpingPatterns._NUMBER_BASE_PATTERN}  # A number with or without
+                                                    # thousands separators.
+            \b                                      # Followed by a word
+                                                    # boundary.
+            (?!                                     # Not followed by...
+                \.                                  # A period.
+                \d                                  # Followed by a digit.
+            )
+            ''',
+            re.VERBOSE
         )
-        ''', re.VERBOSE)
 
     @staticmethod
     @lru_cache(maxsize=1)
@@ -387,41 +431,41 @@ class WarpingPatterns:
     def get_opening_straight_quotes() -> re.Pattern[str]:
         """Matches opening straight quotes."""
         return re.compile(r'''
-        # PART 1: SINGLE QUOTES
-        (?:                 # OPENING CONTEXT (SINGLE QUOTES)
-            ^               # The start of a string.
-            |               # OR
-            (?<=            # Preceded by...
-                [\s([{"“]   # A whitespace character, opening
-                            # parenthesis, opening square bracket,
-                            # opening curly brace or straight or
-                            # opening double quote.
-                |           # OR
-                ["“]\s      # Preceded by a straight or opening double
-                            # quote followed by a space.
+            # PART 1: SINGLE QUOTES
+            (?:                 # OPENING CONTEXT (SINGLE QUOTES)
+                ^               # The start of a string.
+                |               # OR
+                (?<=            # Preceded by...
+                    [\s([{"“]   # A whitespace character, opening
+                                # parenthesis, opening square bracket,
+                                # opening curly brace or straight or
+                                # opening double quote.
+                    |           # OR
+                    ["“]\s      # Preceded by a straight or opening double
+                                # quote followed by a space.
+                )
             )
-        )
-        (                   # GROUP 1 (SINGLE QUOTES)
-        '+                  # One or more straight single quotes.
-        )
-        |                   # OR
-        # PART 2: DOUBLE QUOTES
-        (?:                 # OPENING CONTEXT (DOUBLE QUOTES)
-            ^               # The start of a string.
-            |               # OR
-            (?<=            # Preceded by...
-                [\s([{]     # A whitespace character,
-                            # opening parenthesis, opening square
-                            # bracket or opening curly brace.
+            (                   # GROUP 1 (SINGLE QUOTES)
+            '+                  # One or more straight single quotes.
             )
-        )
-        (                   # GROUP 2 (DOUBLE QUOTES)
-            (?<!            # Not preceded by...
-                ['’]\s      # A straight or closing single quote
-                            # followed by a space.
+            |                   # OR
+            # PART 2: DOUBLE QUOTES
+            (?:                 # OPENING CONTEXT (DOUBLE QUOTES)
+                ^               # The start of a string.
+                |               # OR
+                (?<=            # Preceded by...
+                    [\s([{]     # A whitespace character,
+                                # opening parenthesis, opening square
+                                # bracket or opening curly brace.
+                )
             )
-        "+                  # One or more straight double quotes.
-        )
+            (                   # GROUP 2 (DOUBLE QUOTES)
+                (?<!            # Not preceded by...
+                    ['’]\s      # A straight or closing single quote
+                                # followed by a space.
+                )
+            "+                  # One or more straight double quotes.
+            )
         ''', re.VERBOSE)
 
     @staticmethod
