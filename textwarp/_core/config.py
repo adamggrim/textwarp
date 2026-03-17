@@ -11,6 +11,7 @@ from textwarp._core.types import (
     EntityCasingContext,
     JSONType
 )
+from textwarp._core.context import ctx
 
 __all__ = [
     'ContractionExpansion',
@@ -25,15 +26,22 @@ __all__ = [
 def _load(relative_path: str | Path) -> JSONType:
     """
     Load JSON content using importlib.resources for zip safety.
+    Determine language-specific data using the active locale.
 
     Args:
-        relative_path: The name of the JSON file.
+        relative_path: The name of the JSON file or subpath.
 
     Returns:
         JSONType: The JSON file loaded as a Python object.
     """
     pkg_files = importlib.resources.files(__package__)
-    parts = Path(relative_path).parts
+    path_obj = Path(relative_path)
+
+    if path_obj.name == 'morse_map.json':
+        parts = path_obj.parts
+    else:
+        parts = (ctx.locale,) + path_obj.parts
+
     resource = pkg_files.joinpath('data', *parts)
 
     return cast(JSONType, json.loads(resource.read_text(encoding='utf-8')))
