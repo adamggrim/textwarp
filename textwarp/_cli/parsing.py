@@ -35,16 +35,16 @@ def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
     return max(len(key) + adjustment for key in commands.keys())
 
 
-def parse_args() -> list[tuple[str, Callable[[str], str]]]:
+def parse_args() -> tuple[list[tuple[str, Callable[[str], str]]], str]:
     """
     Parse command-line arguments for a text warping or analysis
-    function name.
+    function name and the language locale.
 
     Returns:
-        list[tuple[str, Callable[[str], str]]]: A list of tuples
+        tuple[list[tuple[str, Callable[[str], str]]], str]: A tuple
             containing:
-            - The command-line argument string (e.g., 'word-count').
-            - The corresponding callable function (e.g., 'word_count').
+            1. The pipeline list of command tuples.
+            2. The language locale string (e.g., "en").
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
@@ -75,6 +75,13 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
         action='version',
         version=f'%(prog)s {__version__}',
         help='show version number and exit'
+    )
+
+    parser.add_argument(
+        '-l', '--lang',
+        type=str,
+        default='en',
+        help='set the language locale ("en" by default)'
     )
 
     for arg_key, (_, help_message) in ARGS_MAP.items():
@@ -141,4 +148,4 @@ def parse_args() -> list[tuple[str, Callable[[str], str]]]:
         parser.print_help(sys.stderr)
         sys.exit(1)
 
-    return pipeline
+    return pipeline, args.lang
