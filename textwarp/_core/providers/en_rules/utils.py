@@ -50,11 +50,9 @@ def apply_expansion_casing(
         idx = find_first_alphabetical_idx(text)
         return idx is not None and text[idx].isupper()
 
-    # Handle empty strings.
     if not original_text or not expanded_text:
         return expanded_text
 
-    # Check for all caps.
     if original_text.isupper():
         return expanded_text.upper()
 
@@ -66,13 +64,11 @@ def apply_expansion_casing(
         and all(_starts_capitalized(part) for part in original_parts)
     )
 
-    # Check for title case.
     if is_title_case:
         return ' '.join([
             case_from_string(part) for part in expanded_parts
         ])
 
-    # Check for sentence case.
     if _starts_capitalized(original_text):
         first_part: str = case_from_string(expanded_parts[0])
 
@@ -83,7 +79,6 @@ def apply_expansion_casing(
 
         return ' '.join([first_part] + remaining_parts)
 
-    # Otherwise, return the original ``expanded_text`` casing.
     return expanded_text
 
 
@@ -170,7 +165,6 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
     )
 
     if expanded_contraction:
-        # "Cannot" is a special case.
         if expanded_contraction == 'cannot':
             return 'can'
         return expanded_contraction.split()[0]
