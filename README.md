@@ -117,58 +117,77 @@ textwarp/
 ├── _core/
 │ ├── constants/
 │ │ ├── __init__.py: Exposes constants for use across the package
-│ │ ├── apostrophes.py: Sets used across the package for variants and input
+│ │ ├── apostrophes.py: Set used across the package for apostrophe characters
 │ │ ├── maps.py: Map used across the package for lookups
 │ │ ├── nlp.py: Objects used across the package for spaCy processing
 │ │ └── regexes.py: Regular expressions used across the package
 │ ├── data/
-│ │ ├── contraction_expansion/
-│ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
-│ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
-│ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
-│ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
-│ │ ├── entity_casing/
-│ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
-│ │ │ ├── contextual_casings_map.json: Maps entities that require context (casing, part of speech, ngrams) to capitalize
-│ │ │ ├── contraction_suffixes.json: Lists suffixes derived from contractions
-│ │ │ └── lowercase_particles.json: List of name particles (e.g., "von") to keep lowercase
-│ │ ├── string_casing/
-│ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
-│ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
-│ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
-│ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames (that cannot be capitalized by a general rule) to their capitalized version
-│ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames (e.g., "macabre")
-│ │ │ └── surname_prefixes.json: Lists common name prefixes (e.g., "Mac", "O'")
-│ │ ├── elision_words.json: Lists commonly elided words
+│ │ ├── en/
+│ │ │ ├── contraction_expansion/
+│ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
+│ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
+│ │ │ │ ├── idiomatic_phrases.json: Maps idiomatic phrases to their expansions
+│ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+│ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
+│ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
+│ │ │ ├── entity_casing/
+│ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
+│ │ │ │ ├── contextual_casings_map.json: Maps entities that require contextto capitalize
+│ │ │ │ ├── contraction_suffixes.json: Lists suffixes derived from contractions
+│ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
+│ │ │ ├── string_casing/
+│ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
+│ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
+│ │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
+│ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
+│ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
+│ │ │ │ └── surname_prefixes.json: Lists common name prefixes
+│ │ │ └── elision_words.json: Lists commonly elided words
 │ │ └── morse_map.json: Maps characters to their Morse code equivalent
+│ ├── providers/
+│ │ | ├── en_rules/
+│ │ │ ├── __init__.py: Initializes the en_rules sub-package
+│ │ │ ├── apostrophes.py: Sets used in English contraction variants
+│ │ │ ├── casing.py: English-specific string casing logic
+│ │ │ ├── constants.py: English-specific NLP constants
+│ │ │ ├── data.py: English-specific data loading and caching
+│ │ │ ├── disambiguation.py: Functions for resolving ambiguous contractions based on context
+│ │ │ ├── handlers.py: Functions for handling specific types of contractions
+│ │ │ ├── regexes.py: English-specific regular expressions
+│ │ │ └── utils.py: Utilities for applying casing and finding contraction subjects and verbs
+│ │ ├── __init__.py: Strategy pattern classes containing language-specific logic
+│ │ ├── base.py: Abstract base class for language providers
+│ │ └── en.py: English-specific LanguageProvider implementation
 │ ├── __init__.py: Exposes core configuration, constants, and models
 │ ├── config.py: A configuration module handling lazy loading of JSON data
+│ ├── context.py: Global singleton for the active locale and provider
 │ ├── decorators.py: A custom decorator function for non-instantiable classes
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
 │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
 │ ├── models.py: Classes for parts-of-speech counts and word counts
-│ └── types.py: Generic type definitions used across the package
+│ ├── types.py: Generic type definitions used across the package
+│ └── utils.py: Universal utility functions
 ├── _lib/
 │ ├── casing/
 │ │ ├── __init__.py: Exposes casing logic for use across the package
-│ │ ├── case_conversion.py: Functions for converting between cases (title, Pascal, etc.)
-│ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
-│ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
+│ │ ├── case_conversion.py: Functions for converting between cases
+│ │ ├── entity_casing.py: Function for spaCy-based entity capitalization
+│ │ ├── string_casing.py: Function for capitalizing strings through dictionary lookup
 │ │ └── token_casing.py: Logic for spaCy-based token capitalization
-│ ├── contractions/
-│ │ ├── __init__.py: Exposes contraction expansion logic for use across the package
-│ │ ├── core.py: Main logic for expanding contractions
-│ │ ├── disambiguation.py: Functions for resolving ambiguous contractions based on context
-│ │ ├── handlers.py: Functions for handling specific types of contractions (negation, "'s", "'d", "whatcha")
-│ │ └── utils.py: Utilities for applying casing and finding contraction subjects and verbs
 │ ├── __init__.py: Exposes library functions for use across the package
+│ ├── contractions.py: Main logic for expanding contractions
 │ ├── encoding.py: Functions for encoding and decoding text
 │ ├── manipulation.py: Functions for manipulating a given string
 │ ├── nlp.py: Functions for lazy spaCy loading and text processing
 │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
 │ └── punctuation.py: Functions for converting between straight and curly quotes
-├── __init__.py: Initializes the package and exposes public functions
-├── __main__.py: The main entry point for the package, containing the main loop
+├── locales/
+│ └── en/
+│   └── LC_MESSAGES/
+│     ├── textwarp.mo: Compiled translation machine object file for English
+│     └── textwarp.po: Translation source file for English
+├── __init__.py: A Python package for analyzing and transforming text
+├── __main__.py: The main entry point for the package, containing the main loop and associated functions
 ├── analysis.py: Public functions for analyzing text
 └── warping.py: Public functions for warping text
 ```
