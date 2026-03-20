@@ -27,7 +27,8 @@ def test_extract_words_from_doc():
     words = extract_words_from_doc(doc)
 
     expected_words = [
-        'i', "'m", 'sorry', 'dave', 'i', "'m", 'afraid', 'i', 'ca', "n't", 'do', 'that'
+        'i', "'m", 'sorry', 'dave', 'i', "'m", 'afraid', 'i', 'ca',
+        "n't", 'do', 'that'
     ]
 
     assert words == expected_words
