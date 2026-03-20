@@ -1,3 +1,5 @@
+"""Tests for global fixtures and configurations."""
+
 import pytest
 
 from textwarp._lib.nlp import _nlp_instances
