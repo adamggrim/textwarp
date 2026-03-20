@@ -6,7 +6,9 @@ from textwarp.analysis import (
     count_chars,
     count_lines,
     count_mfws,
-    count_pos
+    count_pos,
+    count_sents,
+    count_words
 )
 from textwarp.warping import (
     capitalize,
@@ -47,6 +49,8 @@ __all__ = [
     'count_lines',
     'count_mfws',
     'count_pos',
+    'count_sents',
+    'count_words',
     'curly_to_straight',
     'expand_contractions',
     'from_binary',
@@ -57,8 +61,8 @@ __all__ = [
     'ordinal_to_cardinal',
     'punct_to_inside',
     'punct_to_outside',
-    'randomize',
     'random_case',
+    'randomize',
     'redact',
     'reverse',
     'straight_to_curly',
