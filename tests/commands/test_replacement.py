@@ -15,7 +15,7 @@ from textwarp._commands import replacement
 CASE_TEST_STRING = 'pascal_case'
 
 TEXT_TEST_STRING = (
-    'My heart aches, and a drowsy numbness pains'
+    'My heart aches, and a drowsy numbness pains\n'
     'My sense, as though of hemlock I had drunk.'
 )
 
