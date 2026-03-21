@@ -39,14 +39,14 @@ def _find_first_word_token_idx(
 ) -> int | None:
     """
     Find the index of the first non-space, non-punctuation token in a
-    spaCy ``Doc`` or ``Span``.
+    spaCy `Doc` or `Span`.
 
     Args:
         start_idx: The relative index in the text container for
             starting the search.
 
     Returns:
-        int | None: The index of the first word token, or ``None`` if
+        int | None: The index of the first word token, or `None` if
             there is no non-space, non-punctuation token.
     """
     for i in range(start_idx, len(text_container)):
@@ -64,7 +64,7 @@ def _find_sentence_case_idxs(
     for sentence case.
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to search.
+        text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
         tuple[set[int], set[int]]:
@@ -113,7 +113,7 @@ def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     case (i.e., all word tokens).
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to search.
+        text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
         set[int]: A set containing the indices of all word tokens.
@@ -133,11 +133,11 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     case.
 
     This includes tokens at the start of a sentence, after a colon, at
-    the end of the ``Doc`` or that should be capitalized based on their part
+    the end of the `Doc` or that should be capitalized based on their part
     of speech or length.
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to search.
+        text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
         set[int]: A set containing the set of first word indices and the
@@ -176,14 +176,14 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
 
 def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
-    Convert a spaCy ``Doc`` or ``Span`` to a title case string, handling special
+    Convert a spaCy `Doc` or `Span` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
 
     Args:
-        text_container: The spaCy ``Doc`` or ``Span`` to convert.
+        text_container: The spaCy `Doc` or `Span` to convert.
 
     Returns:
-        str: The converted ``Doc`` or ``Span`` text.
+        str: The converted `Doc` or `Span` text.
     """
     # Find the indices of tokens that should always be capitalized based
     # on their position.
@@ -205,11 +205,11 @@ def _to_title_case_from_token(
     should_capitalize_for_title: bool
 ) -> str:
     """
-    Convert a spaCy ``Token`` to title case, handling special name prefixes
+    Convert a spaCy `Token` to title case, handling special name prefixes
     and preserving other mid-word capitalizations.
 
     Args:
-        token: The spaCy ``Token`` to convert.
+        token: The spaCy `Token` to convert.
         should_capitalize_for_title: A flag indicating whether the
             token should be capitalized.
 
@@ -240,7 +240,7 @@ def change_first_letter_case(
     Args:
         text: The string to convert.
         casing_func: The function to apply to the first letter
-            (i.e., ``str.upper`` or ``str.lower``).
+            (i.e., `str.upper` or `str.lower`).
 
     Returns:
         str: The converted text.
@@ -257,13 +257,13 @@ def change_first_letter_case(
 
 def doc_to_case(doc: Doc, casing: Casing) -> str:
     """
-    Apply title or sentence case to a spaCy ``Doc``, capitalizing any
+    Apply title or sentence case to a spaCy `Doc`, capitalizing any
     proper noun entities.
 
     Args:
-        doc (Doc): A spaCy ``Doc``.
+        doc (Doc): A spaCy `Doc`.
         casing (Casing): The target casing to apply, either
-            ``Casing.SENTENCE``, ``Casing.START`` or ``Casing.TITLE``.
+            `Casing.SENTENCE`, `Casing.START` or `Casing.TITLE`.
 
     Returns:
         str: The cased string.
@@ -447,7 +447,7 @@ def word_to_pascal(word: str) -> str:
     Convert a single word to Pascal case.
 
     This function applies to words split by the
-    ``SPLIT_FOR_PASCAL_CONVERSION`` regular expression.
+    `SPLIT_FOR_PASCAL_CONVERSION` regular expression.
 
     Args:
         word: The word to convert.

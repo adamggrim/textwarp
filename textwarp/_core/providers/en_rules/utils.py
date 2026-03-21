@@ -84,7 +84,7 @@ def apply_expansion_casing(
 
 def find_subject_token(verb_token: Token | None) -> Token | None:
     """
-    Find the subject of a verb in a spaCy ``Doc``, handling both
+    Find the subject of a verb in a spaCy `Doc`, handling both
     standard order (subject to the left: e.g., "I don't") and inverted
     order (subject to the right: e.g., "Don't I").
 
@@ -94,10 +94,10 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
     Args:
         verb_token | None: The token for the verb that predicates the subject;
-            otherwise ``None``.
+            otherwise `None`.
 
     Returns:
-        Token | None: The subject token, otherwise ``None``.
+        Token | None: The subject token, otherwise `None`.
     """
     if verb_token is None:
         return None
@@ -153,7 +153,7 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
 
     Returns:
         str | None: The base verb corresponding to the contraction;
-            otherwise ``None``.
+            otherwise `None`.
     """
     straight_contraction = curly_to_straight(contraction).lower()
 

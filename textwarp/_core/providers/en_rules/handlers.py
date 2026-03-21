@@ -51,12 +51,12 @@ def handle_d(span: Span) -> tuple[str, int] | None:
     Replace a matched "'d" contraction with its expanded version.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise ``None``.
+            2. The end index of the expanded contraction; otherwise `None`.
     """
     if not any(
         span.text.lower().endswith(suffix) for suffix in APOSTROPHE_D_VARIANTS
@@ -82,12 +82,12 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     Replace a matched "gotta" contraction with its expanded version.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise ``None``.
+            2. The end index of the expanded contraction; otherwise `None`.
     """
     if span.text.lower() != 'gotta':
         return None
@@ -136,13 +136,13 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     inversion contractions.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise
-                ``None``.
+                `None`.
     """
     if not WarpingPatterns.get_n_t_suffix().search(span.text.lower()):
         return None
@@ -205,13 +205,13 @@ def handle_s(span: Span) -> tuple[str, int] | None:
     Replace a matched "'s" contraction with its expanded version.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise
-                ``None``.
+                `None`.
     """
     if not any(
         span.text.lower().endswith(suffix) for suffix in APOSTROPHE_S_VARIANTS
@@ -238,13 +238,13 @@ def handle_wanna(span: Span) -> tuple[str, int] | None:
     Replace a matched "wanna" contraction with its expanded version.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise
-                ``None``.
+                `None`.
     """
     if span.text.lower() != 'wanna':
         return None
@@ -261,13 +261,13 @@ def handle_whatcha(span: Span) -> tuple[str, int] | None:
     Replace a matched "whatcha" contraction with its expanded version.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise
-                ``None``.
+                `None`.
     """
     if span.text.lower() != 'whatcha':
         return None

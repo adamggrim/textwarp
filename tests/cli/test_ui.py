@@ -18,7 +18,7 @@ from textwarp._cli.constants.messages import (
 
 
 def test_get_input_yes(simulate_input, capsys):
-    """Test that affirmative inputs return ``True``."""
+    """Test that affirmative inputs return `True`."""
     simulate_input(['y'])
     assert get_input() is True
 
@@ -27,7 +27,7 @@ def test_get_input_yes(simulate_input, capsys):
 
 
 def test_get_input_no_or_exit(simulate_input, capsys):
-    """Test that negative or exit inputs return ``False``."""
+    """Test that negative or exit inputs return `False`."""
     simulate_input(['n'])
     assert get_input() is False
 
@@ -91,7 +91,7 @@ def test_print_wrapped(monkeypatch, capsys):
 def test_program_exit(capsys):
     """
     Test that program_exit prints the exit message and raises a
-    ``SystemExit``.
+    `SystemExit`.
     """
     with pytest.raises(SystemExit):
         program_exit()

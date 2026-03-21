@@ -90,7 +90,7 @@ def test_process_interactive_mode_replacement(monkeypatch):
 
 
 def test_process_piped_mode_warping(monkeypatch):
-    """Test that piped mode reads from stdin and runs ``warp_and_copy``."""
+    """Test that piped mode reads from stdin and runs `warp_and_copy`."""
     monkeypatch.setattr(sys.stdin, 'read', lambda: 'Piped text\n')
 
     warp_called = False
@@ -125,7 +125,7 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
 
 
 def test_main_keyboard_interrupt(monkeypatch):
-    """Test that the main function catches a ``KeyboardInterrupt``."""
+    """Test that the main function catches a `KeyboardInterrupt`."""
     def mock_parse_args():
         raise KeyboardInterrupt()
 

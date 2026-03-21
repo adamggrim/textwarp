@@ -41,11 +41,11 @@ def _is_present_participle(token: Token) -> bool:
     words that end in "in'".
 
     Args:
-        token: The spaCy ``Token`` to check.
+        token: The spaCy `Token` to check.
 
     Returns:
-        bool: ``True`` if the token is a present participle, otherwise
-            ``False``.
+        bool: `True` if the token is a present participle, otherwise
+            `False`.
     """
     if token.tag_ == 'VBG':
         return True
@@ -85,11 +85,11 @@ def disambiguate_ain_t(span: Span) -> str:
     """
     Disambiguate the base verb for an "ain't" contraction.
 
-    This function assumes the "n't" ``Span`` is already an identified
+    This function assumes the "n't" `Span` is already an identified
     "ain't" contraction (preceded by "ai").
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str : The base verb for the contraction.
@@ -128,10 +128,10 @@ def disambiguate_d(span: Span) -> str:
     """
     Disambiguate the base verb for an "'d" contraction.
 
-    This function assumes the ``Span`` is already a "'d" contraction.
+    This function assumes the `Span` is already a "'d" contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str: The base verb for the contraction.
@@ -165,11 +165,11 @@ def disambiguate_gotta(span: Span) -> str:
     """
     Disambiguate the suffix for a "gotta" contraction.
 
-    This function assumes the ``Span`` is already an identified "gotta"
+    This function assumes the `Span` is already an identified "gotta"
     contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str: The base verb for the contraction.
@@ -181,10 +181,10 @@ def disambiguate_s(span: Span) -> str:
     """
     Disambiguate the base verb for an "'s" contraction.
 
-    This function assumes the ``Span`` is already an "'s" contraction.
+    This function assumes the `Span` is already an "'s" contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str: The base verb for the contraction.
@@ -215,11 +215,11 @@ def disambiguate_wanna(span: Span) -> str:
     """
     Disambiguate the suffix for a "wanna" contraction.
 
-    This function assumes the ``Span`` is already an identified "wanna"
+    This function assumes the `Span` is already an identified "wanna"
     contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str: The base verb for the contraction.
@@ -231,11 +231,11 @@ def disambiguate_whatcha(span: Span) -> str:
     """
     Disambiguate the base verb for a "whatcha" contraction.
 
-    This function assumes the ``Span`` has already been identified as a
+    This function assumes the `Span` has already been identified as a
     "whatcha" contraction.
 
     Args:
-        span: The spaCy ``Span`` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         str: The base verb for the contraction.

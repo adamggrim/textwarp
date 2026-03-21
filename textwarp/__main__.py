@@ -45,7 +45,7 @@ def _apply_pipeline(text: str, pipeline: Pipeline) -> str | None:
 
     Returns:
         str | None: The string after applying all functions from the
-            pipeline, or ``None`` if the pipeline executes an analysis
+            pipeline, or `None` if the pipeline executes an analysis
             command.
     """
     for cmd_name, func in pipeline:

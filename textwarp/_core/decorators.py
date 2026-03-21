@@ -6,7 +6,7 @@ __all__ = [
     'non_instantiable'
 ]
 
-# Type variable bound to ``type`` so the decorator preserves the
+# Type variable bound to `type` so the decorator preserves the
 # identity of the class it modifies.
 _T = TypeVar('_T', bound=type)
 

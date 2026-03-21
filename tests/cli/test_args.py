@@ -21,7 +21,7 @@ def test_lazy_load():
 
 def test_args_map_structure():
     """
-    Test that every entry in ``ARGS_MAP`` has a valid callable function
+    Test that every entry in `ARGS_MAP` has a valid callable function
     and help string.
     """
     for cmd_name, (func, help_text) in ARGS_MAP.items():
@@ -41,7 +41,7 @@ def test_args_map_structure():
 
 def test_command_sets_validity():
     """
-    Test that all commands in the command sets are in ``ARGS_MAP``.
+    Test that all commands in the command sets are in `ARGS_MAP`.
     """
     all_mapped_commands = set(ARGS_MAP.keys())
 
@@ -79,7 +79,7 @@ def test_mutually_exclusive_sets():
 ])
 def test_built_in_string_functions(command, input_text, expected_output):
     """
-    Test the commands in ``ARGS_MAP`` that map directly to built-in
+    Test the commands in `ARGS_MAP` that map directly to built-in
     string methods or lambdas.
     """
     func = ARGS_MAP[command][0]

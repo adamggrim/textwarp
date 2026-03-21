@@ -76,7 +76,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
     Count the most frequent words in a given string.
 
     Args:
-        content: The string or spaCy ``Doc`` to analyze.
+        content: The string or spaCy `Doc` to analyze.
         num_mfws: The number of most frequent words to return.
 
     Returns:
@@ -108,7 +108,7 @@ def count_pos(content: str | Doc) -> POSCounts:
     Count the parts of speech in a given string.
 
     Args:
-        content: The string or spaCy ``Doc`` to analyze.
+        content: The string or spaCy `Doc` to analyze.
 
     Returns:
         POSCounts: The parts of speech counts for the string.
@@ -133,7 +133,7 @@ def count_sents(content: str | Doc) -> int:
     Count the number of sentences in a given string.
 
     Args:
-        content: The string or spaCy ``Doc`` to analyze.
+        content: The string or spaCy `Doc` to analyze.
 
     Returns:
         int: The number of sentences in the string.
@@ -147,7 +147,7 @@ def count_words(content: str | Doc) -> int:
     Count the number of words in a given string.
 
     Args:
-        content: The string or spaCy ``Doc`` to analyze.
+        content: The string or spaCy `Doc` to analyze.
 
     Returns:
         int: The number of words in the string.

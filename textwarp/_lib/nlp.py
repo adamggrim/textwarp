@@ -42,8 +42,8 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
                 try:
                     _nlp_instances[model_name] = spacy.load(model_name)
                 except ImportError:
-                    # Occurs when ``en_core_web_trf`` is installed but
-                    # ``spacy-transformers`` is missing.
+                    # Occurs when a transformer model is installed but
+                    # `spacy-transformers` is missing.
                     continue
             return _nlp_instances[model_name]
 
@@ -64,13 +64,13 @@ def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
     """
-    Extract a list of word strings from a spaCy ``Doc``.
+    Extract a list of word strings from a spaCy `Doc`.
 
     Args:
-        doc: The spaCy ``Doc`` to analyze.
+        doc: The spaCy `Doc` to analyze.
 
     Returns:
-        list[str]: The list of word strings from the ``Doc``.
+        list[str]: The list of word strings from the `Doc`.
     """
     return [
         token.text.lower()
@@ -81,15 +81,15 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
 
 def process_as_doc(content: str | Doc, model_priority: ModelPriority = 'speed') -> Doc:
     """
-    Process the input as a spaCy ``Doc``.
+    Process the input as a spaCy `Doc`.
 
     Args:
-        content: The string or ``Doc`` to process.
+        content: The string or `Doc` to process.
         model_priority: The size of the spaCy model to use. Defaults to
             "speed".
 
     Returns:
-        Doc: The processed spaCy ``Doc``.
+        Doc: The processed spaCy `Doc`.
     """
     if not isinstance(content, str):
         return content

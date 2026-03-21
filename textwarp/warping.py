@@ -72,12 +72,12 @@ __all__ = [
 
 def capitalize(content: str | Doc) -> str:
     """
-    Capitalize the each word in a given string or spaCy ``Doc``,
+    Capitalize the each word in a given string or spaCy `Doc`,
     handling special name prefixes and preserving other mid-word
     capitalizations.
 
     Args:
-        content: The string or spaCy ``Doc`` to capitalize.
+        content: The stringspaCy `Doc` to capitalize.
 
     Returns:
         str: The capitalized string.
@@ -101,10 +101,10 @@ def cardinal_to_ordinal(text: str) -> str:
 
 def expand_contractions(content: str | Doc) -> str:
     """
-    Expand all contractions in a given string or spaCy ``Doc``.
+    Expand all contractions in a given string or spaCy `Doc`.
 
     Args:
-        content: The string or spaCy ``Doc`` to convert.
+        content: The string or spaCy `Doc` to convert.
 
     Returns:
         str: The converted string.
@@ -446,10 +446,10 @@ def to_pascal_case(text: str) -> str:
 
 def to_sentence_case(content: str | Doc) -> str:
     """
-    Convert a string or spaCy ``Doc`` to sentence case.
+    Convert a string or spaCy `Doc` to sentence case.
 
     Args:
-        content: The string or spaCy ``Doc`` to convert.
+        content: The string or spaCy `Doc` to convert.
 
     Returns:
         str: The converted string.
@@ -488,11 +488,11 @@ def to_snake_case(text: str) -> str:
 
 def to_title_case(content: str | Doc) -> str:
     """
-    Convert a string or spaCy ``Doc`` to title case, handling special
+    Convert a string or spaCy `Doc` to title case, handling special
     name prefixes and preserving other mid-word capitalizations.
 
     Args:
-        content: The string or spaCy ``Doc`` to convert.
+        content: The string or spaCy `Doc` to convert.
 
     Returns:
         str: The converted string.

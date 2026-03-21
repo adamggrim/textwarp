@@ -181,9 +181,9 @@ def case_from_string(
     Args:
         word: The word to capitalize.
         lowercase_by_default: Whether to lowercase the word if no
-            capitalization strategy applies. Defaults to ``False``.
+            capitalization strategy applies. Defaults to `False`.
         preserve_mixed_case: Whether to preserve mixed-case words.
-            Defaults to ``True``.
+            Defaults to `True`.
 
     Returns:
         str: The capitalized word.

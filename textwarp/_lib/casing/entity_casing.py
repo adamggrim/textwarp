@@ -26,11 +26,11 @@ def _case_contextual_entity(
     speech sequences and ngrams.
 
     Args:
-        span: The spaCy ``Span`` to case.
+        span: The spaCy `Span` to case.
         key: The key to look up in the context map.
 
     Returns:
-        str | None: The contextual casing; otherwise ``None``.
+        str | None: The contextual casing; otherwise `None`.
     """
     contextual_entities_map = EntityCasing.get_contextual_map()
     contexts: list[EntityCasingContext] = contextual_entities_map.get(
@@ -67,9 +67,9 @@ def _check_for_ngrams(
     specific index in the Doc.
 
     Args:
-        span: The spaCy ``Span`` to check.
+        span: The spaCy `Span` to check.
         ngrams: A list of ngrams to check for.
-        context_window: The number of tokens around the ``Span`` to
+        context_window: The number of tokens around the `Span` to
             check.
 
     Returns:
@@ -150,19 +150,19 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
 
 def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
     """
-    Map model entities in a spaCy ``Doc``. These entities are detected
+    Map model entities in a spaCy `Doc`. These entities are detected
     by the underlying spaCy NLP model.
 
     Args:
-        doc: The spaCy ``Doc`` to convert.
+        doc: The spaCy `Doc` to convert.
 
     Returns:
         dict[int, tuple[Span, int, None]]: A dictionary where each key
             is an entity's start token index and each value is a tuple
             containing:
-                1. The entity's spaCy ``Span`` object.
+                1. The entity's spaCy `Span` object.
                 2. The entity's end token index.
-                3. ``None`` (no forced casing).
+                3. `None` (no forced casing).
     """
     return {
         ent.start: (ent, ent.end, None) for ent in doc.ents
@@ -175,15 +175,15 @@ def map_all_entities(doc: Doc) -> dict[int, tuple[Span, int, str | None]]:
     Create a prioritized map of all entities (absolute > contextual > model).
 
     Args:
-        doc: The spaCy ``Doc`` to convert.
+        doc: The spaCy `Doc` to convert.
 
     Returns:
         dict[int, tuple[str | Span, int, None]]: A dictionary where each
             key is an entity's start token index and each value is a
             tuple containing:
-                1. The entity's spaCy ``Span`` object.
+                1. The entity's spaCy `Span` object.
                 2. The entity's end token index.
-                3. The cased entity; otherwise ``None``.
+                3. The cased entity; otherwise `None`.
     """
     custom_map = _map_custom_entities(doc)
 

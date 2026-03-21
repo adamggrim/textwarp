@@ -218,14 +218,14 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     )
 }
 
-# Can be combined with ``SEPARATOR_COMMANDS``. Mutually exclusive with
+# Can be combined with `SEPARATOR_COMMANDS`. Mutually exclusive with
 # each other.
 CASING_COMMANDS: Final[frozenset[str]] = frozenset({
     'alternating-caps', 'capitalize', 'lowercase', 'random-case',
     'sentence-case', 'swapcase', 'title-case', 'uppercase'
 })
 
-# Can be combined with ``CASING_COMMANDS``. Mutually exclusive with
+# Can be combined with `CASING_COMMANDS`. Mutually exclusive with
 # each other.
 SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'camel-case', 'dot-case', 'kebab-case', 'pascal-case',

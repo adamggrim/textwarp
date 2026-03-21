@@ -31,7 +31,7 @@ def _paste_and_validate() -> str | None:
     Paste and validate clipboard text.
 
     Returns:
-        clipboard | None: The validated clipboard text, or ``None`` if
+        clipboard | None: The validated clipboard text, or `None` if
             an error occurred.
     """
     try:
