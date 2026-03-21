@@ -1,6 +1,6 @@
 """Tests for the main contraction expansion engine."""
 
-from textwarp._lib.contractions.core import expand_contractions
+from textwarp._lib.contractions import expand_contractions
 from textwarp._lib.nlp import process_as_doc
 
 
