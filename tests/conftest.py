@@ -1,8 +1,29 @@
 """Tests for global fixtures and configurations."""
 
 import pytest
+from spacy.tokens import Span
 
 from textwarp._lib.nlp import _nlp_instances
+from textwarp._lib.nlp import process_as_doc
+
+
+@pytest.fixture
+def get_contraction_span():
+    """
+    Fixture that returns a helper function to extract the spaCy `Span`
+    for a given contraction in a string.
+    """
+    def _get_span(text: str, contraction: str) -> Span:
+        doc = process_as_doc(text)
+        start_char = text.lower().find(contraction.lower())
+        end_char = start_char + len(contraction)
+        span = doc.char_span(start_char, end_char)
+        assert span is not None, (
+            f"Could not map '{contraction}' to a Span in '{text}'"
+        )
+        return span
+
+    return _get_span
 
 
 @pytest.fixture(autouse=True)
