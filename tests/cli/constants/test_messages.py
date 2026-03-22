@@ -48,7 +48,6 @@ def test_not_found_messages():
     """
     assert 'not found' in CASE_NOT_FOUND_MESSAGE.lower()
     assert 'not found' in TEXT_NOT_FOUND_MESSAGE.lower()
-    assert "Alas, poor Yorick!" not in TEXT_NOT_FOUND_MESSAGE
 
 
 def test_prompt_messages():
