@@ -22,7 +22,7 @@ def test_calculate_max_arg_width():
 def test_parse_args_valid_single_command(monkeypatch):
     """Test parsing a single valid command."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case'])
-    pipeline = parse_args()
+    pipeline, _ = parse_args()
 
     assert len(pipeline) == 1
     cmd_name, func = pipeline[0]
@@ -35,7 +35,7 @@ def test_parse_args_valid_pipeline(monkeypatch):
     monkeypatch.setattr(
         sys, 'argv', ['textwarp', '--strip', '--lowercase', '--snake-case']
     )
-    pipeline = parse_args()
+    pipeline, _ = parse_args()
 
     assert len(pipeline) == 3
     cmd_names = [cmd[0] for cmd in pipeline]
