@@ -1,0 +1,213 @@
+"""English-specific string casing logic."""
+
+from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._core.providers.en_rules.data import EnStringCasing
+from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
+
+__all__ = ['en_case_from_string']
+
+
+def _capitalize_from_map(
+    lower_word: str,
+    capitalization_map: dict[str, str]
+) -> str | None:
+    """
+    Handle word capitalization through dictionary lookup, lowercasing
+    any suffix.
+
+    Args:
+        lower_word: The lowercase word.
+        capitalization_map: A dictionary with lowercase words as keys
+            and their capitalized versions as values.
+
+    Returns:
+        str | None: The capitalized initialism, or `None` if
+            `lower_word` is not in the map.
+    """
+    if lower_word in capitalization_map:
+        return capitalization_map[lower_word]
+
+    match = EnWarpingPatterns.get_map_suffix_exceptions_pattern().search(
+        lower_word
+    )
+
+    if match:
+        start_of_split = match.start()
+        base = lower_word[:start_of_split]
+        suffix = lower_word[start_of_split:]
+
+        capitalized_base = capitalization_map.get(base)
+
+        if capitalized_base:
+            return capitalized_base + suffix.lower()
+        return None
+    else:
+        return capitalization_map.get(lower_word)
+
+
+def _handle_lookup(_word: str, lower_word: str) -> str | None:
+    """
+    Handle capitalization through a combined lookup of absolute
+    casings and mapped prefixed surnames.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The cased word, or `None` if `lower_word`
+            is not in the combined casings map.
+    """
+    return _capitalize_from_map(lower_word, EnStringCasing.get_lookup_map())
+
+
+def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of the "I" pronoun.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized pronoun "I", or `None` if the
+            input is not "i".
+    """
+    if lower_word == 'i':
+        return 'I'
+    return None
+
+
+def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
+    """
+    Preserve the capitalization of a lowercase abbreviation.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The lowercase abbreviation, or `None` if
+            `lower_word` is not in the lowercase abbreviations set.
+    """
+    if (lower_word.removesuffix('.')
+            in EnStringCasing.get_lowercase_abbreviations()):
+        return lower_word
+    return None
+
+
+def _handle_period_separated_initialism(
+    _word: str,
+    lower_word: str
+) -> str | None:
+    """
+    Handle the capitalization of a period-separated initialism.
+
+    Args:
+        _word: The word to capitalize (unused).
+        lower_word: The lowercase word.
+
+    Returns:
+        str | None: The capitalized initialism, or `None` if the
+            word does not contain a period.
+    """
+    if (WarpingPatterns.get_period_separated_initialism()
+            .fullmatch(lower_word)):
+        parts = lower_word.split('.')
+        formatted_parts = [
+            part.upper()
+            if not WarpingPatterns.get_any_apostrophe().search(part)
+            else part.lower()
+            for part in parts
+        ]
+        return '.'.join(formatted_parts)
+    return None
+
+
+def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
+    """
+    Handle the capitalization of a prefixed surname.
+
+    Args:
+        _word: The name to capitalize (unused).
+        lower_word: The lowercase name.
+
+    Returns:
+        str | None: The capitalized name, or `None` if the
+            string starts with a name prefix exception.
+    """
+    surname_prefix_pattern = EnWarpingPatterns.get_surname_prefix_pattern()
+    name_prefix_exception_pattern = (
+        EnWarpingPatterns.get_name_prefix_exception_pattern()
+    )
+
+    if name_prefix_exception_pattern.match(lower_word):
+        return None
+    elif (match := surname_prefix_pattern.match(lower_word)):
+        prefix_len = len(match.group(0))
+        return (lower_word[:prefix_len].capitalize()
+                + lower_word[prefix_len:].capitalize())
+    return None
+
+
+def _preserve_mixed_case(word: str, _lower_word: str) -> str | None:
+    """
+    Preserve the capitalization of a word that is already mixed-case.
+
+    Args:
+        word: The word to check.
+        _lower_word: The lowercase word (unused).
+
+    Returns:
+        str | None : The original word, or `None` if the word is all
+            lowercase or uppercase.
+    """
+    if not word.islower() and not word.isupper():
+        return word
+    return None
+
+
+def en_case_from_string(
+    word: str,
+    lowercase_by_default: bool = False,
+    preserve_mixed_case: bool = True
+) -> str:
+    """
+    Capitalize a word, handling special name prefixes and preserving
+    other mid-word capitalizations.
+
+    Args:
+        word: The word to capitalize.
+        lowercase_by_default: Whether to lowercase the word if no
+            capitalization strategy applies. Defaults to `False`.
+        preserve_mixed_case: Whether to preserve mixed-case words.
+            Defaults to `True`.
+
+    Returns:
+        str: The capitalized word.
+    """
+    if not word or not word[0].isalpha():
+        return word
+
+    lower_word = word.lower()
+
+    capitalization_strategies: list[Callable[[str, str], str | None]] = [
+        _handle_i_pronoun,
+        _handle_lookup,
+        _handle_lowercase_abbreviation,
+        _handle_period_separated_initialism,
+        _handle_prefixed_surname
+    ]
+
+    if preserve_mixed_case:
+        capitalization_strategies.append(_preserve_mixed_case)
+
+    if lowercase_by_default:
+        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
+
+    for strategy in capitalization_strategies:
+        word_result = strategy(word, lower_word)
+        if word_result is not None:
+            return word_result
+
+    return word.capitalize() if not lowercase_by_default else lower_word
