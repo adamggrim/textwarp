@@ -61,6 +61,22 @@ class LanguageProvider(ABC):
         """
         Fine-grained parts-of-speech tags for past tense and past participle
         verb forms. (Fine-grained tags used to distinguish verb tense.)
+
+    @property
+    @abstractmethod
+    def punct_inside_pattern(self) -> re.Pattern[str]:
+        """
+        Regular expression for matching punctuation inside quotation
+        marks.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def punct_outside_pattern(self) -> re.Pattern[str]:
+        """
+        Regular expression for matching punctuation outside quotation
+        marks.
         """
         pass
 

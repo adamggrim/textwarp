@@ -15,6 +15,7 @@ from textwarp._core.constants.regexes import (
     CasePatterns,
     WarpingPatterns
 )
+from textwarp._core.context import ctx
 from textwarp._core.enums import CaseSeparator, Casing
 
 from textwarp._lib import (
@@ -215,7 +216,7 @@ def punct_to_inside(text: str) -> str:
         quote, punct = match.groups()
         return punct + quote
 
-    return WarpingPatterns.get_punct_outside().sub(_repl, text)
+    return ctx.provider.punct_outside_pattern.sub(_repl, text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -243,7 +244,7 @@ def punct_to_outside(text: str) -> str:
         punct, quote = match.groups()
         return quote + punct
 
-    return WarpingPatterns.get_punct_inside().sub(_repl, text)
+    return ctx.provider.punct_inside_pattern.sub(_repl, text)
 
 
 def random_case(text: str) -> str:

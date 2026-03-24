@@ -1,6 +1,7 @@
 """English-specific regular expressions."""
 
 from functools import lru_cache
+from typing import Final
 
 import regex as re
 
@@ -22,6 +23,24 @@ class EnWarpingPatterns:
     A namespace for compiled regular expressions used for English text
     warping.
     """
+
+    _NUMBER_BASE_PATTERN: Final[str] = r'''
+        (?<!            # Not preceded by...
+            \d          # A digit.
+            \.          # Followed by a period.
+        )
+        \b              # A word boundary.
+        (?:             # A non-capturing group for...
+            # A NUMBER WITH THOUSANDS SEPARATORS
+            \d{1,3}     # One to three digits.
+            (?:         # A non-capturing group for...
+                ,\d{3}  # A comma followed by exactly three digits.
+            )+          # One or more times.
+            |           # OR
+            # A NUMBER WITHOUT THOUSANDS SEPARATORS
+            \d+         # One or more digits.
+        )
+    '''
 
     @staticmethod
     @lru_cache(maxsize=1)
@@ -205,6 +224,30 @@ class EnWarpingPatterns:
             (?:st|nd|rd|th)s?
             \b
         ''', re.VERBOSE)
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_punct_inside() -> re.Pattern[str]:
+        """
+        Get a regular expression matching punctuation inside quotation
+        marks.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
+        return re.compile(r'([.,])(["”\'’]?["”\'’])')
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def get_punct_outside() -> re.Pattern[str]:
+        """
+        Get a regular expression matching punctuation outside quotation
+        marks.
+
+        Returns:
+            re.Pattern[str]: A compiled regular expression pattern.
+        """
+        return re.compile(r'(["”\'’]?["”\'’])([.,])')
 
     @staticmethod
     @lru_cache(maxsize=1)

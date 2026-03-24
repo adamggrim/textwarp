@@ -381,6 +381,22 @@ class EnglishProvider(LanguageProvider):
         """
         return EnWarpingPatterns.get_ordinal().sub(_replace_ordinal, text)
 
+    @property
+    def punct_inside_pattern(self) -> re.Pattern[str]:
+        """
+        Regular expression for matching punctuation inside quotation
+        marks.
+        """
+        return EnWarpingPatterns.get_punct_inside()
+
+    @property
+    def punct_outside_pattern(self) -> re.Pattern[str]:
+        """
+        Regular expression for matching punctuation outside quotation
+        marks.
+        """
+        return EnWarpingPatterns.get_punct_outside()
+
     def should_always_lowercase(self, text: str) -> bool:
         """
         Determine if a specific token string should always remain
