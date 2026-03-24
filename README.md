@@ -117,7 +117,7 @@ textwarp/
 ├── _core/
 │ ├── constants/
 │ │ ├── __init__.py: Exposes constants for use across the package
-│ │ ├── apostrophes.py: Set used across the package for apostrophe characters
+│ │ ├── apostrophes.py: Set used across the package for grouping apostrophe characters
 │ │ ├── maps.py: Map used across the package for lookups
 │ │ ├── nlp.py: Objects used across the package for spaCy processing
 │ │ └── regexes.py: Regular expressions used across the package
