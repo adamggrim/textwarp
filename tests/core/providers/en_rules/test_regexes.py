@@ -37,10 +37,10 @@ def test_get_cardinal():
 def test_get_ordinal():
     """Test the regular expression matching ordinal numbers."""
     pattern = EnWarpingPatterns.get_ordinal()
-    match = pattern.search('the 30th of October')
+    match = pattern.search('Thursday, May 12th')
     assert match is not None
-    assert match.group(0) == '30th'
-    assert pattern.search('30') is None
+    assert match.group(0) == '12th'
+    assert pattern.search('12') is None
 
 
 def test_get_n_t_suffix():
