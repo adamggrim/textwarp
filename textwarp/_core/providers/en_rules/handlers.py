@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from textwarp._core.constants.nlp import (
+from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
+from textwarp._core.providers.en_rules.constants import (
     HAVE_AUXILIARIES,
     SINGULAR_NOUN_TAGS,
     THIRD_PERSON_SINGULAR_PRONOUNS
@@ -13,12 +14,11 @@ from textwarp._core.constants.nlp import (
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from textwarp._core.constants.apostrophes import (
+from textwarp._core.providers.en_rules.apostrophes import (
     AIN_T_SUFFIX_VARIANTS,
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS
 )
-from textwarp._core.constants.regexes import WarpingPatterns
 from textwarp._core.providers.en_rules.disambiguation import (
     disambiguate_ain_t,
     disambiguate_d,
@@ -55,9 +55,7 @@ def handle_d(span: Span) -> tuple[str, int] | None:
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction; otherwise `None`.
     """
-    if not any(
-        span.text.lower().endswith(suffix) for suffix in APOSTROPHE_D_VARIANTS
-    ):
+    if not span.text.lower().endswith(tuple(APOSTROPHE_D_VARIANTS)):
         return None
 
     doc = span.doc
@@ -100,7 +98,7 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
         while curr_idx >= 0:
             prev_token = doc[curr_idx]
             if (prev_token.lower_ in HAVE_AUXILIARIES
-                or prev_token.lower_ == "'s"):
+                    or prev_token.lower_ == "'s"):
                 has_aux = True
                 break
             elif prev_token.pos_ == 'ADV':
@@ -111,7 +109,7 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
         if not has_aux:
             subject = find_subject_token(span[0])
             if subject and (
-                subject.text.lower() in THIRD_PERSON_SINGULAR_PRONOUNS
+                subject.lower_ in THIRD_PERSON_SINGULAR_PRONOUNS
                 or subject.tag_ in SINGULAR_NOUN_TAGS
             ):
                 prefix = 'has '
@@ -141,22 +139,20 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise
                 `None`.
     """
-    if not WarpingPatterns.get_n_t_suffix().search(span.text.lower()):
+    if not EnWarpingPatterns.get_n_t_suffix().search(span.text.lower()):
         return None
 
-    doc = span.doc
     suffix_token = span[-1]
 
-    prev_token = (
-        doc[suffix_token.i - 1] if suffix_token.i > 0 else None
-    )
-
-    if not prev_token:
+    if suffix_token.i == 0:
         return span.text, span.end_char
+
+    doc = span.doc
+    prev_token = doc[suffix_token.i - 1]
 
     base_verb: str | None = None
 
-    if (prev_token and prev_token.lower_ == 'ai'
+    if (prev_token.lower_ == 'ai'
             and suffix_token.lower_ in AIN_T_SUFFIX_VARIANTS):
         base_verb = disambiguate_ain_t(span)
     else:
@@ -169,32 +165,22 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     subject_token = find_subject_token(verb_token)
 
     # Verb comes before the subject (e.g., "Don't I").
-    if subject_token and subject_token.i > verb_token.i:
+    if subject_token and subject_token.i > prev_token.i:
         subject_end_token = subject_token.right_edge
-        subject_phrase_end_idx = (
-            subject_end_token.idx + len(subject_end_token)
-        )
+        return_idx = subject_end_token.idx + len(subject_end_token)
+
         # Everything between the end of the contraction and the end
         # of the subject phrase.
-        intermediate_text = doc.text[
-            span.end_char : subject_phrase_end_idx
-        ]
-
-        expanded_text: str = f'{base_verb}{intermediate_text} not'
-        cased_text: str = apply_expansion_casing(span.text, expanded_text)
-
-        return cased_text, subject_phrase_end_idx
+        intermediate_text = doc.text[span.end_char : return_idx]
+        expanded_text = f'{base_verb}{intermediate_text} not'
 
     # Verb comes after the subject (e.g., "I don't").
     else:
-        if base_verb == 'can':
-            expanded_text = 'cannot'
-        else:
-            expanded_text = f'{base_verb} not'
-        cased_text = (
-            apply_expansion_casing(span.text, expanded_text)
-        )
-        return cased_text, span.end_char
+        return_idx = span.end_char
+        expanded_text = 'cannot' if base_verb == 'can' else f'{base_verb} not'
+
+    cased_text = apply_expansion_casing(span.text, expanded_text)
+    return cased_text, return_idx
 
 
 def handle_s(span: Span) -> tuple[str, int] | None:
@@ -210,9 +196,7 @@ def handle_s(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise
                 `None`.
     """
-    if not any(
-        span.text.lower().endswith(suffix) for suffix in APOSTROPHE_S_VARIANTS
-    ):
+    if not span.text.lower().endswith(tuple(APOSTROPHE_S_VARIANTS)):
         return None
 
     doc = span.doc
