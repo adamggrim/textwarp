@@ -7,3 +7,4 @@ from textwarp._core.enums import *
 from textwarp._core.exceptions import *
 from textwarp._core.models import *
 from textwarp._core.types import *
+from textwarp._core.utils import *
