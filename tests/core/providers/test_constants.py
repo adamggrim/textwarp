@@ -41,7 +41,10 @@ def test_third_person_singular_pronouns():
 
 def test_wh_words():
     """Verify interrogative wh-words."""
-    assert 'who' in WH_WORDS
+    assert 'how' in WH_WORDS
     assert 'what' in WH_WORDS
+    assert 'when' in WH_WORDS
     assert 'where' in WH_WORDS
-    assert 'which' not in WH_WORDS
+    assert 'which' in WH_WORDS
+    assert 'who' in WH_WORDS
+    assert 'why' in WH_WORDS
