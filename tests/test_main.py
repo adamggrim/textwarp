@@ -19,7 +19,8 @@ def _dummy_reverse(text: str) -> str:
 
 def test_apply_pipeline_warping():
     """
-    Test that a pipeline of warping functions transforms the text correctly.
+    Test that a pipeline of warping functions transforms the text
+    correctly.
     """
     pipeline = [
         ('lowercase', _dummy_lower),
@@ -30,7 +31,9 @@ def test_apply_pipeline_warping():
 
 
 def test_apply_pipeline_analysis(monkeypatch):
-    """Test that an analysis command stops the pipeline and returns None."""
+    """
+    Test that an analysis command stops the pipeline and returns `None`.
+    """
     analysis_called = False
 
     def mock_analysis(text):

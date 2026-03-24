@@ -1,4 +1,4 @@
-"""Tests for custom class decorators."""
+"""Test for custom class decorators."""
 
 import pytest
 from textwarp._core.decorators import non_instantiable

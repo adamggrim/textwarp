@@ -15,7 +15,8 @@ def test_en_warping_patterns_is_non_instantiable():
 
 def test_get_apostrophe_in_word():
     """
-    Test the regular expression matching apostrophes inside words or elisions.
+    Test the regular expression matching apostrophes inside words or
+    elisions.
     """
     pattern = EnWarpingPatterns.get_apostrophe_in_word()
     match = pattern.search("It's")

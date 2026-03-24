@@ -33,8 +33,8 @@ def test_pattern_classes_are_non_instantiable():
 
 def test_case_patterns_return_compiled_regexes():
     """
-    Verify that CasePatterns methods return compiled regular expression
-    objects.
+    Verify that `CasePatterns` methods return compiled regular
+    expression objects.
     """
     assert isinstance(CasePatterns.get_camel_word(), re.Pattern)
     assert isinstance(CasePatterns.get_snake_word(), re.Pattern)

@@ -100,7 +100,6 @@ def _find_sentence_case_idxs(
 
         if all_upper or all_capitalized:
             for token in sent:
-                # Mark everything except the first word for lowercasing.
                 if token.is_alpha:
                     indices_to_lowercase.add(token.i)
 
@@ -146,14 +145,12 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     position_idxs: set[int] = set()
 
     for i, token in enumerate(text_container):
-        # Find the first word token in each sentence, `Doc` or `Span`.
         if i == 0 or token.is_sent_start:
             first_word_idx: int | None = _find_first_word_token_idx(
                 i, text_container
             )
             if first_word_idx is not None:
                 position_idxs.add(first_word_idx)
-        # Find the first word token after a colon or opening quote.
         elif ((token.text == ':' or token.text in OPEN_QUOTES)
               and token.i + 1 < len(text_container)):
             first_word_idx = _find_first_word_token_idx(
@@ -161,11 +158,9 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
             )
             if first_word_idx is not None:
                 position_idxs.add(first_word_idx)
-        # Find tokens that should be capitalized based on POS or length.
         elif should_capitalize_pos_or_length(token):
             position_idxs.add(token.i)
 
-    # Find the index of the last word.
     for token in reversed(text_container):
         if not token.is_space and not token.is_punct:
             position_idxs.add(token.i)
@@ -185,8 +180,6 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     Returns:
         str: The converted `Doc` or `Span` text.
     """
-    # Find the indices of tokens that should always be capitalized based
-    # on their position.
     position_idxs = _find_title_case_idxs(text_container)
     processed_parts: list[str] = []
 
@@ -216,8 +209,6 @@ def _to_title_case_from_token(
     Returns:
         str: The converted token.
     """
-    # Preserve the token if it contains only whitespace or is a
-    # contraction suffix.
     if token.is_space or (
         WarpingPatterns.get_contraction_suffixes_pattern()
         .fullmatch(token.text)
@@ -248,10 +239,8 @@ def change_first_letter_case(
     idx = find_first_alphabetical_idx(text)
 
     if idx is not None:
-        # Modify the first letter and return the new text.
         return text[:idx] + casing_func(text[idx]) + text[idx+1:]
 
-    # Return the original text if there are no letters in the string.
     return text
 
 
@@ -285,33 +274,24 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
         token_idxs = _find_title_case_idxs(doc)
         lowercase_by_default = True
 
-    # Loop through each token in the ``Doc`` to find any indices that
-    # should be cased.
     while i < len(doc):
-        # Check if the current token is part of a proper noun entity.
         if i in entity_map and casing == Casing.TITLE:
             entity_span, end_idx, absolute_capitalization = entity_map[i]
 
-            # If the entity has an absolute capitalization, use it
-            # directly.
             if absolute_capitalization:
                 trailing_whitespace = entity_span[-1].whitespace_
                 processed_parts.append(
                     absolute_capitalization + trailing_whitespace
                 )
-            # Otherwise, convert the entity to title case.
             else:
                 title_cased_entity_text: str = _to_title_case_from_doc(
                     entity_span
                 )
                 processed_parts.append(title_cased_entity_text)
 
-            # Jump to the end index of the entity.
             i = end_idx
             continue
 
-        # If the curent token is not part of a proper noun entity,
-        # process it as a normal string.
         token = doc[i]
         token_text = doc[i].text
         is_sentence_start = i in token_idxs
@@ -396,25 +376,18 @@ def to_separator_case(
     ]
 
     for i, part in enumerate(parts):
-        # Part contains no alphabetical characters and is not a single
-        # space.
         if not any(char.isalpha() for char in part) and part != ' ':
             processed_parts.append(part)
             continue
-        # Part is a single space.
         elif part == ' ':
-            # Default to keeping the space.
             processed_part = part
-            # Check if the space is surrounded by alphabetical parts.
             if i > 0 and i < len(parts) - 1:
                 prev_part = parts[i - 1]
                 next_part = parts[i + 1]
                 if prev_part.isalnum() and next_part.isalnum():
                     processed_part = separator.value
-        # Part is already in the given separator case.
         elif separator_pattern.match(part):
             processed_part = part
-        # Part is in another separator case.
         elif any(
             getattr(CasePatterns, f'get_{s.name.lower()}_word')().match(part)
             for s in other_separators
@@ -425,16 +398,12 @@ def to_separator_case(
                     part
                 )
             )
-        # Part is in camel or Pascal case.
         elif (CasePatterns.get_camel_word().fullmatch(part)
-              or CasePatterns.get_pascal_word().fullmatch(part)):
-            # Break camel case and Pascal case into constituent words.
             broken_words: list[str] = (
                 CaseConversionPatterns.get_split_camel_or_pascal().split(part)
             )
             lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
-        # Part is not in any of the above cases.
         else:
             processed_part = part.lower()
         processed_parts.append(processed_part)
@@ -455,14 +424,11 @@ def word_to_pascal(word: str) -> str:
     Returns:
         str: The converted word.
     """
-    # Word contains no alphabetical characters.
     if not any(char.isalpha() for char in word):
         return word
-    # Word is already in Pascal case.
     if CasePatterns.get_pascal_word().match(word):
         return word
-    # Word is in camel case.
     if CasePatterns.get_camel_word().match(word):
         return change_first_letter_case(word, str.upper)
-    # Word is not in Pascal or camel case.
+
     return case_from_string(word)

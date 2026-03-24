@@ -19,12 +19,12 @@ from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal
     ('525,600', '525,600th'),
 ])
 def test_cardinal_to_ordinal_isolated(cardinal, expected_ordinal):
-    """Test cardinal to ordinal conversion on isolated numbers."""
+    """Test cardinal-to-ordinal conversion on isolated numbers."""
     assert cardinal_to_ordinal(cardinal) == expected_ordinal
 
 
 def test_cardinal_to_ordinal_in_text():
-    """Test cardinal to ordinal conversion within a sentence."""
+    """Test cardinal-to-ordinal conversion within a sentence."""
     text = 'It happens in the 1 scene of the 3 act.'
     expected = 'It happens in the 1st scene of the 3rd act.'
     assert cardinal_to_ordinal(text) == expected
@@ -45,12 +45,12 @@ def test_cardinal_to_ordinal_ignores_decimals():
     ('525,600th', '525,600'),
 ])
 def test_ordinal_to_cardinal_isolated(ordinal, expected_cardinal):
-    """Test ordinal to cardinal conversion on isolated numbers."""
+    """Test ordinal-to-cardinal conversion on isolated numbers."""
     assert ordinal_to_cardinal(ordinal) == expected_cardinal
 
 
 def test_ordinal_to_cardinal_in_text():
-    """Test ordinal to cardinal conversion within a sentence."""
+    """Test ordinal-to-cardinal conversion within a sentence."""
     text = "A 7th-nation army couldn't hold me back."
     expected = "A 7-nation army couldn't hold me back."
     assert ordinal_to_cardinal(text) == expected

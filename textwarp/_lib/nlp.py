@@ -18,7 +18,7 @@ _nlp_instances: dict[str, 'spacy.language.Language'] = {}
 def _get_nlp(model_priority: ModelPriority = 'speed') -> spacy.language.Language:
     """
     Returns the best available spaCy model instance based on speed or
-    accuracy.
+    accuracy for the active language locale.
 
     Args:
         model_priority: The spaCy model priority. Can be either "speed" or

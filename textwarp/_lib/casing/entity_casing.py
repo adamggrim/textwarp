@@ -95,18 +95,10 @@ def _check_for_ngrams(
 
 def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     """
-    Map entities in a spaCy ``Doc`` to their correct contextual casing.
-
-    Args:
-        doc: The spaCy ``Doc`` to convert.
+    Build and cache the regular expression for finding custom entities.
 
     Returns:
-        dict[int, tuple[Span, int, str]]: A dictionary where each key is
-            an entity's start token index and each value is a tuple
-            containing:
-                1. The entity's spaCy ``Span`` object.
-                2. The entity's end token index.
-                3. The cased entity.
+        re.Pattern[str]: The compiled regular expression pattern.
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
 
@@ -130,7 +122,6 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
         start_char, end_char = match.span()
         span = doc.char_span(start_char, end_char)
 
-        # Skip the match if the ``Span`` does not align with a token.
         if span is None:
             continue
 

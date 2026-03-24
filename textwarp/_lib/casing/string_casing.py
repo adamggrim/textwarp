@@ -1,4 +1,4 @@
-"""Functions for capitalizing strings through dictionary lookup."""
+"""Function for capitalizing strings through dictionary lookup."""
 
 from typing import Callable
 
@@ -175,8 +175,8 @@ def case_from_string(
     preserve_mixed_case: bool = True
 ) -> str:
     """
-    Capitalize a word, handling special name prefixes and preserving
-    other mid-word capitalizations.
+    Capitalize a word according to the active language provider's
+    specific rules.
 
     Args:
         word: The word to capitalize.

@@ -20,7 +20,7 @@ def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
 
     Returns:
         MappingProxyType[str, re.Pattern[str]]: A read-only dictionary
-            mapping string inputs to regex patterns.
+            mapping string inputs to regular expression patterns.
     """
     return MappingProxyType({
         'camel': CasePatterns.get_camel_word(),

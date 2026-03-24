@@ -1,4 +1,4 @@
-"""Sets used across the package for variants and input."""
+"""Set used across the package for grouping apostrophe characters."""
 
 from typing import Final
 

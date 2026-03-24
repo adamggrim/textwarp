@@ -1,7 +1,4 @@
-"""
-Functions for handling specific types of contractions (negation, "'s",
-"'d", "whatcha").
-"""
+"""Functions for handling specific types of contractions."""
 
 from __future__ import annotations
 

@@ -22,7 +22,7 @@ def test_pos_counts_initialization():
 
 
 def test_pos_counts_get_pos_count():
-    """Test retrieving counts for POS tags."""
+    """Test retrieving counts for part-of-spech tags."""
     pos_counts = POSCounts(word_count=4, tag_counts={'NOUN': 1, 'VERB': 1})
 
     assert pos_counts.get_pos_count('ADJ') == 0
@@ -31,7 +31,7 @@ def test_pos_counts_get_pos_count():
 
 
 def test_pos_counts_get_percentage():
-    """Test percentage calculation for POS tags."""
+    """Test percentage calculation for part-of-speech tags."""
     pos_counts = POSCounts(word_count=10, tag_counts={'NOUN': 4})
 
     assert pos_counts.get_percentage('NOUN') == 40.0

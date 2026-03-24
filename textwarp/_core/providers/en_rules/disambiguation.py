@@ -69,7 +69,13 @@ def _is_present_participle(token: Token) -> bool:
 
 def _disambiguate_a_or_to(span: Span) -> str:
     """
-    Shared logic for 'gotta' and 'wanna' to disambiguate 'a' or 'to'.
+    Shared logic for "gotta" and "wanna" to disambiguate between "a" and "to".
+
+    Args:
+        span: The spaCy `Span` containing the contraction.
+
+    Returns:
+        str: The disambiguated suffix ("a" or "to").
     """
     doc = span.doc
     next_token = doc[span.end] if span.end < len(doc) else None
@@ -92,7 +98,7 @@ def disambiguate_ain_t(span: Span) -> str:
         span: The spaCy `Span` containing the contraction.
 
     Returns:
-        str : The base verb for the contraction.
+        str: The base verb for the contraction.
     """
     doc = span.doc
     verb_token = span[0]
