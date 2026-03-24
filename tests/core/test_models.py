@@ -52,7 +52,9 @@ def test_pos_counts_get_pos_data():
 
     assert len(pos_data) == len(POS_TAGS)
 
-    pos_dict = {name: (count, percentage) for name, count, percentage in pos_data}
+    pos_dict = {
+        name: (count, percentage) for name, count, percentage in pos_data
+    }
 
     assert pos_dict['Nouns'] == (10, 50.0)
     assert pos_dict['Verbs'] == (5, 25.0)

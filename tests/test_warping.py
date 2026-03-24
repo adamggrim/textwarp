@@ -61,7 +61,8 @@ from textwarp.warping import (
      '“To be, or not to be, that is the question”.'),
     (redact, 'yes I said yes I will yes', '███ █ ████ ███ █ ████ ███'),
     (reverse, 'reverse', 'esrever'),
-    (straight_to_curly, '"All art is quite useless."', '“All art is quite useless.”'),
+    (straight_to_curly, '"All art is quite useless."',
+     '“All art is quite useless.”'),
     (to_alternating_caps, 'alternating caps', 'aLtErNaTiNg CaPs'),
     (to_binary, 'creatio ex nihilo', '01100011 01110010 01100101 01100001 '
      '01110100 01101001 01101111 00100000 01100101 01111000 00100000 01101110 '
