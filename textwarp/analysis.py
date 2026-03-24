@@ -83,7 +83,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
         list[WordCount]: A list of WordCount objects containing a word
             and its count.
     """
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     words = extract_words_from_doc(doc)
     total_word_count = len(words)
 
@@ -113,7 +113,7 @@ def count_pos(content: str | Doc) -> POSCounts:
     Returns:
         POSCounts: The parts of speech counts for the string.
     """
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     tags = [token.pos_ for token in doc if not token.is_space]
     counts = Counter(tags)
 
@@ -138,7 +138,7 @@ def count_sents(content: str | Doc) -> int:
     Returns:
         int: The number of sentences in the string.
     """
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer'])
     return len(list(doc.sents))
 
 
@@ -152,5 +152,5 @@ def count_words(content: str | Doc) -> int:
     Returns:
         int: The number of words in the string.
     """
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     return len(extract_words_from_doc(doc))

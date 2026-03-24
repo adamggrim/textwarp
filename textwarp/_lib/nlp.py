@@ -79,7 +79,11 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
     ]
 
 
-def process_as_doc(content: str | Doc, model_priority: ModelPriority = 'speed') -> Doc:
+def process_as_doc(
+    content: str | Doc,
+    model_priority: ModelPriority = 'speed',
+    disable: list[str] | None = None
+) -> Doc:
     """
     Process the input as a spaCy `Doc`.
 
@@ -87,11 +91,18 @@ def process_as_doc(content: str | Doc, model_priority: ModelPriority = 'speed') 
         content: The string or `Doc` to process.
         model_priority: The size of the spaCy model to use. Defaults to
             "speed".
+        disable: A list of pipeline components to disable during
+            processing. Defaults to `None`.
 
     Returns:
         Doc: The processed spaCy `Doc`.
     """
     if not isinstance(content, str):
         return content
+
     nlp = _get_nlp(model_priority)
+    if disable:
+        with nlp.select_pipes(disable=disable):
+            return nlp(content)
+
     return nlp(content)
