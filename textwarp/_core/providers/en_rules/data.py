@@ -217,9 +217,9 @@ class EnStringCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_map_suffix_exceptions() -> tuple[str, ...]:
-        """Get a cached tuple of map suffix exceptions."""
-        return tuple(
+    def get_map_suffix_exceptions() -> frozenset[str]:
+        """Get a cached `frozenset` of map suffix exceptions."""
+        return frozenset(
             cast(
                 list[str],
                 _load_en_data(
@@ -230,9 +230,9 @@ class EnStringCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_surname_prefix_exceptions() -> tuple[str, ...]:
-        """Get a cached tuple of surname prefix exceptions."""
-        return tuple(
+    def get_surname_prefix_exceptions() -> frozenset[str]:
+        """Get a cached `frozenset` of surname prefix exceptions."""
+        return frozenset(
             cast(
                 list[str],
                 _load_en_data(
@@ -243,9 +243,9 @@ class EnStringCasing:
 
     @staticmethod
     @lru_cache(maxsize=1)
-    def get_surname_prefixes() -> tuple[str, ...]:
-        """Get a cached tuple of standard surname prefixes."""
-        return tuple(
+    def get_surname_prefixes() -> frozenset[str]:
+        """Get a cached `frozenset` of standard surname prefixes."""
+        return frozenset(
             cast(
                 list[str],
                 _load_en_data(EnStringCasing.DIR / 'surname_prefixes.json')

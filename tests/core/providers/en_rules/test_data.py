@@ -47,9 +47,9 @@ def test_string_casing_data():
     """Test that string casing mappings load with the expected types."""
     assert isinstance(EnStringCasing.get_lookup_map(), MappingProxyType)
     assert isinstance(EnStringCasing.get_lowercase_abbreviations(), frozenset)
-    assert isinstance(EnStringCasing.get_map_suffix_exceptions(), tuple)
-    assert isinstance(EnStringCasing.get_surname_prefix_exceptions(), tuple)
-    assert isinstance(EnStringCasing.get_surname_prefixes(), tuple)
+    assert isinstance(EnStringCasing.get_map_suffix_exceptions(), frozenset)
+    assert isinstance(EnStringCasing.get_surname_prefix_exceptions(), frozenset)
+    assert isinstance(EnStringCasing.get_surname_prefixes(), frozenset)
 
 
 def test_token_casing_data():
