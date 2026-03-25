@@ -117,8 +117,8 @@ textwarp/
 ├── _core/
 │ ├── constants/
 │ │ ├── __init__.py: Exposes constants for use across the package
-│ │ ├── apostrophes.py: Set used across the package for grouping apostrophe characters
-│ │ ├── maps.py: Map used across the package for lookups
+│ │ ├── apostrophes.py: Sets used across the package for grouping apostrophe characters
+│ │ ├── maps.py: Maps used across the package for lookups
 │ │ ├── nlp.py: Objects used across the package for spaCy processing
 │ │ └── regexes.py: Regular expressions used across the package
 │ ├── data/
@@ -161,7 +161,7 @@ textwarp/
 │ ├── __init__.py: Exposes core configuration, constants, and models
 │ ├── config.py: A configuration module handling lazy loading of JSON data
 │ ├── context.py: Global singleton for the active locale and provider
-│ ├── decorators.py: A custom decorator function for non-instantiable classes
+│ ├── decorators.py: Custom decorator functions for non-instantiable classes
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
 │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
 │ ├── models.py: Classes for parts-of-speech counts and word counts
@@ -171,8 +171,8 @@ textwarp/
 │ ├── casing/
 │ │ ├── __init__.py: Exposes casing logic for use across the package
 │ │ ├── case_conversion.py: Functions for converting between cases
-│ │ ├── entity_casing.py: Function for spaCy-based entity capitalization
-│ │ ├── string_casing.py: Function for capitalizing strings through dictionary lookup
+│ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
+│ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
 │ │ └── token_casing.py: Logic for spaCy-based token capitalization
 │ ├── __init__.py: Exposes library functions for use across the package
 │ ├── contractions.py: Main logic for expanding contractions
