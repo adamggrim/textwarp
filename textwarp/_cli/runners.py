@@ -2,8 +2,6 @@
 
 from typing import Callable, TypeAlias
 
-import pyperclip
-
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MESSAGE,
     CLIPBOARD_CLEARED_MESSAGE,
@@ -34,6 +32,7 @@ def _paste_and_validate() -> str | None:
         clipboard | None: The validated clipboard text, or `None` if
             an error occurred.
     """
+    import pyperclip
     try:
         clipboard = pyperclip.paste()
         validate_clipboard(clipboard)
@@ -67,6 +66,7 @@ def _replace_and_copy(
         command: The replacement function.
         clipboard: The clipboard text to transform.
     """
+    import pyperclip
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
@@ -74,6 +74,7 @@ def _replace_and_copy(
 
 def clear_clipboard() -> None:
     """Clear clipboard text."""
+    import pyperclip
     pyperclip.copy('')
     print_wrapped(CLIPBOARD_CLEARED_MESSAGE)
 
@@ -138,6 +139,7 @@ def warp_and_copy(
         command: The transformation function.
         clipboard: The clipboard text to transform.
     """
+    import pyperclip
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
