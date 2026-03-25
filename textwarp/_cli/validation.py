@@ -1,7 +1,5 @@
 """Validators for text, clipboard, and regular expression content."""
 
-import regex as re
-
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
     EmptyClipboardError,
@@ -92,6 +90,7 @@ def validate_regex(regex: str) -> None:
         NoRegexError: If the input string is empty.
         re.error: If the input string is not a valid regular expression.
     """
+    import regex as re
     if regex == '':
         raise NoRegexError('Regex input is empty.')
 

@@ -2,8 +2,6 @@
 
 from typing import Callable
 
-import regex as re
-
 from textwarp._cli.constants.messages import (
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
@@ -205,6 +203,7 @@ def replace_regex(text: str) -> str:
     Returns:
         str: The transformed text.
     """
+    import regex as re
     presence_validator = _create_presence_validator(
         validate_regex, text, PresenceCheckType.REGEX
     )
