@@ -1,4 +1,4 @@
-"""Set used across the package for grouping apostrophe characters."""
+"""Sets used across the package for grouping apostrophe characters."""
 
 from typing import Final
 

@@ -1,4 +1,4 @@
-"""Map used across the package for lookups."""
+"""Maps used across the package for lookups."""
 
 from functools import lru_cache
 from types import MappingProxyType

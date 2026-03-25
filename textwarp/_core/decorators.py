@@ -1,4 +1,4 @@
-"""A custom decorator function for non-instantiable classes."""
+"""Custom decorator functions for non-instantiable classes."""
 
 from typing import Any, TypeVar
 

@@ -1,4 +1,4 @@
-"""Function for capitalizing strings through dictionary lookup."""
+"""Functions for capitalizing strings through dictionary lookup."""
 
 from textwarp._core.context import ctx
 
