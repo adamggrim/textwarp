@@ -19,3 +19,14 @@ def test_context_set_locale_en():
 
     assert ctx.locale == 'en'
     assert isinstance(ctx.provider, EnglishProvider)
+
+
+def test_context_set_locale_fallback():
+    """
+    Verify that an unsupported locale safely falls back to English.
+    """
+    ctx = TextwarpContext()
+    ctx.set_locale('fr')
+
+    assert ctx.locale == 'en'
+    assert isinstance(ctx.provider, EnglishProvider)
