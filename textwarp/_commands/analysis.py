@@ -22,7 +22,7 @@ from textwarp._cli.formatting import (
     format_pos_count,
     format_time_to_read
 )
-from textwarp._cli.ui import print_wrapped
+from textwarp._cli.ui import print_wrapped, prompt_for_integer
 
 __all__ = [
     'char_count',
@@ -70,25 +70,11 @@ def mfws(text: str) -> None:
     Args:
         text: The string to process.
     """
-    def prompt_for_mfws() -> int:
-        """
-        Prompt the user for the number of most frequent words to
-        display.
+    num_mfws: int = prompt_for_integer(
+        ENTER_MFW_COUNT_PROMPT,
+        ENTER_VALID_NUMBER_PROMPT
+    )
 
-        Returns:
-            int: The number of most frequent words to display.
-        """
-        print_wrapped(ENTER_MFW_COUNT_PROMPT)
-        num_mfws_input: str = input().strip()
-        while True:
-            if num_mfws_input.isdigit():
-                return int(num_mfws_input)
-            else:
-                print_wrapped(ENTER_VALID_NUMBER_PROMPT)
-                num_mfws_input = input().strip()
-                continue
-
-    num_mfws: int = prompt_for_mfws()
     mfws: list[WordCount] = count_mfws(text, num_mfws)
     formatted_mfws: str = format_mfws(mfws)
     print('\n' + formatted_mfws)
@@ -127,24 +113,11 @@ def time_to_read(text: str) -> None:
     Args:
         text: The string to process.
     """
-    def prompt_for_wpm() -> int:
-        """
-        Prompts the user for the number of words per minute.
+    wpm: int = prompt_for_integer(
+        ENTER_WPM_PROMPT,
+        ENTER_VALID_NUMBER_PROMPT
+    )
 
-        Returns:
-            int: The number of words per minute.
-        """
-        print_wrapped(ENTER_WPM_PROMPT)
-        wpm_input: str = input().strip()
-        while True:
-            if wpm_input.isdigit() and int(wpm_input) > 0:
-                break
-            else:
-                print(ENTER_VALID_NUMBER_PROMPT)
-                wpm_input = input().strip()
-                continue
-        return int(wpm_input)
-    wpm: int = prompt_for_wpm()
     minutes: int = calculate_time_to_read(text, wpm)
     formatted_minutes: str = format_time_to_read(minutes)
     print_wrapped(formatted_minutes)
