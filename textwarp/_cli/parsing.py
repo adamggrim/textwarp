@@ -14,9 +14,7 @@ from textwarp._cli.args import (
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
 from textwarp._core.types import Pipeline
 
-__all__ = [
-    'parse_args'
-]
+__all__ = ['parse_args']
 
 
 def _calculate_max_arg_width(commands: dict[str, Any]) -> int:

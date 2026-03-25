@@ -5,10 +5,7 @@ from typing import final
 
 from textwarp._core.constants.nlp import POS_TAGS
 
-__all__ = [
-    'POSCounts',
-    'WordCount'
-]
+__all__ = ['POSCounts', 'WordCount']
 
 
 @final

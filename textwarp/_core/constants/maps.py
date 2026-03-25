@@ -7,9 +7,7 @@ import regex as re
 
 from textwarp._core.constants.regexes import CasePatterns
 
-__all__ = [
-    'get_case_names_regex_map'
-]
+__all__ = ['get_case_names_regex_map']
 
 
 @lru_cache(maxsize=1)

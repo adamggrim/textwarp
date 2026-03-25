@@ -9,10 +9,7 @@ from typing import (
     final
 )
 
-__all__ = [
-    'EntityCasingContext',
-    'JSONType'
-]
+__all__ = ['EntityCasingContext', 'JSONType']
 
 
 @final

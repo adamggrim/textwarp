@@ -2,9 +2,7 @@
 
 from typing import Any, TypeVar
 
-__all__ = [
-    'non_instantiable'
-]
+__all__ = ['non_instantiable']
 
 # Type variable bound to `type` so the decorator preserves the
 # identity of the class it modifies.
