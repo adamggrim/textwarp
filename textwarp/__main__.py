@@ -120,7 +120,7 @@ def main() -> None:
     try:
         pipeline_data = parse_args()
         if not pipeline_data:
-            return
+            return None
 
         pipeline, lang_code = pipeline_data
 
