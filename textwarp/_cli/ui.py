@@ -19,7 +19,8 @@ __all__ = [
     'get_input',
     'print_padding',
     'print_wrapped',
-    'program_exit'
+    'program_exit',
+    'prompt_for_integer'
 ]
 
 
@@ -66,3 +67,25 @@ def program_exit() -> NoReturn:
     print_wrapped(EXIT_MESSAGE)
     print_padding()
     exit()
+
+
+def prompt_for_integer(prompt_text: str, error_text: str) -> int:
+    """
+    Prompt the user for a valid positive integer.
+
+    Args:
+        prompt_text: The initial prompt to display.
+        error_text: The error message displayed on invalid input.
+
+    Returns:
+        int: A valid integer provided by the user.
+    """
+    print_wrapped(prompt_text)
+    user_input: str = input().strip()
+
+    while True:
+        if user_input.isdigit() and int(user_input) > 0:
+            return int(user_input)
+        else:
+            print_wrapped(error_text)
+            user_input = input().strip()
