@@ -52,15 +52,21 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def noun_phrase_tags(self) -> frozenset[str]:
-        """Fine-grained parts-of-speech tags for the first word of a noun phrase."""
+        """
+        Fine-grained parts-of-speech tags for the first word of a noun
+        phrase.
+        """
         pass
 
     @property
     @abstractmethod
     def participle_tags(self) -> frozenset[str]:
         """
-        Fine-grained parts-of-speech tags for past tense and past participle
-        verb forms. (Fine-grained tags used to distinguish verb tense.)
+        Fine-grained parts-of-speech tags for past tense and past
+        participle verb forms. (Fine-grained tags used to distinguish
+        verb tense.)
+        """
+        pass
 
     @property
     @abstractmethod
@@ -83,7 +89,10 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def singular_noun_tags(self) -> frozenset[str]:
-        """Fine-grained parts-of-speech tags for singular nouns and proper nouns."""
+        """
+        Fine-grained parts-of-speech tags for singular nouns and proper
+        nouns.
+        """
         pass
 
     @property
