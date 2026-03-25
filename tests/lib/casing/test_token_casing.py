@@ -11,7 +11,7 @@ def test_should_capitalize_lowercase_particles():
     doc = process_as_doc('Maria Augusta von Trapp')
     von_token = doc[2]
 
-    assert von_token.text.lower() == 'von'
+    assert von_token.lower_ == 'von'
     assert should_capitalize_pos_or_length(von_token) is False
 
 
@@ -22,7 +22,7 @@ def test_should_capitalize_contraction_suffixes():
     doc = process_as_doc("don't, don't")
     nt_token = doc[4]
 
-    assert nt_token.text.lower() == "n't"
+    assert nt_token.lower_ == "n't"
     assert should_capitalize_pos_or_length(nt_token) is False
 
 

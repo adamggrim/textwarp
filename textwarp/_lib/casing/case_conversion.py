@@ -217,7 +217,7 @@ def _to_title_case_from_token(
     elif should_capitalize_for_title:
         return case_from_string(token.text)
     else:
-        return token.text.lower()
+        return token.lower_
 
 
 def change_first_letter_case(

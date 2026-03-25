@@ -73,7 +73,7 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
         list[str]: The list of word strings from the `Doc`.
     """
     return [
-        token.text.lower()
+        token.lower_
         for token in doc
         if token.pos_ in POS_WORD_TAGS
     ]
