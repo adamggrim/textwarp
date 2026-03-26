@@ -49,7 +49,7 @@ def should_capitalize_pos_or_length(token: Token) -> bool:
     """
     if _should_always_lowercase(token):
         return False
-    # Capitalize long words regardless of POS tag.
+    # Capitalize long words regardless of part-of-speech tag.
     if len(token.text) >= 5:
         return True
 

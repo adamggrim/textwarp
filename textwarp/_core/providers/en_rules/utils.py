@@ -67,9 +67,7 @@ def apply_expansion_casing(
     )
 
     if is_title_case:
-        return ' '.join([
-            case_from_string(part) for part in expanded_parts
-        ])
+        return ' '.join(case_from_string(part) for part in expanded_parts)
 
     if _starts_capitalized(original_text):
         first_part: str = case_from_string(expanded_parts[0])

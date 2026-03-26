@@ -122,7 +122,8 @@ def disambiguate_ain_t(span: Span) -> str:
         is_first_person_i = (subj_text == 'i')
 
     if action_verb:
-        if action_verb.lower_ == 'got' or action_verb.tag_ in PARTICIPLE_TAGS:
+        if (action_verb.lower_ == 'got'
+                or action_verb.tag_ in PARTICIPLE_TAGS):
             return 'has' if is_singular else 'have'
 
     if is_first_person_i:
@@ -151,13 +152,17 @@ def disambiguate_d(span: Span) -> str:
 
     is_wh_question = (
         span[0].lower_ in WH_WORDS
-        or (span.start > 0 and doc[span.start - 1].lower_ in WH_WORDS)
+        or ((
+            span.start > 0
+            and doc[span.start - 1].lower_ in WH_WORDS
+        ))
     )
 
     for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
         token = doc[i]
 
-        if token.lower_ == 'better' or token.tag_ in PARTICIPLE_TAGS:
+        if (token.lower_ == 'better'
+                or token.tag_ in PARTICIPLE_TAGS):
             return 'had'
 
         if token.tag_ in BASE_VERB_TAGS:

@@ -73,7 +73,7 @@ def _check_for_ngrams(
             check.
 
     Returns:
-        bool: ``True`` if any ngram is found, otherwise ``False``.
+        bool: `True` if any ngram is found, otherwise `False`.
     """
     doc = span.doc
 
@@ -87,7 +87,7 @@ def _check_for_ngrams(
     for ngram in ngrams:
         pattern = r'(?<!\w)' + re.escape(ngram.lower()) + r'(?!\w)'
         if (re.search(pattern, left_context)
-            or re.search(pattern, right_context)):
+                or re.search(pattern, right_context)):
             return True
 
     return False
