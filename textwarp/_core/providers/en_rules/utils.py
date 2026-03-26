@@ -16,8 +16,8 @@ from textwarp._core.constants.nlp import (
 if TYPE_CHECKING:
     from spacy.tokens import Token
 
-from textwarp._core.config import ContractionExpansion
-from textwarp._lib.casing.case_conversion import find_first_alphabetical_idx
+from textwarp._core.providers.en_rules.data import EnContractionExpansion
+from textwarp._core.utils import find_first_alphabetical_idx
 from textwarp._lib.casing.string_casing import case_from_string
 from textwarp._lib.punctuation import curly_to_straight
 

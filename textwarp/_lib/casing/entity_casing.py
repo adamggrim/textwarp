@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 from typing import TYPE_CHECKING
 
 import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
-from textwarp._core.config import EntityCasing
 from textwarp._core.constants.nlp import PROPER_NOUN_ENTITIES
+from textwarp._core.context import ctx
 from textwarp._core.types import EntityCasingContext
 
 __all__ = [

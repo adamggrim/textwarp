@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 
 from textwarp._core.constants.regexes import (
     CaseConversionPatterns,
-    CasePatterns,
-    WarpingPatterns
+    CasePatterns
 )
 from textwarp._core.constants.apostrophes import OPEN_QUOTES
 from textwarp._core.context import ctx
