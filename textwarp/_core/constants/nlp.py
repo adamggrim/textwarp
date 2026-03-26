@@ -3,28 +3,12 @@
 from typing import Final
 
 __all__ = [
-    'BASE_VERB_TAGS',
-    'HAVE_AUXILIARIES',
-    'MODEL_RANKING_BY_SPEED',
-    'NOUN_PHRASE_TAGS',
     'NOUN_TAGS',
-    'PARTICIPLE_TAGS',
     'POS_TAGS',
     'POS_WORD_TAGS',
     'PROPER_NOUN_ENTITIES',
-    'SUBJECT_POS_TAGS',
-    'THIRD_PERSON_SINGULAR_PRONOUNS',
-    'TITLE_CASE_TAG_EXCEPTIONS',
-    'WH_WORDS'
+    'SUBJECT_POS_TAGS'
 ]
-
-# Fine-grained parts-of-speech tags for base verb forms.
-BASE_VERB_TAGS: Final[frozenset[str]] = frozenset({'VB', 'VBP'})
-
-# Auxiliary verbs forms of "have".
-HAVE_AUXILIARIES: Final[frozenset[str]] = frozenset(
-    {'have', 'has', 'had', "'ve", "'d"}
-)
 
 # Coarse-grained parts-of-speech tags for stopping a subject search when
 # looking left.
@@ -32,29 +16,8 @@ LEFT_SEARCH_STOP_TAGS: Final[frozenset[str]] = frozenset(
     {'DET', 'VERB', 'PUNCT'}
 )
 
-# Ranking of spaCy models by speed.
-MODEL_RANKING_BY_SPEED: Final[tuple[str, ...]] = (
-    'en_core_web_sm',
-    'en_core_web_md',
-    'en_core_web_lg',
-    'en_core_web_trf'
-)
-
-# Fine-grained parts-of-speech tags for the first word of a noun phrase.
-NOUN_PHRASE_TAGS: Final[frozenset[str]] = frozenset({
-    'JJ', 'JJR', 'JJS',      # Adjectives
-    'DT', 'PDT', 'WDT',      # Determiners
-    'PRP', 'PRP$', 'WP',     # Pronouns
-    'NN', 'NNS',             # Common nouns
-    'NNP', 'NNPS'            # Proper nouns
-})
-
 # Coarse-grained parts-of-speech tags for singular and proper nouns.
 NOUN_TAGS: Final[frozenset[str]] = frozenset({'NOUN', 'PROPN'})
-
-# Fine-grained parts-of-speech tags for past tense and past participle
-# verb forms. (Fine-grained tags used to distinguish verb tense.)
-PARTICIPLE_TAGS: Final[frozenset[str]] = frozenset({'VBN', 'VBD'})
 
 # Tuple of tuples for all parts-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
@@ -77,7 +40,7 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
 
 # Tuple of strings for all coarse-grained parts-of-speech tags
 # representing words.
-POS_WORD_TAGS: Final[frozenset[str]] = frozenset(
+POS_WORD_TAGS: Final[tuple[str, ...]] = tuple(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )
 
@@ -100,31 +63,6 @@ PROPER_NOUN_ENTITIES: Final[frozenset[str]] = frozenset({
     'WORK_OF_ART'
 })
 
-# Fine-grained parts-of-speech tags for singular nouns and proper nouns.
-SINGULAR_NOUN_TAGS: Final[frozenset[str]] = frozenset({'NN', 'NNP'})
-
 # Coarse-grained parts-of-speech tags for pronouns, proper nouns, and
 # nouns.
 SUBJECT_POS_TAGS: Final[frozenset[str]] = frozenset({'PRON', 'PROPN', 'NOUN'})
-
-# Third-person singular pronouns for subject-verb agreement checks.
-THIRD_PERSON_SINGULAR_PRONOUNS: Final[frozenset[str]] = frozenset({
-    'he', 'she', 'it', 'nobody', 'everyone', 'someone', 'anyone', 'no one',
-    'everybody', 'somebody', 'anybody'
-})
-
-# Fine-grained parts-of-speech tag exceptions for title case
-# capitalization. (Fine-grained tags used to distinguish articles
-# from possessives.)
-TITLE_CASE_TAG_EXCEPTIONS: Final[frozenset[str]] = frozenset({
-    'CC',   # Coordinating conjunction (e.g., 'and', 'but')
-    'DT',   # Determiner (e.g., 'a', 'an', 'the')
-    'IN',   # Preposition or subordinating conjunction
-            # (e.g., 'in', 'of', 'on')
-    'RP',   # Particle (e.g., 'in' in 'give in')
-    'TO',   # to (infinitive marker)
-    'WDT',  # Wh-determiner (e.g., 'what')
-})
-
-# Wh-words that start questions.
-WH_WORDS: Final[frozenset[str]] = frozenset({'how', 'what', 'when', 'where', 'who', 'why'})
