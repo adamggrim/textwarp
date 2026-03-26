@@ -9,18 +9,17 @@ from spacy.tokens import Token
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from textwarp._core.constants.nlp import (
+from textwarp._core.constants.nlp import NOUN_TAGS
+from textwarp._core.providers.en_rules.apostrophes import AIN_T_SUFFIX_VARIANTS
 from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
+from textwarp._core.providers.en_rules.utils import find_subject_token
+from textwarp._core.providers.en_rules.constants import (
     BASE_VERB_TAGS,
     NOUN_PHRASE_TAGS,
-    NOUN_TAGS,
     PARTICIPLE_TAGS,
     THIRD_PERSON_SINGULAR_PRONOUNS,
     WH_WORDS
 )
-from textwarp._core.constants.apostrophes import AIN_T_SUFFIX_VARIANTS
-from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._core.providers.en_rules.utils import find_subject_token
 
 __all__ = [
     'disambiguate_ain_t',
