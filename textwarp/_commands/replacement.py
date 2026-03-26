@@ -74,6 +74,7 @@ def _create_presence_validator(
             if pattern and not pattern.search(text):
                 raise CaseNotFoundError(CASE_NOT_FOUND_MESSAGE)
         elif check_type is PresenceCheckType.REGEX:
+            import regex as re
             if not re.search(search_input, text):
                 raise RegexNotFoundError(REGEX_NOT_FOUND_MESSAGE)
         elif check_type is PresenceCheckType.SUBSTRING:
