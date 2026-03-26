@@ -94,17 +94,16 @@ def _check_for_ngrams(
     return False
 
 
-def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
+@lru_cache(maxsize=1)
+def _get_custom_entities_pattern() -> re.Pattern[str]:
     """
     Build and cache the regular expression for finding custom entities.
 
     Returns:
         re.Pattern[str]: The compiled regular expression pattern.
     """
-    custom_entities_map: dict[int, tuple[Span, int, str]] = {}
-
-    absolute_entities_map = EntityCasing.get_absolute_map()
-    contextual_entities_map = EntityCasing.get_contextual_map()
+    absolute_entities_map = ctx.provider.absolute_casings_map
+    contextual_entities_map = ctx.provider.contextual_casings_map
 
     all_keys: set[str] = (
         absolute_entities_map.keys()
@@ -114,7 +113,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     # Sort words by length in descending order to prioritize longer
     # matches.
     sorted_keys = sorted(all_keys, key=len, reverse=True)
-    keys_pattern = re.compile(
+    return re.compile(
         rf'(?<!\w)(?:{"|".join(re.escape(key) for key in sorted_keys)})(?!\w)',
         re.IGNORECASE
     )
