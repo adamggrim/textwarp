@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from spacy.tokens import Token
 from typing import TYPE_CHECKING, Final
+
+from spacy.tokens import Token
 
 if TYPE_CHECKING:
     from spacy.tokens import Span
