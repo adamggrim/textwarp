@@ -160,7 +160,7 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
     if straight_contraction == 'cannot':
         return 'can'
 
-    expanded_contraction = ContractionExpansion.get_unambiguous_map().get(
+    expanded_contraction = EnContractionExpansion.get_unambiguous_map().get(
         straight_contraction
     )
 

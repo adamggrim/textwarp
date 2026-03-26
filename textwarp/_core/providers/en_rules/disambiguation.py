@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Span
 
 from textwarp._core.constants.nlp import (
+from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
     BASE_VERB_TAGS,
     NOUN_PHRASE_TAGS,
     NOUN_TAGS,
@@ -53,7 +54,7 @@ def _is_present_participle(token: Token) -> bool:
 
     text_lower = token.lower_
 
-    if WarpingPatterns.get_common_stateless_participles().match(text_lower):
+    if EnWarpingPatterns.get_common_stateless_participles().match(text_lower):
         return True
 
     if text_lower.endswith(("in'", 'in’')):
@@ -269,12 +270,12 @@ def disambiguate_whatcha(span: Span) -> str:
         return ''
 
     if (
-        WarpingPatterns.get_whatcha_are_words().match(next_text_lower)
+        EnWarpingPatterns.get_whatcha_are_words().match(next_text_lower)
         or _is_present_participle(next_token)
     ):
         return 'are'
     elif (
-        WarpingPatterns.get_whatcha_have_words().match(next_text_lower)
+        EnWarpingPatterns.get_whatcha_have_words().match(next_text_lower)
         or tag in PARTICIPLE_TAGS
     ):
         return 'have'
