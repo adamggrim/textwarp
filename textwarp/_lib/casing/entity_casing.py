@@ -32,7 +32,7 @@ def _case_contextual_entity(
     Returns:
         str | None: The contextual casing; otherwise `None`.
     """
-    contextual_entities_map = EntityCasing.get_contextual_map()
+    contextual_entities_map = ctx.provider.contextual_casings_map
     contexts: list[EntityCasingContext] = contextual_entities_map.get(
         key, []
     )

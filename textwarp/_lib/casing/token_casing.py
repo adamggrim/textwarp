@@ -7,9 +7,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Token
 
-from textwarp._core.constants.nlp import TITLE_CASE_TAG_EXCEPTIONS
-from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._core.config import TokenCasing
+from textwarp._core.context import ctx
 
 __all__ = [
     'should_capitalize_pos_or_length'
@@ -30,9 +28,7 @@ def _should_always_lowercase(token: Token) -> bool:
         bool: `True` if the token should always be lowercase, otherwise
             `False`.
     """
-    return (token.text.lower() in TokenCasing.get_lowercase_particles() or
-        WarpingPatterns.get_contraction_suffixes_pattern()
-        .fullmatch(token.text))
+    return ctx.provider.should_always_lowercase(token.text)
 
 
 def should_capitalize_pos_or_length(token: Token) -> bool:
@@ -53,4 +49,4 @@ def should_capitalize_pos_or_length(token: Token) -> bool:
     if len(token.text) >= 5:
         return True
 
-    return token.tag_ not in TITLE_CASE_TAG_EXCEPTIONS
+    return token.tag_ not in ctx.provider.title_case_tag_exceptions

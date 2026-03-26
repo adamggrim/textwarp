@@ -3,6 +3,7 @@
 import regex as re
 
 from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._core.context import ctx
 
 __all__ = [
     'curly_to_straight',
@@ -64,7 +65,7 @@ def remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.get_apostrophe_in_word().sub('', text)
+    return ctx.provider.apostrophe_in_word_pattern.sub('', text)
 
 
 def straight_to_curly(text: str) -> str:
@@ -78,7 +79,7 @@ def straight_to_curly(text: str) -> str:
         curly_text: The converted string.
     """
     # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = WarpingPatterns.get_apostrophe_in_word().sub('’', text)
+    curly_text = ctx.provider.apostrophe_in_word_pattern.sub('’', text)
 
     # Replace opening straight quotes with opening curly quotes.
     curly_text = WarpingPatterns.get_opening_straight_quotes().sub(

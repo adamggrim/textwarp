@@ -9,6 +9,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Doc
 
 from textwarp._core.constants.nlp import POS_WORD_TAGS
+from textwarp._core.context import ctx
 
 ModelPriority = Literal['accuracy', 'speed']
 # Use string forward reference to support lazy spaCy loading.
@@ -31,7 +32,7 @@ def _get_nlp(
     """
     import spacy
 
-    from textwarp._core.constants.nlp import MODEL_RANKING_BY_SPEED
+    locale_models = ctx.provider.spacy_models
 
     if model_priority == 'accuracy':
         model_ranking = MODEL_RANKING_BY_SPEED[::-1]
@@ -51,6 +52,7 @@ def _get_nlp(
 
     # Search for any other installed English model.
     installed_models = spacy.util.get_installed_models()
+    locale_prefix = f'{ctx.locale}_'
     for model_name in installed_models:
         if model_name.startswith('en_'):
             if model_name not in _nlp_instances:
@@ -59,8 +61,8 @@ def _get_nlp(
 
     priority_model_name = model_ranking[0]
     raise RuntimeError(
-        f'Error: No English spaCy models found. Run: python -m spacy download '
-        f'{priority_model_name}'
+        f'Error: No {ctx.locale.upper()} spaCy models found. Run: python -m '
+        f'spacy download {priority_model_name}'
     )
 
 

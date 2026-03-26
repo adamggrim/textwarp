@@ -18,6 +18,7 @@ from textwarp._core.constants.regexes import (
     WarpingPatterns
 )
 from textwarp._core.constants.apostrophes import OPEN_QUOTES
+from textwarp._core.context import ctx
 from textwarp._core.enums import CaseSeparator, Casing
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
@@ -209,10 +210,7 @@ def _to_title_case_from_token(
     Returns:
         str: The converted token.
     """
-    if token.is_space or (
-        WarpingPatterns.get_contraction_suffixes_pattern()
-        .fullmatch(token.text)
-    ):
+    if token.is_space or ctx.provider.should_always_lowercase(token.text):
         return token.text
     elif should_capitalize_for_title:
         return case_from_string(token.text)
