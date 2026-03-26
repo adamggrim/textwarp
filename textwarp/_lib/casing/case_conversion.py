@@ -327,23 +327,6 @@ def doc_to_case(doc: Doc, casing: Casing) -> str:
     return ''.join(processed_parts)
 
 
-def find_first_alphabetical_idx(text: str) -> int | None:
-    """
-    Find the index of the first alphabetical character in a string.
-
-    Args:
-        text: The string to search.
-
-    Returns:
-        int | None: The index of the first alphabetical character, or
-            ``None`` if there are no alphabetical characters.
-    """
-    for i, char in enumerate(text):
-        if char.isalpha():
-            return i
-    return None
-
-
 def to_separator_case(
     text: str,
     separator: CaseSeparator
