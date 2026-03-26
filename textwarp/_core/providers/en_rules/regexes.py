@@ -99,7 +99,7 @@ class EnWarpingPatterns:
             re.Pattern[str]: A compiled regular expression pattern.
         """
         return re.compile(rf'''
-            ({WarpingPatterns._NUMBER_BASE_PATTERN})
+            ({EnWarpingPatterns._NUMBER_BASE_PATTERN})
             \b              # A word boundary.
             (?!             # Not followed by...
                 \.\d        # A period and a digit.
@@ -110,7 +110,7 @@ class EnWarpingPatterns:
                 |           # OR
                 \s+         # One or more spaces.
                 # Followed by a number...
-                {WarpingPatterns._NUMBER_BASE_PATTERN}
+                {EnWarpingPatterns._NUMBER_BASE_PATTERN}
                 /           # Followed by a forward slash.
             )
         ''', re.VERBOSE)
@@ -220,7 +220,7 @@ class EnWarpingPatterns:
             re.Pattern[str]: A compiled regular expression pattern.
         """
         return re.compile(rf'''
-            ({WarpingPatterns._NUMBER_BASE_PATTERN})
+            ({EnWarpingPatterns._NUMBER_BASE_PATTERN})
             (?:st|nd|rd|th)s?
             \b
         ''', re.VERBOSE)
