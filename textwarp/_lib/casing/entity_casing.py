@@ -118,6 +118,28 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
         re.IGNORECASE
     )
 
+
+def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
+    """
+    Map entities in a spaCy `Doc` to their correct contextual casing.
+
+    Args:
+        doc: The spaCy `Doc` to convert.
+
+    Returns:
+        dict[int, tuple[Span, int, str]]: A dictionary where each key is
+            an entity's start token index and each value is a tuple
+            containing:
+                1. The entity's spaCy `Span` object.
+                2. The entity's end token index.
+                3. The cased entity.
+    """
+    custom_entities_map: dict[int, tuple[Span, int, str]] = {}
+    absolute_entities_map = ctx.provider.absolute_casings_map
+    contextual_entities_map = ctx.provider.contextual_casings_map
+
+    keys_pattern = _get_custom_entities_pattern()
+
     for match in keys_pattern.finditer(doc.text):
         start_char, end_char = match.span()
         span = doc.char_span(start_char, end_char)
