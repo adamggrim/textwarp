@@ -35,9 +35,9 @@ def _get_nlp(
     locale_models = ctx.provider.spacy_models
 
     if model_priority == 'accuracy':
-        model_ranking = MODEL_RANKING_BY_SPEED[::-1]
+        model_ranking = locale_models[::-1]
     else:
-        model_ranking = MODEL_RANKING_BY_SPEED
+        model_ranking = locale_models
 
     for model_name in model_ranking:
         if spacy.util.is_package(model_name):
@@ -50,11 +50,10 @@ def _get_nlp(
                     continue
             return _nlp_instances[model_name]
 
-    # Search for any other installed English model.
     installed_models = spacy.util.get_installed_models()
     locale_prefix = f'{ctx.locale}_'
     for model_name in installed_models:
-        if model_name.startswith('en_'):
+        if model_name.startswith(locale_prefix):
             if model_name not in _nlp_instances:
                 _nlp_instances[model_name] = spacy.load(model_name)
             return _nlp_instances[model_name]
