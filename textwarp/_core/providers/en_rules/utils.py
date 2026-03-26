@@ -55,6 +55,8 @@ def apply_expansion_casing(
 
     if original_text.isupper():
         return expanded_text.upper()
+    if original_text.islower():
+        return expanded_text.lower()
 
     original_parts: list[str] = original_text.split()
     expanded_parts: list[str] = expanded_text.split()
