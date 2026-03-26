@@ -86,11 +86,9 @@ def straight_to_curly(text: str) -> str:
     )
 
     # Replace any remaining straight single quotes with closing curly
-    # single quotes.
-    curly_text = curly_text.replace("'", '’')
-
-    # Replace any remaining straight double quotes with closing curly
-    # double quotes.
-    curly_text = curly_text.replace('"', '”')
+    # single quotes. Replace any remaining straight double quotes with
+    # closing curly double quotes.
+    translation_table = str.maketrans({"'": '’', '"': '”'})
+    curly_text = curly_text.translate(translation_table)
 
     return curly_text
