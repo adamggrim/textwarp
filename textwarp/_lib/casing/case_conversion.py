@@ -379,6 +379,7 @@ def to_separator_case(
                 )
             )
         elif (CasePatterns.get_camel_word().fullmatch(part)
+                or CasePatterns.get_pascal_word().fullmatch(part)):
             broken_words: list[str] = (
                 CaseConversionPatterns.get_split_camel_or_pascal().split(part)
             )
