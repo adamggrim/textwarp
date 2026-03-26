@@ -13,9 +13,7 @@ from textwarp._core.constants.nlp import PROPER_NOUN_ENTITIES
 from textwarp._core.context import ctx
 from textwarp._core.types import EntityCasingContext
 
-__all__ = [
-    'map_all_entities'
-]
+__all__ = ['map_all_entities']
 
 
 def _case_contextual_entity(

@@ -9,9 +9,7 @@ if TYPE_CHECKING:
 
 from textwarp._core.context import ctx
 
-__all__ = [
-    'should_capitalize_pos_or_length'
-]
+__all__ = ['should_capitalize_pos_or_length']
 
 
 def _should_always_lowercase(token: Token) -> bool:
