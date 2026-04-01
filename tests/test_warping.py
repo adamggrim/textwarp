@@ -1,4 +1,4 @@
-"""Tests for warping functions."""
+"""Tests for text warping functions."""
 
 import pytest
 

@@ -1,4 +1,4 @@
-"""Tests for lazy-loading configuration."""
+"""Tests for lazy-loading configuration and data."""
 
 from types import MappingProxyType
 
