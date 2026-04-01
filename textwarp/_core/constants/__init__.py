@@ -2,5 +2,4 @@
 
 from textwarp._core.constants.maps import *
 from textwarp._core.constants.nlp import *
-from textwarp._core.constants.regexes import *
-from textwarp._core.constants.apostrophes import *
+from textwarp._core.constants.patterns import *
