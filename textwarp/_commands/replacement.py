@@ -62,8 +62,17 @@ def _create_presence_validator(
         """
         Check the user input for presence in the given string.
 
-        search_input: A string input from the user, representing a case,
-            regular expression or substring.
+        Args:
+            search_input: A string input from the user, representing a
+                case, regular expression or substring.
+
+        Raises:
+            CaseNotFoundError: If the case input is not found in the
+                string.
+            RegexNotFoundError: If the regular expression input is not
+                found in the string.
+            TextNotFoundError: If the substring input is not found in
+                the string.
         """
         base_validator(search_input)
 
