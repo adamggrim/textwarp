@@ -1,8 +1,5 @@
 """Functions for converting between straight and curly quotes."""
 
-import regex as re
-
-from textwarp._core.constants.regexes import WarpingPatterns
 from textwarp._core.context import ctx
 
 __all__ = [
@@ -10,26 +7,6 @@ __all__ = [
     'remove_apostrophes',
     'straight_to_curly'
 ]
-
-
-def _replace_opening_quote(match: re.Match[str]) -> str:
-    """
-    Convert a sequence of straight quotes to opening curly quotes in a
-    given match.
-
-    Args:
-        match: A match object where the first captured group is a
-            string of one or more consecutive straight quote
-            characters.
-
-    Returns:
-        str: A string of opening curly quotes.
-    """
-    quote_chars = match.group(1) or match.group(2) or ''
-    if quote_chars.startswith("'"):
-        return '‘' * len(quote_chars)
-    else:
-        return '“' * len(quote_chars)
 
 
 def curly_to_straight(text: str) -> str:
@@ -42,17 +19,7 @@ def curly_to_straight(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    translation_table = str.maketrans({
-        # Curly opening single quotes to straight single quotes
-        '’': "'",
-        # Curly opening double quotes to straight double quotes
-        '”': '"',
-        # Curly closing single quotes to straight single quotes
-        '‘': "'",
-        # Curly closing double quotes to straight double quotes
-        '“': '"'
-    })
-    return text.translate(translation_table)
+    return ctx.provider.curly_to_straight(text)
 
 
 def remove_apostrophes(text: str) -> str:
@@ -65,7 +32,7 @@ def remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return ctx.provider.apostrophe_in_word_pattern.sub('', text)
+    return ctx.provider.remove_apostrophes(text)
 
 
 def straight_to_curly(text: str) -> str:
@@ -78,18 +45,4 @@ def straight_to_curly(text: str) -> str:
     Returns:
         curly_text: The converted string.
     """
-    # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = ctx.provider.apostrophe_in_word_pattern.sub('’', text)
-
-    # Replace opening straight quotes with opening curly quotes.
-    curly_text = WarpingPatterns.get_opening_straight_quotes().sub(
-        _replace_opening_quote, curly_text
-    )
-
-    # Replace any remaining straight single quotes with closing curly
-    # single quotes. Replace any remaining straight double quotes with
-    # closing curly double quotes.
-    translation_table = str.maketrans({"'": '’', '"': '”'})
-    curly_text = curly_text.translate(translation_table)
-
-    return curly_text
+    return ctx.provider.straight_to_curly(text)
