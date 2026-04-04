@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Literal, TYPE_CHECKING
+import gettext
+from functools import lru_cache
+from types import ModuleType
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import spacy.language
@@ -10,59 +13,87 @@ if TYPE_CHECKING:
 
 from textwarp._core.constants.nlp import POS_WORD_TAGS
 from textwarp._core.context import ctx
+from textwarp._core.enums import ModelPriority
 
-ModelPriority = Literal['accuracy', 'speed']
-# Use string forward reference to support lazy spaCy loading.
-_nlp_instances: dict[str, 'spacy.language.Language'] = {}
+_ = gettext.gettext
+
+__all__ = ['extract_words_from_doc', 'process_as_doc']
+
+
+@lru_cache(maxsize=1)
+def _load_spacy() -> ModuleType:
+    """
+    Lazily load and cache the spaCy module.
+
+    Returns:
+        ModuleType: The loaded spaCy module.
+    """
+    import spacy
+    return spacy
+
+
+@lru_cache(maxsize=None)
+def _load_spacy_model(model_name: str) -> spacy.language.Language:
+    """
+    Load a spaCy model by name.
+
+    Args:
+        model_name: The name of the spaCy model to load.
+
+    Returns:
+        spacy.language.Language: The loaded spaCy model.
+    """
+    spacy = _load_spacy()
+    return spacy.load(model_name)
 
 
 def _get_nlp(
-    model_priority: ModelPriority = 'speed'
+    model_priority: ModelPriority = ModelPriority.SPEED
 ) -> spacy.language.Language:
     """
     Returns the best available spaCy model instance based on speed or
     accuracy for the active language locale.
 
     Args:
-        model_priority: The spaCy model priority. Can be either "speed" or
-            "accuracy". Defaults to "speed".
+        model_priority: The spaCy model to prioritize. Can be either
+            `SPEED` or `ACCURACY`. Defaults to `SPEED`.
 
     Returns:
         spacy.language.Language: The loaded spaCy model instance.
     """
-    import spacy
+    spacy = _load_spacy()
 
     locale_models = ctx.provider.spacy_models
 
-    if model_priority == 'accuracy':
+    if model_priority == ModelPriority.ACCURACY:
         model_ranking = locale_models[::-1]
     else:
         model_ranking = locale_models
 
     for model_name in model_ranking:
         if spacy.util.is_package(model_name):
-            if model_name not in _nlp_instances:
-                try:
-                    _nlp_instances[model_name] = spacy.load(model_name)
-                except ImportError:
-                    # Occurs when a transformer model is installed but
-                    # `spacy-transformers` is missing.
-                    continue
-            return _nlp_instances[model_name]
+            try:
+                return _load_spacy_model(model_name)
+            except ImportError:
+                # Occurs when a transformer model is installed but
+                # `spacy-transformers` is missing.
+                continue
 
     installed_models = spacy.util.get_installed_models()
     locale_prefix = f'{ctx.locale}_'
     for model_name in installed_models:
         if model_name.startswith(locale_prefix):
-            if model_name not in _nlp_instances:
-                _nlp_instances[model_name] = spacy.load(model_name)
-            return _nlp_instances[model_name]
+            return _load_spacy_model(model_name)
 
     priority_model_name = model_ranking[0]
-    raise RuntimeError(
-        f'Error: No {ctx.locale.upper()} spaCy models found. Run: python -m '
-        f'spacy download {priority_model_name}'
+    message = _(
+        'Error: No {locale} spaCy models found. Run: python -m spacy download '
+        '{model}'
+    ).format(
+        locale=ctx.locale.upper(),
+        model=priority_model_name
     )
+    raise RuntimeError(message)
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
@@ -84,7 +115,7 @@ def extract_words_from_doc(doc: Doc) -> list[str]:
 
 def process_as_doc(
     content: str | Doc,
-    model_priority: ModelPriority = 'speed',
+    model_priority: ModelPriority = ModelPriority.SPEED,
     disable: list[str] | None = None
 ) -> Doc:
     """
@@ -92,8 +123,8 @@ def process_as_doc(
 
     Args:
         content: The string or `Doc` to process.
-        model_priority: The size of the spaCy model to use. Defaults to
-            "speed".
+        model_priority: The spaCy model to prioritize. Can be either
+            `SPEED` or `ACCURACY`. Defaults to `SPEED`.
         disable: A list of pipeline components to disable during
             processing. Defaults to `None`.
 
