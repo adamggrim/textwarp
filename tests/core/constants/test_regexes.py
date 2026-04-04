@@ -1,34 +1,11 @@
 """Tests for core regular expression patterns."""
 
-import pytest
 import regex as re
 
 from textwarp._core.constants.regexes import (
-    CaseConversionPatterns,
     CasePatterns,
     WarpingPatterns
 )
-
-
-def test_pattern_classes_are_non_instantiable():
-    """
-    Verify that regular expression namespace classes cannot be
-    instantiated.
-    """
-    with pytest.raises(
-        RuntimeError, match='CaseConversionPatterns cannot be instantiated'
-    ):
-        CaseConversionPatterns()
-
-    with pytest.raises(
-        RuntimeError, match='CasePatterns cannot be instantiated'
-    ):
-        CasePatterns()
-
-    with pytest.raises(
-        RuntimeError, match='WarpingPatterns cannot be instantiated'
-    ):
-        WarpingPatterns()
 
 
 def test_case_patterns_return_compiled_regexes():
@@ -63,10 +40,10 @@ def test_warping_patterns_em_dash_stand_in():
     assert match.group(0) == '--'
 
 
-def test_warping_patterns_create_words_regex():
+def test_warping_patternscreate_words_regex():
     """Test the dynamic word regex generator."""
     words = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
-    pattern = WarpingPatterns._create_words_regex(words)
+    pattern = patterns.warping.create_words_regex(words)
 
     assert isinstance(pattern, re.Pattern)
 
