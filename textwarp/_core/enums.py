@@ -63,6 +63,20 @@ class CountLabels(str, Enum):
 
 
 @final
+class ModelPriority(str, Enum):
+    """
+    Specify whether to prioritize accuracy or speed for spaCy model
+    selection.
+
+    Attributes:
+        ACCURACY: Prioritize accuracy over speed.
+        SPEED: Prioritize speed over accuracy.
+    """
+    ACCURACY = 'accuracy'
+    SPEED = 'speed'
+
+
+@final
 class PresenceCheckType(Enum):
     """
     Specify whether to check for the presence of a case, regular
