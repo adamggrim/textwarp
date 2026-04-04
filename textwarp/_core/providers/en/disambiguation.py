@@ -1,4 +1,7 @@
-"""Functions for resolving ambiguous contractions based on context."""
+"""
+English-specific functions for resolving ambiguous contractions based
+on context.
+"""
 
 from __future__ import annotations
 
@@ -10,16 +13,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Span
 
 from textwarp._core.constants.nlp import NOUN_TAGS
-from textwarp._core.providers.en_rules.apostrophes import AIN_T_SUFFIX_VARIANTS
-from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
-from textwarp._core.providers.en_rules.utils import find_subject_token
-from textwarp._core.providers.en_rules.constants import (
-    BASE_VERB_TAGS,
-    NOUN_PHRASE_TAGS,
-    PARTICIPLE_TAGS,
-    THIRD_PERSON_SINGULAR_PRONOUNS,
-    WH_WORDS
-)
+from textwarp._core.providers import en
 
 __all__ = [
     'disambiguate_ain_t',
@@ -53,7 +47,7 @@ def _is_present_participle(token: Token) -> bool:
 
     text_lower = token.lower_
 
-    if EnWarpingPatterns.get_common_stateless_participles().match(text_lower):
+    if en.patterns.get_common_stateless_participles().match(text_lower):
         return True
 
     if text_lower.endswith(("in'", 'in’')):
@@ -81,7 +75,7 @@ def _disambiguate_a_or_to(span: Span) -> str:
     doc = span.doc
     next_token = doc[span.end] if span.end < len(doc) else None
 
-    if (next_token and next_token.tag_ in NOUN_PHRASE_TAGS
+    if (next_token and next_token.tag_ in en.constants.NOUN_PHRASE_TAGS
         and next_token.tag_ != 'VB'):
         return 'a'
 
@@ -103,7 +97,7 @@ def disambiguate_ain_t(span: Span) -> str:
     """
     doc = span.doc
     verb_token = span[0]
-    subject_token = find_subject_token(verb_token)
+    subject_token = en.utils.find_subject_token(verb_token)
     next_token = doc[span.end] if span.end < len(doc) else None
 
     action_verb = next_token
@@ -116,14 +110,14 @@ def disambiguate_ain_t(span: Span) -> str:
     if subject_token:
         subj_text = subject_token.lower_
         is_singular = (
-            subj_text in THIRD_PERSON_SINGULAR_PRONOUNS
+            subj_text in en.constants.THIRD_PERSON_SINGULAR_PRONOUNS
             or subject_token.tag_ in NOUN_TAGS
         )
         is_first_person_i = (subj_text == 'i')
 
     if action_verb:
         if (action_verb.lower_ == 'got'
-                or action_verb.tag_ in PARTICIPLE_TAGS):
+                or action_verb.tag_ in en.constants.PARTICIPLE_TAGS):
             return 'has' if is_singular else 'have'
 
     if is_first_person_i:
@@ -151,21 +145,21 @@ def disambiguate_d(span: Span) -> str:
         return 'would'
 
     is_wh_question = (
-        span[0].lower_ in WH_WORDS
-        or ((
+        span[0].lower_ in en.constants.WH_WORDS
+        or (
             span.start > 0
-            and doc[span.start - 1].lower_ in WH_WORDS
-        ))
+            and doc[span.start - 1].lower_ in en.constants.WH_WORDS
+        )
     )
 
     for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
         token = doc[i]
 
         if (token.lower_ == 'better'
-                or token.tag_ in PARTICIPLE_TAGS):
+                or token.tag_ in en.constants.PARTICIPLE_TAGS):
             return 'had'
 
-        if token.tag_ in BASE_VERB_TAGS:
+        if token.tag_ in en.constants.BASE_VERB_TAGS:
             if token.lemma_ in _PREFERENCE_VERBS:
                 return 'would'
             return 'did' if is_wh_question else 'would'
@@ -213,9 +207,9 @@ def disambiguate_s(span: Span) -> str:
 
         if token.lower_ == 'gotta':
             return 'has'
-        if tag in BASE_VERB_TAGS:
+        if tag in en.constants.BASE_VERB_TAGS:
             return 'does'
-        if tag in PARTICIPLE_TAGS:
+        if tag in en.constants.PARTICIPLE_TAGS:
             return 'has'
         if _is_present_participle(token):
             return 'is'
@@ -269,18 +263,20 @@ def disambiguate_whatcha(span: Span) -> str:
     next_text_lower = next_token.lower_
     tag = next_token.tag_
 
-    if after_next_token and (next_text_lower == 'ai'
-            and after_next_token.lower_ in AIN_T_SUFFIX_VARIANTS):
+    if after_next_token and (
+        next_text_lower == 'ai'
+        and after_next_token.lower_ in en.contractions.AIN_T_SUFFIX_VARIANTS
+    ):
         return ''
 
     if (
-        EnWarpingPatterns.get_whatcha_are_words().match(next_text_lower)
+        en.patterns.get_whatcha_are_words().match(next_text_lower)
         or _is_present_participle(next_token)
     ):
         return 'are'
     elif (
-        EnWarpingPatterns.get_whatcha_have_words().match(next_text_lower)
-        or tag in PARTICIPLE_TAGS
+        en.patterns.get_whatcha_have_words().match(next_text_lower)
+        or tag in en.constants.PARTICIPLE_TAGS
     ):
         return 'have'
 
