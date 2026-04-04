@@ -1,10 +1,12 @@
 """English-specific string casing logic."""
 
-from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._core.providers.en_rules.data import EnStringCasing
-from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
+from typing import Callable
 
-__all__ = ['en_case_from_string']
+from textwarp._core.constants import patterns
+from textwarp._core.providers import en
+
+
+__all__ = ['case_from_string']
 
 
 def _capitalize_from_map(
@@ -27,7 +29,7 @@ def _capitalize_from_map(
     if lower_word in capitalization_map:
         return capitalization_map[lower_word]
 
-    match = EnWarpingPatterns.get_map_suffix_exceptions_pattern().search(
+    match = en.patterns.get_map_suffix_exceptions_pattern().search(
         lower_word
     )
 
@@ -58,7 +60,10 @@ def _handle_lookup(_word: str, lower_word: str) -> str | None:
         str | None: The cased word, or `None` if `lower_word`
             is not in the combined casings map.
     """
-    return _capitalize_from_map(lower_word, EnStringCasing.get_lookup_map())
+    return _capitalize_from_map(
+        lower_word,
+        en.data.string_casing.get_lookup_map()
+    )
 
 
 def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
@@ -91,7 +96,7 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
             `lower_word` is not in the lowercase abbreviations set.
     """
     if (lower_word.removesuffix('.')
-            in EnStringCasing.get_lowercase_abbreviations()):
+            in en.data.string_casing.get_lowercase_abbreviations()):
         return lower_word
     return None
 
@@ -111,12 +116,12 @@ def _handle_period_separated_initialism(
         str | None: The capitalized initialism, or `None` if the
             word does not contain a period.
     """
-    if (WarpingPatterns.get_period_separated_initialism()
+    if (patterns.warping.get_period_separated_initialism()
             .fullmatch(lower_word)):
         parts = lower_word.split('.')
         formatted_parts = [
             part.upper()
-            if not WarpingPatterns.get_any_apostrophe().search(part)
+            if not en.patterns.warping.get_any_apostrophe().search(part)
             else part.lower()
             for part in parts
         ]
@@ -136,9 +141,9 @@ def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
         str | None: The capitalized name, or `None` if the
             string starts with a name prefix exception.
     """
-    surname_prefix_pattern = EnWarpingPatterns.get_surname_prefix_pattern()
+    surname_prefix_pattern = en.patterns.get_surname_prefix_pattern()
     name_prefix_exception_pattern = (
-        EnWarpingPatterns.get_name_prefix_exception_pattern()
+        en.patterns.get_name_prefix_exception_pattern()
     )
 
     if name_prefix_exception_pattern.match(lower_word):
@@ -167,7 +172,7 @@ def _preserve_mixed_case(word: str, _lower_word: str) -> str | None:
     return None
 
 
-def en_case_from_string(
+def case_from_string(
     word: str,
     lowercase_by_default: bool = False,
     preserve_mixed_case: bool = True
