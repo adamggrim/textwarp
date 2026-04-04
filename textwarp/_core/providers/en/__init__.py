@@ -11,10 +11,10 @@ from textwarp._core.providers.en import (
     patterns,
     provider,
     punctuation,
-    utils,
+    utils
 )
 
-all = [
+__all__ = [
     'casing',
     'constants',
     'contractions',
