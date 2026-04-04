@@ -5,7 +5,7 @@ from types import MappingProxyType
 
 import regex as re
 
-from textwarp._core.constants.regexes import CasePatterns
+from textwarp._core.constants import patterns
 
 __all__ = ['get_case_names_regex_map']
 
@@ -21,18 +21,18 @@ def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
             mapping string inputs to regular expression patterns.
     """
     return MappingProxyType({
-        'camel': CasePatterns.get_camel_word(),
-        'camel case': CasePatterns.get_camel_word(),
-        'dot': CasePatterns.get_dot_word(),
-        'dot case': CasePatterns.get_dot_word(),
-        'kebab': CasePatterns.get_kebab_word(),
-        'kebab case': CasePatterns.get_kebab_word(),
-        'lower': CasePatterns.get_lower_word(),
-        'lowercase': CasePatterns.get_lower_word(),
-        'pascal': CasePatterns.get_pascal_word(),
-        'pascal case': CasePatterns.get_pascal_word(),
-        'snake': CasePatterns.get_snake_word(),
-        'snake case': CasePatterns.get_snake_word(),
-        'upper': CasePatterns.get_upper_word(),
-        'uppercase': CasePatterns.get_upper_word(),
+        'camel': patterns.cases.get_camel_word(),
+        'camel case': patterns.cases.get_camel_word(),
+        'dot': patterns.cases.get_dot_word(),
+        'dot case': patterns.cases.get_dot_word(),
+        'kebab': patterns.cases.get_kebab_word(),
+        'kebab case': patterns.cases.get_kebab_word(),
+        'lower': patterns.cases.get_lower_word(),
+        'lowercase': patterns.cases.get_lower_word(),
+        'pascal': patterns.cases.get_pascal_word(),
+        'pascal case': patterns.cases.get_pascal_word(),
+        'snake': patterns.cases.get_snake_word(),
+        'snake case': patterns.cases.get_snake_word(),
+        'upper': patterns.cases.get_upper_word(),
+        'uppercase': patterns.cases.get_upper_word(),
     })

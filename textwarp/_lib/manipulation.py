@@ -2,7 +2,7 @@
 
 from random import shuffle
 
-from textwarp._core.constants.regexes import WarpingPatterns
+from textwarp._core.constants import patterns
 
 __all__ = [
     'randomize',
@@ -53,7 +53,7 @@ def to_single_spaces(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.get_multiple_spaces().sub(' ', text)
+    return patterns.warping.get_multiple_spaces().sub(' ', text)
 
 
 def widen(text: str) -> str:

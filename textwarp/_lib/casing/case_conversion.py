@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Callable, TYPE_CHECKING
 
 import regex as re
+
 if TYPE_CHECKING:
     from spacy.tokens import (
         Doc,
@@ -12,11 +13,7 @@ if TYPE_CHECKING:
         Token
     )
 
-from textwarp._core.constants.regexes import (
-    CaseConversionPatterns,
-    CasePatterns
-)
-from textwarp._core.constants.apostrophes import OPEN_QUOTES
+from textwarp._core.constants import patterns
 from textwarp._core.context import ctx
 from textwarp._core.enums import CaseSeparator, Casing
 from textwarp._core.utils import find_first_alphabetical_idx
@@ -151,7 +148,7 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
             )
             if first_word_idx is not None:
                 position_idxs.add(first_word_idx)
-        elif ((token.text == ':' or token.text in OPEN_QUOTES)
+        elif ((token.text == ':' or token.text in ctx.provider.open_quotes)
               and token.i + 1 < len(text_container)):
             first_word_idx = _find_first_word_token_idx(
                 i + 1, text_container
@@ -340,7 +337,7 @@ def to_separator_case(
     """
     no_apostrophes_text = remove_apostrophes(text)
     parts: list[str] = (
-        CaseConversionPatterns.get_split_for_separator_conversion().split(
+        patterns.case_conversion.get_split_for_separator_conversion().split(
             no_apostrophes_text
         )
     )
@@ -348,7 +345,7 @@ def to_separator_case(
 
     separator_pattern_name = f'get_{separator.name.lower()}_word'
     separator_pattern: re.Pattern[str] = getattr(
-        CasePatterns,
+        patterns.cases,
         separator_pattern_name
     )()
     other_separators: list[CaseSeparator] = [
@@ -369,19 +366,21 @@ def to_separator_case(
         elif separator_pattern.match(part):
             processed_part = part
         elif any(
-            getattr(CasePatterns, f'get_{s.name.lower()}_word')().match(part)
+            getattr(patterns.cases, f'get_{s.name.lower()}_word')().match(part)
             for s in other_separators
         ):
             processed_part = (
-                CaseConversionPatterns.get_any_separator().sub(
+                patterns.case_conversion.get_any_separator().sub(
                     separator.value,
                     part
                 )
             )
-        elif (CasePatterns.get_camel_word().fullmatch(part)
-                or CasePatterns.get_pascal_word().fullmatch(part)):
+        elif (patterns.cases.get_camel_word().fullmatch(part)
+                or patterns.cases.get_pascal_word().fullmatch(part)):
             broken_words: list[str] = (
-                CaseConversionPatterns.get_split_camel_or_pascal().split(part)
+                patterns.case_conversion
+                .get_split_camel_or_pascal()
+                .split(part)
             )
             lower_words: list[str] = [word.lower() for word in broken_words]
             processed_part = separator.value.join(lower_words)
@@ -407,9 +406,9 @@ def word_to_pascal(word: str) -> str:
     """
     if not any(char.isalpha() for char in word):
         return word
-    if CasePatterns.get_pascal_word().match(word):
+    if patterns.cases.get_pascal_word().match(word):
         return word
-    if CasePatterns.get_camel_word().match(word):
+    if patterns.cases.get_camel_word().match(word):
         return change_first_letter_case(word, str.upper)
 
     return case_from_string(word)

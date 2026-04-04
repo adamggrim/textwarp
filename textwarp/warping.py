@@ -10,11 +10,7 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
-from textwarp._core.constants.regexes import (
-    CaseConversionPatterns,
-    CasePatterns,
-    WarpingPatterns
-)
+from textwarp._core.constants import patterns
 from textwarp._core.context import ctx
 from textwarp._core.enums import CaseSeparator, Casing
 
@@ -176,7 +172,7 @@ def hyphen_to_en(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return text.replace('-', '–')
+    return patterns.warping.get_em_dash_stand_in().sub('—', text)
 
 
 def ordinal_to_cardinal(text: str) -> str:
@@ -295,7 +291,7 @@ def redact(text: str) -> str:
     Returns:
         str: The redacted string.
     """
-    return WarpingPatterns.get_word_character().sub('█', text)
+    return patterns.warping.get_word_character().sub('█', text)
 
 
 def reverse(text: str) -> str:
@@ -363,7 +359,7 @@ def to_camel_case(text: str) -> str:
         str: The converted string.
     """
     pascal_text = to_pascal_case(text)
-    return CasePatterns.get_pascal_word().sub(
+    return patterns.cases.get_pascal_word().sub(
         lambda m: change_first_letter_case(m.group(0), str.lower),
         pascal_text
     )
@@ -438,7 +434,7 @@ def to_pascal_case(text: str) -> str:
     """
     no_apostrophes_text: str = remove_apostrophes(text)
     words: list[str] = (
-        CaseConversionPatterns.get_split_for_pascal_conversion().split(
+        patterns.case_conversion.get_split_for_pascal_conversion().split(
             no_apostrophes_text
         )
     )
