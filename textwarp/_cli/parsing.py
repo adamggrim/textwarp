@@ -1,6 +1,7 @@
 """Command-line argument parsing using argparse."""
 
 import argparse
+import gettext
 import sys
 from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Callable
@@ -13,6 +14,8 @@ from textwarp._cli.args import (
 )
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
 from textwarp._core.types import Pipeline
+
+_ = gettext.gettext
 
 __all__ = ['parse_args']
 
@@ -33,7 +36,62 @@ def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
     return max(len(key) + adjustment for key in commands.keys())
 
 
-def parse_args() -> tuple[list[tuple[str, Callable[[str], str]]], str]:
+def _validate_command_combinations(
+    args: argparse.Namespace,
+    parser: argparse.ArgumentParser
+) -> None:
+    """
+    Validate that combined command-line arguments do not conflict.
+
+    Args:
+        args: The parsed command-line arguments.
+        parser: The `ArgumentParser` instance used to display error messages.
+
+    Raises:
+        SystemExit: If any invalid combination of arguments is detected.
+    """
+    active_cmds = [
+        key for key in ARGS_MAP
+        if getattr(args, key.replace('-', '_'), False)
+    ]
+
+    active_separators = [c for c in active_cmds if c in SEPARATOR_COMMANDS]
+    active_casings = [c for c in active_cmds if c in CASING_COMMANDS]
+    active_mutually_exclusives = [
+        c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
+    ]
+
+    if len(active_separators) > 1:
+        parser.error(
+            _('Cannot combine multiple separator styles: {styles}').format(
+                styles=', '.join(active_separators)
+            )
+        )
+    if len(active_casings) > 1:
+        parser.error(
+            _('Cannot combine multiple casing styles: {styles}').format(
+                styles=', '.join(active_casings)
+            )
+        )
+    if len(active_mutually_exclusives) > 1:
+        parser.error(
+            _('Cannot combine multiple exclusive commands: {commands}').format(
+                commands=', '.join(active_mutually_exclusives)
+            )
+        )
+    if active_mutually_exclusives and (active_separators or active_casings):
+        cmd = active_mutually_exclusives[0]
+        message = _(
+            "Command '{cmd}' cannot be combined with casing or separator "
+            'commands.'
+        )
+        parser.error(message.format(cmd=cmd))
+
+
+def parse_args() -> tuple[
+    list[tuple[str, Callable[[str], str]]],
+    str
+]:
     """
     Parse command-line arguments for a text warping or analysis
     function name and the language locale.
@@ -97,38 +155,7 @@ def parse_args() -> tuple[list[tuple[str, Callable[[str], str]]], str]:
 
     args: argparse.Namespace = parser.parse_args()
 
-    active_cmds = [
-        key for key in ARGS_MAP
-        if getattr(args, key.replace('-', '_'), False)
-    ]
-
-    active_separators = [c for c in active_cmds if c in SEPARATOR_COMMANDS]
-    active_casings = [c for c in active_cmds if c in CASING_COMMANDS]
-    active_mutually_exclusives = [
-        c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
-    ]
-
-    if len(active_separators) > 1:
-        parser.error(
-            f'Cannot combine multiple separator styles: '
-            f"{', '.join(active_separators)}"
-        )
-    if len(active_casings) > 1:
-        parser.error(
-            f'Cannot combine multiple casing styles: '
-            f"{', '.join(active_casings)}"
-        )
-    if len(active_mutually_exclusives) > 1:
-        parser.error(
-            f'Cannot combine multiple exclusive commands: '
-            f"{', '.join(active_mutually_exclusives)}"
-        )
-    if active_mutually_exclusives and (active_separators or active_casings):
-        cmd = active_mutually_exclusives[0]
-        parser.error(
-            f"Command '{cmd}' cannot be combined with casing or separator "
-            f'commands.'
-        )
+    _validate_command_combinations(args, parser)
 
     pipeline: Pipeline = []
 

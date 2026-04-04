@@ -1,5 +1,6 @@
 """Main loop logic for executing commands."""
 
+import gettext
 from typing import Callable, TypeAlias
 
 from textwarp._cli.constants.messages import (
@@ -7,10 +8,11 @@ from textwarp._cli.constants.messages import (
     CLIPBOARD_CLEARED_MESSAGE,
     MODIFIED_TEXT_COPIED_MESSAGE
 )
-from textwarp._commands import replacement
-
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import EmptyClipboardError, validate_clipboard
+from textwarp._commands import replacement
+
+_ = gettext.gettext
 
 __all__ = [
     'clear_clipboard',
@@ -43,9 +45,9 @@ def _paste_and_validate() -> str | None:
     except pyperclip.PyperclipException as e:
         msg = CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e)
         if 'xclip' in str(e) or 'xsel' in str(e):
-            msg += (
+            msg += _(
                 "\nOn Linux, you may need to install 'xclip' or 'xsel' "
-                "(e.g., sudo apt install xclip)."
+                '(e.g., sudo apt install xclip).'
             )
         print_wrapped(msg)
         return None

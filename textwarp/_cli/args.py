@@ -2,9 +2,12 @@
 A mapping of command-line arguments to functions and help messages.
 """
 
+import gettext
 import importlib
 from types import ModuleType
 from typing import Callable, Final
+
+_ = gettext.gettext
 
 __all__ = [
     'ARGS_MAP',
@@ -26,195 +29,190 @@ def _lazy_load(module_name: str, func_name: str) -> Callable[[str], str]:
 
 # A dictionary for all warping, analysis, replacement and
 # clearing commands.
-
-# This dictionary maps each public-facing command-line argument to a
-# tuple containing:
-#   1. The function that performs the action.
-#   2. The help message to display for the argument.
 ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     'alternating-caps': (
         _lazy_load('..warping', 'to_alternating_caps'),
-        'cOnVeRt To AlTeRnAtInG cApS'
+        _('cOnVeRt To AlTeRnAtInG cApS')
     ),
     'binary': (
         _lazy_load('..warping', 'to_binary'),
-        'convert to binary'
+        _('convert to binary')
     ),
     'camel-case': (
         _lazy_load('..warping', 'to_camel_case'),
-        'convertToCamelCase'
+        _('convertToCamelCase')
     ),
     'capitalize': (
         _lazy_load('..warping', 'capitalize'),
-        'Capitalize The First Character Of Each Word'
+        _('Capitalize The First Character Of Each Word')
     ),
     'cardinal': (
         _lazy_load('..warping', 'ordinal_to_cardinal'),
-        'convert ordinal numbers to cardinal numbers'
+        _('convert ordinal numbers to cardinal numbers')
     ),
     'char-count': (
         _lazy_load('.._commands.analysis', 'char_count'),
-        'count characters'
+        _('count characters')
     ),
     'clear': (
         lambda text: text,
-        'clear clipboard text'
+        _('clear clipboard text')
     ),
     'curly-quotes': (
         _lazy_load('.._lib.punctuation', 'straight_to_curly'),
-        'convert "straight quotes" to “curly quotes”'
+        _('convert "straight quotes" to “curly quotes”')
     ),
     'dot-case': (
         _lazy_load('..warping', 'to_dot_case'),
-        'convert.to.dot.case'
+        _('convert.to.dot.case')
     ),
     'expand-contractions': (
         _lazy_load('..warping', 'expand_contractions'),
-        'expand contractions'
+        _('expand contractions')
     ),
     'from-binary': (
         _lazy_load('..warping', 'from_binary'),
-        'convert from binary'
+        _('convert from binary')
     ),
     'from-hexadecimal': (
         _lazy_load('..warping', 'from_hexadecimal'),
-        'convert from hexadecimal'
+        _('convert from hexadecimal')
     ),
     'from-morse': (
         _lazy_load('..warping', 'from_morse'),
-        'convert from Morse code'
+        _('convert from Morse code')
     ),
     'hexadecimal': (
         _lazy_load('..warping', 'to_hexadecimal'),
-        'convert to hexadecimal'
+        _('convert to hexadecimal')
     ),
     'hyphen-to-en': (
         _lazy_load('..warping', 'hyphen_to_en'),
-        'convert hyphens to en dashes'
+        _('convert hyphens to en dashes')
     ),
     'hyphens-to-em': (
         _lazy_load('..warping', 'hyphens_to_em'),
-        'convert consecutive hyphens to em dashes'
+        _('convert consecutive hyphens to em dashes')
     ),
     'kebab-case': (
         _lazy_load('..warping', 'to_kebab_case'),
-        'convert-to-kebab-case'
+        _('convert-to-kebab-case')
     ),
     'line-count': (
         _lazy_load('.._commands.analysis', 'line_count'),
-        'count lines'
+        _('count lines')
     ),
     'lowercase': (
         str.lower,
-        'convert to lowercase'
+        _('convert to lowercase')
     ),
     'mfws': (
         _lazy_load('.._commands.analysis', 'mfws'),
-        'get most frequent words'
+        _('get most frequent words')
     ),
     'morse': (
         _lazy_load('..warping', 'to_morse'),
-        'convert to Morse code'
+        _('convert to Morse code')
     ),
     'ordinal': (
         _lazy_load('..warping', 'cardinal_to_ordinal'),
-        'convert cardinal numbers to ordinal numbers'
+        _('convert cardinal numbers to ordinal numbers')
     ),
     'pascal-case': (
         _lazy_load('..warping', 'to_pascal_case'),
-        'ConvertToPascalCase'
+        _('ConvertToPascalCase')
     ),
     'plain-text': (
         str,
-        'convert to plain text'
+        _('convert to plain text')
     ),
     'pos-count': (
         _lazy_load('.._commands.analysis', 'pos_count'),
-        'count parts of speech'
+        _('count parts of speech')
     ),
     'punct-to-inside': (
         _lazy_load('..warping', 'punct_to_inside'),
-        '"move punctuation inside quotation marks."'
+        _('"move punctuation inside quotation marks."')
     ),
     'punct-to-outside': (
         _lazy_load('..warping', 'punct_to_outside'),
-        '"move punctuation outside quotation marks".'
+        _('"move punctuation outside quotation marks".')
     ),
     'random-case': (
         _lazy_load('..warping', 'random_case'),
-        'randomize the casing of each character'
+        _('randomize the casing of each character')
     ),
     'randomize': (
         _lazy_load('..warping', 'randomize'),
-        'randomize characters'
+        _('randomize characters')
     ),
     'redact': (
         _lazy_load('..warping', 'redact'),
-        'redact text'
+        _('redact text')
     ),
     'replace': (
         _lazy_load('.._commands.replacement', 'replace'),
-        'find and replace text'
+        _('find and replace text')
     ),
     'replace-case': (
         _lazy_load('.._commands.replacement', 'replace_case'),
-        'find and replace a case'
+        _('find and replace a case')
     ),
     'replace-regex': (
         _lazy_load('.._commands.replacement', 'replace_regex'),
-        'find and replace a regular expression'
+        _('find and replace a regular expression')
     ),
     'reverse': (
         _lazy_load('..warping', 'reverse'),
-        'reverse text'
+        _('reverse text')
     ),
     'sentence-case': (
         _lazy_load('..warping', 'to_sentence_case'),
-        'Convert to sentence case.'
+        _('Convert to sentence case.')
     ),
     'sentence-count': (
         _lazy_load('.._commands.analysis', 'sentence_count'),
-        'count sentences'
+        _('count sentences')
     ),
     'single-spaces': (
         _lazy_load('..warping', 'to_single_spaces'),
-        'convert consecutive spaces to a single space'
+        _('convert consecutive spaces to a single space')
     ),
     'snake-case': (
         _lazy_load('..warping', 'to_snake_case'),
-        'convert_to_snake_case'
+        _('convert_to_snake_case')
     ),
     'straight-quotes': (
         _lazy_load('.._lib.punctuation', 'curly_to_straight'),
-        'convert “curly quotes” to "straight quotes"'
+        _('convert “curly quotes” to "straight quotes"')
     ),
     'strip': (
         str.strip,
-        'remove leading and trailing whitespace'
+        _('remove leading and trailing whitespace')
     ),
     'swapcase': (
         str.swapcase,
-        'convert LOWERCASE to all caps and vice versa'
+        _('swap the case of all alphabetical characters')
     ),
     'time-to-read': (
         _lazy_load('.._commands.analysis', 'time_to_read'),
-        'calculate time to read'
+        _('calculate time to read')
     ),
     'title-case': (
         _lazy_load('..warping', 'to_title_case'),
-        'Convert to Title Case'
+        _('Convert to Title Case')
     ),
     'uppercase': (
         str.upper,
-        'CONVERT TO ALL CAPS'
+        _('CONVERT TO ALL CAPS')
     ),
     'word-count': (
         _lazy_load('.._commands.analysis', 'word_count'),
-        'count words'
+        _('count words')
     ),
     'widen': (
         _lazy_load('..warping', 'widen'),
-        'w i d e n  t e x t'
+        _('w i d e n  t e x t')
     )
 }
 

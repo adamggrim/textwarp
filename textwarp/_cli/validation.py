@@ -1,5 +1,6 @@
 """Validators for text, clipboard, and regular expression content."""
 
+import gettext
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
     EmptyClipboardError,
@@ -10,6 +11,8 @@ from textwarp._core.exceptions import (
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
+
+_ = gettext.gettext
 
 __all__ = [
     'validate_any_text',
@@ -48,11 +51,11 @@ def validate_case_name(case_name: str) -> None:
         InvalidCaseNameError: If the input is not a valid case name.
     """
     if case_name == '':
-        raise NoCaseNameError('Case input is empty.')
+        raise NoCaseNameError(_('Case input is empty.'))
     elif case_name.strip() == '':
-        raise WhitespaceCaseNameError('Case contains only whitespace.')
+        raise WhitespaceCaseNameError(_('Case contains only whitespace.'))
     elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
-        raise InvalidCaseNameError('Invalid case.')
+        raise InvalidCaseNameError(_('Invalid case.'))
 
 
 def validate_clipboard(clipboard: str) -> None:
@@ -71,9 +74,9 @@ def validate_clipboard(clipboard: str) -> None:
             whitespace.
     """
     if clipboard == '':
-        raise EmptyClipboardError('Clipboard is empty.')
+        raise EmptyClipboardError(_('Clipboard is empty.'))
     elif clipboard.strip() == '':
-        raise WhitespaceClipboardError('Clipboard contains only whitespace.')
+        raise WhitespaceClipboardError(_('Clipboard contains only whitespace.'))
 
 
 def validate_regex(regex: str) -> None:
@@ -92,7 +95,7 @@ def validate_regex(regex: str) -> None:
     """
     import regex as re
     if regex == '':
-        raise NoRegexError('Regex input is empty.')
+        raise NoRegexError(_('Regex input is empty.'))
 
     re.compile(regex)
 
@@ -107,4 +110,4 @@ def validate_text(text: str) -> None:
         ValueError: If the text string is empty.
     """
     if text == '':
-        raise NoTextError('Text input is empty.')
+        raise NoTextError(_('Text input is empty.'))

@@ -3,6 +3,7 @@ The main entry point for the package, containing the main loop and
 associated functions.
 """
 
+import gettext
 import sys
 from typing import Final
 
@@ -17,6 +18,8 @@ from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
 from textwarp._core.types import Pipeline
 from textwarp._core.context import ctx
+
+_ = gettext.gettext
 
 # Commands that print analysis and exit.
 ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
@@ -98,7 +101,10 @@ def _process_piped_mode(pipeline: Pipeline) -> None:
             warp_and_copy(lambda t: _apply_pipeline(t, pipeline), text)
 
     except Exception as e:
-        print_wrapped(f'Error processing input: {e}', file=sys.stderr)
+        print_wrapped(
+            _('Error processing input: {error}').format(error=e),
+            file=sys.stderr
+        )
         sys.exit(1)
 
 
@@ -108,8 +114,8 @@ def _validate_piped_commands(pipeline: Pipeline) -> None:
         normalized_name = cmd_name.replace('-', '_')
         if normalized_name in _REPLACEMENT_FUNC_NAMES:
             print_wrapped(
-                'Replacement commands require interactive user input and '
-                'cannot be used with pipelines.',
+                _('Replacement commands require interactive user input and '
+                  'cannot be used with pipelines.'),
                 file=sys.stderr
             )
             sys.exit(1)

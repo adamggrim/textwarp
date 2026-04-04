@@ -1,6 +1,7 @@
-"""Sets for command-line input."""
-
+import gettext
 from typing import Final
+
+_ = gettext.gettext
 
 __all__ = [
     'EXIT_INPUTS',
@@ -9,10 +10,12 @@ __all__ = [
 ]
 
 # Inputs for exiting the program.
-EXIT_INPUTS: Final[frozenset[str]] = frozenset({'quit', 'q', 'exit', 'e'})
+EXIT_INPUTS: Final[frozenset[str]] = frozenset(
+    {_('quit'), _('q'), _('exit'), _('e')}
+)
 
 # Inputs for indicating a negative response.
-NO_INPUTS: Final[frozenset[str]] = frozenset({'no', 'n'})
+NO_INPUTS: Final[frozenset[str]] = frozenset({_('no'), _('n')})
 
 # Inputs for indicating an affirmative response.
-YES_INPUTS: Final[frozenset[str]] = frozenset({'yes', 'y'})
+YES_INPUTS: Final[frozenset[str]] = frozenset({_('yes'), _('y')})
