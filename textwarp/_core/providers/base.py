@@ -31,12 +31,6 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def base_verb_tags(self) -> frozenset[str]:
-        """Fine-grained parts-of-speech tags for base verb forms."""
-        pass
-
-    @property
-    @abstractmethod
     def contextual_casings_map(self) -> Mapping[
         str, tuple['EntityCasingContext', ...]
     ]:
@@ -45,27 +39,8 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def have_auxiliaries(self) -> frozenset[str]:
-        """Auxiliary verbs forms of "have"."""
-        pass
-
-    @property
-    @abstractmethod
-    def noun_phrase_tags(self) -> frozenset[str]:
-        """
-        Fine-grained parts-of-speech tags for the first word of a noun
-        phrase.
-        """
-        pass
-
-    @property
-    @abstractmethod
-    def participle_tags(self) -> frozenset[str]:
-        """
-        Fine-grained parts-of-speech tags for past tense and past
-        participle verb forms. (Fine-grained tags used to distinguish
-        verb tense.)
-        """
+    def open_quotes(self) -> frozenset[str]:
+        """Opening quote characters for the locale."""
         pass
 
     @property
@@ -88,11 +63,8 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def singular_noun_tags(self) -> frozenset[str]:
-        """
-        Fine-grained parts-of-speech tags for singular nouns and proper
-        nouns.
-        """
+    def proper_noun_entities(self) -> frozenset[str]:
+        """Named entities that are typically proper nouns for the locale's model."""
         pass
 
     @property
@@ -103,22 +75,10 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def third_person_singular_pronouns(self) -> frozenset[str]:
-        """Pronouns for subject-verb agreement checks."""
-        pass
-
-    @property
-    @abstractmethod
     def title_case_tag_exceptions(self) -> frozenset[str]:
         """
         Part-of-speech tag exceptions for title case capitalization.
         """
-        pass
-
-    @property
-    @abstractmethod
-    def wh_words(self) -> frozenset[str]:
-        """Words that start questions."""
         pass
 
     @abstractmethod
@@ -139,10 +99,15 @@ class LanguageProvider(ABC):
         pass
 
     @abstractmethod
+    def curly_to_straight(self, text: str) -> str:
+        """
+        Convert curly quotes in a given string to straight quotes.
+        """
+        pass
+
+    @abstractmethod
     def expand_contractions(self, doc: 'Doc') -> str:
-        """
-        Expand all contractions in a given spaCy `Doc`.
-        """
+        """Expand all contractions in a given spaCy `Doc`."""
         pass
 
     @abstractmethod
@@ -153,9 +118,23 @@ class LanguageProvider(ABC):
         pass
 
     @abstractmethod
+    def remove_apostrophes(self, text: str) -> str:
+        """
+        Remove apostrophes from a string without removing single quotes.
+        """
+        pass
+
+    @abstractmethod
     def should_always_lowercase(self, text: str) -> bool:
         """
         Determine if a specific token string should always remain
         lowercase.
+        """
+        pass
+
+    @abstractmethod
+    def straight_to_curly(self, text: str) -> str:
+        """
+        Convert straight quotes in a given string to curly quotes.
         """
         pass
