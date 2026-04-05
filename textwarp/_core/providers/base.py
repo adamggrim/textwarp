@@ -24,8 +24,8 @@ class LanguageProvider(ABC):
     @abstractmethod
     def apostrophe_in_word_pattern(self) -> re.Pattern[str]:
         """
-        Regular expression for matching apostrophes within words or
-        elisions.
+        Regular expression for matching either apostrophes within words
+        or elisions.
         """
         pass
 
@@ -156,7 +156,6 @@ class LanguageProvider(ABC):
     def should_always_lowercase(self, text: str) -> bool:
         """
         Determine if a specific token string should always remain
-        lowercase (e.g., particles like "von" or contraction suffixes
-        like "n't").
+        lowercase.
         """
         pass

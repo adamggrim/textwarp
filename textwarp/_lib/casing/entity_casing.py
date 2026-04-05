@@ -189,7 +189,7 @@ def map_all_entities(doc: Doc) -> dict[int, tuple[Span, int, str | None]]:
         doc: The spaCy `Doc` to convert.
 
     Returns:
-        dict[int, tuple[str | Span, int, None]]: A dictionary where each
+        dict[int, tuple[Span, int, str | None]]: A dictionary where each
             key is an entity's start token index and each value is a
             tuple containing:
                 1. The entity's spaCy `Span` object.

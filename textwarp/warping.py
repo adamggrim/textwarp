@@ -69,12 +69,11 @@ __all__ = [
 
 def capitalize(content: str | Doc) -> str:
     """
-    Capitalize the each word in a given string or spaCy `Doc`,
-    handling special name prefixes and preserving other mid-word
-    capitalizations.
+    Capitalize each word in a given string or spaCy `Doc`, handling
+    special name prefixes and preserving other mid-word capitalizations.
 
     Args:
-        content: The stringspaCy `Doc` to capitalize.
+        content: The string or spaCy `Doc` to capitalize.
 
     Returns:
         str: The capitalized string.

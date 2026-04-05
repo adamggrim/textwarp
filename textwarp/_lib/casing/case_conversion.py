@@ -65,9 +65,9 @@ def _find_sentence_case_idxs(
 
     Returns:
         tuple[set[int], set[int]]:
-            1. sent_start_idxs: A list of the first token in each
+            1. sent_start_idxs: A set of the first token in each
                 sentence.
-            2. indices_to_lowercase: A list of words after the first
+            2. indices_to_lowercase: A set of words after the first
                 word that are currently capitalized or uppercase, as
                 long as all words in the text follow the same casing
                 (i.e., all capitalized words or all uppercase

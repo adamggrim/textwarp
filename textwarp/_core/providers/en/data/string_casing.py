@@ -1,4 +1,6 @@
-"""Functions for loading English string casing exceptions and prefixes."""
+"""
+Functions for loading English string casing exceptions and prefixes.
+"""
 
 from functools import lru_cache
 from pathlib import Path

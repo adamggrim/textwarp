@@ -64,7 +64,8 @@ def _is_present_participle(token: Token) -> bool:
 
 def _disambiguate_a_or_to(span: Span) -> str:
     """
-    Shared logic for "gotta" and "wanna" to disambiguate between "a" and "to".
+    Shared logic for "gotta" and "wanna" to disambiguate between "a"
+    and "to".
 
     Args:
         span: The spaCy `Span` containing the contraction.
