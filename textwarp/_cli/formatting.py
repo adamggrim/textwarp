@@ -1,6 +1,11 @@
 """Functions for formatting analysis into readable strings."""
 
+import gettext
+
 from textwarp._core.models import POSCounts, WordCount
+
+_ = gettext.gettext
+ngettext = gettext.ngettext
 
 __all__ = [
     'format_count',
@@ -62,7 +67,12 @@ def format_count(name: str, count: int) -> str:
     Returns:
         str: A formatted string indicating the name and count.
     """
-    return f'{name} count: {count}'
+    translated_name = _(name)
+
+    return _('%(name)s count: %(count)d') % {
+        'name': translated_name,
+        'count': count
+    }
 
 
 def format_mfws(mfws: list[WordCount]) -> str:
@@ -126,14 +136,30 @@ def format_time_to_read(minutes_to_read: int) -> str:
     """
     hours, minutes = divmod(minutes_to_read, 60)
     if hours >= 1:
-        formatted_hours: str = f'{hours} hours' if hours != 1 else '1 hour'
+        formatted_hours: str = ngettext(
+            '%(hours)d hour',
+            '%(hours)d hours',
+            hours
+        ) % {'hours': hours}
+
         if minutes == 0:
             return formatted_hours
-        formatted_minutes: str = (
-            f'{minutes} minutes' if minutes != 1 else '1 minute'
-        )
-        return f'{formatted_hours}, {formatted_minutes}'
+
+        formatted_minutes: str = ngettext(
+            '%(minutes)d minute',
+            '%(minutes)d minutes',
+            minutes
+        ) % {'minutes': minutes}
+
+        return _('%(hours)s, %(minutes)s') % {
+            'hours': formatted_hours,
+            'minutes': formatted_minutes
+        }
     elif minutes >= 1:
-        return f'{minutes} minutes' if minutes != 1 else '1 minute'
+        return ngettext(
+            '%(minutes)d minute',
+            '%(minutes)d minutes',
+            minutes
+        ) % {'minutes': minutes}
     else:
-        return 'Less than 1 minute'
+        return _('Less than 1 minute')
