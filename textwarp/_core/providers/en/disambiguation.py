@@ -78,6 +78,11 @@ def _disambiguate_a_or_to(span: Span) -> str:
 
     if (next_token and next_token.tag_ in en.constants.NOUN_PHRASE_TAGS
         and next_token.tag_ != 'VB'):
+
+        if next_token.lower_ in (
+                en.data.contraction_expansion.get_to_verb_words()):
+            return 'to'
+
         return 'a'
 
     return 'to'

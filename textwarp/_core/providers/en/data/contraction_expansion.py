@@ -39,6 +39,18 @@ def get_idiomatic_map() -> Mapping[str, str]:
         cast(dict[str, str], load_data(DIR / 'idiomatic_phrases.json'))
     )
 
+
+@lru_cache(maxsize=1)
+def get_to_verb_words() -> frozenset[str]:
+    """
+    Get a cached `frozenset` of words that expand to 'to' despite noun
+    tags.
+    """
+    return frozenset(
+        cast(list[str], load_data(DIR / 'to_verb_words.json'))
+    )
+
+
 @lru_cache(maxsize=1)
 def get_unambiguous_map() -> Mapping[str, str]:
     """Get a cached mapping of unambiguous contractions."""
