@@ -10,7 +10,7 @@ ngettext = gettext.ngettext
 __all__ = [
     'format_count',
     'format_mfws',
-    'format_pos_count',
+    'format_pos_counts',
     'format_time_to_read'
 ]
 
@@ -99,7 +99,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
     return _format_table(mfw_data)
 
 
-def format_pos_count(pos_counts: POSCounts) -> str:
+def format_pos_counts(pos_counts: POSCounts) -> str:
     """
     Return a dynamically formatted string indicating parts of speech
     counts for a given POSCounts object.

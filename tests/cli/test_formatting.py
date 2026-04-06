@@ -4,7 +4,7 @@ from textwarp._cli.formatting import (
     _format_table,
     format_count,
     format_mfws,
-    format_pos_count,
+    format_pos_counts,
     format_time_to_read
 )
 from textwarp._core.models import POSCounts, WordCount
@@ -53,13 +53,13 @@ def test_format_mfws():
     assert '(25.00%)' in result
 
 
-def test_format_pos_count():
+def test_format_pos_counts():
     """Test formatting of parts-of-speech counts."""
     mock_pos_counts = POSCounts(
         word_count=20,
         tag_counts={'NOUN': 10, 'VERB': 5}
     )
-    result = format_pos_count(mock_pos_counts)
+    result = format_pos_counts(mock_pos_counts)
 
     # Nouns should represent 50% (10/20)
     assert 'Nouns' in result

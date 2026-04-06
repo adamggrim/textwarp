@@ -34,12 +34,12 @@ def test_mfws(simulate_input, capsys):
     assert 'daffodil' not in captured.out
 
 
-def test_pos_count(capsys):
+def test_pos_counts(capsys):
     """
-    Test that pos_count prints a formatted table of parts-of-speech
+    Test that pos_counts prints a formatted table of parts-of-speech
     counts.
     """
-    analysis.pos_count('I celebrate myself, and sing myself.')
+    analysis.pos_counts('I celebrate myself, and sing myself.')
     captured = capsys.readouterr()
 
     assert 'Nouns' in captured.out

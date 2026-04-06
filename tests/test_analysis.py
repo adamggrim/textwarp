@@ -108,8 +108,8 @@ def test_count_pos():
 
     assert isinstance(pos_counts, POSCounts)
 
-    assert pos_counts.get_pos_count('NOUN') == 5
-    assert pos_counts.get_pos_count('ADJ') == 2
+    assert pos_counts.get_pos_counts('NOUN') == 5
+    assert pos_counts.get_pos_counts('ADJ') == 2
 
     assert pos_counts.get_percentage('NOUN') > 0
 
