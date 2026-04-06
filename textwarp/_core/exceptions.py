@@ -4,6 +4,7 @@ __all__ = [
     'CaseNotFoundError',
     'EmptyClipboardError',
     'InvalidCaseNameError',
+    'InvalidRegexError',
     'NoCaseNameError',
     'NoRegexError',
     'NoTextError',
@@ -31,6 +32,13 @@ class EmptyClipboardError(TextwarpValidationError):
 class InvalidCaseNameError(TextwarpValidationError):
     """Exception raised when the provided case name string is
     invalid."""
+
+
+class InvalidRegexError(TextwarpValidationError):
+    """
+    Exception raised when the provided regular expression string is not
+    a valid regular expression.
+    """
 
 
 class NoRegexError(TextwarpValidationError):
