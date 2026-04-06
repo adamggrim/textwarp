@@ -41,8 +41,8 @@ __all__ = [
     'from_binary',
     'from_hexadecimal',
     'from_morse',
-    'hyphens_to_em',
     'hyphen_to_en',
+    'hyphens_to_em',
     'ordinal_to_cardinal',
     'punct_to_inside',
     'punct_to_outside',
@@ -148,9 +148,9 @@ def from_morse(text: str) -> str:
     return encoding.from_morse(text)
 
 
-def hyphens_to_em(text: str) -> str:
+def hyphen_to_en(text: str) -> str:
     """
-    Convert em dash stand-ins in a given string to em dashes.
+    Convert hyphens in a given string to en dashes.
 
     Args:
         text: The string to convert.
@@ -158,12 +158,12 @@ def hyphens_to_em(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return WarpingPatterns.get_em_dash_stand_in().sub('—', text)
+    return text.replace('-', '–')
 
 
-def hyphen_to_en(text: str) -> str:
+def hyphens_to_em(text: str) -> str:
     """
-    Convert hyphens in a given string to en dashes.
+    Convert em dash stand-ins in a given string to em dashes.
 
     Args:
         text: The string to convert.
