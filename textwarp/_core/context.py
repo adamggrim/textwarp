@@ -1,7 +1,11 @@
-"""Global singleton for the active locale and provider."""
+"""Thread-safe global context for the active locale and provider."""
 
+import contextvars
 import gettext
+import logging
 import os
+import sys
+import importlib
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -10,36 +14,48 @@ if TYPE_CHECKING:
 
 _ = gettext.gettext
 
-__all__ = ['ctx']
+__all__ = ['ctx', 'N_']
+
+_active_locale: contextvars.ContextVar[str] = contextvars.ContextVar(
+    'locale', default='en'
+)
+_active_provider: contextvars.ContextVar[
+    'LanguageProvider | None'
+] = contextvars.ContextVar('provider', default=None)
+
+logger = logging.getLogger(__name__)
 
 
 class TextwarpContext:
     """
-    Manage the active language locale and its corresponding provider.
+    Manage the active language locale and its corresponding provider
+    safely across threads.
     """
-
     def __init__(self) -> None:
-        self.locale: str = 'en'
-        self._provider: 'LanguageProvider | None' = None
+        """
+        Initialize the context with the default locale and provider.
+        """
         self._set_up_gettext()
 
-    def _set_up_gettext(self) -> None:
-        """Configure gettext for the active locale."""
-        os.environ['LANGUAGE'] = self.locale
-        locales_dir = Path(__file__).parent.parent.parent / 'locales'
+    @property
+    def locale(self) -> str:
+        """Get the active language locale."""
+        return _active_locale.get()
 
-        try:
-            gettext.bindtextdomain('textwarp', str(locales_dir))
-            gettext.textdomain('textwarp')
-            translation = gettext.translation(
-                'textwarp',
-                localedir=str(locales_dir),
-                languages=[self.locale],
-                fallback=True
-            )
-            translation.install()
-        except FileNotFoundError:
-            pass
+    @locale.setter
+    def locale(self, value: str) -> None:
+        """Set the active language locale."""
+        _active_locale.set(value)
+
+    @property
+    def _provider(self) -> 'LanguageProvider | None':
+        """Get the active language provider, or `None` if not set."""
+        return _active_provider.get()
+
+    @_provider.setter
+    def _provider(self, value: 'LanguageProvider | None') -> None:
+        """Set the active language provider."""
+        _active_provider.set(value)
 
     @property
     def provider(self) -> 'LanguageProvider':
@@ -58,8 +74,10 @@ class TextwarpContext:
         Args:
             locale: The language locale to set.
         """
-        self.locale = locale.lower()
-        import importlib
+        requested_locale = locale.lower()
+        self.locale = requested_locale
+
+        fallback_triggered = False
 
         try:
             provider_module = importlib.import_module(
@@ -93,7 +111,39 @@ class TextwarpContext:
             self.locale = 'en'
             from textwarp._core.providers.en.provider import EnglishProvider
             self._provider = EnglishProvider()
+            fallback_triggered = True
 
         self._set_up_gettext()
 
+        if fallback_triggered:
+            msg = _(
+                "Warning: Language '{locale}' is not supported. Falling back "
+                "to English."
+            ).format(locale=requested_locale)
+            logger.warning(msg)
+
+    def _set_up_gettext(self) -> None:
+        """Configure gettext for the active locale."""
+        os.environ['LANGUAGE'] = self.locale
+        locales_dir = Path(__file__).parent.parent.parent / 'locales'
+
+        try:
+            gettext.bindtextdomain('textwarp', str(locales_dir))
+            gettext.textdomain('textwarp')
+            translation = gettext.translation(
+                'textwarp',
+                localedir=str(locales_dir),
+                languages=[self.locale],
+                fallback=True
+            )
+            translation.install()
+        except FileNotFoundError:
+            pass
+
+
 ctx = TextwarpContext()
+
+
+def N_(message: str) -> str:
+    """Dummy marker for gettext string extraction."""
+    return message
