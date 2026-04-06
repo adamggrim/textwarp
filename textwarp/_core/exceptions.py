@@ -9,50 +9,55 @@ __all__ = [
     'NoTextError',
     'RegexNotFoundError',
     'TextNotFoundError',
+    'TextwarpValidationError',
     'WhitespaceCaseNameError',
     'WhitespaceClipboardError'
 ]
 
 
-class CaseNotFoundError(Exception):
+class TextwarpValidationError(Exception):
+    """Base class for all textwarp validation errors."""
+
+
+class CaseNotFoundError(TextwarpValidationError):
     """Exception raised when the provided case is not found in the
     searched text."""
 
 
-class EmptyClipboardError(Exception):
+class EmptyClipboardError(TextwarpValidationError):
     """Exception raised when the clipboard is empty."""
 
 
-class InvalidCaseNameError(Exception):
+class InvalidCaseNameError(TextwarpValidationError):
     """Exception raised when the provided case name string is
     invalid."""
 
 
-class NoRegexError(Exception):
+class NoRegexError(TextwarpValidationError):
     """Exception raised when the provided regex string is empty."""
 
 
-class NoCaseNameError(Exception):
+class NoCaseNameError(TextwarpValidationError):
     """Exception raised when the provided case name string is empty."""
 
 
-class NoTextError(Exception):
+class NoTextError(TextwarpValidationError):
     """Exception raised when the provided text string is empty."""
 
 
-class RegexNotFoundError(Exception):
+class RegexNotFoundError(TextwarpValidationError):
     """Exception raised when the provided regex string is not found in
     the searched text."""
 
 
-class TextNotFoundError(Exception):
+class TextNotFoundError(TextwarpValidationError):
     """Exception raised when the provided text to replace is not found
     in the searched text."""
 
 
-class WhitespaceCaseNameError(Exception):
+class WhitespaceCaseNameError(TextwarpValidationError):
     """Exception raised when the case name contains only whitespace."""
 
 
-class WhitespaceClipboardError(Exception):
+class WhitespaceClipboardError(TextwarpValidationError):
     """Exception raised when the clipboard contains only whitespace."""
