@@ -15,7 +15,10 @@ DIR: Final = Path('entity_casing')
 def get_absolute_map() -> Mapping[str, str]:
     """Get a cached mapping for absolute entity casing."""
     return MappingProxyType(
-        cast(dict[str, str], load_data(DIR / 'absolute_casings_map.json'))
+        cast(
+            dict[str, str],
+            load_data(DIR / 'absolute_casings_map.json')
+        )
     )
 
 
@@ -34,5 +37,8 @@ def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
 def get_contraction_suffixes() -> frozenset[str]:
     """Get a cached frozenset of allowed contraction suffixes."""
     return frozenset(
-        cast(list[str], load_data(DIR / 'contraction_suffixes.json'))
+        cast(
+            list[str],
+            load_data(DIR / 'contraction_suffixes.json')
+        )
     )

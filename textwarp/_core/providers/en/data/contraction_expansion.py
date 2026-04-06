@@ -31,7 +31,10 @@ def get_ambiguous_map() -> tuple[str, ...]:
 def get_common_stateless_participles() -> tuple[str, ...]:
     """Get a cached tuple of common stateless participles."""
     return tuple(
-        cast(list[str], load_data(DIR / 'common_stateless_participles.json'))
+        cast(
+            list[str],
+            load_data(DIR / 'common_stateless_participles.json')
+        )
     )
 
 

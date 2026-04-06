@@ -15,8 +15,6 @@ def get_lowercase_particles() -> frozenset[str]:
     return frozenset(
         cast(
             list[str],
-            load_data(
-                Path('entity_casing') / 'lowercase_particles.json'
-            )
+            load_data(Path('entity_casing') / 'lowercase_particles.json')
         )
     )

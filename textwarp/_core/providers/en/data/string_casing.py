@@ -52,9 +52,7 @@ def get_map_suffix_exceptions() -> frozenset[str]:
     return frozenset(
         cast(
             list[str],
-            load_data(
-                DIR / 'map_suffix_exceptions.json'
-            )
+            load_data(DIR / 'map_suffix_exceptions.json')
         )
     )
 
@@ -65,9 +63,7 @@ def get_surname_prefix_exceptions() -> frozenset[str]:
     return frozenset(
         cast(
             list[str],
-            load_data(
-                DIR / 'surname_prefix_exceptions.json'
-            )
+            load_data(DIR / 'surname_prefix_exceptions.json')
         )
     )
 
