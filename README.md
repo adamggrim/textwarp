@@ -70,7 +70,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
     --snake-case           convert_to_snake_case
     --straight-quotes      convert “curly quotes” to "straight quotes"
     --strip                remove leading and trailing whitespace
-    --swapcase             convert LOWERCASE to all caps and vice versa
+    --swapcase             swap the case of all alphabetical characters
     --time-to-read         calculate time to read
     --title-case           Convert to Title Case
     --uppercase            CONVERT TO ALL CAPS
@@ -111,30 +111,48 @@ textwarp/
 │ ├── ui.py: Functions for handling console input and output
 │ └── validation.py: Validators for text, clipboard, and regular expression content
 ├── _commands/
-│ ├── __init__.py: Exposes analysis and replacement commands for use across the package
+│ ├── __init__.py: Namespace for analysis and replacement commands
 │ ├── analysis.py: Runners for analysis commands
 │ └── replacement.py: Runners for replacement commands
 ├── _core/
 │ ├── constants/
+│ │ ├── patterns/
+│ │ │ ├── __init__.py: Exposes core regular expression patterns
+│ │ │ ├── case_conversion.py: Universal regular expressions for converting between cases
+│ │ │ ├── cases.py: Universal regular expressions for identifying cases
+│ │ │ └── warping.py: Universal regular expressions for text warping
 │ │ ├── __init__.py: Exposes constants for use across the package
-│ │ ├── apostrophes.py: Sets used across the package for grouping apostrophe characters
 │ │ ├── maps.py: Maps used across the package for lookups
-│ │ ├── nlp.py: Objects used across the package for spaCy processing
-│ │ └── regexes.py: Regular expressions used across the package
+│ │ └── nlp.py: Objects used across the package for spaCy processing
 │ ├── data/
 │ │ ├── en/
 │ │ │ ├── contraction_expansion/
 │ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
 │ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
 │ │ │ │ ├── idiomatic_phrases.json: Maps idiomatic phrases to their expansions
+│ │ │ │ ├── to_verb_words.json: Lists words that expand to "to" despite noun tags
 │ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
 │ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
 │ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
 │ │ │ ├── entity_casing/
 │ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
-│ │ │ │ ├── contextual_casings_map.json: Maps entities that require contextto capitalize
+│ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
 │ │ │ │ ├── contraction_suffixes.json: Lists suffixes derived from contractions
 │ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
+│ │ │ ├── nlp_constants/
+│ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
+│ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
+│ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking left
+│ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained parts-of-speech tags for the first word of a noun phrase
+│ │ │ │ ├── open_quotes.json: Lists opening quote characters
+│ │ │ │ ├── participle_tags.json: Lists fine-grained parts-of-speech tags for past tense and past participle verb forms
+│ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
+│ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
+│ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
+│ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns, and nouns
+│ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
+│ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained parts-of-speech tag exceptions for title case capitalization
+│ │ │ │ └── wh_words.json: Lists wh-words that start questions
 │ │ │ ├── string_casing/
 │ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
 │ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
@@ -145,23 +163,33 @@ textwarp/
 │ │ │ └── elision_words.json: Lists commonly elided words
 │ │ └── morse_map.json: Maps characters to their Morse code equivalent
 │ ├── providers/
-│ │ | ├── en_rules/
-│ │ │ ├── __init__.py: Initializes the en_rules sub-package
-│ │ │ ├── apostrophes.py: Sets used in English contraction variants
+│ │ ├── en/
+│ │ │ ├── data/
+│ │ │ │ ├── __init__.py: Exposes English-specific data modules
+│ │ │ │ ├── contraction_expansion.py: Functions for loading English contraction expansion rules
+│ │ │ │ ├── entity_casing.py: Functions for loading English entity casing rules
+│ │ │ │ ├── loader.py: Functions for loading English-specific JSON data
+│ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
+│ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
+│ │ │ │ └── token_casing.py: Functions for loading English token casing rules
+│ │ │ ├── patterns/
+│ │ │ │ ├── __init__.py: Exposes English-specific regular expression patterns
+│ │ │ │ └── warping.py: English-specific regular expression patterns for text warping
+│ │ │ ├── __init__.py: Exposes English-specific language provider modules
 │ │ │ ├── casing.py: English-specific string casing logic
 │ │ │ ├── constants.py: English-specific NLP constants
-│ │ │ ├── data.py: English-specific data loading and caching
-│ │ │ ├── disambiguation.py: Functions for resolving ambiguous contractions based on context
+│ │ │ ├── contractions.py: Sets used in English contraction variants
+│ │ │ ├── disambiguation.py: English-specific functions for resolving ambiguous contractions based on context
+│ │ │ ├── encoding.py: English-specific functions for encoding and decoding text
 │ │ │ ├── handlers.py: Functions for handling specific types of contractions
-│ │ │ ├── regexes.py: English-specific regular expressions
-│ │ │ └── utils.py: Utilities for applying casing and finding contraction subjects and verbs
-│ │ ├── __init__.py: Strategy pattern classes containing language-specific logic
-│ │ ├── base.py: Abstract base class for language providers
-│ │ └── en.py: English-specific LanguageProvider implementation
+│ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
+│ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
+│ │ │ └── utils.py: English-specific utility functions
+│ │ ├── __init__.py: Exposes strategy pattern classes containing language-specific logic
+│ │ └── base.py: Abstract base class for language providers
 │ ├── __init__.py: Exposes core configuration, constants, and models
-│ ├── config.py: A configuration module handling lazy loading of JSON data
-│ ├── context.py: Global singleton for the active locale and provider
-│ ├── decorators.py: Custom decorator functions for non-instantiable classes
+│ ├── context.py: Thread-safe global context for the active locale and provider
+│ ├── encoding.py: Functions for loading universal encoding data
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
 │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
 │ ├── models.py: Classes for parts-of-speech counts and word counts
@@ -181,11 +209,6 @@ textwarp/
 │ ├── nlp.py: Functions for lazy spaCy loading and text processing
 │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
 │ └── punctuation.py: Functions for converting between straight and curly quotes
-├── locales/
-│ └── en/
-│   └── LC_MESSAGES/
-│     ├── textwarp.mo: Compiled translation machine object file for English
-│     └── textwarp.po: Translation source file for English
 ├── __init__.py: A Python package for analyzing and transforming text
 ├── __main__.py: The main entry point for the package, containing the main loop and associated functions
 ├── analysis.py: Public functions for analyzing text
