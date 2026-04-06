@@ -1,16 +1,6 @@
 """Tests for English-specific regular expressions."""
 
-import pytest
-
-from textwarp._core.providers.en_rules.regexes import EnWarpingPatterns
-
-
-def test_en_warping_patterns_is_non_instantiable():
-    """Verify that `EnWarpingPatterns` cannot be instantiated."""
-    with pytest.raises(
-        RuntimeError, match='EnWarpingPatterns cannot be instantiated'
-    ):
-        EnWarpingPatterns()
+from textwarp._core.providers.en.patterns.warping import EnWarpingPatterns
 
 
 def test_get_apostrophe_in_word():
