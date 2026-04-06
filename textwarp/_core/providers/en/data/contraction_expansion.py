@@ -18,6 +18,7 @@ __all__ = [
 
 DIR: Final = Path('contraction_expansion')
 
+
 @lru_cache(maxsize=1)
 def get_ambiguous_map() -> tuple[str, ...]:
     """Get a cached tuple of ambiguous contractions."""
@@ -25,12 +26,14 @@ def get_ambiguous_map() -> tuple[str, ...]:
         cast(list[str], load_data(DIR / 'ambiguous_contractions.json'))
     )
 
+
 @lru_cache(maxsize=1)
 def get_common_stateless_participles() -> tuple[str, ...]:
     """Get a cached tuple of common stateless participles."""
     return tuple(
         cast(list[str], load_data(DIR / 'common_stateless_participles.json'))
     )
+
 
 @lru_cache(maxsize=1)
 def get_idiomatic_map() -> Mapping[str, str]:
@@ -61,6 +64,7 @@ def get_unambiguous_map() -> Mapping[str, str]:
         )
     )
 
+
 @lru_cache(maxsize=1)
 def get_whatcha_are_words() -> tuple[str, ...]:
     """
@@ -69,6 +73,7 @@ def get_whatcha_are_words() -> tuple[str, ...]:
     return tuple(
         cast(list[str], load_data(DIR / 'whatcha_are_words.json'))
     )
+
 
 @lru_cache(maxsize=1)
 def get_whatcha_have_words() -> tuple[str, ...]:

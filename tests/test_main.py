@@ -6,6 +6,7 @@ import pytest
 
 from textwarp import __main__ as main_module
 
+
 def _dummy_lower(text: str) -> str:
     """Convert text to lowercase for testing."""
     return text.lower()
@@ -14,7 +15,6 @@ def _dummy_lower(text: str) -> str:
 def _dummy_reverse(text: str) -> str:
     """Reverse text for testing."""
     return text[::-1]
-
 
 
 def test_apply_pipeline_warping():
@@ -49,6 +49,7 @@ def test_apply_pipeline_analysis(monkeypatch):
 
     assert result is None
     assert analysis_called is True
+
 
 def test_apply_pipeline_clear(monkeypatch):
     """

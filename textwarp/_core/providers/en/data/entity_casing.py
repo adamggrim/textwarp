@@ -18,6 +18,7 @@ def get_absolute_map() -> Mapping[str, str]:
         cast(dict[str, str], load_data(DIR / 'absolute_casings_map.json'))
     )
 
+
 @lru_cache(maxsize=1)
 def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
     """Get a cached mapping for contextual entity casing."""

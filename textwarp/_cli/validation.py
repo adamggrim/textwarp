@@ -1,6 +1,7 @@
 """Validators for text, clipboard, and regular expression content."""
 
 import gettext
+
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
     EmptyClipboardError,
