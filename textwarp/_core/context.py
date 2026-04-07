@@ -4,17 +4,20 @@ import contextvars
 import gettext
 import logging
 import os
-import sys
 import importlib
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
     from textwarp._core.providers.base import LanguageProvider
 
+__all__ = ['ctx', 'N_']
+
 _ = gettext.gettext
 
-__all__ = ['ctx', 'N_']
+logger = logging.getLogger(__name__)
+
+SUPPORTED_LOCALES: Final[frozenset[str]] = frozenset({'en'})
 
 _active_locale: contextvars.ContextVar[str] = contextvars.ContextVar(
     'locale', default='en'
@@ -22,8 +25,6 @@ _active_locale: contextvars.ContextVar[str] = contextvars.ContextVar(
 _active_provider: contextvars.ContextVar[
     'LanguageProvider | None'
 ] = contextvars.ContextVar('provider', default=None)
-
-logger = logging.getLogger(__name__)
 
 
 class TextwarpContext:
@@ -75,9 +76,13 @@ class TextwarpContext:
             locale: The language locale to set.
         """
         requested_locale = locale.lower()
-        self.locale = requested_locale
-
         fallback_triggered = False
+
+        if requested_locale not in SUPPORTED_LOCALES:
+            requested_locale = 'en'
+            fallback_triggered = True
+
+        self.locale = requested_locale
 
         try:
             provider_module = importlib.import_module(
@@ -107,19 +112,18 @@ class TextwarpContext:
                     )
 
         except (ImportError, ModuleNotFoundError):
-            # Fallback to the English default.
-            self.locale = 'en'
+            # Fallback for when the `SUPPORTED_LOCALES` check passed but
+            # the module failed to load.
             from textwarp._core.providers.en.provider import EnglishProvider
             self._provider = EnglishProvider()
-            fallback_triggered = True
 
         self._set_up_gettext()
 
         if fallback_triggered:
             msg = _(
                 "Warning: Language '{locale}' is not supported. Falling back "
-                "to English."
-            ).format(locale=requested_locale)
+                'to English.'
+            ).format(locale=locale)
             logger.warning(msg)
 
     def _set_up_gettext(self) -> None:
