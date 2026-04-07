@@ -119,3 +119,21 @@ def test_parse_args_exclusive_with_formatting(monkeypatch, capsys):
     assert (
         'cannot be combined with casing or separator commands' in captured.err
     )
+
+
+def test_parse_args_lang_argument(monkeypatch):
+    """Test parsing a specific language argument."""
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-l', 'fr'])
+    pipeline, lang = parse_args()
+
+    assert len(pipeline) == 1
+    assert pipeline[0][0] == 'camel-case'
+    assert lang == 'fr'
+
+
+def test_parse_args_lang_default(monkeypatch):
+    """Test that the language argument defaults to 'en' when omitted."""
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case'])
+    _, lang = parse_args()
+
+    assert lang == 'en'
