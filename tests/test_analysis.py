@@ -1,5 +1,7 @@
 """Tests for analysis functions."""
 
+from textwarp._core.enums import ModelPriority
+from textwarp._lib.nlp import _get_nlp, _load_spacy_model
 from textwarp.analysis import (
     calculate_time_to_read,
     count_chars,
@@ -127,6 +129,17 @@ def test_count_words():
     """
     count = count_words(COUNT_WORDS_TEXT)
     assert count == 41
+
+
+def test_count_mfws_empty():
+    """
+    Test most frequent word counting when there are no valid words.
+    """
+    mfws_empty = count_mfws('', num_mfws=5)
+    assert mfws_empty == []
+
+    mfws_punct = count_mfws('... ??? !!!   ', num_mfws=5)
+    assert mfws_punct == []
 
 
 def test_get_nlp_transformer_import_error(monkeypatch):
