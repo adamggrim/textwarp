@@ -105,6 +105,9 @@ def expand_contractions(content: str | Doc) -> str:
     Returns:
         str: The converted string.
     """
+    if not hasattr(ctx.provider, 'expand_contractions'):
+        return content if isinstance(content, str) else content.text
+
     doc = process_as_doc(content)
     return contractions.expand_contractions(doc)
 
@@ -198,6 +201,9 @@ def punct_to_inside(text: str) -> str:
     Returns:
         str: The converted string.
     """
+    if not hasattr(ctx.provider, 'punct_outside_pattern'):
+        return text
+
     def _repl(match: re.Match[str]) -> str:
         """
         Reorder periods and commas to move them inside quotation marks.
@@ -225,6 +231,9 @@ def punct_to_outside(text: str) -> str:
     Returns:
         str: The converted string.
     """
+    if not hasattr(ctx.provider, 'punct_inside_pattern'):
+        return text
+
     def _repl(match: re.Match[str]) -> str:
         """
         Reorder periods and commas to move them outside quotation
