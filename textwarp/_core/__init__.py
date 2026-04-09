@@ -18,37 +18,40 @@ from textwarp._core.exceptions import (
     NoTextError,
     RegexNotFoundError,
     TextNotFoundError,
+    TextwarpValidationError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._core.types import EntityCasingContext, JSONType
-from textwarp._core.utils import find_first_alphabetical_idx
+from textwarp._core.utils import find_first_alphabetical_idx, load_json_data
 
 __all__ = [
-    'get_morse_map',
-    'get_morse_reversed_map',
-    'maps',
-    'nlp',
-    'patterns',
+    'CaseNotFoundError',
     'CaseSeparator',
     'Casing',
     'CountLabels',
-    'PresenceCheckType',
-    'RegexBoundary',
-    'CaseNotFoundError',
     'EmptyClipboardError',
+    'EntityCasingContext',
     'InvalidCaseNameError',
+    'JSONType',
     'NoCaseNameError',
     'NoRegexError',
     'NoTextError',
+    'POSCounts',
+    'PresenceCheckType',
+    'RegexBoundary',
     'RegexNotFoundError',
     'TextNotFoundError',
+    'TextwarpValidationError',
     'WhitespaceCaseNameError',
     'WhitespaceClipboardError',
-    'POSCounts',
     'WordCount',
-    'EntityCasingContext',
-    'JSONType',
-    'find_first_alphabetical_idx'
+    'find_first_alphabetical_idx',
+    'get_morse_map',
+    'get_morse_reversed_map',
+    'load_json_data',
+    'maps',
+    'nlp',
+    'patterns'
 ]
