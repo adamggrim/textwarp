@@ -162,23 +162,6 @@ def to_morse(text: str) -> str:
         str: The converted string, with a single space between
             character codes and three spaces between word codes.
     """
-    def _normalize_for_morse(text: str) -> str:
-        """
-        Normalize a string for Morse code by converting to all caps and
-        replacing non-Morse-compatible characters.
-
-        Args:
-            text: The string to normalize.
-
-        Returns:
-            str: The normalized string.
-        """
-        straight_text = curly_to_straight(text.upper())
-        hyphenated_text = WarpingPatterns.get_dash().sub('-', straight_text)
-        return hyphenated_text.replace('…', '...')
-
-    normalized_text = _normalize_for_morse(text)
-    morse_map = Encoding.get_morse_map()
 
     morse_words: Generator[str, None, None] = (
         ' '.join(morse_map[char] for char in word if char in morse_map)
