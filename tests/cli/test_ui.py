@@ -98,3 +98,24 @@ def test_program_exit(capsys):
 
     captured = capsys.readouterr()
     assert EXIT_MESSAGE in captured.out
+
+
+def test_prompt_for_integer_valid(simulate_input):
+    """Test that valid integers are accepted and returned."""
+    simulate_input(['42'])
+    assert prompt_for_integer('Enter number:', 'Invalid') == 42
+
+
+def test_prompt_for_integer_invalid_then_valid(simulate_input, capsys):
+    """
+    Test that invalid inputs trigger the error prompt until a valid
+    integer is provided.
+    """
+    simulate_input(['abc', '-5', '0', '7'])
+
+    assert prompt_for_integer('Enter number:', 'Invalid number!') == 7
+
+    captured = capsys.readouterr()
+    assert 'Enter number:' in captured.out
+    assert 'Invalid number!' in captured.out
+    assert captured.out.count('Invalid number!') == 3
