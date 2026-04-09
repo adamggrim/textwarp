@@ -1,6 +1,13 @@
 """Tests for generic type definitions."""
 
-from textwarp._core.types import EntityCasingContext
+import typing
+
+from textwarp._core.types import (
+    EntityCasingContext,
+    JSONType,
+    Pipeline,
+    PipelineItem
+)
 
 
 def test_entity_casing_context_dict():
@@ -18,3 +25,16 @@ def test_entity_casing_context_dict():
     assert context['casing'] == 'Moby-Dick'
     assert len(context['pos_sequences']) == 1
     assert 'whale' in context['ngrams']
+
+
+def test_type_aliases():
+    """
+    Verify that the generic type aliases are defined and accessible.
+    """
+    assert JSONType is not None
+
+    assert PipelineItem is not None
+    assert typing.get_origin(PipelineItem) is tuple
+
+    assert Pipeline is not None
+    assert typing.get_origin(Pipeline) is list
