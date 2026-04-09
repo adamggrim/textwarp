@@ -1,21 +1,33 @@
 import gettext
-from typing import Final
 
 _ = gettext.gettext
 
 __all__ = [
-    'EXIT_INPUTS',
-    'NO_INPUTS',
-    'YES_INPUTS'
+    'get_exit_inputs',
+    'get_no_inputs',
+    'get_yes_inputs'
 ]
 
-# Inputs for exiting the program.
-EXIT_INPUTS: Final[frozenset[str]] = frozenset(
-    {_('quit'), _('q'), _('exit'), _('e')}
-)
 
-# Inputs for indicating a negative response.
-NO_INPUTS: Final[frozenset[str]] = frozenset({_('no'), _('n')})
+def get_exit_inputs() -> frozenset[str]:
+    """Get a cached `frozenset` of inputs for exiting the program."""
+    _ = gettext.gettext
+    return frozenset({_('quit'), _('q'), _('exit'), _('e')})
 
-# Inputs for indicating an affirmative response.
-YES_INPUTS: Final[frozenset[str]] = frozenset({_('yes'), _('y')})
+
+def get_no_inputs() -> frozenset[str]:
+    """
+    Get a cached `frozenset` of inputs for indicating a negative
+    response.
+    """
+    _ = gettext.gettext
+    return frozenset({_('no'), _('n')})
+
+
+def get_yes_inputs() -> frozenset[str]:
+    """
+    Get a cached `frozenset` of inputs for indicating an affirmative
+    response.
+    """
+    _ = gettext.gettext
+    return frozenset({_('yes'), _('y')})
