@@ -81,11 +81,11 @@ def _validate_command_combinations(
         )
     if active_mutually_exclusives and (active_separators or active_casings):
         cmd = active_mutually_exclusives[0]
-        message = _(
+        msg = _(
             "Command '{cmd}' cannot be combined with casing or separator "
             'commands.'
         )
-        parser.error(message.format(cmd=cmd))
+        parser.error(msg.format(cmd=cmd))
 
 
 def parse_args() -> tuple[

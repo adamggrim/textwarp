@@ -86,14 +86,14 @@ def _get_nlp(
             return _load_spacy_model(model_name)
 
     priority_model_name = model_ranking[0]
-    message = _(
+    msg = _(
         'Error: No {locale} spaCy models found. Run: python -m spacy download '
         '{model}'
     ).format(
         locale=ctx.locale.upper(),
         model=priority_model_name
     )
-    raise RuntimeError(message)
+    raise RuntimeError(msg)
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
