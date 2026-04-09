@@ -1,6 +1,8 @@
 """Tests for command-line argument parsing."""
 
 import sys
+from importlib.metadata import PackageNotFoundError
+
 import pytest
 
 from textwarp._cli.parsing import _calculate_max_arg_width, parse_args
@@ -137,3 +139,23 @@ def test_parse_args_lang_default(monkeypatch):
     _, lang = parse_args()
 
     assert lang == 'en'
+
+
+def test_parse_args_version_fallback(monkeypatch, capsys):
+    """
+    Test that the `--version` argument handles when the package metadata
+    is not found.
+    """
+    def mock_version(pkg_name):
+        raise PackageNotFoundError()
+
+    monkeypatch.setattr('textwarp._cli.parsing.version', mock_version)
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--version'])
+
+    with pytest.raises(SystemExit) as excinfo:
+        parse_args()
+
+    assert excinfo.value.code == 0
+
+    captured = capsys.readouterr()
+    assert 'unknown (not installed)' in captured.out
