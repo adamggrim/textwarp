@@ -11,22 +11,6 @@ from textwarp.analysis import (
 )
 from textwarp._core.models import POSCounts
 
-TIME_TO_READ_TEXT = (
-    'riverrun, past Eve and Adam’s, from swerve of shore to bend of bay, '
-    'brings us by a commodius vicus of recirculation back to Howth Castle and '
-    'Environs.\n'
-    'Sir Tristram, violer d’amores, fr’over the short sea, had passencore '
-    'rearrived from North Armorica on this side the scraggy isthmus of Europe '
-    'Minor to wielderfight his penisolate war: nor had topsawyer’s rocks by '
-    'the stream Oconee exaggerated themselse to Laurens County’s gorgios '
-    'while they went doublin their mumper all the time: nor avoice from afire '
-    'bellowsed mishe mishe to tauftauf thuartpeatrick not yet, though '
-    'venissoon after, had a kidscad buttended a bland old isaac: not yet, '
-    'though all’s fair in vanessy, were sosie sesthers wroth with twone '
-    'nathandjoe.\n'
-    'Rot a peck of pa’s malt had Jhem or Shen brewed by arclight and rory end '
-    'to the regginbrow was to be seen ringsome on the aquaface.')
-
 COUNT_CHARS_TEXT = 'Even the sun-clouds this morning cannot manage such skirts.'
 
 COUNT_LINES_TEXT = (
@@ -65,6 +49,21 @@ COUNT_WORDS_TEXT = (
     'When Albion’s lessening shores could grieve or glad mine eye.'
 )
 
+TIME_TO_READ_TEXT = (
+    'riverrun, past Eve and Adam’s, from swerve of shore to bend of bay, '
+    'brings us by a commodius vicus of recirculation back to Howth Castle and '
+    'Environs.\n'
+    'Sir Tristram, violer d’amores, fr’over the short sea, had passencore '
+    'rearrived from North Armorica on this side the scraggy isthmus of Europe '
+    'Minor to wielderfight his penisolate war: nor had topsawyer’s rocks by '
+    'the stream Oconee exaggerated themselse to Laurens County’s gorgios '
+    'while they went doublin their mumper all the time: nor avoice from afire '
+    'bellowsed mishe mishe to tauftauf thuartpeatrick not yet, though '
+    'venissoon after, had a kidscad buttended a bland old isaac: not yet, '
+    'though all’s fair in vanessy, were sosie sesthers wroth with twone '
+    'nathandjoe.\n'
+    'Rot a peck of pa’s malt had Jhem or Shen brewed by arclight and rory end '
+    'to the regginbrow was to be seen ringsome on the aquaface.')
 
 def test_calculate_time_to_read():
     """Test reading time calculation."""
