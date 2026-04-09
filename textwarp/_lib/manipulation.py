@@ -2,6 +2,8 @@
 
 from random import shuffle
 
+import regex as re
+
 from textwarp._core.constants import patterns
 
 __all__ = [
@@ -38,7 +40,7 @@ def reverse(text: str) -> str:
     Returns:
         The reversed string.
     """
-    return text[::-1]
+    return ''.join(reversed(re.findall(r'\X', text)))
 
 
 def to_single_spaces(text: str) -> str:
