@@ -3,6 +3,8 @@
 import gettext
 from typing import Final
 
+from textwarp._core.context import N_
+
 _ = gettext.gettext
 
 __all__ = [
@@ -30,7 +32,7 @@ __all__ = [
 ]
 
 # Prompt for the user to enter any other text.
-ANY_OTHER_TEXT_PROMPT: Final = _(
+ANY_OTHER_TEXT_PROMPT: Final = N_(
     'Any other text? (y/n) (Copy text to clipboard):'
 )
 

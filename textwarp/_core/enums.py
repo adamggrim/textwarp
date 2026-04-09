@@ -6,6 +6,8 @@ expression boundaries.
 from enum import Enum, auto
 from typing import final
 
+from textwarp._core.context import N_
+
 __all__ = [
     'CaseSeparator',
     'Casing',
@@ -56,10 +58,10 @@ class CountLabels(str, Enum):
         SENTENCE: String specifying sentence count.
         WORD: String specifying word count.
     """
-    CHAR = 'Character'
-    LINE = 'Line'
-    SENTENCE = 'Sentence'
-    WORD = 'Word'
+    CHAR = N_('Character')
+    LINE = N_('Line')
+    SENTENCE = N_('Sentence')
+    WORD = N_('Word')
 
 
 @final

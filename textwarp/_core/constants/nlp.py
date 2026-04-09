@@ -2,6 +2,8 @@
 
 from typing import Final
 
+from textwarp._core.context import N_
+
 __all__ = [
     'NOUN_TAGS',
     'POS_TAGS',
@@ -13,21 +15,21 @@ NOUN_TAGS: Final[frozenset[str]] = frozenset({'NOUN', 'PROPN'})
 
 # Tuple of tuples for all parts-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
-    ('ADJ', 'Adjectives'),
-    ('ADP', 'Adpositions'),
-    ('ADV', 'Adverbs'),
-    ('AUX', 'Auxiliaries'),
-    ('CCONJ', 'Coordinating Conjunctions'),
-    ('DET', 'Determiners'),
-    ('INTJ', 'Interjections'),
-    ('NOUN', 'Nouns'),
-    ('NUM', 'Numbers'),
-    ('PART', 'Particles'),
-    ('PRON', 'Pronouns'),
-    ('PROPN', 'Proper Nouns'),
-    ('SCONJ', 'Subordinating Conjunctions'),
-    ('VERB', 'Verbs'),
-    ('X', 'Other')
+    ('ADJ', N_('Adjectives')),
+    ('ADP', N_('Adpositions')),
+    ('ADV', N_('Adverbs')),
+    ('AUX', N_('Auxiliaries')),
+    ('CCONJ', N_('Coordinating Conjunctions')),
+    ('DET', N_('Determiners')),
+    ('INTJ', N_('Interjections')),
+    ('NOUN', N_('Nouns')),
+    ('NUM', N_('Numbers')),
+    ('PART', N_('Particles')),
+    ('PRON', N_('Pronouns')),
+    ('PROPN', N_('Proper Nouns')),
+    ('SCONJ', N_('Subordinating Conjunctions')),
+    ('VERB', N_('Verbs')),
+    ('X', N_('Other'))
 )
 
 # Tuple of strings for all coarse-grained parts-of-speech tags
