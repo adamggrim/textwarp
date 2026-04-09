@@ -9,7 +9,7 @@ from textwarp._core.providers.en.data.contraction_expansion import (
     get_ambiguous_map
 )
 
-DATA_DIR = Path(__file__).parents[4] / 'textwarp' / '_core' / 'data'
+DATA_DIR = Path(__file__).parents[2] / 'textwarp' / '_core' / 'data'
 
 
 def get_json_files():
