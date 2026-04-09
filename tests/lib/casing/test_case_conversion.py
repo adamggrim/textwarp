@@ -3,22 +3,11 @@
 from textwarp._lib.casing.case_conversion import (
     change_first_letter_case,
     doc_to_case,
-    find_first_alphabetical_idx,
     to_separator_case,
     word_to_pascal
 )
 from textwarp._core.enums import CaseSeparator, Casing
 from textwarp._lib.nlp import process_as_doc
-
-
-def test_find_first_alphabetical_idx():
-    """
-    Test finding the first letter in strings with non-alphabetical
-    characters.
-    """
-    assert find_first_alphabetical_idx('10things') == 2
-    assert find_first_alphabetical_idx('***') is None
-    assert find_first_alphabetical_idx('Taming') == 0
 
 
 def test_change_first_letter_case():
