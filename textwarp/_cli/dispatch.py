@@ -1,4 +1,4 @@
-"""A mapping of string inputs to case conversion functions."""
+"""A map of string inputs to case conversion functions."""
 
 import importlib
 from typing import Callable, Final
@@ -14,7 +14,7 @@ def _lazy_load_warping(func_name: str) -> Callable[[str], str]:
 
 __all__ = ['CASE_NAMES_FUNC_MAP']
 
-# Mapping of valid case name inputs to their standardized names.
+# Map of valid case name inputs and their associated functions.
 CASE_NAMES_FUNC_MAP: Final[dict[str, Callable[[str], str]]] = {
     'camel': _lazy_load_warping('to_camel_case'),
     'camel case': _lazy_load_warping('to_camel_case'),

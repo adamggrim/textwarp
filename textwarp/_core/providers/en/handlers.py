@@ -61,7 +61,8 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise `None`.
+            2. The end index of the expanded contraction; otherwise
+                `None`.
     """
     if span.text.lower() != 'gotta':
         return None

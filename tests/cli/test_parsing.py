@@ -134,7 +134,7 @@ def test_parse_args_lang_argument(monkeypatch):
 
 
 def test_parse_args_lang_default(monkeypatch):
-    """Test that the language argument defaults to 'en' when omitted."""
+    """Test that the language argument defaults to `en` when omitted."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case'])
     _, lang = parse_args()
 

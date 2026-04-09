@@ -20,8 +20,8 @@ def _load_universal(relative_path: str | Path) -> JSONType:
 
 @lru_cache(maxsize=1)
 def get_morse_map() -> Mapping[str, str]:
-    """Get a cached mapping of characters to Morse code."""
     return MappingProxyType(cast(dict[str, str], _load_universal(
+    """Get a cached map of characters to Morse code."""
         'morse_map.json'
     )))
 

@@ -64,7 +64,10 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def proper_noun_entities(self) -> frozenset[str]:
-        """Named entities that are typically proper nouns for the locale's model."""
+        """
+        Named entities that are typically proper nouns for the locale's
+        model.
+        """
         pass
 
     @property

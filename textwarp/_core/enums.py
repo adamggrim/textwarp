@@ -21,9 +21,9 @@ class CaseSeparator(str, Enum):
     Specify which separator character to use in a string.
 
     Attributes:
-        DOT: Represents dot.case.
-        KEBAB: Represents kebab-case.
-        SNAKE: Represents snake_case.
+        DOT: Represents `dot.case`.
+        KEBAB: Represents `kebab-case`.
+        SNAKE: Represents `snake_case`.
     """
     DOT: str = '.'
     KEBAB: str = '-'

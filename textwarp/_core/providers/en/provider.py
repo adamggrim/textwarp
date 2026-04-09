@@ -1,4 +1,4 @@
-"""English-specific LanguageProvider implementation."""
+"""English-specific `LanguageProvider` implementation."""
 
 from __future__ import annotations
 
@@ -78,9 +78,7 @@ def _expand_ambiguous_contraction(
 
     Args:
         contraction: The contraction to expand.
-        suffix_token: The token containing the contraction suffix
-            (e.g., "'s", "n't").
-        doc: The spaCy `Doc` containing the contraction.
+        span: The spaCy `Span` containing the contraction.
 
     Returns:
         tuple[str, int]: A tuple containing:

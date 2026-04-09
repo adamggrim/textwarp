@@ -53,7 +53,7 @@ def test_apply_pipeline_analysis(monkeypatch):
 
 def test_apply_pipeline_clear(monkeypatch):
     """
-    Test that the clear command triggers the clear_clipboard function.
+    Test that the clear command triggers the `clear_clipboard` function.
     """
     clear_called = False
 
@@ -94,7 +94,9 @@ def test_process_interactive_mode_replacement(monkeypatch):
 
 
 def test_process_piped_mode_warping(monkeypatch):
-    """Test that piped mode reads from stdin and runs `warp_and_copy`."""
+    """
+    Test that piped mode reads from stdin and runs `warp_and_copy`.
+    """
     monkeypatch.setattr(sys.stdin, 'read', lambda: 'Piped text\n')
 
     warp_called = False

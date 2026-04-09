@@ -7,7 +7,8 @@ from textwarp._core.providers.base import LanguageProvider
 
 def test_language_provider_cannot_be_instantiated():
     """
-    Verify that the `LanguageProvider` abstract base class cannot be instantiated directly.
+    Verify that the `LanguageProvider` abstract base class cannot be
+    instantiated directly.
     """
     with pytest.raises(
         TypeError, match="Can't instantiate abstract class LanguageProvider"

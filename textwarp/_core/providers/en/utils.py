@@ -19,8 +19,8 @@ __all__ = [
 def find_subject_token(verb_token: Token | None) -> Token | None:
     """
     Find the subject of a verb in a spaCy `Doc`, handling both
-    standard order (subject to the left: e.g., "I don't") and inverted
-    order (subject to the right: e.g., "Don't I").
+    standard order (subject to the left: `I don't`) and inverted order
+    (subject to the right: `Don't I`).
 
     This function attempts to use the dependency parser first. If the
     parser fails (common in questions or fragments), it falls back to
@@ -80,7 +80,7 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 def get_negative_contraction_base_verb(contraction: str) -> str | None:
     """
     Determine the base verb from a standard negative contraction (e.g.,
-    "won't" -> "will").
+    `won't` -> `will`).
 
     Args:
         contraction: The contraction to analyze.

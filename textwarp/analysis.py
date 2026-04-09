@@ -80,7 +80,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
         num_mfws: The number of most frequent words to return.
 
     Returns:
-        list[WordCount]: A list of WordCount objects containing a word
+        list[WordCount]: A list of `WordCount` objects containing a word
             and its count.
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])

@@ -31,7 +31,7 @@ from textwarp._core.exceptions import (
 ])
 def test_exceptions_inherit_from_base_exception(exception_class):
     """
-    Verify all custom exceptions inherit from the base `Exception`
+    Verify that all custom exceptions inherit from the base `Exception`
     class.
     """
     assert issubclass(exception_class, Exception)

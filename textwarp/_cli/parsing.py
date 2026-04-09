@@ -48,7 +48,7 @@ def _validate_command_combinations(
         parser: The `ArgumentParser` instance used to display error messages.
 
     Raises:
-        SystemExit: If any invalid combination of arguments is detected.
+        SystemExit: If there is any invalid combination of arguments.
     """
     active_cmds = [
         key for key in ARGS_MAP

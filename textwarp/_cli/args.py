@@ -1,6 +1,4 @@
-"""
-A mapping of command-line arguments to functions and help messages.
-"""
+"""A map of command-line arguments to functions and help messages."""
 
 import gettext
 import importlib

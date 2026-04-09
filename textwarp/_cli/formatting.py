@@ -81,7 +81,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
     string.
 
     Args:
-        mfws: A list of WordCount objects containing a word and its
+        mfws: A list of `WordCount` objects containing a word and its
             count.
 
     Returns:
@@ -102,7 +102,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
 def format_pos_counts(pos_counts: POSCounts) -> str:
     """
     Return a dynamically formatted string indicating parts of speech
-    counts for a given POSCounts object.
+    counts for a given `POSCounts` object.
 
     Args:
         pos_counts: The parts of speech counts.

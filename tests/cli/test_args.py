@@ -12,7 +12,7 @@ from textwarp._cli.args import (
 
 
 def test_lazy_load():
-    """Test that _lazy_load correctly imports a module and function."""
+    """Test that `_lazy_load` correctly imports a module and function."""
     lazy_func = _lazy_load('..warping', 'reverse')
 
     assert callable(lazy_func)
