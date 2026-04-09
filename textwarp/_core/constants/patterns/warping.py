@@ -102,7 +102,7 @@ def get_period_separated_initialism() -> re.Pattern[str]:
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
     """
-    return re.compile(r'\b(?:\p{L}\.){2,}')
+    return re.compile(r'\b(?:\p{L}+\.){2,}')
 
 
 @lru_cache(maxsize=1)
