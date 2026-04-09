@@ -127,3 +127,30 @@ def test_count_words():
     """
     count = count_words(COUNT_WORDS_TEXT)
     assert count == 41
+
+
+def test_get_nlp_transformer_import_error(monkeypatch):
+    """
+    Test that `_get_nlp` gracefully catches an `ImportError` (e.g.,
+    missing `spacy-transformers`) and falls back to the next ranked
+    model.
+    """
+    original_load = _load_spacy_model
+
+    def mock_load_spacy_model(model_name):
+        """
+        Mock function to simulate an `ImportError` for
+        'en_core_web_trf'.
+        """
+        if model_name == 'en_core_web_trf':
+            raise ImportError('spacy-transformers is not installed')
+        return original_load(model_name)
+
+    monkeypatch.setattr(
+        'textwarp._lib.nlp._load_spacy_model',
+        mock_load_spacy_model
+    )
+
+    nlp_instance = _get_nlp(model_priority=ModelPriority.ACCURACY)
+
+    assert nlp_instance is not None
