@@ -109,7 +109,7 @@ def _is_analysis_pipeline(pipeline: Pipeline) -> bool:
 
 def _process_file_mode(
     pipeline: Pipeline,
-    input_file: str,
+    input_files: list[str],
     output_file: str | None
 ) -> None:
     """
@@ -127,30 +127,40 @@ def _process_file_mode(
     """
     _validate_piped_commands(pipeline)
 
-    try:
-        with open(input_file, 'r', encoding='utf-8') as f:
-            text = f.read()
-    except UnicodeDecodeError:
-        print_wrapped(
+    combined_results: list[str] = []
+    is_analysis = _is_analysis_pipeline(pipeline)
+
+    for file_path in input_files:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                text = f.read()
+        except UnicodeDecodeError:
+            print_wrapped(
             _(
                 "Error: '{input_file}' appears to be a binary file. Please "
                 'provide a valid text file.'
-            ).format(input_file=input_file)
-        )
-        sys.exit(1)
-    except FileNotFoundError:
-        print_wrapped(
-            _(
-                "Error: File '{input_file}' not found."
-            ).format(input_file=input_file)
-        )
-        sys.exit(1)
+            ).format(file_path=file_path))
+            sys.exit(1)
+        except FileNotFoundError:
+            print_wrapped(
+                _("Error: File '{file_path}' not found.").format(
+                    file_path=file_path
+                ))
+            sys.exit(1)
 
-    if text.endswith('\n'):
-        text = text[:-1]
+        if text.endswith('\n'):
+            text = text[:-1]
 
-    result = _apply_pipeline(text, pipeline)
-    _handle_output(result, output_file, default_action=print)
+        if is_analysis and len(input_files) > 1:
+            print(f"\n--- {file_path} ---")
+
+        result = _apply_pipeline(text, pipeline)
+        if result is not None:
+            combined_results.append(result)
+
+    if combined_results:
+        final_output = '\n'.join(combined_results)
+        _handle_output(final_output, output_file, default_action=print)
 
 
 def _process_interactive_mode(pipeline: Pipeline, output_file: str | None) -> None:

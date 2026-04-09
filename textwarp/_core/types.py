@@ -37,7 +37,7 @@ JSONType: TypeAlias = (
 
 # A type for a pipeline item, a tuple of a command string and a callable
 # function.
-PipelineItem: TypeAlias = tuple[str, Callable[[str], str]]
+PipelineItem: TypeAlias = tuple[str, Callable[..., str]]
 
 # A type for a pipeline, a list of pipeline items.
 Pipeline: TypeAlias = list[PipelineItem]
