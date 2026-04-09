@@ -14,12 +14,12 @@ from textwarp._commands import replacement
 
 CASE_TEST_STRING = 'pascal_case'
 
+REGEX_TEST_STRING = '525,600 minutes'
+
 TEXT_TEST_STRING = (
     'My heart aches, and a drowsy numbness pains\n'
     'My sense, as though of hemlock I had drunk.'
 )
-
-REGEX_TEST_STRING = '525,600 minutes'
 
 
 def test_replace_case(simulate_input, capsys):
