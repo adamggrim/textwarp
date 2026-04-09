@@ -1,12 +1,12 @@
 """Tests for the EnglishProvider implementation."""
 
-from textwarp._core.providers.en import EnglishProvider
+from textwarp._core.providers.en.provider import EnglishProvider
 from textwarp._lib.nlp import process_as_doc
 
 
 def test_english_provider_properties():
     """
-    Verify that the EnglishProvider returns the correct types for its
+    Verify that `EnglishProvider` returns the correct types for its
     properties.
     """
     provider = EnglishProvider()
