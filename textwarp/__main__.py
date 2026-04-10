@@ -36,20 +36,29 @@ ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
 _REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
 
-def _apply_pipeline(text: str, pipeline: Pipeline) -> str | None:
+def _apply_pipeline(
+    text: str,
+    pipeline: Pipeline,
+    arg_to_replace: str | None = None,
+    replacement_arg: str | None = None
+) -> str | None:
     """
-    Apply a list of pipeline functions to a given string.
+    Apply a sequence of pipeline functions to a given string.
 
     Args:
         text: The string to transform.
         pipeline: A list of tuples containing:
             - The command-line argument string (e.g., `word-count`).
             - The corresponding callable function (e.g., `word_count`).
+        arg_to_replace: The case, regex or substring to replace, if
+            provided. Defaults to `None`.
+        replacement_arg: The replacement case, regex or substring, if
+            provided. Defaults to `None`.
 
     Returns:
-        str | None: The string after applying all functions from the
-            pipeline, or `None` if the pipeline executes an analysis
-            command.
+        str | None: The transformed string after applying all functions
+            from the pipeline, or `None` if the pipeline executes an
+            analysis command.
     """
     for cmd_name, func in pipeline:
         if cmd_name == 'clear':
