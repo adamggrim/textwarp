@@ -4,14 +4,15 @@ from functools import lru_cache
 from types import MappingProxyType
 from typing import Mapping, cast
 
+from textwarp._core.utils import load_json_data
 
 __all__ = ['get_morse_map', 'get_morse_reversed_map']
 
 
 @lru_cache(maxsize=1)
 def get_morse_map() -> Mapping[str, str]:
-    return MappingProxyType(cast(dict[str, str], _load_universal(
     """Get a cached map of characters to Morse code."""
+    return MappingProxyType(cast(dict[str, str], load_json_data(
         'morse_map.json'
     )))
 
