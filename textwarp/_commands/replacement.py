@@ -11,9 +11,9 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT,
-    CASE_NOT_FOUND_MESSAGE,
-    REGEX_NOT_FOUND_MESSAGE,
-    TEXT_NOT_FOUND_MESSAGE
+    CASE_NOT_FOUND_MSG,
+    REGEX_NOT_FOUND_MSG,
+    TEXT_NOT_FOUND_MSG
 )
 from textwarp._cli.constants.inputs import EXIT_INPUTS, NO_INPUTS
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
@@ -81,14 +81,13 @@ def _create_presence_validator(
             pattern = get_case_names_regex_map().get(case_key)
 
             if pattern and not pattern.search(text):
-                raise CaseNotFoundError(CASE_NOT_FOUND_MESSAGE)
+                raise CaseNotFoundError(_(CASE_NOT_FOUND_MSG))
         elif check_type is PresenceCheckType.REGEX:
-            import regex as re
             if not re.search(search_input, text):
-                raise RegexNotFoundError(REGEX_NOT_FOUND_MESSAGE)
+                raise RegexNotFoundError(_(REGEX_NOT_FOUND_MSG))
         elif check_type is PresenceCheckType.SUBSTRING:
             if search_input not in text:
-                raise TextNotFoundError(TEXT_NOT_FOUND_MESSAGE)
+                raise TextNotFoundError(_(TEXT_NOT_FOUND_MSG))
 
     return validator
 
