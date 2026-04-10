@@ -10,6 +10,7 @@ __all__ = [
     'ARGS_MAP',
     'CASING_COMMANDS',
     'MUTUALLY_EXCLUSIVE_COMMANDS',
+    'REPLACEMENT_COMMANDS',
     'SEPARATOR_COMMANDS'
 ]
 
@@ -220,16 +221,21 @@ CASING_COMMANDS: Final[frozenset[str]] = frozenset({
     'sentence-case', 'swapcase', 'title-case', 'uppercase'
 })
 
+# Cannot be combined with any other warping or analysis commands.
+MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
+    'binary', 'from-binary', 'hexadecimal', 'from-hexadecimal',
+    'morse', 'from-morse', 'char-count', 'line-count', 'mfws',
+    'pos-counts', 'sentence-count', 'time-to-read', 'word-count'
+})
+
+# Commands that use `--find` and `--replace` arguments.
+REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
+    'replace', 'replace-case', 'replace-regex'
+})
+
 # Can be combined with `CASING_COMMANDS`. Mutually exclusive with
 # each other.
 SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'camel-case', 'dot-case', 'kebab-case', 'pascal-case',
     'snake-case', 'single-spaces', 'widen'
-})
-
-# Cannot be combined with any other warping or analysis commands.
-MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
-    'binary', 'from-binary', 'hexadecimal', 'from-hexadecimal',
-    'morse', 'from-morse', 'char-count', 'line-count', 'mfws',
-    'pos-count', 'sentence-count', 'time-to-read', 'word-count'
 })
