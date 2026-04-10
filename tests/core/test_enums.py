@@ -4,6 +4,7 @@ from textwarp._core.enums import (
     CaseSeparator,
     Casing,
     CountLabels,
+    ModelPriority,
     PresenceCheckType,
     RegexBoundary
 )
@@ -45,3 +46,9 @@ def test_regex_boundary_enums():
     assert isinstance(RegexBoundary.WORD_BOUNDARY, RegexBoundary)
     assert isinstance(RegexBoundary.START_ANCHOR, RegexBoundary)
     assert isinstance(RegexBoundary.END_ANCHOR, RegexBoundary)
+
+
+def test_model_priority_values():
+    """Verify the string values of `ModelPriority`."""
+    assert ModelPriority.ACCURACY == 'accuracy'
+    assert ModelPriority.SPEED == 'speed'
