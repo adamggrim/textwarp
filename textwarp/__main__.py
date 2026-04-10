@@ -234,7 +234,12 @@ def _process_interactive_mode(
         run_command_loop(pipeline_runner, action_handler=clipboard_action)
 
 
-def _process_piped_mode(pipeline: Pipeline, output_file: str | None) -> None:
+def _process_piped_mode(
+    pipeline: Pipeline,
+    output_file: str | None,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
+) -> None:
     """
     Handle input when data is piped into the script.
 
@@ -242,8 +247,12 @@ def _process_piped_mode(pipeline: Pipeline, output_file: str | None) -> None:
         pipeline: The list of command tuples to apply to the input.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        arg_to_replace: The case, regex or substring to replace, if
+            provided.
+        replacement_arg: The replacement case, regex or substring, if
+            provided.
     """
-    _validate_piped_commands(pipeline)
+    _validate_piped_commands(pipeline, arg_to_replace, replacement_arg)
 
     try:
         text = sys.stdin.read()
@@ -251,9 +260,14 @@ def _process_piped_mode(pipeline: Pipeline, output_file: str | None) -> None:
             text = text[:-1]
 
         if _is_analysis_pipeline(pipeline):
-            _apply_pipeline(text, pipeline)
+            _apply_pipeline(text, pipeline, arg_to_replace, replacement_arg)
         else:
-            result = _apply_pipeline(text, pipeline)
+            result = _apply_pipeline(
+                text,
+                pipeline,
+                arg_to_replace,
+                replacement_arg
+            )
             _handle_output(result, output_file, default_action=print)
 
     except Exception as e:
