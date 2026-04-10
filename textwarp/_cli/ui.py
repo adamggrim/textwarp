@@ -71,7 +71,7 @@ def program_exit() -> NoReturn:
     """
     print_wrapped(_(EXIT_MSG))
     print_padding()
-    exit()
+    sys.exit(0)
 
 
 def prompt_for_integer(prompt_text: str, error_text: str) -> int:
