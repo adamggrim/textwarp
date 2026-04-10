@@ -1,7 +1,6 @@
 """Tests for command-line input and clipboard validation."""
 
 import pytest
-import regex as re
 
 from textwarp._cli.validation import (
     validate_any_text,
@@ -13,6 +12,7 @@ from textwarp._cli.validation import (
 from textwarp._core.exceptions import (
     EmptyClipboardError,
     InvalidCaseNameError,
+    InvalidRegexError,
     NoCaseNameError,
     NoRegexError,
     NoTextError,
@@ -65,7 +65,7 @@ def test_validate_regex():
     with pytest.raises(NoRegexError):
         validate_regex('')
 
-    with pytest.raises(re.error):
+    with pytest.raises(InvalidRegexError):
         validate_regex(r'[unclosed group')
 
 
