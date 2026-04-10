@@ -7,11 +7,13 @@ from textwarp._core.exceptions import (
     CaseNotFoundError,
     EmptyClipboardError,
     InvalidCaseNameError,
+    InvalidRegexError,
     NoCaseNameError,
     NoRegexError,
     NoTextError,
     RegexNotFoundError,
     TextNotFoundError,
+    TextwarpValidationError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
@@ -21,11 +23,13 @@ from textwarp._core.exceptions import (
     CaseNotFoundError,
     EmptyClipboardError,
     InvalidCaseNameError,
+    InvalidRegexError,
     NoCaseNameError,
     NoRegexError,
     NoTextError,
     RegexNotFoundError,
     TextNotFoundError,
+    TextwarpValidationError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 ])
@@ -47,11 +51,14 @@ def test_exception_msgs():
     )):
         raise EmptyClipboardError('Nothing will come of nothing.')
 
-    with pytest.raises(NoTextError, match=re.escape(
-        'It is a tale\n'
-        'Told by an idiot, full of sound and fury,\n'
-        'Signifying nothing.'
-    )):
+    with pytest.raises(
+        NoTextError,
+        match=re.escape(
+            'It is a tale\n'
+            'Told by an idiot, full of sound and fury,\n'
+            'Signifying nothing.'
+        )
+    ):
         raise NoTextError(
             'It is a tale\n'
             'Told by an idiot, full of sound and fury,\n'
@@ -59,7 +66,8 @@ def test_exception_msgs():
         )
 
     with pytest.raises(
-        TextNotFoundError, match=re.escape(
+        TextNotFoundError,
+        match=re.escape(
             "I still haven't found what I'm looking for."
         )
     ):
