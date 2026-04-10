@@ -1,9 +1,12 @@
 """Classes for parts-of-speech counts and word counts."""
 
+import gettext
 from dataclasses import dataclass, field
 from typing import final
 
 from textwarp._core.constants.nlp import POS_TAGS
+
+_ = gettext.gettext
 
 __all__ = ['POSCounts', 'WordCount']
 
@@ -60,7 +63,8 @@ class POSCounts:
         for tag, name in POS_TAGS:
             count: int = self.get_pos_counts(tag)
             percentage: float = self.get_percentage(tag)
-            pos_data.append((name, count, percentage))
+            translated_name = _(name)
+            pos_data.append((translated_name, count, percentage))
 
         return pos_data
 
