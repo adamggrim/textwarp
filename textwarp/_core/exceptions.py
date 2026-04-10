@@ -21,8 +21,10 @@ class TextwarpValidationError(Exception):
 
 
 class CaseNotFoundError(TextwarpValidationError):
-    """Exception raised when the provided case is not found in the
-    searched text."""
+    """
+    Exception raised when the provided case is not found in the searched
+    text.
+    """
 
 
 class EmptyClipboardError(TextwarpValidationError):
@@ -30,8 +32,9 @@ class EmptyClipboardError(TextwarpValidationError):
 
 
 class InvalidCaseNameError(TextwarpValidationError):
-    """Exception raised when the provided case name string is
-    invalid."""
+    """
+    Exception raised when the provided case name string is invalid.
+    """
 
 
 class InvalidRegexError(TextwarpValidationError):
@@ -54,13 +57,17 @@ class NoTextError(TextwarpValidationError):
 
 
 class RegexNotFoundError(TextwarpValidationError):
-    """Exception raised when the provided regex string is not found in
-    the searched text."""
+    """
+    Exception raised when the provided regex string is not found in the
+    searched text.
+    """
 
 
 class TextNotFoundError(TextwarpValidationError):
-    """Exception raised when the provided text to replace is not found
-    in the searched text."""
+    """
+    Exception raised when the provided text to replace is not found in
+    the searched text.
+    """
 
 
 class WhitespaceCaseNameError(TextwarpValidationError):
