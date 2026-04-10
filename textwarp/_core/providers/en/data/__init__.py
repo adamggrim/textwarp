@@ -11,7 +11,6 @@ from textwarp._core.providers.en.data import (
 __all__ = [
     'contraction_expansion',
     'entity_casing',
-    'load_data',
     'punctuation',
     'string_casing',
     'token_casing'
