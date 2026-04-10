@@ -10,7 +10,7 @@ from textwarp._lib.manipulation import (
 
 def test_randomize():
     """Test that string characters are shuffled but preserved."""
-    original = "textwarp"
+    original = 'textwarp'
     randomized = randomize(original)
 
     assert len(randomized) == len(original)
@@ -37,6 +37,6 @@ def test_to_single_spaces():
 
 def test_widen():
     """Test adding spaces between characters."""
-    assert widen("textwarp") == "t e x t w a r p"
+    assert widen('textwarp') == 't e x t w a r p'
     assert widen('E T') == 'E   T'
     assert widen('') == ''

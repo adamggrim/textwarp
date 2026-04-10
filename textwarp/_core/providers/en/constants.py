@@ -91,4 +91,4 @@ def __getattr__(name: str) -> frozenset[str]:
     if name in _file_map:
         return frozenset(cast(list[str], load_data(_file_map[name])))
 
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    raise AttributeError(f'module {__name__!r} has no attribute {name!r}')

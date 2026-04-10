@@ -45,7 +45,7 @@ def test_exception_msgs():
     with pytest.raises(EmptyClipboardError, match=re.escape(
         "Nothing will come of nothing."
     )):
-        raise EmptyClipboardError("Nothing will come of nothing.")
+        raise EmptyClipboardError('Nothing will come of nothing.')
 
     with pytest.raises(NoTextError, match=re.escape(
         'It is a tale\n'

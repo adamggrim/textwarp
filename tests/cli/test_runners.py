@@ -85,7 +85,7 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
 
     quote = (
         "Sometimes I’ve believed as many as six impossible things before "
-        "breakfast."
+        'breakfast.'
     )
 
     mock_clipboard.copy(quote)

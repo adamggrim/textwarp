@@ -26,11 +26,11 @@ def test_expand_contractions_ambiguous():
     result = expand_contractions(doc)
     assert result == (
         "There is a starman waitin' in the sky\n"
-        "He would like to come and meet us\n"
-        "But he thinks he would blow our minds\n"
+        'He would like to come and meet us\n'
+        'But he thinks he would blow our minds\n'
         "There is a starman waitin' in the sky\n"
-        "He has told us not to blow it\n"
-        "Because he knows it is all worthwhile\n"
+        'He has told us not to blow it\n'
+        'Because he knows it is all worthwhile\n'
     )
 
 
@@ -49,8 +49,8 @@ def test_expand_contractions_inverted_and_multiple():
     )
     result = expand_contractions(doc)
     assert result == (
-        "Is it not just like the night to play\n"
-        "Tricks when you are trying to be so quiet?"
+        'Is it not just like the night to play\n'
+        'Tricks when you are trying to be so quiet?'
     )
 
 

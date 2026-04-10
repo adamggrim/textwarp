@@ -27,7 +27,7 @@ def test_straight_to_curly_double_quotes():
     """Test straight double quote conversion."""
     assert (
         straight_to_curly('"Hello, is it me you\'re looking for?"')
-        == "“Hello, is it me you’re looking for?”"
+        == '“Hello, is it me you’re looking for?”'
     )
     assert (
         straight_to_curly('She said, "I know what it\'s like to be dead."')
