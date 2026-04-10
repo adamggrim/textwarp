@@ -37,7 +37,7 @@ def test_exceptions_inherit_from_base_exception(exception_class):
     assert issubclass(exception_class, Exception)
 
 
-def test_exception_messages():
+def test_exception_msgs():
     """
     Verify that exceptions can be raised with custom literary messages.
     """

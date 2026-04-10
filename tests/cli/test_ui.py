@@ -8,12 +8,13 @@ from textwarp._cli.ui import (
     get_input,
     print_padding,
     print_wrapped,
-    program_exit
+    program_exit,
+    prompt_for_integer
 )
 from textwarp._cli.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_VALID_RESPONSE_PROMPT,
-    EXIT_MESSAGE
+    EXIT_MSG
 )
 
 
@@ -97,7 +98,7 @@ def test_program_exit(capsys):
         program_exit()
 
     captured = capsys.readouterr()
-    assert EXIT_MESSAGE in captured.out
+    assert EXIT_MSG in captured.out
 
 
 def test_prompt_for_integer_valid(simulate_input):

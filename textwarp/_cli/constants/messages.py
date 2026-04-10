@@ -9,9 +9,9 @@ _ = gettext.gettext
 
 __all__ = [
     'ANY_OTHER_TEXT_PROMPT',
-    'CASE_NOT_FOUND_MESSAGE',
-    'CLIPBOARD_ACCESS_ERROR_MESSAGE',
-    'CLIPBOARD_CLEARED_MESSAGE',
+    'CASE_NOT_FOUND_MSG',
+    'CLIPBOARD_ACCESS_ERROR_MSG',
+    'CLIPBOARD_CLEARED_MSG',
     'ENTER_CASE_TO_REPLACE_PROMPT',
     'ENTER_MFW_COUNT_PROMPT',
     'ENTER_VALID_NUMBER_PROMPT',
@@ -24,11 +24,11 @@ __all__ = [
     'ENTER_VALID_RESPONSE_PROMPT',
     'ENTER_VALID_TEXT_PROMPT',
     'ENTER_WPM_PROMPT',
-    'EXIT_MESSAGE',
+    'EXIT_MSG',
     'HELP_DESCRIPTION',
-    'MODIFIED_TEXT_COPIED_MESSAGE',
-    'REGEX_NOT_FOUND_MESSAGE',
-    'TEXT_NOT_FOUND_MESSAGE'
+    'MODIFIED_TEXT_COPIED_MSG',
+    'REGEX_NOT_FOUND_MSG',
+    'TEXT_NOT_FOUND_MSG'
 ]
 
 # Prompt for the user to enter any other text.
@@ -37,13 +37,13 @@ ANY_OTHER_TEXT_PROMPT: Final = N_(
 )
 
 # Message for when the case is not found in the text.
-CASE_NOT_FOUND_MESSAGE: Final = _('Case not found.')
+CASE_NOT_FOUND_MSG: Final = _('Case not found.')
 
 # Message for any error accessing the clipboard.
-CLIPBOARD_ACCESS_ERROR_MESSAGE: Final = _('Error accessing clipboard: ')
+CLIPBOARD_ACCESS_ERROR_MSG: Final = _('Error accessing clipboard: ')
 
 # Message for when the clipboard is cleared.
-CLIPBOARD_CLEARED_MESSAGE: Final = _('Clipboard text cleared.')
+CLIPBOARD_CLEARED_MSG: Final = _('Clipboard text cleared.')
 
 # Prompt for the user to enter a case to replace.
 ENTER_CASE_TO_REPLACE_PROMPT: Final = _('Enter a case to replace:')
@@ -82,7 +82,7 @@ ENTER_VALID_TEXT_PROMPT: Final = _('Please enter valid text.')
 ENTER_WPM_PROMPT: Final = _('How many words per minute?')
 
 # Message for when the user exits the program.
-EXIT_MESSAGE: Final = _('Exiting the program...')
+EXIT_MSG: Final = _('Exiting the program...')
 
 # Help description for command-line arguments.
 HELP_DESCRIPTION: Final = _(
@@ -90,10 +90,10 @@ HELP_DESCRIPTION: Final = _(
 )
 
 # Message for when the program copies modified text to the clipboard.
-MODIFIED_TEXT_COPIED_MESSAGE: Final = _('Modified text copied to clipboard.')
+MODIFIED_TEXT_COPIED_MSG: Final = _('Modified text copied to clipboard.')
 
 # Message for when the regular expression is not found in the text.
-REGEX_NOT_FOUND_MESSAGE: Final = _('Regular expression not found.')
+REGEX_NOT_FOUND_MSG: Final = _('Regular expression not found.')
 
 # Message for when the text to replace is not found in the text.
-TEXT_NOT_FOUND_MESSAGE: Final = _('Text not found.')
+TEXT_NOT_FOUND_MSG: Final = _('Text not found.')

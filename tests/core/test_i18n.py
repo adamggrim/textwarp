@@ -1,6 +1,6 @@
 import logging
 
-from textwarp._cli.constants.messages import EXIT_MESSAGE
+from textwarp._cli.constants.messages import EXIT_MSG
 from textwarp._core.context import N_, ctx
 
 
@@ -20,9 +20,9 @@ def test_set_locale_to_unsupported_falls_back_to_en(caplog):
 
 def test_gettext_translation_install():
     """Verify that gettext is properly installed in the environment."""
-    assert isinstance(EXIT_MESSAGE, str)
-    assert EXIT_MESSAGE != 'NO_EXIT'
-    assert 'Exiting' in EXIT_MESSAGE
+    assert isinstance(EXIT_MSG, str)
+    assert EXIT_MSG != 'NO_EXIT'
+    assert 'Exiting' in EXIT_MSG
 
 
 def test_n_marker_returns_original_string():

@@ -11,9 +11,9 @@ from textwarp._cli.runners import (
     warp_and_copy
 )
 from textwarp._cli.constants.messages import (
-    CLIPBOARD_ACCESS_ERROR_MESSAGE,
-    CLIPBOARD_CLEARED_MESSAGE,
-    MODIFIED_TEXT_COPIED_MESSAGE
+    CLIPBOARD_ACCESS_ERROR_MSG,
+    CLIPBOARD_CLEARED_MSG,
+    MODIFIED_TEXT_COPIED_MSG
 )
 
 
@@ -41,7 +41,7 @@ def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
 
     assert _paste_and_validate() is None
     captured = capsys.readouterr()
-    assert CLIPBOARD_ACCESS_ERROR_MESSAGE in captured.out
+    assert CLIPBOARD_ACCESS_ERROR_MSG in captured.out
     assert 'sudo apt install xclip' in captured.out
 
 
@@ -52,7 +52,7 @@ def test_clear_clipboard(mock_clipboard, capsys):
 
     assert mock_clipboard.paste() == ''
     captured = capsys.readouterr()
-    assert CLIPBOARD_CLEARED_MESSAGE in captured.out
+    assert CLIPBOARD_CLEARED_MSG in captured.out
 
 
 def test_warp_and_copy(mock_clipboard, capsys):
@@ -61,7 +61,7 @@ def test_warp_and_copy(mock_clipboard, capsys):
 
     assert mock_clipboard.paste() == 'KILROY'
     captured = capsys.readouterr()
-    assert MODIFIED_TEXT_COPIED_MESSAGE in captured.out
+    assert MODIFIED_TEXT_COPIED_MSG in captured.out
 
 
 def test_replace_and_copy_success(mock_clipboard, capsys):
@@ -75,7 +75,7 @@ def test_replace_and_copy_success(mock_clipboard, capsys):
 
     assert mock_clipboard.paste() == 'Nevermore.'
     captured = capsys.readouterr()
-    assert MODIFIED_TEXT_COPIED_MESSAGE in captured.out
+    assert MODIFIED_TEXT_COPIED_MSG in captured.out
 
 
 def test_replace_and_copy_not_found(mock_clipboard, capsys):
@@ -93,7 +93,7 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
 
     assert mock_clipboard.paste() == quote
     captured = capsys.readouterr()
-    assert MODIFIED_TEXT_COPIED_MESSAGE in captured.out
+    assert MODIFIED_TEXT_COPIED_MSG in captured.out
 
 
 def test_run_command_loop(monkeypatch, mock_clipboard):

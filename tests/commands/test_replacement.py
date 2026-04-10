@@ -3,12 +3,12 @@
 import pytest
 
 from textwarp._cli.constants.messages import (
-    CASE_NOT_FOUND_MESSAGE,
+    CASE_NOT_FOUND_MSG,
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT,
-    REGEX_NOT_FOUND_MESSAGE,
-    TEXT_NOT_FOUND_MESSAGE
+    REGEX_NOT_FOUND_MSG,
+    TEXT_NOT_FOUND_MSG
 )
 from textwarp._commands import replacement
 
@@ -29,7 +29,7 @@ def test_replace_case(simulate_input, capsys):
     result = replacement.replace_case(CASE_TEST_STRING)
     captured = capsys.readouterr()
 
-    assert CASE_NOT_FOUND_MESSAGE in captured.out
+    assert CASE_NOT_FOUND_MSG in captured.out
     assert ENTER_VALID_CASE_PROMPT in captured.out
     assert result == 'PascalCase'
 
@@ -49,7 +49,7 @@ def test_replace_text(simulate_input, capsys):
     result = replacement.replace(TEXT_TEST_STRING)
     captured = capsys.readouterr()
 
-    assert TEXT_NOT_FOUND_MESSAGE in captured.out
+    assert TEXT_NOT_FOUND_MSG in captured.out
     assert ENTER_VALID_TEXT_PROMPT in captured.out
     assert 'of poison I had drunk' in result
     assert 'hemlock' not in result
@@ -65,6 +65,6 @@ def test_replace_regex(simulate_input, capsys):
     result = replacement.replace_regex(REGEX_TEST_STRING)
     captured = capsys.readouterr()
 
-    assert REGEX_NOT_FOUND_MESSAGE in captured.out
+    assert REGEX_NOT_FOUND_MSG in captured.out
     assert ENTER_VALID_REGEX_PROMPT in captured.out
     assert result == 'Five hundred twenty-five thousand, six hundred minutes'
