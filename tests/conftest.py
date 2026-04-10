@@ -3,7 +3,7 @@
 import pytest
 from spacy.tokens import Span
 
-from textwarp._lib.nlp import _nlp_instances
+from textwarp._lib.nlp import _load_spacy_model
 from textwarp._lib.nlp import process_as_doc
 
 
@@ -64,4 +64,4 @@ def simulate_input(monkeypatch):
 def reset_nlp_cache():
     """Reset the spaCy model cache before or after tests."""
     yield
-    _nlp_instances.clear()
+    _load_spacy_model.cache_clear()
