@@ -1,19 +1,23 @@
 """Functions for handling console input and output."""
 
+import gettext
 import shutil
+import sys
 import textwrap
 from typing import NoReturn
 
 from textwarp._cli.constants.inputs import (
-    EXIT_INPUTS,
-    NO_INPUTS,
-    YES_INPUTS
+    get_exit_inputs,
+    get_no_inputs,
+    get_yes_inputs
 )
 from textwarp._cli.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_VALID_RESPONSE_PROMPT,
-    EXIT_MESSAGE
+    EXIT_MSG
 )
+
+_ = gettext.gettext
 
 __all__ = [
     'get_input',
@@ -32,14 +36,14 @@ def get_input() -> bool:
     Returns:
         True: To continue processing the clipboard, otherwise `False`.
     """
-    print_wrapped(ANY_OTHER_TEXT_PROMPT)
+    print_wrapped(_(ANY_OTHER_TEXT_PROMPT))
     while True:
         response = input().strip().lower()
-        if response in YES_INPUTS:
+        if response in get_yes_inputs():
             return True
-        if response in (NO_INPUTS | EXIT_INPUTS):
+        if response in (get_no_inputs() | get_exit_inputs()):
             return False
-        print_wrapped(ENTER_VALID_RESPONSE_PROMPT)
+        print_wrapped(_(ENTER_VALID_RESPONSE_PROMPT))
 
 
 def print_padding() -> None:
