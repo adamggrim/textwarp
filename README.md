@@ -103,8 +103,8 @@ textwarp/
 │ │ ├── inputs.py: Sets for command-line input
 │ │ └── messages.py: Strings for displaying command-line messages
 │ ├── __init__.py: Initializes the _cli sub-package
-│ ├── args.py: A mapping of command-line arguments to functions and help messages
-│ ├── dispatch.py: A mapping of string inputs to case conversion functions
+│ ├── args.py: A map of command-line arguments to functions and help messages
+│ ├── dispatch.py: A map of string inputs to case conversion functions
 │ ├── formatting.py: Functions for formatting analysis into readable strings
 │ ├── parsing.py: Command-line argument parsing using argparse
 │ ├── runners.py: Main loop logic for executing commands
@@ -168,7 +168,6 @@ textwarp/
 │ │ │ │ ├── __init__.py: Exposes English-specific data modules
 │ │ │ │ ├── contraction_expansion.py: Functions for loading English contraction expansion rules
 │ │ │ │ ├── entity_casing.py: Functions for loading English entity casing rules
-│ │ │ │ ├── loader.py: Functions for loading English-specific JSON data
 │ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
 │ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
 │ │ │ │ └── token_casing.py: Functions for loading English token casing rules
