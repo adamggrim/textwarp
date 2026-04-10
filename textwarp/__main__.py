@@ -67,7 +67,19 @@ def _apply_pipeline(
             func(text)
             return None
         else:
-            text = func(text)
+            normalized_name = cmd_name.replace('-', '_')
+            if (
+                normalized_name in _REPLACEMENT_FUNC_NAMES
+                and arg_to_replace is not None
+                and replacement_arg is not None
+            ):
+                text = func(
+                    text,
+                    arg_to_replace=arg_to_replace,
+                    replacement_arg=replacement_arg
+                )
+            else:
+                text = func(text)
     return text
 
 
