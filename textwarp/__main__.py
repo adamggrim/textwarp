@@ -336,16 +336,38 @@ def main() -> None:
         if not pipeline_data:
             return None
 
-        pipeline, lang_code, input_file, output_file = pipeline_data
-
+        (
+            pipeline,
+            lang_code,
+            input_files,
+            output_file,
+            arg_to_replace,
+            replacement_arg
+        ) = pipeline_data
         ctx.set_locale(lang_code)
 
-        if input_file:
-            _process_file_mode(pipeline, input_file, output_file)
+        if input_files:
+            _process_file_mode(
+                pipeline,
+                input_files,
+                output_file,
+                arg_to_replace,
+                replacement_arg
+            )
         elif not sys.stdin.isatty():
-            _process_piped_mode(pipeline, output_file)
+            _process_piped_mode(
+                pipeline,
+                output_file,
+                arg_to_replace,
+                replacement_arg
+            )
         else:
-            _process_interactive_mode(pipeline, output_file)
+            _process_interactive_mode(
+                pipeline,
+                output_file,
+                arg_to_replace,
+                replacement_arg
+            )
 
     except KeyboardInterrupt:
         print_padding()
