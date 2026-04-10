@@ -290,27 +290,37 @@ def _process_piped_mode(
         sys.exit(1)
 
 
-def _validate_piped_commands(pipeline: Pipeline) -> None:
+def _validate_piped_commands(
+    pipeline: Pipeline,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
+) -> None:
     """
     Ensure that replacement commands are not used in pipeline mode.
 
     Args:
         pipeline: A list of tuples containing command names and their
             corresponding functions.
+        arg_to_replace: The case, regex or substring to replace, if
+            provided.
+        replacement_arg: The replacement case, regex or substring, if
+            provided.
     Raises:
         SystemExit: If a replacement command is in the pipeline.
     """
     for cmd_name, _ in pipeline:
         normalized_name = cmd_name.replace('-', '_')
         if normalized_name in _REPLACEMENT_FUNC_NAMES:
-            print_wrapped(
-                _(
-                    'Replacement commands require interactive user input and '
-                    'cannot be used with pipelines.'
-                ),
-                file=sys.stderr
-            )
-            sys.exit(1)
+            if arg_to_replace is None or replacement_arg is None:
+                print_wrapped(
+                    _(
+                        'Replacement commands require --find and '
+                        '--replace arguments when used in file or piped '
+                        'mode.'
+                    ),
+                    file=sys.stderr
+                )
+                sys.exit(1)
 
 
 def main() -> None:
