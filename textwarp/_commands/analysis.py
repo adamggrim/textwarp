@@ -19,7 +19,7 @@ from textwarp._core.models import POSCounts, WordCount
 from textwarp._cli.formatting import (
     format_count,
     format_mfws,
-    format_pos_count,
+    format_pos_counts,
     format_time_to_read
 )
 from textwarp._cli.ui import print_wrapped, prompt_for_integer
@@ -28,7 +28,7 @@ __all__ = [
     'char_count',
     'line_count',
     'mfws',
-    'pos_count',
+    'pos_counts',
     'sentence_count',
     'time_to_read',
     'word_count'
@@ -80,7 +80,7 @@ def mfws(text: str) -> None:
     print('\n' + formatted_mfws)
 
 
-def pos_count(text: str) -> None:
+def pos_counts(text: str) -> None:
     """
     Analyze, format and print parts of speech count output.
 

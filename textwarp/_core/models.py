@@ -18,7 +18,7 @@ class POSCounts:
     word_count: int = 0
     tag_counts: dict[str, int] = field(default_factory=dict)
 
-    def get_pos_count(self, tag: str) -> int:
+    def get_pos_counts(self, tag: str) -> int:
         """
         Get the count for a given parts-of-speech tag.
 
@@ -43,7 +43,7 @@ class POSCounts:
             float: The calculated percentage, or 0.0 if self.word_count
                 is zero.
         """
-        count = self.get_pos_count(tag)
+        count = self.get_pos_counts(tag)
         return (count / self.word_count * 100) if self.word_count else 0.0
 
     def get_pos_data(self) -> list[tuple[str, int, float]]:
@@ -58,7 +58,7 @@ class POSCounts:
         pos_data: list[tuple[str, int, float]] = []
 
         for tag, name in POS_TAGS:
-            count: int = self.get_pos_count(tag)
+            count: int = self.get_pos_counts(tag)
             percentage: float = self.get_percentage(tag)
             pos_data.append((name, count, percentage))
 
