@@ -9,7 +9,6 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
-from textwarp._core.constants.nlp import PROPER_NOUN_ENTITIES
 from textwarp._core.context import ctx
 from textwarp._core.types import EntityCasingContext
 
@@ -177,7 +176,7 @@ def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
     """
     return {
         ent.start: (ent, ent.end, None) for ent in doc.ents
-        if ent.label_ in PROPER_NOUN_ENTITIES
+        if ent.label_ in ctx.provider.proper_noun_entities
     }
 
 
