@@ -10,6 +10,7 @@ from textwarp._cli.args import (
     ARGS_MAP,
     CASING_COMMANDS,
     MUTUALLY_EXCLUSIVE_COMMANDS,
+    REPLACEMENT_COMMANDS,
     SEPARATOR_COMMANDS
 )
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
@@ -87,6 +88,16 @@ def _validate_command_combinations(
         )
         parser.error(msg.format(cmd=cmd))
 
+    is_replacement_cmd = any(c in REPLACEMENT_COMMANDS for c in active_cmds)
+    if (args.find or args.replace) and not is_replacement_cmd:
+        parser.error(
+            _(
+                'The --find and --replace arguments can only be used '
+                'with replacement commands (--replace, --replace-case, '
+                '--replace-regex).'
+            )
+        )
+
 
 def parse_args() -> tuple[
     list[tuple[str, Callable[..., str]]],
@@ -132,7 +143,7 @@ def parse_args() -> tuple[
     parser = argparse.ArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
-        description=HELP_DESCRIPTION,
+        description=_(HELP_DESCRIPTION),
         usage='%(prog)s [command]'
     )
 
@@ -150,11 +161,39 @@ def parse_args() -> tuple[
         help='set the language locale ("en" by default)'
     )
 
-    for arg_key, (_, help_message) in ARGS_MAP.items():
+    parser.add_argument(
+        'input_files',
+        nargs='*',
+        type=str,
+        help='optional path to one or more input text files'
+    )
+
+    parser.add_argument(
+        '-o', '--output',
+        dest='output_file',
+        type=str,
+        help='optional path to write the output file'
+    )
+
+    parser.add_argument(
+        '-f', '--find',
+        dest='find',
+        type=str,
+        help='text, case, or regex to find (for replacement commands)'
+    )
+
+    parser.add_argument(
+        '-r', '--replace',
+        dest='replace',
+        type=str,
+        help='replacement text (for replacement commands)'
+    )
+
+    for arg_key, (_func, help_msg) in ARGS_MAP.items():
         parser.add_argument(
             f'--{arg_key}',
             action='store_true',
-            help=help_message
+            help=_(help_msg)
         )
 
     # If there are no arguments or piped input, print the help messages
@@ -183,4 +222,11 @@ def parse_args() -> tuple[
         parser.print_help(sys.stderr)
         sys.exit(1)
 
-    return pipeline, args.lang
+    return (
+        pipeline,
+        args.lang,
+        args.input_files,
+        args.output_file,
+        args.find,
+        args.replace
+    )
