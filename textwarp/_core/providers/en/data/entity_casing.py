@@ -10,6 +10,12 @@ from textwarp._core.types import EntityCasingContext
 
 DIR: Final = Path('entity_casing')
 
+__all__ = [
+    'get_absolute_map',
+    'get_contextual_map',
+    'get_contraction_suffixes'
+]
+
 
 @lru_cache(maxsize=1)
 def get_absolute_map() -> Mapping[str, str]:
