@@ -5,9 +5,8 @@ from collections.abc import Generator
 
 import regex as re
 
-from textwarp._core.config import Encoding
-from textwarp._core.constants.regexes import WarpingPatterns
-from textwarp._lib.punctuation import curly_to_straight
+from textwarp._core.context import ctx
+from textwarp._core.encoding import get_morse_map, get_morse_reversed_map
 
 __all__ = [
     'from_binary',
@@ -19,9 +18,9 @@ __all__ = [
 ]
 
 
-def _get_morse_spacing_patterns(text: str) -> tuple[
-    re.Pattern[str], re.Pattern[str]
-]:
+def _get_morse_spacing_patterns(
+    text: str
+) -> tuple[re.Pattern[str], re.Pattern[str]]:
     """
     Determine the number of spaces for character and word separators in
     a given Morse string.
@@ -105,7 +104,7 @@ def from_morse(text: str) -> str:
     words = word_gap_pattern.split(text)
     decoded_words: list[str] = []
 
-    reversed_morse_map = Encoding.get_morse_reversed_map()
+    reversed_morse_map = get_morse_reversed_map()
 
     for w in words:
         char_codes: list[str] = char_gap_pattern.split(w)
@@ -162,6 +161,12 @@ def to_morse(text: str) -> str:
         str: The converted string, with a single space between
             character codes and three spaces between word codes.
     """
+    if hasattr(ctx.provider, 'normalize_for_morse'):
+        normalized_text = ctx.provider.normalize_for_morse(text)
+    else:
+        normalized_text = text.upper()
+
+    morse_map = get_morse_map()
 
     morse_words: Generator[str, None, None] = (
         ' '.join(morse_map[char] for char in word if char in morse_map)
