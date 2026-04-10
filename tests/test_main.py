@@ -4,7 +4,8 @@ import sys
 
 import pytest
 
-from textwarp import __main__ as main_module
+from textwarp import __main__
+from textwarp._core.context import ctx
 
 
 def _dummy_lower(text: str) -> str:
@@ -17,20 +18,7 @@ def _dummy_reverse(text: str) -> str:
     return text[::-1]
 
 
-def test_apply_pipeline_warping():
-    """
-    Test that a pipeline of warping functions transforms the text
-    correctly.
-    """
-    pipeline = [
-        ('lowercase', _dummy_lower),
-        ('reverse', _dummy_reverse)
-    ]
-    result = main_module._apply_pipeline('HELLO WORLD', pipeline)
-    assert result == 'dlrow olleh'
-
-
-def test_apply_pipeline_analysis(monkeypatch):
+def test_apply_pipeline_analysis():
     """
     Test that an analysis command stops the pipeline and returns `None`.
     """
@@ -45,7 +33,7 @@ def test_apply_pipeline_analysis(monkeypatch):
         ('lowercase', _dummy_lower)
     ]
 
-    result = main_module._apply_pipeline('test text', pipeline)
+    result = __main__._apply_pipeline('test text', pipeline)
 
     assert result is None
     assert analysis_called is True
@@ -61,12 +49,91 @@ def test_apply_pipeline_clear(monkeypatch):
         nonlocal clear_called
         clear_called = True
 
-    monkeypatch.setattr(main_module, 'clear_clipboard', mock_clear)
+    monkeypatch.setattr(__main__, 'clear_clipboard', mock_clear)
 
     pipeline = [('clear', lambda x: x)]
-    main_module._apply_pipeline('some text', pipeline)
+    __main__._apply_pipeline('some text', pipeline)
 
     assert clear_called is True
+
+
+def test_apply_pipeline_warping():
+    """
+    Test that a pipeline of warping functions transforms the text
+    correctly.
+    """
+    pipeline = [
+        ('lowercase', _dummy_lower),
+        ('reverse', _dummy_reverse)
+    ]
+    result = __main__._apply_pipeline('HELLO WORLD', pipeline)
+    assert result == 'dlrow olleh'
+
+
+def test_cli_version(capsys, monkeypatch):
+    """Verify that "textwarp --version" exits correctly."""
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--version'])
+
+    with pytest.raises(SystemExit) as exc:
+        __main__.main()
+
+    assert exc.value.code == 0
+    captured = capsys.readouterr()
+    assert 'textwarp' in captured.out
+
+
+def test_main_keyboard_interrupt(monkeypatch):
+    """Test that the main function catches a `KeyboardInterrupt`."""
+    def mock_parse_args():
+        raise KeyboardInterrupt()
+
+    monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
+
+    exit_called = False
+    def mock_program_exit():
+        nonlocal exit_called
+        exit_called = True
+
+    monkeypatch.setattr(__main__, 'print_padding', lambda: None)
+    monkeypatch.setattr(__main__, 'program_exit', mock_program_exit)
+
+    __main__.main()
+
+    assert exit_called is True
+
+
+def test_main_sets_locale(monkeypatch):
+    """
+    Test that `main` extracts the language code from `parse_args` and
+    applies it to the global context.
+    """
+    def mock_parse_args():
+        return ([('clear', lambda x: x)], 'en')
+
+    monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
+
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
+    monkeypatch.setattr(
+        __main__, '_process_interactive_mode', lambda p: None
+    )
+
+    __main__.main()
+
+    assert ctx.locale == 'en'
+
+
+def test_piped_input_mode_integration(monkeypatch, mock_clipboard):
+    """
+    Verify that data piped via `stdin` is processed and copied
+    end-to-end.
+    """
+    monkeypatch.setattr(sys.stdin, 'isatty', lambda: False)
+    monkeypatch.setattr(sys.stdin, 'read', lambda: 'eureka\n')
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase'])
+
+    __main__.main()
+
+    assert mock_clipboard.paste() == 'EUREKA'
 
 
 def test_process_interactive_mode_replacement(monkeypatch):
@@ -81,14 +148,14 @@ def test_process_interactive_mode_replacement(monkeypatch):
         replace_called = True
         assert cmd_name == 'replace_case'
 
-    monkeypatch.setattr(main_module, 'replace_text', mock_replace_text)
+    monkeypatch.setattr(__main__, 'replace_text', mock_replace_text)
 
-    monkeypatch.setattr(main_module, 'program_exit', lambda: sys.exit(0))
+    monkeypatch.setattr(__main__, 'program_exit', lambda: sys.exit(0))
 
     pipeline = [('replace-case', lambda x: x)]
 
     with pytest.raises(SystemExit):
-        main_module._process_interactive_mode(pipeline)
+        __main__._process_interactive_mode(pipeline)
 
     assert replace_called is True
 
@@ -106,10 +173,10 @@ def test_process_piped_mode_warping(monkeypatch):
         assert text == 'Piped text'
         assert func('A') == 'a'
 
-    monkeypatch.setattr(main_module, 'warp_and_copy', mock_warp_and_copy)
+    monkeypatch.setattr(__main__, 'warp_and_copy', mock_warp_and_copy)
 
     pipeline = [('lowercase', _dummy_lower)]
-    main_module._process_piped_mode(pipeline)
+    __main__._process_piped_mode(pipeline)
 
     assert warp_called is True
 
@@ -117,7 +184,7 @@ def test_process_piped_mode_warping(monkeypatch):
 def test_validate_piped_commands_rejects_replacement(monkeypatch):
     """Test that replacement commands fail gracefully when piped."""
     monkeypatch.setattr(
-        main_module,
+        __main__,
         'print_wrapped',
         lambda *args, **kwargs: None
     )
@@ -125,26 +192,6 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
     pipeline = [('replace', lambda x: x)]
 
     with pytest.raises(SystemExit) as excinfo:
-        main_module._validate_piped_commands(pipeline)
+        __main__._validate_piped_commands(pipeline)
 
     assert excinfo.value.code == 1
-
-
-def test_main_keyboard_interrupt(monkeypatch):
-    """Test that the main function catches a `KeyboardInterrupt`."""
-    def mock_parse_args():
-        raise KeyboardInterrupt()
-
-    monkeypatch.setattr(main_module, 'parse_args', mock_parse_args)
-
-    exit_called = False
-    def mock_program_exit():
-        nonlocal exit_called
-        exit_called = True
-
-    monkeypatch.setattr(main_module, 'print_padding', lambda: None)
-    monkeypatch.setattr(main_module, 'program_exit', mock_program_exit)
-
-    main_module.main()
-
-    assert exit_called is True
