@@ -5,7 +5,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Final, Mapping, cast
 
-from textwarp._core.providers.en.data.loader import load_data
+from textwarp._core.utils import load_json_data
 from textwarp._core.types import EntityCasingContext
 
 DIR: Final = Path('entity_casing')
@@ -17,7 +17,7 @@ def get_absolute_map() -> Mapping[str, str]:
     return MappingProxyType(
         cast(
             dict[str, str],
-            load_data(DIR / 'absolute_casings_map.json')
+            load_json_data(DIR / 'absolute_casings_map.json', locale='en')
         )
     )
 
@@ -33,13 +33,13 @@ def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
         {key: tuple(contexts) for key, contexts in raw_map.items()}
     )
 
-@staticmethod
+
 @lru_cache(maxsize=1)
 def get_contraction_suffixes() -> frozenset[str]:
     """Get a cached frozenset of allowed contraction suffixes."""
     return frozenset(
         cast(
             list[str],
-            load_data(DIR / 'contraction_suffixes.json')
+            load_json_data(DIR / 'contraction_suffixes.json', locale='en')
         )
     )
