@@ -1,7 +1,33 @@
 """Tests for the main contraction expansion engine."""
 
-from textwarp._lib.contractions import expand_contractions
+from textwarp._lib.contractions import (
+    apply_expansion_casing,
+    expand_contractions
+)
 from textwarp._lib.nlp import process_as_doc
+
+
+def test_apply_expansion_casing_lower():
+    """Test that lowercase is preserved."""
+    assert apply_expansion_casing("can't", 'can not') == 'can not'
+
+
+def test_apply_expansion_casing_upper():
+    """Test that all-caps is preserved."""
+    assert apply_expansion_casing("CAN'T", 'can not') == 'CAN NOT'
+
+
+def test_apply_expansion_casing_sentence():
+    """Test that sentence casing is applied."""
+    assert apply_expansion_casing("Won't", "will not") == 'Will not'
+    assert apply_expansion_casing(
+        "Couldn't've", 'could not have'
+    ) == 'Could not have'
+
+
+def test_apply_expansion_casing_title():
+    """Test that title case is preserved across the expanded words."""
+    assert apply_expansion_casing('Do Not', 'do not') == 'Do Not'
 
 
 def test_expand_contractions_no_contractions():
