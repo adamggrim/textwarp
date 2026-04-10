@@ -119,22 +119,28 @@ def _is_analysis_pipeline(pipeline: Pipeline) -> bool:
 def _process_file_mode(
     pipeline: Pipeline,
     input_files: list[str],
-    output_file: str | None
+    output_file: str | None,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
 ) -> None:
     """
     Handle file input and output mode.
 
     Args:
         pipeline: The list of command tuples to apply to the input.
-        input_file: The path to the input file.
+        input_files: A list of paths to the input files.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        arg_to_replace: The case, regex or substring to replace, if
+            provided.
+        replacement_arg: The replacement case, regex or substring, if
+            provided.
 
     Raises:
         SystemExit: If the input file is unreadable or if there is an
             error writing to the output file.
     """
-    _validate_piped_commands(pipeline)
+    _validate_piped_commands(pipeline, arg_to_replace, replacement_arg)
 
     combined_results: list[str] = []
     is_analysis = _is_analysis_pipeline(pipeline)
@@ -163,7 +169,12 @@ def _process_file_mode(
         if is_analysis and len(input_files) > 1:
             print(f"\n--- {file_path} ---")
 
-        result = _apply_pipeline(text, pipeline)
+        result = _apply_pipeline(
+            text,
+            pipeline,
+            arg_to_replace,
+            replacement_arg
+        )
         if result is not None:
             combined_results.append(result)
 
