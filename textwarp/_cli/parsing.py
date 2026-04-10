@@ -89,18 +89,28 @@ def _validate_command_combinations(
 
 
 def parse_args() -> tuple[
-    list[tuple[str, Callable[[str], str]]],
-    str
+    list[tuple[str, Callable[..., str]]],
+    str,
+    list[str],
+    str | None,
+    str | None,
+    str | None
 ]:
     """
     Parse command-line arguments for a text warping or analysis
     function name and the language locale.
 
     Returns:
-        tuple[list[tuple[str, Callable[[str], str]]], str]: A tuple
-            containing:
-            1. The pipeline list of command tuples.
-            2. The language locale string (e.g., "en").
+        tuple: A six-element tuple containing:
+            1. list[tuple[str, Callable[..., str]]]: The pipeline list
+               of command tuples.
+            2. str: The language locale string (e.g., "en").
+            3. list[str]: A list of optional paths to one or more input
+               text files.
+            4. str | None: An optional path to write the output file.
+            5. str | None: The optional text, case, or regex to find.
+            6. str | None: The replacement text for replacement
+               commands.
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
@@ -109,7 +119,7 @@ def parse_args() -> tuple[
         A custom help formatter to align help messages neatly based on
         the maximum argument width.
         """
-        # Use RawTextHelpFormatter to preserve consecutive spaces.
+        # Use `RawTextHelpFormatter` to preserve consecutive spaces.
         return argparse.RawTextHelpFormatter(
             prog, max_help_position=max_arg_width
         )
