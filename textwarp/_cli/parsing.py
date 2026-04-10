@@ -46,7 +46,8 @@ def _validate_command_combinations(
 
     Args:
         args: The parsed command-line arguments.
-        parser: The `ArgumentParser` instance used to display error messages.
+        parser: The `ArgumentParser` instance used to display error
+            messages.
 
     Raises:
         SystemExit: If there is any invalid combination of arguments.

@@ -18,7 +18,7 @@ def get_morse_map() -> Mapping[str, str]:
 
 @lru_cache(maxsize=1)
 def get_morse_reversed_map() -> Mapping[str, str]:
-    """Get a cached mapping of Morse code to characters."""
+    """Get a cached map of Morse code to characters."""
     return MappingProxyType({
         value: key for key, value in get_morse_map().items()
     })

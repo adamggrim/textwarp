@@ -55,7 +55,10 @@ def test_to_separator_case_existing_cases():
 
 def test_to_separator_case_non_alpha():
     """Test that separator casing safely handles numbers and symbols."""
-    assert to_separator_case('April 4th 1984', CaseSeparator.SNAKE) == 'april_4th_1984'
+    assert to_separator_case(
+        'April 4th 1984',
+        CaseSeparator.SNAKE
+    ) == 'april_4th_1984'
 
 
 def test_doc_to_case_sentence():
