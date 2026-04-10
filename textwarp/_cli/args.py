@@ -15,13 +15,13 @@ __all__ = [
 ]
 
 
-def _lazy_load(module_name: str, func_name: str) -> Callable[[str], str]:
+def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
     """Import a module and function only when called."""
-    def wrapper(text: str) -> str:
+    def wrapper(*args, **kwargs) -> str:
         mod: ModuleType = importlib.import_module(
             module_name, package=__package__
         )
-        return getattr(mod, func_name)(text)
+        return getattr(mod, func_name)(*args, **kwargs)
     return wrapper
 
 
