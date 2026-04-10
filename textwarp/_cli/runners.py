@@ -4,9 +4,9 @@ import gettext
 from typing import Callable, TypeAlias
 
 from textwarp._cli.constants.messages import (
-    CLIPBOARD_ACCESS_ERROR_MESSAGE,
-    CLIPBOARD_CLEARED_MESSAGE,
-    MODIFIED_TEXT_COPIED_MESSAGE
+    CLIPBOARD_ACCESS_ERROR_MSG,
+    CLIPBOARD_CLEARED_MSG,
+    MODIFIED_TEXT_COPIED_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import EmptyClipboardError, validate_clipboard
@@ -43,7 +43,7 @@ def _paste_and_validate() -> str | None:
         print_wrapped(str(e))
         return None
     except pyperclip.PyperclipException as e:
-        msg = CLIPBOARD_ACCESS_ERROR_MESSAGE + str(e)
+        msg = CLIPBOARD_ACCESS_ERROR_MSG + str(e)
         if 'xclip' in str(e) or 'xsel' in str(e):
             msg += _(
                 "\nOn Linux, you may need to install 'xclip' or 'xsel' "
@@ -71,14 +71,14 @@ def _replace_and_copy(
     import pyperclip
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
-    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+    print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
 
 
 def clear_clipboard() -> None:
     """Clear clipboard text."""
     import pyperclip
     pyperclip.copy('')
-    print_wrapped(CLIPBOARD_CLEARED_MESSAGE)
+    print_wrapped(_(CLIPBOARD_CLEARED_MSG))
 
 
 def replace_text(command_name: str) -> None:
@@ -144,4 +144,4 @@ def warp_and_copy(
     import pyperclip
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
-    print_wrapped(MODIFIED_TEXT_COPIED_MESSAGE)
+    print_wrapped(MODIFIED_TEXT_COPIED_MSG)
