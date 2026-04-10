@@ -183,7 +183,12 @@ def _process_file_mode(
         _handle_output(final_output, output_file, default_action=print)
 
 
-def _process_interactive_mode(pipeline: Pipeline, output_file: str | None) -> None:
+def _process_interactive_mode(
+    pipeline: Pipeline,
+    output_file: str | None,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
+) -> None:
     """
     Handle interactive user input.
 
@@ -191,19 +196,27 @@ def _process_interactive_mode(pipeline: Pipeline, output_file: str | None) -> No
         pipeline: The list of command tuples to apply to the input.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        arg_to_replace: The case, regex or substring to replace, if
+            provided.
+        replacement_arg: The replacement case, regex or substring, if
+            provided.
 
     Raises:
-        SystemExit: If a replacement command is in the pipeline, or if
+        SystemExit: If a replacement command is in the pipeline or if
             the user exits the loop.
     """
     def pipeline_runner(text: str) -> str | None:
         """Run the pipeline on the given text."""
-        return _apply_pipeline(text, pipeline)
+        return _apply_pipeline(text, pipeline, arg_to_replace, replacement_arg)
 
     first_cmd, _ = pipeline[0]
     normalized_cmd = first_cmd.replace('-', '_')
 
-    if normalized_cmd in _REPLACEMENT_FUNC_NAMES:
+    if (
+        normalized_cmd in _REPLACEMENT_FUNC_NAMES
+        and arg_to_replace is None
+        and replacement_arg is None
+    ):
         replace_text(normalized_cmd)
         program_exit()
 
