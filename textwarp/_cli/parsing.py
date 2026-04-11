@@ -93,11 +93,20 @@ def _validate_command_combinations(
     if (args.find or args.replace) and not is_replacement_cmd:
         parser.error(
             _(
-                'The --find and --replace arguments can only be used '
-                'with replacement commands (--replace, --replace-case, '
-                '--replace-regex).'
+                'The --find (-f) and --replace (-r) arguments can only '
+                'be used with replacement commands (--replace, '
+                '--replace-case, --replace-regex).'
             )
         )
+
+    if args.markdown:
+        if active_separators:
+            parser.error(
+                _(
+                    'The --markdown flag cannot be combined with manual '
+                    'separator commands: {styles}'
+                ).format(styles=', '.join(active_separators))
+            )
 
 
 def parse_args() -> tuple[
@@ -106,22 +115,25 @@ def parse_args() -> tuple[
     list[str],
     str | None,
     str | None,
-    str | None
+    str | None,
+    bool | None
 ]:
     """
     Parse command-line arguments for a text warping or analysis
     function name and the language locale.
 
     Returns:
-        tuple: A six-element tuple containing:
+        tuple: A seven-element tuple containing:
             1. list[tuple[str, Callable[..., str]]]: The pipeline list
                of command tuples.
             2. str: The language locale string (e.g., "en").
             3. list[str]: A list of optional paths to one or more input
                text files.
             4. str | None: An optional path to write the output file.
-            5. str | None: The optional text, case, or regex to find.
-            6. str | None: The replacement text for replacement
+            5. bool: Whether to parse text as Markdown and preserve
+               formatting.
+            6. str | None: The optional text, case, or regex to find.
+            7. str | None: The replacement text for replacement
                commands.
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
@@ -145,7 +157,7 @@ def parse_args() -> tuple[
         prog='textwarp',
         formatter_class=formatter,
         description=_(HELP_DESCRIPTION),
-        usage='%(prog)s [command]'
+        usage='%(prog)s [options] [input_files ...] [-o output_file]'
     )
 
     parser.add_argument(
@@ -163,10 +175,10 @@ def parse_args() -> tuple[
     )
 
     parser.add_argument(
-        'input_files',
-        nargs='*',
-        type=str,
-        help='optional path to one or more input text files'
+        '-m', '--markdown',
+        dest='markdown',
+        action='store_true',
+        help='parse text as Markdown and preserve formatting'
     )
 
     parser.add_argument(
@@ -196,6 +208,13 @@ def parse_args() -> tuple[
             action='store_true',
             help=_(help_msg)
         )
+
+    parser.add_argument(
+        'input_files',
+        nargs='*',
+        type=str,
+        help='optional path to one or more input text files'
+    )
 
     # If there are no arguments or piped input, print the help messages
     # and exit.
@@ -228,6 +247,7 @@ def parse_args() -> tuple[
         args.lang,
         args.input_files,
         args.output_file,
+        args.markdown,
         args.find,
-        args.replace
+        args.replace,
     )

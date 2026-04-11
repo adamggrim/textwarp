@@ -7,6 +7,8 @@ import gettext
 import sys
 from typing import Final
 
+from spacy import pipeline
+
 from textwarp._cli.parsing import parse_args
 from textwarp._cli.runners import (
     clear_clipboard,
@@ -18,6 +20,7 @@ from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
 from textwarp._core.types import Pipeline
 from textwarp._core.context import ctx
+from textwarp._lib import markdown
 
 _ = gettext.gettext
 
@@ -128,10 +131,51 @@ def _is_analysis_pipeline(pipeline: Pipeline) -> bool:
     return any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
 
 
+def _route_text(
+    text: str,
+    pipeline: Pipeline,
+    parse_markdown: bool,
+    arg_to_replace: str | None = None,
+    replacement_arg: str | None = None
+) -> str | None:
+    """
+    Determine whether to process text as Markdown or a plain string.
+
+    Args:
+        text: The input text to process.
+        pipeline: The pipeline list of command tuples.
+        parse_markdown: Whether to parse text as Markdown.
+        arg_to_replace: The case, regex or substring to replace.
+        replacement_arg: The replacement case, regex or substring.
+
+    Returns:
+        str | None: The transformed text after processing, or `None` if
+            the pipeline executed an analysis command.
+    """
+    if parse_markdown and not _is_analysis_pipeline(pipeline):
+        from textwarp._lib.markdown import process_markdown
+
+        def transform_chunk(chunk: str) -> str:
+            """
+            Transform a chunk of text from the Markdown Abstract Syntax
+            Tree (AST).
+            """
+            res = _apply_pipeline(
+                chunk, pipeline, arg_to_replace, replacement_arg
+            )
+            return res if res is not None else chunk
+
+        return process_markdown(text, transform_chunk)
+    else:
+        return _apply_pipeline(
+            text, pipeline, arg_to_replace, replacement_arg
+        )
+
 def _process_file_mode(
     pipeline: Pipeline,
     input_files: list[str],
     output_file: str | None,
+    parse_markdown: bool,
     arg_to_replace: str | None,
     replacement_arg: str | None
 ) -> None:
@@ -143,6 +187,7 @@ def _process_file_mode(
         input_files: A list of paths to the input files.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        parse_markdown: Whether to parse the input files as Markdown.
         arg_to_replace: The case, regex or substring to replace, if
             provided.
         replacement_arg: The replacement case, regex or substring, if
@@ -181,9 +226,10 @@ def _process_file_mode(
         if is_analysis and len(input_files) > 1:
             print(f"\n--- {file_path} ---")
 
-        result = _apply_pipeline(
+        result = _route_text(
             text,
             pipeline,
+            parse_markdown,
             arg_to_replace,
             replacement_arg
         )
@@ -198,6 +244,7 @@ def _process_file_mode(
 def _process_interactive_mode(
     pipeline: Pipeline,
     output_file: str | None,
+    parse_markdown: bool,
     arg_to_replace: str | None,
     replacement_arg: str | None
 ) -> None:
@@ -208,6 +255,7 @@ def _process_interactive_mode(
         pipeline: The list of command tuples to apply to the input.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        parse_markdown: Whether to parse the input as Markdown.
         arg_to_replace: The case, regex or substring to replace, if
             provided.
         replacement_arg: The replacement case, regex or substring, if
@@ -219,7 +267,9 @@ def _process_interactive_mode(
     """
     def pipeline_runner(text: str) -> str | None:
         """Run the pipeline on the given text."""
-        return _apply_pipeline(text, pipeline, arg_to_replace, replacement_arg)
+        return _route_text(
+            text, pipeline, parse_markdown, arg_to_replace, replacement_arg
+        )
 
     first_cmd, _ = pipeline[0]
     normalized_cmd = first_cmd.replace('-', '_')
@@ -249,6 +299,7 @@ def _process_interactive_mode(
 def _process_piped_mode(
     pipeline: Pipeline,
     output_file: str | None,
+    parse_markdown: bool,
     arg_to_replace: str | None,
     replacement_arg: str | None
 ) -> None:
@@ -272,11 +323,14 @@ def _process_piped_mode(
             text = text[:-1]
 
         if _is_analysis_pipeline(pipeline):
-            _apply_pipeline(text, pipeline, arg_to_replace, replacement_arg)
+            _route_text(
+                text, pipeline, parse_markdown, arg_to_replace, replacement_arg
+            )
         else:
-            result = _apply_pipeline(
+            result = _route_text(
                 text,
                 pipeline,
+                parse_markdown,
                 arg_to_replace,
                 replacement_arg
             )
@@ -341,6 +395,7 @@ def main() -> None:
             lang_code,
             input_files,
             output_file,
+            parse_markdown,
             arg_to_replace,
             replacement_arg
         ) = pipeline_data
@@ -351,6 +406,7 @@ def main() -> None:
                 pipeline,
                 input_files,
                 output_file,
+                parse_markdown,
                 arg_to_replace,
                 replacement_arg
             )
@@ -358,6 +414,7 @@ def main() -> None:
             _process_piped_mode(
                 pipeline,
                 output_file,
+                parse_markdown,
                 arg_to_replace,
                 replacement_arg
             )
@@ -365,6 +422,7 @@ def main() -> None:
             _process_interactive_mode(
                 pipeline,
                 output_file,
+                parse_markdown,
                 arg_to_replace,
                 replacement_arg
             )
