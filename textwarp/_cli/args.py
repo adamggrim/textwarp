@@ -217,25 +217,48 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
 # Can be combined with `SEPARATOR_COMMANDS`. Mutually exclusive with
 # each other.
 CASING_COMMANDS: Final[frozenset[str]] = frozenset({
-    'alternating-caps', 'capitalize', 'lowercase', 'random-case',
-    'sentence-case', 'swapcase', 'title-case', 'uppercase'
+    'alternating-caps',
+    'capitalize',
+    'lowercase',
+    'random-case',
+    'sentence-case',
+    'swapcase',
+    'title-case',
+    'uppercase'
 })
 
 # Cannot be combined with any other warping or analysis commands.
 MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
-    'binary', 'from-binary', 'hexadecimal', 'from-hexadecimal',
-    'morse', 'from-morse', 'char-count', 'line-count', 'mfws',
-    'pos-counts', 'sentence-count', 'time-to-read', 'word-count'
+    'binary',
+    'from-binary',
+    'hexadecimal',
+    'from-hexadecimal',
+    'morse',
+    'from-morse',
+    'char-count',
+    'line-count',
+    'mfws',
+    'pos-counts',
+    'sentence-count',
+    'time-to-read',
+    'word-count'
 })
 
 # Commands that use `--find` and `--replace` arguments.
 REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
-    'replace', 'replace-case', 'replace-regex'
+    'replace',
+    'replace-case',
+    'replace-regex'
 })
 
-# Can be combined with `CASING_COMMANDS`. Mutually exclusive with
-# each other.
+# Can be combined with `CASING_COMMANDS`. Mutually exclusive with each
+# other.
 SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
-    'camel-case', 'dot-case', 'kebab-case', 'pascal-case',
-    'snake-case', 'single-spaces', 'widen'
+    'camel-case',
+    'dot-case',
+    'kebab-case',
+    'pascal-case',
+    'snake-case',
+    'single-spaces',
+    'widen'
 })
