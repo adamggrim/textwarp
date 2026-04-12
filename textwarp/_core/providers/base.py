@@ -101,12 +101,11 @@ class LanguageProvider(ABC):
         """Capitalize a word according to language-specific rules."""
         pass
 
-    @abstractmethod
     def curly_to_straight(self, text: str) -> str:
         """
         Convert curly quotes in a given string to straight quotes.
         """
-        pass
+        return text
 
     @abstractmethod
     def expand_contractions(self, doc: 'Doc') -> str:
@@ -120,12 +119,11 @@ class LanguageProvider(ABC):
         """
         pass
 
-    @abstractmethod
     def remove_apostrophes(self, text: str) -> str:
         """
         Remove apostrophes from a string without removing single quotes.
         """
-        pass
+        return text
 
     @abstractmethod
     def should_always_lowercase(self, text: str) -> bool:
@@ -135,9 +133,8 @@ class LanguageProvider(ABC):
         """
         pass
 
-    @abstractmethod
     def straight_to_curly(self, text: str) -> str:
         """
         Convert straight quotes in a given string to curly quotes.
         """
-        pass
+        return text
