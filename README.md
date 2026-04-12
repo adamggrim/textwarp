@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` applies a transformation or analysis function and copies any modified text to the clipboard.
+`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and outputs the result to the clipboard or file.
 
 ## Requirements
 
@@ -205,6 +205,7 @@ textwarp/
 │ ├── contractions.py: Main logic for expanding contractions
 │ ├── encoding.py: Functions for encoding and decoding text
 │ ├── manipulation.py: Functions for manipulating a given string
+│ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
 │ ├── nlp.py: Functions for lazy spaCy loading and text processing
 │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
 │ └── punctuation.py: Functions for converting between straight and curly quotes
