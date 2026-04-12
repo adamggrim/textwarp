@@ -45,6 +45,15 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
+    def proper_noun_entities(self) -> frozenset[str]:
+        """
+        Named entities that are typically proper nouns for the locale's
+        model.
+        """
+        pass
+
+    @property
+    @abstractmethod
     def punct_inside_pattern(self) -> re.Pattern[str]:
         """
         Regular expression for matching punctuation inside quotation
@@ -58,15 +67,6 @@ class LanguageProvider(ABC):
         """
         Regular expression for matching punctuation outside quotation
         marks.
-        """
-        pass
-
-    @property
-    @abstractmethod
-    def proper_noun_entities(self) -> frozenset[str]:
-        """
-        Named entities that are typically proper nouns for the locale's
-        model.
         """
         pass
 
