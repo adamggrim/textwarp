@@ -7,8 +7,6 @@ import gettext
 import sys
 from typing import Final
 
-from spacy import pipeline
-
 from textwarp._cli.parsing import parse_args
 from textwarp._cli.runners import (
     clear_clipboard,
@@ -20,7 +18,6 @@ from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._commands import replacement
 from textwarp._core.types import Pipeline
 from textwarp._core.context import ctx
-from textwarp._lib import markdown
 
 _ = gettext.gettext
 
@@ -152,9 +149,19 @@ def _route_text(
         str | None: The transformed text after processing, or `None` if
             the pipeline executed an analysis command.
     """
-    if parse_markdown and not _is_analysis_pipeline(pipeline):
-        from textwarp._lib.markdown import process_markdown
+    if not parse_markdown:
+        return _apply_pipeline(
+            text, pipeline, arg_to_replace, replacement_arg
+        )
 
+    from textwarp._lib.markdown import process_markdown, strip_markdown
+
+    if _is_analysis_pipeline(pipeline):
+        clean_text = strip_markdown(text)
+        return _apply_pipeline(
+            clean_text, pipeline, arg_to_replace, replacement_arg
+        )
+    else:
         def transform_chunk(chunk: str) -> str:
             """
             Transform a chunk of text from the Markdown Abstract Syntax
@@ -166,10 +173,7 @@ def _route_text(
             return res if res is not None else chunk
 
         return process_markdown(text, transform_chunk)
-    else:
-        return _apply_pipeline(
-            text, pipeline, arg_to_replace, replacement_arg
-        )
+
 
 def _process_file_mode(
     pipeline: Pipeline,
