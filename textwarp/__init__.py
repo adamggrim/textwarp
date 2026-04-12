@@ -90,7 +90,7 @@ if typing.TYPE_CHECKING:
 
 def __getattr__(name: str):
     """
-    Lazily load functions from submodules when accessed as attributes ofs
+    Lazily load functions from submodules when accessed as attributes of
     the package.
 
     Args:

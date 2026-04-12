@@ -65,7 +65,7 @@ def _replace_and_copy(
     Print if the replacement was not found.
 
     Args:
-        command: The replacement function.
+        command_func: The replacement function.
         clipboard: The clipboard text to transform.
     """
     import pyperclip
@@ -138,7 +138,7 @@ def warp_and_copy(
     clipboard.
 
     Args:
-        command: The transformation function.
+        command_func: The transformation function.
         clipboard: The clipboard text to transform.
     """
     import pyperclip

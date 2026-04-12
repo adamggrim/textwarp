@@ -42,6 +42,9 @@ def load_json_data(
         relative_path: The path to the JSON file relative to the data
             directory.
         locale: An optional locale for the path (e.g., 'en').
+
+    Returns:
+        JSONType: The loaded JSON content.
     """
     pkg_files = importlib.resources.files(__package__.split('.')[0])
 
