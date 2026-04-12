@@ -39,9 +39,10 @@ from textwarp._cli.validation import (
 _ = gettext.gettext
 
 __all__ = [
-    'replace',
     'replace_case',
-    'replace_regex'
+    'replace_regex',
+    'replace_text'
+
 ]
 
 
@@ -137,53 +138,6 @@ def _prompt_for_valid_input(
             current_prompt = enter_valid_text_prompt
 
 
-def replace(
-    text: str,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
-) -> str:
-    """
-    Prompt the user or extract arguments for a string to replace and a
-    string to replace it, and return the transformed text.
-
-    Args:
-        text: The string to transform.
-        arg_to_replace: An optional string to replace. If not provided,
-            the function will prompt the user for one.
-        replacement_arg: An optional replacement string. If not
-            provided, the function will prompt the user for one.
-
-    Returns:
-        str: The transformed text.
-    """
-    presence_validator = _create_presence_validator(
-        validate_text,
-        text,
-        PresenceCheckType.SUBSTRING
-    )
-
-    if arg_to_replace is not None and replacement_arg is not None:
-        presence_validator(arg_to_replace)
-        # Accept any text (including empty text) for replacement.
-        validate_any_text(replacement_arg)
-        text_to_replace = arg_to_replace
-        replacement_text = replacement_arg
-    else:
-        text_to_replace = _prompt_for_valid_input(
-            ENTER_TEXT_TO_REPLACE_PROMPT,
-            presence_validator,
-            ENTER_VALID_TEXT_PROMPT
-        )
-        replacement_text = _prompt_for_valid_input(
-            ENTER_REPLACEMENT_TEXT_PROMPT,
-            # Accept any text (including empty text) for replacement.
-            validate_any_text,
-            ENTER_VALID_TEXT_PROMPT
-        )
-
-    return text.replace(text_to_replace, replacement_text)
-
-
 def replace_case(
     text: str,
     arg_to_replace: str | None = None,
@@ -276,3 +230,50 @@ def replace_regex(
         )
 
     return re.sub(regex_text, replacement_text, text)
+
+
+def replace_text(
+    text: str,
+    arg_to_replace: str | None = None,
+    replacement_arg: str | None = None
+) -> str:
+    """
+    Prompt the user or extract arguments for a string to replace and a
+    string to replace it, and return the transformed text.
+
+    Args:
+        text: The string to transform.
+        arg_to_replace: An optional string to replace. If not provided,
+            the function will prompt the user for one.
+        replacement_arg: An optional replacement string. If not
+            provided, the function will prompt the user for one.
+
+    Returns:
+        str: The transformed text.
+    """
+    presence_validator = _create_presence_validator(
+        validate_text,
+        text,
+        PresenceCheckType.SUBSTRING
+    )
+
+    if arg_to_replace is not None and replacement_arg is not None:
+        presence_validator(arg_to_replace)
+        # Accept any text (including empty text) for replacement.
+        validate_any_text(replacement_arg)
+        text_to_replace = arg_to_replace
+        replacement_text = replacement_arg
+    else:
+        text_to_replace = _prompt_for_valid_input(
+            ENTER_TEXT_TO_REPLACE_PROMPT,
+            presence_validator,
+            ENTER_VALID_TEXT_PROMPT
+        )
+        replacement_text = _prompt_for_valid_input(
+            ENTER_REPLACEMENT_TEXT_PROMPT,
+            # Accept any text (including empty text) for replacement.
+            validate_any_text,
+            ENTER_VALID_TEXT_PROMPT
+        )
+
+    return text.replace(text_to_replace, replacement_text)

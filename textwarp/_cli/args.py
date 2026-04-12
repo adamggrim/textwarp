@@ -148,10 +148,6 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('..warping', 'redact'),
         N_('redact text')
     ),
-    'replace': (
-        _lazy_load('.._commands.replacement', 'replace'),
-        N_('find and replace text')
-    ),
     'replace-case': (
         _lazy_load('.._commands.replacement', 'replace_case'),
         N_('find and replace a case')
@@ -159,6 +155,10 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     'replace-regex': (
         _lazy_load('.._commands.replacement', 'replace_regex'),
         N_('find and replace a regular expression')
+    ),
+    'replace-text': (
+        _lazy_load('.._commands.replacement', 'replace_text'),
+        N_('find and replace text')
     ),
     'reverse': (
         _lazy_load('..warping', 'reverse'),
@@ -246,9 +246,9 @@ MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
 
 # Commands that use `--find` and `--replace` arguments.
 REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
-    'replace',
     'replace-case',
-    'replace-regex'
+    'replace-regex',
+    'replace-text'
 })
 
 # Can be combined with `CASING_COMMANDS`. Mutually exclusive with each
