@@ -3,6 +3,7 @@
 import argparse
 import gettext
 import sys
+from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Callable
 
@@ -18,7 +19,19 @@ from textwarp._core.types import Pipeline
 
 _ = gettext.gettext
 
-__all__ = ['parse_args']
+__all__ = ['parse_args', 'ParsedArgs']
+
+
+@dataclass(frozen=True)
+class ParsedArgs:
+    """Data class containing parsed command-line arguments."""
+    pipeline: Pipeline
+    lang: str
+    input_files: list[str]
+    output_file: str | None
+    markdown: bool
+    find: str | None
+    replace: str | None
 
 
 def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
@@ -109,32 +122,13 @@ def _validate_command_combinations(
             )
 
 
-def parse_args() -> tuple[
-    list[tuple[str, Callable[..., str]]],
-    str,
-    list[str],
-    str | None,
-    str | None,
-    str | None,
-    bool | None
-]:
+def parse_args() -> ParsedArgs:
     """
     Parse command-line arguments for a text warping or analysis
     function name and the language locale.
 
     Returns:
-        tuple: A seven-element tuple containing:
-            1. list[tuple[str, Callable[..., str]]]: The pipeline list
-               of command tuples.
-            2. str: The language locale string (e.g., "en").
-            3. list[str]: A list of optional paths to one or more input
-               text files.
-            4. str | None: An optional path to write the output file.
-            5. bool: Whether to parse text as Markdown and preserve
-               formatting.
-            6. str | None: The optional text, case, or regex to find.
-            7. str | None: The replacement text for replacement
-               commands.
+        ParsedArgs: A frozen dataclass containing the parsed arguments.
     """
     max_arg_width = _calculate_max_arg_width(ARGS_MAP)
 
@@ -242,12 +236,12 @@ def parse_args() -> tuple[
         parser.print_help(sys.stderr)
         sys.exit(1)
 
-    return (
-        pipeline,
-        args.lang,
-        args.input_files,
-        args.output_file,
-        args.markdown,
-        args.find,
-        args.replace,
+    return ParsedArgs(
+        pipeline=pipeline,
+        lang=args.lang,
+        input_files=args.input_files,
+        output_file=args.output_file,
+        markdown=args.markdown,
+        find=args.find,
+        replace=args.replace
     )

@@ -390,45 +390,37 @@ def main() -> None:
             or if the command combinations are invalid.
     """
     try:
-        pipeline_data = parse_args()
-        if not pipeline_data:
+        parsed_args = parse_args()
+
+        if not parsed_args.pipeline:
             return None
 
-        (
-            pipeline,
-            lang_code,
-            input_files,
-            output_file,
-            parse_markdown,
-            arg_to_replace,
-            replacement_arg
-        ) = pipeline_data
-        ctx.set_locale(lang_code)
+        ctx.set_locale(parsed_args.lang)
 
-        if input_files:
+        if parsed_args.input_files:
             _process_file_mode(
-                pipeline,
-                input_files,
-                output_file,
-                parse_markdown,
-                arg_to_replace,
-                replacement_arg
+                parsed_args.pipeline,
+                parsed_args.input_files,
+                parsed_args.output_file,
+                parsed_args.markdown,
+                parsed_args.find,
+                parsed_args.replace
             )
         elif not sys.stdin.isatty():
             _process_piped_mode(
-                pipeline,
-                output_file,
-                parse_markdown,
-                arg_to_replace,
-                replacement_arg
+                parsed_args.pipeline,
+                parsed_args.output_file,
+                parsed_args.markdown,
+                parsed_args.find,
+                parsed_args.replace
             )
         else:
             _process_interactive_mode(
-                pipeline,
-                output_file,
-                parse_markdown,
-                arg_to_replace,
-                replacement_arg
+                parsed_args.pipeline,
+                parsed_args.output_file,
+                parsed_args.markdown,
+                parsed_args.find,
+                parsed_args.replace
             )
 
     except KeyboardInterrupt:
