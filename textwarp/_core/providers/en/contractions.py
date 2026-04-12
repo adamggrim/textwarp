@@ -9,10 +9,22 @@ __all__ = [
 ]
 
 # Variants of "'s" for contractions.
-AIN_T_SUFFIX_VARIANTS: Final[frozenset[str]] = frozenset({"n't", 'n’t', 'n‘t'})
+AIN_T_SUFFIX_VARIANTS: Final[frozenset[str]] = frozenset({
+    "n't",
+    'n’t',
+    'n‘t'
+})
 
 # Variants of "'d" for contractions.
-APOSTROPHE_D_VARIANTS: Final[frozenset[str]] = frozenset({"'d", '’d', '‘d'})
+APOSTROPHE_D_VARIANTS: Final[frozenset[str]] = frozenset({
+    "'d",
+    '’d',
+    '‘d'
+})
 
 # Variants of "'s" for contractions.
-APOSTROPHE_S_VARIANTS: Final[frozenset[str]] = frozenset({"'s", '’s', '‘s'})
+APOSTROPHE_S_VARIANTS: Final[frozenset[str]] = frozenset({
+    "'s",
+    '’s',
+    '‘s'
+})

@@ -21,7 +21,10 @@ def get_no_inputs() -> frozenset[str]:
     response.
     """
     _ = gettext.gettext
-    return frozenset({_('no'), _('n')})
+    return frozenset({
+        _('no'),
+        _('n')
+    })
 
 
 def get_yes_inputs() -> frozenset[str]:
@@ -30,4 +33,7 @@ def get_yes_inputs() -> frozenset[str]:
     response.
     """
     _ = gettext.gettext
-    return frozenset({_('yes'), _('y')})
+    return frozenset({
+        _('yes'),
+        _('y')
+    })

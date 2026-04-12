@@ -13,7 +13,8 @@ from textwarp._lib.contractions import expand_contractions
 from textwarp._lib.encoding import (
     from_binary,
     from_hexadecimal,
-    from_morse, to_binary,
+    from_morse,
+    to_binary,
     to_hexadecimal,
     to_morse
 )

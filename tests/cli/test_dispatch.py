@@ -9,13 +9,20 @@ def test_case_names_func_map_keys():
     names-to-function map.
     """
     expected_keys = {
-        'camel', 'camel case',
-        'dot', 'dot case',
-        'lower', 'lowercase',
-        'kebab', 'kebab case',
-        'pascal', 'pascal case',
-        'snake', 'snake case',
-        'upper', 'uppercase'
+        'camel',
+        'camel case',
+        'dot',
+        'dot case',
+        'lower',
+        'lowercase',
+        'kebab',
+        'kebab case',
+        'pascal',
+        'pascal case',
+        'snake',
+        'snake case',
+        'upper',
+        'uppercase'
     }
     assert set(CASE_NAMES_FUNC_MAP.keys()) == expected_keys
 
