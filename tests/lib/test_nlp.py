@@ -38,16 +38,16 @@ def test_extract_words_from_doc():
 
 def test_process_as_doc_disable_pipes():
     """Test that specific pipeline components can be disabled."""
-    doc = process_as_doc('This is a test.', disable=['parser'])
+    doc = process_as_doc('Close the pod bay doors.', disable=['parser'])
 
     assert not doc.has_annotation('DEP')
 
 
 def test_process_as_doc_from_doc():
     """
-    Test that passing an existing Doc returns the `Doc` unmodified.
+    Test that passing an existing `Doc` returns the `Doc` unmodified.
     """
-    original_doc = process_as_doc('Another test.')
+    original_doc = process_as_doc('Daisy, Daisy, give me your answer do.')
     returned_doc = process_as_doc(original_doc)
 
     assert original_doc is returned_doc
@@ -55,11 +55,15 @@ def test_process_as_doc_from_doc():
 
 def test_process_as_doc_from_string():
     """Test that a string is converted into a spaCy `Doc`."""
-    doc = process_as_doc('This is a test.')
+    test_string = (
+        'This mission is too important for me to allow you to jeopardize it.'
+    )
+    doc = process_as_doc(test_string)
 
     assert hasattr(doc, 'text')
-    assert doc.text == 'This is a test.'
-
+    assert doc.text == (
+        'This mission is too important for me to allow you to jeopardize it.'
+    )
 
 def test_get_nlp_priority_branching():
     """
@@ -79,8 +83,10 @@ def test_nlp_fallback_logic(monkeypatch):
     and verify it tries the next in ranking.
     """
     def mock_is_package(name):
-        if name == 'en_core_web_sm': return False
-        if name == 'en_core_web_md': return True
+        if name == 'en_core_web_sm':
+            return False
+        if name == 'en_core_web_md':
+            return True
         return False
 
     monkeypatch.setattr(spacy.util, 'is_package', mock_is_package)
