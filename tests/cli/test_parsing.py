@@ -24,10 +24,10 @@ def test_calculate_max_arg_width():
 def test_parse_args_valid_single_command(monkeypatch):
     """Test parsing a single valid command."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case'])
-    pipeline, _ = parse_args()
+    parsed_args = parse_args()
 
-    assert len(pipeline) == 1
-    cmd_name, func = pipeline[0]
+    assert len(parsed_args.pipeline) == 1
+    cmd_name, func = parsed_args.pipeline[0]
     assert cmd_name == 'camel-case'
     assert callable(func)
 
@@ -37,10 +37,10 @@ def test_parse_args_valid_pipeline(monkeypatch):
     monkeypatch.setattr(
         sys, 'argv', ['textwarp', '--strip', '--lowercase', '--snake-case']
     )
-    pipeline, _ = parse_args()
+    parsed_args = parse_args()
 
-    assert len(pipeline) == 3
-    cmd_names = [cmd[0] for cmd in pipeline]
+    assert len(parsed_args.pipeline) == 3
+    cmd_names = [cmd[0] for cmd in parsed_args.pipeline]
     assert cmd_names == ['strip', 'lowercase', 'snake-case']
 
 
@@ -126,19 +126,19 @@ def test_parse_args_exclusive_with_formatting(monkeypatch, capsys):
 def test_parse_args_lang_argument(monkeypatch):
     """Test parsing a specific language argument."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-l', 'fr'])
-    pipeline, lang = parse_args()
+    parsed_args = parse_args()
 
-    assert len(pipeline) == 1
-    assert pipeline[0][0] == 'camel-case'
-    assert lang == 'fr'
+    assert len(parsed_args.pipeline) == 1
+    assert parsed_args.pipeline[0][0] == 'camel-case'
+    assert parsed_args.lang == 'fr'
 
 
 def test_parse_args_lang_default(monkeypatch):
     """Test that the language argument defaults to `en` when omitted."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case'])
-    _, lang = parse_args()
+    parsed_args = parse_args()
 
-    assert lang == 'en'
+    assert parsed_args.lang == 'en'
 
 
 def test_parse_args_version_fallback(monkeypatch, capsys):
