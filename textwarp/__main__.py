@@ -128,60 +128,6 @@ def _is_analysis_pipeline(pipeline: Pipeline) -> bool:
     return any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
 
 
-def _route_text(
-    text: str,
-    pipeline: Pipeline,
-    parse_markdown: bool,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
-) -> str | None:
-    """
-    Determine whether to process text as Markdown or a plain string.
-
-    Args:
-        text: The input text to process.
-        pipeline: The pipeline list of command tuples.
-        parse_markdown: Whether to parse text as Markdown.
-        arg_to_replace: The case, regex or substring to replace.
-        replacement_arg: The replacement case, regex or substring.
-
-    Returns:
-        str | None: The transformed text after processing, or `None` if
-            the pipeline executed an analysis command.
-    """
-    if not parse_markdown:
-        return _apply_pipeline(
-            text, pipeline, arg_to_replace, replacement_arg
-        )
-
-    try:
-        from textwarp._lib.markdown import process_markdown, strip_markdown
-    except ImportError:
-        print_wrapped(
-            "Error: Markdown support requires the 'marko' package. Install it "
-            'using: pip install textwarp[markdown]'
-        )
-        sys.exit(1)
-
-    if _is_analysis_pipeline(pipeline):
-        clean_text = strip_markdown(text)
-        return _apply_pipeline(
-            clean_text, pipeline, arg_to_replace, replacement_arg
-        )
-    else:
-        def transform_chunk(chunk: str) -> str:
-            """
-            Transform a chunk of text from the Markdown Abstract Syntax
-            Tree (AST).
-            """
-            res = _apply_pipeline(
-                chunk, pipeline, arg_to_replace, replacement_arg
-            )
-            return res if res is not None else chunk
-
-        return process_markdown(text, transform_chunk)
-
-
 def _process_file_mode(
     pipeline: Pipeline,
     input_files: list[str],
@@ -385,6 +331,60 @@ def _route_output(
         print_wrapped(MODIFIED_TEXT_COPIED_MSG)
     elif not output_file:
         print(result)
+
+
+def _route_text(
+    text: str,
+    pipeline: Pipeline,
+    parse_markdown: bool,
+    arg_to_replace: str | None = None,
+    replacement_arg: str | None = None
+) -> str | None:
+    """
+    Determine whether to process text as Markdown or a plain string.
+
+    Args:
+        text: The input text to process.
+        pipeline: The pipeline list of command tuples.
+        parse_markdown: Whether to parse text as Markdown.
+        arg_to_replace: The case, regex or substring to replace.
+        replacement_arg: The replacement case, regex or substring.
+
+    Returns:
+        str | None: The transformed text after processing, or `None` if
+            the pipeline executed an analysis command.
+    """
+    if not parse_markdown:
+        return _apply_pipeline(
+            text, pipeline, arg_to_replace, replacement_arg
+        )
+
+    try:
+        from textwarp._lib.markdown import process_markdown, strip_markdown
+    except ImportError:
+        print_wrapped(
+            "Error: Markdown support requires the 'marko' package. Install it "
+            'using: pip install textwarp[markdown]'
+        )
+        sys.exit(1)
+
+    if _is_analysis_pipeline(pipeline):
+        clean_text = strip_markdown(text)
+        return _apply_pipeline(
+            clean_text, pipeline, arg_to_replace, replacement_arg
+        )
+    else:
+        def transform_chunk(chunk: str) -> str:
+            """
+            Transform a chunk of text from the Markdown Abstract Syntax
+            Tree (AST).
+            """
+            res = _apply_pipeline(
+                chunk, pipeline, arg_to_replace, replacement_arg
+            )
+            return res if res is not None else chunk
+
+        return process_markdown(text, transform_chunk)
 
 
 def _validate_piped_commands(
