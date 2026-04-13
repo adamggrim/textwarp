@@ -188,7 +188,8 @@ def _process_file_mode(
     output_file: str | None,
     parse_markdown: bool,
     arg_to_replace: str | None,
-    replacement_arg: str | None
+    replacement_arg: str | None,
+    copy_to_clipboard: bool = False
 ) -> None:
     """
     Handle file input and output mode.
@@ -203,6 +204,8 @@ def _process_file_mode(
             provided.
         replacement_arg: The replacement case, regex or substring, if
             provided.
+        copy_to_clipboard: Whether to copy the output to the clipboard
+            instead of printing to the terminal.
 
     Raises:
         SystemExit: If the input file is unreadable or if there is an
@@ -234,9 +237,6 @@ def _process_file_mode(
         if text.endswith('\n'):
             text = text[:-1]
 
-        if is_analysis and len(input_files) > 1:
-            print(f"\n--- {file_path} ---")
-
         result = _route_text(
             text,
             pipeline,
@@ -244,12 +244,16 @@ def _process_file_mode(
             arg_to_replace,
             replacement_arg
         )
+
         if result is not None:
+            if is_analysis and len(input_files) > 1:
+                result = f'\n--- {file_path} ---\n{result}'
+
             combined_results.append(result)
 
     if combined_results:
         final_output = '\n'.join(combined_results)
-        _handle_output(final_output, output_file, default_action=print)
+        _route_output(final_output, output_file, copy_to_clipboard)
 
 
 def _process_interactive_mode(
@@ -312,7 +316,8 @@ def _process_piped_mode(
     output_file: str | None,
     parse_markdown: bool,
     arg_to_replace: str | None,
-    replacement_arg: str | None
+    replacement_arg: str | None,
+    copy_to_clipboard: bool = False
 ) -> None:
     """
     Handle input when data is piped into the script.
@@ -321,10 +326,13 @@ def _process_piped_mode(
         pipeline: The list of command tuples to apply to the input.
         output_file: The optional path to the output file. If `None`,
             the result prints to `stdout`.
+        parse_markdown: Whether to parse the input as Markdown.
         arg_to_replace: The case, regex or substring to replace, if
             provided.
         replacement_arg: The replacement case, regex or substring, if
             provided.
+        copy_to_clipboard: Whether to copy the output to the clipboard
+            instead of printing to the terminal.
     """
     _validate_piped_commands(pipeline, arg_to_replace, replacement_arg)
 
@@ -333,19 +341,16 @@ def _process_piped_mode(
         if text.endswith('\n'):
             text = text[:-1]
 
-        if _is_analysis_pipeline(pipeline):
-            _route_text(
-                text, pipeline, parse_markdown, arg_to_replace, replacement_arg
-            )
-        else:
-            result = _route_text(
-                text,
-                pipeline,
-                parse_markdown,
-                arg_to_replace,
-                replacement_arg
-            )
-            _handle_output(result, output_file, default_action=print)
+        result = _route_text(
+            text,
+            pipeline,
+            parse_markdown,
+            arg_to_replace,
+            replacement_arg
+        )
+
+        if result is not None:
+            _route_output(result, output_file, copy_to_clipboard)
 
     except Exception as e:
         print_wrapped(
@@ -353,6 +358,33 @@ def _process_piped_mode(
             file=sys.stderr
         )
         sys.exit(1)
+
+
+def _route_output(
+    result: str,
+    output_file: str | None,
+    copy_to_clipboard: bool
+) -> None:
+    """
+    Route the transformed text to a file, the clipboard or the terminal.
+
+    Args:
+        result: The transformed text to output.
+        output_file: The optional path to an output file, or `None` to
+            print to `stdout`.
+        copy_to_clipboard: Whether to copy the output to the clipboard
+            instead of printing or writing to a file.
+    """
+    if output_file:
+        _handle_output(result, output_file, default_action=lambda x: None)
+
+    if copy_to_clipboard:
+        import pyperclip
+        from textwarp._cli.constants.messages import MODIFIED_TEXT_COPIED_MSG
+        pyperclip.copy(result)
+        print_wrapped(MODIFIED_TEXT_COPIED_MSG)
+    elif not output_file:
+        print(result)
 
 
 def _validate_piped_commands(
@@ -411,7 +443,8 @@ def main() -> None:
                 parsed_args.output_file,
                 parsed_args.markdown,
                 parsed_args.find,
-                parsed_args.replace
+                parsed_args.replace,
+                parsed_args.copy_to_clipboard
             )
         elif not sys.stdin.isatty():
             _process_piped_mode(
@@ -419,7 +452,8 @@ def main() -> None:
                 parsed_args.output_file,
                 parsed_args.markdown,
                 parsed_args.find,
-                parsed_args.replace
+                parsed_args.replace,
+                parsed_args.copy_to_clipboard
             )
         else:
             _process_interactive_mode(
