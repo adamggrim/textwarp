@@ -70,12 +70,12 @@ def test_mutually_exclusive_sets():
 
 
 @pytest.mark.parametrize('command, input_text, expected_output', [
-    ('clear', 'some text', 'some text'),
+    ('clear', 'nothingness', ''),
     ('lowercase', 'MIXed Case', 'mixed case'),
-    ('plain-text', 'just text', 'just text'),
+    ('plain-text', 'plain text', 'plain text'),
     ('strip', '  padded  ', 'padded'),
     ('swapcase', 'sWAP mE', 'Swap Me'),
-    ('uppercase', 'make me loud', 'MAKE ME LOUD'),
+    ('uppercase', 'louder than a bomb', 'LOUDER THAN A BOMB'),
 ])
 def test_built_in_string_functions(command, input_text, expected_output):
     """

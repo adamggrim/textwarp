@@ -48,7 +48,7 @@ def test_validate_case_name():
 
 def test_validate_clipboard():
     """Test clipboard validation."""
-    validate_clipboard('Valid clipboard data')
+    validate_clipboard('Veritas vos liberabit')
 
     with pytest.raises(EmptyClipboardError):
         validate_clipboard('')
@@ -71,7 +71,7 @@ def test_validate_regex():
 
 def test_validate_text():
     """Test general text validation."""
-    validate_text('Some valid text to replace')
+    validate_text('Truth will set you free')
     validate_text(' ')
 
     with pytest.raises(NoTextError):

@@ -49,7 +49,7 @@ def test_should_capitalize_pos_exception():
 
 def test_should_capitalize_normal():
     """Test that standard nouns and verbs are capitalized."""
-    doc = process_as_doc('seitan')
+    doc = process_as_doc('wheelbarrow')
     token = doc[0]
 
     assert should_capitalize_pos_or_length(token) is True

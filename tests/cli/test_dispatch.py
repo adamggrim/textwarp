@@ -31,12 +31,17 @@ def test_case_names_func_map_execution():
     """
     Verify that mapped functions correctly transform a test string.
     """
-    test_string = 'Hello World'
+    test_string = 'Big Brother Is Watching'
 
-    assert CASE_NAMES_FUNC_MAP['camel'](test_string) == 'helloWorld'
-    assert CASE_NAMES_FUNC_MAP['dot case'](test_string) == 'hello.world'
-    assert CASE_NAMES_FUNC_MAP['lower'](test_string) == 'hello world'
-    assert CASE_NAMES_FUNC_MAP['kebab'](test_string) == 'hello-world'
-    assert CASE_NAMES_FUNC_MAP['pascal case'](test_string) == 'HelloWorld'
-    assert CASE_NAMES_FUNC_MAP['snake'](test_string) == 'hello_world'
-    assert CASE_NAMES_FUNC_MAP['uppercase'](test_string) == 'HELLO WORLD'
+    expected_outputs = {
+        'camel': 'bigBrotherIsWatching',
+        'dot case': 'big.brother.is.watching',
+        'lower': 'big brother is watching',
+        'kebab': 'big-brother-is-watching',
+        'pascal case': 'BigBrotherIsWatching',
+        'snake': 'big_brother_is_watching',
+        'uppercase': 'BIG BROTHER IS WATCHING',
+    }
+
+    for case, expected in expected_outputs.items():
+        assert CASE_NAMES_FUNC_MAP[case](test_string) == expected

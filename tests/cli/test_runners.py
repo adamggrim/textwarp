@@ -19,8 +19,8 @@ from textwarp._cli.constants.messages import (
 
 def test_paste_and_validate_success(mock_clipboard):
     """Test successful pasting and validation of clipboard text."""
-    mock_clipboard.copy('Valid text')
-    assert _paste_and_validate() == 'Valid text'
+    mock_clipboard.copy('Quod erat demonstrandum')
+    assert _paste_and_validate() == 'Quod erat demonstrandum'
 
 
 def test_paste_and_validate_empty(mock_clipboard, capsys):
