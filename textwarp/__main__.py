@@ -154,7 +154,14 @@ def _route_text(
             text, pipeline, arg_to_replace, replacement_arg
         )
 
-    from textwarp._lib.markdown import process_markdown, strip_markdown
+    try:
+        from textwarp._lib.markdown import process_markdown, strip_markdown
+    except ImportError:
+        print_wrapped(
+            "Error: Markdown support requires the 'marko' package. Install it "
+            'using: pip install textwarp[markdown]'
+        )
+        sys.exit(1)
 
     if _is_analysis_pipeline(pipeline):
         clean_text = strip_markdown(text)
