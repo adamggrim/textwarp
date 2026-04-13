@@ -5,7 +5,7 @@ import gettext
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
-from typing import Any, Callable
+from typing import Any
 
 from textwarp._cli.args import (
     ARGS_MAP,
