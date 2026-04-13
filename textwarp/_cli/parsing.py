@@ -165,6 +165,13 @@ def parse_args() -> ParsedArgs:
     )
 
     parser.add_argument(
+        '-c', '--copy',
+        dest='copy_to_clipboard',
+        action='store_true',
+        help='copy the output to the clipboard'
+    )
+
+    parser.add_argument(
         '-f', '--find',
         dest='find',
         type=str,
