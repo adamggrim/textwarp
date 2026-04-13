@@ -147,7 +147,7 @@ def parse_args() -> ParsedArgs:
         '-l', '--lang',
         type=str,
         default='en',
-        help='set the language locale ("en" by default)'
+        help='set the language locale'
     )
 
     parser.add_argument(
@@ -175,14 +175,14 @@ def parse_args() -> ParsedArgs:
         '-f', '--find',
         dest='find',
         type=str,
-        help='text, case, or regex to find (for replacement commands)'
+        help='text, case or regular expression to find'
     )
 
     parser.add_argument(
         '-r', '--replace',
         dest='replace',
         type=str,
-        help='replacement text (for replacement commands)'
+        help='replacement text'
     )
 
     for arg_key, (_func, help_msg) in ARGS_MAP.items():
