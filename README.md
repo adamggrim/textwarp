@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and outputs the result to the clipboard or file.
+`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and outputs the result.
 
 ## Requirements
 
@@ -16,7 +16,7 @@
 
 ## Example
 
-This example demonstrates how to convert text to camel case using `textwarp`.
+This example demonstrates how to convert clipboard text to camel case using `textwarp`.
 
 1. **Copy text to the clipboard**
 
@@ -84,7 +84,7 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
 4. **Continue or exit**
 
-    The program will prompt you to copy any other text to the clipboard. To exit, type `no` (`n`), `quit` (`q`) or `exit` (`e`), or trigger a KeyboardInterrupt (Ctrl + C):
+    The program will prompt you to copy any other text to the clipboard. To exit, type `no` (`n`), `quit` (`q`) or `exit` (`e`), or trigger a `KeyboardInterrupt` (Ctrl + C):
 
     ```
     Any other text? (y/n) (Copy text to clipboard):
@@ -92,6 +92,35 @@ This example demonstrates how to convert text to camel case using `textwarp`.
 
     Exiting the program...
     ```
+
+## Advanced
+
+### File I/O
+
+Process text files directly by passing them as arguments. Use the `-o` or `--output` flag to save the results to a new file.
+
+```bash
+textwarp --uppercase input.txt -o output.txt
+```
+
+### Piping
+
+`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or be copied to the clipboard.
+
+```bash
+echo "is there anybody in there" | textwarp --snake-case | textwarp --uppercase
+```
+
+### Inline find and replace
+Use the `-f` (`--find`) and `-r` (`--replace`) to directly find and replace commands.
+
+```bash
+textwarp --replace -f "marriage" -r "carriage" input.txt
+```
+
+### Markdown
+
+Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` will transform the text nodes while preserving the original Markdown formatting.
 
 ## Structure
 
@@ -109,7 +138,7 @@ textwarp/
 │ ├── parsing.py: Command-line argument parsing using argparse
 │ ├── runners.py: Main loop logic for executing commands
 │ ├── ui.py: Functions for handling console input and output
-│ └── validation.py: Validators for text, clipboard, and regular expression content
+│ └── validation.py: Validators for text, clipboard and regular expression content
 ├── _commands/
 │ ├── __init__.py: Namespace for analysis and replacement commands
 │ ├── analysis.py: Runners for analysis commands
@@ -149,7 +178,7 @@ textwarp/
 │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
 │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
 │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
-│ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns, and nouns
+│ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns and nouns
 │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
 │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained parts-of-speech tag exceptions for title case capitalization
 │ │ │ │ └── wh_words.json: Lists wh-words that start questions
@@ -186,7 +215,7 @@ textwarp/
 │ │ │ └── utils.py: English-specific utility functions
 │ │ ├── __init__.py: Exposes strategy pattern classes containing language-specific logic
 │ │ └── base.py: Abstract base class for language providers
-│ ├── __init__.py: Exposes core configuration, constants, and models
+│ ├── __init__.py: Exposes core configuration, constants and models
 │ ├── context.py: Thread-safe global context for the active locale and provider
 │ ├── encoding.py: Functions for loading universal encoding data
 │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
