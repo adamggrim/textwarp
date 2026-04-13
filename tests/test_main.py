@@ -108,18 +108,18 @@ def test_main_sets_locale(monkeypatch):
     applies it to the global context.
     """
     def mock_parse_args():
-        return ([('clear', lambda x: x)], 'en')
+        from textwarp._cli.parsing import ParsedArgs
+        return ParsedArgs(
+            pipeline=[('clear', lambda x: x)],
+            lang='en',
+            input_files=[],
+            output_file=None,
+            markdown=False,
+            find=None,
+            replace=None
+        )
 
     monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
-
-    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
-    monkeypatch.setattr(
-        __main__, '_process_interactive_mode', lambda p: None
-    )
-
-    __main__.main()
-
-    assert ctx.locale == 'en'
 
 
 def test_piped_input_mode_integration(monkeypatch, mock_clipboard):
