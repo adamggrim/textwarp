@@ -5,7 +5,6 @@ import gettext
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
-from typing import Any
 
 from textwarp._cli.args import (
     ARGS_MAP,
@@ -32,22 +31,7 @@ class ParsedArgs:
     markdown: bool
     find: str | None
     replace: str | None
-
-
-def _calculate_max_arg_width(commands: dict[str, Any]) -> int:
-    """
-    Calculate the length of the longest command string.
-
-    Args:
-        commands (dict): A dictionary mapping command names to their
-            corresponding functions and help messages.
-
-    Returns:
-        int: The length of the longest command string, adjusted for
-            formatting.
-    """
-    adjustment = 6 # Account for both the "--" prefix and whitespace.
-    return max(len(key) + adjustment for key in commands.keys())
+    copy_to_clipboard: bool
 
 
 def _validate_command_combinations(
@@ -130,8 +114,6 @@ def parse_args() -> ParsedArgs:
     Returns:
         ParsedArgs: A frozen dataclass containing the parsed arguments.
     """
-    max_arg_width = _calculate_max_arg_width(ARGS_MAP)
-
     def formatter(prog: str) -> argparse.HelpFormatter:
         """
         A custom help formatter to align help messages neatly based on
@@ -139,7 +121,7 @@ def parse_args() -> ParsedArgs:
         """
         # Use `RawTextHelpFormatter` to preserve consecutive spaces.
         return argparse.RawTextHelpFormatter(
-            prog, max_help_position=max_arg_width
+            prog, max_help_position=79
         )
 
     try:
