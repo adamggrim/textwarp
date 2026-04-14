@@ -160,6 +160,35 @@ def test_process_interactive_mode_replacement(monkeypatch):
     assert replace_called is True
 
 
+def test_process_piped_mode_copy_flag(
+    monkeypatch,
+    mock_clipboard,
+    capsys
+):
+    """
+    Test that when `copy_to_clipboard` is `True` in piped mode, the
+    clipboard receives the modified text and a confirmation message
+    prints to the console.
+    """
+    monkeypatch.setattr(sys.stdin, 'read', lambda: 'piped text\n')
+
+    pipeline = [('uppercase', str.upper)]
+
+    __main__._process_piped_mode(
+        pipeline=pipeline,
+        output_file=None,
+        parse_markdown=False,
+        arg_to_replace=None,
+        replacement_arg=None,
+        copy_to_clipboard=True
+    )
+
+    assert mock_clipboard.paste() == 'PIPED TEXT'
+
+    captured = capsys.readouterr()
+    assert 'Modified text copied to clipboard.' in captured.out
+
+
 def test_process_piped_mode_warping(monkeypatch):
     """
     Test that piped mode reads from stdin and runs `warp_and_copy`.
