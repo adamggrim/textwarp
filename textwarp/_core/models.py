@@ -43,7 +43,7 @@ class POSCounts:
             tag: The parts-of-speech tag (e.g., "ADJ", "NOUN").
 
         Returns:
-            float: The calculated percentage, or 0.0 if self.word_count
+            float: The calculated percentage, or 0.0 if `self.word_count`
                 is zero.
         """
         count = self.get_pos_counts(tag)

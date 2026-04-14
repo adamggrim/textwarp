@@ -39,7 +39,7 @@ def test_exit_inputs():
 
 def test_inputs_are_mutually_exclusive():
     """
-    Ensure there is no overlap between affirmative, negative, and exit
+    Ensure there is no overlap between affirmative, negative and exit
     commands.
     """
     assert get_yes_inputs().isdisjoint(get_no_inputs()), (

@@ -1,4 +1,4 @@
-"""Validators for text, clipboard, and regular expression content."""
+"""Validators for text, clipboard and regular expression content."""
 
 import gettext
 import regex as re

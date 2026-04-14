@@ -49,7 +49,7 @@ RIGHT_SEARCH_STOP_TAGS: frozenset[str]
 # Fine-grained parts-of-speech tags for singular nouns and proper nouns.
 SINGULAR_NOUN_TAGS: frozenset[str]
 
-# Coarse-grained parts-of-speech tags for pronouns, proper nouns, and
+# Coarse-grained parts-of-speech tags for pronouns, proper nouns and
 # nouns.
 SUBJECT_POS_TAGS: frozenset[str]
 
