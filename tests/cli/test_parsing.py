@@ -90,6 +90,36 @@ def test_parse_args_conflicting_casings(monkeypatch, capsys):
     assert 'Cannot combine multiple casing styles' in captured.err
 
 
+def test_parse_args_copy_flag_default_false(monkeypatch):
+    """
+    Test that `copy_to_clipboard` defaults to `False` when omitted.
+    """
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase'])
+    parsed_args = parse_args()
+
+    assert parsed_args.copy_to_clipboard is False
+
+
+def test_parse_args_copy_flag_long(monkeypatch):
+    """
+    Test that the long `--copy` flag sets `copy_to_clipboard` to `True`.
+    """
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case', '--copy'])
+    parsed_args = parse_args()
+
+    assert parsed_args.copy_to_clipboard is True
+
+
+def test_parse_args_copy_flag_short(monkeypatch):
+    """
+    Test that the short `-c` flag sets `copy_to_clipboard` to `True`.
+    """
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-c'])
+    parsed_args = parse_args()
+
+    assert parsed_args.copy_to_clipboard is True
+
+
 def test_parse_args_mutually_exclusive_with_each_other(monkeypatch, capsys):
     """Test that mutually exclusive commands cannot be combined."""
     monkeypatch.setattr(
