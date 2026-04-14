@@ -160,6 +160,7 @@ def parse_args() -> ParsedArgs:
     parser.add_argument(
         '-o', '--output',
         dest='output_file',
+        metavar='FILE',
         type=str,
         help='optional path to write the output file'
     )
@@ -181,6 +182,7 @@ def parse_args() -> ParsedArgs:
     parser.add_argument(
         '-r', '--replace',
         dest='replace',
+        metavar='TEXT',
         type=str,
         help='replacement text'
     )
