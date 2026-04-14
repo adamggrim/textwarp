@@ -234,5 +234,6 @@ def parse_args() -> ParsedArgs:
         output_file=args.output_file,
         markdown=args.markdown,
         find=args.find,
-        replace=args.replace
+        replace=args.replace,
+        copy_to_clipboard=args.copy_to_clipboard
     )
