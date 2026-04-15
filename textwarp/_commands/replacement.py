@@ -30,7 +30,6 @@ from textwarp._core.exceptions import (
 )
 from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._cli.validation import (
-    validate_any_text,
     validate_case_name,
     validate_regex,
     validate_text
@@ -212,8 +211,6 @@ def replace_regex(
 
     if arg_to_replace is not None and replacement_arg is not None:
         presence_validator(arg_to_replace)
-        # Accept any text (including empty text) for replacement.
-        validate_any_text(replacement_arg)
         regex_text = arg_to_replace
         replacement_text = replacement_arg
     else:
@@ -225,7 +222,7 @@ def replace_regex(
         replacement_text = _prompt_for_valid_input(
             ENTER_REPLACEMENT_TEXT_PROMPT,
             # Accept any text (including empty text) for replacement.
-            validate_any_text,
+            lambda x: None,
             ENTER_VALID_TEXT_PROMPT
         )
 
@@ -259,8 +256,6 @@ def replace_text(
 
     if arg_to_replace is not None and replacement_arg is not None:
         presence_validator(arg_to_replace)
-        # Accept any text (including empty text) for replacement.
-        validate_any_text(replacement_arg)
         text_to_replace = arg_to_replace
         replacement_text = replacement_arg
     else:
@@ -272,7 +267,7 @@ def replace_text(
         replacement_text = _prompt_for_valid_input(
             ENTER_REPLACEMENT_TEXT_PROMPT,
             # Accept any text (including empty text) for replacement.
-            validate_any_text,
+            lambda x: None,
             ENTER_VALID_TEXT_PROMPT
         )
 
