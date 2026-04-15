@@ -111,8 +111,9 @@ def validate_text(text: str) -> None:
 
     Args:
         text: A string of text.
+
     Raises:
-        ValueError: If the text string is empty.
+        NoTextError: If the text string is empty.
     """
     if text == '':
         raise NoTextError(_('Text input is empty.'))
