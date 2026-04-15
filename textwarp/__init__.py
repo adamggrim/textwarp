@@ -7,6 +7,8 @@ from textwarp._core.models import POSCounts, WordCount
 
 _MODULE_MAP: dict[str, str] = {
     'calculate_time_to_read': 'textwarp.analysis',
+    'capitalize': 'textwarp.warping',
+    'cardinal_to_ordinal': 'textwarp.warping',
     'count_chars': 'textwarp.analysis',
     'count_lines': 'textwarp.analysis',
     'count_mfws': 'textwarp.analysis',
@@ -14,9 +16,6 @@ _MODULE_MAP: dict[str, str] = {
     'count_sents': 'textwarp.analysis',
     'count_words': 'textwarp.analysis',
     'curly_to_straight': 'textwarp._lib.punctuation',
-    'straight_to_curly': 'textwarp._lib.punctuation',
-    'capitalize': 'textwarp.warping',
-    'cardinal_to_ordinal': 'textwarp.warping',
     'expand_contractions': 'textwarp.warping',
     'from_binary': 'textwarp.warping',
     'from_hexadecimal': 'textwarp.warping',
@@ -30,6 +29,7 @@ _MODULE_MAP: dict[str, str] = {
     'randomize': 'textwarp.warping',
     'redact': 'textwarp.warping',
     'reverse': 'textwarp.warping',
+    'straight_to_curly': 'textwarp._lib.punctuation',
     'to_alternating_caps': 'textwarp.warping',
     'to_binary': 'textwarp.warping',
     'to_camel_case': 'textwarp.warping',
