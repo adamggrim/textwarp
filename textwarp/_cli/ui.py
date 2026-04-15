@@ -68,6 +68,9 @@ def print_wrapped(text: str) -> None:
 def program_exit() -> NoReturn:
     """
     Print a message that the program is exiting, then exit the program.
+
+    Raises:
+        SystemExit: Raised to terminate the application.
     """
     print_wrapped(_(EXIT_MSG))
     print_padding()
