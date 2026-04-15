@@ -5,7 +5,7 @@ from importlib.metadata import PackageNotFoundError
 
 import pytest
 
-from textwarp._cli.parsing import _calculate_max_arg_width, parse_args
+from textwarp._cli.parsing import parse_args
 
 
 def test_parse_args_valid_single_command(monkeypatch):

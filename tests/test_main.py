@@ -5,7 +5,6 @@ import sys
 import pytest
 
 from textwarp import __main__
-from textwarp._core.context import ctx
 
 
 def _dummy_lower(text: str) -> str:
