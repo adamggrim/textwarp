@@ -7,7 +7,7 @@ import gettext
 import sys
 from typing import Final
 
-from textwarp._cli.parsing import parse_args
+from textwarp._cli.parsing import ParsedArgs, parse_args
 from textwarp._cli.runners import (
     clear_clipboard,
     replace_text,
@@ -128,41 +128,23 @@ def _is_analysis_pipeline(pipeline: Pipeline) -> bool:
     return any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
 
 
-def _process_file_mode(
-    pipeline: Pipeline,
-    input_files: list[str],
-    output_file: str | None,
-    parse_markdown: bool,
-    arg_to_replace: str | None,
-    replacement_arg: str | None,
-    copy_to_clipboard: bool = False
-) -> None:
+def _process_file_mode(args: ParsedArgs) -> None:
     """
     Handle file input and output mode.
 
     Args:
-        pipeline: The list of command tuples to apply to the input.
-        input_files: A list of paths to the input files.
-        output_file: The optional path to the output file. If `None`,
-            the result prints to `stdout`.
-        parse_markdown: Whether to parse the input files as Markdown.
-        arg_to_replace: The case, regex or substring to replace, if
-            provided.
-        replacement_arg: The replacement case, regex or substring, if
-            provided.
-        copy_to_clipboard: Whether to copy the output to the clipboard
-            instead of printing to the terminal.
+        args: The parsed command-line arguments.
 
     Raises:
         SystemExit: If the input file is unreadable or if there is an
             error writing to the output file.
     """
-    _validate_piped_commands(pipeline, arg_to_replace, replacement_arg)
+    _validate_piped_commands(args.pipeline, args.find, args.replace)
 
     combined_results: list[str] = []
-    is_analysis = _is_analysis_pipeline(pipeline)
+    is_analysis = _is_analysis_pipeline(args.pipeline)
 
-    for file_path in input_files:
+    for file_path in args.input_files:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 text = f.read()
@@ -185,42 +167,29 @@ def _process_file_mode(
 
         result = _route_text(
             text,
-            pipeline,
-            parse_markdown,
-            arg_to_replace,
-            replacement_arg
+            args.pipeline,
+            args.parse_markdown,
+            args.find,
+            args.replace
         )
 
         if result is not None:
-            if is_analysis and len(input_files) > 1:
+            if is_analysis and len(args.input_files) > 1:
                 result = f'\n--- {file_path} ---\n{result}'
 
             combined_results.append(result)
 
     if combined_results:
         final_output = '\n'.join(combined_results)
-        _route_output(final_output, output_file, copy_to_clipboard)
+        _route_output(final_output, args.output_file, args.copy_to_clipboard)
 
 
-def _process_interactive_mode(
-    pipeline: Pipeline,
-    output_file: str | None,
-    parse_markdown: bool,
-    arg_to_replace: str | None,
-    replacement_arg: str | None
-) -> None:
+def _process_interactive_mode(args: ParsedArgs) -> None:
     """
     Handle interactive user input.
 
     Args:
-        pipeline: The list of command tuples to apply to the input.
-        output_file: The optional path to the output file. If `None`,
-            the result prints to `stdout`.
-        parse_markdown: Whether to parse the input as Markdown.
-        arg_to_replace: The case, regex or substring to replace, if
-            provided.
-        replacement_arg: The replacement case, regex or substring, if
-            provided.
+        args: The parsed command-line arguments.
 
     Raises:
         SystemExit: If a replacement command is in the pipeline or if
@@ -229,58 +198,42 @@ def _process_interactive_mode(
     def pipeline_runner(text: str) -> str | None:
         """Run the pipeline on the given text."""
         return _route_text(
-            text, pipeline, parse_markdown, arg_to_replace, replacement_arg
+            text, args.pipeline, args.parse_markdown, args.find, args.replace
         )
 
-    first_cmd, _ = pipeline[0]
+    first_cmd, _ = args.pipeline[0]
     normalized_cmd = first_cmd.replace('-', '_')
 
     if (
         normalized_cmd in _REPLACEMENT_FUNC_NAMES
-        and arg_to_replace is None
-        and replacement_arg is None
+        and args.find is None
+        and args.replace is None
     ):
         replace_text(normalized_cmd)
         program_exit()
 
-    if _is_analysis_pipeline(pipeline):
+    if _is_analysis_pipeline(args.pipeline):
         run_command_loop(pipeline_runner, action_handler=None)
     else:
         def clipboard_action(func, text):
             result = func(text)
             _handle_output(
                 result,
-                output_file,
+                args.output_file,
                 default_action=lambda r: warp_and_copy(lambda _: r, text)
             )
 
         run_command_loop(pipeline_runner, action_handler=clipboard_action)
 
 
-def _process_piped_mode(
-    pipeline: Pipeline,
-    output_file: str | None,
-    parse_markdown: bool,
-    arg_to_replace: str | None,
-    replacement_arg: str | None,
-    copy_to_clipboard: bool = False
-) -> None:
+def _process_piped_mode(args: ParsedArgs) -> None:
     """
     Handle input when data is piped into the script.
 
     Args:
-        pipeline: The list of command tuples to apply to the input.
-        output_file: The optional path to the output file. If `None`,
-            the result prints to `stdout`.
-        parse_markdown: Whether to parse the input as Markdown.
-        arg_to_replace: The case, regex or substring to replace, if
-            provided.
-        replacement_arg: The replacement case, regex or substring, if
-            provided.
-        copy_to_clipboard: Whether to copy the output to the clipboard
-            instead of printing to the terminal.
+        args: The parsed command-line arguments.
     """
-    _validate_piped_commands(pipeline, arg_to_replace, replacement_arg)
+    _validate_piped_commands(args.pipeline, args.find, args.replace)
 
     try:
         text = sys.stdin.read()
@@ -289,14 +242,14 @@ def _process_piped_mode(
 
         result = _route_text(
             text,
-            pipeline,
-            parse_markdown,
-            arg_to_replace,
-            replacement_arg
+            args.pipeline,
+            args.parse_markdown,
+            args.find,
+            args.replace
         )
 
         if result is not None:
-            _route_output(result, output_file, copy_to_clipboard)
+            _route_output(result, args.output_file, args.copy_to_clipboard)
 
     except Exception as e:
         print_wrapped(
