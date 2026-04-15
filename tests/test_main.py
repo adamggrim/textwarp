@@ -136,6 +136,49 @@ def test_piped_input_mode_integration(monkeypatch, mock_clipboard):
     assert mock_clipboard.paste() == 'EUREKA'
 
 
+def test_process_file_mode_binary_file(tmp_path, capsys):
+    """Test that file mode handles binary and undecodable files."""
+    binary_file = tmp_path / 'image.png'
+    binary_file.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
+
+    pipeline = [('uppercase', str.upper)]
+
+    from textwarp import __main__
+    with pytest.raises(SystemExit) as excinfo:
+        __main__._process_file_mode(
+            pipeline=pipeline,
+            input_files=[str(binary_file)],
+            output_file=None,
+            parse_markdown=False,
+            arg_to_replace=None,
+            replacement_arg=None
+        )
+
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert 'appears to be a binary file' in captured.out
+
+
+def test_process_file_mode_file_not_found(capsys):
+    """
+    Test that file mode handles missing files gracefully by exiting.
+    """
+    pipeline = [('uppercase', str.upper)]
+
+    from textwarp import __main__
+    with pytest.raises(SystemExit) as excinfo:
+        __main__._process_file_mode(
+            pipeline=pipeline,
+            input_files=['does_not_exist.txt'],
+            output_file=None,
+            parse_markdown=False,
+            arg_to_replace=None,
+            replacement_arg=None
+        )
+
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert 'not found' in captured.out
 def test_process_interactive_mode_replacement(monkeypatch):
     """
     Test that replacement commands branch correctly in interactive mode
