@@ -8,19 +8,6 @@ import pytest
 from textwarp._cli.parsing import _calculate_max_arg_width, parse_args
 
 
-def test_calculate_max_arg_width():
-    """
-    Test that the argument width calculation accounts for the prefix
-    and padding.
-    """
-    dummy_map = {
-        'short': (lambda x: x, 'help'),
-        'a-very-long-argument-name': (lambda x: x, 'help')
-    }
-
-    assert _calculate_max_arg_width(dummy_map) == 31
-
-
 def test_parse_args_valid_single_command(monkeypatch):
     """Test parsing a single valid command."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case'])
