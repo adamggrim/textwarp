@@ -232,6 +232,9 @@ def _process_piped_mode(args: ParsedArgs) -> None:
 
     Args:
         args: The parsed command-line arguments.
+
+    Raises:
+        SystemExit: If there is an error processing the input.
     """
     _validate_piped_commands(args.pipeline, args.find, args.replace)
 
@@ -273,6 +276,9 @@ def _route_output(
             print to `stdout`.
         copy_to_clipboard: Whether to copy the output to the clipboard
             instead of printing or writing to a file.
+
+    Raises:
+        SystemExit: If there is an error processing the input.
     """
     if output_file:
         _handle_output(result, output_file, default_action=lambda x: None)
