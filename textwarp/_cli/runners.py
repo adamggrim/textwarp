@@ -144,4 +144,4 @@ def warp_and_copy(
     import pyperclip
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
-    print_wrapped(MODIFIED_TEXT_COPIED_MSG)
+    print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
