@@ -16,7 +16,7 @@ def get_lowercase_particles() -> frozenset[str]:
         cast(
             list[str],
             load_json_data(
-                Path('entity_casing') / 'lowercase_particles.json', locale='en'
+                Path('token_casing') / 'lowercase_particles.json', locale='en'
             )
         )
     )
