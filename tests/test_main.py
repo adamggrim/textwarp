@@ -179,6 +179,31 @@ def test_process_file_mode_file_not_found(capsys):
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
     assert 'not found' in captured.out
+
+
+def test_process_file_mode_success(tmp_path, capsys):
+    """Test reading from an input file and writing to an output file."""
+    input_file = tmp_path / 'input.txt'
+    input_file.write_text('file content', encoding='utf-8')
+    output_file = tmp_path / 'output.txt'
+
+    pipeline = [('uppercase', str.upper)]
+
+    from textwarp import __main__
+    __main__._process_file_mode(
+        pipeline=pipeline,
+        input_files=[str(input_file)],
+        output_file=str(output_file),
+        parse_markdown=False,
+        arg_to_replace=None,
+        replacement_arg=None
+    )
+
+    assert output_file.read_text(encoding='utf-8') == 'FILE CONTENT'
+    captured = capsys.readouterr()
+    assert 'successfully written' in captured.out
+
+
 def test_process_interactive_mode_replacement(monkeypatch):
     """
     Test that replacement commands branch correctly in interactive mode
