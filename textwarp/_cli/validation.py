@@ -18,22 +18,11 @@ from textwarp._core.exceptions import (
 _ = gettext.gettext
 
 __all__ = [
-    'validate_any_text',
     'validate_case_name',
     'validate_clipboard',
     'validate_regex',
     'validate_text'
 ]
-
-
-def validate_any_text(text: str) -> None:
-    """
-    Validate and accept any text string, including empty text.
-
-    Args:
-        text: A string of any text.
-    """
-    pass
 
 
 def validate_case_name(case_name: str) -> None:
