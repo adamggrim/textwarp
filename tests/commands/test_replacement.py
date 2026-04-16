@@ -46,7 +46,7 @@ def test_replace_text(simulate_input, capsys):
     """Test text replacement and presence validation."""
     simulate_input(['cyanide', 'hemlock', 'poison'])
 
-    result = replacement.replace(TEXT_TEST_STRING)
+    result = replacement.replace_text(TEXT_TEST_STRING)
     captured = capsys.readouterr()
 
     assert TEXT_NOT_FOUND_MSG in captured.out
