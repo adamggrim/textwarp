@@ -204,13 +204,13 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         str.upper,
         N_('CONVERT TO ALL CAPS')
     ),
-    'word-count': (
-        _lazy_load('.._commands.analysis', 'word_count'),
-        N_('count words')
-    ),
     'widen': (
         _lazy_load('..warping', 'widen'),
         N_('w i d e n  t e x t')
+    ),
+    'word-count': (
+        _lazy_load('.._commands.analysis', 'word_count'),
+        N_('count words')
     )
 }
 
