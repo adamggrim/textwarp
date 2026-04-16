@@ -1,13 +1,13 @@
 """Exposes library functions for use across the package."""
 
 from textwarp._lib.casing import (
+    case_from_string,
     change_first_letter_case,
     doc_to_case,
-    to_separator_case,
-    word_to_pascal,
     map_all_entities,
-    case_from_string,
-    should_capitalize_pos_or_length
+    should_capitalize_pos_or_length,
+    to_separator_case,
+    word_to_pascal
 )
 from textwarp._lib.contractions import expand_contractions
 from textwarp._lib.encoding import (
@@ -33,29 +33,29 @@ from textwarp._lib.punctuation import (
 )
 
 __all__ = [
-    'change_first_letter_case',
-    'doc_to_case',
-    'to_separator_case',
-    'word_to_pascal',
-    'map_all_entities',
+    'cardinal_to_ordinal',
     'case_from_string',
-    'should_capitalize_pos_or_length',
+    'change_first_letter_case',
+    'curly_to_straight',
+    'doc_to_case',
     'expand_contractions',
+    'extract_words_from_doc',
     'from_binary',
     'from_hexadecimal',
     'from_morse',
+    'map_all_entities',
+    'ordinal_to_cardinal',
+    'process_as_doc',
+    'randomize',
+    'remove_apostrophes',
+    'reverse',
+    'should_capitalize_pos_or_length',
+    'straight_to_curly',
     'to_binary',
     'to_hexadecimal',
     'to_morse',
-    'randomize',
-    'reverse',
+    'to_separator_case',
     'to_single_spaces',
     'widen',
-    'extract_words_from_doc',
-    'process_as_doc',
-    'cardinal_to_ordinal',
-    'ordinal_to_cardinal',
-    'curly_to_straight',
-    'remove_apostrophes',
-    'straight_to_curly'
+    'word_to_pascal'
 ]
