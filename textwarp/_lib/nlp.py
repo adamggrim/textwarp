@@ -60,6 +60,10 @@ def _get_nlp(
 
     Returns:
         spacy.language.Language: The loaded spaCy model instance.
+
+    Raises:
+        RuntimeError: If no appropriate spaCy models are found for the
+            locale.
     """
     spacy = _load_spacy()
 
