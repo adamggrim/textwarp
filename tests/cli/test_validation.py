@@ -3,7 +3,6 @@
 import pytest
 
 from textwarp._cli.validation import (
-    validate_any_text,
     validate_case_name,
     validate_clipboard,
     validate_regex,
@@ -19,15 +18,6 @@ from textwarp._core.exceptions import (
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
-
-
-def test_validate_any_text():
-    """
-    Test that validate_any_text accepts all strings without raising.
-    """
-    validate_any_text('Valid text')
-    validate_any_text('   ')
-    validate_any_text('')
 
 
 def test_validate_case_name():
