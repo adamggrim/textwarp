@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and outputs the result.
+`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and returns the result.
 
 ## Requirements
 
@@ -166,8 +166,7 @@ textwarp/
 │ │ │ ├── entity_casing/
 │ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
 │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
-│ │ │ │ ├── contraction_suffixes.json: Lists suffixes derived from contractions
-│ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
+│ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
 │ │ │ ├── nlp_constants/
 │ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
 │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
@@ -189,6 +188,8 @@ textwarp/
 │ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
 │ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
 │ │ │ │ └── surname_prefixes.json: Lists common name prefixes
+│ │ │ ├── token_casing/
+│ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
 │ │ │ └── elision_words.json: Lists commonly elided words
 │ │ └── morse_map.json: Maps characters to their Morse code equivalent
 │ ├── providers/
