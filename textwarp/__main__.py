@@ -153,7 +153,7 @@ def _process_file_mode(args: ParsedArgs) -> None:
             _(
                 "Error: '{input_file}' appears to be a binary file. Please "
                 'provide a valid text file.'
-            ).format(file_path=file_path))
+            ).format(input_file=file_path))
             sys.exit(1)
         except FileNotFoundError:
             print_wrapped(
@@ -168,7 +168,7 @@ def _process_file_mode(args: ParsedArgs) -> None:
         result = _route_text(
             text,
             args.pipeline,
-            args.parse_markdown,
+            args.markdown,
             args.find,
             args.replace
         )
@@ -198,7 +198,7 @@ def _process_interactive_mode(args: ParsedArgs) -> None:
     def pipeline_runner(text: str) -> str | None:
         """Run the pipeline on the given text."""
         return _route_text(
-            text, args.pipeline, args.parse_markdown, args.find, args.replace
+            text, args.pipeline, args.markdown, args.find, args.replace
         )
 
     first_cmd, _ = args.pipeline[0]
@@ -246,7 +246,7 @@ def _process_piped_mode(args: ParsedArgs) -> None:
         result = _route_text(
             text,
             args.pipeline,
-            args.parse_markdown,
+            args.markdown,
             args.find,
             args.replace
         )
@@ -256,8 +256,7 @@ def _process_piped_mode(args: ParsedArgs) -> None:
 
     except Exception as e:
         print_wrapped(
-            _('Error processing input: {error}').format(error=e),
-            file=sys.stderr
+            _('Error processing input: {error}').format(error=e)
         )
         sys.exit(1)
 
@@ -287,7 +286,7 @@ def _route_output(
         import pyperclip
         from textwarp._cli.constants.messages import MODIFIED_TEXT_COPIED_MSG
         pyperclip.copy(result)
-        print_wrapped(MODIFIED_TEXT_COPIED_MSG)
+        print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
     elif not output_file:
         print(result)
 
@@ -373,8 +372,7 @@ def _validate_piped_commands(
                         'Replacement commands require --find and '
                         '--replace arguments when used in file or piped '
                         'mode.'
-                    ),
-                    file=sys.stderr
+                    )
                 )
                 sys.exit(1)
 
@@ -396,32 +394,11 @@ def main() -> None:
         ctx.set_locale(parsed_args.lang)
 
         if parsed_args.input_files:
-            _process_file_mode(
-                parsed_args.pipeline,
-                parsed_args.input_files,
-                parsed_args.output_file,
-                parsed_args.markdown,
-                parsed_args.find,
-                parsed_args.replace,
-                parsed_args.copy_to_clipboard
-            )
+            _process_file_mode(parsed_args)
         elif not sys.stdin.isatty():
-            _process_piped_mode(
-                parsed_args.pipeline,
-                parsed_args.output_file,
-                parsed_args.markdown,
-                parsed_args.find,
-                parsed_args.replace,
-                parsed_args.copy_to_clipboard
-            )
+            _process_piped_mode(parsed_args)
         else:
-            _process_interactive_mode(
-                parsed_args.pipeline,
-                parsed_args.output_file,
-                parsed_args.markdown,
-                parsed_args.find,
-                parsed_args.replace
-            )
+            _process_interactive_mode(parsed_args)
 
     except KeyboardInterrupt:
         print_padding()
