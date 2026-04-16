@@ -113,6 +113,10 @@ def parse_args() -> ParsedArgs:
 
     Returns:
         ParsedArgs: A frozen dataclass containing the parsed arguments.
+
+    Raises:
+        SystemExit: If arguments are invalid or help or version flags
+        are present.
     """
     def formatter(prog: str) -> argparse.HelpFormatter:
         """
