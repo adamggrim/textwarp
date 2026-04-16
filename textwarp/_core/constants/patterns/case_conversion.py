@@ -81,7 +81,7 @@ def get_split_for_pascal_conversion() -> re.Pattern[str]:
         re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(
-        r'''
+        rf'''
         # PART 1: SPACE NOT PRECEDED OR FOLLOWED BY A SPACE OR
         # PUNCTUATION
         (?<!                            # Not preceded by...
