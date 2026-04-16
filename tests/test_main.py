@@ -5,6 +5,7 @@ import sys
 import pytest
 
 from textwarp import __main__
+from textwarp._cli.parsing import ParsedArgs
 
 
 def _dummy_lower(text: str) -> str:
@@ -107,7 +108,6 @@ def test_main_sets_locale(monkeypatch):
     applies it to the global context.
     """
     def mock_parse_args():
-        from textwarp._cli.parsing import ParsedArgs
         return ParsedArgs(
             pipeline=[('clear', lambda x: x)],
             lang='en',
@@ -128,7 +128,7 @@ def test_piped_input_mode_integration(monkeypatch, mock_clipboard):
     """
     monkeypatch.setattr(sys.stdin, 'isatty', lambda: False)
     monkeypatch.setattr(sys.stdin, 'read', lambda: 'eureka\n')
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase', '--copy'])
 
     __main__.main()
 
@@ -142,20 +142,23 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
 
     pipeline = [('uppercase', str.upper)]
 
-    from textwarp import __main__
+    args = ParsedArgs(
+        pipeline=pipeline,
+        lang='en',
+        input_files=[str(binary_file)],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False
+    )
+
     with pytest.raises(SystemExit) as excinfo:
-        __main__._process_file_mode(
-            pipeline=pipeline,
-            input_files=[str(binary_file)],
-            output_file=None,
-            parse_markdown=False,
-            arg_to_replace=None,
-            replacement_arg=None
-        )
+        __main__._process_file_mode(args)
 
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
-    assert 'appears to be a binary file' in captured.out
+    assert 'binary file' in captured.out.replace('\n', ' ')
 
 
 def test_process_file_mode_file_not_found(capsys):
@@ -164,16 +167,19 @@ def test_process_file_mode_file_not_found(capsys):
     """
     pipeline = [('uppercase', str.upper)]
 
-    from textwarp import __main__
+    args = ParsedArgs(
+        pipeline=pipeline,
+        lang='en',
+        input_files=['does_not_exist.txt'],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False
+    )
+
     with pytest.raises(SystemExit) as excinfo:
-        __main__._process_file_mode(
-            pipeline=pipeline,
-            input_files=['does_not_exist.txt'],
-            output_file=None,
-            parse_markdown=False,
-            arg_to_replace=None,
-            replacement_arg=None
-        )
+        __main__._process_file_mode(args)
 
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
@@ -188,15 +194,18 @@ def test_process_file_mode_success(tmp_path, capsys):
 
     pipeline = [('uppercase', str.upper)]
 
-    from textwarp import __main__
-    __main__._process_file_mode(
+    args = ParsedArgs(
         pipeline=pipeline,
+        lang='en',
         input_files=[str(input_file)],
         output_file=str(output_file),
-        parse_markdown=False,
-        arg_to_replace=None,
-        replacement_arg=None
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False
     )
+
+    __main__._process_file_mode(args)
 
     assert output_file.read_text(encoding='utf-8') == 'FILE CONTENT'
     captured = capsys.readouterr()
@@ -219,10 +228,19 @@ def test_process_interactive_mode_replacement(monkeypatch):
 
     monkeypatch.setattr(__main__, 'program_exit', lambda: sys.exit(0))
 
-    pipeline = [('replace-case', lambda x: x)]
+    args = ParsedArgs(
+        pipeline=[('replace-case', lambda x: x)],
+        lang='en',
+        input_files=[],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False
+    )
 
     with pytest.raises(SystemExit):
-        __main__._process_interactive_mode(pipeline)
+        __main__._process_interactive_mode(args)
 
     assert replace_called is True
 
@@ -241,14 +259,18 @@ def test_process_piped_mode_copy_flag(
 
     pipeline = [('uppercase', str.upper)]
 
-    __main__._process_piped_mode(
+    args = ParsedArgs(
         pipeline=pipeline,
+        lang='en',
+        input_files=[],
         output_file=None,
-        parse_markdown=False,
-        arg_to_replace=None,
-        replacement_arg=None,
+        markdown=False,
+        find=None,
+        replace=None,
         copy_to_clipboard=True
     )
+
+    __main__._process_piped_mode(args)
 
     assert mock_clipboard.paste() == 'PIPED TEXT'
 
@@ -256,25 +278,27 @@ def test_process_piped_mode_copy_flag(
     assert 'Modified text copied to clipboard.' in captured.out
 
 
-def test_process_piped_mode_warping(monkeypatch):
+def test_process_piped_mode_warping(monkeypatch, capsys):
     """
     Test that piped mode reads from stdin and runs `warp_and_copy`.
     """
     monkeypatch.setattr(sys.stdin, 'read', lambda: 'Piped text\n')
 
-    warp_called = False
-    def mock_warp_and_copy(func, text):
-        nonlocal warp_called
-        warp_called = True
-        assert text == 'Piped text'
-        assert func('A') == 'a'
+    args = ParsedArgs(
+        pipeline=[('lowercase', _dummy_lower)],
+        lang='en',
+        input_files=[],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False
+    )
 
-    monkeypatch.setattr(__main__, 'warp_and_copy', mock_warp_and_copy)
+    __main__._process_piped_mode(args)
 
-    pipeline = [('lowercase', _dummy_lower)]
-    __main__._process_piped_mode(pipeline)
-
-    assert warp_called is True
+    captured = capsys.readouterr()
+    assert 'piped text' in captured.out
 
 
 def test_validate_piped_commands_rejects_replacement(monkeypatch):
@@ -285,9 +309,9 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
         lambda *args, **kwargs: None
     )
 
-    pipeline = [('replace', lambda x: x)]
+    pipeline = [('replace-text', lambda x: x)]
 
     with pytest.raises(SystemExit) as excinfo:
-        __main__._validate_piped_commands(pipeline)
+        __main__._validate_piped_commands(pipeline, None, None)
 
     assert excinfo.value.code == 1
