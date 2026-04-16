@@ -95,6 +95,9 @@ def __getattr__(name: str):
 
     Args:
         name: The name of the accessed attribute.
+
+    Raises:
+        AttributeError: If the module has no such attribute.
     """
     if name in _MODULE_MAP:
         mod = importlib.import_module(_MODULE_MAP[name])
