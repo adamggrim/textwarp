@@ -2,12 +2,12 @@
 
 from textwarp._lib.casing import (
     case_from_string,
-    change_first_letter_case,
-    doc_to_case,
     map_all_entities,
     should_capitalize_pos_or_length,
-    to_separator_case,
-    word_to_pascal
+    to_camel_case,
+    to_natural_case,
+    to_pascal_case,
+    to_separator_case
 )
 from textwarp._lib.contractions import expand_contractions
 from textwarp._lib.encoding import (
@@ -35,9 +35,7 @@ from textwarp._lib.punctuation import (
 __all__ = [
     'cardinal_to_ordinal',
     'case_from_string',
-    'change_first_letter_case',
     'curly_to_straight',
-    'doc_to_case',
     'expand_contractions',
     'extract_words_from_doc',
     'from_binary',
@@ -52,8 +50,11 @@ __all__ = [
     'should_capitalize_pos_or_length',
     'straight_to_curly',
     'to_binary',
+    'to_camel_case',
     'to_hexadecimal',
     'to_morse',
+    'to_natural_case',
+    'to_pascal_case',
     'to_separator_case',
     'to_single_spaces',
     'widen',
