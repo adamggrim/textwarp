@@ -1,4 +1,6 @@
-"""Functions for handling specific types of contractions."""
+"""
+English-specific functions for handling specific types of contractions.
+"""
 
 from __future__ import annotations
 
