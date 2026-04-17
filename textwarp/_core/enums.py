@@ -3,8 +3,7 @@ Enumerations for casing, count labels, presence checking and regular
 expression boundaries.
 """
 
-from enum import Enum, auto
-from typing import final
+from enum import Enum, auto, unique
 
 from textwarp._core.context import N_
 
@@ -17,7 +16,7 @@ __all__ = [
 ]
 
 
-@final
+@unique
 class CaseSeparator(str, Enum):
     """
     Specify which separator character to use in a string.
@@ -32,7 +31,7 @@ class CaseSeparator(str, Enum):
     SNAKE: str = '_'
 
 
-@final
+@unique
 class Casing(Enum):
     """
     Specify which capitalization style to use in a string.
@@ -47,7 +46,7 @@ class Casing(Enum):
     TITLE = auto()
 
 
-@final
+@unique
 class CountLabels(str, Enum):
     """
     Label strings for count formatting.
@@ -64,7 +63,7 @@ class CountLabels(str, Enum):
     WORD = N_('Word')
 
 
-@final
+@unique
 class ModelPriority(str, Enum):
     """
     Specify whether to prioritize accuracy or speed for spaCy model
@@ -78,7 +77,7 @@ class ModelPriority(str, Enum):
     SPEED = 'speed'
 
 
-@final
+@unique
 class PresenceCheckType(Enum):
     """
     Specify whether to check for the presence of a case, regular
@@ -95,7 +94,7 @@ class PresenceCheckType(Enum):
     SUBSTRING = auto()
 
 
-@final
+@unique
 class RegexBoundary(Enum):
     """
     Specify the boundary-matching strategy for a regular expression.
