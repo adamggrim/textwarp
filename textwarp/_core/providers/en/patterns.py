@@ -1,7 +1,6 @@
 """English-specific regular expression patterns for text warping."""
 
 from functools import lru_cache
-from typing import Final
 
 import regex as re
 
@@ -13,7 +12,6 @@ __all__ = [
     'get_any_apostrophe',
     'get_apostrophe_in_word',
     'get_ambiguous_contraction',
-    'get_cardinal',
     'get_contraction',
     'get_contraction_suffixes_pattern',
     'get_common_stateless_participles',
@@ -21,32 +19,12 @@ __all__ = [
     'get_map_suffix_exceptions_pattern',
     'get_name_prefix_exception_pattern',
     'get_n_t_suffix',
-    'get_opening_straight_quotes',
-    'get_ordinal',
     'get_punct_inside',
     'get_punct_outside',
     'get_surname_prefix_pattern',
     'get_whatcha_are_words',
     'get_whatcha_have_words'
 ]
-
-_NUMBER_BASE_PATTERN: Final[str] = r'''
-    (?<!            # Not preceded by...
-        \d          # A digit.
-        \.          # Followed by a period.
-    )
-    \b              # A word boundary.
-    (?:             # A non-capturing group for...
-        # A NUMBER WITH THOUSANDS SEPARATORS
-        \d{1,3}     # One to three digits.
-        (?:         # A non-capturing group for...
-            ,\d{3}  # A comma followed by exactly three digits.
-        )+          # One or more times.
-        |           # OR
-        # A NUMBER WITHOUT THOUSANDS SEPARATORS
-        \d+         # One or more digits.
-    )
-'''
 
 
 @lru_cache(maxsize=1)
@@ -105,31 +83,6 @@ def get_any_apostrophe() -> re.Pattern[str]:
         re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(r"['’‘]")
-
-
-@lru_cache(maxsize=1)
-def get_cardinal() -> re.Pattern[str]:
-    """
-    Get a regular expression that matches a cardinal number.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return re.compile(rf'''
-        ({_NUMBER_BASE_PATTERN})
-        \b                          # A word boundary.
-        (?!                         # Not followed by...
-            \.\d                    # A period and a digit.
-            |                       # OR
-            \d                      # A digit
-            |                       # OR
-            /                       # A forward slash
-            |                       # OR
-            \s+                     # One or more spaces.
-            {_NUMBER_BASE_PATTERN}  # Followed by a number...
-            /                       # Followed by a forward slash.
-        )
-    ''', re.VERBOSE)
 
 
 @lru_cache(maxsize=1)
@@ -225,68 +178,6 @@ def get_n_t_suffix() -> re.Pattern[str]:
         re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(r"n['’‘]t$", re.IGNORECASE)
-
-
-@lru_cache(maxsize=1)
-def get_opening_straight_quotes() -> re.Pattern[str]:
-    """
-    Get a regular expression matching opening straight quotes.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return re.compile(r'''
-        # PART 1: SINGLE QUOTES
-        (?:                 # OPENING CONTEXT (SINGLE QUOTES)
-            ^               # The start of a string.
-            |               # OR
-            (?<=            # Preceded by...
-                [\s([{"“]   # A whitespace character, opening
-                            # parenthesis, opening square bracket,
-                            # opening curly brace or straight or
-                            # opening double quote.
-                |           # OR
-                ["“]\s      # Preceded by a straight or opening double
-                            # quote followed by a space.
-            )
-        )
-        (                   # GROUP 1 (SINGLE QUOTES)
-        '+                  # One or more straight single quotes.
-        )
-        |                   # OR
-        # PART 2: DOUBLE QUOTES
-        (?:                 # OPENING CONTEXT (DOUBLE QUOTES)
-            ^               # The start of a string.
-            |               # OR
-            (?<=            # Preceded by...
-                [\s([{]     # A whitespace character,
-                            # opening parenthesis, opening square
-                            # bracket or opening curly brace.
-            )
-        )
-        (                   # GROUP 2 (DOUBLE QUOTES)
-            (?<!            # Not preceded by...
-                ['’]\s      # A straight or closing single quote
-                            # followed by a space.
-            )
-        "+                  # One or more straight double quotes.
-        )
-    ''', re.VERBOSE)
-
-
-@lru_cache(maxsize=1)
-def get_ordinal() -> re.Pattern[str]:
-    """
-    Get a regular expression matching an ordinal number.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return re.compile(rf'''
-        ({_NUMBER_BASE_PATTERN})
-        (?:st|nd|rd|th)s?
-        \b
-    ''', re.VERBOSE)
 
 
 @lru_cache(maxsize=1)
