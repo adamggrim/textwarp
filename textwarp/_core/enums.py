@@ -90,7 +90,7 @@ class PresenceCheckType(Enum):
         REGEX: Check for a regular expression match.
         SUBSTRING: Check for the presence of a substring.
     """
-    CASE_NAME = auto()
+    CASE = auto()
     REGEX = auto()
     SUBSTRING = auto()
 

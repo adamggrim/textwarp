@@ -36,7 +36,7 @@ def test_count_labels_values():
 
 def test_presence_check_type_enums():
     """Verify that the `PresenceCheckType` enum members exist."""
-    assert isinstance(PresenceCheckType.CASE_NAME, PresenceCheckType)
+    assert isinstance(PresenceCheckType.CASE, PresenceCheckType)
     assert isinstance(PresenceCheckType.REGEX, PresenceCheckType)
     assert isinstance(PresenceCheckType.SUBSTRING, PresenceCheckType)
 

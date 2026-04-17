@@ -82,7 +82,7 @@ def _create_presence_validator(
         """
         base_validator(search_input)
 
-        if check_type is PresenceCheckType.CASE_NAME:
+        if check_type is PresenceCheckType.CASE:
             case_key = search_input.lower()
             pattern = get_case_names_regex_map().get(case_key)
 
@@ -159,7 +159,7 @@ def replace_case(
     presence_validator = _create_presence_validator(
         validate_case_name,
         text,
-        PresenceCheckType.CASE_NAME
+        PresenceCheckType.CASE
     )
 
     if arg_to_replace is not None and replacement_arg is not None:
