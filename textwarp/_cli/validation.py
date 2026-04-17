@@ -83,7 +83,8 @@ def validate_regex(regex: str) -> None:
 
     Raises:
         NoRegexError: If the input string is empty.
-        re.error: If the input string is not a valid regular expression.
+        InvalidRegexError: If the input string is not a valid regular
+            expression.
     """
     if regex == '':
         raise NoRegexError(_('Regex input is empty.'))
