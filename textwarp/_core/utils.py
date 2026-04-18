@@ -3,14 +3,39 @@
 import importlib.resources
 import json
 from pathlib import Path
-from typing import cast
+from typing import Callable, cast
 
 from textwarp._core.types import JSONType
 
 __all__ = [
+    'change_first_letter_case',
     'find_first_alphabetical_idx',
     'load_json_data'
 ]
+
+
+def change_first_letter_case(
+    text: str,
+    casing_func: Callable[[str], str]
+) -> str:
+    """
+    Change the case of the first letter of a string without modifying
+    any other letters.
+
+    Args:
+        text: The string to convert.
+        casing_func: The function to apply to the first letter
+            (i.e., `str.upper` or `str.lower`).
+
+    Returns:
+        str: The converted text.
+    """
+    idx = find_first_alphabetical_idx(text)
+
+    if idx is not None:
+        return text[:idx] + casing_func(text[idx]) + text[idx+1:]
+
+    return text
 
 
 def find_first_alphabetical_idx(text: str) -> int | None:
