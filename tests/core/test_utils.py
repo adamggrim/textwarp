@@ -1,6 +1,18 @@
 """Tests for universal utility functions."""
 
-from textwarp._core.utils import find_first_alphabetical_idx
+from textwarp._core.utils import (
+    change_first_letter_case, find_first_alphabetical_idx
+)
+
+
+def test_change_first_letter_case():
+    """Test changing only the first alphabetical character's case."""
+    assert change_first_letter_case('101 dalmations', str.upper) == (
+        '101 Dalmations'
+    )
+    assert change_first_letter_case('bang', str.upper) == 'Bang'
+    assert change_first_letter_case('WHIMPER', str.lower) == 'wHIMPER'
+    assert change_first_letter_case('!!!', str.upper) == '!!!'
 
 
 def test_find_first_alphabetical_idx_standard():
