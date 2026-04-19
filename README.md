@@ -210,7 +210,8 @@ textwarp/
 │ │ │ ├── contractions.py: Sets used in English contraction variants
 │ │ │ ├── disambiguation.py: English-specific functions for resolving ambiguous contractions based on context
 │ │ │ ├── encoding.py: English-specific functions for encoding and decoding text
-│ │ │ ├── handlers.py: Functions for handling specific types of contractions
+│ │ │ ├── handlers.py: English-specific functions for handling specific types of contractions
+│ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
 │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
 │ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
 │ │ │ └── utils.py: English-specific utility functions
