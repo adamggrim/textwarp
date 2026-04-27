@@ -67,6 +67,7 @@ TIME_TO_READ_TEXT = (
     'Rot a peck of pa’s malt had Jhem or Shen brewed by arclight and rory end '
     'to the regginbrow was to be seen ringsome on the aquaface.')
 
+
 def test_calculate_time_to_read():
     """Test reading time calculation."""
     assert calculate_time_to_read(TIME_TO_READ_TEXT, wpm=200) == 1
@@ -103,6 +104,17 @@ def test_count_mfws():
     assert hyacinth_entry.count == 2
 
 
+def test_count_mfws_empty():
+    """
+    Test most frequent word counting when there are no valid words.
+    """
+    mfws_empty = count_mfws('', num_mfws=5)
+    assert mfws_empty == []
+
+    mfws_punct = count_mfws('... ??? !!!   ', num_mfws=5)
+    assert mfws_punct == []
+
+
 def test_count_pos():
     """Test parts-of-speech counting."""
     pos_counts = count_pos(COUNT_POS_TEXT)
@@ -129,17 +141,6 @@ def test_count_words():
     """
     count = count_words(COUNT_WORDS_TEXT)
     assert count == 41
-
-
-def test_count_mfws_empty():
-    """
-    Test most frequent word counting when there are no valid words.
-    """
-    mfws_empty = count_mfws('', num_mfws=5)
-    assert mfws_empty == []
-
-    mfws_punct = count_mfws('... ??? !!!   ', num_mfws=5)
-    assert mfws_punct == []
 
 
 def test_get_nlp_transformer_import_error(monkeypatch):
