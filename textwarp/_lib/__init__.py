@@ -57,6 +57,5 @@ __all__ = [
     'to_pascal_case',
     'to_separator_case',
     'to_single_spaces',
-    'widen',
-    'word_to_pascal'
+    'widen'
 ]
