@@ -1,7 +1,7 @@
 """Tests for universal utility functions."""
 
 from textwarp._core.utils import (
-    change_first_letter_case, find_first_alphabetical_idx
+    change_first_letter_case, find_first_alphabetical_idx, load_json_data
 )
 
 
@@ -48,3 +48,13 @@ def test_find_first_alphabetical_idx_no_letters():
     assert find_first_alphabetical_idx('!!!') is None
     assert find_first_alphabetical_idx('') is None
     assert find_first_alphabetical_idx('   ') is None
+
+def test_load_json_data():
+    """Test that JSON data can be loaded with and without a locale."""
+    morse_data = load_json_data('morse_map.json')
+    assert isinstance(morse_data, dict)
+    assert 'A' in morse_data
+
+    en_elision_data = load_json_data('elision_words.json', locale='en')
+    assert isinstance(en_elision_data, list)
+    assert 'cause' in en_elision_data
