@@ -42,17 +42,12 @@ def test_replace_case_early_exit(simulate_input):
         replacement.replace_case(CASE_TEST_STRING)
 
 
-def test_replace_text(simulate_input, capsys):
-    """Test text replacement and presence validation."""
-    simulate_input(['cyanide', 'hemlock', 'poison'])
-
-    result = replacement.replace_text(TEXT_TEST_STRING)
-    captured = capsys.readouterr()
-
-    assert TEXT_NOT_FOUND_MSG in captured.out
-    assert ENTER_VALID_TEXT_PROMPT in captured.out
-    assert 'of poison I had drunk' in result
-    assert 'hemlock' not in result
+def test_replace_case_with_args():
+    """
+    Test case replacement using explicit arguments instead of prompts.
+    """
+    result = replacement.replace_case(CASE_TEST_STRING, 'snake', 'camel')
+    assert result == 'pascalCase'
 
 
 def test_replace_regex(simulate_input, capsys):
@@ -68,3 +63,32 @@ def test_replace_regex(simulate_input, capsys):
     assert REGEX_NOT_FOUND_MSG in captured.out
     assert ENTER_VALID_REGEX_PROMPT in captured.out
     assert result == 'Five hundred twenty-five thousand, six hundred minutes'
+
+
+def test_replace_regex_with_args():
+    """
+    Test regex replacement using explicit arguments instead of prompts.
+    """
+    result = replacement.replace_regex(REGEX_TEST_STRING, r'\d+', 'many')
+    assert result == 'many,many minutes'
+
+
+def test_replace_text(simulate_input, capsys):
+    """Test text replacement and presence validation."""
+    simulate_input(['cyanide', 'hemlock', 'poison'])
+
+    result = replacement.replace_text(TEXT_TEST_STRING)
+    captured = capsys.readouterr()
+
+    assert TEXT_NOT_FOUND_MSG in captured.out
+    assert ENTER_VALID_TEXT_PROMPT in captured.out
+    assert 'of poison I had drunk' in result
+    assert 'hemlock' not in result
+
+
+def test_replace_text_with_args():
+    """
+    Test text replacement using explicit arguments instead of prompts.
+    """
+    result = replacement.replace_text(TEXT_TEST_STRING, 'hemlock', 'coffee')
+    assert 'of coffee I had drunk' in result
