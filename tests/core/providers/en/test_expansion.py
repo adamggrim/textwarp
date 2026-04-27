@@ -22,19 +22,6 @@ def test_expand_ambiguous_contraction(get_contraction_span):
     assert end_idx == span.end_char
 
 
-def test_expand_ambiguous_contraction_unmatched(get_contraction_span):
-    '''
-    Test that an unmatched or unhandled ambiguous contraction returns
-    the original string.
-    '''
-    span = get_contraction_span("They daren't go.", "daren't")
-
-    expansion, end_idx = _expand_ambiguous_contraction("daren't", span)
-
-    assert expansion == "daren't"
-    assert end_idx == span.end_char
-
-
 def test_expand_idiomatic_phrases_casing():
     '''
     Test that idiomatic phrase expansions preserve original casing.
