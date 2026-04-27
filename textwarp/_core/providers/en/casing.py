@@ -6,7 +6,10 @@ from textwarp._core.constants import patterns
 from textwarp._core.providers import en
 
 
-__all__ = ['case_from_string']
+__all__ = [
+    'case_from_string',
+    'should_always_lowercase'
+]
 
 
 def _capitalize_from_map(
@@ -121,7 +124,7 @@ def _handle_period_separated_initialism(
         parts = lower_word.split('.')
         formatted_parts = [
             part.upper()
-            if not en.patterns.warping.get_any_apostrophe().search(part)
+            if not en.patterns.get_any_apostrophe().search(part)
             else part.lower()
             for part in parts
         ]
@@ -216,3 +219,24 @@ def case_from_string(
             return word_result
 
     return word.capitalize() if not lowercase_by_default else lower_word
+
+
+def should_always_lowercase(text: str) -> bool:
+    """
+    Determine if a specific token string should always be lowercase
+    (e.g., particles like "von" or contraction suffixes like "n't").
+
+    Args:
+        text: The string to check.
+
+    Returns:
+        bool: `True` if the string should always be lowercase,
+            otherwise `False`.
+    """
+    return (
+        text.lower() in en.data.token_casing.get_lowercase_particles()
+        or bool(
+            en.patterns.get_contraction_suffixes_pattern()
+            .fullmatch(text)
+        )
+    )
