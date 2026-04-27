@@ -11,6 +11,7 @@ __all__ = [
     'CaseSeparator',
     'Casing',
     'CountLabels',
+    'ModelPriority',
     'PresenceCheckType',
     'RegexBoundary'
 ]
@@ -110,3 +111,21 @@ class RegexBoundary(Enum):
     WORD_BOUNDARY = auto()
     START_ANCHOR = auto()
     END_ANCHOR = auto()
+
+
+@unique
+class TokenType(Enum):
+    """
+    Specify the type of token extracted during programming case
+    chunking.
+
+    Attributes:
+        WORD: An alphanumeric word chunk.
+        SYMBOL: A non-alphanumeric character that is not a standard
+            casing separator.
+        SEPARATOR: A standard casing separator (space, dot, dash, or
+            underscore).
+    """
+    WORD = auto()
+    SYMBOL = auto()
+    SEPARATOR = auto()
