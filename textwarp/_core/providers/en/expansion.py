@@ -69,6 +69,15 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
         original_phrase = match.group(0)
         straight_match = curly_to_straight(original_phrase).lower()
         expanded_text = idiom_map.get(straight_match, original_phrase)
+
+        apostrophe_match = en.patterns.get_any_apostrophe().search(
+            original_phrase
+        )
+        if apostrophe_match:
+            expanded_text = en.patterns.get_any_apostrophe().sub(
+                apostrophe_match.group(0), expanded_text
+            )
+
         return apply_expansion_casing(original_phrase, expanded_text)
 
     return en.patterns.get_idiomatic_phrases().sub(
