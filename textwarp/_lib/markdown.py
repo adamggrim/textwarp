@@ -3,7 +3,7 @@ Functions for parsing Markdown and transforming Markdown Abstract Syntax
 Trees (ASTs).
 """
 
-from typing import Callable
+from typing import Any, Callable
 import marko
 from marko.md_renderer import MarkdownRenderer
 
@@ -28,7 +28,7 @@ def _apply_func_to_markdown(
 
     class TextwarpRenderer(MarkdownRenderer):
         """A custom renderer that intercepts raw text nodes."""
-        def render_raw_text(self, element) -> str:
+        def render_raw_text(self, element: Any) -> str:
             """Apply the transformation function to raw text nodes."""
             return handler_func(element.children)
 
