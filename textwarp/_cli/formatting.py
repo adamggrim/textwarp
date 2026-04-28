@@ -1,5 +1,6 @@
 """Functions for formatting analysis into readable strings."""
 
+from collections.abc import Sequence
 import gettext
 
 from textwarp._core.models import POSCounts, WordCount
@@ -16,7 +17,7 @@ __all__ = [
 
 
 def _format_table(
-    data_rows: list[tuple[str, ...]],
+    data_rows: Sequence[tuple[str, ...]],
     padding: int = 2
 ) -> str:
     """

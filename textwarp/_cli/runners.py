@@ -101,7 +101,7 @@ def replace_text(command_name: str) -> None:
 
 
 def run_command_loop(
-    command_func: Callable[[str], str],
+    command_func: Callable[[str], str | None],
     action_handler: _ActionHandler | None = None
 ) -> None:
     """

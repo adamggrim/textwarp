@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Mapping
 
 import regex as re
 
@@ -88,7 +88,7 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
 
 def _expand_unambiguous_contraction(
     contraction: str,
-    contractions_map: dict[str, str]
+    contractions_map: Mapping[str, str]
 ) -> str:
     """
     Replace an unambiguous contraction with its expanded version using

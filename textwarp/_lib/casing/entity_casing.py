@@ -199,7 +199,7 @@ def map_all_entities(
     """
     custom_map = _map_custom_entities(doc)
 
-    consumed_idxs = set()
+    consumed_idxs: set[int] = set()
     for span, _, _ in custom_map.values():
         consumed_idxs.update(range(span.start, span.end))
 

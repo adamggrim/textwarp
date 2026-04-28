@@ -2,7 +2,7 @@
 
 import importlib
 from types import ModuleType
-from typing import Callable, Final
+from typing import Any, Callable, Final
 
 from textwarp._core.context import N_
 
@@ -17,7 +17,7 @@ __all__ = [
 
 def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
     """Import a module and function only when called."""
-    def wrapper(*args, **kwargs) -> str:
+    def wrapper(*args: Any, **kwargs: Any) -> str:
         mod: ModuleType = importlib.import_module(
             module_name, package=__package__
         )

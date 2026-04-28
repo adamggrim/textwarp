@@ -1,6 +1,6 @@
 """English-specific string casing logic."""
 
-from typing import Callable
+from typing import Callable, Mapping
 
 from textwarp._core.constants import patterns
 from textwarp._core.providers import en
@@ -14,7 +14,7 @@ __all__ = [
 
 def _capitalize_from_map(
     lower_word: str,
-    capitalization_map: dict[str, str]
+    capitalization_map: Mapping[str, str]
 ) -> str | None:
     """
     Handle word capitalization through dictionary lookup, lowercasing
