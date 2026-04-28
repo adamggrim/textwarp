@@ -9,9 +9,9 @@ from textwarp._core.providers import en
 from textwarp._core.enums import RegexBoundary
 
 __all__ = [
+    'get_ambiguous_contraction',
     'get_any_apostrophe',
     'get_apostrophe_in_word',
-    'get_ambiguous_contraction',
     'get_contraction',
     'get_contraction_suffixes_pattern',
     'get_common_stateless_participles',
@@ -25,6 +25,31 @@ __all__ = [
     'get_whatcha_are_words',
     'get_whatcha_have_words'
 ]
+
+
+@lru_cache(maxsize=1)
+def get_ambiguous_contraction() -> re.Pattern[str]:
+    """
+    Get a regular expression matching any contraction that can
+    expand to multiple phrases.
+
+    Returns:
+        re.Pattern[str]: A compiled regular expression pattern.
+    """
+    return patterns.warping.create_words_regex(
+        en.data.contraction_expansion.get_ambiguous_map()
+    )
+
+
+@lru_cache(maxsize=1)
+def get_any_apostrophe() -> re.Pattern[str]:
+    """
+    Get a regular expression matching any straight or curly apostrophe.
+
+    Returns:
+        re.Pattern[str]: A compiled regular expression pattern.
+    """
+    return re.compile(r"['’‘]")
 
 
 @lru_cache(maxsize=1)
@@ -58,31 +83,6 @@ def get_apostrophe_in_word() -> re.Pattern[str]:
         ''',
         re.VERBOSE | re.IGNORECASE
     )
-
-
-@lru_cache(maxsize=1)
-def get_ambiguous_contraction() -> re.Pattern[str]:
-    """
-    Get a regular expression matching any contraction that can
-    expand to multiple phrases.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return patterns.warping.create_words_regex(
-        en.data.contraction_expansion.get_ambiguous_map()
-    )
-
-
-@lru_cache(maxsize=1)
-def get_any_apostrophe() -> re.Pattern[str]:
-    """
-    Get a regular expression matching any straight or curly apostrophe.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return re.compile(r"['’‘]")
 
 
 @lru_cache(maxsize=1)
