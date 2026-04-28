@@ -10,9 +10,8 @@ from typing import (
 __all__ = ['EntityCasingContext', 'JSONType']
 
 
-@final
-@dataclass
-class EntityCasingContext(TypedDict):
+@dataclass(frozen=True, slots=True)
+class EntityCasingContext:
     """
     The casing context for a custom entity.
 
