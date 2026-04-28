@@ -3,7 +3,6 @@ English-specific functions for converting between straight and curly
 quotes.
 """
 
-import regex as re
 from textwarp._core.providers import en
 
 __all__ = [
@@ -11,28 +10,6 @@ __all__ = [
     'remove_apostrophes',
     'straight_to_curly'
 ]
-
-
-def _replace_opening_quote(match: re.Match[str]) -> str:
-    """
-    Convert a sequence of straight quotes in a given match to opening
-    curly quotes.
-
-    Args:
-        match: A match object where the first captured group is a
-            string of one or more consecutive straight quote
-            characters.
-
-    Returns:
-        str: A string of opening curly quotes.
-    """
-    quote_chars = match.group(1) or match.group(2) or ''
-
-    if not quote_chars:
-        return match.group(0)
-
-    char = '‘' if quote_chars[0] == "'" else '“'
-    return char * len(quote_chars)
 
 
 def curly_to_straight(text: str) -> str:
@@ -46,14 +23,15 @@ def curly_to_straight(text: str) -> str:
         str: The converted string.
     """
     translation_table = str.maketrans({
-        # Curly opening single quotes to straight single quotes
-        '’': "'",
-        # Curly opening double quotes to straight double quotes
-        '”': '"',
-        # Curly closing single quotes to straight single quotes
+        # Curly opening single quote to straight single quote
         '‘': "'",
-        # Curly closing double quotes to straight double quotes
-        '“': '"'
+        # Curly closing single quote (or apostrophe) to straight single
+        # quote
+        '’': "'",
+        # Curly opening double quote to straight double quote
+        '“': '"',
+        # Curly closing double quote to straight double quote
+        '”': '"'
     })
     return text.translate(translation_table)
 
@@ -68,7 +46,7 @@ def remove_apostrophes(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    return en.patterns.warping.get_apostrophe_in_word().sub('', text)
+    return en.patterns.get_apostrophe_in_word().sub('', text)
 
 
 def straight_to_curly(text: str) -> str:
@@ -81,18 +59,43 @@ def straight_to_curly(text: str) -> str:
     Returns:
         curly_text: The converted string.
     """
-    # Replace intra-word apostrophes and apostrophes in elisions.
-    curly_text = en.patterns.warping.get_apostrophe_in_word().sub('’', text)
+    # Convert any straight apostrophes first (contractions, decades or
+    # elisions).
+    text = en.patterns.get_apostrophe_in_word().sub('’', text)
 
-    # Replace opening straight quotes with opening curly quotes.
-    curly_text = en.patterns.warping.get_opening_straight_quotes().sub(
-        _replace_opening_quote, curly_text
-    )
+    chars = list(text)
 
-    # Replace any remaining straight single quotes with closing curly
-    # single quotes. Replace any remaining straight double quotes with
-    # closing curly double quotes.
-    translation_table = str.maketrans({"'": '’', '"': '”'})
-    curly_text = curly_text.translate(translation_table)
+    for i, char in enumerate(chars):
+        if char not in "'\"":
+            continue
 
-    return curly_text
+        prev_char = chars[i - 1] if i else None
+        prev_prev_char = chars[i - 2] if i > 1 else None
+
+        is_opening_context = (
+            prev_char is None or prev_char in ' \t\n\r([{—–"\u201c\u2018\''
+        )
+        is_preceded_by_whitespace = (
+            prev_char is not None and prev_char in ' \t\n\r'
+        )
+
+        if char == "'":
+            is_opener = (
+                is_opening_context
+                or (is_preceded_by_whitespace and prev_prev_char in ('"', '“'))
+            )
+            chars[i] = '‘' if is_opener else '’'
+
+        elif char == '"':
+            # Exception for double quotes preceded by a space and single
+            # quote.
+            is_opener = (
+                is_opening_context
+                and not (
+                    is_preceded_by_whitespace
+                    and prev_prev_char in ("'", '’', '‘')
+                )
+            )
+            chars[i] = '“' if is_opener else '”'
+
+    return ''.join(chars)
