@@ -58,15 +58,10 @@ class POSCounts:
             list[tuple[str, int, float]]: A list where each tuple
                 contains the parts-of-speech name, count and percentage.
         """
-        pos_data: list[tuple[str, int, float]] = []
-
-        for tag, name in POS_TAGS:
-            count: int = self.get_pos_counts(tag)
-            percentage: float = self.get_percentage(tag)
-            translated_name = _(name)
-            pos_data.append((translated_name, count, percentage))
-
-        return pos_data
+        return [
+            (_(name), self.get_pos_counts(tag), self.get_percentage(tag))
+            for tag, name in POS_TAGS
+        ]
 
 
 @final
