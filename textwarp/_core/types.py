@@ -1,17 +1,16 @@
 """Generic type definitions used across the package."""
 
-from dataclasses import dataclass
 from typing import (
     Any,
     Callable,
-    TypeAlias
+    TypeAlias,
+    TypedDict
 )
 
 __all__ = ['EntityCasingContext', 'JSONType']
 
 
-@dataclass(frozen=True, slots=True)
-class EntityCasingContext:
+class EntityCasingContext(TypedDict, total=False):
     """
     The casing context for a custom entity.
 
