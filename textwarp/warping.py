@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 from textwarp._core.constants import patterns
 from textwarp._core.context import ctx
-from textwarp._core.enums import CaseSeparator, Casing
+from textwarp._core.enums import CaseSeparator, Casing, ModelPriority
 
 from textwarp._lib import (
     casing,
@@ -487,7 +487,7 @@ def to_title_case(content: str | Doc) -> str:
         str: The converted string.
     """
     # Use the large model for identifying titles within titles.
-    doc = process_as_doc(content, model_priority='accuracy')
+    doc = process_as_doc(content, model_priority=ModelPriority.ACCURACY)
     return to_natural_case(doc, Casing.TITLE)
 
 
