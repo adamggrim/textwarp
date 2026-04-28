@@ -43,6 +43,6 @@ def straight_to_curly(text: str) -> str:
         text: The string to convert.
 
     Returns:
-        curly_text: The converted string.
+        str: The converted string.
     """
     return ctx.provider.straight_to_curly(text)
