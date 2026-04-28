@@ -5,7 +5,7 @@ associated functions.
 
 import gettext
 import sys
-from typing import Final
+from typing import Callable, Final
 
 from textwarp._cli.parsing import ParsedArgs, parse_args
 from textwarp._cli.runners import (

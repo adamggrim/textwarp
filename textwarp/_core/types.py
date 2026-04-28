@@ -4,9 +4,7 @@ from dataclasses import dataclass
 from typing import (
     Any,
     Callable,
-    TypeAlias,
-    TypedDict,
-    final
+    TypeAlias
 )
 
 __all__ = ['EntityCasingContext', 'JSONType']

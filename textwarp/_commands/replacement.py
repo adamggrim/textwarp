@@ -23,10 +23,10 @@ from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.constants.maps import get_case_names_regex_map
 from textwarp._core.enums import PresenceCheckType
 from textwarp._core.exceptions import (
-    TextwarpValidationError,
     CaseNotFoundError,
     RegexNotFoundError,
-    TextNotFoundError
+    TextNotFoundError,
+    TextwarpValidationError
 )
 from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._cli.validation import (

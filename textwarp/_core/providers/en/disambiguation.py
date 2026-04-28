@@ -12,7 +12,7 @@ from spacy.tokens import Token
 if TYPE_CHECKING:
     from spacy.tokens import Span
 
-from textwarp._core.constants.nlp import NOUN_TAGS
+from textwarp._core.constants import NOUN_TAGS
 from textwarp._core.providers import en
 
 __all__ = [

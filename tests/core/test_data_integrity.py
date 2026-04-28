@@ -5,8 +5,8 @@ import pytest
 
 from textwarp._core.providers.en.data.entity_casing import get_absolute_map
 from textwarp._core.providers.en.data.contraction_expansion import (
-    get_unambiguous_map,
-    get_ambiguous_map
+    get_ambiguous_map,
+    get_unambiguous_map
 )
 
 DATA_DIR = Path(__file__).parents[2] / 'textwarp' / '_core' / 'data'
