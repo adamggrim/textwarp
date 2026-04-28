@@ -58,6 +58,14 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = [
     "textwarp._lib.markdown",
-    "textwarp._lib.nlp"
+    "textwarp._lib.nlp",
+    "textwarp._core.providers.en.encoding",
+    "textwarp._core.providers.en.punctuation",
+    "textwarp._core.providers.en.expansion",
+    "textwarp._lib.manipulation",
+    "textwarp._commands.replacement",
+    "textwarp.warping",
+    "textwarp._cli.runners",
+    "textwarp._cli.args"
 ]
 warn_return_any = false
