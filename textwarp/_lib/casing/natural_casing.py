@@ -262,7 +262,7 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
                 if i in indices_to_lowercase:
                     processed_parts.append(token_text.capitalize())
                 else:
-                    processed_parts.append(_change_first_letter_case(
+                    processed_parts.append(change_first_letter_case(
                         token_text, str.upper
                     ))
 

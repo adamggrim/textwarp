@@ -96,7 +96,8 @@ def test_nlp_fallback_logic(monkeypatch):
     )
 
     result = _get_nlp(model_priority=ModelPriority.SPEED)
-    assert result == "loaded_en_core_web_md"
+    assert result == 'loaded_en_core_web_md'
+
 
 def test_nlp_no_models_found_raises_runtime_error(monkeypatch):
     """

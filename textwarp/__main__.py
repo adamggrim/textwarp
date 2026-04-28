@@ -86,7 +86,7 @@ def _apply_pipeline(
 def _handle_output(
     result: str | None,
     output_file: str | None,
-    default_action
+    default_action: Callable[[str], None]
 ) -> None:
     """
     Route the transformed text to a file.
@@ -215,7 +215,8 @@ def _process_interactive_mode(args: ParsedArgs) -> None:
     if _is_analysis_pipeline(args.pipeline):
         run_command_loop(pipeline_runner, action_handler=None)
     else:
-        def clipboard_action(func, text):
+        def clipboard_action(func: Callable[[str], str], text: str) -> None:
+            """Handle clipboard output for non-analysis pipelines."""
             result = func(text)
             _handle_output(
                 result,
