@@ -205,7 +205,7 @@ def map_all_entities(
 
     standard_map = _map_model_entities(doc)
 
-    combined_map: dict[int, tuple[Span, int, str| None]] = dict(custom_map)
+    combined_map: dict[int, tuple[Span, int, str | None]] = dict(custom_map)
 
     for start_idx, (span, end_idx, text) in standard_map.items():
         span_idxs = set(range(span.start, span.end))

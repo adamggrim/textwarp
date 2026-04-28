@@ -65,6 +65,7 @@ def test_process_as_doc_from_string():
         'This mission is too important for me to allow you to jeopardize it.'
     )
 
+
 def test_get_nlp_priority_branching():
     """
     Test that `_get_nlp` respects the `ModelPriority` enum and
@@ -106,6 +107,7 @@ def test_nlp_no_models_found_raises_runtime_error(monkeypatch):
 
     with pytest.raises(RuntimeError, match='No EN spaCy models found.'):
         _get_nlp(model_priority=ModelPriority.SPEED)
+
 
 def test_process_as_doc_with_disabled_pipes():
     """Ensure that pipes are disabled when requested."""

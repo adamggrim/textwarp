@@ -68,7 +68,9 @@ def validate_clipboard(clipboard: str) -> None:
     if clipboard == '':
         raise EmptyClipboardError(_('Clipboard is empty.'))
     elif clipboard.strip() == '':
-        raise WhitespaceClipboardError(_('Clipboard contains only whitespace.'))
+        raise WhitespaceClipboardError(
+            _('Clipboard contains only whitespace.')
+        )
 
 
 def validate_regex(regex: str) -> None:
