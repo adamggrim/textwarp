@@ -66,6 +66,7 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
     idiom_map = en.data.contraction_expansion.get_idiomatic_map()
 
     def _replace_idiom(match: re.Match[str]) -> str:
+        """Replace a matched idiomatic phrase with its expansion."""
         original_phrase = match.group(0)
         straight_match = curly_to_straight(original_phrase).lower()
         expanded_text = idiom_map.get(straight_match, original_phrase)

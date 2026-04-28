@@ -24,7 +24,7 @@ def create_words_regex(
 
     Args:
         words: A string or iterable of strings to match.
-        boundary: The boundary to use around the words.
+        boundary: The boundary to use around the word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.

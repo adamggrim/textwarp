@@ -34,8 +34,11 @@ def test_pos_tags_structure():
 
 
 def test_pos_word_tags():
-    """Verify that `POS_WORD_TAGS` strips out the 'X' (Other) tag."""
-    assert isinstance(POS_WORD_TAGS, tuple)
+    """
+    Verify that the `POS_WORD_TAGS` `frozenset` strips out the 'X'
+    (Other) tag.
+    """
+    assert isinstance(POS_WORD_TAGS, frozenset)
     assert 'NOUN' in POS_WORD_TAGS
     assert 'VERB' in POS_WORD_TAGS
     assert 'X' not in POS_WORD_TAGS

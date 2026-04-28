@@ -23,7 +23,6 @@ class EntityCasingContext(TypedDict):
         pos_sequences: A list of parts-of-speech sequences for the
             entity.
         ngrams: A list of ngrams to check for.
-
     """
     casing: str
     pos_sequences: list[list[str]]

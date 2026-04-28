@@ -32,7 +32,7 @@ def randomize(text: str) -> str:
 
 def reverse(text: str) -> str:
     """
-    Reverses the characters of a given string.
+    Reverse the characters of a given string.
 
     Args:
         text: The string to reverse.
