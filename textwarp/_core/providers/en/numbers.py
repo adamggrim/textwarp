@@ -3,8 +3,13 @@ English-specific functions for converting between cardinal and ordinal
 numbers.
 """
 
+from typing import TYPE_CHECKING
 
-def _get_nlp_doc(text: str):
+if TYPE_CHECKING:
+    from spacy.tokens import Doc
+
+
+def _get_nlp_doc(text: str) -> 'Doc':
     """
     Helper to initialize the NLP document.
 

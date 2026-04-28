@@ -1,7 +1,7 @@
 """A Python package for analyzing and transforming text."""
 
 import importlib
-import typing
+from typing import Any, TYPE_CHECKING
 
 from textwarp._core.models import POSCounts, WordCount
 
@@ -47,7 +47,7 @@ _MODULE_MAP: dict[str, str] = {
 
 __all__ = list(_MODULE_MAP.keys())
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from spacy.tokens import Doc
 
     def calculate_time_to_read(text: str, wpm: int) -> int: ...
@@ -88,7 +88,8 @@ if typing.TYPE_CHECKING:
     def to_title_case(content: str | Doc) -> str: ...
     def widen(text: str) -> str: ...
 
-def __getattr__(name: str):
+
+def __getattr__(name: str) -> Any:
     """
     Lazily load functions from submodules when accessed as attributes of
     the package.
