@@ -15,22 +15,16 @@ from textwarp._core.context import ctx
 from textwarp._core.enums import CaseSeparator, Casing
 
 from textwarp._lib import (
+    casing,
     contractions,
+    curly_to_straight,
     encoding,
     manipulation,
-    numbers
-)
-from textwarp._lib.casing.case_conversion import (
-    change_first_letter_case,
-    doc_to_case,
-    to_separator_case,
-    word_to_pascal
-)
-from textwarp._lib.nlp import process_as_doc
-from textwarp._lib.punctuation import (
-    curly_to_straight,
-    remove_apostrophes,
-    straight_to_curly
+    numbers,
+    process_as_doc,
+    straight_to_curly,
+    to_natural_case,
+    to_separator_case
 )
 
 __all__ = [
@@ -79,7 +73,7 @@ def capitalize(content: str | Doc) -> str:
         str: The capitalized string.
     """
     doc = process_as_doc(content)
-    return doc_to_case(doc, Casing.START)
+    return to_natural_case(doc, Casing.START)
 
 
 def cardinal_to_ordinal(text: str) -> str:
@@ -304,7 +298,7 @@ def redact(text: str) -> str:
 
 def reverse(text: str) -> str:
     """
-    Reverses the characters of a given string.
+    Reverse the characters of a given string.
 
     Args:
         text: The string to reverse.
@@ -366,11 +360,7 @@ def to_camel_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    pascal_text = to_pascal_case(text)
-    return patterns.cases.get_pascal_word().sub(
-        lambda m: change_first_letter_case(m.group(0), str.lower),
-        pascal_text
-    )
+    return casing.to_camel_case(text)
 
 
 def to_dot_case(text: str) -> str:
@@ -440,13 +430,7 @@ def to_pascal_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    no_apostrophes_text: str = remove_apostrophes(text)
-    words: list[str] = (
-        patterns.case_conversion.get_split_for_pascal_conversion().split(
-            no_apostrophes_text
-        )
-    )
-    return ''.join(word_to_pascal(w) for w in words)
+    return casing.to_pascal_case(text)
 
 
 def to_sentence_case(content: str | Doc) -> str:
@@ -460,7 +444,7 @@ def to_sentence_case(content: str | Doc) -> str:
         str: The converted string.
     """
     doc = process_as_doc(content)
-    return doc_to_case(doc, Casing.SENTENCE)
+    return to_natural_case(doc, Casing.SENTENCE)
 
 
 def to_single_spaces(text: str) -> str:
@@ -504,7 +488,7 @@ def to_title_case(content: str | Doc) -> str:
     """
     # Use the large model for identifying titles within titles.
     doc = process_as_doc(content, model_priority='accuracy')
-    return doc_to_case(doc, Casing.TITLE)
+    return to_natural_case(doc, Casing.TITLE)
 
 
 def widen(text: str) -> str:
