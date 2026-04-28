@@ -68,10 +68,12 @@ def _find_sentence_case_idxs(
         """Check whether a word is capitalized."""
         return word[0].isupper() and word[1:].islower()
 
+    sentences = getattr(text_container, 'sents', [text_container])
+
     sent_start_idxs: set[int] = set()
     indices_to_lowercase: set[int] = set()
 
-    for sent in text_container.sents:
+    for sent in sentences:
         first_word_idx = _find_first_word_token_idx(0, sent)
 
         if first_word_idx is not None:
