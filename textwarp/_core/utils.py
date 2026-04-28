@@ -78,5 +78,8 @@ def load_json_data(
     else:
         parts = Path(relative_path).parts
 
-    resource = pkg_files.joinpath('_core', 'data', *parts)
+    resource = pkg_files.joinpath('_core', 'data')
+    for part in parts:
+        resource = resource.joinpath(part)
+
     return cast(JSONType, json.loads(resource.read_text(encoding='utf-8')))

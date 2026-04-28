@@ -23,6 +23,7 @@ class EntityCasingContext(TypedDict, total=False):
     casing: str
     pos_sequences: list[list[str]]
     ngrams: list[str]
+    context_window: int
 
 
 # A type for JSON data.

@@ -31,9 +31,9 @@ def _case_contextual_entity(
         str | None: The contextual casing; otherwise `None`.
     """
     contextual_entities_map = ctx.provider.contextual_casings_map
-    contexts: list[EntityCasingContext] = contextual_entities_map.get(
-        key, []
-    )
+    contexts: (
+        tuple[EntityCasingContext, ...] | list[EntityCasingContext]
+    ) = contextual_entities_map.get(key, [])
 
     current_pos_seq = [token.pos_ for token in span]
 

@@ -40,9 +40,9 @@ def _get_morse_spacing_patterns(
         gap_lengths = [len(s) for s in space_matches]
 
         try:
-            char_gap_length = statistics.mode(gap_lengths)
+            char_gap_length = int(statistics.mode(gap_lengths))
         except statistics.StatisticsError:
-            char_gap_length = statistics.median(gap_lengths)
+            char_gap_length = int(statistics.median(gap_lengths))
 
         long_gap_lengths = [L for L in gap_lengths if L > char_gap_length]
 
