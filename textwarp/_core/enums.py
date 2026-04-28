@@ -27,9 +27,9 @@ class CaseSeparator(str, Enum):
         KEBAB: Represents `kebab-case`.
         SNAKE: Represents `snake_case`.
     """
-    DOT: str = '.'
-    KEBAB: str = '-'
-    SNAKE: str = '_'
+    DOT = '.'
+    KEBAB = '-'
+    SNAKE = '_'
 
 
 @unique
