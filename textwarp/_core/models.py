@@ -12,7 +12,7 @@ __all__ = ['POSCounts', 'WordCount']
 
 
 @final
-@dataclass
+@dataclass(frozen=True, slots=True)
 class POSCounts:
     """
     A class representing the counts and percentages for each part of
@@ -65,7 +65,7 @@ class POSCounts:
 
 
 @final
-@dataclass
+@dataclass(frozen=True, slots=True)
 class WordCount:
     """
     A class representing the count and percentage for a word in a
