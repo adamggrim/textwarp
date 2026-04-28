@@ -123,7 +123,7 @@ def _prompt_for_valid_input(
         print_wrapped(current_prompt)
         user_input = input().rstrip('\n')
 
-        exit_commands: set[str] = get_exit_inputs() | get_no_inputs()
+        exit_commands: set[str] = set(get_exit_inputs() | get_no_inputs())
         is_exiting = user_input.strip().lower() in exit_commands
 
         if allow_early_exit and is_exiting:
