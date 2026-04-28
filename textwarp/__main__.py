@@ -7,6 +7,7 @@ import gettext
 import sys
 from typing import Callable, Final
 
+from textwarp._cli.args import ANALYSIS_COMMANDS
 from textwarp._cli.parsing import ParsedArgs, parse_args
 from textwarp._cli.runners import (
     clear_clipboard,
@@ -20,17 +21,6 @@ from textwarp._core.types import Pipeline
 from textwarp._core.context import ctx
 
 _ = gettext.gettext
-
-# Commands that print analysis and exit.
-ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
-    'char-count',
-    'line-count',
-    'mfws',
-    'pos-counts',
-    'sentence-count',
-    'time-to-read',
-    'word-count'
-})
 
 # All the function names for replacement commands.
 _REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)

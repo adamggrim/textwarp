@@ -1,6 +1,6 @@
 """English-specific NLP constants."""
 
-from typing import cast
+from typing import Final, cast
 from textwarp._core.utils import load_json_data
 
 __all__ = [
@@ -9,7 +9,10 @@ __all__ = [
     'LEFT_SEARCH_STOP_TAGS',
     'NOUN_PHRASE_TAGS',
     'OPEN_QUOTES',
+    'ORDINAL_SUFFIX_MAP',
+    'ORDINAL_SUFFIXES',
     'PARTICIPLE_TAGS',
+    'PREFERENCE_VERBS',
     'PROPER_NOUN_ENTITIES',
     'RIGHT_SEARCH_STOP_TAGS',
     'SINGULAR_NOUN_TAGS',
@@ -35,9 +38,29 @@ NOUN_PHRASE_TAGS: frozenset[str]
 # Opening quote characters.
 OPEN_QUOTES: frozenset[str]
 
+# A mapping of integers to their corresponding ordinal suffix.
+ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
+    1: 'st',
+    2: 'nd',
+    3: 'rd'
+}
+
+# Strings for ordinal suffixes.
+ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
+    'nd', 'nds',
+    'rd', 'rds',
+    'st', 'sts',
+    'th', 'ths',
+)
+
 # Fine-grained parts-of-speech tags for past tense and past participle
 # verb forms. (Fine-grained tags used to distinguish verb tense.)
 PARTICIPLE_TAGS: frozenset[str]
+
+# Strings for verbs that expand to "would".
+PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
+    {'care', 'mind', 'prefer'}
+)
 
 # Named entities that are typically proper nouns.
 PROPER_NOUN_ENTITIES: frozenset[str]

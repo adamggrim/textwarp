@@ -5,6 +5,8 @@ numbers.
 
 from typing import TYPE_CHECKING
 
+from textwarp._core.providers.en.constants import ORDINAL_SUFFIX_MAP, ORDINAL_SUFFIXES
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
@@ -27,7 +29,7 @@ def _get_ordinal_suffix(number: int) -> str:
     """Determine the correct ordinal suffix for a given integer."""
     if 10 <= number % 100 <= 20:
         return 'th'
-    return {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
+    return ORDINAL_SUFFIX_MAP.get(number % 10, 'th')
 
 
 def _is_part_of_mixed_fraction(text: str, start_index: int) -> bool:
@@ -131,18 +133,11 @@ def ordinal_to_cardinal(text: str) -> str:
     result = []
     last_idx = 0
 
-    valid_suffixes = (
-        'nd', 'nds',
-        'rd', 'rds',
-        'st', 'sts',
-        'th', 'ths',
-    )
-
     for token in doc:
         lower_text = token.text.lower()
 
         # Check for standard ordinal suffixes.
-        if lower_text.endswith(valid_suffixes):
+        if lower_text.endswith(ORDINAL_SUFFIXES):
             suffix_len = 3 if lower_text.endswith('s') else 2
 
             # Ensure the remaining base string is a number.

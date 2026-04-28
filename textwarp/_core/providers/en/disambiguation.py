@@ -5,7 +5,7 @@ on context.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
 from spacy.tokens import Token
 
@@ -23,11 +23,6 @@ __all__ = [
     'disambiguate_wanna',
     'disambiguate_whatcha'
 ]
-
-# Strings for verbs that expand to "would".
-_PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
-    {'care', 'mind', 'prefer'}
-)
 
 
 def _is_present_participle(token: Token) -> bool:
@@ -166,7 +161,7 @@ def disambiguate_d(span: Span) -> str:
             return 'had'
 
         if token.tag_ in en.constants.BASE_VERB_TAGS:
-            if token.lemma_ in _PREFERENCE_VERBS:
+            if token.lemma_ in en.constants.PREFERENCE_VERBS:
                 return 'would'
             return 'did' if is_wh_question else 'would'
 

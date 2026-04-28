@@ -7,6 +7,7 @@ from typing import Any, Callable, Final
 from textwarp._core.context import N_
 
 __all__ = [
+    'ANALYSIS_COMMANDS',
     'ARGS_MAP',
     'CASING_COMMANDS',
     'MUTUALLY_EXCLUSIVE_COMMANDS',
@@ -213,6 +214,17 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         N_('count words')
     )
 }
+
+# Commands that print analysis and exit.
+ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
+    'char-count',
+    'line-count',
+    'mfws',
+    'pos-counts',
+    'sentence-count',
+    'time-to-read',
+    'word-count'
+})
 
 # Can be combined with `SEPARATOR_COMMANDS`. Mutually exclusive with
 # each other.
