@@ -21,30 +21,6 @@ from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
 __all__ = ['to_natural_case',]
 
 
-def _change_first_letter_case(
-    text: str,
-    casing_func: Callable[[str], str]
-) -> str:
-    """
-    Change the case of the first letter of a string without modifying
-    any other letters.
-
-    Args:
-        text: The string to convert.
-        casing_func: The function to apply to the first letter
-            (i.e., `str.upper` or `str.lower`).
-
-    Returns:
-        str: The converted text.
-    """
-    idx = find_first_alphabetical_idx(text)
-
-    if idx is not None:
-        return text[:idx] + casing_func(text[idx]) + text[idx+1:]
-
-    return text
-
-
 def _find_first_word_token_idx(
     start_idx: int,
     text_container: Doc | Span
