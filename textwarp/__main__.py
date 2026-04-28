@@ -26,7 +26,7 @@ ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'char-count',
     'line-count',
     'mfws',
-    'pos-count',
+    'pos-counts',
     'sentence-count',
     'time-to-read',
     'word-count'

@@ -54,7 +54,7 @@ This example demonstrates how to convert clipboard text to camel case using `tex
     --ordinal              convert cardinal numbers to ordinal numbers
     --pascal-case          ConvertToPascalCase
     --plain-text           convert to plain text
-    --pos-count            count parts of speech
+    --pos-counts           count parts of speech
     --punct-to-inside      "move punctuation inside quotation marks."
     --punct-to-outside     "move punctuation outside quotation marks".
     --random-case          randomize the casing of each character
