@@ -69,7 +69,7 @@ def _replace_and_copy(
         clipboard: The clipboard text to transform.
     """
     import pyperclip
-    transformation: str = str(command_func(clipboard))
+    transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
 

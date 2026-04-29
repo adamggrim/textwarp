@@ -10,9 +10,4 @@ __all__ = ['get_elision_words']
 @cache
 def get_elision_words() -> frozenset[str]:
     """Get a cached `frozenset` of elision words."""
-    return frozenset(
-        cast(
-            list[str],
-            load_json_data('elision_words.json', locale='en')
-        )
-    )
+    return frozenset(load_json_data('elision_words.json', locale='en'))

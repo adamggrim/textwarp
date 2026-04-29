@@ -3,7 +3,7 @@
 import importlib.resources
 import json
 from pathlib import Path
-from typing import Callable, cast
+from typing import Callable
 
 from textwarp._core.types import JSONType
 
@@ -79,7 +79,8 @@ def load_json_data(
         parts = Path(relative_path).parts
 
     resource = pkg_files.joinpath('_core', 'data')
+    resource = pkg_files.joinpath('_core').joinpath('data')
     for part in parts:
         resource = resource.joinpath(part)
 
-    return cast(JSONType, json.loads(resource.read_text(encoding='utf-8')))
+    return json.loads(resource.read_text(encoding='utf-8'))

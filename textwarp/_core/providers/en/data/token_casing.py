@@ -12,10 +12,7 @@ __all__ = ['get_lowercase_particles']
 def get_lowercase_particles() -> frozenset[str]:
     """Get a cached `frozenset` of lowercase particles."""
     return frozenset(
-        cast(
-            list[str],
-            load_json_data(
-                Path('token_casing') / 'lowercase_particles.json', locale='en'
-            )
+        load_json_data(
+            Path('token_casing') / 'lowercase_particles.json', locale='en'
         )
     )

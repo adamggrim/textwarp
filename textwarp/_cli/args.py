@@ -22,7 +22,7 @@ def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
         mod: ModuleType = importlib.import_module(
             module_name, package=__package__
         )
-        return str(getattr(mod, func_name)(*args, **kwargs))
+        return getattr(mod, func_name)(*args, **kwargs)
     return wrapper
 
 

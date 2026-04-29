@@ -1,6 +1,6 @@
 """English-specific NLP constants."""
 
-from typing import Final, cast
+from typing import Final
 from textwarp._core.utils import load_json_data
 
 __all__ = [
@@ -112,8 +112,6 @@ def __getattr__(name: str) -> frozenset[str]:
     }
 
     if name in _file_map:
-        return frozenset(
-            cast(list[str], load_json_data(_file_map[name], locale='en'))
-        )
+        return frozenset(load_json_data(_file_map[name], locale='en'))
 
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
