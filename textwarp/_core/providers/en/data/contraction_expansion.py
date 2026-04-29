@@ -1,6 +1,6 @@
 """Functions for loading English contraction expansion rules."""
 
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final, Mapping, cast
@@ -19,7 +19,7 @@ __all__ = [
 DIR: Final = Path('contraction_expansion')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_ambiguous_map() -> tuple[str, ...]:
     """Get a cached tuple of ambiguous contractions."""
     return tuple(
@@ -30,7 +30,7 @@ def get_ambiguous_map() -> tuple[str, ...]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_common_stateless_participles() -> tuple[str, ...]:
     """Get a cached tuple of common stateless participles."""
     return tuple(
@@ -43,7 +43,7 @@ def get_common_stateless_participles() -> tuple[str, ...]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_idiomatic_map() -> Mapping[str, str]:
     """Get a cached map of idiomatic phrases."""
     return MappingProxyType(
@@ -54,7 +54,7 @@ def get_idiomatic_map() -> Mapping[str, str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_to_verb_words() -> frozenset[str]:
     """
     Get a cached `frozenset` of words that expand to 'to' despite noun
@@ -68,7 +68,7 @@ def get_to_verb_words() -> frozenset[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_unambiguous_map() -> Mapping[str, str]:
     """Get a cached map of unambiguous contractions."""
     return MappingProxyType(
@@ -81,7 +81,7 @@ def get_unambiguous_map() -> Mapping[str, str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_whatcha_are_words() -> tuple[str, ...]:
     """
     Get a cached tuple of "whatcha" "are" replacement words.
@@ -94,7 +94,7 @@ def get_whatcha_are_words() -> tuple[str, ...]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_whatcha_have_words() -> tuple[str, ...]:
     """
     Get a cached tuple of "whatcha" "have" replacement words.

@@ -2,7 +2,7 @@
 Functions for loading English string casing exceptions and prefixes.
 """
 
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final, Mapping, cast
@@ -20,7 +20,7 @@ __all__ = [
 DIR: Final = Path('string_casing')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_lookup_map() -> Mapping[str, str]:
     """Get a combined cached map for string casings."""
     absolute_map = cast(
@@ -36,7 +36,7 @@ def get_lookup_map() -> Mapping[str, str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_lowercase_abbreviations() -> frozenset[str]:
     """
     Get a cached `frozenset` of lowercase abbreviations.
@@ -46,7 +46,7 @@ def get_lowercase_abbreviations() -> frozenset[str]:
     )))
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_map_suffix_exceptions() -> frozenset[str]:
     """Get a cached `frozenset` of map suffix exceptions."""
     return frozenset(
@@ -57,7 +57,7 @@ def get_map_suffix_exceptions() -> frozenset[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_surname_prefix_exceptions() -> frozenset[str]:
     """Get a cached `frozenset` of surname prefix exceptions."""
     return frozenset(
@@ -68,7 +68,7 @@ def get_surname_prefix_exceptions() -> frozenset[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_surname_prefixes() -> frozenset[str]:
     """Get a cached `frozenset` of standard surname prefixes."""
     return frozenset(

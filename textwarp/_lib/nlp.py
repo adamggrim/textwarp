@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import gettext
-from functools import lru_cache
+from functools import cache
 from types import ModuleType
 from typing import TYPE_CHECKING
 
@@ -20,7 +20,7 @@ _ = gettext.gettext
 __all__ = ['extract_words_from_doc', 'process_as_doc']
 
 
-@lru_cache(maxsize=1)
+@cache
 def _load_spacy() -> ModuleType:
     """
     Lazily load and cache the spaCy module.
@@ -32,7 +32,7 @@ def _load_spacy() -> ModuleType:
     return spacy
 
 
-@lru_cache(maxsize=None)
+@cache
 def _load_spacy_model(model_name: str) -> spacy.language.Language:
     """
     Load a spaCy model by name.

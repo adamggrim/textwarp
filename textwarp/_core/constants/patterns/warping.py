@@ -1,6 +1,6 @@
 """Universal regular expressions for text warping."""
 
-from functools import lru_cache
+from functools import cache
 from typing import Iterable
 
 import regex as re
@@ -60,7 +60,7 @@ def create_words_regex(
     return re.compile(final_pattern, re.IGNORECASE)
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_dash() -> re.Pattern[str]:
     """
     Get a regular expression matching an en (–) or em (—) dash.
@@ -71,7 +71,7 @@ def get_dash() -> re.Pattern[str]:
     return re.compile(r'[–—]')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_em_dash_stand_in() -> re.Pattern[str]:
     """
     Get a regular expression matching characters that function as an em
@@ -83,7 +83,7 @@ def get_em_dash_stand_in() -> re.Pattern[str]:
     return re.compile(r'\s?--?\s?')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_multiple_spaces() -> re.Pattern[str]:
     """
     Get a regular expression matching two or more consecutive spaces.
@@ -94,7 +94,7 @@ def get_multiple_spaces() -> re.Pattern[str]:
     return re.compile(r'(?<=\S) {2,}')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_period_separated_initialism() -> re.Pattern[str]:
     """
     Get a regular expression matching a period-separated initialism.
@@ -105,7 +105,7 @@ def get_period_separated_initialism() -> re.Pattern[str]:
     return re.compile(r'\b(?:\p{L}+\.){2,}')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_word_character() -> re.Pattern[str]:
     """
     Get a regular expression matching any word character.

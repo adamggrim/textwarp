@@ -1,6 +1,6 @@
 """English-specific regular expression patterns for text warping."""
 
-from functools import lru_cache
+from functools import cache
 
 import regex as re
 
@@ -27,7 +27,7 @@ __all__ = [
 ]
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_ambiguous_contraction() -> re.Pattern[str]:
     """
     Get a regular expression matching any contraction that can
@@ -41,7 +41,7 @@ def get_ambiguous_contraction() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_any_apostrophe() -> re.Pattern[str]:
     """
     Get a regular expression matching any straight or curly apostrophe.
@@ -52,7 +52,7 @@ def get_any_apostrophe() -> re.Pattern[str]:
     return re.compile(r"['’‘]")
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_apostrophe_in_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a straight apostrophe within a
@@ -85,7 +85,7 @@ def get_apostrophe_in_word() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_contraction() -> re.Pattern[str]:
     """
     Get a regular expression matching any expandable contraction.
@@ -99,7 +99,7 @@ def get_contraction() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_contraction_suffixes_pattern() -> re.Pattern[str]:
     """
     Get a regular expression matching any contraction suffix (e.g.,
@@ -113,7 +113,7 @@ def get_contraction_suffixes_pattern() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_common_stateless_participles() -> re.Pattern[str]:
     """
     Get a regular expression matching common stateless participles
@@ -127,7 +127,7 @@ def get_common_stateless_participles() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_idiomatic_phrases() -> re.Pattern[str]:
     """
     Get a regular expression matching idiomatic phrases with their
@@ -141,7 +141,7 @@ def get_idiomatic_phrases() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_map_suffix_exceptions_pattern() -> re.Pattern[str]:
     """
     Get a regular expression matching suffix exceptions.
@@ -155,7 +155,7 @@ def get_map_suffix_exceptions_pattern() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_name_prefix_exception_pattern() -> re.Pattern[str]:
     """
     Get a regular expression matching prefix exceptions.
@@ -169,7 +169,7 @@ def get_name_prefix_exception_pattern() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_n_t_suffix() -> re.Pattern[str]:
     """
     Get a regular expression matching negative contraction suffixes.
@@ -180,7 +180,7 @@ def get_n_t_suffix() -> re.Pattern[str]:
     return re.compile(r"n['’‘]t$", re.IGNORECASE)
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_punct_inside() -> re.Pattern[str]:
     """
     Get a regular expression matching punctuation inside quotation
@@ -192,7 +192,7 @@ def get_punct_inside() -> re.Pattern[str]:
     return re.compile(r'([.,])(["”\'’]?["”\'’])')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_punct_outside() -> re.Pattern[str]:
     """
     Get a regular expression matching punctuation outside quotation
@@ -204,7 +204,7 @@ def get_punct_outside() -> re.Pattern[str]:
     return re.compile(r'(["”\'’]?["”\'’])([.,])')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_surname_prefix_pattern() -> re.Pattern[str]:
     """
     Get a regular expression matching any surname prefix.
@@ -218,7 +218,7 @@ def get_surname_prefix_pattern() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_whatcha_are_words() -> re.Pattern[str]:
     """
     Get a regular expression matching words where "whatcha" expands to
@@ -232,7 +232,7 @@ def get_whatcha_are_words() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_whatcha_have_words() -> re.Pattern[str]:
     """
     Get a regular expression matching words where "whatcha" expands to

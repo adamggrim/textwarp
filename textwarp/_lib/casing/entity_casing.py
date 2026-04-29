@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cache
 from typing import TYPE_CHECKING
 
 import regex as re
@@ -91,7 +91,7 @@ def _check_for_ngrams(
     return False
 
 
-@lru_cache(maxsize=1)
+@cache
 def _get_custom_entities_pattern() -> re.Pattern[str]:
     """
     Build and cache the regular expression for finding custom entities.

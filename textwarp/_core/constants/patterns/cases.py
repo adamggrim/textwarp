@@ -1,6 +1,6 @@
 """Universal regular expressions for identifying cases."""
 
-from functools import lru_cache
+from functools import cache
 
 import regex as re
 
@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_camel_word() -> re.Pattern[str]:
     """
     Get a regular expression matching any camel case word.
@@ -26,7 +26,7 @@ def get_camel_word() -> re.Pattern[str]:
     return re.compile(r'\b\p{Ll}[\p{Ll}\d]*\p{Lu}[\p{L}\d]*\b')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_dot_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a dot case word.
@@ -37,7 +37,7 @@ def get_dot_word() -> re.Pattern[str]:
     return re.compile(r'\b\p{L}[\p{L}\d]*(?:\.[\p{L}\d]+)+\b')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_kebab_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a kebab case word.
@@ -48,7 +48,7 @@ def get_kebab_word() -> re.Pattern[str]:
     return re.compile(r'\b\p{L}[\p{L}\d]*(?:\-[\p{L}\d]+)+\b')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_lower_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a lowercase word and any optional
@@ -72,7 +72,7 @@ def get_lower_word() -> re.Pattern[str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_pascal_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a Pascal case word.
@@ -83,7 +83,7 @@ def get_pascal_word() -> re.Pattern[str]:
     return re.compile(r'\b\p{Lu}[\p{Lu}\d]*\p{Ll}[\p{L}\d]*\b')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_snake_word() -> re.Pattern[str]:
     """
     Get a regular expression matching a snake case word.
@@ -94,7 +94,7 @@ def get_snake_word() -> re.Pattern[str]:
     return re.compile(r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b')
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_upper_word() -> re.Pattern[str]:
     """
     Get a regular expression matching an uppercase word and any optional

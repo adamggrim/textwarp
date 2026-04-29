@@ -1,6 +1,6 @@
 """Maps used across the package for lookups."""
 
-from functools import lru_cache
+from functools import cache
 from types import MappingProxyType
 
 import regex as re
@@ -10,7 +10,7 @@ from textwarp._core.constants import patterns
 __all__ = ['get_case_names_regex_map']
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
     """
     Get a map of valid case name inputs to their corresponding compiled

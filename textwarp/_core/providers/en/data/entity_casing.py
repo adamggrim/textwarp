@@ -1,6 +1,6 @@
 """Functions for loading English entity casing rules."""
 
-from functools import lru_cache
+from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final, Mapping, cast
@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_absolute_map() -> Mapping[str, str]:
     """Get a cached map for absolute entity casing."""
     return MappingProxyType(
@@ -28,7 +28,7 @@ def get_absolute_map() -> Mapping[str, str]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
     """Get a cached map for contextual entity casing."""
     raw_map = cast(
@@ -40,7 +40,7 @@ def get_contextual_map() -> Mapping[str, tuple[EntityCasingContext, ...]]:
     )
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_contraction_suffixes() -> frozenset[str]:
     """Get a cached frozenset of allowed contraction suffixes."""
     return frozenset(
