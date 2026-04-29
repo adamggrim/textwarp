@@ -48,7 +48,10 @@ def test_title_case_unicode():
 
     assert result.startswith('À')
     assert 'du' in result.split()
-    assert result == 'À La Recherche du Temps Perdu'
+    assert result in (
+        'À La Recherche du Temps Perdu',
+        'À la Recherche du Temps Perdu' # Acccount for `en_core_web_sm`.
+    )
 
 
 @pytest.mark.parametrize('warping_func', [
