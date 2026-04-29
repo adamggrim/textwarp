@@ -1,6 +1,7 @@
 """Main loop logic for executing commands."""
 
 import gettext
+import logging
 from typing import Callable, TypeAlias
 
 from textwarp._cli.constants.messages import (
@@ -25,6 +26,7 @@ __all__ = [
 # clipboard text.
 _ActionHandler: TypeAlias = Callable[[Callable[[str], str | None], str], None]
 
+_logger = logging.getLogger(__name__)
 
 def _paste_and_validate() -> str | None:
     """
@@ -51,8 +53,9 @@ def _paste_and_validate() -> str | None:
             )
         print_wrapped(msg)
         return None
-    except Exception as e:
-        print_wrapped(str(e))
+    except Exception:
+        _logger.exception('Unexpected clipboard error.')
+        print_wrapped(_('An unexpected error occurred while accessing the clipboard.'))
         return None
 
 
