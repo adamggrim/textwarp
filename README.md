@@ -147,7 +147,6 @@ textwarp/
 │ ├── constants/
 │ │ ├── patterns/
 │ │ │ ├── __init__.py: Exposes core regular expression patterns
-│ │ │ ├── case_conversion.py: Universal regular expressions for converting between cases
 │ │ │ ├── cases.py: Universal regular expressions for identifying cases
 │ │ │ └── warping.py: Universal regular expressions for text warping
 │ │ ├── __init__.py: Exposes constants for use across the package
@@ -228,8 +227,9 @@ textwarp/
 ├── _lib/
 │ ├── casing/
 │ │ ├── __init__.py: Exposes casing logic for use across the package
-│ │ ├── case_conversion.py: Functions for converting between cases
 │ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
+│ │ ├── natural_casing.py: Functions for converting between natural cases
+│ │ ├── programming_casing.py: Functions for converting between programming cases
 │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
 │ │ └── token_casing.py: Logic for spaCy-based token capitalization
 │ ├── __init__.py: Exposes library functions for use across the package
