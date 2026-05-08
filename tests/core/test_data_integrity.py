@@ -1,5 +1,5 @@
+import importlib.resources
 import json
-from pathlib import Path
 
 import pytest
 
@@ -9,12 +9,18 @@ from textwarp._core.providers.en.data.contraction_expansion import (
     get_unambiguous_map
 )
 
-DATA_DIR = Path(__file__).parents[2] / 'textwarp' / '_core' / 'data'
-
-
 def get_json_files():
     """Helper function to find all JSON files in the data directory."""
-    return list(DATA_DIR.rglob('*.json'))
+    data_dir = importlib.resources.files('textwarp').joinpath('_core', 'data')
+
+    def _find_json(directory):
+        for item in directory.iterdir():
+            if item.is_dir():
+                yield from _find_json(item)
+            elif item.name.endswith('.json'):
+                yield item
+
+    return list(_find_json(data_dir))
 
 
 def test_absolute_casings_keys_are_lowercase():
@@ -30,10 +36,9 @@ def test_absolute_casings_keys_are_lowercase():
 @pytest.mark.parametrize('json_file', get_json_files())
 def test_json_files_are_valid_and_not_empty(json_file):
     """Verify that every JSON file is valid syntax and has content."""
-    with open(json_file, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        assert data is not None
-        assert len(data) > 0
+    data = json.loads(json_file.read_text(encoding='utf-8'))
+    assert data is not None
+    assert len(data) > 0
 
 
 def test_no_duplicate_contractions():
