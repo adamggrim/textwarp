@@ -126,125 +126,126 @@ Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` wil
 
 ```
 textwarp/
-├── _cli/
-│ ├── constants/
-│ │ ├── __init__.py: Exposes command-line inputs and messages
-│ │ ├── inputs.py: Sets for command-line input
-│ │ └── messages.py: Strings for displaying command-line messages
-│ ├── __init__.py: Initializes the _cli sub-package
-│ ├── args.py: A map of command-line arguments to functions and help messages
-│ ├── dispatch.py: A map of string inputs to case conversion functions
-│ ├── formatting.py: Functions for formatting analysis into readable strings
-│ ├── parsing.py: Command-line argument parsing using argparse
-│ ├── runners.py: Main loop logic for executing commands
-│ ├── ui.py: Functions for handling console input and output
-│ └── validation.py: Validators for text, clipboard and regular expression content
-├── _commands/
-│ ├── __init__.py: Namespace for analysis and replacement commands
-│ ├── analysis.py: Runners for analysis commands
-│ └── replacement.py: Runners for replacement commands
-├── _core/
-│ ├── constants/
-│ │ ├── patterns/
-│ │ │ ├── __init__.py: Exposes core regular expression patterns
-│ │ │ ├── cases.py: Universal regular expressions for identifying cases
-│ │ │ └── warping.py: Universal regular expressions for text warping
-│ │ ├── __init__.py: Exposes constants for use across the package
-│ │ ├── maps.py: Maps used across the package for lookups
-│ │ └── nlp.py: Objects used across the package for spaCy processing
-│ ├── data/
-│ │ ├── en/
-│ │ │ ├── contraction_expansion/
-│ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
-│ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
-│ │ │ │ ├── idiomatic_phrases.json: Maps idiomatic phrases to their expansions
-│ │ │ │ ├── to_verb_words.json: Lists words that expand to "to" despite noun tags
-│ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
-│ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
-│ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
-│ │ │ ├── entity_casing/
-│ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
-│ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
-│ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
-│ │ │ ├── nlp_constants/
-│ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
-│ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
-│ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking left
-│ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained parts-of-speech tags for the first word of a noun phrase
-│ │ │ │ ├── open_quotes.json: Lists opening quote characters
-│ │ │ │ ├── participle_tags.json: Lists fine-grained parts-of-speech tags for past tense and past participle verb forms
-│ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
-│ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
-│ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
-│ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns and nouns
-│ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
-│ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained parts-of-speech tag exceptions for title case capitalization
-│ │ │ │ └── wh_words.json: Lists wh-words that start questions
-│ │ │ ├── string_casing/
-│ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
-│ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
-│ │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
-│ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
-│ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
-│ │ │ │ └── surname_prefixes.json: Lists common name prefixes
-│ │ │ ├── token_casing/
-│ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
-│ │ │ └── elision_words.json: Lists commonly elided words
-│ │ └── morse_map.json: Maps characters to their Morse code equivalent
-│ ├── providers/
-│ │ ├── en/
-│ │ │ ├── data/
-│ │ │ │ ├── __init__.py: Exposes English-specific data modules
-│ │ │ │ ├── contraction_expansion.py: Functions for loading English contraction expansion rules
-│ │ │ │ ├── entity_casing.py: Functions for loading English entity casing rules
-│ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
-│ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
-│ │ │ │ └── token_casing.py: Functions for loading English token casing rules
-│ │ │ ├── patterns/
-│ │ │ │ ├── __init__.py: Exposes English-specific regular expression patterns
-│ │ │ │ └── warping.py: English-specific regular expression patterns for text warping
-│ │ │ ├── __init__.py: Exposes English-specific language provider modules
-│ │ │ ├── casing.py: English-specific string casing logic
-│ │ │ ├── constants.py: English-specific NLP constants
-│ │ │ ├── contractions.py: Sets used in English contraction variants
-│ │ │ ├── disambiguation.py: English-specific functions for resolving ambiguous contractions based on context
-│ │ │ ├── encoding.py: English-specific functions for encoding and decoding text
-│ │ │ ├── handlers.py: English-specific functions for handling specific types of contractions
-│ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
-│ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
-│ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
-│ │ │ └── utils.py: English-specific utility functions
-│ │ ├── __init__.py: Exposes strategy pattern classes containing language-specific logic
-│ │ └── base.py: Abstract base class for language providers
-│ ├── __init__.py: Exposes core configuration, constants and models
-│ ├── context.py: Thread-safe global context for the active locale and provider
-│ ├── encoding.py: Functions for loading universal encoding data
-│ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
-│ ├── exceptions.py: Custom exceptions for clipboard and validation errors
-│ ├── models.py: Classes for parts-of-speech counts and word counts
-│ ├── types.py: Generic type definitions used across the package
-│ └── utils.py: Universal utility functions
-├── _lib/
-│ ├── casing/
-│ │ ├── __init__.py: Exposes casing logic for use across the package
-│ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
-│ │ ├── natural_casing.py: Functions for converting between natural cases
-│ │ ├── programming_casing.py: Functions for converting between programming cases
-│ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
-│ │ └── token_casing.py: Logic for spaCy-based token capitalization
-│ ├── __init__.py: Exposes library functions for use across the package
-│ ├── contractions.py: Main logic for expanding contractions
-│ ├── encoding.py: Functions for encoding and decoding text
-│ ├── manipulation.py: Functions for manipulating a given string
-│ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
-│ ├── nlp.py: Functions for lazy spaCy loading and text processing
-│ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
-│ └── punctuation.py: Functions for converting between straight and curly quotes
-├── __init__.py: A Python package for analyzing and transforming text
-├── __main__.py: The main entry point for the package, containing the main loop and associated functions
-├── analysis.py: Public functions for analyzing text
-└── warping.py: Public functions for warping text
-```
+└── src/
+  ├── _cli/
+  │ ├── constants/
+  │ │ ├── __init__.py: Exposes command-line inputs and messages
+  │ │ ├── inputs.py: Sets for command-line input
+  │ │ └── messages.py: Strings for displaying command-line messages
+  │ ├── __init__.py: Initializes the _cli sub-package
+  │ ├── args.py: A map of command-line arguments to functions and help messages
+  │ ├── dispatch.py: A map of string inputs to case conversion functions
+  │ ├── formatting.py: Functions for formatting analysis into readable strings
+  │ ├── parsing.py: Command-line argument parsing using argparse
+  │ ├── runners.py: Main loop logic for executing commands
+  │ ├── ui.py: Functions for handling console input and output
+  │ └── validation.py: Validators for text, clipboard and regular expression content
+  ├── _commands/
+  │ ├── __init__.py: Namespace for analysis and replacement commands
+  │ ├── analysis.py: Runners for analysis commands
+  │ └── replacement.py: Runners for replacement commands
+  ├── _core/
+  │ ├── constants/
+  │ │ ├── patterns/
+  │ │ │ ├── __init__.py: Exposes core regular expression patterns
+  │ │ │ ├── cases.py: Universal regular expressions for identifying cases
+  │ │ │ └── warping.py: Universal regular expressions for text warping
+  │ │ ├── __init__.py: Exposes constants for use across the package
+  │ │ ├── maps.py: Maps used across the package for lookups
+  │ │ └── nlp.py: Objects used across the package for spaCy processing
+  │ ├── data/
+  │ │ ├── en/
+  │ │ │ ├── contraction_expansion/
+  │ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
+  │ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
+  │ │ │ │ ├── idiomatic_phrases.json: Maps idiomatic phrases to their expansions
+  │ │ │ │ ├── to_verb_words.json: Lists words that expand to "to" despite noun tags
+  │ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+  │ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
+  │ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
+  │ │ │ ├── entity_casing/
+  │ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
+  │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
+  │ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
+  │ │ │ ├── nlp_constants/
+  │ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
+  │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
+  │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking left
+  │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained parts-of-speech tags for the first word of a noun phrase
+  │ │ │ │ ├── open_quotes.json: Lists opening quote characters
+  │ │ │ │ ├── participle_tags.json: Lists fine-grained parts-of-speech tags for past tense and past participle verb forms
+  │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
+  │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
+  │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
+  │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns and nouns
+  │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
+  │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained parts-of-speech tag exceptions for title case capitalization
+  │ │ │ │ └── wh_words.json: Lists wh-words that start questions
+  │ │ │ ├── string_casing/
+  │ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
+  │ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
+  │ │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
+  │ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
+  │ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
+  │ │ │ │ └── surname_prefixes.json: Lists common name prefixes
+  │ │ │ ├── token_casing/
+  │ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
+  │ │ │ └── elision_words.json: Lists commonly elided words
+  │ │ └── morse_map.json: Maps characters to their Morse code equivalent
+  │ ├── providers/
+  │ │ ├── en/
+  │ │ │ ├── data/
+  │ │ │ │ ├── __init__.py: Exposes English-specific data modules
+  │ │ │ │ ├── contraction_expansion.py: Functions for loading English contraction expansion rules
+  │ │ │ │ ├── entity_casing.py: Functions for loading English entity casing rules
+  │ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
+  │ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
+  │ │ │ │ └── token_casing.py: Functions for loading English token casing rules
+  │ │ │ ├── patterns/
+  │ │ │ │ ├── __init__.py: Exposes English-specific regular expression patterns
+  │ │ │ │ └── warping.py: English-specific regular expression patterns for text warping
+  │ │ │ ├── __init__.py: Exposes English-specific language provider modules
+  │ │ │ ├── casing.py: English-specific string casing logic
+  │ │ │ ├── constants.py: English-specific NLP constants
+  │ │ │ ├── contractions.py: Sets used in English contraction variants
+  │ │ │ ├── disambiguation.py: English-specific functions for resolving ambiguous contractions based on context
+  │ │ │ ├── encoding.py: English-specific functions for encoding and decoding text
+  │ │ │ ├── handlers.py: English-specific functions for handling specific types of contractions
+  │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
+  │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
+  │ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
+  │ │ │ └── utils.py: English-specific utility functions
+  │ │ ├── __init__.py: Exposes strategy pattern classes containing language-specific logic
+  │ │ └── base.py: Abstract base class for language providers
+  │ ├── __init__.py: Exposes core configuration, constants and models
+  │ ├── context.py: Thread-safe global context for the active locale and provider
+  │ ├── encoding.py: Functions for loading universal encoding data
+  │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
+  │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
+  │ ├── models.py: Classes for parts-of-speech counts and word counts
+  │ ├── types.py: Generic type definitions used across the package
+  │ └── utils.py: Universal utility functions
+  ├── _lib/
+  │ ├── casing/
+  │ │ ├── __init__.py: Exposes casing logic for use across the package
+  │ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
+  │ │ ├── natural_casing.py: Functions for converting between natural cases
+  │ │ ├── programming_casing.py: Functions for converting between programming cases
+  │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
+  │ │ └── token_casing.py: Logic for spaCy-based token capitalization
+  │ ├── __init__.py: Exposes library functions for use across the package
+  │ ├── contractions.py: Main logic for expanding contractions
+  │ ├── encoding.py: Functions for encoding and decoding text
+  │ ├── manipulation.py: Functions for manipulating a given string
+  │ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
+  │ ├── nlp.py: Functions for lazy spaCy loading and text processing
+  │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
+  │ └── punctuation.py: Functions for converting between straight and curly quotes
+  ├── __init__.py: A Python package for analyzing and transforming text
+  ├── __main__.py: The main entry point for the package, containing the main loop and associated functions
+  ├── analysis.py: Public functions for analyzing text
+  └── warping.py: Public functions for warping text
+  ```
 
 ## Usage
 
