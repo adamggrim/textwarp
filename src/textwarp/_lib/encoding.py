@@ -29,7 +29,7 @@ def _get_morse_spacing_patterns(
         text: The Morse string to analyze.
 
     Returns:
-        A tuple containing the compiled word separator pattern and
+        A tuple containing both the compiled word separator pattern and
         the compiled character separator pattern.
     """
     space_matches = re.findall(r' +', text)
@@ -39,10 +39,10 @@ def _get_morse_spacing_patterns(
     else:
         gap_lengths = [len(s) for s in space_matches]
 
-        try:
-            char_gap_length = int(statistics.mode(gap_lengths))
-        except statistics.StatisticsError:
-            char_gap_length = int(statistics.median(gap_lengths))
+        modes = statistics.multimode(gap_lengths)
+        char_gap_length = int(min(modes)) if modes else int(
+            statistics.median(gap_lengths)
+        )
 
         long_gap_lengths = [L for L in gap_lengths if L > char_gap_length]
 
