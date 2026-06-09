@@ -115,7 +115,7 @@ echo "is there anybody in there" | textwarp --snake-case | textwarp --uppercase
 Use the `-f` (`--find`) and `-r` (`--replace`) to directly find and replace commands.
 
 ```bash
-textwarp --replace -f "marriage" -r "carriage" input.txt
+textwarp --replace-text -f "marriage" -r "carriage" input.txt
 ```
 
 ### Markdown
