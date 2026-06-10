@@ -25,6 +25,15 @@ __all__ = [
 # Fine-grained parts-of-speech tags for base verb forms.
 BASE_VERB_TAGS: frozenset[str]
 
+# A mapping of curly apostrophes and quotation marks to their straight
+# counterparts.
+CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
+    '‘': "'",
+    '’': "'",
+    '“': '"',
+    '”': '"'
+})
+
 # Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: frozenset[str]
 

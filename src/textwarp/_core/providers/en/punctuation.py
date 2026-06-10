@@ -4,6 +4,7 @@ quotes.
 """
 
 from textwarp._core.providers import en
+from textwarp._core.providers.en.constants import CURLY_TO_STRAIGHT_TABLE
 
 __all__ = [
     'curly_to_straight',
@@ -22,18 +23,7 @@ def curly_to_straight(text: str) -> str:
     Returns:
         str: The converted string.
     """
-    translation_table = str.maketrans({
-        # Curly opening single quote to straight single quote
-        '‘': "'",
-        # Curly closing single quote (or apostrophe) to straight single
-        # quote
-        '’': "'",
-        # Curly opening double quote to straight double quote
-        '“': '"',
-        # Curly closing double quote to straight double quote
-        '”': '"'
-    })
-    return text.translate(translation_table)
+    return text.translate(CURLY_TO_STRAIGHT_TABLE)
 
 
 def remove_apostrophes(text: str) -> str:
