@@ -79,7 +79,6 @@ def load_json_data(
         parts = Path(relative_path).parts
 
     resource = pkg_files.joinpath('_core', 'data')
-    resource = pkg_files.joinpath('_core').joinpath('data')
     for part in parts:
         resource = resource.joinpath(part)
 

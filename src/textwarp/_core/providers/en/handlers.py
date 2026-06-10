@@ -149,7 +149,6 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     # Verb comes before the subject (e.g., "Don't I").
     if subject_token and subject_token.i > prev_token.i:
         subject_end_token = subject_token.right_edge
-        subject_end_token = subject_token.right_edge
 
         # Prevent negative slicing.
         if subject_end_token.i < span.end:

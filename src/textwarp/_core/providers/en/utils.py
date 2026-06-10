@@ -48,8 +48,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
                 return child
 
     # Fallback A: Look immediately before the verb (standard order).
-    curr_idx = verb_token.i - 1
-
     for curr_idx in range(verb_token.i - 1, -1, -1):
         candidate = doc[curr_idx]
         if candidate.pos_ in en.constants.SUBJECT_POS_TAGS:
