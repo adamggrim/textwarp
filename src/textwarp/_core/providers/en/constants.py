@@ -38,6 +38,9 @@ NOUN_PHRASE_TAGS: frozenset[str]
 # Opening quote characters.
 OPEN_QUOTES: frozenset[str]
 
+# Quotation marks characters.
+QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
+
 # A mapping of integers to their corresponding ordinal suffix.
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',
@@ -62,8 +65,13 @@ PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
     {'care', 'mind', 'prefer'}
 )
 
+# Suffixes for a participle form with the "g" dropped.
+PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
+
 # Named entities that are typically proper nouns.
 PROPER_NOUN_ENTITIES: frozenset[str]
+
+QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
 
 # Coarse-grained parts-of-speech tags for stopping a subject search when
 # looking right.

@@ -14,6 +14,10 @@ if TYPE_CHECKING:
 
 from textwarp._core.constants import NOUN_TAGS
 from textwarp._core.providers import en
+from textwarp._core.providers.en.constants import (
+    PARTICIPLE_SUFFIXES,
+    QUOTATION_MARKS
+)
 
 __all__ = [
     'disambiguate_ain_t',
@@ -45,13 +49,13 @@ def _is_present_participle(token: Token) -> bool:
     if en.patterns.get_common_stateless_participles().match(text_lower):
         return True
 
-    if text_lower.endswith(("in'", 'in’')):
+    if text_lower.endswith(PARTICIPLE_SUFFIXES):
         return True
 
-    doc = token.doc
-    if text_lower.endswith('in') and token.i + 1 < len(doc):
-        next_token_text = doc[token.i + 1].text
-        if next_token_text in {'"', "'"}:
+    if text_lower.endswith('in'):
+        doc = token.doc
+        if (token.i + 1 < len(doc)
+                and doc[token.i + 1].text in QUOTATION_MARKS):
             return True
 
     return False
