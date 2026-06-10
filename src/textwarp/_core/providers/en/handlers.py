@@ -149,12 +149,24 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     # Verb comes before the subject (e.g., "Don't I").
     if subject_token and subject_token.i > prev_token.i:
         subject_end_token = subject_token.right_edge
+        subject_end_token = subject_token.right_edge
+
+        # Prevent negative slicing.
+        if subject_end_token.i < span.end:
+            subject_end_token = subject_token
+
         return_idx = subject_end_token.idx + len(subject_end_token)
 
-        # Everything between the end of the contraction and the end
-        # of the subject phrase.
-        intermediate_text = doc.text[span.end_char : return_idx]
-        expanded_text = f'{base_verb}{intermediate_text} not'
+        # Every token between the end of the contraction and the end of
+        # the subject phrase.
+        intermediate_tokens = doc[span.end : subject_end_token.i + 1]
+        intermediate_text = ''.join(t.text + t.whitespace_ for t in intermediate_tokens)
+
+        # Ensure spacing before 'not' does not change.
+        if not intermediate_text.endswith(' '):
+            intermediate_text += ' '
+
+        expanded_text = f'{base_verb} {intermediate_text}not'
 
     # Verb comes after the subject (e.g., "I don't").
     else:
