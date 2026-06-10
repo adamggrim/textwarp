@@ -210,9 +210,6 @@ def case_from_string(
     if preserve_mixed_case:
         capitalization_strategies.append(_preserve_mixed_case)
 
-    if lowercase_by_default:
-        capitalization_strategies.insert(4, _handle_lowercase_abbreviation)
-
     for strategy in capitalization_strategies:
         word_result = strategy(word, lower_word)
         if word_result is not None:
