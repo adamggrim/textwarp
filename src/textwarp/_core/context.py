@@ -112,8 +112,9 @@ class TextwarpContext:
                     )
 
         except (ImportError, ModuleNotFoundError):
-            # Fallback for when the `SUPPORTED_LOCALES` check passed but
-            # the module failed to load.
+            # Fallback for when the `SUPPORTED_LOCALES` check passed,
+            # but the module failed to load.
+            self.locale = 'en'
             from textwarp._core.providers.en.provider import EnglishProvider
             self._provider = EnglishProvider()
 
