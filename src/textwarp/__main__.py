@@ -7,6 +7,8 @@ import gettext
 import sys
 from typing import Callable, Final
 
+from spacy.tokens import Doc
+
 from textwarp._cli.args import ANALYSIS_COMMANDS
 from textwarp._cli.parsing import ParsedArgs, parse_args
 from textwarp._cli.runners import (
@@ -27,7 +29,7 @@ _REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
 
 def _apply_pipeline(
-    text: str,
+    text: str | Doc,
     pipeline: Pipeline,
     arg_to_replace: str | None = None,
     replacement_arg: str | None = None
@@ -36,7 +38,7 @@ def _apply_pipeline(
     Apply a sequence of pipeline functions to a given string.
 
     Args:
-        text: The string to transform.
+        text: The string or spaCy Doc to transform.
         pipeline: A list of tuples containing:
             - The command-line argument string (e.g., `word-count`).
             - The corresponding callable function (e.g., `word_count`).
@@ -50,11 +52,13 @@ def _apply_pipeline(
             from the pipeline, or `None` if the pipeline executes an
             analysis command.
     """
+    content = text
+    
     for cmd_name, func in pipeline:
         if cmd_name == 'clear':
             clear_clipboard()
         elif cmd_name in ANALYSIS_COMMANDS:
-            func(text)
+            func(content)
             return None
         else:
             normalized_name = cmd_name.replace('-', '_')
@@ -63,14 +67,15 @@ def _apply_pipeline(
                 and arg_to_replace is not None
                 and replacement_arg is not None
             ):
-                text = func(
-                    text,
+                content = func(
+                    content,
                     arg_to_replace=arg_to_replace,
                     replacement_arg=replacement_arg
                 )
             else:
-                text = func(text)
-    return text
+                content = func(content)
+                
+    return content.text if isinstance(content, Doc) else content
 
 
 def _handle_output(
