@@ -1,5 +1,5 @@
-.DS_Store
-*.egg-info
 __pycache__/
 build/
+.DS_Store
+*.egg-info
 repomix-output.xml
