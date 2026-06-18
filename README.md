@@ -28,54 +28,61 @@ This example demonstrates how to convert clipboard text to camel case using `tex
 
     For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
-    -h, --help             show this help message and exit
-    --version              show version number and exit
-    --alternating-caps     cOnVeRt To AlTeRnAtInG cApS
-    --binary               convert to binary
-    --camel-case           convertToCamelCase
-    --capitalize           Capitalize The First Character Of Each Word
-    --cardinal             convert ordinal numbers to cardinal numbers
-    --char-count           count characters
-    --clear                clear clipboard text
-    --curly-quotes         convert "straight quotes" to “curly quotes”
-    --dot-case             convert.to.dot.case
-    --expand-contractions  expand contractions
-    --from-binary          convert from binary
-    --from-hexadecimal     convert from hexadecimal
-    --from-morse           convert from Morse code
-    --hexadecimal          convert to hexadecimal
-    --hyphens-to-em        convert consecutive hyphens to em dashes
-    --hyphen-to-en         convert hyphens to en dashes
-    --kebab-case           convert-to-kebab-case
-    --line-count           count lines
-    --lowercase            convert to lowercase
-    --mfws                 get most frequent words
-    --morse                convert to Morse code
-    --ordinal              convert cardinal numbers to ordinal numbers
-    --pascal-case          ConvertToPascalCase
-    --plain-text           convert to plain text
-    --pos-counts           count parts of speech
-    --punct-to-inside      "move punctuation inside quotation marks."
-    --punct-to-outside     "move punctuation outside quotation marks".
-    --random-case          randomize the casing of each character
-    --randomize            randomize characters
-    --redact               redact text
-    --replace              find and replace text
-    --replace-case         find and replace a case
-    --replace-regex        find and replace a regular expression
-    --reverse              reverse text
-    --sentence-case        Convert to sentence case.
-    --sentence-count       count sentences
-    --single-spaces        convert consecutive spaces to a single space
-    --snake-case           convert_to_snake_case
-    --straight-quotes      convert “curly quotes” to "straight quotes"
-    --strip                remove leading and trailing whitespace
-    --swapcase             swap the case of all alphabetical characters
-    --time-to-read         calculate time to read
-    --title-case           Convert to Title Case
-    --uppercase            CONVERT TO ALL CAPS
-    --word-count           count words
-    --widen                w i d e n  t e x t
+    -h, --help               show this help message and exit
+    --version                show version number and exit
+    -l LANG, --lang LANG     set the language locale
+    -m, --markdown           parse text as Markdown and preserve formatting
+    -o FILE, --output FILE   optional path to write the output file
+    -c, --copy               copy the output to the clipboard
+    -f FIND, --find FIND     text, case or regular expression to find
+    -r TEXT, --replace TEXT  replacement text
+    --alternating-caps       cOnVeRt To AlTeRnAtInG cApS
+    --binary                 convert to binary
+    --camel-case             convertToCamelCase
+    --capitalize             Capitalize The First Character Of Each Word
+    --cardinal               convert ordinal numbers to cardinal numbers
+    --char-count             count characters
+    --clear                  clear clipboard text
+    --curly-quotes           convert "straight quotes" to “curly quotes”
+    --dot-case               convert.to.dot.case
+    --expand-contractions    expand contractions
+    --from-binary            convert from binary
+    --from-hexadecimal       convert from hexadecimal
+    --from-morse             convert from Morse code
+    --hexadecimal            convert to hexadecimal
+    --hyphen-to-en           convert hyphens to en dashes
+    --hyphens-to-em          convert consecutive hyphens to em dashes
+    --kebab-case             convert-to-kebab-case
+    --line-count             count lines
+    --lowercase              convert to lowercase
+    --mfws                   get most frequent words
+    --morse                  convert to Morse code
+    --ordinal                convert cardinal numbers to ordinal numbers
+    --pascal-case            ConvertToPascalCase
+    --plain-text             convert to plain text
+    --pos-counts             count parts of speech
+    --punct-to-inside        "move punctuation inside quotation marks."
+    --punct-to-outside       "move punctuation outside quotation marks".
+    --random-case            randomize the casing of each character
+    --randomize              randomize characters
+    --redact                 redact text
+    --replace-case           find and replace a case
+    --replace-regex          find and replace a regular expression
+    --replace-text           find and replace text
+    --reverse                reverse text
+    --sentence-case          Convert to sentence case.
+    --sentence-count         count sentences
+    --single-spaces          convert consecutive spaces to a single space
+    --snake-case             convert_to_snake_case
+    --straight-quotes        convert “curly quotes” to "straight quotes"
+    --strip                  remove leading and trailing whitespace
+    --swapcase               swap the case of all alphabetical characters
+    --time-to-read           calculate time to read
+    --title-case             Convert to Title Case
+    --uppercase              CONVERT TO ALL CAPS
+    --widen                  w i d e n  t e x t
+    --word-count             count words
+    --zalgo                  c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
     ```
 
 3. **Paste text from the clipboard**
