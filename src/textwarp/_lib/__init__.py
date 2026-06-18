@@ -19,6 +19,7 @@ from textwarp._lib.encoding import (
     to_morse
 )
 from textwarp._lib.manipulation import (
+    from_zalgo,
     randomize,
     reverse,
     to_single_spaces,
@@ -42,6 +43,7 @@ __all__ = [
     'from_binary',
     'from_hexadecimal',
     'from_morse',
+    'from_zalgo',
     'map_all_entities',
     'ordinal_to_cardinal',
     'process_as_doc',

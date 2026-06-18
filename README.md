@@ -49,6 +49,7 @@ This example demonstrates how to convert clipboard text to camel case using `tex
     --from-binary            convert from binary
     --from-hexadecimal       convert from hexadecimal
     --from-morse             convert from Morse code
+    --from-zalgo             remove Zalgo diacritics
     --hexadecimal            convert to hexadecimal
     --hyphen-to-en           convert hyphens to en dashes
     --hyphens-to-em          convert consecutive hyphens to em dashes

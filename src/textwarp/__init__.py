@@ -20,6 +20,7 @@ _MODULE_MAP: dict[str, str] = {
     'from_binary': 'textwarp.warping',
     'from_hexadecimal': 'textwarp.warping',
     'from_morse': 'textwarp.warping',
+    'from_zalgo': 'textwarp.warping',
     'hyphen_to_en': 'textwarp.warping',
     'hyphens_to_em': 'textwarp.warping',
     'ordinal_to_cardinal': 'textwarp.warping',

@@ -19,6 +19,7 @@ from textwarp._lib import (
     contractions,
     curly_to_straight,
     encoding,
+    from_zalgo,
     manipulation,
     numbers,
     process_as_doc,
@@ -36,6 +37,7 @@ __all__ = [
     'from_binary',
     'from_hexadecimal',
     'from_morse',
+    'from_zalgo',
     'hyphen_to_en',
     'hyphens_to_em',
     'ordinal_to_cardinal',
@@ -145,6 +147,19 @@ def from_morse(text: str) -> str:
         str: The converted string (in all caps).
     """
     return encoding.from_morse(text)
+
+
+def from_zalgo(text: str) -> str:
+    """
+    Remove Zalgo diacritics.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return manipulation.from_zalgo(text)
 
 
 def hyphen_to_en(text: str) -> str:

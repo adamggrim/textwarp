@@ -1,5 +1,6 @@
 """Functions for manipulating a given string."""
 
+import unicodedata
 from random import choice, randint, shuffle
 
 import regex as re
@@ -7,12 +8,29 @@ import regex as re
 from textwarp._core.constants import patterns
 
 __all__ = [
+    'from_zalgo',
     'randomize',
     'reverse',
     'to_single_spaces',
     'widen',
     'zalgo'
 ]
+
+
+def from_zalgo(text: str) -> str:
+    """
+    Remove Zalgo diacritics.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return ''.join(
+        char for char in text
+        if not unicodedata.combining(char)
+    )
 
 
 def randomize(text: str) -> str:
