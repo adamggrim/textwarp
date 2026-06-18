@@ -106,6 +106,7 @@ def widen(text: str) -> str:
     """
     return ' '.join(text)
 
+
 def zalgo(text: str) -> str:
     """
     Convert a string to Zalgo text.
@@ -120,11 +121,11 @@ def zalgo(text: str) -> str:
     for char in text:
         result.append(char)
         if char.isalnum():
-            for _ in range(randint(1, 3)):
-                result.append(choice(up_marks))
             for _ in range(randint(1, 2)):
-                result.append(choice(mid_marks))
-            for _ in range(randint(1, 3)):
-                result.append(choice(down_marks))
+                result.append(choice(UP_MARKS))
+            if choice([True, False]):
+                result.append(choice(MID_MARKS))
+            for _ in range(randint(1, 2)):
+                result.append(choice(DOWN_MARKS))
 
     return ''.join(result)
