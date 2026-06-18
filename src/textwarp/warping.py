@@ -24,7 +24,8 @@ from textwarp._lib import (
     process_as_doc,
     straight_to_curly,
     to_natural_case,
-    to_separator_case
+    to_separator_case,
+    zalgo
 )
 
 __all__ = [
@@ -57,7 +58,8 @@ __all__ = [
     'to_single_spaces',
     'to_snake_case',
     'to_title_case',
-    'widen'
+    'widen',
+    'zalgo'
 ]
 
 
@@ -503,3 +505,16 @@ def widen(text: str) -> str:
         str: The converted string.
     """
     return manipulation.widen(text)
+
+
+def zalgo(text: str) -> str:
+    """
+    Convert a string to Zalgo text.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return manipulation.zalgo(text)

@@ -22,7 +22,8 @@ from textwarp._lib.manipulation import (
     randomize,
     reverse,
     to_single_spaces,
-    widen
+    widen,
+    zalgo
 )
 from textwarp._lib.nlp import extract_words_from_doc, process_as_doc
 from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal
@@ -57,5 +58,6 @@ __all__ = [
     'to_pascal_case',
     'to_separator_case',
     'to_single_spaces',
-    'widen'
+    'widen',
+    'zalgo'
 ]

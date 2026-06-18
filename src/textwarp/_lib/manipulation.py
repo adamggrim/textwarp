@@ -1,6 +1,6 @@
 """Functions for manipulating a given string."""
 
-from random import shuffle
+from random import choice, randint, shuffle
 
 import regex as re
 
@@ -10,7 +10,8 @@ __all__ = [
     'randomize',
     'reverse',
     'to_single_spaces',
-    'widen'
+    'widen',
+    'zalgo'
 ]
 
 
@@ -70,3 +71,42 @@ def widen(text: str) -> str:
         str: The converted string.
     """
     return ' '.join(text)
+
+def zalgo(text: str) -> str:
+    """
+    Convert a string to Zalgo text.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    up_marks = (
+        [chr(i) for i in range(0x0300, 0x0316)]
+        + [chr(i) for i in range(0x033D, 0x0345)]
+        + [chr(i) for i in range(0x0350, 0x0358)]
+        + [chr(i) for i in range(0x0363, 0x0370)]
+    )
+    down_marks = (
+        [chr(i) for i in range(0x0316, 0x0334)]
+        + [chr(i) for i in range(0x0347, 0x034A)]
+        + [chr(i) for i in range(0x0359, 0x035C)]
+    )
+    mid_marks = (
+        [chr(i) for i in range(0x0334, 0x033D)]
+        + [chr(0x0338)]
+    )
+
+    result = []
+    for char in text:
+        result.append(char)
+        if char.isalnum():
+            for _ in range(randint(1, 3)):
+                result.append(choice(up_marks))
+            for _ in range(randint(1, 2)):
+                result.append(choice(mid_marks))
+            for _ in range(randint(1, 3)):
+                result.append(choice(down_marks))
+
+    return ''.join(result)
