@@ -59,7 +59,6 @@ def randomize(text: str) -> str:
     Returns:
         str: The randomized string.
     """
-    # Convert the string into a list of characters.
     char_list = list(text)
     shuffle(char_list)
     return ''.join(char_list)
