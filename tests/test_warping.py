@@ -10,6 +10,7 @@ from textwarp.warping import (
     from_binary,
     from_hexadecimal,
     from_morse,
+    from_zalgo,
     hyphen_to_en,
     hyphens_to_em,
     ordinal_to_cardinal,
@@ -69,6 +70,7 @@ from textwarp.warping import (
         ),
         'WHAT HATH GOD WROUGHT'
     ),
+    (from_zalgo, 't̼ͩ͛e̼̱̝ͪx͚̭̆ͬṯ̢͑̈w̮͇ͦͫḁ̛̾̉r̷̥ͥp̡̺̲̅̉', 'textwarp'),
     (hyphen_to_en, 'Books I-XII', 'Books I–XII'),
     (
         hyphens_to_em,
