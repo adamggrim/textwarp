@@ -10,7 +10,7 @@ def test_zalgo_text():
     original_text = 'textwarp'
     zalgonized_text = zalgo(original_text)
 
-    # Zalgo text should be longer than the original.
+    # Zalgonized text should be longer than the original.
     assert len(zalgonized_text) > len(original_text)
 
     assert from_zalgo(zalgonized_text) == original_text
