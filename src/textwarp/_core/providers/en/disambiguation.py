@@ -7,10 +7,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from spacy.tokens import Token
-
 if TYPE_CHECKING:
-    from spacy.tokens import Span
+    from spacy.tokens import Span, Token
 
 from textwarp._core.constants import NOUN_TAGS
 from textwarp._core.providers import en

@@ -3,11 +3,14 @@ The main entry point for the package, containing the main loop and
 associated functions.
 """
 
+from __future__ import annotations
+
 import gettext
 import sys
-from typing import Callable, Final
+from typing import Callable, Final, TYPE_CHECKING
 
-from spacy.tokens import Doc
+if TYPE_CHECKING:
+    from spacy.tokens import Doc
 
 from textwarp._cli.args import ANALYSIS_COMMANDS
 from textwarp._cli.parsing import ParsedArgs, parse_args
@@ -53,7 +56,7 @@ def _apply_pipeline(
             analysis command.
     """
     content = text
-    
+
     for cmd_name, func in pipeline:
         if cmd_name == 'clear':
             clear_clipboard()
@@ -74,8 +77,8 @@ def _apply_pipeline(
                 )
             else:
                 content = func(content)
-                
-    return content.text if isinstance(content, Doc) else content
+
+    return content if isinstance(content, str) else content.text
 
 
 def _handle_output(
