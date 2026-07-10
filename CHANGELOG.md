@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Introduced a half-second input delay for "Any other text?" prompts.
+* Allowed early exit from integer prompts.
 
 ### Internal
-* Updated tests to reflect the new spinner and input delay.
+* Updated tests to reflect the new spinner, input delay and early exit.

@@ -108,6 +108,17 @@ def test_program_exit(capsys):
     assert EXIT_MSG in captured.out
 
 
+def test_prompt_for_integer_exit(simulate_input, capsys):
+    """Test that negative or exit inputs raise a `SystemExit`."""
+    simulate_input(['q'])
+
+    with pytest.raises(SystemExit):
+        prompt_for_integer('Enter number:', 'Invalid', allow_early_exit=True)
+
+    captured = capsys.readouterr()
+    assert EXIT_MSG in captured.out
+
+
 def test_prompt_for_integer_valid(simulate_input):
     """Test that valid integers are accepted and returned."""
     simulate_input(['42'])

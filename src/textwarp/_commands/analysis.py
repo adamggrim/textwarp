@@ -72,7 +72,8 @@ def mfws(text: str) -> None:
     """
     count_limit: int = prompt_for_integer(
         _(ENTER_MFW_COUNT_PROMPT),
-        _(ENTER_VALID_NUMBER_PROMPT)
+        _(ENTER_VALID_NUMBER_PROMPT),
+        allow_early_exit=True
     )
 
     data: list[WordCount] = count_mfws(text, count_limit)
@@ -115,7 +116,8 @@ def time_to_read(text: str) -> None:
     """
     wpm: int = prompt_for_integer(
         _(ENTER_WPM_PROMPT),
-        _(ENTER_VALID_NUMBER_PROMPT)
+        _(ENTER_VALID_NUMBER_PROMPT),
+        allow_early_exit=True
     )
 
     minutes: int = calculate_time_to_read(text, wpm)

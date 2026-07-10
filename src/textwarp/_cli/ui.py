@@ -80,13 +80,19 @@ def program_exit() -> NoReturn:
     sys.exit(0)
 
 
-def prompt_for_integer(prompt_text: str, error_text: str) -> int:
+def prompt_for_integer(
+    prompt_text: str,
+    error_text: str,
+    allow_early_exit: bool = False
+) -> int:
     """
     Prompt the user for a valid positive integer.
 
     Args:
         prompt_text: The initial prompt to display.
         error_text: The error message displayed on invalid input.
+        allow_early_exit: Whether to allow the user to exit early by
+            entering an exit input.
 
     Returns:
         int: A valid integer provided by the user.
@@ -95,6 +101,12 @@ def prompt_for_integer(prompt_text: str, error_text: str) -> int:
     user_input: str = input().strip()
 
     while True:
+        exit_commands: set[str] = set(get_exit_inputs() | get_no_inputs())
+        is_exiting = user_input.lower() in exit_commands
+
+        if allow_early_exit and is_exiting:
+            program_exit()
+
         if user_input.isdigit() and int(user_input) > 0:
             return int(user_input)
         else:
