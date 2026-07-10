@@ -12,7 +12,7 @@ from typing import Callable, Final, TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
-from textwarp._cli.args import ANALYSIS_COMMANDS
+from textwarp._cli.args import ANALYSIS_COMMANDS, SPACY_COMMANDS
 from textwarp._cli.parsing import ParsedArgs, parse_args
 from textwarp._cli.runners import (
     clear_clipboard,
@@ -55,6 +55,14 @@ def _apply_pipeline(
             from the pipeline, or `None` if the pipeline executes an
             analysis command.
     """
+    imports_spacy = any(cmd in SPACY_COMMANDS for cmd, _ in pipeline)
+
+    if imports_spacy:
+        from textwarp._cli.spinner import AcceleratingSpinner
+        from textwarp._lib.nlp import _get_nlp
+        with AcceleratingSpinner():
+            _get_nlp()
+
     content = text
 
     for cmd_name, func in pipeline:

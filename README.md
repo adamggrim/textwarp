@@ -146,6 +146,7 @@ textwarp/
   │ ├── formatting.py: Functions for formatting analysis into readable strings
   │ ├── parsing.py: Command-line argument parsing using argparse
   │ ├── runners.py: Main loop logic for executing commands
+  │ ├── spinner.py: Command-line spinner for loading heavy dependencies
   │ ├── ui.py: Functions for handling console input and output
   │ └── validation.py: Validators for text, clipboard and regular expression content
   ├── _commands/

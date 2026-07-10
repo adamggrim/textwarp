@@ -12,7 +12,8 @@ __all__ = [
     'CASING_COMMANDS',
     'MUTUALLY_EXCLUSIVE_COMMANDS',
     'REPLACEMENT_COMMANDS',
-    'SEPARATOR_COMMANDS'
+    'SEPARATOR_COMMANDS',
+    'SPACY_COMMANDS'
 ]
 
 
@@ -281,4 +282,19 @@ SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'snake-case',
     'single-spaces',
     'widen'
+})
+
+# Commands that require loading spaCy models.
+SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
+    'capitalize',
+    'cardinal',
+    'expand-contractions',
+    'mfws',
+    'ordinal',
+    'pos-counts',
+    'sentence-case',
+    'sentence-count',
+    'time-to-read',
+    'title-case',
+    'word-count'
 })
