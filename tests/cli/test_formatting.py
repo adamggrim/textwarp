@@ -45,10 +45,10 @@ def test_format_mfws():
     ]
     result = format_mfws(mock_mfws)
 
-    assert 'the' in result
+    assert "'the'" in result
     assert '10' in result
     assert '(50.00%)' in result
-    assert 'a' in result
+    assert "'a'" in result
     assert '5' in result
     assert '(25.00%)' in result
 

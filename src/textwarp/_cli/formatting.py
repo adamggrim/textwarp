@@ -90,7 +90,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
     """
     mfw_data: list[tuple[str, str, str]] = [
         (
-            word_count.word,
+            f"'{word_count.word}'",
             str(word_count.count),
             f'({word_count.percentage:.2f}%)'
         )
