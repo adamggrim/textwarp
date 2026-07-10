@@ -26,6 +26,9 @@ This example demonstrates how to convert clipboard text to camel case using `tex
 
     Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --camel-case`
 
+    <details>
+    <summary>(Click to expand)</summary>
+
     For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
     ```
     -h, --help               show this help message and exit
@@ -85,6 +88,7 @@ This example demonstrates how to convert clipboard text to camel case using `tex
     --word-count             count words
     --zalgo                  c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
     ```
+</details>
 
 3. **Paste text from the clipboard**
 
@@ -131,6 +135,9 @@ textwarp --replace-text -f "marriage" -r "carriage" input.txt
 Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` will transform the text nodes while preserving the original Markdown formatting.
 
 ## Structure
+
+<details>
+<summary>(Click to expand)</summary>
 
 ```
 textwarp/
@@ -255,6 +262,7 @@ textwarp/
   ├── analysis.py: Public functions for analyzing text
   └── warping.py: Public functions for warping text
   ```
+</details>
 
 ## Usage
 
