@@ -9,4 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Logarithmically accelerating spinner for spaCy commands.
 
 ### Changed
-* Updated tests to reflect the new spinner.
+* Introduced a half-second input delay for "Any other text?" prompts.
+
+### Internal
+* Updated tests to reflect the new spinner and input delay.

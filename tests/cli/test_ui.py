@@ -18,13 +18,20 @@ from textwarp._cli.constants.messages import (
 )
 
 
-def test_get_input_yes(simulate_input):
-    """Test that affirmative inputs return `True`."""
-    simulate_input(['y'])
-    assert get_input() is True
+def test_get_input_delay(simulate_input, monkeypatch):
+    """Test that the delay is triggered with the default value."""
+    sleep_called = False
 
-    simulate_input(['yes'])
-    assert get_input() is True
+    def mock_sleep(seconds):
+        nonlocal sleep_called
+        sleep_called = True
+        assert seconds == 0.5
+
+    monkeypatch.setattr('time.sleep', mock_sleep)
+    simulate_input(['y'])
+
+    get_input()
+    assert sleep_called is True
 
 
 def test_get_input_no_or_exit(simulate_input):

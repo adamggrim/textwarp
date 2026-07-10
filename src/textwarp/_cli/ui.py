@@ -4,6 +4,7 @@ import gettext
 import shutil
 import sys
 import textwrap
+import time
 from typing import NoReturn
 
 from textwarp._cli.constants.inputs import (
@@ -28,7 +29,7 @@ __all__ = [
 ]
 
 
-def get_input() -> bool:
+def get_input(prompt_delay = 0.5) -> bool:
     """
     Prompt the user on whether to process the clipboard and return a
     Boolean representing whether to continue.
@@ -36,6 +37,8 @@ def get_input() -> bool:
     Returns:
         True: To continue processing the clipboard, otherwise `False`.
     """
+    time.sleep(prompt_delay)
+
     print_wrapped(_(ANY_OTHER_TEXT_PROMPT))
     while True:
         response = input().strip().lower()
