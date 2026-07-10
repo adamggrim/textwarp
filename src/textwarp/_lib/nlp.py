@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 from textwarp._core.constants.nlp import POS_WORD_TAGS
 from textwarp._core.context import ctx
 from textwarp._core.enums import ModelPriority
+from textwarp._core.exceptions import MissingModelError
 
 _ = gettext.gettext
 
@@ -97,7 +98,7 @@ def _get_nlp(
         locale=ctx.locale.upper(),
         model=priority_model_name
     )
-    raise RuntimeError(msg)
+    raise MissingModelError(msg)
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:

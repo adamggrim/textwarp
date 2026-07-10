@@ -92,6 +92,7 @@ def _apply_pipeline(
 def _handle_output(
     result: str | None,
     output_file: str | None,
+    debug: bool,
     default_action: Callable[[str], None]
 ) -> None:
     """
@@ -121,6 +122,8 @@ def _handle_output(
                 ).format(output_file=output_file)
             )
         except Exception as e:
+            if debug:
+                raise
             print_wrapped(
                 _('Error writing to output file: {error}').format(error=e)
             )
@@ -161,10 +164,11 @@ def _process_file_mode(args: ParsedArgs) -> None:
                 'provide a valid text file.'
             ).format(input_file=file_path))
             sys.exit(1)
-        except FileNotFoundError:
+        except OSError as e:
             print_wrapped(
-                _("Error: File '{file_path}' not found.").format(
-                    file_path=file_path
+                _("Error accessing file '{file_path}': {error}").format(
+                    file_path=file_path,
+                    error=e
                 ))
             sys.exit(1)
 
@@ -187,7 +191,9 @@ def _process_file_mode(args: ParsedArgs) -> None:
 
     if combined_results:
         final_output = '\n'.join(combined_results)
-        _route_output(final_output, args.output_file, args.copy_to_clipboard)
+        _route_output(
+            final_output, args.output_file, args.copy_to_clipboard, args.debug
+        )
 
 
 def _process_interactive_mode(args: ParsedArgs) -> None:
@@ -227,6 +233,7 @@ def _process_interactive_mode(args: ParsedArgs) -> None:
             _handle_output(
                 result,
                 args.output_file,
+                args.debug,
                 default_action=lambda r: warp_and_copy(lambda _: r, text)
             )
 
@@ -259,9 +266,13 @@ def _process_piped_mode(args: ParsedArgs) -> None:
         )
 
         if result is not None:
-            _route_output(result, args.output_file, args.copy_to_clipboard)
+            _route_output(
+                result, args.output_file, args.copy_to_clipboard, args.debug
+            )
 
     except Exception as e:
+        if args.debug:
+            raise
         print_wrapped(
             _('Error processing input: {error}').format(error=e)
         )
@@ -271,7 +282,8 @@ def _process_piped_mode(args: ParsedArgs) -> None:
 def _route_output(
     result: str,
     output_file: str | None,
-    copy_to_clipboard: bool
+    copy_to_clipboard: bool,
+    debug: bool
 ) -> None:
     """
     Route the transformed text to a file, the clipboard or the terminal.
@@ -287,7 +299,9 @@ def _route_output(
         SystemExit: If there is an error processing the input.
     """
     if output_file:
-        _handle_output(result, output_file, default_action=lambda x: None)
+        _handle_output(
+            result, output_file, debug, default_action=lambda x: None
+        )
 
     if copy_to_clipboard:
         import pyperclip

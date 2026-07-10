@@ -5,18 +5,24 @@ __all__ = [
     'EmptyClipboardError',
     'InvalidCaseNameError',
     'InvalidRegexError',
+    'MissingModelError',
     'NoCaseNameError',
     'NoRegexError',
     'NoTextError',
     'RegexNotFoundError',
     'TextNotFoundError',
+    'TextwarpError',
     'TextwarpValidationError',
     'WhitespaceCaseNameError',
     'WhitespaceClipboardError'
 ]
 
 
-class TextwarpValidationError(Exception):
+class TextwarpError(Exception):
+    """Base class for all textwarp errors."""
+
+
+class TextwarpValidationError(TextwarpError):
     """Base class for all textwarp validation errors."""
 
 
@@ -42,6 +48,9 @@ class InvalidRegexError(TextwarpValidationError):
     Exception raised when the provided regular expression string is not
     a valid regular expression.
     """
+
+class MissingModelError(TextwarpError):
+    """Exception raised when a required spaCy model is not installed."""
 
 
 class NoRegexError(TextwarpValidationError):

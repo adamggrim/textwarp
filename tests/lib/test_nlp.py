@@ -99,14 +99,16 @@ def test_nlp_fallback_logic(monkeypatch):
     assert result == 'loaded_en_core_web_md'
 
 
-def test_nlp_no_models_found_raises_runtime_error(monkeypatch):
+def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
     """
     Verify the error message if the user has no spaCy models installed.
     """
+    from textwarp._core.exceptions import MissingModelError
+
     monkeypatch.setattr(spacy.util, 'is_package', lambda x: False)
     monkeypatch.setattr(spacy.util, 'get_installed_models', lambda: [])
 
-    with pytest.raises(RuntimeError, match='No EN spaCy models found.'):
+    with pytest.raises(MissingModelError, match='No EN spaCy models found.'):
         _get_nlp(model_priority=ModelPriority.SPEED)
 
 

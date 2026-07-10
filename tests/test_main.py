@@ -115,7 +115,9 @@ def test_main_sets_locale(monkeypatch):
             output_file=None,
             markdown=False,
             find=None,
-            replace=None
+            replace=None,
+            copy_to_clipboard=False,
+            debug=False
         )
 
     monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
@@ -150,7 +152,8 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=False
+        copy_to_clipboard=False,
+        debug=False
     )
 
     with pytest.raises(SystemExit) as excinfo:
@@ -175,7 +178,8 @@ def test_process_file_mode_file_not_found(capsys):
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=False
+        copy_to_clipboard=False,
+        debug=False
     )
 
     with pytest.raises(SystemExit) as excinfo:
@@ -183,7 +187,7 @@ def test_process_file_mode_file_not_found(capsys):
 
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
-    assert 'not found' in captured.out
+    assert 'Error accessing file' in captured.out
 
 
 def test_process_file_mode_success(tmp_path, capsys):
@@ -202,7 +206,8 @@ def test_process_file_mode_success(tmp_path, capsys):
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=False
+        copy_to_clipboard=False,
+        debug=False
     )
 
     __main__._process_file_mode(args)
@@ -236,7 +241,8 @@ def test_process_interactive_mode_replacement(monkeypatch):
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=False
+        copy_to_clipboard=False,
+        debug=False
     )
 
     with pytest.raises(SystemExit):
@@ -267,7 +273,8 @@ def test_process_piped_mode_copy_flag(
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=True
+        copy_to_clipboard=True,
+        debug=False
     )
 
     __main__._process_piped_mode(args)
@@ -292,7 +299,8 @@ def test_process_piped_mode_warping(monkeypatch, capsys):
         markdown=False,
         find=None,
         replace=None,
-        copy_to_clipboard=False
+        copy_to_clipboard=False,
+        debug=False
     )
 
     __main__._process_piped_mode(args)

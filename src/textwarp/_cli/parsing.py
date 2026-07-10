@@ -32,6 +32,7 @@ class ParsedArgs:
     find: str | None
     replace: str | None
     copy_to_clipboard: bool
+    debug: bool
 
 
 def _validate_command_combinations(
@@ -177,6 +178,13 @@ def parse_args() -> ParsedArgs:
     )
 
     parser.add_argument(
+        '--debug',
+        dest='debug',
+        action='store_true',
+        help='enable debug mode to show full error tracebacks'
+    )
+
+    parser.add_argument(
         '-f', '--find',
         dest='find',
         type=str,
@@ -239,5 +247,6 @@ def parse_args() -> ParsedArgs:
         markdown=args.markdown,
         find=args.find,
         replace=args.replace,
-        copy_to_clipboard=args.copy_to_clipboard
+        copy_to_clipboard=args.copy_to_clipboard,
+        debug=args.debug
     )
