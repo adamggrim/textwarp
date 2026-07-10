@@ -14,3 +14,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Internal
 * Updated tests to reflect the new spinner, input delay and early exit.
+* Added affirmative inputs test.

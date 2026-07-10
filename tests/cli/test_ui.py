@@ -43,6 +43,15 @@ def test_get_input_no_or_exit(simulate_input):
     assert get_input() is False
 
 
+def test_get_input_yes(simulate_input):
+    """Test that affirmative inputs return `True`."""
+    simulate_input(['y'])
+    assert get_input() is True
+
+    simulate_input(['yes'])
+    assert get_input() is True
+
+
 def test_get_input_invalid_then_valid(simulate_input, capsys):
     """
     Test that invalid inputs prompt the user for valid input.
