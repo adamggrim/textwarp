@@ -10,7 +10,7 @@ from textwarp._lib.manipulation import (
 
 def test_randomize():
     """Test that string characters are shuffled but preserved."""
-    original = 'textwarp'
+    original = 'things fall apart'
     randomized = randomize(original)
 
     assert len(randomized) == len(original)
@@ -19,8 +19,8 @@ def test_randomize():
 
 def test_reverse():
     """Test reversing string characters."""
-    assert reverse('redrum') == 'murder'
     assert reverse('number nine, number nine') == 'enin rebmun ,enin rebmun'
+    assert reverse('redrum') == 'murder'
 
 
 def test_to_single_spaces():
@@ -28,15 +28,15 @@ def test_to_single_spaces():
     Test collapsing multiple consecutive spaces into a single space.
     """
     assert to_single_spaces(
-        'Come  with  me  if  you  want  to  live.'
-    ) == 'Come with me if you want to live.'
+        'Objects  In  The  Rear  View  Mirror  May  Appear  Closer  Than  '
+        'They  Are'
+    ) == 'Objects In The Rear View Mirror May Appear Closer Than They Are'
     assert to_single_spaces(
-        '\tA   long   time   ago   in   a   galaxy   far   far   away....'
-    ) == '\tA long time ago in a galaxy far far away....'
+        '\tIn   space,  no   one   can   hear   you   scream.'
+    ) == '\tIn space, no one can hear you scream.'
 
 
 def test_widen():
     """Test adding spaces between characters."""
-    assert widen('textwarp') == 't e x t w a r p'
-    assert widen('E T') == 'E   T'
+    assert widen('illimitable ocean') == 'i l l i m i t a b l e   o c e a n'
     assert widen('') == ''

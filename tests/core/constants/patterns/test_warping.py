@@ -49,9 +49,9 @@ def test_get_em_dash_stand_in():
 def test_get_multiple_spaces():
     """Test the multiple consecutive spaces pattern."""
     pattern = get_multiple_spaces()
-    assert pattern.search('Two  spaces') is not None
-    assert pattern.search('Three   spaces') is not None
-    assert pattern.search('One space') is None
+    assert pattern.search('Two  fish') is not None
+    assert pattern.search('Red   fish') is not None
+    assert pattern.search('Blue fish') is None
 
 
 def test_get_period_separated_initialism():
@@ -59,7 +59,7 @@ def test_get_period_separated_initialism():
     pattern = get_period_separated_initialism()
     assert pattern.search('U.S.A.') is not None
     assert pattern.search('Ph.D.') is not None
-    assert pattern.search('Mr. Smith') is None
+    assert pattern.search('Mrs. Robinson') is None
     assert pattern.search('End of sentence.') is None
 
 

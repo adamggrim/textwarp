@@ -10,25 +10,31 @@ from textwarp._lib.casing.programming_casing import (
 
 def test_to_camel_case():
     """Test converting text to camel case."""
-    assert to_camel_case('hello world') == 'helloWorld'
-    assert to_camel_case('HELLO WORLD') == 'helloWorld'
-    assert to_camel_case('AlreadyCamelCase') == 'alreadyCamelCase'
-    assert to_camel_case('snake_case_test') == 'snakeCaseTest'
+    assert to_camel_case('yonder cloud') == 'yonderCloud'
+    assert to_camel_case('SHAPE OF A CAMEL') == 'shapeOfACamel'
+    assert to_camel_case('LikeACamelIndeed') == 'likeACamelIndeed'
+    assert to_camel_case('backed_like_a_snake') == 'backedLikeASnake'
 
 
 def test_to_pascal_case():
     """Test converting text to Pascal case."""
-    assert to_pascal_case('hello world') == 'HelloWorld'
-    assert to_pascal_case('HELLO WORLD') == 'HelloWorld'
-    assert to_pascal_case('alreadyPascalCase') == 'AlreadyPascalCase'
-    assert to_pascal_case('snake_case_test') == 'SnakeCaseTest'
+    assert to_pascal_case('DieuEst') == 'DieuEst'
+    assert to_pascal_case('il n’est pas') == 'IlNestPas'
+    assert to_pascal_case('PENSÉES') == 'Pensées'
+    assert to_pascal_case('un_serpent_qui_danse') == 'UnSerpentQuiDanse'
 
 
 def test_to_separator_case_basic():
     """Test converting standard spaced text to separator cases."""
-    assert to_separator_case('bell jar', CaseSeparator.SNAKE) == 'bell_jar'
-    assert to_separator_case('bell jar', CaseSeparator.KEBAB) == 'bell-jar'
-    assert to_separator_case('bell jar', CaseSeparator.DOT) == 'bell.jar'
+    assert to_separator_case(
+        'Why did it have to be snakes', CaseSeparator.SNAKE
+    ) == 'why_did_it_have_to_be_snakes'
+    assert to_separator_case(
+        'Vlad the Impaler', CaseSeparator.KEBAB
+    ) == 'vlad-the-impaler'
+    assert to_separator_case(
+        'sunday on la grande jatte', CaseSeparator.DOT
+    ) == 'sunday.on.la.grande.jatte'
 
 
 def test_to_separator_case_existing_cases():
@@ -37,22 +43,19 @@ def test_to_separator_case_existing_cases():
     case.
     """
     assert to_separator_case(
-        'existence-precedes-essence', CaseSeparator.SNAKE
-    ) == 'existence_precedes_essence'
+        'withThySharpTeethThisKnotIntrinsicate', CaseSeparator.SNAKE
+    ) == 'with_thy_sharp_teeth_this_knot_intrinsicate'
     assert to_separator_case(
-        'being.nothingness', CaseSeparator.KEBAB
-    ) == 'being-nothingness'
+        'spitted.upon.pikes', CaseSeparator.KEBAB
+    ) == 'spitted-upon-pikes'
     assert to_separator_case(
-        'deBeauvoir', CaseSeparator.SNAKE
-    ) == 'de_beauvoir'
-    assert to_separator_case(
-        'LeMytheDeSisyphe', CaseSeparator.DOT
-    ) == 'le.mythe.de.sisyphe'
+        'a_square_round', CaseSeparator.DOT
+    ) == 'a.square.round'
 
 
 def test_to_separator_case_non_alpha():
     """Test that separator casing safely handles numbers and symbols."""
     assert to_separator_case(
-        'April 4th 1984',
+        '16 June 1904',
         CaseSeparator.SNAKE
-    ) == 'april_4th_1984'
+    ) == '16_june_1904'

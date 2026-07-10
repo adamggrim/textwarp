@@ -66,8 +66,8 @@ def test_apply_pipeline_warping():
         ('lowercase', _dummy_lower),
         ('reverse', _dummy_reverse)
     ]
-    result = __main__._apply_pipeline('HELLO WORLD', pipeline)
-    assert result == 'dlrow olleh'
+    result = __main__._apply_pipeline('IN MY BEGINNING IS MY END', pipeline)
+    assert result == 'dne ym si gninnigeb ym ni'
 
 
 def test_cli_version(capsys, monkeypatch):

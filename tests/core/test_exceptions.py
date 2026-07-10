@@ -68,7 +68,11 @@ def test_exception_msgs():
     with pytest.raises(
         TextNotFoundError,
         match=re.escape(
-            "I still haven't found what I'm looking for."
+            'I found myself within a forest dark,\n'
+            'For the straightforward pathway had been lost.'
         )
     ):
-        raise TextNotFoundError("I still haven't found what I'm looking for.")
+        raise TextNotFoundError(
+            'I found myself within a forest dark,\n'
+            'For the straightforward pathway had been lost.'
+        )

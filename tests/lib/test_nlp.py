@@ -9,24 +9,21 @@ from textwarp._lib.nlp import _get_nlp, extract_words_from_doc, process_as_doc
 
 def test_extract_words_from_doc():
     """Test extracting words from a string."""
-    text = "I'm sorry, Dave. I'm afraid I can't do that."
+    text = 'I’m sorry, Frank. I think you missed it.'
     doc = process_as_doc(text)
 
     words = extract_words_from_doc(doc)
 
     expected_words = [
         'i',
-        "'m",
+        '’m',
         'sorry',
-        'dave',
+        'frank',
         'i',
-        "'m",
-        'afraid',
-        'i',
-        'ca',
-        "n't",
-        'do',
-        'that'
+        'think',
+        'you',
+        'missed',
+        'it'
     ]
 
     assert words == expected_words
@@ -47,7 +44,9 @@ def test_process_as_doc_from_doc():
     """
     Test that passing an existing `Doc` returns the `Doc` unmodified.
     """
-    original_doc = process_as_doc('Daisy, Daisy, give me your answer do.')
+    original_doc = process_as_doc(
+        'I’m sorry, Dave. I’m afraid I can’t do that.'
+    )
     returned_doc = process_as_doc(original_doc)
 
     assert original_doc is returned_doc
@@ -114,7 +113,9 @@ def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
 
 def test_process_as_doc_with_disabled_pipes():
     """Ensure that pipes are disabled when requested."""
-    doc = process_as_doc('xf', disable=['parser', 'ner'])
+    doc = process_as_doc(
+        'Daisy, Daisy, give me your answer do.', disable=['parser', 'ner']
+    )
 
     assert not doc.has_annotation('DEP')
     assert not doc.has_annotation('ENT_IOB')

@@ -39,7 +39,7 @@ def test_pos_counts(capsys):
     Test that pos_counts prints a formatted table of parts-of-speech
     counts.
     """
-    analysis.pos_counts('I celebrate myself, and sing myself.')
+    analysis.pos_counts('Colorless green ideas sleep furiously.')
     captured = capsys.readouterr()
 
     assert 'Nouns' in captured.out
@@ -64,19 +64,19 @@ def test_sentence_count(capsys):
 def test_time_to_read(simulate_input, capsys):
     """Test the time to read command and its input loop."""
     simulate_input(['wrong', '250'])
-    dummy_text = 'chrysanthemum ' * 500
+    dummy_text = 'A Brief History of Time ' * 237
 
     analysis.time_to_read(dummy_text)
     captured = capsys.readouterr()
 
     assert ENTER_VALID_NUMBER_PROMPT in captured.out
 
-    assert '2 minutes' in captured.out
+    assert '5 minutes' in captured.out
 
 
 def test_word_count(capsys):
     """Test that word_count prints the formatted word count."""
-    analysis.word_count('Cogito, ergo sum.')
+    analysis.word_count('Words, words, words.')
     captured = capsys.readouterr()
 
     assert 'Word count: 3' in captured.out

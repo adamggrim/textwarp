@@ -44,10 +44,10 @@ def test_straight_to_curly_single_quotes():
 
 def test_straight_to_curly_apostrophes():
     """Test intra-word apostrophe conversion."""
-    assert straight_to_curly("don't") == "don’t"
-    assert straight_to_curly("'twas") == "’twas"
-    assert straight_to_curly("Guns N' Roses") == "Guns N’ Roses"
-    assert straight_to_curly("90's") == "90’s"
+    assert straight_to_curly("don't") == 'don’t'
+    assert straight_to_curly("'twas") == '’twas'
+    assert straight_to_curly("Guns N' Roses") == 'Guns N’ Roses'
+    assert straight_to_curly("90's") == '90’s'
 
 
 def test_remove_apostrophes():

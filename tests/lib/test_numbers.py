@@ -32,7 +32,7 @@ def test_cardinal_to_ordinal_in_text():
 
 def test_cardinal_to_ordinal_ignores_decimals():
     """Test that numbers with decimal points are ignored."""
-    assert cardinal_to_ordinal('version 3.14') == 'version 3.14'
+    assert cardinal_to_ordinal('811.52') == '811.52'
 
 
 @pytest.mark.parametrize('ordinal, expected_cardinal', [
@@ -51,6 +51,6 @@ def test_ordinal_to_cardinal_isolated(ordinal, expected_cardinal):
 
 def test_ordinal_to_cardinal_in_text():
     """Test ordinal-to-cardinal conversion within a sentence."""
-    text = "A 7th-nation army couldn't hold me back."
-    expected = "A 7-nation army couldn't hold me back."
+    text = 'A 7th-nation army couldn’t hold me back.'
+    expected = 'A 7-nation army couldn’t hold me back.'
     assert ordinal_to_cardinal(text) == expected

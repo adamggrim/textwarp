@@ -31,16 +31,16 @@ def test_case_names_func_map_execution():
     """
     Verify that mapped functions correctly transform a test string.
     """
-    test_string = 'Big Brother Is Watching'
+    test_string = 'The Strange Case of Dr Jekyll and Mr Hyde'
 
     expected_outputs = {
-        'camel': 'bigBrotherIsWatching',
-        'dot case': 'big.brother.is.watching',
-        'lower': 'big brother is watching',
-        'kebab': 'big-brother-is-watching',
-        'pascal case': 'BigBrotherIsWatching',
-        'snake': 'big_brother_is_watching',
-        'uppercase': 'BIG BROTHER IS WATCHING',
+        'camel': 'theStrangeCaseOfDrJekyllAndMrHyde',
+        'dot case': 'the.strange.case.of.dr.jekyll.and.mr.hyde',
+        'lower': 'the strange case of dr jekyll and mr hyde',
+        'kebab': 'the-strange-case-of-dr-jekyll-and-mr-hyde',
+        'pascal case': 'TheStrangeCaseOfDrJekyllAndMrHyde',
+        'snake': 'the_strange_case_of_dr_jekyll_and_mr_hyde',
+        'uppercase': 'THE STRANGE CASE OF DR JEKYLL AND MR HYDE',
     }
 
     for case, expected in expected_outputs.items():

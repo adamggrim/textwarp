@@ -14,9 +14,9 @@ from textwarp._lib.nlp import process_as_doc
 
 def test_expand_ambiguous_contraction(get_contraction_span):
     '''Test expansion of an ambiguous contraction using handlers.'''
-    span = get_contraction_span("He'd like to come and meet us", "He'd")
+    span = get_contraction_span('He’d like to come and meet us', 'He’d')
 
-    expansion, end_idx = _expand_ambiguous_contraction("He'd", span)
+    expansion, end_idx = _expand_ambiguous_contraction('He’d', span)
 
     assert expansion == 'He would'
     assert end_idx == span.end_char
@@ -26,10 +26,10 @@ def test_expand_idiomatic_phrases_casing():
     '''
     Test that idiomatic phrase expansions preserve original casing.
     '''
-    phrase = ("Ain’t Got No, I Got Life.")
+    phrase = ('Ain’t Got No, I Got Life.')
     expanded = _expand_idiomatic_phrases(phrase)
 
-    assert expanded == ("Ain’t Got Any, I Got Life.")
+    assert expanded == ('Ain’t Got Any, I Got Life.')
 
 
 def test_expand_unambiguous_contraction():
@@ -37,21 +37,21 @@ def test_expand_unambiguous_contraction():
     unambiguous_map = get_unambiguous_map()
 
     assert _expand_unambiguous_contraction(
-        "won't", unambiguous_map
+        'won’t', unambiguous_map
     ) == 'will not'
 
     assert _expand_unambiguous_contraction(
-        "shouldn't've", unambiguous_map
+        'shouldn’t’ve', unambiguous_map
     ) == 'should not have'
     assert _expand_unambiguous_contraction(
-        "Shouldn't've", unambiguous_map
+        'Shouldn’t’ve', unambiguous_map
     ) == 'Should not have'
 
 
 def test_expand_contractions():
     '''Test the full expansion pipeline on a spaCy `Doc`.'''
     text = (
-        "Ain't it just like the night to play tricks when you're trying to be "
+        'Ain’t it just like the night to play tricks when you’re trying to be '
         'so quiet?'
     )
     doc = process_as_doc(text)
@@ -67,7 +67,7 @@ def test_expand_contractions():
 def test_expand_contractions_no_matches():
     '''Test that a `Doc` with no contractions returns unmodified.'''
     text = (
-        'This mission is too important for me to allow you to jeopardize it.'
+        'I exist as I am, that is enough.'
     )
     doc = process_as_doc(text)
 

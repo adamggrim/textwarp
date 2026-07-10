@@ -38,7 +38,7 @@ def test_case_from_string_map_suffix():
 def test_case_from_string_prefixed_surname():
     """Test capitalization of common prefixed surnames."""
     assert case_from_string('mcdonald') == 'McDonald'
-    assert case_from_string("o'connor") == "O'Connor"
+    assert case_from_string('o’connor') == 'O’Connor'
     assert case_from_string('macarthur') == 'MacArthur'
 
 

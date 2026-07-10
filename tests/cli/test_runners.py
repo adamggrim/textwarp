@@ -19,8 +19,10 @@ from textwarp._cli.constants.messages import (
 
 def test_paste_and_validate_success(mock_clipboard):
     """Test successful pasting and validation of clipboard text."""
-    mock_clipboard.copy('Quod erat demonstrandum')
-    assert _paste_and_validate() == 'Quod erat demonstrandum'
+    mock_clipboard.copy('Immature poets imitate; mature poets steal.')
+    assert (
+        _paste_and_validate() == 'Immature poets imitate; mature poets steal.'
+    )
 
 
 def test_paste_and_validate_empty(mock_clipboard, capsys):
@@ -83,10 +85,7 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
     def dummy_replace(text):
         return text
 
-    quote = (
-        "Sometimes I’ve believed as many as six impossible things before "
-        'breakfast.'
-    )
+    quote = ('There is no there there.')
 
     mock_clipboard.copy(quote)
     _replace_and_copy(dummy_replace, quote)

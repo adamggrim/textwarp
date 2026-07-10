@@ -8,7 +8,9 @@ def test_map_all_entities_absolute():
     """
     Test absolute entities map casing.
     """
-    doc = process_as_doc('They bought a blu-ray player to watch casablanca.')
+    doc = process_as_doc(
+        'They bought a blu-ray player to watch dr. strangelove.'
+    )
     entity_map = map_all_entities(doc)
 
     found_blu_ray = False

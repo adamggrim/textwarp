@@ -95,7 +95,7 @@ from textwarp.warping import (
         '“To be, or not to be, that is the question”.'
     ),
     (redact, 'yes I said yes I will yes', '███ █ ████ ███ █ ████ ███'),
-    (reverse, 'reverse', 'esrever'),
+    (reverse, 'Strike that, reverse it.', '.ti esrever ,taht ekirtS'),
     (
         straight_to_curly,
         '"All art is quite useless."',

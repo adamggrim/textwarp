@@ -12,11 +12,13 @@ from textwarp._cli.args import (
 
 
 def test_lazy_load():
-    """Test that `_lazy_load` correctly imports a module and function."""
-    lazy_func = _lazy_load('..warping', 'reverse')
+    """
+    Test that `_lazy_load` correctly imports a module and function.
+    """
+    lazy_func = _lazy_load('..warping', 'to_title_case')
 
     assert callable(lazy_func)
-    assert lazy_func('textwarp') == 'prawtxet'
+    assert lazy_func('bartleby, the scrivener') == 'Bartleby, the Scrivener'
 
 
 def test_args_map_structure():
@@ -70,12 +72,15 @@ def test_mutually_exclusive_sets():
 
 
 @pytest.mark.parametrize('command, input_text, expected_output', [
-    ('clear', 'nothingness', ''),
-    ('lowercase', 'MIXed Case', 'mixed case'),
-    ('plain-text', 'plain text', 'plain text'),
-    ('strip', '  padded  ', 'padded'),
-    ('swapcase', 'sWAP mE', 'Swap Me'),
-    ('uppercase', 'louder than a bomb', 'LOUDER THAN A BOMB'),
+    ('clear', 'Out, out, brief candle!', ''),
+    ('lowercase', 'LOOK ON MY WORKS, YE MIGHTY',
+     'look on my works, ye mighty'),
+    ('plain-text', 'An honest tale speeds best being plainly told',
+     'An honest tale speeds best being plainly told'),
+    ('strip', '  off, you lendings  ', 'off, you lendings'),
+    ('swapcase', 'fAIR iS fOUL, aND fOUL iS fAIR',
+     'Fair Is Foul, And Foul Is Fair'),
+    ('uppercase', 'i sound my barbaric yawp', 'I SOUND MY BARBARIC YAWP'),
 ])
 def test_built_in_string_functions(command, input_text, expected_output):
     """

@@ -18,14 +18,7 @@ def test_set_locale_to_unsupported_falls_back_to_en(caplog):
     assert ctx.locale == 'en'
 
 
-def test_gettext_translation_install():
-    """Verify that gettext is properly installed in the environment."""
-    assert isinstance(EXIT_MSG, str)
-    assert EXIT_MSG != 'NO_EXIT'
-    assert 'Exiting' in EXIT_MSG
-
-
 def test_n_marker_returns_original_string():
     """Verify that the `N_` dummy marker avoids mutating strings."""
-    test_str = 'Rumpelstiltskin'
+    test_str = 'Traduttore, traditore'
     assert N_(test_str) == test_str

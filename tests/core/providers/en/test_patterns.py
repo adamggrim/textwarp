@@ -12,10 +12,10 @@ def test_get_apostrophe_in_word():
     elisions.
     """
     pattern = get_apostrophe_in_word()
-    match = pattern.search("It's")
+    match = pattern.search('It’s')
     assert match is not None
-    assert match.group(0) == "'"
-    assert pattern.search("'n'") is not None
+    assert match.group(0) == '’'
+    assert pattern.search('’n’') is not None
 
 
 def test_get_n_t_suffix():
@@ -24,7 +24,7 @@ def test_get_n_t_suffix():
     """
     pattern = get_n_t_suffix()
 
-    match = pattern.search("can't")
+    match = pattern.search('can’t')
     assert match is not None
 
     match_curly = pattern.search('won’t')

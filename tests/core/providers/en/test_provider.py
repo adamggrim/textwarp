@@ -39,18 +39,22 @@ def test_case_from_string():
     provider = EnglishProvider()
     assert provider.case_from_string('lennon') == 'Lennon'
     assert provider.case_from_string('mccartney') == 'McCartney'
-    assert provider.case_from_string('qWeRTy') == 'qWeRTy'
+    assert provider.case_from_string('NeXTSTEP') == 'NeXTSTEP'
 
 
 def test_expand_contractions():
     """Test contraction expansion using the provider."""
     provider = EnglishProvider()
 
-    text = "Help me, Obi-Wan Kenobi. You're my only hope."
+    text = ('It’s a truth universally acknowledged, that a word in possession '
+            'of an apostrophe, must be in want of expansion.')
     doc = process_as_doc(text)
 
     result = provider.expand_contractions(doc)
-    assert result == "Help me, Obi-Wan Kenobi. You are my only hope."
+    assert result == (
+        'It is a truth universally acknowledged, that a word in possession of '
+        'an apostrophe, must be in want of expansion.'
+    )
 
 
 def test_should_always_lowercase():
