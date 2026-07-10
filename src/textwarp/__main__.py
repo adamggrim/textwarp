@@ -60,33 +60,39 @@ def _apply_pipeline(
     if imports_spacy:
         from textwarp._cli.spinner import AcceleratingSpinner
         from textwarp._lib.nlp import _get_nlp
-        with AcceleratingSpinner():
+        active_context = AcceleratingSpinner()
+    else:
+        import contextlib
+        active_context = contextlib.nullcontext()
+
+    with active_context:
+        if imports_spacy:
             _get_nlp()
 
-    content = text
+        content = text
 
-    for cmd_name, func in pipeline:
-        if cmd_name == 'clear':
-            clear_clipboard()
-        elif cmd_name in ANALYSIS_COMMANDS:
-            func(content)
-            return None
-        else:
-            normalized_name = cmd_name.replace('-', '_')
-            if (
-                normalized_name in _REPLACEMENT_FUNC_NAMES
-                and arg_to_replace is not None
-                and replacement_arg is not None
-            ):
-                content = func(
-                    content,
-                    arg_to_replace=arg_to_replace,
-                    replacement_arg=replacement_arg
-                )
+        for cmd_name, func in pipeline:
+            if cmd_name == 'clear':
+                clear_clipboard()
+            elif cmd_name in ANALYSIS_COMMANDS:
+                func(content)
+                return None
             else:
-                content = func(content)
+                normalized_name = cmd_name.replace('-', '_')
+                if (
+                    normalized_name in _REPLACEMENT_FUNC_NAMES
+                    and arg_to_replace is not None
+                    and replacement_arg is not None
+                ):
+                    content = func(
+                        content,
+                        arg_to_replace=arg_to_replace,
+                        replacement_arg=replacement_arg
+                    )
+                else:
+                    content = func(content)
 
-    return content if isinstance(content, str) else content.text
+        return content if isinstance(content, str) else content.text
 
 
 def _handle_output(
