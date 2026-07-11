@@ -132,34 +132,34 @@ def parse_args() -> ParsedArgs:
     try:
         __version__ = version('textwarp')
     except PackageNotFoundError:
-        __version__ = 'unknown (not installed)'
+        __version__ = _('unknown (not installed)')
 
     parser = argparse.ArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
         description=_(HELP_DESCRIPTION),
-        usage='%(prog)s [options] [input_files ...] [-o output_file]'
+        usage=_('%(prog)s [options] [input_files ...] [-o output_file]')
     )
 
     parser.add_argument(
         '--version',
         action='version',
         version=f'%(prog)s {__version__}',
-        help='show version number and exit'
+        help=_('show version number and exit')
     )
 
     parser.add_argument(
         '-l', '--lang',
         type=str,
         default='en',
-        help='set the language locale'
+        help=_('set the language locale')
     )
 
     parser.add_argument(
         '-m', '--markdown',
         dest='markdown',
         action='store_true',
-        help='parse text as Markdown and preserve formatting'
+        help=_('parse text as Markdown and preserve formatting')
     )
 
     parser.add_argument(
@@ -167,28 +167,28 @@ def parse_args() -> ParsedArgs:
         dest='output_file',
         metavar='FILE',
         type=str,
-        help='optional path to write the output file'
+        help=_('optional path to write the output file')
     )
 
     parser.add_argument(
         '-c', '--copy',
         dest='copy_to_clipboard',
         action='store_true',
-        help='copy the output to the clipboard'
+        help=_('copy the output to the clipboard')
     )
 
     parser.add_argument(
         '--debug',
         dest='debug',
         action='store_true',
-        help='enable debug mode to show full error tracebacks'
+        help=_('enable debug mode to show full error tracebacks')
     )
 
     parser.add_argument(
         '-f', '--find',
         dest='find',
         type=str,
-        help='text, case or regular expression to find'
+        help=_('text, case or regular expression to find')
     )
 
     parser.add_argument(
@@ -196,7 +196,7 @@ def parse_args() -> ParsedArgs:
         dest='replace',
         metavar='TEXT',
         type=str,
-        help='replacement text'
+        help=_('replacement text')
     )
 
     for arg_key, (_func, help_msg) in ARGS_MAP.items():
@@ -210,7 +210,7 @@ def parse_args() -> ParsedArgs:
         'input_files',
         nargs='*',
         type=str,
-        help='optional path to one or more input text files'
+        help=_('optional path to one or more input text files')
     )
 
     # If there are no arguments or piped input, print the help messages

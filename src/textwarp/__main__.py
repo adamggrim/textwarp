@@ -391,8 +391,10 @@ def _route_text(
         from textwarp._lib.markdown import process_markdown, strip_markdown
     except ImportError:
         print_wrapped(
-            "Error: Markdown support requires the 'marko' package. Install it "
-            'using: pip install textwarp[markdown]'
+            _(
+                "Error: Markdown support requires the 'marko' package. "
+                "Install it using: pip install textwarp[markdown]"
+            )
         )
         sys.exit(1)
 
