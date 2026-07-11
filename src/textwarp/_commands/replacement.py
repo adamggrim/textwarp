@@ -1,4 +1,4 @@
-"""Runners for replacement commands."""
+"""Runners for find-and-replace commands."""
 
 import gettext
 from typing import Callable
@@ -35,6 +35,7 @@ from textwarp._cli.validation import (
     validate_regex,
     validate_text
 )
+from textwarp._lib import replacement as lib_replacement
 
 _ = gettext.gettext
 
@@ -186,9 +187,8 @@ def replace_case(
     conversion_func = CASE_NAMES_FUNC_MAP[replacement_case_name]
 
     with AcceleratingSpinner():
-        return search_pattern.sub(
-            lambda match: conversion_func(match.group(0)),
-            text
+        return lib_replacement.replace_case(
+            text, search_pattern, conversion_func
         )
 
 
@@ -229,7 +229,9 @@ def replace_regex(
         )
 
     with AcceleratingSpinner():
-        return re.sub(regex_text, replacement_text, text)
+        return lib_replacement.replace_regex(
+            text, regex_text, replacement_text
+        )
 
 
 def replace_text(
@@ -275,4 +277,6 @@ def replace_text(
         )
 
     with AcceleratingSpinner():
-        return text.replace(text_to_replace, replacement_text)
+        return lib_replacement.replace_text(
+            text, text_to_replace, replacement_text
+        )

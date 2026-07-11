@@ -152,6 +152,8 @@ textwarp/
   │ ├── dispatch.py: A map of string inputs to case conversion functions
   │ ├── formatting.py: Functions for formatting analysis into readable strings
   │ ├── parsing.py: Command-line argument parsing using argparse
+  │ ├── pipeline.py: Pipeline output routing
+  │ ├── processing.py: Execution modes for pipeline processing
   │ ├── runners.py: Main loop logic for executing commands
   │ ├── spinner.py: Command-line spinner for loading heavy dependencies
   │ ├── ui.py: Functions for handling console input and output
@@ -159,7 +161,7 @@ textwarp/
   ├── _commands/
   │ ├── __init__.py: Namespace for analysis and replacement commands
   │ ├── analysis.py: Runners for analysis commands
-  │ └── replacement.py: Runners for replacement commands
+  │ └── replacement.py: Runners for find-and-replace commands
   ├── _core/
   │ ├── constants/
   │ │ ├── patterns/
@@ -245,6 +247,7 @@ textwarp/
   │ ├── casing/
   │ │ ├── __init__.py: Exposes casing logic for use across the package
   │ │ ├── entity_casing.py: Functions for spaCy-based entity capitalization
+  │ │ ├── lexing.py: Tokenization and chunking functions for programming cases
   │ │ ├── natural_casing.py: Functions for converting between natural cases
   │ │ ├── programming_casing.py: Functions for converting between programming cases
   │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
@@ -256,9 +259,10 @@ textwarp/
   │ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
   │ ├── nlp.py: Functions for lazy spaCy loading and text processing
   │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
-  │ └── punctuation.py: Functions for converting between straight and curly quotes
+  │ ├── punctuation.py: Functions for converting between straight and curly quotes
+  │ └── replacement.py: Functions for finding and replacing text
   ├── __init__.py: A Python package for analyzing and transforming text
-  ├── __main__.py: The main entry point for the package, containing the main loop and associated functions
+  ├── __main__.py: The entry point of the package, containing the main loop
   ├── analysis.py: Public functions for analyzing text
   └── warping.py: Public functions for warping text
   ```

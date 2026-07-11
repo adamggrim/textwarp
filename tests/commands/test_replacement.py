@@ -14,8 +14,9 @@ from textwarp._commands import replacement
 
 CASE_TEST_STRING = 'pascal_case'
 
+
 def test_replace_case(simulate_input, capsys):
-    """Test case replacement and presence validation."""
+    """Test case replacement prompts and presence validation."""
     simulate_input(['camel', 'snake', 'pascal'])
 
     result = replacement.replace_case(CASE_TEST_STRING)
@@ -34,16 +35,10 @@ def test_replace_case_early_exit(simulate_input):
         replacement.replace_case(CASE_TEST_STRING)
 
 
-def test_replace_case_with_args():
-    """
-    Test case replacement using explicit arguments instead of prompts.
-    """
-    result = replacement.replace_case(CASE_TEST_STRING, 'snake', 'camel')
-    assert result == 'pascalCase'
-
-
 def test_replace_regex(simulate_input, capsys):
-    """Test regular expression replacement and presence validation."""
+    """
+    Test regular expression replacement prompts and presence validation.
+    """
     target_regex = r'\d{5}'
     replacement_str = 'vingt-quatre mille six cent un'
 
@@ -62,20 +57,8 @@ def test_replace_regex(simulate_input, capsys):
     )
 
 
-def test_replace_regex_with_args():
-    """
-    Test regex replacement using explicit arguments instead of prompts.
-    """
-    result = replacement.replace_regex(
-        '525,600 minutes',
-        r'(\d{3}),(\d{3})',
-        'five hundred twenty-five thousand, six hundred'
-    )
-    assert result == 'five hundred twenty-five thousand, six hundred minutes'
-
-
 def test_replace_text(simulate_input, capsys):
-    """Test text replacement and presence validation."""
+    """Test text replacement prompts and presence validation."""
     simulate_input(['cyanide', 'hemlock', 'coffee'])
 
     result = replacement.replace_text(
@@ -88,17 +71,3 @@ def test_replace_text(simulate_input, capsys):
     assert ENTER_VALID_TEXT_PROMPT in captured.out
     assert 'of coffee I had drunk' in result
     assert 'hemlock' not in result
-
-
-def test_replace_text_with_args():
-    """
-    Test text replacement using explicit arguments instead of prompts.
-    """
-    result = replacement.replace_text(
-        'Fand er sich in seinem Bett zu einem ungeheueren '
-        'Ungeziefer verwandelt.',
-        'Ungeziefer',
-        'Feature'
-    )
-    assert 'zu einem ungeheueren Feature verwandelt' in result
-    assert 'Ungeziefer' not in result

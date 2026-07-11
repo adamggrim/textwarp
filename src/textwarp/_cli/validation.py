@@ -1,8 +1,16 @@
 """Validators for text, clipboard and regular expression content."""
 
+import argparse
 import gettext
 import regex as re
 
+from textwarp._cli.args import (
+    ARGS_MAP,
+    CASING_COMMANDS,
+    MUTUALLY_EXCLUSIVE_COMMANDS,
+    REPLACEMENT_COMMANDS,
+    SEPARATOR_COMMANDS
+)
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
     EmptyClipboardError,
@@ -71,6 +79,78 @@ def validate_clipboard(clipboard: str) -> None:
         raise WhitespaceClipboardError(
             _('Clipboard contains only whitespace.')
         )
+
+
+def validate_command_combinations(
+    args: argparse.Namespace,
+    parser: argparse.ArgumentParser
+) -> None:
+    """
+    Validate that combined command-line arguments do not conflict.
+
+    Args:
+        args: The parsed command-line arguments.
+        parser: The `ArgumentParser` instance used to display error
+            messages.
+
+    Raises:
+        SystemExit: If there is any invalid combination of arguments.
+    """
+    active_cmds = [
+        key for key in ARGS_MAP
+        if getattr(args, key.replace('-', '_'), False)
+    ]
+
+    active_separators = [c for c in active_cmds if c in SEPARATOR_COMMANDS]
+    active_casings = [c for c in active_cmds if c in CASING_COMMANDS]
+    active_mutually_exclusives = [
+        c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
+    ]
+
+    if len(active_separators) > 1:
+        parser.error(
+            _('Cannot combine multiple separator styles: {styles}').format(
+                styles=', '.join(active_separators)
+            )
+        )
+    if len(active_casings) > 1:
+        parser.error(
+            _('Cannot combine multiple casing styles: {styles}').format(
+                styles=', '.join(active_casings)
+            )
+        )
+    if len(active_mutually_exclusives) > 1:
+        parser.error(
+            _('Cannot combine multiple exclusive commands: {commands}').format(
+                commands=', '.join(active_mutually_exclusives)
+            )
+        )
+    if active_mutually_exclusives and (active_separators or active_casings):
+        cmd = active_mutually_exclusives[0]
+        msg = _(
+            "Command '{cmd}' cannot be combined with casing or separator "
+            'commands.'
+        )
+        parser.error(msg.format(cmd=cmd))
+
+    is_replacement_cmd = any(c in REPLACEMENT_COMMANDS for c in active_cmds)
+    if (args.find or args.replace) and not is_replacement_cmd:
+        parser.error(
+            _(
+                'The --find (-f) and --replace (-r) arguments can only '
+                'be used with replacement commands (--replace, '
+                '--replace-case, --replace-regex).'
+            )
+        )
+
+    if args.markdown:
+        if active_separators:
+            parser.error(
+                _(
+                    'The --markdown flag cannot be combined with manual '
+                    'separator commands: {styles}'
+                ).format(styles=', '.join(active_separators))
+            )
 
 
 def validate_regex(regex: str) -> None:
