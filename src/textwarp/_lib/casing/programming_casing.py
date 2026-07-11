@@ -121,6 +121,23 @@ def _get_normalized_tokens(
                         yield TokenType.SYMBOL, char
 
 
+def _is_separator_case(text: str) -> bool:
+    """
+    Check whether a string is entirely in a separator case.
+
+    Args:
+        text: The string to evaluate.
+
+    Returns:
+        bool: True if it is a separator case, otherwise False.
+    """
+    return bool(
+        patterns.cases.get_snake_word().fullmatch(text)
+        or patterns.cases.get_kebab_word().fullmatch(text)
+        or patterns.cases.get_dot_word().fullmatch(text)
+    )
+
+
 def _split_camel_pascal(text: str) -> list[str]:
     """
     Split camel case or Pascal case into constituent words.
@@ -203,6 +220,7 @@ def to_camel_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
+    is_separator_case = _is_separator_case(text)
     parts = []
     first_word = True
 
@@ -211,6 +229,8 @@ def to_camel_case(text: str) -> str:
             if first_word:
                 parts.append(_format_camel_first_word(value))
                 first_word = False
+            elif is_separator_case and value.islower():
+                parts.append(value.capitalize())
             else:
                 parts.append(_word_to_pascal(value))
         elif token_type is TokenType.SYMBOL:
@@ -230,11 +250,15 @@ def to_pascal_case(text: str) -> str:
     Returns:
         str: The converted string.
     """
+    is_separator_case = _is_separator_case(text)
     parts = []
 
     for token_type, value in _get_normalized_tokens(text):
         if token_type is TokenType.WORD:
-            parts.append(_word_to_pascal(value))
+            if is_separator_case and value.islower():
+                parts.append(value.capitalize())
+            else:
+                parts.append(_word_to_pascal(value))
         elif token_type is TokenType.SYMBOL:
             parts.append(value)
 
