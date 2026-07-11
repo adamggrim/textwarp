@@ -84,8 +84,12 @@ def _apply_pipeline(
 
         for cmd_name, func in pipeline:
             if cmd_name == 'clear':
+                if imports_spacy:
+                    active_context.stop()
                 clear_clipboard()
             elif cmd_name in ANALYSIS_COMMANDS:
+                if imports_spacy:
+                    active_context.stop()
                 func(content)
                 return None
             else:
