@@ -43,8 +43,8 @@ _MODULE_MAP: dict[str, str] = {
     'to_single_spaces': 'textwarp.warping',
     'to_snake_case': 'textwarp.warping',
     'to_title_case': 'textwarp.warping',
-    'widen': 'textwarp.warping',
-    'zalgo': 'textwarp.warping'
+    'to_zalgo': 'textwarp.warping',
+    'widen': 'textwarp.warping'
 }
 
 __all__ = list(_MODULE_MAP.keys())
@@ -88,8 +88,8 @@ if TYPE_CHECKING:
     def to_single_spaces(text: str) -> str: ...
     def to_snake_case(text: str) -> str: ...
     def to_title_case(content: str | Doc) -> str: ...
+    def to_zalgo(text: str) -> str: ...
     def widen(text: str) -> str: ...
-    def zalgo(text: str) -> str: ...
 
 
 def __getattr__(name: str) -> Any:

@@ -26,7 +26,7 @@ from textwarp._lib import (
     straight_to_curly,
     to_natural_case,
     to_separator_case,
-    zalgo
+    to_zalgo
 )
 
 __all__ = [
@@ -60,8 +60,8 @@ __all__ = [
     'to_single_spaces',
     'to_snake_case',
     'to_title_case',
-    'widen',
-    'zalgo'
+    'to_zalgo',
+    'widen'
 ]
 
 
@@ -508,6 +508,19 @@ def to_title_case(content: str | Doc) -> str:
     return to_natural_case(doc, Casing.TITLE)
 
 
+def to_zalgo(text: str) -> str:
+    """
+    Convert a string to Zalgo text.
+
+    Args:
+        text: The string to convert.
+
+    Returns:
+        str: The converted string.
+    """
+    return manipulation.to_zalgo(text)
+
+
 def widen(text: str) -> str:
     """
     Widen a string by adding a space after each character except
@@ -520,16 +533,3 @@ def widen(text: str) -> str:
         str: The converted string.
     """
     return manipulation.widen(text)
-
-
-def zalgo(text: str) -> str:
-    """
-    Convert a string to Zalgo text.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    return manipulation.zalgo(text)

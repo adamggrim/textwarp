@@ -2,13 +2,13 @@
 
 import unicodedata
 
-from textwarp.warping import zalgo, from_zalgo
+from textwarp.warping import from_zalgo, to_zalgo
 
 
 def test_zalgo_text():
     """Verify that `from_zalgo` removes all diacritics."""
     original_text = 'textwarp'
-    zalgonized_text = zalgo(original_text)
+    zalgonized_text = to_zalgo(original_text)
 
     # Zalgonized text should be longer than the original.
     assert len(zalgonized_text) > len(original_text)
@@ -25,7 +25,7 @@ def test_from_zalgo_on_plain_text():
 def test_zalgo_and_unicode():
     """Verify Zalgo text correctly handles Unicode special cases."""
     original_text = 'café'
-    zalgonized_text = zalgo(original_text)
+    zalgonized_text = to_zalgo(original_text)
 
     cleaned_text = from_zalgo(zalgonized_text)
 

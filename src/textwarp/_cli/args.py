@@ -219,7 +219,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         N_('count words')
     ),
     'zalgo': (
-        _lazy_load('..warping', 'zalgo'),
+        _lazy_load('..warping', 'to_zalgo'),
         N_('c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ')
     )
 }

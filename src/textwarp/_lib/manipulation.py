@@ -12,8 +12,8 @@ __all__ = [
     'randomize',
     'reverse',
     'to_single_spaces',
-    'widen',
-    'zalgo'
+    'to_zalgo',
+    'widen'
 ]
 
 UP_MARKS = tuple(
@@ -92,30 +92,8 @@ def to_single_spaces(text: str) -> str:
     return patterns.warping.get_multiple_spaces().sub(' ', text)
 
 
-def widen(text: str) -> str:
-    """
-    Widen a string by adding a space after each character except
-    the last one.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
-    return ' '.join(text)
-
-
-def zalgo(text: str) -> str:
-    """
-    Convert a string to Zalgo text.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+def to_zalgo(text: str) -> str:
+    """Convert a string to Zalgo text."""
     result = []
     for char in text:
         result.append(char)
@@ -128,3 +106,11 @@ def zalgo(text: str) -> str:
                 result.append(choice(DOWN_MARKS))
 
     return ''.join(result)
+
+
+def widen(text: str) -> str:
+    """
+    Widen a string by adding a space after each character except the
+    last one.
+    """
+    return ' '.join(text)
