@@ -215,17 +215,23 @@ def _process_file_mode(args: ParsedArgs) -> None:
 
 def _process_interactive_mode(args: ParsedArgs) -> None:
     """
-    Handle interactive user input.
+    Handle the interactive CLI interface for user input without files or
+    piping.
+
+    This mode acts as a wrapper around the package's core pipeline engine.
 
     Args:
         args: The parsed command-line arguments.
 
     Raises:
-        SystemExit: If a replacement command is in the pipeline or if
-            the user exits the loop.
+        SystemExit: If the user exits the loop or a replacement command
+            is in the pipeline.
     """
     def pipeline_runner(text: str) -> str | None:
-        """Run the pipeline on the given text."""
+        """
+        Route between the interactive clipboard loop and the core pipeline
+        engine.
+        """
         return _route_text(
             text, args.pipeline, args.markdown, args.find, args.replace
         )
@@ -245,7 +251,10 @@ def _process_interactive_mode(args: ParsedArgs) -> None:
         run_command_loop(pipeline_runner, action_handler=None)
     else:
         def clipboard_action(func: Callable[[str], str], text: str) -> None:
-            """Handle clipboard output for non-analysis pipelines."""
+            """
+            Output transformed clipboard output back to the clipbaord or
+            to a default file.
+            """
             result = func(text)
             _handle_output(
                 result,
