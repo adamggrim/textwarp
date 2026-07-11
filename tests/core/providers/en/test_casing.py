@@ -20,6 +20,8 @@ def test_case_from_string_initialisms():
     """Test capitalization of period-separated initialisms."""
     assert case_from_string('u.s.a.') == 'U.S.A.'
     assert case_from_string('ph.d.') == 'Ph.D.'
+    assert case_from_string("u.s.a.'s") == "U.S.A.'s"
+    assert case_from_string('ph.d.’s') == 'Ph.D.’s'
 
 
 def test_case_from_string_absolute_map():

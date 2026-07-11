@@ -59,9 +59,12 @@ def test_main_sets_locale(monkeypatch):
         )
 
     monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
+
+    # Mock the routing functions inside __main__.
+    monkeypatch.setattr(__main__, 'process_file_mode', lambda args: None)
+    monkeypatch.setattr(__main__, 'process_piped_mode', lambda args: None)
     monkeypatch.setattr(
-        'textwarp._cli.processing.process_interactive_mode',
-        lambda args: None
+        __main__, 'process_interactive_mode', lambda args: None
     )
 
     __main__.main()

@@ -1,5 +1,9 @@
 """Tests for text encoding and decoding functions."""
 
+from random import random
+
+import regex as re
+
 from textwarp._lib.encoding import (
     from_binary,
     from_hexadecimal,
@@ -45,12 +49,24 @@ def test_morse_conversion_complex():
     text = 'What hath God wrought?'
     morse = to_morse(text)
 
+    morse_irreg_word_spacing = re.sub(
+        r'(?<=[.-]) {3}(?=[.-])',
+        lambda _: ' ' * 24,
+        morse
+    )
+    morse_irreg_spacing = re.sub(
+        r'(?<=[.-]) (?=[.-])',
+        lambda _: ' ' * 5,
+        morse_irreg_word_spacing
+    )
+
     expected = (
         '.-- .... .- -   .... .- - ....   --. --- -..   .-- .-. --- '
         '..- --. .... - ..--..'
     )
     assert morse == expected
     assert from_morse(morse) == text.upper()
+    assert from_morse(morse_irreg_spacing) == text.upper()
 
 
 def test_morse_conversion_unsupported_chars():

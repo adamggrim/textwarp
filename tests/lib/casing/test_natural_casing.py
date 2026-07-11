@@ -19,6 +19,10 @@ def test_to_natural_case_sentence():
         'Start writing. Short sentences. Describe it. Just describe it.'
     )
 
+    doc = process_as_doc('The Picture of Dorian Gray.')
+    result = to_natural_case(doc, Casing.SENTENCE)
+
+    assert result == 'The Picture of Dorian Gray.'
 
 def test_to_natural_case_start():
     """Test applying start case to a spaCy Doc."""

@@ -1,6 +1,7 @@
 """Tests for pipeline output routing."""
 
 import argparse
+import sys
 
 import pytest
 
@@ -111,3 +112,17 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
         pipeline.validate_piped_commands(test_pipeline, None, None)
 
     assert excinfo.value.code == 1
+
+
+def test_missing_markdown_dependency(monkeypatch, capsys):
+    """Test graceful failure when `marko` is not installed."""
+    # Simulate the absence of `marko`.
+    monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
+
+    with pytest.raises(SystemExit) as excinfo:
+        pipeline.route_text('## Test Markdown', pipeline=[], parse_markdown=True)
+
+    assert excinfo.value.code == 1
+
+    captured = capsys.readouterr()
+    assert "Markdown support requires 'marko'" in captured.out
