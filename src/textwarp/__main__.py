@@ -70,15 +70,9 @@ def _apply_pipeline(
         import contextlib
         active_context = contextlib.nullcontext()
 
-    requires_intermediate_input = False
-    for cmd_name, _ in pipeline:
-        normalized_name = cmd_name.replace('-', '_')
-        if normalized_name in _INTEGER_PROMPT_FUNC_NAMES:
-            requires_intermediate_input = True
-        elif normalized_name in _REPLACEMENT_FUNC_NAMES and (
-            arg_to_replace is None or replacement_arg is None
-        ):
-            requires_intermediate_input = True
+    requires_intermediate_input = _requires_intermediate_input(
+        pipeline, arg_to_replace, replacement_arg
+    )
 
     with active_context:
         if imports_spacy:
@@ -95,9 +89,9 @@ def _apply_pipeline(
                 func(content)
                 return None
             else:
-                normalized_name = cmd_name.replace('-', '_')
+                func_name = cmd_name.replace('-', '_')
                 if (
-                    normalized_name in _REPLACEMENT_FUNC_NAMES
+                    func_name in _REPLACEMENT_FUNC_NAMES
                     and arg_to_replace is not None
                     and replacement_arg is not None
                 ):
@@ -302,6 +296,29 @@ def _process_piped_mode(args: ParsedArgs) -> None:
         sys.exit(1)
 
 
+def _requires_intermediate_input(
+    pipeline: Pipeline,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
+) -> bool:
+    """
+    Check whether the pipeline contains commands that prompt for input
+    after the initial argument.
+    """
+    for cmd_name, _ in pipeline:
+        normalized_name = cmd_name.replace('-', '_')
+
+        if normalized_name in _INTEGER_PROMPT_FUNC_NAMES:
+            return True
+        if (
+            normalized_name in _REPLACEMENT_FUNC_NAMES
+            and (arg_to_replace is None or replacement_arg is None)
+        ):
+            return True
+
+    return False
+
+
 def _route_output(
     result: str,
     output_file: str | None,
@@ -395,7 +412,8 @@ def _validate_piped_commands(
     replacement_arg: str | None
 ) -> None:
     """
-    Ensure that replacement commands are not used in pipeline mode.
+    Ensure that commands requiring intermediate input are not used in
+    pipeline/file mode without the necessary arguments.
 
     Args:
         pipeline: A list of tuples containing command names and their
@@ -405,11 +423,21 @@ def _validate_piped_commands(
         replacement_arg: The replacement case, regex or substring, if
             provided.
     Raises:
-        SystemExit: If a replacement command is in the pipeline.
+        SystemExit: If an intermediate input command is used in piped mode.
     """
-    for cmd_name, _ in pipeline:
-        normalized_name = cmd_name.replace('-', '_')
-        if normalized_name in _REPLACEMENT_FUNC_NAMES:
+    for cmd_name, func in pipeline:
+        func_name = cmd_name.replace('-', '_')
+
+        if func_name in _INTEGER_PROMPT_FUNC_NAMES:
+            print_wrapped(
+                _(
+                    "The '--{cmd_name}' command requires interactive input "
+                    'and cannot be used in file or piped mode.'
+                ).format(cmd_name=cmd_name)
+            )
+            sys.exit(1)
+
+        if func_name in _REPLACEMENT_FUNC_NAMES:
             if arg_to_replace is None or replacement_arg is None:
                 print_wrapped(
                     _(
