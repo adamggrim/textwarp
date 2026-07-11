@@ -129,13 +129,23 @@ class AcceleratingSpinner:
         self._thread.start()
         return self
 
+    def stop(self) -> None:
+        """Manually stop the spinner and reset the terminal state."""
+        self._stop_event.set()
+        if self._thread:
+            self._thread.join()
+            self._thread = None
+
+        self._show_cursor()
+        atexit.unregister(self._show_cursor)
+
     def __exit__(
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
         exc_tb: types.TracebackType | None
     ) -> None:
-        """Stop the spinner thread and clear the terminal line."""
+        """Stop the spinner thread upon exiting the context."""
         self._stop_event.set()
         if self._thread:
             self._thread.join()

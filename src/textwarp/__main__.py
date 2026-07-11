@@ -27,8 +27,13 @@ from textwarp._core.context import ctx
 
 _ = gettext.gettext
 
-# All the function names for replacement commands.
+# All function names for replacement commands.
 _REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
+
+# All function names for commands requiring integer input.
+_INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
+    'mfws', 'time_to_read'
+})
 
 
 def _apply_pipeline(
@@ -65,9 +70,21 @@ def _apply_pipeline(
         import contextlib
         active_context = contextlib.nullcontext()
 
+    requires_intermediate_input = False
+    for cmd_name, _ in pipeline:
+        normalized_name = cmd_name.replace('-', '_')
+        if normalized_name in _INTEGER_PROMPT_FUNC_NAMES:
+            requires_intermediate_input = True
+        elif normalized_name in _REPLACEMENT_FUNC_NAMES and (
+            arg_to_replace is None or replacement_arg is None
+        ):
+            requires_intermediate_input = True
+
     with active_context:
         if imports_spacy:
             _get_nlp()
+            if requires_intermediate_input:
+                active_context.stop()
 
         content = text
 
