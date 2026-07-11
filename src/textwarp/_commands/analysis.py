@@ -2,6 +2,7 @@
 
 import gettext
 
+from textwarp._cli.spinner import AcceleratingSpinner
 from textwarp.analysis import (
     calculate_time_to_read,
     count_chars,
@@ -76,7 +77,9 @@ def mfws(text: str) -> None:
         allow_early_exit=True
     )
 
-    data: list[WordCount] = count_mfws(text, count_limit)
+    with AcceleratingSpinner():
+        data: list[WordCount] = count_mfws(text, count_limit)
+
     formatted_data: str = format_mfws(data)
     print('\n' + formatted_data)
 
@@ -120,7 +123,9 @@ def time_to_read(text: str) -> None:
         allow_early_exit=True
     )
 
-    minutes: int = calculate_time_to_read(text, wpm)
+    with AcceleratingSpinner():
+        minutes: int = calculate_time_to_read(text, wpm)
+
     formatted_minutes: str = format_time_to_read(minutes)
     print_wrapped(formatted_minutes)
 

@@ -5,6 +5,7 @@ from typing import Callable
 
 import regex as re
 
+from textwarp._cli.spinner import AcceleratingSpinner
 from textwarp._cli.constants.messages import (
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
@@ -184,10 +185,11 @@ def replace_case(
     search_pattern = get_case_names_regex_map()[case_to_replace_name]
     conversion_func = CASE_NAMES_FUNC_MAP[replacement_case_name]
 
-    return search_pattern.sub(
-        lambda match: conversion_func(match.group(0)),
-        text
-    )
+    with AcceleratingSpinner():
+        return search_pattern.sub(
+            lambda match: conversion_func(match.group(0)),
+            text
+        )
 
 
 def replace_regex(
@@ -226,7 +228,8 @@ def replace_regex(
             ENTER_VALID_TEXT_PROMPT
         )
 
-    return re.sub(regex_text, replacement_text, text)
+    with AcceleratingSpinner():
+        return re.sub(regex_text, replacement_text, text)
 
 
 def replace_text(
@@ -271,4 +274,5 @@ def replace_text(
             ENTER_VALID_TEXT_PROMPT
         )
 
-    return text.replace(text_to_replace, replacement_text)
+    with AcceleratingSpinner():
+        return text.replace(text_to_replace, replacement_text)
