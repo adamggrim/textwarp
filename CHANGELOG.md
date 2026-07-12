@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split some larger files to adhere to single-responsibility principle.
 * Updated pipeline handling of intermediate and replacement inputs.
 * Wrapped words in single quotes for MFWs analysis.
+* Added apostrophe-based suffix support for initialisms.
 
 ### Internal
 * Updated tests to reflect the new spinner, input delay, early exit and MFWs formatting.

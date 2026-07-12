@@ -121,14 +121,12 @@ def _handle_period_separated_initialism(
     """
     if (patterns.warping.get_period_separated_initialism()
             .fullmatch(lower_word)):
-        parts = lower_word.split('.')
-        formatted_parts = [
-            part.upper()
-            if not en.patterns.get_any_apostrophe().search(part)
-            else part.lower()
-            for part in parts
-        ]
-        return '.'.join(formatted_parts)
+        match = en.patterns.get_any_apostrophe().search(lower_word)
+        if match:
+            start_idx = match.start()
+            prefix = lower_word[:start_idx].upper()
+            return prefix + lower_word[start_idx:].lower()
+        return lower_word.upper()
     return None
 
 
