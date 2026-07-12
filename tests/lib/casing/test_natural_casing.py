@@ -6,22 +6,29 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_to_natural_case_sentence():
-    doc = process_as_doc('I HAVE NO MOUTH, AND I MUST SCREAM.')
-    result = to_natural_case(doc, Casing.SENTENCE)
-    assert result == 'I have no mouth, and i must scream.'
+    doc_uppercase = process_as_doc('HURRY UP PLEASE ITS TIME.')
+    result = to_natural_case(doc_uppercase, Casing.SENTENCE)
+    assert result == 'Hurry up please its time.'
 
     doc_mixed = process_as_doc(
-        'start writing. short sentences. describe it. just describe it.'
+        'what happens is a continual surrender of himself as he is at the '
+        'moment to something which is more valuable. the progress of an '
+        'artist is a continual self-sacrifice, a continual extinction of '
+        'personality.'
     )
     result_mixed = to_natural_case(doc_mixed, Casing.SENTENCE)
     assert result_mixed == (
-        'Start writing. Short sentences. Describe it. Just describe it.'
+        'What happens is a continual surrender of himself as he is at the '
+        'moment to something which is more valuable. The progress of an '
+        'artist is a continual self-sacrifice, a continual extinction of '
+        'personality.'
     )
 
-    doc = process_as_doc('The Picture of Dorian Gray.')
-    result = to_natural_case(doc, Casing.SENTENCE)
+    doc_sentence = process_as_doc('The Love Song of J. Alfred Prufrock.')
+    result = to_natural_case(doc_sentence, Casing.SENTENCE)
 
-    assert result == 'The Picture of Dorian Gray.'
+    assert result == 'The Love Song of J. Alfred Prufrock.'
+
 
 def test_to_natural_case_start():
     doc = process_as_doc('of man’s first disobedience')

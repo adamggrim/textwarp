@@ -108,6 +108,9 @@ def test_missing_markdown_dependency(monkeypatch, capsys):
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 
     with pytest.raises(SystemExit) as excinfo:
+        pipeline.route_text(
+            '## Rain also is of the process', pipeline=[], parse_markdown=True
+        )
 
     assert excinfo.value.code == 1
 

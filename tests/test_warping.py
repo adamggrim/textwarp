@@ -180,8 +180,7 @@ def test_deterministic_warping_functions(func, input_str, expected):
 
 
 def test_random_case():
-    """Test random casing."""
-    input_str = 'random case'
+    input_str = 'Tell all the truth but tell it slant'
     result = random_case(input_str)
 
     # Check that the function changes casing while preserving length and
@@ -191,8 +190,7 @@ def test_random_case():
 
 
 def test_randomize():
-    """Test randomization."""
-    input_str = 'randomize'
+    input_str = 'things fall apart'
     result = randomize(input_str)
 
     # Check that the function shuffles character order while preserving

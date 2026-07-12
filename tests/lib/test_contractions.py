@@ -27,9 +27,7 @@ def test_apply_expansion_casing_title():
 
 
 def test_expand_contractions_no_contractions():
-    text = (
-        'This mission is too important for me to allow you to jeopardize it.'
-    )
+    text = ('How does it feel?')
     doc = process_as_doc(text)
     assert expand_contractions(doc) == text
 

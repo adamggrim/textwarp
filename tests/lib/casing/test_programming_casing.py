@@ -24,8 +24,8 @@ def test_to_pascal_case():
 
 def test_to_separator_case_basic():
     assert to_separator_case(
-        'Why did it have to be snakes', CaseSeparator.SNAKE
-    ) == 'why_did_it_have_to_be_snakes'
+        'Why did it have to be snakes?', CaseSeparator.SNAKE
+    ) == 'why_did_it_have_to_be_snakes?'
     assert to_separator_case(
         'Vlad the Impaler', CaseSeparator.KEBAB
     ) == 'vlad-the-impaler'
