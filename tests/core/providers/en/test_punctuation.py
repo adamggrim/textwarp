@@ -25,7 +25,7 @@ def test_straight_to_curly_double_quotes():
     assert straight_to_curly('She said, "Hi."') == 'She said, “Hi.”'
 
 
-def test_straight_to_curly_single_quotes_and_apostrophes():
+def test_straight_to_curly_single_quotes():
     assert straight_to_curly("'Hello'") == '‘Hello’'
     assert straight_to_curly("don't") == "don’t"
     assert straight_to_curly("It's 'written'") == "It’s ‘written’"

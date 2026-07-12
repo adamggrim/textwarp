@@ -34,7 +34,7 @@ def test_to_separator_case_basic():
     ) == 'sunday.on.la.grande.jatte'
 
 
-def test_to_separator_case_existing_cases():
+def test_to_separator_case_from_existing_cases():
     assert to_separator_case(
         'withThySharpTeethThisKnotIntrinsicate', CaseSeparator.SNAKE
     ) == 'with_thy_sharp_teeth_this_knot_intrinsicate'
