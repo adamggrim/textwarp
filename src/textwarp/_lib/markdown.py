@@ -17,13 +17,6 @@ def _apply_func_to_markdown(
     """
     Parse a Markdown string into an Abstract Syntax Tree (AST), apply a
     handler function and translate the string back into Markdown.
-
-    Args:
-        text: The Markdown string to process.
-        handler_func: The function to apply to the text nodes.
-
-    Returns:
-        str: The transformed Markdown string.
     """
 
     class TextwarpRenderer(MarkdownRenderer):
@@ -37,15 +30,7 @@ def _apply_func_to_markdown(
 
 
 def strip_markdown(text: str) -> str:
-    """
-    Parse a Markdown string and extract only the plain text.
-
-    Args:
-        text: The Markdown string to process.
-
-    Returns:
-        str: The extracted plain text.
-    """
+    """Parse a Markdown string and extract only the plain text."""
     extracted_text: list[str] = []
 
     def intercept_text(chunk: str) -> str:
@@ -60,12 +45,5 @@ def process_markdown(text: str, transform_func: Callable[[str], str]) -> str:
     """
     Parse a Markdown string into an Abstract Syntax Tree (AST), apply a
     transformation function and translate the string back into Markdown.
-
-    Args:
-        text: The Markdown string to process.
-        transform_func: The function to apply to the text nodes.
-
-    Returns:
-        str: The transformed Markdown string.
     """
     return _apply_func_to_markdown(text, transform_func)

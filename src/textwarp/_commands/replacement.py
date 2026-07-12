@@ -54,7 +54,7 @@ def _create_presence_validator(
 ) -> Callable[[str], None]:
     """
     Create a function that checks for the presence and validity of a
-    case, regular expression or substring in a given string.
+    case, regular expression or substring in a string.
 
     Args:
         base_validator: A function that validates the input without
@@ -68,7 +68,7 @@ def _create_presence_validator(
     """
     def validator(search_input: str) -> None:
         """
-        Check the user input for presence in the given string.
+        Check the user input for presence in the string.
 
         Args:
             search_input: A string input from the user, representing a
@@ -200,12 +200,6 @@ def replace_regex(
     """
     Prompt the user or extract arguments for a regular expression to
     find and a string to replace it, and return the transformed text.
-
-    Args:
-        text: The string to transform.
-
-    Returns:
-        str: The transformed text.
     """
     presence_validator = _create_presence_validator(
         validate_regex, text, PresenceCheckType.REGEX

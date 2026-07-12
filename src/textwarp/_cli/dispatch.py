@@ -6,7 +6,6 @@ from textwarp._cli.args import _lazy_load
 
 __all__ = ['CASE_NAMES_FUNC_MAP']
 
-# Map of valid case name inputs and their associated functions.
 CASE_NAMES_FUNC_MAP: Final[dict[str, Callable[[str], str]]] = {
     'camel': _lazy_load('..warping', 'to_camel_case'),
     'camel case': _lazy_load('..warping', 'to_camel_case'),

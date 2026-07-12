@@ -127,7 +127,7 @@ def format_pos_counts(pos_counts: POSCounts) -> str:
 
 def format_time_to_read(minutes_to_read: int) -> str:
     """
-    Return a string indicating the time to read a given string.
+    Return a string indicating the time to read a string.
 
     Args:
         minutes_to_read (int): The number of minutes.

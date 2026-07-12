@@ -19,14 +19,7 @@ __all__ = [
 
 @unique
 class CaseSeparator(str, Enum):
-    """
-    Specify which separator character to use in a string.
-
-    Attributes:
-        DOT: Represents `dot.case`.
-        KEBAB: Represents `kebab-case`.
-        SNAKE: Represents `snake_case`.
-    """
+    """Specify which separator character to use in a string."""
     DOT = '.'
     KEBAB = '-'
     SNAKE = '_'
@@ -34,14 +27,7 @@ class CaseSeparator(str, Enum):
 
 @unique
 class Casing(Enum):
-    """
-    Specify which capitalization style to use in a string.
-
-    Attributes:
-        SENTENCE: Represents sentence case.
-        START: Represents start case.
-        TITLE: Represents title case.
-    """
+    """Specify which capitalization style to use in a string."""
     SENTENCE = auto()
     START = auto()
     TITLE = auto()
@@ -49,15 +35,7 @@ class Casing(Enum):
 
 @unique
 class CountLabels(str, Enum):
-    """
-    Label strings for count formatting.
-
-    Attributes:
-        CHAR: String specifying character count.
-        LINE: String specifying line count.
-        SENTENCE: String specifying sentence count.
-        WORD: String specifying word count.
-    """
+    """Label strings for count formatting."""
     CHAR = N_('Character')
     LINE = N_('Line')
     SENTENCE = N_('Sentence')
@@ -69,10 +47,6 @@ class ModelPriority(str, Enum):
     """
     Specify whether to prioritize accuracy or speed for spaCy model
     selection.
-
-    Attributes:
-        ACCURACY: Prioritize accuracy over speed.
-        SPEED: Prioritize speed over accuracy.
     """
     ACCURACY = 'accuracy'
     SPEED = 'speed'
@@ -81,14 +55,8 @@ class ModelPriority(str, Enum):
 @unique
 class PresenceCheckType(Enum):
     """
-    Specify whether to check for the presence of a case, regular
-    expression or substring in a given string.
-
-    Attributes:
-        CASE: Check for the presence of a specific case (e.g., camel
-            case or snake case).
-        REGEX: Check for a regular expression match.
-        SUBSTRING: Check for the presence of a substring.
+    Specify whether to check for the presence of a case (e.g., camel
+    case or snake case), regular expression or substring.
     """
     CASE = auto()
     REGEX = auto()

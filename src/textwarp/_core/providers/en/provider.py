@@ -134,7 +134,7 @@ class EnglishProvider(LanguageProvider):
 
     def cardinal_to_ordinal(self, text: str) -> str:
         """
-        Convert cardinal numbers in a given string to ordinal numbers.
+        Convert cardinal numbers in a string to ordinal numbers.
 
         Args:
             text: The string to convert.
@@ -170,7 +170,7 @@ class EnglishProvider(LanguageProvider):
 
     def curly_to_straight(self, text: str) -> str:
         """
-        Convert curly quotes in a given string to straight quotes.
+        Convert curly quotes in a string to straight quotes.
 
         Args:
             text: The string to convert.
@@ -182,7 +182,7 @@ class EnglishProvider(LanguageProvider):
 
     def expand_contractions(self, doc: Doc) -> str:
         """
-        Expand all contractions in a given spaCy `Doc`.
+        Expand all contractions in a spaCy `Doc`.
 
         Args:
             doc: A spaCy `Doc`.
@@ -207,7 +207,7 @@ class EnglishProvider(LanguageProvider):
 
     def ordinal_to_cardinal(self, text: str) -> str:
         """
-        Convert ordinal numbers in a given string to cardinal numbers.
+        Convert ordinal numbers in a string to cardinal numbers.
 
         Args:
             text: The string to convert.
@@ -246,7 +246,7 @@ class EnglishProvider(LanguageProvider):
 
     def straight_to_curly(self, text: str) -> str:
         """
-        Convert straight quotes in a given string to curly quotes.
+        Convert straight quotes in a string to curly quotes.
 
         Args:
             text: The string to convert.

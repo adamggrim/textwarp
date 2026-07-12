@@ -31,13 +31,6 @@ def _is_present_participle(token: Token) -> bool:
     """
     Check if a token is a present participle (VBG), accounting for
     words that end in "in'".
-
-    Args:
-        token: The spaCy `Token` to check.
-
-    Returns:
-        bool: `True` if the token is a present participle, otherwise
-            `False`.
     """
     if token.tag_ == 'VBG':
         return True
@@ -61,14 +54,8 @@ def _is_present_participle(token: Token) -> bool:
 
 def _disambiguate_a_or_to(span: Span) -> str:
     """
-    Shared logic for "gotta" and "wanna" to disambiguate between "a"
+    Shared logic for "gotta" and "wanna" disambiguation between "a"
     and "to".
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The disambiguated suffix ("a" or "to").
     """
     doc = span.doc
     next_token = doc[span.end] if span.end < len(doc) else None
@@ -91,12 +78,6 @@ def disambiguate_ain_t(span: Span) -> str:
 
     This function assumes the "n't" `Span` is already an identified
     "ain't" contraction (preceded by "ai").
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     doc = span.doc
     verb_token = span[0]
@@ -134,12 +115,6 @@ def disambiguate_d(span: Span) -> str:
     Disambiguate the base verb for an "'d" contraction.
 
     This function assumes the `Span` is already a "'d" contraction.
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     doc = span.doc
     suffix_token = span[-1]
@@ -176,12 +151,6 @@ def disambiguate_gotta(span: Span) -> str:
 
     This function assumes the `Span` is already an identified "gotta"
     contraction.
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     return _disambiguate_a_or_to(span)
 
@@ -191,12 +160,6 @@ def disambiguate_s(span: Span) -> str:
     Disambiguate the base verb for an "'s" contraction.
 
     This function assumes the `Span` is already an "'s" contraction.
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     doc = span.doc
     suffix_token = span[-1]
@@ -226,12 +189,6 @@ def disambiguate_wanna(span: Span) -> str:
 
     This function assumes the `Span` is already an identified "wanna"
     contraction.
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     return _disambiguate_a_or_to(span)
 
@@ -242,12 +199,6 @@ def disambiguate_whatcha(span: Span) -> str:
 
     This function assumes the `Span` has already been identified as a
     "whatcha" contraction.
-
-    Args:
-        span: The spaCy `Span` containing the contraction.
-
-    Returns:
-        str: The base verb for the contraction.
     """
     doc = span.doc
 

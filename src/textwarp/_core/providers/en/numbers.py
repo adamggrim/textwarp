@@ -12,15 +12,7 @@ if TYPE_CHECKING:
 
 
 def _get_nlp_doc(text: str) -> 'Doc':
-    """
-    Helper to initialize the NLP document.
-
-    Args:
-        text: The input text to process.
-
-    Returns:
-        The processed NLP document.
-    """
+    """Helper to initialize the NLP document."""
     from textwarp._lib.nlp import process_as_doc
     return process_as_doc(text, disable=['parser', 'ner', 'lemmatizer'])
 
@@ -36,10 +28,6 @@ def _is_part_of_mixed_fraction(text: str, start_index: int) -> bool:
     """
     Look ahead in the text to determine if the current number precedes a
     fraction.
-
-    Args:
-        text: The text to analyze.
-        start_index: The index immediately following the current number.
     """
     lookahead_index = start_index
 
@@ -59,15 +47,7 @@ def _is_part_of_mixed_fraction(text: str, start_index: int) -> bool:
 
 
 def cardinal_to_ordinal(text: str) -> str:
-    """
-    Convert cardinal numbers in a given string to ordinal numbers.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert cardinal numbers in a string to ordinal numbers."""
     doc = _get_nlp_doc(text)
     result = []
     last_idx = 0
@@ -120,15 +100,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
 
 def ordinal_to_cardinal(text: str) -> str:
-    """
-    Convert ordinal numbers in a given string to cardinal numbers.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert ordinal numbers in a string to cardinal numbers."""
     doc = _get_nlp_doc(text)
     result = []
     last_idx = 0

@@ -1,4 +1,4 @@
-"""Functions for manipulating a given string."""
+"""Functions that manipulate a string."""
 
 import unicodedata
 from random import choice, randint, shuffle
@@ -34,15 +34,7 @@ DOWN_MARKS = tuple(
 
 
 def from_zalgo(text: str) -> str:
-    """
-    Remove Zalgo diacritics.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Remove Zalgo diacritics from a string."""
     return ''.join(
         char for char in text
         if not unicodedata.combining(char)
@@ -50,30 +42,14 @@ def from_zalgo(text: str) -> str:
 
 
 def randomize(text: str) -> str:
-    """
-    Randomize the characters of a given string.
-
-    Args:
-        text: The string to randomize.
-
-    Returns:
-        str: The randomized string.
-    """
+    """Randomize the characters of a string."""
     char_list = list(text)
     shuffle(char_list)
     return ''.join(char_list)
 
 
 def reverse(text: str) -> str:
-    """
-    Reverse the characters of a given string.
-
-    Args:
-        text: The string to reverse.
-
-    Returns:
-        The reversed string.
-    """
+    """Reverse the characters of a string."""
     return ''.join(reversed(re.findall(r'\X', text)))
 
 
@@ -82,12 +58,6 @@ def to_single_spaces(text: str) -> str:
     Convert consecutive spaces to a single space.
 
     This function preserves leading spaces and tabs.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
     """
     return patterns.warping.get_multiple_spaces().sub(' ', text)
 

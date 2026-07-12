@@ -22,11 +22,8 @@ __all__ = [
     'WH_WORDS'
 ]
 
-# Fine-grained parts-of-speech tags for base verb forms.
 BASE_VERB_TAGS: frozenset[str]
 
-# A mapping of curly apostrophes and quotation marks to their straight
-# counterparts.
 CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
     '‘': "'",
     '’': "'",
@@ -34,30 +31,17 @@ CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
     '”': '"'
 })
 
-# Auxiliary verbs forms of "have".
 HAVE_AUXILIARIES: frozenset[str]
-
-# Coarse-grained parts-of-speech tags for stopping a subject search when
-# looking left.
 LEFT_SEARCH_STOP_TAGS: frozenset[str]
-
-# Fine-grained parts-of-speech tags for the first word of a noun phrase.
 NOUN_PHRASE_TAGS: frozenset[str]
-
-# Opening quote characters.
 OPEN_QUOTES: frozenset[str]
 
-# Quotation marks characters.
-QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
-
-# A mapping of integers to their corresponding ordinal suffix.
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',
     2: 'nd',
     3: 'rd'
 }
 
-# Strings for ordinal suffixes.
 ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
     'nd', 'nds',
     'rd', 'rds',
@@ -65,43 +49,20 @@ ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
     'th', 'ths',
 )
 
-# Fine-grained parts-of-speech tags for past tense and past participle
-# verb forms. (Fine-grained tags used to distinguish verb tense.)
 PARTICIPLE_TAGS: frozenset[str]
 
-# Strings for verbs that expand to "would".
 PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
     {'care', 'mind', 'prefer'}
 )
 
-# Suffixes for a participle form with the "g" dropped.
 PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
-
-# Named entities that are typically proper nouns.
 PROPER_NOUN_ENTITIES: frozenset[str]
-
 QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
-
-# Coarse-grained parts-of-speech tags for stopping a subject search when
-# looking right.
 RIGHT_SEARCH_STOP_TAGS: frozenset[str]
-
-# Fine-grained parts-of-speech tags for singular nouns and proper nouns.
 SINGULAR_NOUN_TAGS: frozenset[str]
-
-# Coarse-grained parts-of-speech tags for pronouns, proper nouns and
-# nouns.
 SUBJECT_POS_TAGS: frozenset[str]
-
-# Third-person singular pronouns for subject-verb agreement checks.
 THIRD_PERSON_SINGULAR_PRONOUNS: frozenset[str]
-
-# Fine-grained parts-of-speech tag exceptions for title case
-# capitalization. (Fine-grained tags used to distinguish articles from
-# possessives.)
 TITLE_CASE_TAG_EXCEPTIONS: frozenset[str]
-
-# Wh-words that start questions.
 WH_WORDS: frozenset[str]
 
 

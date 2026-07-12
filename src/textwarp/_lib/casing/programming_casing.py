@@ -21,12 +21,6 @@ def _format_camel_first_word(word: str) -> str:
 
     Lowercases the entire word if it is an acronym, otherwise lowercases
     only the first letter.
-
-    Args:
-        word: The word to format.
-
-    Returns:
-        str: The correctly formatted starting word.
     """
     if word.isupper():
         return word.lower()
@@ -34,15 +28,7 @@ def _format_camel_first_word(word: str) -> str:
 
 
 def _is_separator_case(text: str) -> bool:
-    """
-    Check whether a string is entirely in a separator case.
-
-    Args:
-        text: The string to evaluate.
-
-    Returns:
-        bool: True if it is a separator case, otherwise False.
-    """
+    """Check whether a string is entirely in a separator case."""
     return bool(
         patterns.cases.get_snake_word().fullmatch(text)
         or patterns.cases.get_kebab_word().fullmatch(text)
@@ -51,15 +37,7 @@ def _is_separator_case(text: str) -> bool:
 
 
 def _word_to_pascal(word: str) -> str:
-    """
-    Convert a single word to Pascal case.
-
-    Args:
-        word: The word to convert.
-
-    Returns:
-        str: The converted word.
-    """
+    """Convert a single word to Pascal case."""
     if not any(char.isalpha() for char in word):
         return word
     if patterns.cases.get_pascal_word().match(word):
@@ -71,15 +49,7 @@ def _word_to_pascal(word: str) -> str:
 
 
 def to_camel_case(text: str) -> str:
-    """
-    Convert a string to camel case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to camel case."""
     is_separator_case = _is_separator_case(text)
     parts = []
     first_word = True
@@ -101,15 +71,7 @@ def to_camel_case(text: str) -> str:
 
 
 def to_pascal_case(text: str) -> str:
-    """
-    Convert a string to Pascal case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to Pascal case."""
     is_separator_case = _is_separator_case(text)
     parts = []
 
@@ -129,16 +91,7 @@ def to_separator_case(
     text: str,
     separator: CaseSeparator
 ) -> str:
-    """
-    Convert a string to dot case, kebab case or snake case.
-
-    Args:
-        text: The string to convert.
-        separator: The separator for the converted string.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to dot case, kebab case or snake case."""
     parts = []
     last_was_sep = False
     last_token_type = None

@@ -29,8 +29,8 @@ def _get_morse_spacing_patterns(
         text: The Morse string to analyze.
 
     Returns:
-        A tuple containing both the compiled word separator pattern and
-        the compiled character separator pattern.
+        A tuple containing the compiled word separator pattern and the
+        compiled character separator pattern.
     """
     space_matches = re.findall(r' +', text)
 
@@ -149,7 +149,7 @@ def to_hexadecimal(text: str) -> str:
 
 def to_morse(text: str) -> str:
     """
-    Convert a given string to Morse code.
+    Convert a string to Morse code.
 
     Letters (A-Z), numbers (0-9) and common punctuation (., ?, !, ,, :,
     ;, +, -, =, @, (, ), ", ', /, &) are all supported.

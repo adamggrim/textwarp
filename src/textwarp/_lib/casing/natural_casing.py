@@ -100,12 +100,6 @@ def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for start
     case (i.e., all word tokens).
-
-    Args:
-        text_container: The spaCy `Doc` or `Span` to search.
-
-    Returns:
-        set[int]: A set containing the indices of all word tokens.
     """
     word_idxs: set[int] = set()
 
@@ -122,15 +116,14 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     case.
 
     This includes tokens at the start of a sentence, after a colon, at
-    the end of the `Doc` or that should be capitalized based on their part
-    of speech or length.
+    the end of the `Doc` or that should be capitalized based on their
+    part of speech or length.
 
     Args:
         text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
-        set[int]: A set containing the set of first word indices and the
-            last word index.
+        set[int]: A set containing the first word and last word indices.
     """
     position_idxs: set[int] = set()
 
@@ -163,12 +156,6 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     """
     Convert a spaCy `Doc` or `Span` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
-
-    Args:
-        text_container: The spaCy `Doc` or `Span` to convert.
-
-    Returns:
-        str: The converted `Doc` or `Span` text.
     """
     position_idxs = _find_title_case_idxs(text_container)
     processed_parts: list[str] = []

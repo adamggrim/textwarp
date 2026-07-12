@@ -56,12 +56,6 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
     """
     Expand multi-word idiomatic phrases before expanding standard
     contractions.
-
-    Args:
-        phrase: The input text to expand.
-
-    Returns:
-        str: The text with expanded idiomatic phrases.
     """
     idiom_map = en.data.contraction_expansion.get_idiomatic_map()
 
@@ -110,15 +104,7 @@ def _expand_unambiguous_contraction(
 
 
 def expand_contractions(doc: Doc) -> str:
-    """
-    Expand all contractions in a given spaCy `Doc`.
-
-    Args:
-        doc: A spaCy `Doc`.
-
-    Returns:
-        str: The converted `Doc` text.
-    """
+    """Expand all contractions in a spaCy `Doc`."""
     text_with_idioms_expanded = _expand_idiomatic_phrases(doc.text)
 
     if text_with_idioms_expanded != doc.text:

@@ -23,27 +23,14 @@ __all__ = ['extract_words_from_doc', 'process_as_doc']
 
 @cache
 def _load_spacy() -> ModuleType:
-    """
-    Lazily load and cache the spaCy module.
-
-    Returns:
-        ModuleType: The loaded spaCy module.
-    """
+    """Lazily load and cache the spaCy module."""
     import spacy
     return spacy
 
 
 @cache
 def _load_spacy_model(model_name: str) -> spacy.language.Language:
-    """
-    Load a spaCy model by name.
-
-    Args:
-        model_name: The name of the spaCy model to load.
-
-    Returns:
-        spacy.language.Language: The loaded spaCy model.
-    """
+    """Load a spaCy model by name."""
     spacy = _load_spacy()
     return spacy.load(model_name)
 
@@ -102,15 +89,7 @@ def _get_nlp(
 
 
 def extract_words_from_doc(doc: Doc) -> list[str]:
-    """
-    Extract a list of word strings from a spaCy `Doc`.
-
-    Args:
-        doc: The spaCy `Doc` to analyze.
-
-    Returns:
-        list[str]: The list of word strings from the `Doc`.
-    """
+    """Extract a list of word strings from a spaCy `Doc`."""
     return [
         token.lower_
         for token in doc

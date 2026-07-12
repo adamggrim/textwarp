@@ -15,7 +15,7 @@ __all__ = [
 
 def curly_to_straight(text: str) -> str:
     """
-    Convert curly quotes in a given string to straight quotes.
+    Convert curly quotes in a string to straight quotes.
 
     Args:
         text: The string to convert.
@@ -41,7 +41,7 @@ def remove_apostrophes(text: str) -> str:
 
 def straight_to_curly(text: str) -> str:
     """
-    Convert straight quotes in a given string to curly quotes.
+    Convert straight quotes in a string to curly quotes.
 
     Args:
         text: The string to convert.

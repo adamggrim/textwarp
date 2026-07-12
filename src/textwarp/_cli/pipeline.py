@@ -21,10 +21,8 @@ from textwarp._core.types import Pipeline
 
 _ = gettext.gettext
 
-# All function names for replacement commands.
 REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
-# All function names for commands requiring integer input.
 INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
     'mfws', 'time_to_read'
 })
@@ -37,7 +35,7 @@ def apply_pipeline(
     replacement_arg: str | None = None
 ) -> str | None:
     """
-    Apply a sequence of pipeline functions to a given string.
+    Apply a sequence of pipeline functions to a string.
 
     Args:
         text: The string or spaCy Doc to transform.
@@ -273,8 +271,8 @@ def route_text(
     except ImportError:
         print_wrapped(
             _(
-                "Error: Markdown support requires the 'marko' package. "
-                "Install it using: pip install textwarp[markdown]"
+                "Error: Markdown support requires 'marko'. Install it "
+                'using: pip install textwarp[markdown]'
             )
         )
         sys.exit(1)

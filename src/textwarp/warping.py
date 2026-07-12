@@ -19,14 +19,12 @@ from textwarp._lib import (
     contractions,
     curly_to_straight,
     encoding,
-    from_zalgo,
     manipulation,
     numbers,
     process_as_doc,
     straight_to_curly,
     to_natural_case,
-    to_separator_case,
-    to_zalgo
+    to_separator_case
 )
 
 __all__ = [
@@ -67,14 +65,8 @@ __all__ = [
 
 def capitalize(content: str | Doc) -> str:
     """
-    Capitalize each word in a given string or spaCy `Doc`, handling
-    special name prefixes and preserving other mid-word capitalizations.
-
-    Args:
-        content: The string or spaCy `Doc` to capitalize.
-
-    Returns:
-        str: The capitalized string.
+    Capitalize each word in a string or spaCy `Doc`, handling apecial
+    name prefixes and preserving other mid-word capitalizations.
     """
     doc = process_as_doc(content)
     return to_natural_case(doc, Casing.START)
@@ -82,27 +74,13 @@ def capitalize(content: str | Doc) -> str:
 
 def cardinal_to_ordinal(text: str) -> str:
     """
-    Convert cardinal numbers in a given string to ordinal numbers.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
+    Convert cardinal numbers in a string to ordinal numbers.
     """
     return numbers.cardinal_to_ordinal(text)
 
 
 def expand_contractions(content: str | Doc) -> str:
-    """
-    Expand all contractions in a given string or spaCy `Doc`.
-
-    Args:
-        content: The string or spaCy `Doc` to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Expand all contractions in a string or spaCy `Doc`."""
     if not hasattr(ctx.provider, 'expand_contractions'):
         return content if isinstance(content, str) else content.text
 
@@ -111,106 +89,43 @@ def expand_contractions(content: str | Doc) -> str:
 
 
 def from_binary(binary_text: str) -> str:
-    """
-    Convert a string from binary.
-
-    Args:
-        binary_text: The space-separated binary string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string from binary."""
     return encoding.from_binary(binary_text)
 
 
 def from_hexadecimal(text: str) -> str:
-    """
-    Convert a string from hexadecimal.
-
-    Args:
-        text: The hexadecimal string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string from hexadecimal."""
     return encoding.from_hexadecimal(text)
 
 
 def from_morse(text: str) -> str:
-    """
-    Convert a string from Morse code.
-
-    Args:
-        text: The Morse string to convert.
-
-    Returns:
-        str: The converted string (in all caps).
-    """
+    """Convert a string from Morse code."""
     return encoding.from_morse(text)
 
 
 def from_zalgo(text: str) -> str:
-    """
-    Remove Zalgo diacritics.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Remove Zalgo diacritics from a string."""
     return manipulation.from_zalgo(text)
 
 
 def hyphen_to_en(text: str) -> str:
-    """
-    Convert hyphens in a given string to en dashes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert hyphens in a string to en dashes."""
     return text.replace('-', '–')
 
 
 def hyphens_to_em(text: str) -> str:
-    """
-    Convert em dash stand-ins in a given string to em dashes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert em dash stand-ins in a string to em dashes."""
     return patterns.warping.get_em_dash_stand_in().sub('—', text)
 
 
 def ordinal_to_cardinal(text: str) -> str:
-    """
-    Convert ordinal numbers in a given string to cardinal numbers.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert ordinal numbers in a string to cardinal numbers."""
     return numbers.ordinal_to_cardinal(text)
 
 
 def punct_to_inside(text: str) -> str:
     """
-    Move periods and commas at the end of quotes inside quotation
-    marks.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
+    Move periods and commas at the end of quotes inside quotation marks.
     """
     if not hasattr(ctx.provider, 'punct_outside_pattern'):
         return text
@@ -218,12 +133,6 @@ def punct_to_inside(text: str) -> str:
     def _repl(match: re.Match[str]) -> str:
         """
         Reorder periods and commas to move them inside quotation marks.
-
-        Args:
-            match: A match object.
-
-        Returns:
-            str: The reordered string.
         """
         quote, punct = match.groups()
         return punct + quote
@@ -235,12 +144,6 @@ def punct_to_outside(text: str) -> str:
     """
     Move periods and commas at the end of quotes to outside quotation
     marks.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
     """
     if not hasattr(ctx.provider, 'punct_inside_pattern'):
         return text
@@ -249,12 +152,6 @@ def punct_to_outside(text: str) -> str:
         """
         Reorder periods and commas to move them outside quotation
         marks.
-
-        Args:
-            match: A match object.
-
-        Returns:
-            str: The reordered string.
         """
         punct, quote = match.groups()
         return quote + punct
@@ -263,15 +160,7 @@ def punct_to_outside(text: str) -> str:
 
 
 def random_case(text: str) -> str:
-    """
-    Randomize the casing of each character in a given string.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Randomize the casing of each character in a string."""
     result: list[str] = []
 
     for char in text:
@@ -287,57 +176,27 @@ def random_case(text: str) -> str:
 
 
 def randomize(text: str) -> str:
-    """
-    Randomize the characters of a given string.
-
-    Args:
-        text: The string to randomize.
-
-    Returns:
-        str: The randomized string.
-    """
+    """Randomize the characters of a string."""
     return manipulation.randomize(text)
 
 
 def redact(text: str) -> str:
     """
-    Redact a string by replacing each word character with a black
-    square.
-
-    Args:
-        text: The string to redact.
-
-    Returns:
-        str: The redacted string.
+    Redact a string by replacing each word character with a black square.
     """
     return patterns.warping.get_word_character().sub('█', text)
 
 
 def reverse(text: str) -> str:
     """
-    Reverse the characters of a given string.
-
-    Args:
-        text: The string to reverse.
-
-    Returns:
-        The reversed string.
+    Reverse the characters of a string.
     """
     return manipulation.reverse(text)
 
 
 def to_alternating_caps(text: str) -> str:
-    """
-    Convert a string to alternating caps.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to alternating caps."""
     result: list[str] = []
-    # Toggle switch for alternating caps effect.
     upper = False
 
     for char in text:
@@ -368,28 +227,12 @@ def to_binary(text: str) -> str:
 
 
 def to_camel_case(text: str) -> str:
-    """
-    Convert a string to camel case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to camel case."""
     return casing.to_camel_case(text)
 
 
 def to_dot_case(text: str) -> str:
-    """
-    Convert a string to dot case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to dot case."""
     return to_separator_case(text, CaseSeparator.DOT)
 
 
@@ -408,21 +251,13 @@ def to_hexadecimal(text: str) -> str:
 
 
 def to_kebab_case(text: str) -> str:
-    """
-    Convert a string to kebab case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to kebab case."""
     return to_separator_case(text, CaseSeparator.KEBAB)
 
 
 def to_morse(text: str) -> str:
     """
-    Convert a given string to Morse code.
+    Convert a string to Morse code.
 
     Letters (A-Z), numbers (0-9) and common punctuation (., ?, !, ,, :,
     ;, +, -, =, @, (, ), ", ', /, &) are all supported.
@@ -438,28 +273,12 @@ def to_morse(text: str) -> str:
 
 
 def to_pascal_case(text: str) -> str:
-    """
-    Convert a string to Pascal case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to Pascal case."""
     return casing.to_pascal_case(text)
 
 
 def to_sentence_case(content: str | Doc) -> str:
-    """
-    Convert a string or spaCy `Doc` to sentence case.
-
-    Args:
-        content: The string or spaCy `Doc` to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string or spaCy `Doc` to sentence case."""
     doc = process_as_doc(content)
     return to_natural_case(doc, Casing.SENTENCE)
 
@@ -469,26 +288,12 @@ def to_single_spaces(text: str) -> str:
     Convert consecutive spaces to a single space.
 
     This function preserves leading spaces and tabs.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
     """
     return manipulation.to_single_spaces(text)
 
 
 def to_snake_case(text: str) -> str:
-    """
-    Convert a string to snake case.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to snake case."""
     return to_separator_case(text, CaseSeparator.SNAKE)
 
 
@@ -496,28 +301,14 @@ def to_title_case(content: str | Doc) -> str:
     """
     Convert a string or spaCy `Doc` to title case, handling special
     name prefixes and preserving other mid-word capitalizations.
-
-    Args:
-        content: The string or spaCy `Doc` to convert.
-
-    Returns:
-        str: The converted string.
     """
-    # Use the large model for identifying titles within titles.
+    # Use the large spaCy model for identifying titles within titles.
     doc = process_as_doc(content, model_priority=ModelPriority.ACCURACY)
     return to_natural_case(doc, Casing.TITLE)
 
 
 def to_zalgo(text: str) -> str:
-    """
-    Convert a string to Zalgo text.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert a string to Zalgo text."""
     return manipulation.to_zalgo(text)
 
 
@@ -525,11 +316,5 @@ def widen(text: str) -> str:
     """
     Widen a string by adding a space after each character except
     the last one.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
     """
     return manipulation.widen(text)

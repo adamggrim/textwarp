@@ -18,13 +18,6 @@ def _should_always_lowercase(token: Token) -> bool:
 
     This occurs when it is a lowercase particle (e.g., "de", "von") or a
     contraction suffix (e.g., "'ve", "n't").
-
-    Args:
-        token: The spaCy `Token` to check.
-
-    Returns:
-        bool: `True` if the token should always be lowercase, otherwise
-            `False`.
     """
     return ctx.provider.should_always_lowercase(token.text)
 
@@ -33,13 +26,6 @@ def should_capitalize_pos_or_length(token: Token) -> bool:
     """
     Determine whether a spaCy `Token` should be capitalized for title
     case based on its part of speech or length.
-
-    Args:
-        token: The spaCy `Token` to check.
-
-    Returns:
-        bool: `True` if the tag should be capitalized, otherwise
-            `False`.
     """
     if _should_always_lowercase(token):
         return False

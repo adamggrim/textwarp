@@ -26,14 +26,14 @@ __all__ = [
 
 def calculate_time_to_read(text: str, wpm: int) -> int:
     """
-    Calculate the minutes to read a given string.
+    Calculate the minutes to read a string.
 
     Args:
         text: The string to analyze.
         wpm: The number of words per minute to return.
 
     Returns:
-        int: The minutes to read the given string. Rounded up if
+        int: The minutes to read the string. Rounded up if
             between zero and one minute, otherwise rounded to the
             nearest integer.
     """
@@ -44,28 +44,12 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
 
 
 def count_chars(text: str) -> int:
-    """
-    Count the number of characters in a given string.
-
-    Args:
-        text: The string to analyze.
-
-    Returns:
-        int: The total number of characters in the string.
-    """
+    """Count the number of characters in a string."""
     return len(text)
 
 
 def count_lines(text: str) -> int:
-    """
-    Count the number of non-whitespace lines in a given string.
-
-    Args:
-        text: The string to analyze.
-
-    Returns:
-        int: The number of non-whitespace lines in the string.
-    """
+    """Count the number of non-whitespace lines in a string."""
     lines = text.splitlines()
     text_lines = [line for line in lines if line.strip()]
     return len(text_lines)
@@ -73,7 +57,7 @@ def count_lines(text: str) -> int:
 
 def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
     """
-    Count the most frequent words in a given string.
+    Count the most frequent words in a string.
 
     Args:
         content: The string or spaCy `Doc` to analyze.
@@ -105,7 +89,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
 
 def count_pos(content: str | Doc) -> POSCounts:
     """
-    Count the parts of speech in a given string.
+    Count the parts of speech in a string.
 
     Args:
         content: The string or spaCy `Doc` to analyze.
@@ -129,28 +113,12 @@ def count_pos(content: str | Doc) -> POSCounts:
 
 
 def count_sents(content: str | Doc) -> int:
-    """
-    Count the number of sentences in a given string.
-
-    Args:
-        content: The string or spaCy `Doc` to analyze.
-
-    Returns:
-        int: The number of sentences in the string.
-    """
+    """Count the number of sentences in a string."""
     doc = process_as_doc(content, disable=['ner', 'lemmatizer'])
     return len(list(doc.sents))
 
 
 def count_words(content: str | Doc) -> int:
-    """
-    Count the number of words in a given string.
-
-    Args:
-        content: The string or spaCy `Doc` to analyze.
-
-    Returns:
-        int: The number of words in the string.
-    """
+    """Count the number of words in a string."""
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     return len(extract_words_from_doc(doc))

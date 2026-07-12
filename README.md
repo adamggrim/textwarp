@@ -255,7 +255,7 @@ textwarp/
   │ ├── __init__.py: Exposes library functions for use across the package
   │ ├── contractions.py: Main logic for expanding contractions
   │ ├── encoding.py: Functions for encoding and decoding text
-  │ ├── manipulation.py: Functions for manipulating a given string
+  │ ├── manipulation.py: Functions that manipulate a string
   │ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
   │ ├── nlp.py: Functions for lazy spaCy loading and text processing
   │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers

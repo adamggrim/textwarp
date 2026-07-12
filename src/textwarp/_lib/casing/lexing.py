@@ -49,15 +49,7 @@ def _chunk_by_alnum(text: str) -> list[str]:
 
 
 def _split_camel_pascal(text: str) -> list[str]:
-    """
-    Split camel case or Pascal case into constituent words.
-
-    Args:
-        text: The string to split.
-
-    Returns:
-        list[str]: The split words.
-    """
+    """Split camel case or Pascal case into constituent words."""
     if not text:
         return []
 

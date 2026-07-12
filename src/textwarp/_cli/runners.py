@@ -22,20 +22,12 @@ __all__ = [
     'warp_and_copy'
 ]
 
-# Type alias for a function defining what to do with a command and
-# clipboard text.
 _ActionHandler: TypeAlias = Callable[[Callable[[str], str | None], str], None]
 
 _logger = logging.getLogger(__name__)
 
 def _paste_and_validate() -> str | None:
-    """
-    Paste and validate clipboard text.
-
-    Returns:
-        clipboard | None: The validated clipboard text, or `None` if
-            an error occurred.
-    """
+    """Paste and validate clipboard text."""
     import pyperclip
     try:
         clipboard = pyperclip.paste()
@@ -65,11 +57,7 @@ def _replace_and_copy(
 ) -> None:
     """
     Transform text using a replacement command and copy the result.
-    Print if the replacement was not found.
-
-    Args:
-        command_func: The replacement function.
-        clipboard: The clipboard text to transform.
+    Print if the text to replace was not found.
     """
     import pyperclip
     transformation: str = command_func(clipboard)
@@ -88,9 +76,6 @@ def replace_text(command_name: str) -> None:
     """
     Apply the selected replacement function to the clipboard and prompt
     the user for any other clipboard input.
-
-    Args:
-        command_name: The name of the replacement function.
     """
     command_func: Callable[[str], str] = getattr(
         replacement,
@@ -139,10 +124,6 @@ def warp_and_copy(
     """
     Transform text using a given command and copy the result back to the
     clipboard.
-
-    Args:
-        command_func: The transformation function.
-        clipboard: The clipboard text to transform.
     """
     import pyperclip
     transformation: str = command_func(clipboard)

@@ -224,7 +224,6 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     )
 }
 
-# Commands that print analysis and exit.
 ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'char-count',
     'line-count',
@@ -265,7 +264,6 @@ MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
     'word-count'
 })
 
-# Commands that use `--find` and `--replace` arguments.
 REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
     'replace-case',
     'replace-regex',
@@ -284,7 +282,6 @@ SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'widen'
 })
 
-# Commands that require loading spaCy models.
 SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
     'capitalize',
     'cardinal',

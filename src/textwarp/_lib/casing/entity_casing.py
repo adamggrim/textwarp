@@ -22,13 +22,6 @@ def _case_contextual_entity(
     """
     Determine the casing for a contextual entity based on parts-of-
     speech sequences and ngrams.
-
-    Args:
-        span: The spaCy `Span` to case.
-        key: The key to look up in the context map.
-
-    Returns:
-        str | None: The contextual casing; otherwise `None`.
     """
     contextual_entities_map = ctx.provider.contextual_casings_map
     contexts: (
@@ -63,15 +56,6 @@ def _check_for_ngrams(
     """
     Check if any of a given list of ngrams are present around a
     specific index in the Doc.
-
-    Args:
-        span: The spaCy `Span` to check.
-        ngrams: A list of ngrams to check for.
-        context_window: The number of tokens around the `Span` to
-            check.
-
-    Returns:
-        bool: `True` if any ngram is found, otherwise `False`.
     """
     doc = span.doc
 
@@ -99,9 +83,6 @@ def _check_for_ngrams(
 def _get_custom_entities_pattern() -> re.Pattern[str]:
     """
     Build and cache the regular expression for finding custom entities.
-
-    Returns:
-        re.Pattern[str]: The compiled regular expression pattern.
     """
     absolute_entities_map = ctx.provider.absolute_casings_map
     contextual_entities_map = ctx.provider.contextual_casings_map

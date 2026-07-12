@@ -10,10 +10,8 @@ __all__ = [
     'POS_WORD_TAGS',
 ]
 
-# Coarse-grained parts-of-speech tags for singular and proper nouns.
 NOUN_TAGS: Final[frozenset[str]] = frozenset({'NOUN', 'PROPN'})
 
-# Tuple of tuples for all parts-of-speech tags and their names.
 POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('ADJ', N_('Adjectives')),
     ('ADP', N_('Adpositions')),
@@ -32,7 +30,6 @@ POS_TAGS: Final[tuple[tuple[str, str], ...]] = (
     ('X', N_('Other'))
 )
 
-# Coarse-grained parts-of-speech tags representing words.
 POS_WORD_TAGS: Final[frozenset[str]] = frozenset(
     item[0] for item in POS_TAGS if item[0] != 'X'
 )

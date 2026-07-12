@@ -87,7 +87,7 @@ class LanguageProvider(ABC):
     @abstractmethod
     def cardinal_to_ordinal(self, text: str) -> str:
         """
-        Convert cardinal numbers in a given string to ordinal numbers.
+        Convert cardinal numbers in a string to ordinal numbers.
         """
         pass
 
@@ -103,19 +103,19 @@ class LanguageProvider(ABC):
 
     def curly_to_straight(self, text: str) -> str:
         """
-        Convert curly quotes in a given string to straight quotes.
+        Convert curly quotes in a string to straight quotes.
         """
         return text
 
     @abstractmethod
     def expand_contractions(self, doc: 'Doc') -> str:
-        """Expand all contractions in a given spaCy `Doc`."""
+        """Expand all contractions in a spaCy `Doc`."""
         pass
 
     @abstractmethod
     def ordinal_to_cardinal(self, text: str) -> str:
         """
-        Convert ordinal numbers in a given string to cardinal numbers.
+        Convert ordinal numbers in a string to cardinal numbers.
         """
         pass
 
@@ -135,6 +135,6 @@ class LanguageProvider(ABC):
 
     def straight_to_curly(self, text: str) -> str:
         """
-        Convert straight quotes in a given string to curly quotes.
+        Convert straight quotes in a string to curly quotes.
         """
         return text

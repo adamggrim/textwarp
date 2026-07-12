@@ -222,13 +222,6 @@ def should_always_lowercase(text: str) -> bool:
     """
     Determine if a specific token string should always be lowercase
     (e.g., particles like "von" or contraction suffixes like "n't").
-
-    Args:
-        text: The string to check.
-
-    Returns:
-        bool: `True` if the string should always be lowercase,
-            otherwise `False`.
     """
     return (
         text.lower() in en.data.token_casing.get_lowercase_particles()
