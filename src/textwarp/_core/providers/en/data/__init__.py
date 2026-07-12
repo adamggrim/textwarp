@@ -1,5 +1,3 @@
-"""Exposes English-specific data modules."""
-
 from textwarp._core.providers.en.data import (
     contraction_expansion,
     entity_casing,

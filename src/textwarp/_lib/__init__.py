@@ -1,5 +1,3 @@
-"""Exposes library functions for use across the package."""
-
 from textwarp._lib.casing import (
     case_from_string,
     map_all_entities,

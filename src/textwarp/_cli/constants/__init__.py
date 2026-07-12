@@ -1,5 +1,3 @@
-"""Exposes command-line inputs and messages."""
-
 from textwarp._cli.constants.inputs import (
     get_exit_inputs,
     get_no_inputs,

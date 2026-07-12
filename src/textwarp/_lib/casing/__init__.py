@@ -1,5 +1,3 @@
-"""Exposes casing logic for use across the package."""
-
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.natural_casing import to_natural_case
 from textwarp._lib.casing.programming_casing import (
