@@ -111,15 +111,8 @@ def get_normalized_tokens(
 
     for i, chunk in enumerate(chunks):
         if chunk[0].isalnum():
-            if (
-                not chunk.islower()
-                and not chunk.isupper()
-                and any(c.isalpha() for c in chunk)
-            ):
-                for sub in _split_camel_pascal(chunk):
-                    yield TokenType.WORD, sub
-            else:
-                yield TokenType.WORD, chunk
+            for sub in _split_camel_pascal(chunk):
+                yield TokenType.WORD, sub
         else:
             is_only_spaces_and_separators = all(
                 c.isspace() or c in '.-_' for c in chunk
