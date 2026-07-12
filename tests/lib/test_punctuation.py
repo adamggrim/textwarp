@@ -8,7 +8,6 @@ from textwarp._lib.punctuation import (
 
 
 def test_curly_to_straight():
-    """Test curly-to-straight quote conversion."""
     assert (
         curly_to_straight('“Here’s looking at you, kid.”')
         == '"Here\'s looking at you, kid."'
@@ -24,7 +23,6 @@ def test_curly_to_straight():
 
 
 def test_straight_to_curly_double_quotes():
-    """Test straight double quote conversion."""
     assert (
         straight_to_curly('"Hello, is it me you\'re looking for?"')
         == '“Hello, is it me you’re looking for?”'
@@ -37,13 +35,11 @@ def test_straight_to_curly_double_quotes():
 
 
 def test_straight_to_curly_single_quotes():
-    """Test straight single quote conversion."""
     assert straight_to_curly("'Kronos'") == '‘Kronos’'
     assert straight_to_curly(" 'Kronos' ") == ' ‘Kronos’ '
 
 
 def test_straight_to_curly_apostrophes():
-    """Test intra-word apostrophe conversion."""
     assert straight_to_curly("don't") == 'don’t'
     assert straight_to_curly("'twas") == '’twas'
     assert straight_to_curly("Guns N' Roses") == 'Guns N’ Roses'
@@ -51,7 +47,6 @@ def test_straight_to_curly_apostrophes():
 
 
 def test_remove_apostrophes():
-    """Test intra-word apostrophe removal."""
     assert (
         remove_apostrophes("It's a Man's Man's Man's World")
         == 'Its a Mans Mans Mans World'

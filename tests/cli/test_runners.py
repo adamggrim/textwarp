@@ -18,7 +18,6 @@ from textwarp._cli.constants.messages import (
 
 
 def test_paste_and_validate_success(mock_clipboard):
-    """Test successful pasting and validation of clipboard text."""
     mock_clipboard.copy('Immature poets imitate; mature poets steal.')
     assert (
         _paste_and_validate() == 'Immature poets imitate; mature poets steal.'
@@ -26,7 +25,6 @@ def test_paste_and_validate_success(mock_clipboard):
 
 
 def test_paste_and_validate_empty(mock_clipboard, capsys):
-    """Test pasting an empty clipboard."""
     mock_clipboard.copy('')
     assert _paste_and_validate() is None
 
@@ -35,7 +33,6 @@ def test_paste_and_validate_empty(mock_clipboard, capsys):
 
 
 def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
-    """Test handling of clipboard access errors."""
     def mock_paste():
         raise pyperclip.PyperclipException('xclip or xsel not found')
 
@@ -48,7 +45,6 @@ def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
 
 
 def test_clear_clipboard(mock_clipboard, capsys):
-    """Test clearing the clipboard contents."""
     mock_clipboard.copy('The Family Shakespeare')
     clear_clipboard()
 
@@ -58,7 +54,6 @@ def test_clear_clipboard(mock_clipboard, capsys):
 
 
 def test_warp_and_copy(mock_clipboard, capsys):
-    """Test transforming text and copying it back to the clipboard."""
     warp_and_copy(str.upper, 'kilroy')
 
     assert mock_clipboard.paste() == 'KILROY'
@@ -67,9 +62,6 @@ def test_warp_and_copy(mock_clipboard, capsys):
 
 
 def test_replace_and_copy_success(mock_clipboard, capsys):
-    """
-    Test replacement command successfully finding and modifying text.
-    """
     def dummy_replace(text):
         return text.replace('Evermore', 'Nevermore')
 
@@ -81,7 +73,6 @@ def test_replace_and_copy_success(mock_clipboard, capsys):
 
 
 def test_replace_and_copy_not_found(mock_clipboard, capsys):
-    """Test replacement command when target is not found."""
     def dummy_replace(text):
         return text
 
@@ -96,10 +87,6 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
 
 
 def test_run_command_loop(monkeypatch, mock_clipboard):
-    """
-    Test the main command loop executes correctly and breaks when
-    requested.
-    """
     mock_clipboard.copy('Tomorrow, and tomorrow, and tomorrow')
 
     monkeypatch.setattr('textwarp._cli.runners.get_input', lambda: False)
@@ -116,10 +103,6 @@ def test_run_command_loop(monkeypatch, mock_clipboard):
 
 
 def test_replace_text_lookup(monkeypatch):
-    """
-    Test that replace_text retrieves the replacement function and
-    enters the loop.
-    """
     loop_called = False
 
     def mock_run_command_loop(command_func, action_handler):

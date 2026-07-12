@@ -19,7 +19,6 @@ from textwarp._cli.constants.messages import (
 
 
 def test_get_input_delay(simulate_input, monkeypatch):
-    """Test that the delay is triggered with the default value."""
     sleep_called = False
 
     def mock_sleep(seconds):
@@ -35,7 +34,6 @@ def test_get_input_delay(simulate_input, monkeypatch):
 
 
 def test_get_input_no_or_exit(simulate_input):
-    """Test that negative or exit inputs return `False`."""
     simulate_input(['n'])
     assert get_input() is False
 
@@ -44,7 +42,6 @@ def test_get_input_no_or_exit(simulate_input):
 
 
 def test_get_input_yes(simulate_input):
-    """Test that affirmative inputs return `True`."""
     simulate_input(['y'])
     assert get_input() is True
 
@@ -53,9 +50,6 @@ def test_get_input_yes(simulate_input):
 
 
 def test_get_input_invalid_then_valid(simulate_input, capsys):
-    """
-    Test that invalid inputs prompt the user for valid input.
-    """
     simulate_input(['invalid', 'wrong', 'y'])
 
     assert get_input() is True
@@ -66,17 +60,12 @@ def test_get_input_invalid_then_valid(simulate_input, capsys):
 
 
 def test_print_padding(capsys):
-    """Test that the padding output is a single blank line."""
     print_padding()
     captured = capsys.readouterr()
     assert captured.out == '\n'
 
 
 def test_print_wrapped(monkeypatch, capsys):
-    """
-    Test that text is wrapped to terminal size and prepended with a
-    newline.
-    """
     monkeypatch.setattr(
         shutil,
         'get_terminal_size',
@@ -106,10 +95,6 @@ def test_print_wrapped(monkeypatch, capsys):
 
 
 def test_program_exit(capsys):
-    """
-    Test that program_exit prints the exit message and raises a
-    `SystemExit`.
-    """
     with pytest.raises(SystemExit):
         program_exit()
 
@@ -118,7 +103,6 @@ def test_program_exit(capsys):
 
 
 def test_prompt_for_integer_exit(simulate_input, capsys):
-    """Test that negative or exit inputs raise a `SystemExit`."""
     simulate_input(['q'])
 
     with pytest.raises(SystemExit):
@@ -129,16 +113,11 @@ def test_prompt_for_integer_exit(simulate_input, capsys):
 
 
 def test_prompt_for_integer_valid(simulate_input):
-    """Test that valid integers are accepted and returned."""
     simulate_input(['42'])
     assert prompt_for_integer('Enter number:', 'Invalid') == 42
 
 
 def test_prompt_for_integer_invalid_then_valid(simulate_input, capsys):
-    """
-    Test that invalid inputs trigger the error prompt until a valid
-    integer is provided.
-    """
     simulate_input(['abc', '-5', '0', '7'])
 
     assert prompt_for_integer('Enter number:', 'Invalid number!') == 7

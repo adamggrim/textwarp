@@ -6,7 +6,6 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_to_natural_case_sentence():
-    """Test applying sentence case to a spaCy Doc."""
     doc = process_as_doc('I HAVE NO MOUTH, AND I MUST SCREAM.')
     result = to_natural_case(doc, Casing.SENTENCE)
     assert result == 'I have no mouth, and i must scream.'
@@ -25,14 +24,12 @@ def test_to_natural_case_sentence():
     assert result == 'The Picture of Dorian Gray.'
 
 def test_to_natural_case_start():
-    """Test applying start case to a spaCy Doc."""
     doc = process_as_doc('of man’s first disobedience')
     result = to_natural_case(doc, Casing.START)
     assert result == 'Of Man’s First Disobedience'
 
 
 def test_to_natural_case_title():
-    """Test applying title case to a spaCy Doc."""
     doc = process_as_doc(
         'the tragical history of the life and death of doctor faustus'
     )

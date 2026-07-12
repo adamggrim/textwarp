@@ -34,18 +34,10 @@ from textwarp._core.exceptions import (
     WhitespaceClipboardError
 ])
 def test_exceptions_inherit_from_base_exception(exception_class):
-    """
-    Verify that all custom exceptions inherit from the base `Exception`
-    class.
-    """
     assert issubclass(exception_class, Exception)
 
 
 def test_exception_msgs():
-    """
-    Verify that exceptions can be raised with custom literary messages.
-    """
-
     with pytest.raises(EmptyClipboardError, match=re.escape(
         "Nothing will come of nothing."
     )):

@@ -8,7 +8,6 @@ from textwarp._lib.nlp import _get_nlp, extract_words_from_doc, process_as_doc
 
 
 def test_extract_words_from_doc():
-    """Test extracting words from a string."""
     text = 'I’m sorry, Frank. I think you missed it.'
     doc = process_as_doc(text)
 
@@ -34,16 +33,12 @@ def test_extract_words_from_doc():
 
 
 def test_process_as_doc_disable_pipes():
-    """Test that specific pipeline components can be disabled."""
     doc = process_as_doc('Close the pod bay doors.', disable=['parser'])
 
     assert not doc.has_annotation('DEP')
 
 
 def test_process_as_doc_from_doc():
-    """
-    Test that passing an existing `Doc` returns the `Doc` unmodified.
-    """
     original_doc = process_as_doc(
         'I’m sorry, Dave. I’m afraid I can’t do that.'
     )
@@ -53,7 +48,6 @@ def test_process_as_doc_from_doc():
 
 
 def test_process_as_doc_from_string():
-    """Test that a string is converted into a spaCy `Doc`."""
     test_string = (
         'This mission is too important for me to allow you to jeopardize it.'
     )
@@ -99,9 +93,6 @@ def test_nlp_fallback_logic(monkeypatch):
 
 
 def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
-    """
-    Verify the error message if the user has no spaCy models installed.
-    """
     from textwarp._core.exceptions import MissingModelError
 
     monkeypatch.setattr(spacy.util, 'is_package', lambda x: False)
@@ -112,7 +103,6 @@ def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
 
 
 def test_process_as_doc_with_disabled_pipes():
-    """Ensure that pipes are disabled when requested."""
     doc = process_as_doc(
         'Daisy, Daisy, give me your answer do.', disable=['parser', 'ner']
     )

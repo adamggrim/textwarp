@@ -9,12 +9,10 @@ from textwarp._cli import pipeline
 
 
 def _dummy_lower(text: str) -> str:
-    """Convert text to lowercase for testing."""
     return text.lower()
 
 
 def _dummy_reverse(text: str) -> str:
-    """Reverse text for testing."""
     return text[::-1]
 
 
@@ -40,9 +38,6 @@ def test_apply_pipeline_analysis():
 
 
 def test_apply_pipeline_clear(monkeypatch):
-    """
-    Test that the clear command triggers the `clear_clipboard` function.
-    """
     clear_called = False
 
     def mock_clear():
@@ -58,10 +53,6 @@ def test_apply_pipeline_clear(monkeypatch):
 
 
 def test_apply_pipeline_warping():
-    """
-    Test that a pipeline of warping functions transforms the text
-    correctly.
-    """
     test_pipeline = [
         ('lowercase', _dummy_lower),
         ('reverse', _dummy_reverse)
@@ -87,7 +78,6 @@ def test_build_valid_pipeline():
 
 
 def test_build_valid_single_command():
-    """Test building a pipeline with a single valid command."""
     parser = argparse.ArgumentParser()
     argv = ['textwarp', '--camel-case']
     pipeline_result = pipeline.build_pipeline(argv, parser)
@@ -99,7 +89,6 @@ def test_build_valid_single_command():
 
 
 def test_validate_piped_commands_rejects_replacement(monkeypatch):
-    """Test that replacement commands fail gracefully when piped."""
     monkeypatch.setattr(
         pipeline,
         'print_wrapped',
@@ -115,12 +104,10 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
 
 
 def test_missing_markdown_dependency(monkeypatch, capsys):
-    """Test graceful failure when `marko` is not installed."""
-    # Simulate the absence of `marko`.
+    # Simulate the absence of Marko.
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 
     with pytest.raises(SystemExit) as excinfo:
-        pipeline.route_text('## Test Markdown', pipeline=[], parse_markdown=True)
 
     assert excinfo.value.code == 1
 

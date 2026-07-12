@@ -9,7 +9,6 @@ from textwarp._cli.parsing import ParsedArgs
 
 
 def test_cli_version(capsys, monkeypatch):
-    """Verify that "textwarp --version" exits correctly."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--version'])
 
     with pytest.raises(SystemExit) as exc:
@@ -21,7 +20,6 @@ def test_cli_version(capsys, monkeypatch):
 
 
 def test_main_keyboard_interrupt(monkeypatch):
-    """Test that the main function catches a `KeyboardInterrupt`."""
     def mock_parse_args():
         raise KeyboardInterrupt()
 

@@ -6,14 +6,12 @@ from textwarp._core.utils import (
 
 
 def test_change_first_letter_case():
-    """Test changing only the first alphabetical character's case."""
     assert change_first_letter_case('bang', str.upper) == 'Bang'
     assert change_first_letter_case('WHIMPER', str.lower) == 'wHIMPER'
     assert change_first_letter_case('!!!', str.upper) == '!!!'
 
 
 def test_find_first_alphabetical_idx_standard():
-    """Test standard strings starting with letters."""
     assert find_first_alphabetical_idx(
         'To strive, to seek, to find, and not to yield'
     ) == 0
@@ -23,7 +21,6 @@ def test_find_first_alphabetical_idx_standard():
 
 
 def test_find_first_alphabetical_idx_with_numbers():
-    """Test strings starting with digits."""
     assert find_first_alphabetical_idx(
         'Freedom is the freedom to say that 2 + 2 = 4.') == 0
     assert find_first_alphabetical_idx(
@@ -40,7 +37,6 @@ def test_find_first_alphabetical_idx_with_symbols():
 
 
 def test_find_first_alphabetical_idx_no_letters():
-    """Test strings that contain no alphabetical characters."""
     assert find_first_alphabetical_idx('1885') is None
     assert find_first_alphabetical_idx('!!!') is None
     assert find_first_alphabetical_idx('') is None

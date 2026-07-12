@@ -22,27 +22,15 @@ from textwarp.warping import (
     ('Ἰλιάς', 'ἰλιάς'),
 ])
 def test_separator_cases_handle_unicode(input_str, expected):
-    """
-    Test that separator cases safely handle non-ASCII letters using the
-    underlying regular expression engine's `\\p{L}` matching.
-    """
     assert to_snake_case(input_str) == expected
 
 
 def test_reverse_handles_symbols():
-    """
-    Test that string reversal handles multi-byte symbols like emojis
-    without shredding the underlying encoding.
-    """
     assert reverse('Dante Alighieri 📜') == '📜 ireihgilA etnaD'
     assert reverse('Veni, vidi, vici. 🏛️') == '🏛️ .iciv ,idiv ,ineV'
 
 
 def test_title_case_unicode():
-    """
-    Test that title casing correctly capitalizes non-ASCII starting
-    letters while respecting the English provider's particle rules.
-    """
     text = 'à la recherche du temps perdu'
     result = to_title_case(text)
 

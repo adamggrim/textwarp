@@ -13,7 +13,6 @@ def test_context_default_initialization():
 
 
 def test_context_set_locale_en():
-    """Verify setting the locale explicitly to English."""
     ctx = TextwarpContext()
     ctx.set_locale('EN')
 
@@ -22,9 +21,6 @@ def test_context_set_locale_en():
 
 
 def test_context_set_locale_fallback():
-    """
-    Verify that an unsupported locale safely falls back to English.
-    """
     ctx = TextwarpContext()
     ctx.set_locale('fr')
 

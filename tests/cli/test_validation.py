@@ -21,7 +21,6 @@ from textwarp._core.exceptions import (
 
 
 def test_validate_case_name():
-    """Test case name validation."""
     validate_case_name('camel')
     validate_case_name('snake case')
     validate_case_name('PASCAL')
@@ -37,7 +36,6 @@ def test_validate_case_name():
 
 
 def test_validate_clipboard():
-    """Test clipboard validation."""
     validate_clipboard('Catch the conscience of the King')
 
     with pytest.raises(EmptyClipboardError):
@@ -48,7 +46,6 @@ def test_validate_clipboard():
 
 
 def test_validate_regex():
-    """Test regular expression validation."""
     validate_regex(r'^[a-z]+$')
     validate_regex(r'(?<=foo)bar')
 
@@ -60,7 +57,6 @@ def test_validate_regex():
 
 
 def test_validate_text():
-    """Test general text validation."""
     validate_text('Truth will out.')
     validate_text(' ')
 

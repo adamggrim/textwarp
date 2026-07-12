@@ -69,7 +69,6 @@ TIME_TO_READ_TEXT = (
 
 
 def test_calculate_time_to_read():
-    """Test reading time calculation."""
     assert calculate_time_to_read(TIME_TO_READ_TEXT, wpm=200) == 1
 
     minutes = calculate_time_to_read(TIME_TO_READ_TEXT, wpm=10)
@@ -77,17 +76,14 @@ def test_calculate_time_to_read():
 
 
 def test_count_chars():
-    """Test character counting."""
     assert count_chars(COUNT_CHARS_TEXT) == 59
 
 
 def test_count_lines():
-    """Test line counting."""
     assert count_lines(COUNT_LINES_TEXT) == 2
 
 
 def test_count_mfws():
-    """Test most frequent word counting."""
     mfws = count_mfws(COUNT_MFWS_TEXT, num_mfws=5)
 
     assert len(mfws) == 5
@@ -105,9 +101,6 @@ def test_count_mfws():
 
 
 def test_count_mfws_empty():
-    """
-    Test most frequent word counting when there are no valid words.
-    """
     mfws_empty = count_mfws('', num_mfws=5)
     assert mfws_empty == []
 
@@ -116,7 +109,6 @@ def test_count_mfws_empty():
 
 
 def test_count_pos():
-    """Test parts-of-speech counting."""
     pos_counts = count_pos(COUNT_POS_TEXT)
 
     assert isinstance(pos_counts, POSCounts)
@@ -128,7 +120,6 @@ def test_count_pos():
 
 
 def test_count_sents():
-    """Test sentence counting."""
     count = count_sents(COUNT_SENTS_TEXT)
     # Depending on the specific spaCy version, "And one fine morning—"
     # would count as three or four sentences.
@@ -136,9 +127,6 @@ def test_count_sents():
 
 
 def test_count_words():
-    """
-    Test word counting.
-    """
     count = count_words(COUNT_WORDS_TEXT)
     assert count == 41
 

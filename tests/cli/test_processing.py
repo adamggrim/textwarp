@@ -9,7 +9,6 @@ from textwarp._cli.parsing import ParsedArgs
 
 
 def _dummy_lower(text: str) -> str:
-    """Convert text to lowercase for testing."""
     return text.lower()
 
 
@@ -41,9 +40,6 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
 
 
 def test_process_file_mode_file_not_found(capsys):
-    """
-    Test that file mode handles missing files gracefully by exiting.
-    """
     pipeline = [('uppercase', str.upper)]
 
     args = ParsedArgs(
@@ -94,10 +90,6 @@ def test_process_file_mode_success(tmp_path, capsys):
 
 
 def test_process_interactive_mode_replacement(monkeypatch):
-    """
-    Test that replacement commands branch correctly in interactive mode
-    and exit.
-    """
     replace_called = False
 
     def mock_replace_text(cmd_name):
@@ -162,9 +154,6 @@ def test_process_piped_mode_copy_flag(
 
 
 def test_process_piped_mode_warping(monkeypatch, capsys):
-    """
-    Test that piped mode reads from stdin and runs `warp_and_copy`.
-    """
     monkeypatch.setattr(sys.stdin, 'read', lambda: 'Piped text\n')
 
     args = ParsedArgs(

@@ -5,7 +5,6 @@ from textwarp._core.constants.nlp import POS_TAGS
 
 
 def test_word_count_initialization():
-    """Test that WordCount initializes and stores its attributes."""
     word_count = WordCount(word='alone', count=6, percentage=0.15)
 
     assert word_count.word == 'alone'
@@ -14,7 +13,6 @@ def test_word_count_initialization():
 
 
 def test_pos_counts_initialization():
-    """Test POSCounts initialization."""
     pos_counts = POSCounts()
 
     assert pos_counts.word_count == 0
@@ -22,7 +20,6 @@ def test_pos_counts_initialization():
 
 
 def test_pos_counts_get_pos_counts():
-    """Test retrieving counts for part-of-spech tags."""
     pos_counts = POSCounts(word_count=4, tag_counts={'NOUN': 1, 'VERB': 1})
 
     assert pos_counts.get_pos_counts('ADJ') == 0
@@ -31,7 +28,6 @@ def test_pos_counts_get_pos_counts():
 
 
 def test_pos_counts_get_percentage():
-    """Test percentage calculation for part-of-speech tags."""
     pos_counts = POSCounts(word_count=10, tag_counts={'NOUN': 4})
 
     assert pos_counts.get_percentage('NOUN') == 40.0
@@ -39,14 +35,12 @@ def test_pos_counts_get_percentage():
 
 
 def test_pos_counts_get_percentage_zero_word_count():
-    """Test that get_percentage safely handles a word count of 0."""
     pos_counts = POSCounts(word_count=0, tag_counts={'NOUN': 4})
 
     assert pos_counts.get_percentage('NOUN') == 0.0
 
 
 def test_pos_counts_get_pos_data():
-    """Test that get_pos_data maps internal tags to display names."""
     pos_counts = POSCounts(word_count=20, tag_counts={'NOUN': 10, 'VERB': 5})
     pos_data = pos_counts.get_pos_data()
 

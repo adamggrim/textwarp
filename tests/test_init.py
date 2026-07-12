@@ -16,9 +16,6 @@ def test_lazy_loading_all_attributes():
 
 
 def test_lazy_loading_invalid_attribute():
-    """
-    Verify that an invalid attribute raises a standard `AttributeError`.
-    """
     with pytest.raises(
         AttributeError,
         match="module 'textwarp' has no attribute 'invalid_function_name'"

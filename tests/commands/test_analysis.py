@@ -5,7 +5,6 @@ from textwarp._cli.constants.messages import ENTER_VALID_NUMBER_PROMPT
 
 
 def test_char_count(capsys):
-    """Test that char_count prints the formatted character count."""
     analysis.char_count('Call me Ishmael.')
     captured = capsys.readouterr()
 
@@ -13,7 +12,6 @@ def test_char_count(capsys):
 
 
 def test_line_count(capsys):
-    """Test that line_count prints the formatted line count."""
     analysis.line_count('so much depends\nupon\na red wheel\nbarrow')
     captured = capsys.readouterr()
 
@@ -21,7 +19,6 @@ def test_line_count(capsys):
 
 
 def test_mfws(simulate_input, capsys):
-    """Test the most frequent words command and its input loop."""
     simulate_input(['invalid', '2'])
 
     analysis.mfws('Rose is a rose is a rose is a rose.')
@@ -35,10 +32,6 @@ def test_mfws(simulate_input, capsys):
 
 
 def test_pos_counts(capsys):
-    """
-    Test that pos_counts prints a formatted table of parts-of-speech
-    counts.
-    """
     analysis.pos_counts('Colorless green ideas sleep furiously.')
     captured = capsys.readouterr()
 
@@ -49,7 +42,6 @@ def test_pos_counts(capsys):
 
 
 def test_sentence_count(capsys):
-    """Test that sentence_count prints the formatted sentence count."""
     analysis.sentence_count(
         'The best lack all conviction, while the worst\n'
         'Are full of passionate intensity.\n'
@@ -62,7 +54,6 @@ def test_sentence_count(capsys):
 
 
 def test_time_to_read(simulate_input, capsys):
-    """Test the time to read command and its input loop."""
     simulate_input(['wrong', '250'])
     dummy_text = 'A Brief History of Time ' * 237
 
@@ -75,7 +66,6 @@ def test_time_to_read(simulate_input, capsys):
 
 
 def test_word_count(capsys):
-    """Test that word_count prints the formatted word count."""
     analysis.word_count('Words, words, words.')
     captured = capsys.readouterr()
 

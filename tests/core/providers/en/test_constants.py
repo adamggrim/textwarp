@@ -13,7 +13,6 @@ from textwarp._core.providers.en.constants import (
 
 
 def test_en_constants_are_frozensets():
-    """Verify that all English constant collections are immutable."""
     assert isinstance(BASE_VERB_TAGS, frozenset)
     assert isinstance(HAVE_AUXILIARIES, frozenset)
     assert isinstance(NOUN_PHRASE_TAGS, frozenset)
@@ -25,14 +24,12 @@ def test_en_constants_are_frozensets():
 
 
 def test_have_auxiliaries():
-    """Verify auxiliary verb forms of 'have'."""
     assert 'have' in HAVE_AUXILIARIES
     assert 'has' in HAVE_AUXILIARIES
     assert "'ve" in HAVE_AUXILIARIES
 
 
 def test_third_person_singular_pronouns():
-    """Verify pronouns used for subject-verb agreement."""
     assert 'he' in THIRD_PERSON_SINGULAR_PRONOUNS
     assert 'she' in THIRD_PERSON_SINGULAR_PRONOUNS
     assert 'nobody' in THIRD_PERSON_SINGULAR_PRONOUNS
@@ -40,7 +37,6 @@ def test_third_person_singular_pronouns():
 
 
 def test_wh_words():
-    """Verify interrogative wh-words."""
     assert 'how' in WH_WORDS
     assert 'what' in WH_WORDS
     assert 'when' in WH_WORDS

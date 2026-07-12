@@ -16,7 +16,6 @@ CASE_TEST_STRING = 'pascal_case'
 
 
 def test_replace_case(simulate_input, capsys):
-    """Test case replacement prompts and presence validation."""
     simulate_input(['camel', 'snake', 'pascal'])
 
     result = replacement.replace_case(CASE_TEST_STRING)
@@ -28,7 +27,6 @@ def test_replace_case(simulate_input, capsys):
 
 
 def test_replace_case_early_exit(simulate_input):
-    """Test that early exit commands exit the program gracefully."""
     simulate_input(['quit'])
 
     with pytest.raises(SystemExit):
@@ -36,9 +34,6 @@ def test_replace_case_early_exit(simulate_input):
 
 
 def test_replace_regex(simulate_input, capsys):
-    """
-    Test regular expression replacement prompts and presence validation.
-    """
     target_regex = r'\d{5}'
     replacement_str = 'vingt-quatre mille six cent un'
 
@@ -58,7 +53,6 @@ def test_replace_regex(simulate_input, capsys):
 
 
 def test_replace_text(simulate_input, capsys):
-    """Test text replacement prompts and presence validation."""
     simulate_input(['cyanide', 'hemlock', 'coffee'])
 
     result = replacement.replace_text(

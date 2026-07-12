@@ -11,10 +11,6 @@ from textwarp._core.types import (
 
 
 def test_entity_casing_context_dict():
-    """
-    Verify that `EntityCasingContext` acts as a valid dictionary at runtime.
-    """
-
     context: EntityCasingContext = {
         'casing': 'Moby-Dick',
         'pos_sequences': [['PROPN', 'PUNCT', 'PROPN']],
@@ -28,9 +24,6 @@ def test_entity_casing_context_dict():
 
 
 def test_type_aliases():
-    """
-    Verify that the generic type aliases are defined and accessible.
-    """
     assert JSONType is not None
 
     assert PipelineItem is not None

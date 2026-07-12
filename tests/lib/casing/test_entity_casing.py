@@ -5,9 +5,6 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_map_all_entities_absolute():
-    """
-    Test absolute entities map casing.
-    """
     doc = process_as_doc(
         'They bought a blu-ray player to watch dr. strangelove.'
     )
@@ -23,7 +20,6 @@ def test_map_all_entities_absolute():
 
 
 def test_map_all_entities_contextual():
-    """Test contextual entities map casing."""
     doc = process_as_doc('the aids activist wore hearing aids.')
     entity_map = map_all_entities(doc)
 
@@ -40,9 +36,6 @@ def test_map_all_entities_contextual():
 
 
 def test_map_all_entities_model_fallback():
-    """
-    Test that spaCy model entities are captured without forced casing.
-    """
     doc = process_as_doc(
         'Dorothy lived in the midst of the great Kansas prairies.'
     )

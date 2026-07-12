@@ -176,9 +176,6 @@ from textwarp.warping import (
     (widen, 'widen', 'w i d e n')
 ])
 def test_deterministic_warping_functions(func, input_str, expected):
-    """
-    Test warping functions that have deterministic outputs.
-    """
     assert func(input_str) == expected
 
 

@@ -12,9 +12,6 @@ from textwarp._cli.args import (
 
 
 def test_lazy_load():
-    """
-    Test that `_lazy_load` correctly imports a module and function.
-    """
     lazy_func = _lazy_load('..warping', 'to_title_case')
 
     assert callable(lazy_func)
@@ -42,9 +39,6 @@ def test_args_map_structure():
 
 
 def test_command_sets_validity():
-    """
-    Test that all commands in the command sets are in `ARGS_MAP`.
-    """
     all_mapped_commands = set(ARGS_MAP.keys())
 
     assert CASING_COMMANDS.issubset(all_mapped_commands), (
@@ -59,10 +53,6 @@ def test_command_sets_validity():
 
 
 def test_mutually_exclusive_sets():
-    """
-    Test that mutually exclusive commands do not overlap with combinable
-    command sets.
-    """
     assert CASING_COMMANDS.isdisjoint(MUTUALLY_EXCLUSIVE_COMMANDS), (
         'Overlap found between casing and mutually exclusive commands.'
     )
@@ -83,9 +73,5 @@ def test_mutually_exclusive_sets():
     ('uppercase', 'i sound my barbaric yawp', 'I SOUND MY BARBARIC YAWP'),
 ])
 def test_built_in_string_functions(command, input_text, expected_output):
-    """
-    Test the commands in `ARGS_MAP` that map directly to built-in
-    string methods or lambdas.
-    """
     func = ARGS_MAP[command][0]
     assert func(input_text) == expected_output

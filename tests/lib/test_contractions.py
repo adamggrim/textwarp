@@ -8,17 +8,14 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_apply_expansion_casing_lower():
-    """Test that lowercase is preserved."""
     assert apply_expansion_casing('can’t', 'can not') == 'can not'
 
 
 def test_apply_expansion_casing_upper():
-    """Test that all-caps is preserved."""
     assert apply_expansion_casing('CAN’T', 'can not') == 'CAN NOT'
 
 
 def test_apply_expansion_casing_sentence():
-    """Test that sentence casing is applied."""
     assert apply_expansion_casing('Won’t', 'will not') == 'Will not'
     assert apply_expansion_casing(
         'Couldn’t’ve', 'could not have'
@@ -26,12 +23,10 @@ def test_apply_expansion_casing_sentence():
 
 
 def test_apply_expansion_casing_title():
-    """Test that title case is preserved across the expanded words."""
     assert apply_expansion_casing('Do Not', 'do not') == 'Do Not'
 
 
 def test_expand_contractions_no_contractions():
-    """Test that text without contractions remains unchanged."""
     text = (
         'This mission is too important for me to allow you to jeopardize it.'
     )
@@ -40,7 +35,6 @@ def test_expand_contractions_no_contractions():
 
 
 def test_expand_contractions_ambiguous():
-    """Test expansion of ambiguous contractions requiring handlers."""
     doc = process_as_doc(
         'There’s a starman waitin’ in the sky\n'
         'He’d like to come and meet us\n'
@@ -61,14 +55,12 @@ def test_expand_contractions_ambiguous():
 
 
 def test_expand_contractions_unambiguous():
-    """Test expansion of straightforward dictionary-mapped contractions."""
     doc = process_as_doc('They won’t go when I go.')
     result = expand_contractions(doc)
     assert result == 'They will not go when I go.'
 
 
 def test_expand_contractions_inverted_and_multiple():
-    """Test expansion of multiple contractions while respecting case."""
     doc = process_as_doc(
         'Ain’t it just like the night to play\n'
         'Tricks when you’re trying to be so quiet?'
@@ -81,7 +73,6 @@ def test_expand_contractions_inverted_and_multiple():
 
 
 def test_expand_contractions_chained():
-    """Test expansion of chained contractions."""
     doc = process_as_doc(
         'I shouldn’t’ve said that. I should not have said that.'
     )

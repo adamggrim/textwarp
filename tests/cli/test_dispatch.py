@@ -4,10 +4,6 @@ from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 
 
 def test_case_names_func_map_keys():
-    """
-    Verify that all expected case name keys are present in the case-
-    names-to-function map.
-    """
     expected_keys = {
         'camel',
         'camel case',
@@ -28,9 +24,6 @@ def test_case_names_func_map_keys():
 
 
 def test_case_names_func_map_execution():
-    """
-    Verify that mapped functions correctly transform a test string.
-    """
     test_string = 'The Strange Case of Dr Jekyll and Mr Hyde'
 
     expected_outputs = {

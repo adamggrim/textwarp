@@ -5,7 +5,6 @@ from textwarp._lib.casing.lexing import get_normalized_tokens
 
 
 def test_get_normalized_tokens_mixed_case():
-    """Test tokenization of mixed casing strings."""
     result = list(get_normalized_tokens('camelCase'))
     assert result == [
         (TokenType.WORD, 'camel'),
@@ -21,7 +20,6 @@ def test_get_normalized_tokens_mixed_case():
 
 
 def test_get_normalized_tokens_with_numbers():
-    """Test tokenization of strings containing numbers."""
     result = list(get_normalized_tokens('base64Encoding'))
     assert result == [
         (TokenType.WORD, 'base'),
@@ -41,10 +39,6 @@ def test_get_normalized_tokens_with_numbers():
 
 
 def test_get_normalized_tokens_separators():
-    """
-    Test tokenization of standard separators (space, dot, dash,
-    underscore).
-    """
     result = list(get_normalized_tokens('hello-world_test.py'))
     assert result == [
         (TokenType.WORD, 'hello'),
@@ -67,7 +61,6 @@ def test_get_normalized_tokens_separators():
 
 
 def test_get_normalized_tokens_symbols():
-    """Test tokenization of non-separator symbols."""
     result = list(get_normalized_tokens('email@address.com!'))
     assert result == [
         (TokenType.WORD, 'email'),
@@ -80,7 +73,6 @@ def test_get_normalized_tokens_symbols():
 
 
 def test_get_normalized_tokens_apostrophes():
-    """Test that apostrophes are removed before tokenization."""
     result = list(get_normalized_tokens("don't fail"))
     assert result == [
         (TokenType.WORD, 'dont'),

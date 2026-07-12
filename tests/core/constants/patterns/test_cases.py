@@ -10,10 +10,6 @@ from textwarp._core.constants.patterns.cases import (
 
 
 def test_case_patterns_return_compiled_regexes():
-    """
-    Verify that case pattern methods return compiled regular
-    expression objects.
-    """
     assert isinstance(get_camel_word(), re.Pattern)
     assert isinstance(get_snake_word(), re.Pattern)
     assert isinstance(get_pascal_word(), re.Pattern)

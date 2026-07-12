@@ -11,7 +11,6 @@ from textwarp._core.providers.en.disambiguation import (
 
 
 def test_disambiguate_ain_t(get_contraction_span):
-    """Test "ain't" disambiguation based on subject and verb tense."""
     assert disambiguate_ain_t(get_contraction_span(
         'I ain’t no fortunate son.', 'ain’t'
     )) == 'am'
@@ -30,7 +29,6 @@ def test_disambiguate_ain_t(get_contraction_span):
 
 
 def test_disambiguate_d(get_contraction_span):
-    """Test "'d." disambiguation."""
     assert disambiguate_d(get_contraction_span(
         'I’d do anything for love.', 'I’d'
     )) == 'would'
@@ -48,7 +46,6 @@ def test_disambiguate_d(get_contraction_span):
 
 
 def test_disambiguate_gotta(get_contraction_span):
-    """Test "gotta" disambiguation."""
     assert disambiguate_gotta(get_contraction_span(
         '’Cause I gotta have faith.', 'gotta'
     )) == 'to'
@@ -58,7 +55,6 @@ def test_disambiguate_gotta(get_contraction_span):
 
 
 def test_disambiguate_s(get_contraction_span):
-    """Test "'s" disambiguation."""
     assert disambiguate_s(get_contraction_span(
         'She’s a woman who understands.', 'She’s'
     )) == 'is'
@@ -73,7 +69,6 @@ def test_disambiguate_s(get_contraction_span):
 
 
 def test_disambiguate_wanna(get_contraction_span):
-    """Test "wanna" disambiguation."""
     assert disambiguate_wanna(get_contraction_span(
         'I wanna hold your hand.', 'wanna'
     )) == 'to'
@@ -83,7 +78,6 @@ def test_disambiguate_wanna(get_contraction_span):
 
 
 def test_disambiguate_whatcha(get_contraction_span):
-    """Test "whatcha" disambiguation."""
     assert disambiguate_whatcha(get_contraction_span(
         'Chill out, whatcha yellin’ for?', 'whatcha'
     )) == 'are'

@@ -15,7 +15,6 @@ from textwarp._lib.encoding import (
 
 
 def test_binary_conversion():
-    """Test converting to and from binary strings."""
     original = 'Turing'
     binary = to_binary(original)
 
@@ -24,7 +23,6 @@ def test_binary_conversion():
 
 
 def test_hexadecimal_conversion():
-    """Test converting to and from hexadecimal strings."""
     original = 'This only is the witchcraft I have used.'
     hex_str = to_hexadecimal(original)
 
@@ -36,7 +34,6 @@ def test_hexadecimal_conversion():
 
 
 def test_morse_conversion_basic():
-    """Test converting standard alphanumeric text to Morse code."""
     original = 'SOS'
     morse = to_morse(original)
 
@@ -45,7 +42,6 @@ def test_morse_conversion_basic():
 
 
 def test_morse_conversion_complex():
-    """Test converting words, spaces and punctuation to Morse code."""
     text = 'What hath God wrought?'
     morse = to_morse(text)
 
@@ -70,7 +66,6 @@ def test_morse_conversion_complex():
 
 
 def test_morse_conversion_unsupported_chars():
-    """Test unsupported characters ignored during Morse conversion."""
     text = 'A * B'
     morse = to_morse(text)
 
@@ -78,9 +73,7 @@ def test_morse_conversion_unsupported_chars():
 
 
 def test_morse_conversion_dashes():
-    """
-    Test that dashes are normalized to hyphens for Morse.
-    """
+    """Test that dashes are normalized to hyphens for Morse code."""
     text = 'A—Z'
     morse = to_morse(text)
 

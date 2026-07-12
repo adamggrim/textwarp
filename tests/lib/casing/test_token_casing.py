@@ -5,9 +5,6 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_should_capitalize_lowercase_particles():
-    """
-    Test that particles like "von" and "de" are flagged to stay lowercase.
-    """
     doc = process_as_doc('Maria Augusta von Trapp')
     von_token = doc[2]
 
@@ -16,9 +13,6 @@ def test_should_capitalize_lowercase_particles():
 
 
 def test_should_capitalize_contraction_suffixes():
-    """
-    Test that contraction suffixes are flagged to stay lowercase.
-    """
     doc = process_as_doc('don’t, don’t')
     nt_token = doc[4]
 
@@ -27,10 +21,6 @@ def test_should_capitalize_contraction_suffixes():
 
 
 def test_should_capitalize_length():
-    """
-    Test that words five characters or longer are capitalized
-    regardless of part of speech.
-    """
     doc = process_as_doc('about')
     token = doc[0]
 
@@ -39,7 +29,6 @@ def test_should_capitalize_length():
 
 
 def test_should_capitalize_pos_exception():
-    """Test that specific short parts of speech are lowercased."""
     doc = process_as_doc('and')
     token = doc[0]
 
@@ -48,7 +37,6 @@ def test_should_capitalize_pos_exception():
 
 
 def test_should_capitalize_normal():
-    """Test that standard nouns and verbs are capitalized."""
     doc = process_as_doc('wheelbarrow')
     token = doc[0]
 

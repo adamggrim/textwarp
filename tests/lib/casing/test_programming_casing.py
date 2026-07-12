@@ -9,7 +9,6 @@ from textwarp._lib.casing.programming_casing import (
 
 
 def test_to_camel_case():
-    """Test converting text to camel case."""
     assert to_camel_case('yonder cloud') == 'yonderCloud'
     assert to_camel_case('SHAPE OF A CAMEL') == 'shapeOfACamel'
     assert to_camel_case('LikeACamelIndeed') == 'likeACamelIndeed'
@@ -17,7 +16,6 @@ def test_to_camel_case():
 
 
 def test_to_pascal_case():
-    """Test converting text to Pascal case."""
     assert to_pascal_case('DieuEst') == 'DieuEst'
     assert to_pascal_case('il n’est pas') == 'IlNestPas'
     assert to_pascal_case('PENSÉES') == 'Pensées'
@@ -25,7 +23,6 @@ def test_to_pascal_case():
 
 
 def test_to_separator_case_basic():
-    """Test converting standard spaced text to separator cases."""
     assert to_separator_case(
         'Why did it have to be snakes', CaseSeparator.SNAKE
     ) == 'why_did_it_have_to_be_snakes'
@@ -38,10 +35,6 @@ def test_to_separator_case_basic():
 
 
 def test_to_separator_case_existing_cases():
-    """
-    Test converting from existing programming cases to a new separator
-    case.
-    """
     assert to_separator_case(
         'withThySharpTeethThisKnotIntrinsicate', CaseSeparator.SNAKE
     ) == 'with_thy_sharp_teeth_this_knot_intrinsicate'
@@ -54,7 +47,6 @@ def test_to_separator_case_existing_cases():
 
 
 def test_to_separator_case_non_alpha():
-    """Test that separator casing safely handles numbers and symbols."""
     assert to_separator_case(
         '16 June 1904',
         CaseSeparator.SNAKE

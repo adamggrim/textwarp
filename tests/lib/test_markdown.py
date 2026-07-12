@@ -4,7 +4,6 @@ from textwarp._lib.markdown import process_markdown, strip_markdown
 
 
 def test_strip_markdown_removes_formatting():
-    """Test that `strip_markdown` extracts plain text."""
     markdown_text = (
         '# Canto XI\n'
         '*Be bold, be bold*, and euery where **Be bold**\n'
@@ -23,14 +22,9 @@ def test_strip_markdown_removes_formatting():
 
 
 def test_process_markdown_transforms_text_nodes():
-    """
-    Test that `process_markdown` applies a transformation function
-    solely to text nodes.
-    """
     markdown_text = '## The Faerie Queene\n\n**XII.** Moral vertues.'
 
     def mock_transform(text: str) -> str:
-        """Dummy transformation function for testing."""
         return text.upper()
 
     transformed = process_markdown(markdown_text, mock_transform)
@@ -39,10 +33,8 @@ def test_process_markdown_transforms_text_nodes():
 
 
 def test_strip_markdown_empty_string():
-    """Test that `strip_markdown` handles empty strings safely."""
     assert strip_markdown('') == ''
 
 
 def test_process_markdown_empty_string():
-    """Test that `process_markdown` handles empty strings safely."""
     assert process_markdown('', str.upper) == ''

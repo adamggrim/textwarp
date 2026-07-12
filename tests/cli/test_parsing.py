@@ -9,9 +9,6 @@ from textwarp._cli.parsing import parse_args
 
 
 def test_parse_args_copy_flag_default_false(monkeypatch):
-    """
-    Test that `copy_to_clipboard` defaults to `False` when omitted.
-    """
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase'])
     parsed_args = parse_args()
 
@@ -39,7 +36,6 @@ def test_parse_args_copy_flag_short(monkeypatch):
 
 
 def test_parse_args_lang_argument(monkeypatch):
-    """Test parsing a specific language argument."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-l', 'fr'])
     parsed_args = parse_args()
 
@@ -49,7 +45,6 @@ def test_parse_args_lang_argument(monkeypatch):
 
 
 def test_parse_args_lang_default(monkeypatch):
-    """Test that the language argument defaults to `en` when omitted."""
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case'])
     parsed_args = parse_args()
 
@@ -57,10 +52,6 @@ def test_parse_args_lang_default(monkeypatch):
 
 
 def test_parse_args_no_args_prints_help(monkeypatch, capsys):
-    """
-    Test that running with no arguments in a terminal prints help and
-    exits.
-    """
     monkeypatch.setattr(sys, 'argv', ['textwarp'])
     monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
 

@@ -13,7 +13,6 @@ from textwarp._lib.nlp import process_as_doc
 
 
 def test_expand_ambiguous_contraction(get_contraction_span):
-    '''Test expansion of an ambiguous contraction using handlers.'''
     span = get_contraction_span('He’d like to come and meet us', 'He’d')
 
     expansion, end_idx = _expand_ambiguous_contraction('He’d', span)
@@ -23,9 +22,6 @@ def test_expand_ambiguous_contraction(get_contraction_span):
 
 
 def test_expand_idiomatic_phrases_casing():
-    '''
-    Test that idiomatic phrase expansions preserve original casing.
-    '''
     phrase = ('Ain’t Got No, I Got Life.')
     expanded = _expand_idiomatic_phrases(phrase)
 
@@ -33,7 +29,6 @@ def test_expand_idiomatic_phrases_casing():
 
 
 def test_expand_unambiguous_contraction():
-    '''Test that unambiguous dictionary contractions properly expand.'''
     unambiguous_map = get_unambiguous_map()
 
     assert _expand_unambiguous_contraction(
@@ -49,7 +44,6 @@ def test_expand_unambiguous_contraction():
 
 
 def test_expand_contractions():
-    '''Test the full expansion pipeline on a spaCy `Doc`.'''
     text = (
         'Ain’t it just like the night to play tricks when you’re trying to be '
         'so quiet?'
@@ -65,7 +59,6 @@ def test_expand_contractions():
 
 
 def test_expand_contractions_no_matches():
-    '''Test that a `Doc` with no contractions returns unmodified.'''
     text = (
         'I exist as I am, that is enough.'
     )
