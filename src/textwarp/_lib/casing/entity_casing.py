@@ -69,11 +69,15 @@ def _check_for_ngrams(
         ngram_tokens = ngram.lower().split()
         n = len(ngram_tokens)
 
-        if any(left_tokens[i:i+n] == ngram_tokens
-               for i in range(len(left_tokens) - n + 1)):
+        if any(
+            left_tokens[i:i+n] == ngram_tokens
+            for i in range(len(left_tokens) - n + 1)
+        ):
             return True
-        if any(right_tokens[i:i+n] == ngram_tokens
-               for i in range(len(right_tokens) - n + 1)):
+        if any(
+            right_tokens[i:i+n] == ngram_tokens
+            for i in range(len(right_tokens) - n + 1)
+        ):
             return True
 
     return False

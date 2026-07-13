@@ -45,8 +45,12 @@ def _is_present_participle(token: Token) -> bool:
 
     if text_lower.endswith('in'):
         doc = token.doc
-        if (token.i + 1 < len(doc)
-                and doc[token.i + 1].text in QUOTATION_MARKS):
+        is_followed_by_quote = (
+            token.i + 1 < len(doc)
+            and doc[token.i + 1].text in QUOTATION_MARKS
+        )
+
+        if is_followed_by_quote:
             return True
 
     return False
@@ -60,11 +64,18 @@ def _disambiguate_a_or_to(span: Span) -> str:
     doc = span.doc
     next_token = doc[span.end] if span.end < len(doc) else None
 
-    if (next_token and next_token.tag_ in en.constants.NOUN_PHRASE_TAGS
-        and next_token.tag_ != 'VB'):
+    is_valid_noun_phrase = (
+        next_token
+        and next_token.tag_ in en.constants.NOUN_PHRASE_TAGS
+        and next_token.tag_ != 'VB'
+    )
 
-        if next_token.lower_ in (
-                en.data.contraction_expansion.get_to_verb_words()):
+    if is_valid_noun_phrase:
+        is_to_verb_word = (
+            next_token.lower_ in en.data.contraction_expansion.get_to_verb_words()
+        )
+
+        if is_to_verb_word:
             return 'to'
 
         return 'a'
@@ -100,8 +111,12 @@ def disambiguate_ain_t(span: Span) -> str:
         is_first_person_i = (subj_text == 'i')
 
     if action_verb:
-        if (action_verb.lower_ == 'got'
-                or action_verb.tag_ in en.constants.PARTICIPLE_TAGS):
+        is_got_or_participle = (
+            action_verb.lower_ == 'got'
+            or action_verb.tag_ in en.constants.PARTICIPLE_TAGS
+        )
+
+        if is_got_or_participle:
             return 'has' if is_singular else 'have'
 
     if is_first_person_i:
@@ -133,8 +148,12 @@ def disambiguate_d(span: Span) -> str:
     for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
         token = doc[i]
 
-        if (token.lower_ == 'better'
-                or token.tag_ in en.constants.PARTICIPLE_TAGS):
+        is_better_or_participle = (
+            token.lower_ == 'better'
+            or token.tag_ in en.constants.PARTICIPLE_TAGS
+        )
+
+        if is_better_or_participle:
             return 'had'
 
         if token.tag_ in en.constants.BASE_VERB_TAGS:

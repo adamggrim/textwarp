@@ -42,6 +42,7 @@ def test_find_first_alphabetical_idx_no_letters():
     assert find_first_alphabetical_idx('') is None
     assert find_first_alphabetical_idx('   ') is None
 
+
 def test_load_json_data():
     """Test that JSON data can be loaded with and without a locale."""
     morse_data = load_json_data('morse_map.json')

@@ -98,9 +98,14 @@ def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
         str | None: The lowercase abbreviation, or `None` if
             `lower_word` is not in the lowercase abbreviations set.
     """
-    if (lower_word.removesuffix('.')
-            in en.data.string_casing.get_lowercase_abbreviations()):
+    is_lowercase_abbrev = (
+        lower_word.removesuffix('.')
+        in en.data.string_casing.get_lowercase_abbreviations()
+    )
+
+    if is_lowercase_abbrev:
         return lower_word
+
     return None
 
 
@@ -119,8 +124,11 @@ def _handle_period_separated_initialism(
         str | None: The capitalized initialism, or `None` if the
             word does not contain a period.
     """
-    if (patterns.warping.get_period_separated_initialism()
-            .fullmatch(lower_word)):
+    initialism_match = (
+        patterns.warping.get_period_separated_initialism().fullmatch(lower_word)
+    )
+
+    if initialism_match:
         match = en.patterns.get_any_apostrophe().search(lower_word)
         if match:
             start_idx = match.start()

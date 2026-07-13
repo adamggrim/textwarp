@@ -4,6 +4,7 @@ Trees (ASTs).
 """
 
 from typing import Any, Callable
+
 import marko
 from marko.md_renderer import MarkdownRenderer
 

@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 
-def get_input(prompt_delay = 0.5) -> bool:
+def get_input(prompt_delay=0.5) -> bool:
     """
     Prompt the user on whether to process the clipboard and return a
     Boolean representing whether to continue.

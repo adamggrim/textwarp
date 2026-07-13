@@ -77,10 +77,16 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
 
         has_aux = False
         curr_idx = span.start - 1
+
         while curr_idx >= 0:
             prev_token = doc[curr_idx]
-            if (prev_token.lower_ in en.constants.HAVE_AUXILIARIES
-                    or prev_token.lower_ == "'s"):
+
+            is_have_auxiliary = (
+                prev_token.lower_ in en.constants.HAVE_AUXILIARIES
+                or prev_token.lower_ == "'s"
+            )
+
+            if is_have_auxiliary:
                 has_aux = True
                 break
             elif prev_token.pos_ == 'ADV':
@@ -134,8 +140,12 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     base_verb: str | None = None
 
-    if (prev_token.lower_ == 'ai'
-            and suffix_token.lower_ in en.contractions.AIN_T_SUFFIX_VARIANTS):
+    is_aint_contraction = (
+        prev_token.lower_ == 'ai'
+        and suffix_token.lower_ in en.contractions.AIN_T_SUFFIX_VARIANTS
+    )
+
+    if is_aint_contraction:
         base_verb = en.disambiguation.disambiguate_ain_t(span)
     else:
         base_verb = en.utils.get_negative_contraction_base_verb(span.text)
@@ -159,7 +169,9 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
         # Every token between the end of the contraction and the end of
         # the subject phrase.
         intermediate_tokens = doc[span.end : subject_end_token.i + 1]
-        intermediate_text = ''.join(t.text + t.whitespace_ for t in intermediate_tokens)
+        intermediate_text = ''.join(
+            t.text + t.whitespace_ for t in intermediate_tokens
+        )
 
         # Ensure spacing before 'not' does not change.
         if not intermediate_text.endswith(' '):

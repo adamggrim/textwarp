@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from typing import Mapping, TYPE_CHECKING
+
 import regex as re
 
 if TYPE_CHECKING:

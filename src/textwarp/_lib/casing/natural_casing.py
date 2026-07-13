@@ -18,7 +18,7 @@ from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
 from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
 
-__all__ = ['to_natural_case',]
+__all__ = ['to_natural_case']
 
 
 def _find_first_word_token_idx(
@@ -128,14 +128,18 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     position_idxs: set[int] = set()
 
     for i, token in enumerate(text_container):
+        is_valid_punctuation_boundary = (
+            (token.text == ':' or token.text in ctx.provider.open_quotes)
+            and token.i + 1 < len(text_container)
+        )
+
         if i == 0 or token.is_sent_start:
             first_word_idx: int | None = _find_first_word_token_idx(
                 i, text_container
             )
             if first_word_idx is not None:
                 position_idxs.add(first_word_idx)
-        elif ((token.text == ':' or token.text in ctx.provider.open_quotes)
-              and token.i + 1 < len(text_container)):
+        elif is_valid_punctuation_boundary:
             first_word_idx = _find_first_word_token_idx(
                 i + 1, text_container
             )

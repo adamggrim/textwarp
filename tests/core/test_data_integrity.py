@@ -9,6 +9,7 @@ from textwarp._core.providers.en.data.contraction_expansion import (
     get_unambiguous_map
 )
 
+
 def get_json_files():
     """Helper function to find all JSON files in the data directory."""
     data_dir = importlib.resources.files('textwarp').joinpath('_core', 'data')

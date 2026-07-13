@@ -49,6 +49,7 @@ class InvalidRegexError(TextwarpValidationError):
     a valid regular expression.
     """
 
+
 class MissingModelError(TextwarpError):
     """Exception raised when a required spaCy model is not installed."""
 

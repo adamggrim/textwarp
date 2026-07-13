@@ -3,6 +3,7 @@
 import sys
 from textwarp._cli.spinner import AcceleratingSpinner
 
+
 def test_spinner_context_manager(monkeypatch):
     """
     Test that the logarithmically accelerating spinner starts and stops

@@ -43,7 +43,6 @@ __all__ = [
     'replace_case',
     'replace_regex',
     'replace_text'
-
 ]
 
 

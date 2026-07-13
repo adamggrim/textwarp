@@ -45,10 +45,11 @@ def process_file_mode(args: ParsedArgs) -> None:
                 text = f.read()
         except UnicodeDecodeError:
             print_wrapped(
-            _(
-                "Error: '{input_file}' appears to be a binary file. Please "
-                'provide a valid text file.'
-            ).format(input_file=file_path))
+                _(
+                    "Error: '{input_file}' appears to be a binary file. "
+                    'Please provide a valid text file.'
+                ).format(input_file=file_path)
+            )
             sys.exit(1)
         except OSError as e:
             print_wrapped(
