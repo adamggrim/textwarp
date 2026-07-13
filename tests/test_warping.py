@@ -44,7 +44,10 @@ from textwarp.warping import (
         '“All art is quite useless.”',
         '"All art is quite useless."'
     ),
-    (expand_contractions, 'I’d prefer not to.', 'I would prefer not to.'),
+    (
+        expand_contractions,
+        'I’m opening out like the largest telescope that ever was!',
+        'I am opening out like the largest telescope that ever was!'),
     (
         from_binary,
         (
@@ -180,7 +183,7 @@ def test_deterministic_warping_functions(func, input_str, expected):
 
 
 def test_random_case():
-    input_str = 'Tell all the truth but tell it slant'
+    input_str = 'Tell all the truth but tell it slant.'
     result = random_case(input_str)
 
     # Check that the function changes casing while preserving length and

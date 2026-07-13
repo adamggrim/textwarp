@@ -23,7 +23,7 @@ def test_apply_expansion_casing_sentence():
 
 
 def test_apply_expansion_casing_title():
-    assert apply_expansion_casing('Do Not', 'do not') == 'Do Not'
+    assert apply_expansion_casing('Don’t Don’t', 'do not do not') == 'Do Not Do Not'
 
 
 def test_expand_contractions_no_contractions():

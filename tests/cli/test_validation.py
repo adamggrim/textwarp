@@ -32,11 +32,14 @@ def test_validate_case_name():
         validate_case_name('   ')
 
     with pytest.raises(InvalidCaseNameError):
-        validate_case_name('invalid_case_format')
+        validate_case_name('Jarndyce and Jarndyce')
 
 
 def test_validate_clipboard():
-    validate_clipboard('Catch the conscience of the King')
+    validate_clipboard(
+        'The knowledge and survey of vice is in this world so necessary to '
+        'the constituting of human virtue.'
+    )
 
     with pytest.raises(EmptyClipboardError):
         validate_clipboard('')
@@ -47,13 +50,13 @@ def test_validate_clipboard():
 
 def test_validate_regex():
     validate_regex(r'^[a-z]+$')
-    validate_regex(r'(?<=foo)bar')
+    validate_regex(r'(?<=madeleine)À la recherche du temps perdu')
 
     with pytest.raises(NoRegexError):
         validate_regex('')
 
     with pytest.raises(InvalidRegexError):
-        validate_regex(r'[unclosed group')
+        validate_regex(r'[They do not move')
 
 
 def test_validate_text():

@@ -2,7 +2,8 @@
 
 import regex as re
 
-from textwarp._lib.casing.programming_casing import to_camel_case
+from textwarp._core.enums import CaseSeparator
+from textwarp._lib.casing.programming_casing import to_separator_case
 from textwarp._lib.replacement import (
     replace_case,
     replace_regex,
@@ -13,19 +14,19 @@ from textwarp._lib.replacement import (
 def test_replace_case():
     search_pattern = re.compile(r'\b_?\p{L}[\p{L}\d]*(?:_[\p{L}\d]+)+\b')
 
-    result = replace_case('pascal_case', search_pattern, to_camel_case)
+    result = replace_case(
+        'that_thing_I_harpoon',
+        search_pattern,
+        lambda match_text: to_separator_case(match_text, CaseSeparator.KEBAB)
+    )
 
-    assert result == 'pascalCase'
+    assert result == 'that-thing-i-harpoon'
 
 
 def test_replace_regex():
-    result = replace_regex(
-        '525,600 minutes',
-        r'(\d{3}),(\d{3})',
-        'five hundred twenty-five thousand, six hundred'
-    )
+    result = replace_regex('Out, damned spot, out, I say!', r'\ss\w+t', '')
 
-    assert result == 'five hundred twenty-five thousand, six hundred minutes'
+    assert result == 'Out, damned, out, I say!'
 
 
 def test_replace_text():

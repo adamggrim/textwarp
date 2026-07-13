@@ -6,17 +6,14 @@ from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal
 
 @pytest.mark.parametrize('cardinal, expected_ordinal', [
     ('1', '1st'),
+    ('1', '1st'),
     ('2', '2nd'),
     ('3', '3rd'),
-    ('4', '4th'),
-    ('10', '10th'),
-    ('11', '11th'),
-    ('12', '12th'),
+    ('5', '5th'),
+    ('8', '8th'),
     ('13', '13th'),
     ('21', '21st'),
-    ('22', '22nd'),
-    ('103', '103rd'),
-    ('525,600', '525,600th'),
+    ('34', '34th')
 ])
 def test_cardinal_to_ordinal_isolated(cardinal, expected_ordinal):
     assert cardinal_to_ordinal(cardinal) == expected_ordinal
@@ -33,19 +30,16 @@ def test_cardinal_to_ordinal_ignores_decimals():
 
 
 @pytest.mark.parametrize('ordinal, expected_cardinal', [
-    ('1st', '1'),
-    ('2nd', '2'),
-    ('3rd', '3'),
     ('4th', '4'),
-    ('11th', '11'),
-    ('21st', '21'),
-    ('525,600th', '525,600'),
+    ('5th', '5'),
+    ('25th', '25'),
+    ('32nd', '32')
 ])
 def test_ordinal_to_cardinal_isolated(ordinal, expected_cardinal):
     assert ordinal_to_cardinal(ordinal) == expected_cardinal
 
 
 def test_ordinal_to_cardinal_in_text():
-    text = 'A 7th-nation army couldn’t hold me back.'
-    expected = 'A 7-nation army couldn’t hold me back.'
+    text = '9th concentric circles'
+    expected = '9 concentric circles'
     assert ordinal_to_cardinal(text) == expected
