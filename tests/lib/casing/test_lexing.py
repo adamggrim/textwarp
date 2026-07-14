@@ -16,10 +16,10 @@ from textwarp._lib.casing.lexing import get_normalized_tokens
             (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'believe'),
             (TokenType.SYMBOL, ','),
-            (TokenType.SYMBOL, ' '),
+            (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'doctor'),
             (TokenType.SYMBOL, '!'),
-            (TokenType.SYMBOL, ' '),
+            (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'To'),
             (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'make'),
@@ -72,14 +72,13 @@ from textwarp._lib.casing.lexing import get_normalized_tokens
         ]
     ),
     (
-        'email@website.com!',
+        'yorick@elsinore.dk',
         [
-            (TokenType.WORD, 'email'),
+            (TokenType.WORD, 'yorick'),
             (TokenType.SYMBOL, '@'),
-            (TokenType.WORD, 'website'),
+            (TokenType.WORD, 'elsinore'),
             (TokenType.SEPARATOR, '.'),
-            (TokenType.WORD, 'com'),
-            (TokenType.SYMBOL, '!')
+            (TokenType.WORD, 'dk'),
         ]
     ),
     (
@@ -93,7 +92,7 @@ from textwarp._lib.casing.lexing import get_normalized_tokens
             (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'thing'),
             (TokenType.SYMBOL, ','),
-            (TokenType.SYMBOL, ' '),
+            (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'the'),
             (TokenType.SEPARATOR, ' '),
             (TokenType.WORD, 'destruction'),
