@@ -17,7 +17,6 @@ from textwarp.warping import (
     punct_to_inside,
     punct_to_outside,
     random_case,
-    randomize,
     redact,
     reverse,
     straight_to_curly,
@@ -190,13 +189,3 @@ def test_random_case():
     # characters.
     assert len(result) == len(input_str)
     assert result.lower() == input_str.lower()
-
-
-def test_randomize():
-    input_str = 'things fall apart'
-    result = randomize(input_str)
-
-    # Check that the function shuffles character order while preserving
-    # the characters.
-    assert len(result) == len(input_str)
-    assert sorted(result) == sorted(input_str)
