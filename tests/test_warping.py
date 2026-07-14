@@ -50,29 +50,30 @@ from textwarp.warping import (
     (
         from_binary,
         (
-            '01100011 01110010 01100101 01100001 01110100 01101001 01101111 '
-            '00100000 01100101 01111000 00100000 01101110 01101001 01101000 '
-            '01101001 01101100 01101111'
+            '01100011 01110010 01100101 01100001 01110100 01101001 '
+            '01101111 00100000 01100101 01111000 00100000 01101110 '
+            '01101001 01101000 01101001 01101100 01101111'
         ),
         'creatio ex nihilo'
     ),
     (
         from_hexadecimal,
         (
-            '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 69 74 63 '
-            '68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 73 65 64 2e'
+            '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 '
+            '69 74 63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 '
+            '73 65 64 2e'
         ),
         'This only is the witchcraft I have used.'
     ),
     (
         from_morse,
         (
-            '.-- .... .- -   .... .- - ....   --. --- -..   .-- .-. --- ..- '
-            '--. .... -'
+            '.-- .... .- -   .... .- - ....   --. --- -..   .-- '
+            '.-. --- ..- --. .... -'
         ),
         'WHAT HATH GOD WROUGHT'
     ),
-    (from_zalgo, 't̼ͩ͛e̼̱̝ͪx͚̭̆ͬṯ̢͑̈w̮͇ͦͫḁ̛̾̉r̷̥ͥp̡̺̲̅̉', 'textwarp'),
+    (from_zalgo, 'ǹ̡̓a̷͕̱͒r̶̢̟ͩͤç̥ͭi̶̳̖ͬͪs͓̟s̶͗̚u̵̡͑s̵͚͑', 'narcissus'),
     (hyphen_to_en, 'Books I-XII', 'Books I–XII'),
     (
         hyphens_to_em,
@@ -108,47 +109,51 @@ from textwarp.warping import (
         to_binary,
         'creatio ex nihilo',
         (
-            '01100011 01110010 01100101 01100001 01110100 01101001 01101111 '
-            '00100000 01100101 01111000 00100000 01101110 01101001 01101000 '
-            '01101001 01101100 01101111'
+            '01100011 01110010 01100101 01100001 01110100 01101001 '
+            '01101111 00100000 01100101 01111000 00100000 01101110 '
+            '01101001 01101000 01101001 01101100 01101111'
         )
     ),
-    (
-        to_camel_case,
-        'camel.case, camel-case, CamelCase, camel_case',
-        'camelCase, camelCase, camelCase, camelCase'
-    ),
-    (
-        to_dot_case,
-        'dotCase, dot-case, DotCase, dot_case',
-        'dot.case, dot.case, dot.case, dot.case'
-    ),
+
+    (to_camel_case, 'i.see.the.camel', 'iSeeTheCamel'),
+    (to_camel_case, 'i-see-the-camel', 'iSeeTheCamel'),
+    (to_camel_case, 'ISeeTheCamel', 'iSeeTheCamel'),
+    (to_camel_case, 'i_see_the_camel', 'iSeeTheCamel'),
+
+    (to_dot_case, 'lookAgainAtThatDot', 'look.again.at.that.dot'),
+    (to_dot_case, 'look-again-at-that-dot', 'look.again.at.that.dot'),
+    (to_dot_case, 'LookAgainAtThatDot', 'look.again.at.that.dot'),
+    (to_dot_case, 'look_again_at_that_dot', 'look.again.at.that.dot'),
+
     (
         to_hexadecimal,
         'This only is the witchcraft I have used.',
         (
-            '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 69 74 63 '
-            '68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 73 65 64 2e'
+            '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 '
+            '69 74 63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 '
+            '73 65 64 2e'
         )
     ),
-    (
-        to_kebab_case,
-        'kebabCase, kebab.case, KebabCase, kebab_case',
-        'kebab-case, kebab-case, kebab-case, kebab-case'
-    ),
+
+    (to_kebab_case, 'headsOnTheStakes', 'heads-on-the-stakes'),
+    (to_kebab_case, 'heads.on.the.stakes', 'heads-on-the-stakes'),
+    (to_kebab_case, 'HeadsOnTheStakes', 'heads-on-the-stakes'),
+    (to_kebab_case, 'heads_on_the_stakes', 'heads-on-the-stakes'),
+
     (
         to_morse,
         'What hath God wrought',
         (
-            '.-- .... .- -   .... .- - ....   --. --- -..   .-- .-. --- ..- '
-            '--. .... -'
+            '.-- .... .- -   .... .- - ....   --. --- -..   .-- '
+            '.-. --- ..- --. .... -'
         )
     ),
-    (
-        to_pascal_case,
-        'pascalCase, pascal.case, pascal-case, pascal_case',
-        'PascalCase, PascalCase, PascalCase, PascalCase'
-    ),
+
+    (to_pascal_case, 'laPascaline', 'LaPascaline'),
+    (to_pascal_case, 'la.pascaline', 'LaPascaline'),
+    (to_pascal_case, 'la-pascaline', 'LaPascaline'),
+    (to_pascal_case, 'la_pascaline', 'LaPascaline'),
+
     (
         to_sentence_case,
         (
@@ -165,17 +170,16 @@ from textwarp.warping import (
         'The past is never dead.  In fact, it’s not even past.',
         'The past is never dead. In fact, it’s not even past.'
     ),
-    (
-        to_snake_case,
-        'snakeCase, snake.case, snake-case, SnakeCase',
-        'snake_case, snake_case, snake_case, snake_case'
-    ),
+    (to_snake_case, 'filletOfFennySnake', 'fillet_of_fenny_snake'),
+    (to_snake_case, 'fillet.of.fenny.snake', 'fillet_of_fenny_snake'),
+    (to_snake_case, 'fillet-of-fenny-snake', 'fillet_of_fenny_snake'),
+    (to_snake_case, 'FilletOfFennySnake', 'fillet_of_fenny_snake'),
     (
         to_title_case,
         'the tragical history of the life and death of doctor faustus',
         'The Tragical History of the Life and Death of Doctor Faustus'
     ),
-    (widen, 'widen', 'w i d e n')
+    (widen, 'violet beauregarde', 'v i o l e t   b e a u r e g a r d e')
 ])
 def test_deterministic_warping_functions(func, input_str, expected):
     assert func(input_str) == expected
