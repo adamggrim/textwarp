@@ -40,7 +40,7 @@ __all__ = [
 ]
 
 
-def char_count(text: str) -> None:
+def char_count(text: str) -> str:
     """
     Analyze, format and print character count output.
 
@@ -48,11 +48,10 @@ def char_count(text: str) -> None:
         text: The string to process.
     """
     count: int = count_chars(text)
-    formatted_count: str = format_count(CountLabels.CHAR.value, count)
-    print_wrapped(formatted_count)
+    return format_count(CountLabels.CHAR.value, count)
 
 
-def line_count(text: str) -> None:
+def line_count(text: str) -> str:
     """
     Analyze, format and print line count output.
 
@@ -60,11 +59,11 @@ def line_count(text: str) -> None:
         text: The string to process.
     """
     count: int = count_lines(text)
-    formatted_count: str = format_count(CountLabels.LINE.value, count)
-    print_wrapped(formatted_count)
+    return format_count(CountLabels.LINE.value, count)
 
 
-def mfws(text: str) -> None:
+
+def mfws(text: str) -> str:
     """
     Analyze, format and print most frequent words output.
 
@@ -80,11 +79,10 @@ def mfws(text: str) -> None:
     with AcceleratingSpinner():
         data: list[WordCount] = count_mfws(text, count_limit)
 
-    formatted_data: str = format_mfws(data)
-    print('\n' + formatted_data)
+    return format_mfws(data)
 
 
-def pos_counts(text: str) -> None:
+def pos_counts(text: str) -> str:
     """
     Analyze, format and print parts of speech count output.
 
@@ -92,11 +90,10 @@ def pos_counts(text: str) -> None:
         text: The string to process.
     """
     counts: POSCounts = count_pos(text)
-    formatted_count: str = format_pos_counts(counts)
-    print('\n' + formatted_count)
+    return format_pos_counts(counts)
 
 
-def sentence_count(text: str) -> None:
+def sentence_count(text: str) -> str:
     """
     Analyze, format and print sentence count output.
 
@@ -104,13 +101,10 @@ def sentence_count(text: str) -> None:
         text: The string to process.
     """
     count: int = count_sents(text)
-    formatted_count: str = format_count(
-        CountLabels.SENTENCE.value, count
-    )
-    print_wrapped(formatted_count)
+    return format_count(CountLabels.SENTENCE.value, count)
 
 
-def time_to_read(text: str) -> None:
+def time_to_read(text: str) -> str:
     """
     Analyze, format and print time-to-read output.
 
@@ -126,11 +120,10 @@ def time_to_read(text: str) -> None:
     with AcceleratingSpinner():
         minutes: int = calculate_time_to_read(text, wpm)
 
-    formatted_minutes: str = format_time_to_read(minutes)
-    print_wrapped(formatted_minutes)
+    return format_time_to_read(minutes)
 
 
-def word_count(text: str) -> None:
+def word_count(text: str) -> str:
     """
     Analyze, format and print word count output.
 
@@ -138,7 +131,4 @@ def word_count(text: str) -> None:
         text: The string to process.
     """
     count: int = count_words(text)
-    formatted_count: str = format_count(
-        CountLabels.WORD.value, count
-    )
-    print_wrapped(formatted_count)
+    return format_count(CountLabels.WORD.value, count)

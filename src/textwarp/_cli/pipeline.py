@@ -82,8 +82,7 @@ def apply_pipeline(
             elif cmd_name in ANALYSIS_COMMANDS:
                 if imports_spacy:
                     active_context.stop()
-                func(content)
-                return None
+                return func(content)
             else:
                 func_name = cmd_name.replace('-', '_')
                 if (

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Introduced a half-second input delay for "Any other text?" prompts.
 * Allowed early exit from integer prompts.
 * Expanded internationalization support.
+* Fixed analysis output to file.
 * Fixed a bug where Pascal and camel casing overrode separator cases for known initialisms.
 * Split some larger files to adhere to single-responsibility principle.
 * Updated pipeline handling of intermediate and replacement inputs.

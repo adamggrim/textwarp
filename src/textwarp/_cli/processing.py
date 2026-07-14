@@ -79,7 +79,10 @@ def process_file_mode(args: ParsedArgs) -> None:
     if combined_results:
         final_output = '\n'.join(combined_results)
         route_output(
-            final_output, args.output_file, args.copy_to_clipboard, args.debug
+            final_output,
+            args.output_file,
+            args.copy_to_clipboard,
+            args.debug
         )
 
 
@@ -118,12 +121,25 @@ def process_interactive_mode(args: ParsedArgs) -> None:
         program_exit()
 
     if is_analysis_pipeline(args.pipeline):
-        run_command_loop(pipeline_runner, action_handler=None)
-    else:
-        def clipboard_action(func: Callable[[str], str], text: str) -> None:
+        def route_analysis_output(func: Callable[[str], str | None], text: str) -> None:
             """
-            Output transformed clipboard output back to the clipbaord or
-            to a default file.
+            Route analysis to a file, the clipboard or the terminal.
+            """
+            result = func(text)
+            if result is not None:
+                route_output(
+                    result,
+                    args.output_file,
+                    args.copy_to_clipboard,
+                    args.debug
+                )
+
+        run_command_loop(pipeline_runner, action_handler=route_analysis_output)
+    else:
+        def handle_clipboard_output(func: Callable[[str], str], text: str) -> None:
+            """
+            Output transformed clipboard back to the clipboard or to a
+            default file.
             """
             result = func(text)
             handle_output(
@@ -133,7 +149,7 @@ def process_interactive_mode(args: ParsedArgs) -> None:
                 default_action=lambda r: warp_and_copy(lambda _: r, text)
             )
 
-        run_command_loop(pipeline_runner, action_handler=clipboard_action)
+        run_command_loop(pipeline_runner, action_handler=handle_clipboard_output)
 
 
 def process_piped_mode(args: ParsedArgs) -> None:
@@ -163,7 +179,10 @@ def process_piped_mode(args: ParsedArgs) -> None:
 
         if result is not None:
             route_output(
-                result, args.output_file, args.copy_to_clipboard, args.debug
+                result,
+                args.output_file,
+                args.copy_to_clipboard,
+                args.debug
             )
 
     except Exception as e:
