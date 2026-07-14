@@ -44,12 +44,12 @@ def get_idiomatic_map() -> Mapping[str, str]:
 
 
 @cache
-def get_to_verb_words() -> frozenset[str]:
+def get_infinitive_exceptions() -> frozenset[str]:
     """
-    Get a cached `frozenset` of words that expand to 'to' despite noun
+    Get a cached `frozenset` of words that expand to "to" despite noun
     tags.
     """
-    return frozenset(load_json_data(DIR / 'to_verb_words.json', locale='en'))
+    return frozenset(load_json_data(DIR / 'infinitive_exceptions.json', locale='en'))
 
 
 @cache

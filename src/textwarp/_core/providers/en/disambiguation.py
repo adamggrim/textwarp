@@ -71,11 +71,12 @@ def _disambiguate_a_or_to(span: Span) -> str:
     )
 
     if is_valid_noun_phrase:
-        is_to_verb_word = (
-            next_token.lower_ in en.data.contraction_expansion.get_to_verb_words()
+        is_infinitive_exception = (
+            next_token.lower_
+            in en.data.contraction_expansion.get_infinitive_exceptions()
         )
 
-        if is_to_verb_word:
+        if is_infinitive_exception:
             return 'to'
 
         return 'a'

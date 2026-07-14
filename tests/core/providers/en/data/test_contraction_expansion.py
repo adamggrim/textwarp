@@ -20,4 +20,6 @@ def test_contraction_expansion_config():
     assert isinstance(contraction_expansion.get_whatcha_are_words(), tuple)
     assert isinstance(contraction_expansion.get_whatcha_have_words(), tuple)
 
-    assert isinstance(contraction_expansion.get_to_verb_words(), frozenset)
+    assert isinstance(
+        contraction_expansion.get_infinitive_exceptions(), frozenset
+    )

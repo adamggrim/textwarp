@@ -177,7 +177,7 @@ textwarp/
   │ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
   │ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
   │ │ │ │ ├── idiomatic_phrases.json: Maps idiomatic phrases to their expansions
-  │ │ │ │ ├── to_verb_words.json: Lists words that expand to "to" despite noun tags
+  │ │ │ │ ├── infinitive_exceptions.json: Lists words that expand to "to" despite noun tags
   │ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
   │ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
   │ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
