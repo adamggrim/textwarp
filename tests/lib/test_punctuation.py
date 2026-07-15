@@ -9,29 +9,36 @@ from textwarp._lib.punctuation import (
 
 def test_curly_to_straight():
     assert (
-        curly_to_straight('“Here’s looking at you, kid.”')
-        == '"Here\'s looking at you, kid."'
-    )
-    assert (
-        curly_to_straight('“I’m gonna make him an offer he can’t refuse!”')
-        == '"I\'m gonna make him an offer he can\'t refuse!"'
+        curly_to_straight('“I don’t know what to do!” cried Scrooge.')
+        == '"I don\'t know what to do!" cried Scrooge.'
     )
     assert (
         curly_to_straight('“‘Please, sir, I want some more.’”')
         == '"\'Please, sir, I want some more.\'"'
     )
+    assert (
+        curly_to_straight(
+            '“It’s enough for a man to understand his own business, and not '
+            'to interfere with other people’s.”'
+        )
+        == '"It\'s enough for a man to understand his own business, and not '
+           'to interfere with other people\'s."'
+    )
 
 
 def test_straight_to_curly_double_quotes():
     assert (
-        straight_to_curly('"Hello, is it me you\'re looking for?"')
-        == '“Hello, is it me you’re looking for?”'
+        straight_to_curly('"I\'ll buy you a diamond ring, my friend."')
+        == '“I’ll buy you a diamond ring, my friend.”'
     )
     assert (
         straight_to_curly('She said, "I know what it\'s like to be dead."')
         == 'She said, “I know what it’s like to be dead.”'
     )
-    assert straight_to_curly('("Hello, it\'s me.")') == '(“Hello, it’s me.”)'
+    assert (
+        straight_to_curly('"There\'s nothing you can do that can\'t be done."')
+        == '“There’s nothing you can do that can’t be done.”'
+    )
 
 
 def test_straight_to_curly_single_quotes():
