@@ -13,6 +13,7 @@ __all__ = [
     'CLIPBOARD_ACCESS_ERROR_MSG',
     'CLIPBOARD_CLEARED_MSG',
     'ENTER_CASE_TO_REPLACE_PROMPT',
+    'ENTER_ENTITY_COUNT_PROMPT',
     'ENTER_MFW_COUNT_PROMPT',
     'ENTER_VALID_NUMBER_PROMPT',
     'ENTER_REGEX_PROMPT',
@@ -36,6 +37,7 @@ ANY_OTHER_TEXT_PROMPT: Final = N_(
 )
 
 ENTER_CASE_TO_REPLACE_PROMPT: Final = _('Enter a case to replace:')
+ENTER_ENTITY_COUNT_PROMPT: Final = _('How many entities?')
 ENTER_MFW_COUNT_PROMPT: Final = _('How many most frequent words?')
 ENTER_REGEX_PROMPT: Final = _('Enter a regular expression to replace:')
 ENTER_REPLACEMENT_CASE_PROMPT: Final = _('Enter a replacement case:')

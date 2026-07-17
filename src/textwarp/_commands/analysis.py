@@ -7,6 +7,7 @@ from textwarp.analysis import (
     calculate_time_to_read,
     calculate_ttr,
     count_chars,
+    count_entities,
     count_lines,
     count_mfws,
     count_pos,
@@ -14,6 +15,7 @@ from textwarp.analysis import (
     count_words
 )
 from textwarp._cli.constants.messages import (
+    ENTER_ENTITY_COUNT_PROMPT,
     ENTER_MFW_COUNT_PROMPT,
     ENTER_VALID_NUMBER_PROMPT,
     ENTER_WPM_PROMPT
@@ -22,6 +24,7 @@ from textwarp._core.enums import CountLabels
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._cli.formatting import (
     format_count,
+    format_entity_counts,
     format_mfws,
     format_pos_counts,
     format_time_to_read,
@@ -33,12 +36,13 @@ _ = gettext.gettext
 
 __all__ = [
     'char_count',
+    'entity_counts',
     'line_count',
     'mfws',
     'pos_counts',
     'sentence_count',
     'time_to_read',
-    'ttr',
+    'type_token_ratio',
     'word_count'
 ]
 
@@ -52,6 +56,25 @@ def char_count(text: str) -> str:
     """
     count: int = count_chars(text)
     return format_count(CountLabels.CHAR.value, count)
+
+
+def entity_counts(text: str) -> str:
+    """
+    Analyze, format and print most frequent entities output.
+
+    Args:
+        text: The string to process.
+    """
+    count_limit: int = prompt_for_integer(
+        _(ENTER_ENTITY_COUNT_PROMPT),
+        _(ENTER_VALID_NUMBER_PROMPT),
+        allow_early_exit=True
+    )
+
+    with AcceleratingSpinner():
+        data: list[WordCount] = count_entities(text, count_limit)
+
+    return format_entity_counts(data)
 
 
 def line_count(text: str) -> str:

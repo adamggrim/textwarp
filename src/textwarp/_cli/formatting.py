@@ -10,6 +10,7 @@ ngettext = gettext.ngettext
 
 __all__ = [
     'format_count',
+    'format_entity_counts',
     'format_mfws',
     'format_pos_counts',
     'format_time_to_read',
@@ -77,13 +78,37 @@ def format_count(name: str, count: int) -> str:
     }
 
 
+def format_entity_counts(entities: list[WordCount]) -> str:
+    """
+    Return a string indicating the most frequent entities in a given
+    string.
+
+    Args:
+        entities: A list of `WordCount` objects, containing an entity
+            and its count.
+
+    Returns:
+        str: A formatted string indicating most frequent entities.
+    """
+    entity_data: list[tuple[str, str, str]] = [
+        (
+            f"'{entity_count.word}'",
+            str(entity_count.count),
+            f'({entity_count.percentage:.2f}%)'
+        )
+        for entity_count in entities
+    ]
+
+    return _format_table(entity_data)
+
+
 def format_mfws(mfws: list[WordCount]) -> str:
     """
     Return a string indicating the most frequent words in a given
     string.
 
     Args:
-        mfws: A list of `WordCount` objects containing a word and its
+        mfws: A list of `WordCount` objects, containing a word and its
             count.
 
     Returns:

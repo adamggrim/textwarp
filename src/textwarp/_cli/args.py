@@ -66,6 +66,10 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('..warping', 'to_dot_case'),
         N_('convert.to.dot.case')
     ),
+    'entity-counts': (
+        _lazy_load('.._commands.analysis', 'entity_counts'),
+        N_('get most frequent entities')
+    ),
     'expand-contractions': (
         _lazy_load('..warping', 'expand_contractions'),
         N_('expand contractions')
@@ -230,6 +234,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
 
 ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'char-count',
+    'entity-counts',
     'line-count',
     'mfws',
     'pos-counts',
@@ -261,6 +266,7 @@ MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
     'morse',
     'from-morse',
     'char-count',
+    'entity-counts',
     'line-count',
     'mfws',
     'pos-counts',
@@ -292,6 +298,7 @@ SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
 SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
     'capitalize',
     'cardinal',
+    'entity-counts',
     'expand-contractions',
     'mfws',
     'ordinal',

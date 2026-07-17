@@ -17,6 +17,7 @@ __all__ = [
     'calculate_time_to_read',
     'calculate_ttr',
     'count_chars',
+    'count_entities',
     'count_lines',
     'count_mfws',
     'count_pos',
@@ -70,6 +71,38 @@ def count_chars(text: str) -> int:
     return len(text)
 
 
+def count_entities(content: str | Doc, num_entities: int) -> list[WordCount]:
+    """
+    Count the most frequent entities in a string.
+
+    Args:
+        content: The string or spaCy `Doc` to analyze.
+        num_entities: The number of most frequent entities to return.
+
+    Returns:
+        list[WordCount]: A list of `WordCount` objects, containing an
+            entity and its count.
+    """
+    doc = process_as_doc(content, disable=['lemmatizer', 'parser'])
+    entities = [ent.text for ent in doc.ents]
+    total_entity_count = len(entities)
+
+    if total_entity_count == 0:
+        return []
+
+    counts = Counter(entities)
+    count_tuples: list[tuple[str, int]] = counts.most_common(num_entities)
+
+    return [
+        WordCount(
+            word=entity,
+            count=count,
+            percentage=(count / total_entity_count * 100)
+        )
+        for entity, count in count_tuples
+    ]
+
+
 def count_lines(text: str) -> int:
     """Count the number of non-whitespace lines in a string."""
     lines = text.splitlines()
@@ -86,8 +119,8 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
         num_mfws: The number of most frequent words to return.
 
     Returns:
-        list[WordCount]: A list of `WordCount` objects containing a word
-            and its count.
+        list[WordCount]: A list of `WordCount` objects, containing a
+            word and its count.
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     words = extract_words_from_doc(doc)

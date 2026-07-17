@@ -24,7 +24,7 @@ _ = gettext.gettext
 REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 
 INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
-    'mfws', 'time_to_read'
+    'entity_counts', 'mfws', 'time_to_read'
 })
 
 
