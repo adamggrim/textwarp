@@ -30,8 +30,8 @@ def test_to_separator_case_basic():
         'Vlad the Impaler', CaseSeparator.KEBAB
     ) == 'vlad-the-impaler'
     assert to_separator_case(
-        'sunday on la grande jatte', CaseSeparator.DOT
-    ) == 'sunday.on.la.grande.jatte'
+        'la grande jatte', CaseSeparator.DOT
+    ) == 'la.grande.jatte'
 
 
 def test_to_separator_case_from_existing_cases():
