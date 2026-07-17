@@ -12,7 +12,8 @@ __all__ = [
     'format_count',
     'format_mfws',
     'format_pos_counts',
-    'format_time_to_read'
+    'format_time_to_read',
+    'format_ttr'
 ]
 
 
@@ -164,3 +165,16 @@ def format_time_to_read(minutes_to_read: int) -> str:
         ) % {'minutes': minutes}
     else:
         return _('Less than 1 minute')
+
+
+def format_ttr(ttr: float) -> str:
+    """
+    Return a string indicating the type-token ratio.
+
+    Args:
+        ttr (float): The type-token ratio.
+
+    Returns:
+        str: The formatted string indicating the ratio.
+    """
+    return _('Type-token ratio: %(ttr).2f') % {'ttr': ttr}

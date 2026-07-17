@@ -15,6 +15,7 @@ from textwarp._lib.nlp import extract_words_from_doc, process_as_doc
 
 __all__ = [
     'calculate_time_to_read',
+    'calculate_ttr',
     'count_chars',
     'count_lines',
     'count_mfws',
@@ -41,6 +42,27 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
     minutes_to_read = word_count / wpm
     rounded_minutes = int(minutes_to_read + 0.5)
     return ceil(minutes_to_read) if minutes_to_read < 1 else rounded_minutes
+
+
+def calculate_ttr(content: str | Doc) -> float:
+    """
+    Calculate the type-token ratio for a string.
+
+    Args:
+        content: The string or spaCy `Doc` to analyze.
+
+    Returns:
+        float: The calculated type-token ratio, or 0.0 if empty.
+    """
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
+    words = extract_words_from_doc(doc)
+    total_words = len(words)
+
+    if total_words == 0:
+        return 0.0
+
+    unique_words = len(set(words))
+    return unique_words / total_words
 
 
 def count_chars(text: str) -> int:

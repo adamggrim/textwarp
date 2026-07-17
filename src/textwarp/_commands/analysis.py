@@ -5,6 +5,7 @@ import gettext
 from textwarp._cli.spinner import AcceleratingSpinner
 from textwarp.analysis import (
     calculate_time_to_read,
+    calculate_ttr,
     count_chars,
     count_lines,
     count_mfws,
@@ -23,9 +24,10 @@ from textwarp._cli.formatting import (
     format_count,
     format_mfws,
     format_pos_counts,
-    format_time_to_read
+    format_time_to_read,
+    format_ttr
 )
-from textwarp._cli.ui import print_wrapped, prompt_for_integer
+from textwarp._cli.ui import prompt_for_integer
 
 _ = gettext.gettext
 
@@ -36,6 +38,7 @@ __all__ = [
     'pos_counts',
     'sentence_count',
     'time_to_read',
+    'ttr',
     'word_count'
 ]
 
@@ -121,6 +124,17 @@ def time_to_read(text: str) -> str:
         minutes: int = calculate_time_to_read(text, wpm)
 
     return format_time_to_read(minutes)
+
+
+def ttr(text: str) -> str:
+    """
+    Analyze, format and print type-token ratio output.
+
+    Args:
+        text: The string to process.
+    """
+    ttr: float = calculate_ttr(text)
+    return format_ttr(ttr)
 
 
 def word_count(text: str) -> str:

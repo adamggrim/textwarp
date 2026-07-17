@@ -206,6 +206,10 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('..warping', 'to_title_case'),
         N_('Convert to Title Case')
     ),
+    'ttr': (
+        _lazy_load('.._commands.analysis', 'ttr'),
+        N_('calculate type-token ratio')
+    ),
     'uppercase': (
         str.upper,
         N_('CONVERT TO ALL CAPS')
@@ -231,6 +235,7 @@ ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'pos-counts',
     'sentence-count',
     'time-to-read',
+    'ttr',
     'word-count'
 })
 
@@ -261,6 +266,7 @@ MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
     'pos-counts',
     'sentence-count',
     'time-to-read',
+    'ttr',
     'word-count'
 })
 
@@ -282,6 +288,7 @@ SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'widen'
 })
 
+# Require spaCy installation.
 SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
     'capitalize',
     'cardinal',
@@ -293,5 +300,6 @@ SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
     'sentence-count',
     'time-to-read',
     'title-case',
+    'ttr',
     'word-count'
 })
