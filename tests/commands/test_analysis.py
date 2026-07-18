@@ -9,6 +9,25 @@ def test_char_count():
     assert 'Character count: 16' in result
 
 
+def test_entity_counts(simulate_input, capsys):
+    simulate_input(['invalid', '3'])
+
+    result = analysis.entity_counts(
+        'How a Ship having passed the Line was driven by storms to the cold '
+        'Country towards the South Pole; and how from thence she made her '
+        'course to the tropical Latitude of the Great Pacific Ocean; and of '
+        'the strange things that befell; and in what manner the Ancyent '
+        'Marinere came back to his own Country.'
+    )
+    captured = capsys.readouterr()
+
+    assert ENTER_VALID_NUMBER_PROMPT in captured.out
+
+    assert "'the South Pole'" in result
+    assert '1' in result
+    assert "'Latitude of the Great Pacific Ocean'" in result
+
+
 def test_line_count():
     result = analysis.line_count(
         'so much depends\n'
@@ -63,6 +82,18 @@ def test_time_to_read(simulate_input, capsys):
     assert ENTER_VALID_NUMBER_PROMPT in captured.out
 
     assert '5 minutes' in result
+
+
+def test_ttr():
+    result = analysis.ttr(
+        'Bent double, like old beggars under sacks,\n'
+        'Knock-kneed, coughing like hags, we cursed through sludge,\n'
+        'Till on the haunting flares we turned our backs\n'
+        'And towards our distant rest began to trudge.'
+    )
+
+    assert 'Type-token ratio:' in result
+    assert '0.91' in result
 
 
 def test_word_count():

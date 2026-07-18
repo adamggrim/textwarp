@@ -4,7 +4,9 @@ from textwarp._core.enums import ModelPriority
 from textwarp._lib.nlp import _get_nlp, _load_spacy_model
 from textwarp.analysis import (
     calculate_time_to_read,
+    calculate_ttr,
     count_chars,
+    count_entities,
     count_lines,
     count_mfws,
     count_pos,
@@ -13,7 +15,28 @@ from textwarp.analysis import (
 )
 from textwarp._core.models import POSCounts
 
-COUNT_CHARS_TEXT = 'Even the sun-clouds this morning cannot manage such skirts.'
+CALCULATE_TTR_TEXT = (
+    'The girl in the tea shop\n'
+    'Is not so beautiful as she was,\n'
+    'The August has worn against her.\n'
+    'She does not get up the stairs so eagerly;\n'
+    'Yes, she also will turn middle-aged,\n'
+    'And the glow of youth that she spread about us\n'
+    'As she brought us our muffins\n'
+    'Will be spread about us no longer.\n'
+    'She also will turn middle-aged.'
+)
+
+COUNT_CHARS_TEXT = (
+    'Even the sun-clouds this morning cannot manage such skirts.'
+)
+
+COUNT_ENTITIES_TEXT = (
+    'According to the Pallinode, Helen was never in Troy. She had been '
+    'transposed or translated from Greece into Egypt. Helen of Troy was a '
+    'phantom, substituted for the real Helen, by jealous deities. The Greeks '
+    'and the Trojans alike fought for an illusion.'
+)
 
 COUNT_LINES_TEXT = (
     'Does it dry up\n'
@@ -75,8 +98,25 @@ def test_calculate_time_to_read():
     assert 14 <= minutes <= 16
 
 
+def test_calculate_ttr():
+    assert calculate_ttr(CALCULATE_TTR_TEXT) == 0.65625
+
+
 def test_count_chars():
     assert count_chars(COUNT_CHARS_TEXT) == 59
+
+
+def test_count_entities():
+    entities = count_entities(COUNT_ENTITIES_TEXT, num_entities=3)
+
+    assert len(entities) == 3
+
+    assert entities[0].word == 'Helen'
+    assert entities[0].count == 2
+
+    troy_entry = next((e for e in entities if 'Troy' in e.word), None)
+    assert troy_entry is not None
+    assert troy_entry.count == 2
 
 
 def test_count_lines():
