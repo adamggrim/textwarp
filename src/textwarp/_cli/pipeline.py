@@ -236,7 +236,7 @@ def route_output(
         pyperclip.copy(result)
         print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
     elif not output_file:
-        print(result)
+        print('\n' + result)
 
 
 def route_text(
