@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Logarithmically accelerating spinner for spaCy commands.
 * New `--debug` argument.
+* Support for newlines and carriage returns in CLI replacement text.
 
 ### Changed
 * Improved error handling.

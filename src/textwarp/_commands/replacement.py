@@ -45,6 +45,13 @@ __all__ = [
     'replace_text'
 ]
 
+_ESCAPE_PATTERN = re.compile(r'\\[nrt\\]')
+_ESCAPE_MAP = {
+    r'\n': '\n',
+    r'\r': '\r',
+    r'\t': '\t',
+    r'\\': '\\'
+}
 
 def _create_presence_validator(
     base_validator: Callable[[str], None],
@@ -97,6 +104,18 @@ def _create_presence_validator(
                 raise TextNotFoundError(_(TEXT_NOT_FOUND_MSG))
 
     return validator
+
+
+def _parse_cli_escapes(text: str) -> str:
+    """
+    Convert CLI escape strings into their corresponding whitespace
+    characters.
+    """
+    def _replace_escape(match: re.Match[str]) -> str:
+        return _ESCAPE_MAP[match.group(0)]
+
+    # Match a backslash followed by "n", "r", "t" or another backslash.
+    return re.sub(_ESCAPE_PATTERN, _replace_escape, text)
 
 
 def _prompt_for_valid_input(
@@ -221,9 +240,11 @@ def replace_regex(
             ENTER_VALID_TEXT_PROMPT
         )
 
+    parsed_replacement = _parse_cli_escapes(replacement_text)
+
     with AcceleratingSpinner():
         return lib_replacement.replace_regex(
-            text, regex_text, replacement_text
+            text, regex_text, parsed_replacement
         )
 
 
@@ -269,7 +290,9 @@ def replace_text(
             ENTER_VALID_TEXT_PROMPT
         )
 
+    parsed_replacement = _parse_cli_escapes(replacement_text)
+
     with AcceleratingSpinner():
         return lib_replacement.replace_text(
-            text, text_to_replace, replacement_text
+            text, text_to_replace, parsed_replacement
         )
