@@ -10,7 +10,11 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
-from textwarp._cli.validation import EmptyClipboardError, validate_clipboard
+from textwarp._cli.validation import (
+    EmptyClipboardError,
+    WhitespaceClipboardError,
+    validate_clipboard
+)
 from textwarp._commands import replacement
 
 _ = gettext.gettext
@@ -33,7 +37,7 @@ def _paste_and_validate() -> str | None:
         clipboard = pyperclip.paste()
         validate_clipboard(clipboard)
         return clipboard
-    except EmptyClipboardError as e:
+    except (EmptyClipboardError, WhitespaceClipboardError) as e:
         print_wrapped(str(e))
         return None
     except pyperclip.PyperclipException as e:

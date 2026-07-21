@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Wrapped words in single quotes for MFWs analysis.
 * Added apostrophe-based suffix support for initialisms.
 * Improved token type classification during text normalization.
+* Added whitespace-only error support to paste-and-validate function.
 
 ### Internal
 * Updated tests to reflect the new spinner, input delay, early exit and MFWs formatting.
