@@ -42,7 +42,7 @@ __all__ = [
     'pos_counts',
     'sentence_count',
     'time_to_read',
-    'type_token_ratio',
+    'ttr',
     'word_count'
 ]
 
