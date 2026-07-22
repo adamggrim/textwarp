@@ -147,8 +147,8 @@ class EnglishProvider(LanguageProvider):
     def case_from_string(
         self,
         word: str,
-        lowercase_by_default: bool = False,
-        preserve_mixed_case: bool = True
+        lowercase_by_default = False,
+        preserve_mixed_case = True
     ) -> str:
         """
         Capitalize a word, handling special name prefixes and preserving

@@ -83,7 +83,7 @@ def program_exit() -> NoReturn:
 def prompt_for_integer(
     prompt_text: str,
     error_text: str,
-    allow_early_exit: bool = False
+    allow_early_exit = False
 ) -> int:
     """
     Prompt the user for a valid positive integer.

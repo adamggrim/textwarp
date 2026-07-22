@@ -64,7 +64,7 @@ def _prompt_for_valid_input(
     enter_text_prompt: str,
     validation_func: Callable[[str], None],
     enter_valid_text_prompt: str,
-    allow_early_exit: bool = False
+    allow_early_exit = False
 ) -> str:
     """
     Prompt the user for input until the input is valid.

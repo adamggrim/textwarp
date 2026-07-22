@@ -183,8 +183,8 @@ def _preserve_mixed_case(word: str, _lower_word: str) -> str | None:
 
 def case_from_string(
     word: str,
-    lowercase_by_default: bool = False,
-    preserve_mixed_case: bool = True
+    lowercase_by_default = False,
+    preserve_mixed_case = True
 ) -> str:
     """
     Capitalize a word, handling special name prefixes and preserving

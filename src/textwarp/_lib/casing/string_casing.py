@@ -7,8 +7,8 @@ __all__ = ['case_from_string']
 
 def case_from_string(
     word: str,
-    lowercase_by_default: bool = False,
-    preserve_mixed_case: bool = True
+    lowercase_by_default = False,
+    preserve_mixed_case = True
 ) -> str:
     """
     Capitalize a word according to the active language provider's
