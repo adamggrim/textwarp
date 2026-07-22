@@ -1,20 +1,36 @@
 """Command-line spinner for loading heavy dependencies."""
 
-import atexit
 import math
 import random
 import sys
-import threading
 import time
-import types
+from concurrent.futures import ProcessPoolExecutor
+from typing import Callable, Any
 
-__all__ = ['AcceleratingSpinner']
+__all__ = ['AcceleratingSpinner', 'run_with_spinner']
+
+_SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+_NUM_FRAMES = len(_SPINNER_FRAMES)
+
+
+def _worker_wrapper(
+    locale: str,
+    func: Callable,
+    *args: Any,
+    **kwargs: Any
+) -> Any:
+    """
+    Initialize the locale correctly in the background worker process.
+    """
+    from textwarp._core.context import ctx
+    ctx.set_locale(locale)
+    return func(*args, **kwargs)
 
 
 class AcceleratingSpinner:
     """
-    A context manager for displaying a logarithmically accelerating
-    spinner on a background thread.
+    A class for displaying a logarithmically accelerating spinner and
+    offloading other work to a background process.
     """
 
     def __init__(
@@ -33,14 +49,10 @@ class AcceleratingSpinner:
             peak_animation_fps: Peak frames per second.
             max_render_fps: Terminal throttle to prevent dropped frames.
         """
-        self._frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
-        self._stop_event = threading.Event()
-        self._thread: threading.Thread | None = None
-
         self.accel_secs = accel_secs
         self.initial_fps = initial_fps
         self.peak_animation_fps = peak_animation_fps
-        self.max_render_fps = max_render_fps
+        self.loop_delay = 1.0 / max_render_fps
 
         is_tty = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
         is_utf8 = getattr(sys.stdout, 'encoding', '').lower() in (
@@ -49,62 +61,8 @@ class AcceleratingSpinner:
         )
         self._disabled = not (is_tty and is_utf8)
 
-    def _spin(self) -> None:
-        """Run the logarithmically accelerating spinner loop."""
-        try:
-            current_frame = float(random.randint(0, len(self._frames) - 1))
-            last_rendered_idx = -1
-            is_first_frame = True
-
-            start_time = time.time()
-            last_update_time = start_time
-
-            loop_delay = 1.0 / self.max_render_fps
-
-            while not self._stop_event.is_set():
-                now = time.time()
-                elapsed_total = now - start_time
-                elapsed_since_last = now - last_update_time
-                last_update_time = now
-
-                if elapsed_total < self.accel_secs:
-                    progress = elapsed_total / self.accel_secs
-                    log_progress = math.log10(1 + 9 * progress)
-                    current_fps = self.initial_fps + (
-                        (self.peak_animation_fps - self.initial_fps)
-                        * log_progress
-                    )
-                else:
-                    current_fps = self.peak_animation_fps
-
-                frames_to_advance = current_fps * elapsed_since_last
-                current_frame += frames_to_advance
-
-                current_frame_idx = int(current_frame) % len(self._frames)
-
-                # Only write to the terminal if the frame actually changed.
-                if current_frame_idx != last_rendered_idx:
-                    char = self._frames[current_frame_idx]
-                    if is_first_frame:
-                        sys.stdout.write(char)
-                        is_first_frame = False
-                    else:
-                        sys.stdout.write(f'\b{char}')
-
-                    sys.stdout.flush()
-                    last_rendered_idx = current_frame_idx
-
-                # Sleep briefly to avoid pegging the CPU.
-                self._stop_event.wait(loop_delay)
-
-            sys.stdout.write('\r\033[K')
-            sys.stdout.flush()
-
-        except (OSError, ValueError):
-            pass
-
     def _show_cursor(self) -> None:
-        """Safely restore the terminal cursor."""
+        """Restore the terminal cursor."""
         if not self._disabled:
             try:
                 sys.stdout.write('\033[?25h')
@@ -112,43 +70,83 @@ class AcceleratingSpinner:
             except (OSError, ValueError):
                 pass
 
-    def __enter__(self) -> 'AcceleratingSpinner':
-        """Start or bypass the spinner thread."""
+    def _hide_cursor(self) -> None:
+        """Hide the terminal cursor."""
+        if not self._disabled:
+            try:
+                sys.stdout.write('\033[?25l')
+                sys.stdout.flush()
+            except (OSError, ValueError):
+                pass
+
+    def run(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
+        """
+        Run a function on a background process while running the
+        logarithmically accelerating spinner on the main process.
+        """
+        from textwarp._core.context import ctx
+        locale = ctx.locale
+
         if self._disabled:
-            return self
+            return func(*args, **kwargs)
 
-        self._stop_event.clear()
+        self._hide_cursor()
+        try:
+            with ProcessPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(
+                    _worker_wrapper,
+                    locale,
+                    func,
+                    *args,
+                    **kwargs
+                )
 
-        # Remove the cursor from the terminal during animation.
-        sys.stdout.write('\033[?25l')
-        sys.stdout.flush()
+                current_frame = float(random.randint(0, _NUM_FRAMES - 1))
+                last_rendered_idx = -1
+                start_time = last_update_time = time.time()
 
-        atexit.register(self._show_cursor)
+                while not future.done():
+                    now = time.time()
+                    elapsed_total = now - start_time
+                    elapsed_since_last = now - last_update_time
+                    last_update_time = now
 
-        self._thread = threading.Thread(target=self._spin, daemon=True)
-        self._thread.start()
-        return self
+                    if elapsed_total < self.accel_secs:
+                        progress = elapsed_total / self.accel_secs
+                        log_progress = math.log10(1 + 9 * progress)
+                        current_fps = (
+                            self.initial_fps
+                            + (self.peak_animation_fps - self.initial_fps)
+                            * log_progress
+                        )
+                    else:
+                        current_fps = self.peak_animation_fps
 
-    def stop(self) -> None:
-        """Manually stop the spinner and reset the terminal state."""
-        self._stop_event.set()
-        if self._thread:
-            self._thread.join()
-            self._thread = None
+                    current_frame += current_fps * elapsed_since_last
+                    current_frame_idx = int(current_frame) % _NUM_FRAMES
 
-        self._show_cursor()
-        atexit.unregister(self._show_cursor)
+                    # Only write to the terminal if the frame actually
+                    # changed.
+                    if current_frame_idx != last_rendered_idx:
+                        char = _SPINNER_FRAMES[current_frame_idx]
+                        sys.stdout.write(
+                            char if last_rendered_idx == -1 else f'\b{char}'
+                        )
+                        sys.stdout.flush()
+                        last_rendered_idx = current_frame_idx
 
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: types.TracebackType | None
-    ) -> None:
-        """Stop the spinner thread upon exiting the context."""
-        self._stop_event.set()
-        if self._thread:
-            self._thread.join()
+                    # Sleep briefly to avoid pegging the CPU.
+                    time.sleep(self.loop_delay)
 
-        self._show_cursor()
-        atexit.unregister(self._show_cursor)
+                sys.stdout.write('\r\033[K')
+                sys.stdout.flush()
+                return future.result()
+
+        finally:
+            self._show_cursor()
+
+
+def run_with_spinner(func: Callable, *args: Any, **kwargs: Any) -> Any:
+    """Helper function to execute another function with the spinner."""
+    spinner = AcceleratingSpinner()
+    return spinner.run(func, *args, **kwargs)

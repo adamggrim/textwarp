@@ -7,6 +7,7 @@ import sys
 from typing import Callable, Final, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    import argparse
     from spacy.tokens import Doc
 
 from textwarp._cli.args import (
@@ -26,6 +27,43 @@ REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
 INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
     'entity_counts', 'mfws', 'time_to_read'
 })
+
+
+def _run_pipeline_segment(
+    text: str,
+    pipeline: Pipeline,
+    arg_to_replace: str | None,
+    replacement_arg: str | None
+) -> str | None:
+    """Helper to sequentially apply a list of commands to text."""
+    content = text
+    for cmd_name, func in pipeline:
+        if cmd_name == 'clear':
+            clear_clipboard()
+        elif cmd_name in ANALYSIS_COMMANDS:
+            return func(content)
+        else:
+            func_name = cmd_name.replace('-', '_')
+            if (
+                func_name in REPLACEMENT_FUNC_NAMES
+                and arg_to_replace is not None
+                and replacement_arg is not None
+            ):
+                content = func(
+                    content,
+                    arg_to_replace=arg_to_replace,
+                    replacement_arg=replacement_arg
+                )
+            else:
+                content = func(content)
+
+    return content if isinstance(content, str) else content.text
+
+
+def _preload_spacy() -> None:
+    """Helper to preload spaCy in the background."""
+    from textwarp._lib.nlp import _get_nlp
+    _get_nlp()
 
 
 def apply_pipeline(
@@ -53,55 +91,36 @@ def apply_pipeline(
             analysis command.
     """
     imports_spacy = any(cmd in SPACY_COMMANDS for cmd, _ in pipeline)
-
-    if imports_spacy:
-        from textwarp._cli.spinner import AcceleratingSpinner
-        from textwarp._lib.nlp import _get_nlp
-        active_context = AcceleratingSpinner()
-    else:
-        import contextlib
-        active_context = contextlib.nullcontext()
-
     requires_input = requires_intermediate_input(
         pipeline, arg_to_replace, replacement_arg
     )
 
-    with active_context:
-        if imports_spacy:
-            _get_nlp()
-            if requires_input:
-                active_context.stop()
+    content = text if isinstance(text, str) else text.text
 
-        content = text
-
-        for cmd_name, func in pipeline:
-            if cmd_name == 'clear':
-                if imports_spacy:
-                    active_context.stop()
-                clear_clipboard()
-            elif cmd_name in ANALYSIS_COMMANDS:
-                if imports_spacy:
-                    active_context.stop()
-                return func(content)
-            else:
-                func_name = cmd_name.replace('-', '_')
-                if (
-                    func_name in REPLACEMENT_FUNC_NAMES
-                    and arg_to_replace is not None
-                    and replacement_arg is not None
-                ):
-                    content = func(
-                        content,
-                        arg_to_replace=arg_to_replace,
-                        replacement_arg=replacement_arg
-                    )
-                else:
-                    content = func(content)
-
-        return content if isinstance(content, str) else content.text
+    if imports_spacy:
+        from textwarp._cli.spinner import run_with_spinner
+        if requires_input:
+            run_with_spinner(_preload_spacy)
+            return _run_pipeline_segment(
+                content, pipeline, arg_to_replace, replacement_arg
+            )
+        else:
+            return run_with_spinner(
+                _run_pipeline_segment,
+                content,
+                pipeline,
+                arg_to_replace,
+                replacement_arg
+            )
+    else:
+        return _run_pipeline_segment(
+            content, pipeline, arg_to_replace, replacement_arg
+        )
 
 
-def build_pipeline(argv: list[str], parser: argparse.ArgumentParser) -> Pipeline:
+def build_pipeline(
+    argv: list[str], parser: argparse.ArgumentParser
+) -> Pipeline:
     """
     Construct the execution pipeline from command-line arguments.
 

@@ -16,10 +16,14 @@ def _dummy_reverse(text: str) -> str:
     return text[::-1]
 
 
-def test_apply_pipeline_analysis():
+def test_apply_pipeline_analysis(monkeypatch):
     """
     Test that an analysis command stops the pipeline and returns `None`.
     """
+    monkeypatch.setattr(
+        'textwarp._cli.spinner.run_with_spinner',
+        lambda f, *args, **kwargs: f(*args, **kwargs)
+    )
     analysis_called = False
 
     def mock_analysis(text):

@@ -2,7 +2,7 @@
 
 import gettext
 
-from textwarp._cli.spinner import AcceleratingSpinner
+from textwarp._cli.spinner import run_with_spinner
 from textwarp.analysis import (
     calculate_time_to_read,
     calculate_ttr,
@@ -71,9 +71,7 @@ def entity_counts(text: str) -> str:
         allow_early_exit=True
     )
 
-    with AcceleratingSpinner():
-        data: list[WordCount] = count_entities(text, count_limit)
-
+    data: list[WordCount] = run_with_spinner(count_entities, text, count_limit)
     return format_entity_counts(data)
 
 
@@ -102,8 +100,7 @@ def mfws(text: str) -> str:
         allow_early_exit=True
     )
 
-    with AcceleratingSpinner():
-        data: list[WordCount] = count_mfws(text, count_limit)
+    data: list[WordCount] = run_with_spinner(count_mfws, text, count_limit)
 
     return format_mfws(data)
 
@@ -143,8 +140,7 @@ def time_to_read(text: str) -> str:
         allow_early_exit=True
     )
 
-    with AcceleratingSpinner():
-        minutes: int = calculate_time_to_read(text, wpm)
+    minutes: int = run_with_spinner(calculate_time_to_read, text, wpm)
 
     return format_time_to_read(minutes)
 
