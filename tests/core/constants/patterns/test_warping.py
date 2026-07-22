@@ -61,7 +61,7 @@ def test_get_period_separated_initialism():
 def test_get_word_character():
     pattern = get_word_character()
     assert pattern.search('A') is not None
-    assert pattern.search('7') is not None
+    assert pattern.search('24') is not None
     assert pattern.search('_') is not None
     assert pattern.match(' ') is None
     assert pattern.match('-') is None
