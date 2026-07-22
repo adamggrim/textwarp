@@ -83,12 +83,20 @@ def _find_sentence_case_idxs(
         if not words:
             continue
 
-        all_upper: bool = all(w.text.isupper() for w in words)
-        all_capitalized: bool = len(words) > 1 and all(
-            is_capitalized(w.text) for w in words
-        )
+        all_upper = True
+        all_capitalized = True
 
-        if all_upper or all_capitalized:
+        for w in words:
+            word_text = w.text
+            if all_upper and not word_text.isupper():
+                all_upper = False
+            if all_capitalized and not is_capitalized(word_text):
+                all_capitalized = False
+
+            if not all_upper and not all_capitalized:
+                break
+
+        if all_upper or (all_capitalized and len(words) > 1):
             for token in sent:
                 if token.is_alpha:
                     indices_to_lowercase.add(token.i)
