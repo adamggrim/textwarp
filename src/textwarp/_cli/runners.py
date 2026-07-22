@@ -21,6 +21,7 @@ _ = gettext.gettext
 
 __all__ = [
     'clear_clipboard',
+    'clear_text',
     'replace_text',
     'run_command_loop',
     'warp_and_copy'
@@ -74,6 +75,14 @@ def clear_clipboard() -> None:
     import pyperclip
     pyperclip.copy('')
     print_wrapped(_(CLIPBOARD_CLEARED_MSG))
+
+
+def clear_text(text: str) -> str:
+    """
+    Dummy function to satisfy pipeline type hints for the `--clear`
+    command.
+    """
+    return ''
 
 
 def replace_text(command_name: str) -> None:

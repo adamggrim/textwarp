@@ -55,7 +55,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         N_('count characters')
     ),
     'clear': (
-        lambda text: '',
+        _lazy_load('.runners', 'clear_text'),
         N_('clear clipboard text')
     ),
     'curly-quotes': (
