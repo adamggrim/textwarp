@@ -170,7 +170,7 @@ def format_time_to_read(minutes_to_read: int) -> str:
         ) % {'hours': hours}
 
         if minutes == 0:
-            return formatted_hours
+            return _('%(hours)s to read') % {'hours': formatted_hours}
 
         formatted_minutes: str = ngettext(
             '%(minutes)d minute',
@@ -178,18 +178,19 @@ def format_time_to_read(minutes_to_read: int) -> str:
             minutes
         ) % {'minutes': minutes}
 
-        return _('%(hours)s, %(minutes)s') % {
+        return _('%(hours)s, %(minutes)s to read') % {
             'hours': formatted_hours,
             'minutes': formatted_minutes
         }
-    elif minutes >= 1:
+
+    if minutes >= 1:
         return ngettext(
-            '%(minutes)d minute',
-            '%(minutes)d minutes',
+            '%(minutes)d minute to read',
+            '%(minutes)d minutes to read',
             minutes
         ) % {'minutes': minutes}
-    else:
-        return _('Less than 1 minute')
+
+    return _('Less than 1 minute to read')
 
 
 def format_ttr(ttr: float) -> str:

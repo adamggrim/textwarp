@@ -67,9 +67,9 @@ def test_format_pos_counts():
 
 
 def test_format_time_to_read():
-    assert format_time_to_read(0) == 'Less than 1 minute'
-    assert format_time_to_read(1) == '1 minute'
-    assert format_time_to_read(45) == '45 minutes'
-    assert format_time_to_read(60) == '1 hour'
-    assert format_time_to_read(61) == '1 hour, 1 minute'
-    assert format_time_to_read(125) == '2 hours, 5 minutes'
+    assert format_time_to_read(0) == 'Less than 1 minute to read'
+    assert format_time_to_read(1) == '1 minute to read'
+    assert format_time_to_read(45) == '45 minutes to read'
+    assert format_time_to_read(60) == '1 hour to read'
+    assert format_time_to_read(61) == '1 hour, 1 minute to read'
+    assert format_time_to_read(125) == '2 hours, 5 minutes to read'
