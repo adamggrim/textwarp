@@ -90,6 +90,8 @@ def __getattr__(name: str) -> frozenset[str]:
     }
 
     if name in _file_map:
-        return frozenset(load_json_data(_file_map[name], locale='en'))
+        data = frozenset(load_json_data(_file_map[name], locale='en'))
+        globals()[name] = data
+        return data
 
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
