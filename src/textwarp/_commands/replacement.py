@@ -22,13 +22,7 @@ from textwarp._cli.constants.messages import (
 from textwarp._cli.constants.inputs import get_exit_inputs, get_no_inputs
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.constants.maps import get_case_names_regex_map
-from textwarp._core.enums import PresenceCheckType
-from textwarp._core.exceptions import (
-    CaseNotFoundError,
-    RegexNotFoundError,
-    TextNotFoundError,
-    TextwarpValidationError
-)
+from textwarp._core.exceptions import TextwarpValidationError
 from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._cli.validation import (
     validate_case_name,
@@ -52,58 +46,6 @@ _ESCAPE_MAP = {
     r'\t': '\t',
     r'\\': '\\'
 }
-
-def _create_presence_validator(
-    base_validator: Callable[[str], None],
-    text: str,
-    check_type: PresenceCheckType
-) -> Callable[[str], None]:
-    """
-    Create a function that checks for the presence and validity of a
-    case, regular expression or substring in a string.
-
-    Args:
-        base_validator: A function that validates the input without
-            checking for presence.
-        text: The string to search.
-        check_type: The type of check to perform (case, regex or
-            substring).
-
-    Returns:
-        Callable[[str], None]: A validator function.
-    """
-    def validator(search_input: str) -> None:
-        """
-        Check the user input for presence in the string.
-
-        Args:
-            search_input: A string input from the user, representing a
-                case, regular expression or substring.
-
-        Raises:
-            CaseNotFoundError: If the case input is not found in the
-                string.
-            RegexNotFoundError: If the regular expression input is not
-                found in the string.
-            TextNotFoundError: If the substring input is not found in
-                the string.
-        """
-        base_validator(search_input)
-
-        if check_type is PresenceCheckType.CASE:
-            case_key = search_input.lower()
-            pattern = get_case_names_regex_map().get(case_key)
-
-            if pattern and not pattern.search(text):
-                raise CaseNotFoundError(_(CASE_NOT_FOUND_MSG))
-        elif check_type is PresenceCheckType.REGEX:
-            if not re.search(search_input, text):
-                raise RegexNotFoundError(_(REGEX_NOT_FOUND_MSG))
-        elif check_type is PresenceCheckType.SUBSTRING:
-            if search_input not in text:
-                raise TextNotFoundError(_(TEXT_NOT_FOUND_MSG))
-
-    return validator
 
 
 def _parse_cli_escapes(text: str) -> str:
@@ -176,24 +118,30 @@ def replace_case(
     Returns:
         str: The transformed text.
     """
-    presence_validator = _create_presence_validator(
-        validate_case_name,
-        text,
-        PresenceCheckType.CASE
-    )
-
     if arg_to_replace is not None and replacement_arg is not None:
-        presence_validator(arg_to_replace)
-        validate_case_name(replacement_arg)
+        validate_case_name(arg_to_replace)
         case_to_replace_name = arg_to_replace.lower()
+        search_pattern = get_case_names_regex_map().get(case_to_replace_name)
+
+        if search_pattern and not search_pattern.search(text):
+            print_wrapped(_(CASE_NOT_FOUND_MSG))
+            return text
+
+        validate_case_name(replacement_arg)
         replacement_case_name = replacement_arg.lower()
     else:
         case_to_replace_name = _prompt_for_valid_input(
             ENTER_CASE_TO_REPLACE_PROMPT,
-            presence_validator,
+            validate_case_name,
             ENTER_VALID_CASE_PROMPT,
             allow_early_exit=True
         ).lower()
+
+        search_pattern = get_case_names_regex_map().get(case_to_replace_name)
+        if search_pattern and not search_pattern.search(text):
+            print_wrapped(_(CASE_NOT_FOUND_MSG))
+            return text
+
         replacement_case_name = _prompt_for_valid_input(
             ENTER_REPLACEMENT_CASE_PROMPT,
             validate_case_name,
@@ -219,20 +167,24 @@ def replace_regex(
     Prompt the user or extract arguments for a regular expression to
     find and a string to replace it, and return the transformed text.
     """
-    presence_validator = _create_presence_validator(
-        validate_regex, text, PresenceCheckType.REGEX
-    )
-
     if arg_to_replace is not None and replacement_arg is not None:
-        presence_validator(arg_to_replace)
+        validate_regex(arg_to_replace)
+        if not re.search(arg_to_replace, text):
+            print_wrapped(_(REGEX_NOT_FOUND_MSG))
+            return text
+
         regex_text = arg_to_replace
         replacement_text = replacement_arg
     else:
         regex_text = _prompt_for_valid_input(
             ENTER_REGEX_PROMPT,
-            presence_validator,
+            validate_regex,
             ENTER_VALID_REGEX_PROMPT
         )
+        if not re.search(regex_text, text):
+            print_wrapped(_(REGEX_NOT_FOUND_MSG))
+            return text
+
         replacement_text = _prompt_for_valid_input(
             ENTER_REPLACEMENT_TEXT_PROMPT,
             # Accept any text (including empty text) for replacement.
@@ -267,22 +219,24 @@ def replace_text(
     Returns:
         str: The transformed text.
     """
-    presence_validator = _create_presence_validator(
-        validate_text,
-        text,
-        PresenceCheckType.SUBSTRING
-    )
-
     if arg_to_replace is not None and replacement_arg is not None:
-        presence_validator(arg_to_replace)
+        validate_text(arg_to_replace)
+        if arg_to_replace not in text:
+            print_wrapped(_(TEXT_NOT_FOUND_MSG))
+            return text
+
         text_to_replace = arg_to_replace
         replacement_text = replacement_arg
     else:
         text_to_replace = _prompt_for_valid_input(
             ENTER_TEXT_TO_REPLACE_PROMPT,
-            presence_validator,
+            validate_text,
             ENTER_VALID_TEXT_PROMPT
         )
+        if text_to_replace not in text:
+            print_wrapped(_(TEXT_NOT_FOUND_MSG))
+            return text
+
         replacement_text = _prompt_for_valid_input(
             ENTER_REPLACEMENT_TEXT_PROMPT,
             # Accept any text (including empty text) for replacement.
