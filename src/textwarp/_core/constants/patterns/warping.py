@@ -11,7 +11,9 @@ __all__ = [
     'create_words_regex',
     'get_dash',
     'get_em_dash_stand_in',
-    'get_multiple_spaces'
+    'get_multiple_spaces',
+    'get_period_separated_initialism',
+    'get_word_character'
 ]
 
 
