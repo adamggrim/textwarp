@@ -48,6 +48,30 @@ def _chunk_by_alnum(text: str) -> list[str]:
     return chunks
 
 
+def _process_non_alnum_chunk(
+    chunk: str,
+    prev_chunk: str | None,
+    next_chunk: str | None
+) -> Generator[tuple[TokenType, str], None, None]:
+    """
+    Process a non-alphanumeric chunk into separator or symbol tokens.
+    """
+    is_between_alnum = (
+        prev_chunk is not None and prev_chunk[0].isalnum()
+        and next_chunk is not None and next_chunk[0].isalnum()
+    )
+
+    if chunk.isspace() and is_between_alnum:
+        yield TokenType.SEPARATOR, chunk
+        return
+
+    for char in chunk:
+        if char in '.-_' or char.isspace():
+            yield TokenType.SEPARATOR, char
+        else:
+            yield TokenType.SYMBOL, char
+
+
 def _split_camel_pascal(text: str) -> list[str]:
     """Split camel case or Pascal case into constituent words."""
     if not text:
@@ -108,19 +132,15 @@ def get_normalized_tokens(
     """
     no_apostrophes_text = remove_apostrophes(text)
     chunks = _chunk_by_alnum(no_apostrophes_text)
+    num_chunks = len(chunks)
 
     for i, chunk in enumerate(chunks):
         if chunk[0].isalnum():
             for sub in _split_camel_pascal(chunk):
                 yield TokenType.WORD, sub
-        else:
-            if chunk.isspace() and i > 0 and i < len(chunks) - 1:
-                if chunks[i - 1][0].isalnum() and chunks[i + 1][0].isalnum():
-                    yield TokenType.SEPARATOR, chunk
-                    continue
+            continue
 
-            for char in chunk:
-                if char in '.-_' or char.isspace():
-                    yield TokenType.SEPARATOR, char
-                else:
-                    yield TokenType.SYMBOL, char
+        prev_chunk = chunks[i - 1] if i > 0 else None
+        next_chunk = chunks[i + 1] if i < num_chunks - 1 else None
+
+        yield from _process_non_alnum_chunk(chunk, prev_chunk, next_chunk)
