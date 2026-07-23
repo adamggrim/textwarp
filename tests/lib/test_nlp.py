@@ -4,32 +4,7 @@ import pytest
 import spacy
 
 from textwarp._core.enums import ModelPriority
-from textwarp._lib.nlp import _get_nlp, extract_words_from_doc, process_as_doc
-
-
-def test_extract_words_from_doc():
-    text = 'I’m sorry, Frank. I think you missed it.'
-    doc = process_as_doc(text)
-
-    words = extract_words_from_doc(doc)
-
-    expected_words = [
-        'i',
-        '’m',
-        'sorry',
-        'frank',
-        'i',
-        'think',
-        'you',
-        'missed',
-        'it'
-    ]
-
-    assert words == expected_words
-
-    assert ',' not in words
-    assert '.' not in words
-    assert '  ' not in words
+from textwarp._lib.nlp import _get_nlp, process_as_doc
 
 
 def test_process_as_doc_disable_pipes():

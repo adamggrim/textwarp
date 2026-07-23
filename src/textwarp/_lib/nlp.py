@@ -11,14 +11,13 @@ if TYPE_CHECKING:
     import spacy.language
     from spacy.tokens import Doc
 
-from textwarp._core.constants.nlp import POS_WORD_TAGS
 from textwarp._core.context import ctx
 from textwarp._core.enums import ModelPriority
 from textwarp._core.exceptions import MissingModelError
 
 _ = gettext.gettext
 
-__all__ = ['extract_words_from_doc', 'process_as_doc']
+__all__ = ['process_as_doc']
 
 
 @cache
@@ -86,15 +85,6 @@ def _get_nlp(
         model=priority_model_name
     )
     raise MissingModelError(msg)
-
-
-def extract_words_from_doc(doc: Doc) -> list[str]:
-    """Extract a list of word strings from a spaCy `Doc`."""
-    return [
-        token.lower_
-        for token in doc
-        if token.pos_ in POS_WORD_TAGS
-    ]
 
 
 def process_as_doc(

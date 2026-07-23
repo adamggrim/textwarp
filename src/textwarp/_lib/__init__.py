@@ -24,7 +24,7 @@ from textwarp._lib.manipulation import (
     to_zalgo,
     widen,
 )
-from textwarp._lib.nlp import extract_words_from_doc, process_as_doc
+from textwarp._lib.nlp import process_as_doc
 from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal
 from textwarp._lib.punctuation import (
     curly_to_straight,
@@ -37,7 +37,6 @@ __all__ = [
     'case_from_string',
     'curly_to_straight',
     'expand_contractions',
-    'extract_words_from_doc',
     'from_binary',
     'from_hexadecimal',
     'from_morse',
