@@ -294,19 +294,15 @@ SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
     'widen'
 })
 
-# Require spaCy installation.
+# Commands that require spaCy installation.
 SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
     'capitalize',
     'cardinal',
     'entity-counts',
     'expand-contractions',
-    'mfws',
     'ordinal',
     'pos-counts',
     'sentence-case',
     'sentence-count',
-    'time-to-read',
-    'title-case',
-    'ttr',
-    'word-count'
+    'title-case'
 })

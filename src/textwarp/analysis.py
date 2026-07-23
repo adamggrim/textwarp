@@ -11,9 +11,9 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
-from textwarp._core.constants.nlp import POS_TAGS
+from textwarp._core.constants.nlp import POS_TAGS, POS_WORD_TAGS
 from textwarp._core.models import POSCounts, WordCount
-from textwarp._lib.nlp import extract_words_from_doc, process_as_doc
+from textwarp._lib.nlp import process_as_doc
 
 __all__ = [
     'calculate_time_to_read',
@@ -66,8 +66,8 @@ def calculate_ttr(content: str | Doc) -> float:
     Returns:
         float: The calculated type-token ratio, or 0.0 if empty.
     """
-    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
-    words = extract_words_from_doc(doc)
+    text = content.text if not isinstance(content, str) else content
+    words = [w.lower() for w in _extract_uax29_words(text)]
     total_words = len(words)
 
     if total_words == 0:
@@ -133,8 +133,8 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
         list[WordCount]: A list of `WordCount` objects, containing a
             word and its count.
     """
-    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
-    words = extract_words_from_doc(doc)
+    text = content.text if not isinstance(content, str) else content
+    words = [w.lower() for w in _extract_uax29_words(text)]
     total_word_count = len(words)
 
     if total_word_count == 0:
@@ -157,11 +157,8 @@ def count_pos(content: str | Doc) -> POSCounts:
     """
     Count the parts of speech in a string.
 
-    Args:
-        content: The string or spaCy `Doc` to analyze.
-
-    Returns:
-        POSCounts: The parts of speech counts for the string.
+    This function counts hyphenated words (e.g., "man-eaters") and
+    contractions as separate words.
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
     tags = [token.pos_ for token in doc if not token.is_space]
@@ -170,7 +167,7 @@ def count_pos(content: str | Doc) -> POSCounts:
     tag_counts: dict[str, int] = {
         tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
     }
-    total_word_count = len(extract_words_from_doc(doc))
+    total_word_count = sum(1 for token in doc if token.pos_ in POS_WORD_TAGS)
 
     return POSCounts(
         word_count=total_word_count,
@@ -186,5 +183,5 @@ def count_sents(content: str | Doc) -> int:
 
 def count_words(content: str | Doc) -> int:
     """Count the number of words in a string."""
-    doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
-    return len(extract_words_from_doc(doc))
+    text = content.text if not isinstance(content, str) else content
+    return len(_extract_uax29_words(text))

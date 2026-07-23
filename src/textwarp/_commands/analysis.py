@@ -100,7 +100,7 @@ def mfws(text: str) -> str:
         allow_early_exit=True
     )
 
-    data: list[WordCount] = run_with_spinner(count_mfws, text, count_limit)
+    data: list[WordCount] = count_mfws(text, count_limit)
 
     return format_mfws(data)
 
@@ -140,7 +140,7 @@ def time_to_read(text: str) -> str:
         allow_early_exit=True
     )
 
-    minutes: int = run_with_spinner(calculate_time_to_read, text, wpm)
+    minutes: int = calculate_time_to_read(text, wpm)
 
     return format_time_to_read(minutes)
 
