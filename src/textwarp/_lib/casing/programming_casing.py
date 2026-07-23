@@ -40,25 +40,26 @@ def _to_camel_or_pascal(text: str, is_camel: bool) -> str:
     """Shared logic for camel and Pascal case conversion."""
     is_separator_case = _is_separator_case(text)
     parts = []
-    first_word = True
+    is_first_word = True
     last_token_type = None
 
     for token_type, value in get_normalized_tokens(text):
-        if token_type is TokenType.WORD:
-            if first_word and is_camel:
-                parts.append(_format_camel_first_word(value))
-            elif is_separator_case and value.islower():
-                parts.append(value.capitalize())
-            else:
-                parts.append(_word_to_pascal(value))
-            first_word = False
+        match token_type:
+            case TokenType.WORD:
+                if is_first_word and is_camel:
+                    parts.append(_format_camel_first_word(value))
+                elif is_separator_case and value.islower():
+                    parts.append(value.capitalize())
+                else:
+                    parts.append(_word_to_pascal(value))
+                is_first_word = False
 
-        elif token_type is TokenType.SYMBOL:
-            parts.append(value)
-
-        elif token_type is TokenType.SEPARATOR:
-            if last_token_type is TokenType.SYMBOL and value.isspace():
+            case TokenType.SYMBOL:
                 parts.append(value)
+
+            case TokenType.SEPARATOR:
+                if last_token_type is TokenType.SYMBOL and value.isspace():
+                    parts.append(value)
 
         last_token_type = token_type
 
