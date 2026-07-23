@@ -3,6 +3,7 @@
 from textwarp._core.enums import ModelPriority
 from textwarp._lib.nlp import _get_nlp, _load_spacy_model
 from textwarp.analysis import (
+    _extract_uax29_words,
     calculate_time_to_read,
     calculate_ttr,
     count_chars,
@@ -168,7 +169,26 @@ def test_count_sents():
 
 def test_count_words():
     count = count_words(COUNT_WORDS_TEXT)
-    assert count == 41
+    assert count == 39
+
+
+def test_extract_uax29_words():
+    text = (
+        'it’s\n'
+        'spring\n'
+        'and\n\n'
+        '         the\n\n'
+        '                  goat-footed\n\n'
+        'balloonMan         whistles'
+    )
+
+    words = _extract_uax29_words(text)
+
+    assert 'it’s' in words
+    assert 'goat' in words
+    assert 'footed' in words
+    assert 'balloonMan' in words
+    assert 'whistles' in words
 
 
 def test_get_nlp_transformer_import_error(monkeypatch):
