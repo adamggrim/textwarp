@@ -21,13 +21,6 @@ def create_words_regex(
 ) -> re.Pattern[str]:
     """
     Create a regular expression that matches any word in the given list.
-
-    Args:
-        words: A string or iterable of strings to match.
-        boundary: The boundary to use around the word.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
     """
     def _add_escaped_apostrophes(word: str) -> str:
         """Add escaped straight and curly apostrophes to a word."""
@@ -62,12 +55,7 @@ def create_words_regex(
 
 @cache
 def get_dash() -> re.Pattern[str]:
-    """
-    Get a regular expression matching an en (–) or em (—) dash.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
+    """Get a regular expression matching an en (–) or em (—) dash."""
     return re.compile(r'[–—]')
 
 
@@ -76,9 +64,6 @@ def get_em_dash_stand_in() -> re.Pattern[str]:
     """
     Get a regular expression matching characters that function as an em
     dash.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(r'\s?--?\s?')
 
@@ -87,9 +72,6 @@ def get_em_dash_stand_in() -> re.Pattern[str]:
 def get_multiple_spaces() -> re.Pattern[str]:
     """
     Get a regular expression matching two or more consecutive spaces.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(r'(?<=\S) {2,}')
 
@@ -98,19 +80,11 @@ def get_multiple_spaces() -> re.Pattern[str]:
 def get_period_separated_initialism() -> re.Pattern[str]:
     """
     Get a regular expression matching a period-separated initialism.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
     """
     return re.compile(r'\b(?:\p{L}+\.){2,}(?:[\'’‘]\p{L}+)?')
 
 
 @cache
 def get_word_character() -> re.Pattern[str]:
-    """
-    Get a regular expression matching any word character.
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
+    """Get a regular expression matching any word character."""
     return re.compile(r'\w')
