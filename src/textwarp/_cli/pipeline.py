@@ -61,7 +61,7 @@ def _run_pipeline_segment(
 
 
 def _preload_spacy() -> None:
-    """Helper to preload spaCy in the background."""
+    """Helper to preload spaCy in the main process."""
     from textwarp._lib.nlp import _get_nlp
     _get_nlp()
 
