@@ -1,7 +1,6 @@
 """A map of command-line arguments to functions and help messages."""
 
 import importlib
-
 from types import ModuleType
 from typing import Any, Callable, Final
 
@@ -18,22 +17,14 @@ __all__ = [
 ]
 
 
-class _LazyLoad:
-    """A serializable callable to import a function only when called."""
-    def __init__(self, module_name: str, func_name: str):
-        self.module_name = module_name
-        self.func_name = func_name
-
-    def __call__(self, *args: Any, **kwargs: Any) -> str:
-        mod: ModuleType = importlib.import_module(
-            self.module_name, package='textwarp._cli'
-        )
-        return getattr(mod, self.func_name)(*args, **kwargs)
-
-
 def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
     """Import a module and function only when called."""
-    return _LazyLoad(module_name, func_name)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        mod: ModuleType = importlib.import_module(
+            module_name, package=__package__
+        )
+        return getattr(mod, func_name)(*args, **kwargs)
+    return wrapper
 
 
 # A dictionary for all warping, analysis, replacement and
@@ -64,7 +55,7 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         N_('count characters')
     ),
     'clear': (
-        _lazy_load('.runners', 'clear_text'),
+        lambda text: '',
         N_('clear clipboard text')
     ),
     'curly-quotes': (

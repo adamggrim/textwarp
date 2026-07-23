@@ -1,10 +1,10 @@
 """Command-line spinner for loading heavy dependencies."""
 
 import math
+import multiprocessing
 import random
 import sys
 import time
-from concurrent.futures import ProcessPoolExecutor
 from typing import Callable, Any
 
 __all__ = ['AcceleratingSpinner', 'run_with_spinner']
@@ -13,18 +13,55 @@ _SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇'
 _NUM_FRAMES = len(_SPINNER_FRAMES)
 
 
-def _worker_wrapper(
-    locale: str,
-    func: Callable,
-    *args: Any,
-    **kwargs: Any
-) -> Any:
+def _spinner_worker(
+    stop_event: Any,
+    accel_secs: float,
+    initial_fps: float,
+    peak_animation_fps: float,
+    loop_delay: float
+) -> None:
     """
-    Initialize the locale correctly in the background worker process.
+    Run the logarithmically accelerating spinner in a background
+    process.
     """
-    from textwarp._core.context import ctx
-    ctx.set_locale(locale)
-    return func(*args, **kwargs)
+    current_frame = float(random.randint(0, _NUM_FRAMES - 1))
+    last_rendered_idx = -1
+    start_time = last_update_time = time.time()
+
+    while not stop_event.is_set():
+        now = time.time()
+        elapsed_total = now - start_time
+        elapsed_since_last = now - last_update_time
+        last_update_time = now
+
+        if elapsed_total < accel_secs:
+            progress = elapsed_total / accel_secs
+            log_progress = math.log10(1 + 9 * progress)
+            current_fps = (
+                initial_fps
+                + (peak_animation_fps - initial_fps)
+                * log_progress
+            )
+        else:
+            current_fps = peak_animation_fps
+
+        current_frame += current_fps * elapsed_since_last
+        current_frame_idx = int(current_frame) % _NUM_FRAMES
+
+        # Only write to the terminal if the frame actually changed.
+        if current_frame_idx != last_rendered_idx:
+            char = _SPINNER_FRAMES[current_frame_idx]
+            sys.stdout.write(
+                char if last_rendered_idx == -1 else f'\b{char}'
+            )
+            sys.stdout.flush()
+            last_rendered_idx = current_frame_idx
+
+        # Sleep briefly to avoid pegging the CPU.
+        time.sleep(loop_delay)
+
+    sys.stdout.write('\r\033[K')
+    sys.stdout.flush()
 
 
 class AcceleratingSpinner:
@@ -81,68 +118,32 @@ class AcceleratingSpinner:
 
     def run(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
         """
-        Run a function on a background process while running the
-        logarithmically accelerating spinner on the main process.
+        Run a function on the main process while the logarithmically
+        accelerating spinner runs on a background process.
         """
-        from textwarp._core.context import ctx
-        locale = ctx.locale
-
         if self._disabled:
             return func(*args, **kwargs)
 
         self._hide_cursor()
+
+        stop_event = multiprocessing.Event()
+        spinner_process = multiprocessing.Process(
+            target=_spinner_worker,
+            args=(
+                stop_event,
+                self.accel_secs,
+                self.initial_fps,
+                self.peak_animation_fps,
+                self.loop_delay
+            )
+        )
+
         try:
-            with ProcessPoolExecutor(max_workers=1) as executor:
-                future = executor.submit(
-                    _worker_wrapper,
-                    locale,
-                    func,
-                    *args,
-                    **kwargs
-                )
-
-                current_frame = float(random.randint(0, _NUM_FRAMES - 1))
-                last_rendered_idx = -1
-                start_time = last_update_time = time.time()
-
-                while not future.done():
-                    now = time.time()
-                    elapsed_total = now - start_time
-                    elapsed_since_last = now - last_update_time
-                    last_update_time = now
-
-                    if elapsed_total < self.accel_secs:
-                        progress = elapsed_total / self.accel_secs
-                        log_progress = math.log10(1 + 9 * progress)
-                        current_fps = (
-                            self.initial_fps
-                            + (self.peak_animation_fps - self.initial_fps)
-                            * log_progress
-                        )
-                    else:
-                        current_fps = self.peak_animation_fps
-
-                    current_frame += current_fps * elapsed_since_last
-                    current_frame_idx = int(current_frame) % _NUM_FRAMES
-
-                    # Only write to the terminal if the frame actually
-                    # changed.
-                    if current_frame_idx != last_rendered_idx:
-                        char = _SPINNER_FRAMES[current_frame_idx]
-                        sys.stdout.write(
-                            char if last_rendered_idx == -1 else f'\b{char}'
-                        )
-                        sys.stdout.flush()
-                        last_rendered_idx = current_frame_idx
-
-                    # Sleep briefly to avoid pegging the CPU.
-                    time.sleep(self.loop_delay)
-
-                sys.stdout.write('\r\033[K')
-                sys.stdout.flush()
-                return future.result()
-
+            spinner_process.start()
+            return func(*args, **kwargs)
         finally:
+            stop_event.set()
+            spinner_process.join()
             self._show_cursor()
 
 
