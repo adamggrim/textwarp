@@ -6,6 +6,8 @@ from collections import Counter
 from math import ceil
 from typing import TYPE_CHECKING
 
+import regex as re
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
@@ -24,6 +26,15 @@ __all__ = [
     'count_sents',
     'count_words'
 ]
+
+
+def _extract_uax29_words(text: str) -> list[str]:
+    """
+    Extract words using Unicode Standard Annex (UAX) #29 text
+    segmentation.
+    """
+    segments = re.split(r'\b', text, flags=re.V1 | re.WORD)
+    return [seg for seg in segments if any(c.isalnum() for c in seg)]
 
 
 def calculate_time_to_read(text: str, wpm: int) -> int:
