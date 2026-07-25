@@ -196,7 +196,11 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
     ),
     'strip': (
         str.strip,
-        N_('remove leading and trailing whitespace')
+        N_('strip leading and trailing whitespace')
+    ),
+    'strip-html': (
+        _lazy_load('..warping', 'strip_html'),
+        N_('strip HTML tags')
     ),
     'swapcase': (
         str.swapcase,

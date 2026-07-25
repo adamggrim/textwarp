@@ -1,6 +1,7 @@
 """Functions that manipulate a string."""
 
 import unicodedata
+from html.parser import HTMLParser
 from random import choice, randint, shuffle
 
 import regex as re
@@ -11,10 +12,31 @@ __all__ = [
     'from_zalgo',
     'randomize',
     'reverse',
+    'strip_html',
     'to_single_spaces',
     'to_zalgo',
     'widen'
 ]
+
+
+class _HTMLStripper(HTMLParser):
+    """
+    A subclass of HTMLParser used to strip HTML tags.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.text_parts: list[str] = []
+
+    def handle_data(self, d: str) -> None:
+        self.text_parts.append(d)
+
+    def get_data(self) -> str:
+        return ''.join(self.text_parts)
+
 
 UP_MARKS = tuple(
     [chr(i) for i in range(0x0300, 0x0316)]
@@ -51,6 +73,13 @@ def randomize(text: str) -> str:
 def reverse(text: str) -> str:
     """Reverse the characters of a string."""
     return ''.join(reversed(re.findall(r'\X', text)))
+
+
+def strip_html(text: str) -> str:
+    """Strip HTML tags from a string."""
+    stripper = _HTMLStripper()
+    stripper.feed(text)
+    return stripper.get_data()
 
 
 def to_single_spaces(text: str) -> str:

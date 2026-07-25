@@ -3,6 +3,7 @@
 from textwarp._lib.manipulation import (
     randomize,
     reverse,
+    strip_html,
     to_single_spaces,
     widen
 )
@@ -19,6 +20,16 @@ def test_randomize():
 def test_reverse():
     assert reverse('number nine, number nine') == 'enin rebmun ,enin rebmun'
     assert reverse('redrum') == 'murder'
+
+
+def test_strip_html():
+    assert strip_html(
+        '<p>I do HTML for ’em <b>all</b>!</p>'
+    ) == 'I do HTML for ’em all!'
+    assert strip_html('I edit Wikipedia.') == 'I edit Wikipedia.'
+    assert strip_html(
+        'AV club &lt; glee club &gt; chess team'
+    ) == 'AV club < glee club > chess team'
 
 
 def test_to_single_spaces():

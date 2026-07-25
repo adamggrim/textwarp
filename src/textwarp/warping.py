@@ -46,6 +46,7 @@ __all__ = [
     'redact',
     'reverse',
     'straight_to_curly',
+    'strip_html',
     'to_alternating_caps',
     'to_binary',
     'to_camel_case',
@@ -192,6 +193,11 @@ def reverse(text: str) -> str:
     Reverse the characters of a string.
     """
     return manipulation.reverse(text)
+
+
+def strip_html(text: str) -> str:
+    """Strip HTML tags from a string."""
+    return manipulation.strip_html(text)
 
 
 def to_alternating_caps(text: str) -> str:

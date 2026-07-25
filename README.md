@@ -98,7 +98,8 @@ For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwar
 --single-spaces          convert consecutive spaces to a single space
 --snake-case             convert_to_snake_case
 --straight-quotes        convert “curly quotes” to "straight quotes"
---strip                  remove leading and trailing whitespace
+--strip                  strip leading and trailing whitespace
+--strip-html             strip HTML tags
 --swapcase               swap the case of all alphabetical characters
 --time-to-read           calculate time to read
 --title-case             Convert to Title Case
