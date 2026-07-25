@@ -173,7 +173,8 @@ def map_all_entities(
     doc: Doc
 ) -> dict[int, tuple[Span, int, str | None]]:
     """
-    Create a prioritized map of all entities (absolute > contextual > model).
+    Create a prioritized map of all entities (absolute > contextual
+    > model).
 
     Args:
         doc: The spaCy `Doc` to convert.

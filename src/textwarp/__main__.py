@@ -26,7 +26,7 @@ def main() -> None:
         parsed_args = parse_args()
 
         if not parsed_args.pipeline:
-            return None
+            return
 
         ctx.set_locale(parsed_args.lang)
 

@@ -61,17 +61,29 @@ def test_mutually_exclusive_sets():
     )
 
 
-@pytest.mark.parametrize('command, input_text, expected_output', [
-    ('clear', 'Out, out, brief candle!', ''),
-    ('lowercase', 'LOOK ON MY WORKS, YE MIGHTY',
-     'look on my works, ye mighty'),
-    ('plain-text', 'An honest tale speeds best being plainly told',
-     'An honest tale speeds best being plainly told'),
-    ('strip', '  off, you lendings  ', 'off, you lendings'),
-    ('swapcase', 'fAIR iS fOUL, aND fOUL iS fAIR',
-     'Fair Is Foul, And Foul Is Fair'),
-    ('uppercase', 'i sound my barbaric yawp', 'I SOUND MY BARBARIC YAWP'),
-])
+@pytest.mark.parametrize(
+    'command, input_text, expected_output',
+    [
+        ('clear', 'Out, out, brief candle!', ''),
+        (
+            'lowercase',
+            'LOOK ON MY WORKS, YE MIGHTY',
+            'look on my works, ye mighty',
+        ),
+        (
+            'plain-text',
+            'An honest tale speeds best being plainly told',
+            'An honest tale speeds best being plainly told',
+        ),
+        ('strip', '  off, you lendings  ', 'off, you lendings'),
+        (
+            'swapcase',
+            'fAIR iS fOUL, aND fOUL iS fAIR',
+            'Fair Is Foul, And Foul Is Fair',
+        ),
+        ('uppercase', 'i sound my barbaric yawp', 'I SOUND MY BARBARIC YAWP'),
+    ],
+)
 def test_built_in_string_functions(command, input_text, expected_output):
     func = ARGS_MAP[command][0]
     assert func(input_text) == expected_output
