@@ -72,8 +72,8 @@ def test_mutually_exclusive_sets():
         ),
         (
             'plain-text',
-            'An honest tale speeds best being plainly told',
-            'An honest tale speeds best being plainly told',
+            'An honest tale speeds best being plainly told.',
+            'An honest tale speeds best being plainly told.',
         ),
         ('strip', '  off, you lendings  ', 'off, you lendings'),
         (

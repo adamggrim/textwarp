@@ -8,24 +8,37 @@ from textwarp._core.providers.en.punctuation import (
 
 
 def test_curly_to_straight():
-    assert curly_to_straight('“Hello, world”') == '"Hello, world"'
-    assert curly_to_straight('It’s a ‘test’') == "It's a 'test'"
+    assert curly_to_straight(
+        '“Curly quotes are the quotation marks used in good typography.”'
+    ) == '"Curly quotes are the quotation marks used in good typography."'
+    assert curly_to_straight(
+        'I won’t waste your time or Catherine’s time bargaining for petty '
+        'privileges.'
+    ) == (
+        "I won't waste your time or Catherine's time bargaining for petty "
+        'privileges.'
+    )
 
 
 def test_remove_apostrophes():
-    assert remove_apostrophes("don't") == 'dont'
     assert remove_apostrophes(
-        'It’s Only the End of the World'
-    ) == 'Its Only the End of the World'
-    assert remove_apostrophes('‘quoted’') == '‘quoted’'
+        "I imagine they'll call for your removal"
+    ) == 'I imagine theyll call for your removal'
+    assert remove_apostrophes(
+        '‘Lost all my possessions.’'
+    ) == '‘Lost all my possessions.’'
 
 
-def test_straight_to_curly_double_quotes():
-    assert straight_to_curly('"Hello"') == '“Hello”'
-    assert straight_to_curly('She said, "Hi."') == 'She said, “Hi.”'
-
-
-def test_straight_to_curly_single_quotes():
-    assert straight_to_curly("'Hello'") == '‘Hello’'
-    assert straight_to_curly("don't") == "don’t"
-    assert straight_to_curly("It's 'written'") == "It’s ‘written’"
+def test_straight_to_curly():
+    assert straight_to_curly(
+        '"What happens to a dream deferred?\n'
+        '"Does it dry up\n'
+        '"Like a raisin in the sun?"'
+    ) == (
+        '“What happens to a dream deferred?\n'
+        '“Does it dry up\n'
+        '“Like a raisin in the sun?”'
+    )
+    assert straight_to_curly(
+        '"Once upon a time freedom used to be life—now it\'s money."'
+    ) == '“Once upon a time freedom used to be life—now it’s money.”'

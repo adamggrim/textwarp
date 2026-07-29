@@ -106,5 +106,7 @@ from textwarp._lib.casing.lexing import get_normalized_tokens
 ])
 def test_get_normalized_tokens(input_str, expected):
     assert list(get_normalized_tokens(input_str)) == expected
-ers = get_normalized_tokens('It’s a beautiful thing, the destruction of words.')
+ers = get_normalized_tokens(
+    'It’s a beautiful thing, the destruction of words.'
+)
 print(list(ers))

@@ -32,7 +32,7 @@ def test_case_from_string_prefixed_surname():
 
 
 def test_case_from_string_mixed_case():
-    assert case_from_string('camelCase') == 'camelCase'
+    assert case_from_string('shakenNotStirred') == 'shakenNotStirred'
     assert case_from_string(
-        'camelCase', preserve_mixed_case=False
-    ) == 'Camelcase'
+        'shakenNotStirred', preserve_mixed_case=False
+    ) == 'Shakennotstirred'

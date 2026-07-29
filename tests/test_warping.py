@@ -159,8 +159,8 @@ from textwarp.warping import (
         ),
         (
             to_single_spaces,
-            'The past is never dead.  In fact, it’s not even past.',
-            'The past is never dead. In fact, it’s not even past.',
+            'Mind the gap.  Mind the gap.',
+            'Mind the gap. Mind the gap.',
         ),
         (to_snake_case, 'filletOfFennySnake', 'fillet_of_fenny_snake'),
         (to_snake_case, 'fillet.of.fenny.snake', 'fillet_of_fenny_snake'),
@@ -168,8 +168,8 @@ from textwarp.warping import (
         (to_snake_case, 'FilletOfFennySnake', 'fillet_of_fenny_snake'),
         (
             to_title_case,
-            'the tragical history of the life and death of doctor faustus',
-            'The Tragical History of the Life and Death of Doctor Faustus',
+            'the artist formerly known as prince',
+            'The Artist Formerly Known as Prince',
         ),
         (widen, 'violet beauregarde', 'v i o l e t   b e a u r e g a r d e'),
     ],

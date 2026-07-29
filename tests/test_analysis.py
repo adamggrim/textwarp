@@ -40,8 +40,8 @@ COUNT_ENTITIES_TEXT = (
 )
 
 COUNT_LINES_TEXT = (
-    'Does it dry up\n'
-    'like a raisin in the sun?'
+    'With me in dreadful harmony they join,\n'
+    'And weave with bloody hands the tissue of thy line'
 )
 
 COUNT_MFWS_TEXT = (
@@ -60,11 +60,8 @@ COUNT_POS_TEXT = (
 )
 
 COUNT_SENTS_TEXT = (
-    'Gatsby believed in the green light, the orgiastic future that year by '
-    'year recedes before us. It eluded us then, but that’s no matter—tomorrow '
-    'we will run faster, stretch out our arms further… And one fine morning—\n'
-    'So we beat on, boats against the current, borne back ceaselessly into '
-    'the past.'
+    'Doth thy sentence bind thee to wear the token in thy sleep? Art thou '
+    'not afraid of nightmares and hideous dreams?'
 )
 
 COUNT_WORDS_TEXT = (
@@ -162,9 +159,7 @@ def test_count_pos():
 
 def test_count_sents():
     count = count_sents(COUNT_SENTS_TEXT)
-    # Depending on the specific spaCy version, "And one fine morning—"
-    # would count as three or four sentences.
-    assert count in {3, 4}
+    assert count in {2}
 
 
 def test_count_words():

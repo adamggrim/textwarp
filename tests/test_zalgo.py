@@ -21,7 +21,7 @@ def test_from_zalgo_on_plain_text():
 
 
 def test_zalgo_and_unicode():
-    original_text = 'café'
+    original_text = 'glitché'
     zalgonized_text = to_zalgo(original_text)
 
     cleaned_text = from_zalgo(zalgonized_text)
