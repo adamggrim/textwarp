@@ -40,6 +40,7 @@ def _run_pipeline_segment(
     for cmd_name, func in pipeline:
         if cmd_name == 'clear':
             clear_clipboard()
+            return None
         elif cmd_name in ANALYSIS_COMMANDS:
             return func(content)
         else:
