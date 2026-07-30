@@ -90,6 +90,13 @@ def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
 def _find_sentence_start_idxs(text_container: Doc | Span) -> set[int]:
     """
     Find the index of the first word token in each sentence.
+
+    Args:
+        text_container: The spaCy `Doc` or `Span` to search.
+
+    Returns:
+        set[int]: A set containing the index of the first word token
+            in each sentence.
     """
     sentences = getattr(text_container, 'sents', [text_container])
     sent_start_idxs: set[int] = set()
@@ -106,6 +113,12 @@ def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     """
     Find the indices of tokens that should be capitalized for start
     case (i.e., all word tokens).
+
+    Args:
+        text_container: The spaCy `Doc` or `Span` to search.
+
+    Returns:
+        set[int]: A set of indices corresponding to word tokens.
     """
     word_idxs: set[int] = set()
 
@@ -129,7 +142,8 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
         text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
-        set[int]: A set containing the first word and last word indices.
+        set[int]: A set of token indices that should be capitalized for
+            title case.
     """
     position_idxs: set[int] = set()
 
@@ -169,6 +183,13 @@ def _to_title_case_from_doc(
     """
     Convert a spaCy `Doc` or `Span` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
+
+    Args:
+        text_container: The spaCy `Doc` or `Span` to convert.
+        indices_to_lowercase: A set of token indices to forcefully lowercase.
+
+    Returns:
+        str: The converted string.
     """
     position_idxs = _find_title_case_idxs(text_container)
     processed_parts: list[str] = []
