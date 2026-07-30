@@ -44,41 +44,24 @@ def _find_first_word_token_idx(
     return None
 
 
-def _find_sentence_case_idxs(
-    text_container: Doc | Span
-) -> tuple[set[int], set[int]]:
+def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
     """
-    Find the indices of tokens that should be capitalized or lowercased
-    for sentence case.
+    Find indices of tokens to forcefully lowercase if the entire sentence
+    shares the same casing (e.g., all uppercase or all capitalized).
 
     Args:
         text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
-        tuple[set[int], set[int]]:
-            1. sent_start_idxs: A set of the first token in each
-                sentence.
-            2. indices_to_lowercase: A set of words after the first
-                word that are currently capitalized or uppercase, as
-                long as all words in the text follow the same casing
-                (i.e., all capitalized words or all uppercase
-                characters).
+        set[int]: A set of token indices that should be lowercased.
     """
     def is_capitalized(word: str) -> bool:
-        """Check whether a word is capitalized."""
         return word[0].isupper() and word[1:].islower()
 
     sentences = getattr(text_container, 'sents', [text_container])
-
-    sent_start_idxs: set[int] = set()
     indices_to_lowercase: set[int] = set()
 
     for sent in sentences:
-        first_word_idx = _find_first_word_token_idx(0, sent)
-
-        if first_word_idx is not None:
-            sent_start_idxs.add(first_word_idx)
-
         words = [token for token in sent if token.is_alpha]
         if not words:
             continue
@@ -101,7 +84,22 @@ def _find_sentence_case_idxs(
                 if token.is_alpha:
                     indices_to_lowercase.add(token.i)
 
-    return sent_start_idxs, indices_to_lowercase
+    return indices_to_lowercase
+
+
+def _find_sentence_start_idxs(text_container: Doc | Span) -> set[int]:
+    """
+    Find the index of the first word token in each sentence.
+    """
+    sentences = getattr(text_container, 'sents', [text_container])
+    sent_start_idxs: set[int] = set()
+
+    for sent in sentences:
+        first_word_idx = _find_first_word_token_idx(0, sent)
+        if first_word_idx is not None:
+            sent_start_idxs.add(first_word_idx)
+
+    return sent_start_idxs
 
 
 def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
@@ -164,7 +162,10 @@ def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
     return position_idxs
 
 
-def _to_title_case_from_doc(text_container: Doc | Span) -> str:
+def _to_title_case_from_doc(
+    text_container: Doc | Span,
+    indices_to_lowercase: set[int]
+) -> str:
     """
     Convert a spaCy `Doc` or `Span` to a title case string, handling special
     name prefixes and preserving other mid-word capitalizations.
@@ -173,9 +174,15 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
     processed_parts: list[str] = []
 
     for token in text_container:
+        token_text = token.text
+        if token.i in indices_to_lowercase:
+            token_text = token_text.lower()
+
         should_capitalize_for_title = token.i in position_idxs
         processed_token = _to_title_case_from_token(
-            token, should_capitalize_for_title=should_capitalize_for_title
+            token,
+            token_text,
+            should_capitalize_for_title=should_capitalize_for_title
         )
         processed_parts.append(processed_token + token.whitespace_)
 
@@ -184,6 +191,7 @@ def _to_title_case_from_doc(text_container: Doc | Span) -> str:
 
 def _to_title_case_from_token(
     token: Token,
+    token_text: str,
     should_capitalize_for_title: bool
 ) -> str:
     """
@@ -192,18 +200,20 @@ def _to_title_case_from_token(
 
     Args:
         token: The spaCy `Token` to convert.
+        token_text: The normalized token text.
         should_capitalize_for_title: A flag indicating whether the
             token should be capitalized.
 
     Returns:
         str: The converted token.
     """
-    if token.is_space or ctx.provider.should_always_lowercase(token.text):
-        return token.text
-    elif should_capitalize_for_title:
-        return case_from_string(token.text)
-    else:
-        return token.lower_
+    if token.is_space or ctx.provider.should_always_lowercase(token_text):
+        return token_text
+    if token_text.isupper():
+        return token_text
+    if should_capitalize_for_title:
+        return case_from_string(token_text)
+    return token_text.lower()
 
 
 def to_natural_case(doc: Doc, casing: Casing) -> str:
@@ -227,14 +237,13 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
     i = 0
 
     if casing == Casing.SENTENCE:
-        token_idxs, indices_to_lowercase = _find_sentence_case_idxs(doc)
-        lowercase_by_default = False
+        token_idxs = _find_sentence_start_idxs(doc)
+        indices_to_lowercase = _find_force_lowercase_idxs(doc)
     elif casing == Casing.START:
         token_idxs = _find_start_case_idxs(doc)
-        lowercase_by_default = False
     elif casing == Casing.TITLE:
         token_idxs = _find_title_case_idxs(doc)
-        lowercase_by_default = True
+        indices_to_lowercase = _find_force_lowercase_idxs(doc)
 
     while i < len(doc):
         if i in entity_map and casing == Casing.TITLE:
@@ -247,7 +256,7 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
                 )
             else:
                 title_cased_entity_text: str = _to_title_case_from_doc(
-                    entity_span
+                    entity_span, indices_to_lowercase
                 )
                 processed_parts.append(title_cased_entity_text)
 
@@ -255,31 +264,34 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
             continue
 
         token = doc[i]
-        token_text = doc[i].text
-        is_sentence_start = i in token_idxs
+        token_text = token.text
+
+        if i in indices_to_lowercase:
+            token_text = token_text.lower()
+
+        is_capitalized_pos = i in token_idxs
 
         if casing == Casing.SENTENCE:
-            if is_sentence_start:
-                if i in indices_to_lowercase:
-                    processed_parts.append(token_text.capitalize())
-                else:
-                    processed_parts.append(change_first_letter_case(
-                        token_text, str.upper
-                    ))
-
-            elif i in indices_to_lowercase:
-                processed_parts.append(token_text.lower())
-
+            if is_capitalized_pos:
+                processed_parts.append(change_first_letter_case(
+                    token_text, str.upper
+                ))
             else:
                 processed_parts.append(token_text)
-
+        elif casing == Casing.TITLE:
+            processed_parts.append(
+                _to_title_case_from_token(
+                    token,
+                    token_text,
+                    should_capitalize_for_title=is_capitalized_pos
+                )
+            )
         else:
-            should_lowercase = lowercase_by_default and not is_sentence_start
             processed_parts.append(
                 case_from_string(
                     token_text,
-                    lowercase_by_default=should_lowercase,
-                    preserve_mixed_case=(not lowercase_by_default)
+                    lowercase_by_default=False,
+                    preserve_mixed_case=True
                 )
             )
 

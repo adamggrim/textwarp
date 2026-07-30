@@ -168,8 +168,8 @@ from textwarp.warping import (
         (to_snake_case, 'FilletOfFennySnake', 'fillet_of_fenny_snake'),
         (
             to_title_case,
-            'the artist formerly known as prince',
-            'The Artist Formerly Known as Prince',
+            'the artist formerly known as prince (tafkap)',
+            'The Artist Formerly Known as Prince (TAFKAP)',
         ),
         (widen, 'violet beauregarde', 'v i o l e t   b e a u r e g a r d e'),
     ],
