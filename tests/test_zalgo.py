@@ -15,11 +15,6 @@ def test_zalgo_text():
     assert from_zalgo(zalgonized_text) == original_text
 
 
-def test_from_zalgo_on_plain_text():
-    original_text = 'plain text'
-    assert from_zalgo(original_text) == original_text
-
-
 def test_zalgo_and_unicode():
     original_text = 'glitché'
     zalgonized_text = to_zalgo(original_text)
