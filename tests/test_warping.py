@@ -39,7 +39,7 @@ from textwarp.warping import (
 @pytest.mark.parametrize(
     'func, input_str, expected',
     [
-        (capitalize, 'divina commedia', 'Divina Commedia'),
+        (capitalize, 'das kapital', 'Das Kapital'),
         (cardinal_to_ordinal, 'October 30', 'October 30th'),
         (
             curly_to_straight,
@@ -109,7 +109,11 @@ from textwarp.warping import (
             '“There is no such thing as a moral or an immoral book.”',
         ),
         (strip_html, '<p>To <b>or not to </b></p>', 'To or not to '),
-        (to_alternating_caps, 'alternating caps', 'aLtErNaTiNg CaPs'),
+        (
+            to_alternating_caps,
+            'absorbent and yellow and porous',
+            'aBsOrBeNt AnD yElLoW aNd PoRoUs'
+        ),
         (
             to_binary,
             'creatio ex nihilo',

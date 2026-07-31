@@ -29,7 +29,7 @@ CALCULATE_TTR_TEXT = (
 )
 
 COUNT_CHARS_TEXT = (
-    'Even the sun-clouds this morning cannot manage such skirts.'
+    'Sei personaggi in cerca d’autore'
 )
 
 COUNT_ENTITIES_TEXT = (
@@ -101,7 +101,8 @@ def test_calculate_ttr():
 
 
 def test_count_chars():
-    assert count_chars(COUNT_CHARS_TEXT) == 59
+    assert count_chars(COUNT_CHARS_TEXT) != 6
+    assert count_chars(COUNT_CHARS_TEXT) == 32
 
 
 def test_count_entities():

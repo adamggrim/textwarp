@@ -6,7 +6,7 @@ from textwarp.warping import from_zalgo, to_zalgo
 
 
 def test_zalgo_text():
-    original_text = 'textwarp'
+    original_text = 'Bloomberg 2020'
     zalgonized_text = to_zalgo(original_text)
 
     # Zalgonized text should be longer than the original.
