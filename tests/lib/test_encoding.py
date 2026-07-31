@@ -11,6 +11,9 @@ from textwarp._lib.encoding import (
     to_morse
 )
 
+_MORSE_WORD_GAP_PATTERN = re.compile(r'(?<=[.-]) {3}(?=[.-])')
+_MORSE_CHAR_GAP_PATTERN = re.compile(r'(?<=[.-]) (?=[.-])')
+
 
 def test_binary_conversion():
     original = 'Turing'
@@ -43,13 +46,11 @@ def test_morse_conversion_complex():
     text = 'What hath God wrought?'
     morse = to_morse(text)
 
-    morse_irreg_word_spacing = re.sub(
-        r'(?<=[.-]) {3}(?=[.-])',
+    morse_irreg_word_spacing = _MORSE_WORD_GAP_PATTERN.sub(
         lambda _: ' ' * 24,
         morse
     )
-    morse_irreg_spacing = re.sub(
-        r'(?<=[.-]) (?=[.-])',
+    morse_irreg_spacing = _MORSE_CHAR_GAP_PATTERN.sub(
         lambda _: ' ' * 5,
         morse_irreg_word_spacing
     )

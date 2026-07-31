@@ -54,6 +54,8 @@ DOWN_MARKS = tuple(
     + [chr(i) for i in range(0x0359, 0x035C)]
 )
 
+_GRAPHEME_PATTERN = re.compile(r'\X')
+
 
 def from_zalgo(text: str) -> str:
     """Remove Zalgo diacritics from a string."""
@@ -72,7 +74,7 @@ def randomize(text: str) -> str:
 
 def reverse(text: str) -> str:
     """Reverse the characters of a string."""
-    return ''.join(reversed(re.findall(r'\X', text)))
+    return ''.join(reversed(_GRAPHEME_PATTERN.findall(text)))
 
 
 def strip_html(text: str) -> str:

@@ -17,6 +17,8 @@ __all__ = [
     'to_morse'
 ]
 
+_SPACES_PATTERN = re.compile(r' +')
+
 
 def _get_morse_spacing_patterns(
     text: str
@@ -32,7 +34,7 @@ def _get_morse_spacing_patterns(
         A tuple containing the compiled word separator pattern and the
         compiled character separator pattern.
     """
-    space_matches = re.findall(r' +', text)
+    space_matches = _SPACES_PATTERN.findall(text)
 
     if not space_matches:
         word_threshold = 3

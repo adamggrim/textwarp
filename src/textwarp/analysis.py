@@ -27,13 +27,14 @@ __all__ = [
     'count_words'
 ]
 
+_BOUNDARY_PATTERN = re.compile(r'\b', flags=re.V1 | re.WORD)
 
 def _extract_uax29_words(text: str) -> list[str]:
     """
     Extract words using Unicode Standard Annex (UAX) #29 text
     segmentation.
     """
-    segments = re.split(r'\b', text, flags=re.V1 | re.WORD)
+    segments = _BOUNDARY_PATTERN.split(text)
     return [seg for seg in segments if any(c.isalnum() for c in seg)]
 
 
