@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 
-def get_input(prompt_delay=0.5) -> bool:
+def get_input(prompt_delay: float = 0.5) -> bool:
     """
     Prompt the user on whether to process the clipboard and return a
     Boolean representing whether to continue.
@@ -83,7 +83,7 @@ def program_exit() -> NoReturn:
 def prompt_for_integer(
     prompt_text: str,
     error_text: str,
-    allow_early_exit = False
+    allow_early_exit: bool = False
 ) -> int:
     """
     Prompt the user for a valid positive integer.
