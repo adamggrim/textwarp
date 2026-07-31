@@ -1,7 +1,5 @@
 """Tests for text encoding and decoding functions."""
 
-from random import random
-
 import regex as re
 
 from textwarp._lib.encoding import (
