@@ -27,8 +27,8 @@ class _HTMLStripper(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.reset()
-        self.strict = False
-        self.convert_charrefs = True
+        self.strict=False
+        self.convert_charrefs=True
         self.text_parts: list[str] = []
 
     def handle_data(self, d: str) -> None:

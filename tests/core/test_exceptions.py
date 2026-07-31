@@ -39,7 +39,7 @@ def test_exceptions_inherit_from_base_exception(exception_class):
 
 def test_exception_msgs():
     with pytest.raises(EmptyClipboardError, match=re.escape(
-        "Nothing will come of nothing."
+        'Nothing will come of nothing.'
     )):
         raise EmptyClipboardError('Nothing will come of nothing.')
 
