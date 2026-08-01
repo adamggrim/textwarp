@@ -83,7 +83,7 @@ def apply_pipeline(
     Apply a sequence of pipeline functions to a string.
 
     Args:
-        text: The string or spaCy Doc to transform.
+        text: The string or spaCy `Doc` to transform.
         pipeline: A list of tuples containing:
             - The command-line argument string (e.g., `word-count`).
             - The corresponding callable function (e.g., `word_count`).

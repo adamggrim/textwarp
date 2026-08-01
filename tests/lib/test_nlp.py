@@ -34,6 +34,13 @@ def test_process_as_doc_from_string():
     )
 
 
+def test_process_as_doc_invalid_type():
+    with pytest.raises(
+        TypeError, match='Expected str or spaCy Doc. Received int'
+    ):
+        process_as_doc(2001)
+
+
 def test_get_nlp_priority_branching():
     """
     Test that `_get_nlp` respects the `ModelPriority` enum and

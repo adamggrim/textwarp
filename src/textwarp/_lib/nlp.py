@@ -105,12 +105,17 @@ def process_as_doc(
     Returns:
         Doc: The processed spaCy `Doc`.
     """
-    if not isinstance(content, str):
+    if isinstance(content, str):
+        nlp = _get_nlp(model_priority)
+        if disable:
+            with nlp.select_pipes(disable=disable):
+                return nlp(content)
+        return nlp(content)
+
+    spacy = _load_spacy()
+    if isinstance(content, spacy.tokens.Doc):
         return content
 
-    nlp = _get_nlp(model_priority)
-    if disable:
-        with nlp.select_pipes(disable=disable):
-            return nlp(content)
-
-    return nlp(content)
+    raise TypeError(
+        f'Expected str or spaCy Doc. Received {type(content).__name__}'
+    )
