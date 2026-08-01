@@ -30,14 +30,20 @@ INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
 
 
 def _run_pipeline_segment(
-    text: str,
+    content: str | Doc,
     pipeline: Pipeline,
     arg_to_replace: str | None,
     replacement_arg: str | None
 ) -> str | None:
     """Helper to sequentially apply a list of commands to text."""
-    content = text
     for cmd_name, func in pipeline:
+        if cmd_name in SPACY_COMMANDS:
+            if isinstance(content, str):
+                from textwarp._lib.nlp import process_as_doc
+                content = process_as_doc(content)
+        elif not isinstance(content, str):
+            content = content.text
+
         if cmd_name == 'clear':
             clear_clipboard()
             return None
@@ -96,7 +102,7 @@ def apply_pipeline(
         pipeline, arg_to_replace, replacement_arg
     )
 
-    content = text if isinstance(text, str) else text.text
+    content = text
 
     if imports_spacy:
         from textwarp._cli.spinner import run_with_spinner

@@ -56,6 +56,42 @@ def test_apply_pipeline_clear(monkeypatch):
     assert clear_called is True
 
 
+def test_apply_pipeline_spacy_doc_persistence(monkeypatch):
+    monkeypatch.setattr(
+        'textwarp._cli.spinner.run_with_spinner',
+        lambda f, *args, **kwargs: f(*args, **kwargs)
+    )
+
+    class DummyDoc:
+        def __init__(self, text):
+            self.text = text
+
+    monkeypatch.setattr(
+        'textwarp._lib.nlp.process_as_doc',
+        lambda x: DummyDoc(x) if isinstance(x, str) else x
+    )
+
+    docs_used = []
+
+    def mock_spacy_cmd(content):
+        docs_used.append(content)
+        return content
+
+    test_pipeline = [
+        ('title-case', mock_spacy_cmd),
+        ('sentence-case', mock_spacy_cmd)
+    ]
+
+    result = pipeline.apply_pipeline(
+        'La persistència de la memòria', test_pipeline
+    )
+
+    assert result == 'La persistència de la memòria'
+    assert len(docs_used) == 2
+    assert isinstance(docs_used[0], DummyDoc)
+    assert docs_used[0] is docs_used[1]
+
+
 def test_apply_pipeline_warping():
     test_pipeline = [
         ('lowercase', _dummy_lower),
