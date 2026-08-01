@@ -113,16 +113,16 @@ def test_prompt_for_integer_exit(simulate_input, capsys):
 
 
 def test_prompt_for_integer_valid(simulate_input):
-    simulate_input(['42'])
-    assert prompt_for_integer('Enter number:', 'Invalid') == 42
+    simulate_input(['200'])
+    assert prompt_for_integer('Enter number:', 'Invalid number.') == 200
 
 
 def test_prompt_for_integer_invalid_then_valid(simulate_input, capsys):
     simulate_input(['abc', '-5', '0', '7'])
 
-    assert prompt_for_integer('Enter number:', 'Invalid number!') == 7
+    assert prompt_for_integer('Enter number:', 'Invalid number.') == 7
 
     captured = capsys.readouterr()
     assert 'Enter number:' in captured.out
-    assert 'Invalid number!' in captured.out
-    assert captured.out.count('Invalid number!') == 3
+    assert 'Invalid number.' in captured.out
+    assert captured.out.count('Invalid number.') == 3
