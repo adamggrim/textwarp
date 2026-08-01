@@ -7,7 +7,15 @@ from textwarp._lib.casing import (
     to_pascal_case,
     to_separator_case
 )
+from textwarp._lib.cleaning import strip_html, to_single_spaces
 from textwarp._lib.contractions import expand_contractions
+from textwarp._lib.effects import (
+    from_zalgo,
+    randomize,
+    reverse,
+    to_zalgo,
+    widen,
+)
 from textwarp._lib.encoding import (
     from_binary,
     from_hexadecimal,
@@ -15,15 +23,6 @@ from textwarp._lib.encoding import (
     to_binary,
     to_hexadecimal,
     to_morse
-)
-from textwarp._lib.manipulation import (
-    from_zalgo,
-    randomize,
-    reverse,
-    strip_html,
-    to_single_spaces,
-    to_zalgo,
-    widen,
 )
 from textwarp._lib.nlp import process_as_doc
 from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal

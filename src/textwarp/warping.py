@@ -16,10 +16,11 @@ from textwarp._core.enums import CaseSeparator, Casing, ModelPriority
 
 from textwarp._lib import (
     casing,
+    cleaning,
     contractions,
     curly_to_straight,
+    effects,
     encoding,
-    manipulation,
     numbers,
     process_as_doc,
     straight_to_curly,
@@ -106,7 +107,7 @@ def from_morse(text: str) -> str:
 
 def from_zalgo(text: str) -> str:
     """Remove Zalgo diacritics from a string."""
-    return manipulation.from_zalgo(text)
+    return effects.from_zalgo(text)
 
 
 def hyphen_to_en(text: str) -> str:
@@ -178,12 +179,13 @@ def random_case(text: str) -> str:
 
 def randomize(text: str) -> str:
     """Randomize the characters of a string."""
-    return manipulation.randomize(text)
+    return effects.randomize(text)
 
 
 def redact(text: str) -> str:
     """
-    Redact a string by replacing each word character with a black square.
+    Redact a string by replacing each word character with a black
+    square.
     """
     return patterns.warping.get_word_character().sub('█', text)
 
@@ -192,12 +194,12 @@ def reverse(text: str) -> str:
     """
     Reverse the characters of a string.
     """
-    return manipulation.reverse(text)
+    return effects.reverse(text)
 
 
 def strip_html(text: str) -> str:
     """Strip HTML tags from a string."""
-    return manipulation.strip_html(text)
+    return cleaning.strip_html(text)
 
 
 def to_alternating_caps(text: str) -> str:
@@ -295,7 +297,7 @@ def to_single_spaces(text: str) -> str:
 
     This function preserves leading spaces and tabs.
     """
-    return manipulation.to_single_spaces(text)
+    return cleaning.to_single_spaces(text)
 
 
 def to_snake_case(text: str) -> str:
@@ -315,7 +317,7 @@ def to_title_case(content: str | Doc) -> str:
 
 def to_zalgo(text: str) -> str:
     """Convert a string to Zalgo text."""
-    return manipulation.to_zalgo(text)
+    return effects.to_zalgo(text)
 
 
 def widen(text: str) -> str:
@@ -323,4 +325,4 @@ def widen(text: str) -> str:
     Widen a string by adding a space after each character except
     the last one.
     """
-    return manipulation.widen(text)
+    return effects.widen(text)

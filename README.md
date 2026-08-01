@@ -258,12 +258,13 @@ textwarp/
   │ │ ├── programming_casing.py: Functions for converting between programming cases
   │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
   │ │ └── token_casing.py: Logic for spaCy-based token capitalization
-  │ ├── __init__.py: Exposes library functions for use across the package
-  │ ├── contractions.py: Main logic for expanding contractions
-  │ ├── encoding.py: Functions for encoding and decoding text
-  │ ├── manipulation.py: Functions that manipulate a string
-  │ ├── markdown.py: Functions for parsing Markdown and transforming ASTs
-  │ ├── nlp.py: Functions for lazy spaCy loading and text processing
+  │ | ├── __init__.py: Exposes library functions for use across the package
+  │ | ├── cleaning.py: Functions for cleaning and sanitizing text
+  │ | ├── contractions.py: Main logic for expanding contractions
+  │ | ├── effects.py: Functions that apply visual effects to text
+  │ | ├── encoding.py: Functions for encoding and decoding text
+  │ | ├── markdown.py: Functions for parsing Markdown and transforming ASTs
+  │ | ├── nlp.py: Functions for lazy spaCy loading and text processing
   │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
   │ ├── punctuation.py: Functions for converting between straight and curly quotes
   │ └── replacement.py: Functions for finding and replacing text
