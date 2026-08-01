@@ -37,34 +37,19 @@ def test_exceptions_inherit_from_base_exception(exception_class):
     assert issubclass(exception_class, Exception)
 
 
-def test_exception_msgs():
-    with pytest.raises(EmptyClipboardError, match=re.escape(
-        'Nothing will come of nothing.'
-    )):
-        raise EmptyClipboardError('Nothing will come of nothing.')
-
-    with pytest.raises(
+@pytest.mark.parametrize('exception_class, error_msg', [
+    (EmptyClipboardError, 'Nothing will come of nothing.'),
+    (
         NoTextError,
-        match=re.escape(
-            'It is a tale\n'
-            'Told by an idiot, full of sound and fury,\n'
-            'Signifying nothing.'
-        )
-    ):
-        raise NoTextError(
-            'It is a tale\n'
-            'Told by an idiot, full of sound and fury,\n'
-            'Signifying nothing.'
-        )
-
-    with pytest.raises(
+        'It is a tale\nTold by an idiot, full of sound and fury,\n'
+        'Signifying nothing.'
+    ),
+    (
         TextNotFoundError,
-        match=re.escape(
-            'I found myself within a forest dark,\n'
-            'For the straightforward pathway had been lost.'
-        )
-    ):
-        raise TextNotFoundError(
-            'I found myself within a forest dark,\n'
-            'For the straightforward pathway had been lost.'
-        )
+        'I found myself within a forest dark,\n'
+        'For the straightforward pathway had been lost.'
+    )
+])
+def test_exception_msgs(exception_class, error_msg):
+    with pytest.raises(exception_class, match=re.escape(error_msg)):
+        raise exception_class(error_msg)

@@ -5,14 +5,14 @@ import pytest
 import textwarp
 
 
-def test_lazy_loading_all_attributes():
+@pytest.mark.parametrize('attr_name', textwarp.__all__)
+def test_lazy_loading_all_attributes(attr_name):
     """
     Verify that all attributes exposed in `__all__` are mapped to valid,
     callable functions.
     """
-    for attr_name in textwarp.__all__:
-        attr = getattr(textwarp, attr_name)
-        assert callable(attr), f"Attribute '{attr_name}' is not callable."
+    attr = getattr(textwarp, attr_name)
+    assert callable(attr), f"Attribute '{attr_name}' is not callable."
 
 
 def test_lazy_loading_invalid_attribute():

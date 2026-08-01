@@ -1,5 +1,7 @@
 """Tests for command-line message constants."""
 
+import pytest
+
 from textwarp._cli.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     CASE_NOT_FOUND_MSG,
@@ -13,22 +15,20 @@ from textwarp._cli.constants.messages import (
 )
 
 
-def test_msgs_are_strings_and_not_empty():
-    messages = [
-        ANY_OTHER_TEXT_PROMPT,
-        CASE_NOT_FOUND_MSG,
-        CLIPBOARD_ACCESS_ERROR_MSG,
-        CLIPBOARD_CLEARED_MSG,
-        ENTER_VALID_CASE_PROMPT,
-        ENTER_VALID_RESPONSE_PROMPT,
-        EXIT_MSG,
-        HELP_DESCRIPTION,
-        TEXT_NOT_FOUND_MSG
-    ]
-
-    for message in messages:
-        assert isinstance(message, str)
-        assert len(message.strip()) > 0
+@pytest.mark.parametrize('message', [
+    ANY_OTHER_TEXT_PROMPT,
+    CASE_NOT_FOUND_MSG,
+    CLIPBOARD_ACCESS_ERROR_MSG,
+    CLIPBOARD_CLEARED_MSG,
+    ENTER_VALID_CASE_PROMPT,
+    ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_MSG,
+    HELP_DESCRIPTION,
+    TEXT_NOT_FOUND_MSG
+])
+def test_msgs_are_strings_and_not_empty(message):
+    assert isinstance(message, str)
+    assert len(message.strip()) > 0
 
 
 def test_exit_msg_content():
