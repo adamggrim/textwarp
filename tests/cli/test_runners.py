@@ -17,11 +17,15 @@ from textwarp._cli.constants.messages import (
 )
 
 
-def test_paste_and_validate_success(mock_clipboard):
-    mock_clipboard.copy('Immature poets imitate; mature poets steal.')
-    assert (
-        _paste_and_validate() == 'Immature poets imitate; mature poets steal.'
+def test_paste_and_validate(mock_clipboard):
+    expected_text = (
+        'The only limit to the height of your achievements is the reach of '
+        'your dreams and your willingness to work for them.'
     )
+    mock_clipboard.copy(expected_text)
+    result = _paste_and_validate()
+
+    assert result == expected_text
 
 
 def test_paste_and_validate_empty(mock_clipboard, capsys):
