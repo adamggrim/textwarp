@@ -94,30 +94,30 @@ def to_separator_case(
 ) -> str:
     """Convert a string to dot case, kebab case or snake case."""
     parts = []
-    last_was_sep = False
-    last_token_type = None
+    prev_was_separator = False
+    prev_token_type = None
 
     for token_type, value in get_normalized_tokens(text):
         if token_type is TokenType.WORD:
-            if last_token_type is TokenType.WORD:
+            if prev_token_type is TokenType.WORD:
                 parts.append(separator.value)
 
             parts.append(value.lower())
-            last_was_sep = False
+            prev_was_separator = False
 
         elif token_type is TokenType.SYMBOL:
             parts.append(value)
-            last_was_sep = False
+            prev_was_separator = False
 
         elif token_type is TokenType.SEPARATOR:
-            if last_token_type is TokenType.SYMBOL and value.isspace():
+            if prev_token_type is TokenType.SYMBOL and value.isspace():
                 parts.append(value)
-                last_was_sep = False
-            elif parts and not last_was_sep:
+                prev_was_separator = False
+            elif parts and not prev_was_separator:
                 parts.append(separator.value)
-                last_was_sep = True
+                prev_was_separator = True
 
-        last_token_type = token_type
+        prev_token_type = token_type
 
     cased_text = ''.join(parts)
     return cased_text.rstrip(separator.value)

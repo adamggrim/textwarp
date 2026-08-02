@@ -25,14 +25,14 @@ def _spinner_worker(
     process.
     """
     current_frame = float(random.randint(0, _NUM_FRAMES - 1))
-    last_rendered_idx = -1
-    start_time = last_update_time = time.time()
+    prev_rendered_idx = -1
+    start_time = prev_update_time = time.time()
 
     while not stop_event.is_set():
         now = time.time()
         elapsed_total = now - start_time
-        elapsed_since_last = now - last_update_time
-        last_update_time = now
+        elapsed_since_prev = now - prev_update_time
+        prev_update_time = now
 
         if elapsed_total < accel_secs:
             progress = elapsed_total / accel_secs
@@ -45,17 +45,17 @@ def _spinner_worker(
         else:
             current_fps = peak_animation_fps
 
-        current_frame += current_fps * elapsed_since_last
+        current_frame += current_fps * elapsed_since_prev
         current_frame_idx = int(current_frame) % _NUM_FRAMES
 
         # Only write to the terminal if the frame actually changed.
-        if current_frame_idx != last_rendered_idx:
+        if current_frame_idx != prev_rendered_idx:
             char = _SPINNER_FRAMES[current_frame_idx]
             sys.stdout.write(
-                char if last_rendered_idx == -1 else f'\b{char}'
+                char if prev_rendered_idx == -1 else f'\b{char}'
             )
             sys.stdout.flush()
-            last_rendered_idx = current_frame_idx
+            prev_rendered_idx = current_frame_idx
 
         # Sleep briefly to avoid pegging the CPU.
         time.sleep(loop_delay)
@@ -69,7 +69,6 @@ class AcceleratingSpinner:
     A class for displaying a logarithmically accelerating spinner and
     offloading other work to a background process.
     """
-
     def __init__(
         self,
         accel_secs: float = 3.0,

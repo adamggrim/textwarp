@@ -118,7 +118,7 @@ def expand_contractions(doc: Doc) -> str:
         return doc.text
 
     expanded_parts: list[str] = []
-    last_idx = 0
+    prev_idx = 0
     skip_until_idx = -1
 
     for match in matches:
@@ -127,7 +127,7 @@ def expand_contractions(doc: Doc) -> str:
         if start_idx < skip_until_idx:
             continue
 
-        expanded_parts.append(doc.text[last_idx:start_idx])
+        expanded_parts.append(doc.text[prev_idx:start_idx])
         contraction: str = match.group(0)
 
         is_negation: bool = bool(
@@ -149,7 +149,7 @@ def expand_contractions(doc: Doc) -> str:
                     contraction, span
                 )
                 expanded_parts.append(expanded_text)
-                last_idx = new_end_idx
+                prev_idx = new_end_idx
                 skip_until_idx = new_end_idx
                 continue
 
@@ -159,7 +159,7 @@ def expand_contractions(doc: Doc) -> str:
         )
 
         expanded_parts.append(cased_expansion)
-        last_idx = end_idx
+        prev_idx = end_idx
 
-    expanded_parts.append(doc.text[last_idx:])
+    expanded_parts.append(doc.text[prev_idx:])
     return ''.join(expanded_parts)

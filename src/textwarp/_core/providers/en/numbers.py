@@ -24,25 +24,25 @@ def _get_ordinal_suffix(number: int) -> str:
     return ORDINAL_SUFFIX_MAP.get(number % 10, 'th')
 
 
-def _is_part_of_mixed_fraction(text: str, start_index: int) -> bool:
+def _is_part_of_mixed_fraction(text: str, start_idx: int) -> bool:
     """
     Look ahead in the text to determine if the current number precedes a
     fraction.
     """
-    lookahead_index = start_index
+    lookahead_idx = start_idx
 
-    while lookahead_index < len(text) and text[lookahead_index].isspace():
-        lookahead_index += 1
+    while lookahead_idx < len(text) and text[lookahead_idx].isspace():
+        lookahead_idx += 1
 
     found_numerator = False
-    while lookahead_index < len(text) and text[lookahead_index].isdigit():
+    while lookahead_idx < len(text) and text[lookahead_idx].isdigit():
         found_numerator = True
-        lookahead_index += 1
+        lookahead_idx += 1
 
     return (
         found_numerator
-        and lookahead_index < len(text)
-        and text[lookahead_index] == '/'
+        and lookahead_idx < len(text)
+        and text[lookahead_idx] == '/'
     )
 
 
@@ -50,7 +50,7 @@ def cardinal_to_ordinal(text: str) -> str:
     """Convert cardinal numbers in a string to ordinal numbers."""
     doc = _get_nlp_doc(text)
     result = []
-    last_idx = 0
+    prev_idx = 0
 
     for token in doc:
         # Isolate the digits or fraction by stripping commas.
@@ -75,7 +75,9 @@ def cardinal_to_ordinal(text: str) -> str:
 
             if is_digit:
                 # Ignore numbers that are the numerator of a fraction.
-                if (end < len(text) and text[end] == '/'):
+                if (
+                    end < len(text) and text[end] == '/'
+                ):
                     continue
                 # Ignore the whole number part of a mixed fraction.
                 if _is_part_of_mixed_fraction(text, end):
@@ -92,10 +94,10 @@ def cardinal_to_ordinal(text: str) -> str:
                 if int(numerator_str) > 1:
                     suffix += 's'
 
-            result.append(text[last_idx:end] + suffix)
-            last_idx = end
+            result.append(text[prev_idx:end] + suffix)
+            prev_idx = end
 
-    result.append(text[last_idx:])
+    result.append(text[prev_idx:])
     return ''.join(result)
 
 
@@ -103,7 +105,7 @@ def ordinal_to_cardinal(text: str) -> str:
     """Convert ordinal numbers in a string to cardinal numbers."""
     doc = _get_nlp_doc(text)
     result = []
-    last_idx = 0
+    prev_idx = 0
 
     for token in doc:
         lower_text = token.text.lower()
@@ -127,8 +129,8 @@ def ordinal_to_cardinal(text: str) -> str:
                 start = token.idx
                 end = start + len(token)
 
-                result.append(text[last_idx:start] + base_num)
-                last_idx = end
+                result.append(text[prev_idx:start] + base_num)
+                prev_idx = end
 
-    result.append(text[last_idx:])
+    result.append(text[prev_idx:])
     return ''.join(result)
