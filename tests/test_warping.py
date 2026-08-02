@@ -196,8 +196,11 @@ def test_random_case():
     assert result.lower() == input_str.lower()
 
 
-def test_zalgo_text():
-    original_text = 'Bloomberg 2020'
+def test_to_zalgo():
+    original_text = (
+        'For every sin that he committed, a stain would fleck and wreck its '
+        'fairness.'
+    )
     zalgonized_text = to_zalgo(original_text)
 
     # Zalgonized text should be longer than the original.
@@ -206,8 +209,11 @@ def test_zalgo_text():
     assert from_zalgo(zalgonized_text) == original_text
 
 
-def test_zalgo_and_unicode():
-    original_text = 'glitché'
+def test_to_zalgo_unicode():
+    original_text = (
+        'Un rire de démon, un rire qu’on ne peut avoir que lorsqu’on n’est '
+        'plus homme, éclata sur le visage livide du prêtre.'
+    )
     zalgonized_text = to_zalgo(original_text)
 
     cleaned_text = from_zalgo(zalgonized_text)
