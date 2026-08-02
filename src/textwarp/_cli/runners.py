@@ -2,11 +2,14 @@
 
 import gettext
 import logging
+import sys
 from typing import Callable, TypeAlias
+from types import ModuleType
 
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
+    MISSING_PYPERCLIP_ERROR_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
@@ -30,9 +33,20 @@ _ActionHandler: TypeAlias = Callable[[Callable[[str], str | None], str], None]
 
 _logger = logging.getLogger(__name__)
 
+
+def _get_pyperclip() -> ModuleType:
+    """Helper to safely import pyperclip or exit with an error."""
+    try:
+        import pyperclip
+        return pyperclip
+    except ImportError:
+        print_wrapped(MISSING_PYPERCLIP_ERROR_MSG)
+        sys.exit(1)
+
+
 def _paste_and_validate() -> str | None:
     """Paste and validate clipboard text."""
-    import pyperclip
+    pyperclip = _get_pyperclip()
     try:
         clipboard = pyperclip.paste()
         validate_clipboard(clipboard)
@@ -63,7 +77,7 @@ def _replace_and_copy(
     Transform text using a replacement command and copy the result.
     Print if the text to replace was not found.
     """
-    import pyperclip
+    pyperclip = _get_pyperclip()
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
@@ -71,7 +85,7 @@ def _replace_and_copy(
 
 def clear_clipboard() -> None:
     """Clear clipboard text."""
-    import pyperclip
+    pyperclip = _get_pyperclip()
     pyperclip.copy('')
     print_wrapped(_(CLIPBOARD_CLEARED_MSG))
 
@@ -129,7 +143,7 @@ def warp_and_copy(
     Transform text using a given command and copy the result back to the
     clipboard.
     """
-    import pyperclip
+    pyperclip = _get_pyperclip()
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))

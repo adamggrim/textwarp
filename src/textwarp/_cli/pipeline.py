@@ -257,8 +257,16 @@ def route_output(
         )
 
     if copy_to_clipboard:
-        import pyperclip
-        from textwarp._cli.constants.messages import MODIFIED_TEXT_COPIED_MSG
+        from textwarp._cli.constants.messages import (
+            MISSING_PYPERCLIP_ERROR_MSG,
+            MODIFIED_TEXT_COPIED_MSG
+        )
+        try:
+            import pyperclip
+        except ImportError:
+            print_wrapped(MISSING_PYPERCLIP_ERROR_MSG)
+            sys.exit(1)
+
         pyperclip.copy(result)
         print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
     elif not output_file:

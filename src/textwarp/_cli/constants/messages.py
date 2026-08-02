@@ -56,10 +56,12 @@ TEXT_NOT_FOUND_MSG: Final = _('Text not found.')
 
 CLIPBOARD_ACCESS_ERROR_MSG: Final = _('Error accessing clipboard: ')
 CLIPBOARD_CLEARED_MSG: Final = _('Clipboard text cleared.')
-
 EXIT_MSG: Final = _('Exiting the program...')
-
 HELP_DESCRIPTION: Final = _(
     'Specify which text warping function to apply to the clipboard.'
 )
 MODIFIED_TEXT_COPIED_MSG: Final = _('Modified text copied to clipboard.')
+MISSING_PYPERCLIP_ERROR_MSG: Final = _(
+    "Error: Clipboard support requires 'pyperclip'. Install it "
+    'using: pip install textwarp[clipboard]'
+)
