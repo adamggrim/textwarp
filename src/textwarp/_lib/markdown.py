@@ -45,7 +45,8 @@ def strip_markdown(text: str) -> str:
 
     def intercept_text(chunk: str) -> str:
         extracted_text.append(chunk)
-        return ''
+        # Return `chunk` to prevent renderer crashes for empty strings.
+        return chunk
 
     process_markdown(text, intercept_text)
     return ''.join(extracted_text)
