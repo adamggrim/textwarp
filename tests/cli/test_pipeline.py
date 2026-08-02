@@ -143,8 +143,7 @@ def test_validate_piped_commands_rejects_replacement(monkeypatch):
     assert excinfo.value.code == 1
 
 
-def test_missing_markdown_dependency(monkeypatch, capsys):
-    # Simulate the absence of Marko.
+def test_missing_marko_dependency(monkeypatch, capsys):
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 
     with pytest.raises(SystemExit) as excinfo:

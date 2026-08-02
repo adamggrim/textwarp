@@ -70,4 +70,5 @@ def test_to_snake_case_idempotence(s):
 def test_to_camel_case_idempotence(s):
     first_pass = to_camel_case(s)
     second_pass = to_camel_case(first_pass)
+    # Account for context loss on first pass.
     assert second_pass == to_camel_case(second_pass)
