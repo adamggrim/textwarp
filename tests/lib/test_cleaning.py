@@ -1,5 +1,7 @@
 """Tests for text cleaning functions."""
 
+from hypothesis import given, strategies
+
 from textwarp._lib.cleaning import (
     strip_html,
     to_single_spaces
@@ -25,3 +27,8 @@ def test_to_single_spaces():
         to_single_spaces('\tCome   together,   right   now')
         == '\tCome together, right now'
     )
+
+@given(strategies.text())
+def test_strip_html_no_crash(s):
+    result = strip_html(s)
+    assert isinstance(result, str)

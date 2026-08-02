@@ -1,6 +1,7 @@
 """Tests for text encoding and decoding functions."""
 
 import regex as re
+from hypothesis import given, strategies
 
 from textwarp._lib.encoding import (
     from_binary,
@@ -77,3 +78,13 @@ def test_morse_conversion_dashes():
     morse = to_morse(text)
 
     assert morse == '.- -....- --..'
+
+
+@given(strategies.text())
+def test_binary_symmetry(s):
+    assert from_binary(to_binary(s)) == s
+
+
+@given(strategies.text())
+def test_hexadecimal_symmetry(s):
+    assert from_hexadecimal(to_hexadecimal(s)) == s

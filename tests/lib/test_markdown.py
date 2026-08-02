@@ -1,5 +1,7 @@
 """Tests for Markdown parsing and transformation."""
 
+from hypothesis import given, strategies
+
 from textwarp._lib.markdown import process_markdown, strip_markdown
 
 
@@ -38,3 +40,9 @@ def test_strip_markdown_empty_string():
 
 def test_process_markdown_empty_string():
     assert process_markdown('', str.upper) == ''
+
+
+@given(strategies.text())
+def test_strip_markdown_no_crash(s):
+    result = strip_markdown(s)
+    assert isinstance(result, str)

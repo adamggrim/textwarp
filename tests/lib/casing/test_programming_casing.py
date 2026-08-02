@@ -1,11 +1,17 @@
 """Tests for converting between programming cases."""
 
+import string
+
+from hypothesis import given, strategies
+
 from textwarp._core.enums import CaseSeparator
 from textwarp._lib.casing.programming_casing import (
     to_camel_case,
     to_pascal_case,
     to_separator_case
 )
+
+_PROGRAMMING_CASE_CHARS = string.ascii_letters + string.digits + ' _-.'
 
 
 def test_to_camel_case():
@@ -51,3 +57,17 @@ def test_to_separator_case_non_alpha():
         '16 June 1904',
         CaseSeparator.SNAKE
     ) == '16_june_1904'
+
+
+@given(strategies.text(alphabet=_PROGRAMMING_CASE_CHARS))
+def test_to_snake_case_idempotence(s):
+    first_pass = to_separator_case(s, CaseSeparator.SNAKE)
+    second_pass = to_separator_case(first_pass, CaseSeparator.SNAKE)
+    assert first_pass == second_pass
+
+
+@given(strategies.text(alphabet=_PROGRAMMING_CASE_CHARS))
+def test_to_camel_case_idempotence(s):
+    first_pass = to_camel_case(s)
+    second_pass = to_camel_case(first_pass)
+    assert second_pass == to_camel_case(second_pass)

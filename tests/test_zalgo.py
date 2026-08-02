@@ -2,6 +2,8 @@
 
 import unicodedata
 
+from hypothesis import given, strategies
+
 from textwarp.warping import from_zalgo, to_zalgo
 
 
@@ -25,3 +27,8 @@ def test_zalgo_and_unicode():
         unicodedata.normalize('NFC', cleaned_text)
         == unicodedata.normalize('NFC', original_text)
     )
+
+
+@given(strategies.text())
+def test_zalgo_stripping(s):
+    assert from_zalgo(to_zalgo(s)) == from_zalgo(s)
