@@ -3,6 +3,8 @@
 from collections.abc import Sequence
 import gettext
 
+from wcwidth import wcswidth
+
 from textwarp._core.models import POSCounts, WordCount
 
 _ = gettext.gettext
@@ -35,24 +37,36 @@ def _format_table(
     if not data_rows:
         return ''
 
-    num_cols = len(data_rows[0])
+    max_cols = max(len(row) for row in data_rows)
+    item_widths = [
+        [max(0, wcswidth(item)) for item in row] for row in data_rows
+    ]
+    col_widths = [0] * max_cols
 
-    col_widths: list[int] = [0] * num_cols
-    for row in data_rows:
-        for i, item in enumerate(row):
-            col_widths[i] = max(col_widths[i], len(item))
+    for row_widths in item_widths:
+        for i, width in enumerate(row_widths):
+            col_widths[i] = max(col_widths[i], width)
 
     results: list[str] = []
-    for row in data_rows:
+    for row, row_widths in zip(data_rows, item_widths):
         formatted_cols: list[str] = []
+
         for i, item in enumerate(row):
-            align: str = '<' if i != num_cols - 1 else '>'
-            width: int = col_widths[i]
+            is_last_col = (i == max_cols - 1)
+            align = '<' if not is_last_col else '>'
 
-            if i < num_cols - 1:
-                width += padding
+            visual_width = row_widths[i]
+            target_width = col_widths[i]
 
-            formatted_cols.append(f'{item:{align}{width}}')
+            if not is_last_col:
+                target_width += padding
+
+            spaces_to_add = target_width - visual_width
+
+            if align == '<':
+                formatted_cols.append(item + (' ' * spaces_to_add))
+            else:
+                formatted_cols.append((' ' * spaces_to_add) + item)
 
         results.append(''.join(formatted_cols))
 

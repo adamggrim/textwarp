@@ -57,7 +57,8 @@ module = [
     "marko.*",
     "pyperclip.*",
     "regex.*",
-    "spacy.*"
+    "spacy.*",
+    "wcwidth.*"
 ]
 ignore_missing_imports = true
 

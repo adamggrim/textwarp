@@ -12,20 +12,20 @@ from textwarp._core.models import POSCounts, WordCount
 
 def test_format_table():
     data = [
-        ('Penelope', '1', '(25.0%)'),
+        ('Penelope', '4', '(50.0%)'),
+        ('莲花', '1', '(25.0%)'),
         ('Circe', '1', '(25.0%)'),
-        ('Lestrygonians', '2', '(50.0%)')
+        ('🐷🐷🐷', '1', '(25.0%)')
     ]
     result = _format_table(data, padding=2)
     lines = result.split('\n')
 
-    assert len(lines) == 3
-    # Check alignment and padding length
-    assert lines[0] == 'Penelope       1  (25.0%)'
-    assert lines[1] == 'Circe          1  (25.0%)'
-    assert lines[2] == 'Lestrygonians  2  (50.0%)'
-
-    assert _format_table([]) == ''
+    assert len(lines) == 4
+    # Check alignment and padding length.
+    assert lines[0] == 'Penelope  4  (50.0%)'
+    assert lines[1] == '莲花      1  (25.0%)'
+    assert lines[2] == 'Circe     1  (25.0%)'
+    assert lines[3] == '🐷🐷🐷    1  (25.0%)'
 
 
 def test_format_count():

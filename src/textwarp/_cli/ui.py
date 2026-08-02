@@ -7,6 +7,8 @@ import textwrap
 import time
 from typing import NoReturn
 
+from wcwidth import wcswidth
+
 from textwarp._cli.constants.inputs import (
     get_exit_inputs,
     get_no_inputs,
@@ -64,7 +66,27 @@ def print_wrapped(text: str) -> None:
     """
     terminal_size = shutil.get_terminal_size(fallback=(80, 24)).columns
     print_size = terminal_size - 1
-    wrapped_text = textwrap.fill(text, width=print_size)
+
+    words = text.split()
+    lines: list[str] = []
+    current_line: list[str] = []
+    current_width = 0
+
+    for word in words:
+        word_width = max(0, wcswidth(word))
+
+        if current_line and current_width + 1 + word_width > print_size:
+            lines.append(' '.join(current_line))
+            current_line = [word]
+            current_width = word_width
+        else:
+            current_line.append(word)
+            current_width += word_width + (1 if len(current_line) > 1 else 0)
+
+    if current_line:
+        lines.append(' '.join(current_line))
+
+    wrapped_text = '\n'.join(lines)
     print('\n' + wrapped_text)
 
 

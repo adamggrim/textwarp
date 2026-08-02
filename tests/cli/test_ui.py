@@ -3,6 +3,7 @@
 import os
 import shutil
 import pytest
+from wcwidth import wcswidth
 
 from textwarp._cli.ui import (
     get_input,
@@ -92,6 +93,28 @@ def test_print_wrapped(monkeypatch, capsys):
     lines = captured.out.strip().split('\n')
     for line in lines:
         assert len(line) <= 19
+
+
+def test_print_wrapped_wide_chars(monkeypatch, capsys):
+    monkeypatch.setattr(
+        shutil,
+        'get_terminal_size',
+        lambda fallback=None: os.terminal_size((20, 24))
+    )
+
+    wide_text = (
+        '水 🌊, 土 🪨, 火 🔥, 氣 💨. Long ago, the four nations lived together in '
+        'harmony. Then, everything changed when the Fire Nation attacked. '
+        'Only the Avatar, master of all four elements, could stop them, but '
+        'when the world needed him most, he vanished.'
+    )
+    print_wrapped(wide_text)
+
+    captured = capsys.readouterr()
+    lines = captured.out.strip().split('\n')
+
+    for line in lines:
+        assert wcswidth(line) <= 19
 
 
 def test_program_exit(capsys):
