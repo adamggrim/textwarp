@@ -8,7 +8,7 @@ from textwarp._core.constants.patterns.warping import (
     get_em_dash_stand_in,
     get_multiple_spaces,
     get_period_separated_initialism,
-    get_word_character
+    get_word_char
 )
 
 
@@ -58,8 +58,8 @@ def test_get_period_separated_initialism():
     assert pattern.search('End of sentence.') is None
 
 
-def test_get_word_character():
-    pattern = get_word_character()
+def test_get_word_char():
+    pattern = get_word_char()
     assert pattern.search('A') is not None
     assert pattern.search('24') is not None
     assert pattern.search('_') is not None

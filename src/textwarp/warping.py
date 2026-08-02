@@ -187,7 +187,7 @@ def redact(text: str) -> str:
     Redact a string by replacing each word character with a black
     square.
     """
-    return patterns.warping.get_word_character().sub('█', text)
+    return patterns.warping.get_word_char().sub('█', text)
 
 
 def reverse(text: str) -> str:

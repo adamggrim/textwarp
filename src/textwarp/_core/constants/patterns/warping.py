@@ -13,7 +13,7 @@ __all__ = [
     'get_em_dash_stand_in',
     'get_multiple_spaces',
     'get_period_separated_initialism',
-    'get_word_character'
+    'get_word_char'
 ]
 
 
@@ -87,6 +87,6 @@ def get_period_separated_initialism() -> re.Pattern[str]:
 
 
 @cache
-def get_word_character() -> re.Pattern[str]:
+def get_word_char() -> re.Pattern[str]:
     """Get a regular expression matching any word character."""
     return re.compile(r'\w')
