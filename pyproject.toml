@@ -22,7 +22,7 @@ requires-python = ">=3.10"
 [project.optional-dependencies]
 markdown = ["marko>=2.0.0"]
 nlp = ["spacy[transformers]>=3.7.0"]
-test = ["pytest", "hypothesis"]
+test = ["hypothesis", "pexpect", "pytest", "pytest-cov"]
 
 [project.urls]
 "Source" = "https://github.com/adamggrim/textwarp"
@@ -38,6 +38,9 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+filterwarnings = [
+    "ignore:.*use of forkpty.*:DeprecationWarning"
+]
 
 [tool.mypy]
 python_version = "3.10"
@@ -62,19 +65,3 @@ module = [
     "wcwidth.*"
 ]
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = [
-    "textwarp._lib.markdown",
-    "textwarp._lib.nlp",
-    "textwarp._core.providers.en.encoding",
-    "textwarp._core.providers.en.punctuation",
-    "textwarp._core.providers.en.expansion",
-    "textwarp._lib.cleaning",
-    "textwarp._lib.effects",
-    "textwarp._commands.replacement",
-    "textwarp.warping",
-    "textwarp._cli.runners",
-    "textwarp._cli.args"
-]
-warn_return_any = false

@@ -1,5 +1,6 @@
 """Tests for execution modes and pipeline processing."""
 
+import pexpect
 import sys
 
 import pytest
@@ -13,7 +14,6 @@ def _dummy_lower(text: str) -> str:
 
 
 def test_process_file_mode_binary_file(tmp_path, capsys):
-    """Test that file mode handles binary and undecodable files."""
     binary_file = tmp_path / 'image.png'
     binary_file.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
 
@@ -63,7 +63,6 @@ def test_process_file_mode_file_not_found(capsys):
 
 
 def test_process_file_mode_success(tmp_path, capsys):
-    """Test reading from an input file and writing to an output file."""
     input_file = tmp_path / 'input.txt'
     input_file.write_text('file content', encoding='utf-8')
     output_file = tmp_path / 'output.txt'
@@ -153,22 +152,12 @@ def test_process_piped_mode_copy_flag(
     assert 'Modified text copied to clipboard.' in captured.out
 
 
-def test_process_piped_mode_warping(monkeypatch, capsys):
-    monkeypatch.setattr(sys.stdin, 'read', lambda: 'Piped text\n')
-
-    args = ParsedArgs(
-        pipeline=[('lowercase', _dummy_lower)],
-        lang='en',
-        input_files=[],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=False,
-        debug=False
+def test_process_piped_mode_warping():
+    child = pexpect.spawn(
+        f'{sys.executable} -m textwarp --lowercase', encoding='utf-8'
     )
+    child.sendline('Piped text')
+    child.sendeof()
+    child.expect(pexpect.EOF)
 
-    processing.process_piped_mode(args)
-
-    captured = capsys.readouterr()
-    assert 'piped text' in captured.out
+    assert 'piped text' in child.before.lower()
