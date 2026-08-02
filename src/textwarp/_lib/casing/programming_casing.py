@@ -22,6 +22,12 @@ def _format_camel_first_word(word: str) -> str:
     Lowercases the entire word if it is an acronym, otherwise lowercases
     only the first letter.
     """
+    cased_word = case_from_string(word)
+
+    # Preserve mixed-case words starting with a lowercase letter.
+    if cased_word and cased_word[0].islower() and not cased_word.islower():
+        return cased_word
+
     if word.isupper():
         return word.lower()
     return change_first_letter_case(word, str.lower)
@@ -41,7 +47,7 @@ def _to_camel_or_pascal(text: str, is_camel: bool) -> str:
     is_separator_case = _is_separator_case(text)
     parts = []
     is_first_word = True
-    last_token_type = None
+    prev_token_type = None
 
     for token_type, value in get_normalized_tokens(text):
         match token_type:
@@ -58,10 +64,10 @@ def _to_camel_or_pascal(text: str, is_camel: bool) -> str:
                 parts.append(value)
 
             case TokenType.SEPARATOR:
-                if last_token_type is TokenType.SYMBOL and value.isspace():
+                if prev_token_type is TokenType.SYMBOL and value.isspace():
                     parts.append(value)
 
-        last_token_type = token_type
+        prev_token_type = token_type
 
     return ''.join(parts)
 
@@ -75,7 +81,10 @@ def _word_to_pascal(word: str) -> str:
     if patterns.cases.get_camel_word().match(word):
         return change_first_letter_case(word, str.upper)
 
-    return case_from_string(word)
+    # Uppercase the first letter for dictionary lookups.
+    cased_word = case_from_string(word)
+
+    return change_first_letter_case(cased_word, str.upper)
 
 
 def to_camel_case(text: str) -> str:
