@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Internal
 * Updated tests to reflect the new spinner, input delay, early exit and MFWs formatting.
-* Added affirmative inputs test.
+* Added property testing.
+* Introduced terminal mocking for tests.
 * Updated test strings.
 * Renamed `to_verb_words.json` to `infinitive_exceptions.json`.
