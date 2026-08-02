@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e .[markdown]
+        pip install -e .[markdown,clipboard]
         pip install click pytest pytest-cov wcwidth hypothesis pexpect
         python -m spacy download en_core_web_sm
 
