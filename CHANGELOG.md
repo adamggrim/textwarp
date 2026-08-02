@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support for newlines and carriage returns in CLI replacement text.
 
 ### Changed
+* Add wcwidth dependency to handle multi-width characters.
 * Improved error handling.
 * Introduced a half-second input delay for "Any other text?" prompts.
 * Allowed early exit from integer prompts.
