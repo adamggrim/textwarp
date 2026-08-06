@@ -1,8 +1,3 @@
-from textwarp._cli.constants.inputs import (
-    get_exit_inputs,
-    get_no_inputs,
-    get_yes_inputs
-)
 from textwarp._cli.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     CASE_NOT_FOUND_MSG,
@@ -24,6 +19,7 @@ from textwarp._cli.constants.messages import (
     EXIT_MSG,
     HELP_DESCRIPTION,
     MODIFIED_TEXT_COPIED_MSG,
+    NO_ENTITIES_FOUND_MSG,
     REGEX_NOT_FOUND_MSG,
     TEXT_NOT_FOUND_MSG
 )
@@ -50,9 +46,10 @@ __all__ = [
     'HELP_DESCRIPTION',
     'MISSING_PYPERCLIP_ERROR_MSG',
     'MODIFIED_TEXT_COPIED_MSG',
+    'NO_ENTITIES_FOUND_MSG',
     'REGEX_NOT_FOUND_MSG',
     'TEXT_NOT_FOUND_MSG',
     'get_exit_inputs',
     'get_no_inputs',
-    'get_yes_inputs',
+    'get_yes_inputs'
 ]

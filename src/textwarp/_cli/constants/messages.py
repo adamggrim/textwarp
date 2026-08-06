@@ -28,6 +28,7 @@ __all__ = [
     'EXIT_MSG',
     'HELP_DESCRIPTION',
     'MODIFIED_TEXT_COPIED_MSG',
+    'NO_ENTITIES_FOUND_MSG',
     'REGEX_NOT_FOUND_MSG',
     'TEXT_NOT_FOUND_MSG'
 ]
@@ -51,6 +52,7 @@ ENTER_VALID_TEXT_PROMPT: Final = _('Please enter valid text.')
 ENTER_WPM_PROMPT: Final = _('How many words per minute?')
 
 CASE_NOT_FOUND_MSG: Final = _('Case not found.')
+NO_ENTITIES_FOUND_MSG: Final = _('No entities found.')
 REGEX_NOT_FOUND_MSG: Final = _('Regular expression not found.')
 TEXT_NOT_FOUND_MSG: Final = _('Text not found.')
 

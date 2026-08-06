@@ -18,7 +18,8 @@ from textwarp._cli.constants.messages import (
     ENTER_ENTITY_COUNT_PROMPT,
     ENTER_MFW_COUNT_PROMPT,
     ENTER_VALID_NUMBER_PROMPT,
-    ENTER_WPM_PROMPT
+    ENTER_WPM_PROMPT,
+    NO_ENTITIES_FOUND_MSG
 )
 from textwarp._core.enums import CountLabels
 from textwarp._core.models import POSCounts, WordCount
@@ -72,6 +73,8 @@ def entity_counts(text: str) -> str:
     )
 
     data: list[WordCount] = run_with_spinner(count_entities, text, count_limit)
+    if not data:
+        return _(NO_ENTITIES_FOUND_MSG)
     return format_entity_counts(data)
 
 
