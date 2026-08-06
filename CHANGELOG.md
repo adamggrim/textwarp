@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Made pyperclip dependency optional.
+* Updated sentence casing algorithm.
 * Add wcwidth dependency to handle multi-width characters.
 * Improved error handling.
 * Introduced a half-second input delay for "Any other text?" prompts.

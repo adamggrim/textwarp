@@ -56,7 +56,7 @@ def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
         set[int]: A set of token indices that should be lowercased.
     """
     def is_capitalized(word: str) -> bool:
-        return word[0].isupper() and word[1:].islower()
+        return word[0].isupper() and (len(word) == 1 or word[1:].islower())
 
     sentences = getattr(text_container, 'sents', [text_container])
     indices_to_lowercase: set[int] = set()
@@ -267,22 +267,25 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
         indices_to_lowercase = _find_force_lowercase_idxs(doc)
 
     while i < len(doc):
-        if i in entity_map and casing == Casing.TITLE:
+        if i in entity_map:
             entity_span, end_idx, absolute_capitalization = entity_map[i]
 
-            if absolute_capitalization:
-                trailing_whitespace = entity_span[-1].whitespace_
-                processed_parts.append(
-                    absolute_capitalization + trailing_whitespace
-                )
+            if absolute_capitalization is None and i in indices_to_lowercase:
+                pass
             else:
-                title_cased_entity_text: str = _to_title_case_from_doc(
-                    entity_span, indices_to_lowercase
-                )
-                processed_parts.append(title_cased_entity_text)
+                if absolute_capitalization:
+                    trailing_whitespace = entity_span[-1].whitespace_
+                    processed_parts.append(
+                        absolute_capitalization + trailing_whitespace
+                    )
+                else:
+                    title_cased_entity_text: str = _to_title_case_from_doc(
+                        entity_span, indices_to_lowercase
+                    )
+                    processed_parts.append(title_cased_entity_text)
 
-            i = end_idx
-            continue
+                i = end_idx
+                continue
 
         token = doc[i]
         token_text = token.text
@@ -293,12 +296,17 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
         is_capitalized_pos = i in token_idxs
 
         if casing == Casing.SENTENCE:
+            normalized_text = case_from_string(
+                token_text,
+                lowercase_by_default=True,
+                preserve_mixed_case=False
+            )
             if is_capitalized_pos:
                 processed_parts.append(change_first_letter_case(
-                    token_text, str.upper
+                    normalized_text, str.upper
                 ))
             else:
-                processed_parts.append(token_text)
+                processed_parts.append(normalized_text)
         elif casing == Casing.TITLE:
             processed_parts.append(
                 _to_title_case_from_token(
