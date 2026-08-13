@@ -36,6 +36,28 @@ def test_handle_gotta(get_contraction_span):
     assert result3[0] == 'have got to'
 
 
+def test_handle_gotta_complex(get_contraction_span):
+    span1 = get_contraction_span(
+        'Cause sometimes you just feel tired\n'
+        'Feel weak, and when you feel weak\n'
+        'You feel like you wanna just give up\n'
+        'But you ‘gotta’ search within you',
+        'gotta'
+    )
+    result1 = handle_gotta(span1)
+
+    assert result1 is not None
+    assert result1[0] == 'have got to'
+
+    span2 = get_contraction_span(
+        '“This man’s just gotta go”, declared his enemies', 'gotta'
+    )
+    result2 = handle_gotta(span2)
+
+    assert result2 is not None
+    assert result2[0] == 'has got to'
+
+
 def test_handle_negation_standard(get_contraction_span):
     span = get_contraction_span('Mama couldn’t be persuaded.', 'couldn’t')
     result = handle_negation(span)

@@ -27,6 +27,12 @@ def test_disambiguate_ain_t(get_contraction_span):
     )) == 'have'
 
 
+def test_disambiguate_ain_t_complex(get_contraction_span):
+    assert disambiguate_ain_t(get_contraction_span(
+        'I ain’t never crossed a man that didn’t deserve it.', 'ain’t'
+    )) == 'have'
+
+
 def test_disambiguate_d(get_contraction_span):
     assert disambiguate_d(get_contraction_span(
         'I’d do anything for love.', 'I’d'
@@ -39,6 +45,12 @@ def test_disambiguate_d(get_contraction_span):
     assert disambiguate_d(get_contraction_span(
         'Why’d you have to rain on my parade?', 'Why’d'
     )) == 'did'
+
+
+def test_disambiguate_d_complex(get_contraction_span):
+    assert disambiguate_d(get_contraction_span(
+        'I’d just stare out my window.', 'I’d'
+    )) == 'would'
     assert disambiguate_d(get_contraction_span(
         'Guys, you know you’d better watch out.', 'you’d'
     )) == 'had'
@@ -73,6 +85,14 @@ def test_disambiguate_s(get_contraction_span):
     )) == 'does'
 
 
+def test_disambiguate_s_complex(get_contraction_span):
+    assert disambiguate_s(get_contraction_span(
+        'Bennie, she’s really keen', 'She’s'
+    )) == 'is'
+    assert disambiguate_s(get_contraction_span(
+        'It’s always times like these when I think of you\n'
+        'And I wonder if you ever think of me', 'It’s'
+    )) == 'is'
 
 
 def test_disambiguate_whatcha(get_contraction_span):
