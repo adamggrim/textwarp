@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
+from textwarp._core.utils import starts_uppercase
 from textwarp._lib.contractions import apply_expansion_casing
 
 if TYPE_CHECKING:
@@ -175,7 +176,23 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
         if not intermediate_text.endswith(' '):
             intermediate_text += ' '
 
-        expanded_text = f'{base_verb} {intermediate_text}not'
+        cased_base, _, cased_not = (
+            apply_expansion_casing(
+                span.text, f'{base_verb} not').partition(' ')
+        )
+        cased_not = cased_not or 'not'
+
+        if cased_not == 'not':
+            alpha_words = [
+                w for w in doc.text.split() if any(c.isalpha() for c in w)
+            ]
+            is_globally_capitalized = len(alpha_words) > 1 and all(
+                starts_uppercase(w) for w in alpha_words
+            )
+            if is_globally_capitalized:
+                cased_not = 'Not'
+
+        return f'{cased_base} {intermediate_text}{cased_not}', return_idx
 
     # Verb comes after the subject (e.g., "I don't").
     else:
