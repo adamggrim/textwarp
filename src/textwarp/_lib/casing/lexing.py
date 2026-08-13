@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Generator
+from collections.abc import Generator
 
 from textwarp._core.enums import TokenType
 from textwarp._lib.punctuation import remove_apostrophes

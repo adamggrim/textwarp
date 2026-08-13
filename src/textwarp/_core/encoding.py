@@ -1,8 +1,8 @@
 """Functions for loading universal encoding data."""
 
+from collections.abc import Mapping
 from functools import cache
 from types import MappingProxyType
-from typing import Mapping
 
 from textwarp._core.utils import load_json_data
 

@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Mapping, TYPE_CHECKING
+from collections.abc import Mapping
+from typing import TYPE_CHECKING
 
 import regex as re
 

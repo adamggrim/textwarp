@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import gettext
 import sys
-from typing import Callable, Final, TYPE_CHECKING
+from collections.abc import Callable
+from typing import Final, TYPE_CHECKING
 
 if TYPE_CHECKING:
     import argparse

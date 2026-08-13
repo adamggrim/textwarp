@@ -3,7 +3,8 @@ Functions for parsing Markdown and transforming Markdown Abstract Syntax
 Trees (ASTs).
 """
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 import marko
 from marko.md_renderer import MarkdownRenderer

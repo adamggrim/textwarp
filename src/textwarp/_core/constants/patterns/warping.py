@@ -1,7 +1,7 @@
 """Universal regular expressions for text warping."""
 
+from collections.abc import Iterable
 from functools import cache
-from typing import Iterable
 
 import regex as re
 

@@ -2,10 +2,11 @@
 Functions for loading English string casing exceptions and prefixes.
 """
 
+from collections.abc import Mapping
 from functools import cache
 from pathlib import Path
 from types import MappingProxyType
-from typing import Final, Mapping
+from typing import Final
 
 from textwarp._core.utils import load_json_data
 

@@ -3,7 +3,8 @@
 import gettext
 import logging
 import sys
-from typing import Callable, TypeAlias
+from collections.abc import Callable
+from typing import TypeAlias
 from types import ModuleType
 
 from textwarp._cli.constants.messages import (

@@ -2,8 +2,8 @@
 
 import importlib.resources
 import json
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from textwarp._core.types import JSONType
 

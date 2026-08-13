@@ -1,8 +1,9 @@
 """A map of command-line arguments to functions and help messages."""
 
 import importlib
+from collections.abc import Callable
 from types import ModuleType
-from typing import Any, Callable, Final
+from typing import Any, Final
 
 from textwarp._core.context import N_
 

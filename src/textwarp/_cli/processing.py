@@ -2,7 +2,7 @@
 
 import gettext
 import sys
-from typing import Callable
+from collections.abc import Callable
 
 from textwarp._cli.parsing import ParsedArgs
 from textwarp._cli.pipeline import (

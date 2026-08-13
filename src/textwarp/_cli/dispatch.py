@@ -1,6 +1,7 @@
 """A map of string inputs to case conversion functions."""
 
-from typing import Callable, Final
+from collections.abc import Callable
+from typing import Final
 
 from textwarp._cli.args import _lazy_load
 

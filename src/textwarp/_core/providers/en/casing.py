@@ -1,6 +1,6 @@
 """English-specific string casing logic."""
 
-from typing import Callable, Mapping
+from collections.abc import Callable, Mapping
 
 from textwarp._core.constants import patterns
 from textwarp._core.providers import en

@@ -5,7 +5,8 @@ import multiprocessing
 import random
 import sys
 import time
-from typing import Callable, Any
+from collections.abc import Callable
+from typing import Any
 
 __all__ = ['AcceleratingSpinner', 'run_with_spinner']
 

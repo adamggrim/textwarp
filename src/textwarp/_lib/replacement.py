@@ -1,6 +1,6 @@
 """Functions for finding and replacing text."""
 
-from typing import Callable
+from collections.abc import Callable
 
 import regex as re
 

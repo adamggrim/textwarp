@@ -1,7 +1,7 @@
 """Runners for find-and-replace commands."""
 
 import gettext
-from typing import Callable
+from collections.abc import Callable
 
 import regex as re
 

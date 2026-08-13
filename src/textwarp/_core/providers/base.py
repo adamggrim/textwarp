@@ -1,7 +1,8 @@
 """Abstract base class for language providers."""
 
 from abc import ABC, abstractmethod
-from typing import Mapping, TYPE_CHECKING
+from collections.abc import Mapping
+from typing import TYPE_CHECKING
 
 import regex as re
 
