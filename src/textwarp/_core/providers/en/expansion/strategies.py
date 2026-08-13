@@ -1,6 +1,4 @@
-"""
-English-specific functions for handling specific types of contractions.
-"""
+"""Functions for handling specific types of English contractions."""
 
 from __future__ import annotations
 
@@ -15,16 +13,16 @@ if TYPE_CHECKING:
     from spacy.tokens import Span
 
 __all__ = [
-    'handle_d',
-    'handle_gotta',
-    'handle_negation',
-    'handle_s',
-    'handle_wanna',
-    'handle_whatcha'
+    'expand_d_contraction',
+    'expand_gotta',
+    'expand_negative_contraction',
+    'expand_s_contraction',
+    'expand_wanna',
+    'expand_whatcha'
 ]
 
 
-def handle_d(span: Span) -> tuple[str, int] | None:
+def expand_d_contraction(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched "'d" contraction with its expanded version.
 
@@ -37,7 +35,7 @@ def handle_d(span: Span) -> tuple[str, int] | None:
             2. The end index of the expanded contraction; otherwise `None`.
     """
     if not span.text.lower().endswith(
-        tuple(en.contractions.APOSTROPHE_D_VARIANTS)
+        tuple(en.expansion.variants.APOSTROPHE_D_VARIANTS)
     ):
         return None
 
@@ -47,7 +45,7 @@ def handle_d(span: Span) -> tuple[str, int] | None:
     if suffix_token.i == 0:
         return span.text, span.end_char
 
-    base_verb: str = en.disambiguation.disambiguate_d(span)
+    base_verb: str = en.expansion.disambiguation.disambiguate_d(span)
     subject_token = doc[suffix_token.i - 1]
     expanded_text: str = f'{subject_token.text} {base_verb}'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
@@ -55,7 +53,7 @@ def handle_d(span: Span) -> tuple[str, int] | None:
     return cased_text, span.end_char
 
 
-def handle_gotta(span: Span) -> tuple[str, int] | None:
+def expand_gotta(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched "gotta" contraction with its expanded version.
 
@@ -71,7 +69,7 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     if span.text.lower() != 'gotta':
         return None
 
-    suffix = en.disambiguation.disambiguate_gotta_or_wanna(span)
+    suffix = en.expansion.disambiguation.disambiguate_gotta_or_wanna(span)
     prefix = ''
 
     if suffix == 'to':
@@ -109,7 +107,7 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     return cased_text, span.end_char
 
 
-def handle_negation(span: Span) -> tuple[str, int] | None:
+def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched negative contraction (including "ain't") with its
     expanded version.
@@ -141,11 +139,11 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     is_aint_contraction = (
         prev_token.lower_ == 'ai'
-        and suffix_token.lower_ in en.contractions.N_T_SUFFIX_VARIANTS
+        and suffix_token.lower_ in en.expansion.variants.N_T_SUFFIX_VARIANTS
     )
 
     if is_aint_contraction:
-        base_verb = en.disambiguation.disambiguate_ain_t(span)
+        base_verb = en.expansion.disambiguation.disambiguate_ain_t(span)
     else:
         base_verb = en.utils.get_negative_contraction_base_verb(span.text)
 
@@ -204,7 +202,7 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
     return cased_text, return_idx
 
 
-def handle_s(span: Span) -> tuple[str, int] | None:
+def expand_s_contraction(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched "'s" contraction with its expanded version.
 
@@ -218,7 +216,7 @@ def handle_s(span: Span) -> tuple[str, int] | None:
                 `None`.
     """
     if not span.text.lower().endswith(
-        tuple(en.contractions.APOSTROPHE_S_VARIANTS)
+        tuple(en.expansion.variants.APOSTROPHE_S_VARIANTS)
     ):
         return None
 
@@ -228,7 +226,7 @@ def handle_s(span: Span) -> tuple[str, int] | None:
     if suffix_token.i == 0:
         return span.text, span.end_char
 
-    base_verb: str = en.disambiguation.disambiguate_s(span)
+    base_verb: str = en.expansion.disambiguation.disambiguate_s(span)
 
     subject_token = doc[suffix_token.i - 1]
     expanded_text: str = f'{subject_token.text} {base_verb}'
@@ -237,7 +235,7 @@ def handle_s(span: Span) -> tuple[str, int] | None:
     return cased_text, span.end_char
 
 
-def handle_wanna(span: Span) -> tuple[str, int] | None:
+def expand_wanna(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched "wanna" contraction with its expanded version.
 
@@ -253,14 +251,14 @@ def handle_wanna(span: Span) -> tuple[str, int] | None:
     if span.text.lower() != 'wanna':
         return None
 
-    base_verb = en.disambiguation.disambiguate_gotta_or_wanna(span)
+    base_verb = en.expansion.disambiguation.disambiguate_gotta_or_wanna(span)
 
     expanded_text: str = f'want {base_verb}'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
     return cased_text, span.end_char
 
 
-def handle_whatcha(span: Span) -> tuple[str, int] | None:
+def expand_whatcha(span: Span) -> tuple[str, int] | None:
     """
     Replace a matched "whatcha" contraction with its expanded version.
 
@@ -276,7 +274,7 @@ def handle_whatcha(span: Span) -> tuple[str, int] | None:
     if span.text.lower() != 'whatcha':
         return None
 
-    base_verb: str = en.disambiguation.disambiguate_whatcha(span)
+    base_verb: str = en.expansion.disambiguation.disambiguate_whatcha(span)
     expanded_text: str = f'what {base_verb} you'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
 

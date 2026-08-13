@@ -1,6 +1,6 @@
 """Tests for resolving ambiguous contractions based on context."""
 
-from textwarp._core.providers.en.disambiguation import (
+from textwarp._core.providers.en.expansion.disambiguation import (
     disambiguate_ain_t,
     disambiguate_d,
     disambiguate_gotta_or_wanna,

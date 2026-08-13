@@ -1,4 +1,4 @@
-"""English-specific logic for expanding contractions."""
+"""Core logic for expanding English contractions."""
 
 from __future__ import annotations
 
@@ -36,12 +36,12 @@ def _expand_ambiguous_contraction(
     original_end_char_idx = span.end_char
 
     expansion_strategies = [
-        en.handlers.handle_d,
-        en.handlers.handle_gotta,
-        en.handlers.handle_negation,
-        en.handlers.handle_s,
-        en.handlers.handle_wanna,
-        en.handlers.handle_whatcha,
+        en.expansion.strategies.expand_d_contraction,
+        en.expansion.strategies.expand_gotta,
+        en.expansion.strategies.expand_negative_contraction,
+        en.expansion.strategies.expand_s_contraction,
+        en.expansion.strategies.expand_wanna,
+        en.expansion.strategies.expand_whatcha,
     ]
 
     for strategy in expansion_strategies:

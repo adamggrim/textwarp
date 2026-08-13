@@ -3,7 +3,7 @@
 from textwarp._core.providers.en.data.contraction_expansion import (
     get_unambiguous_map
 )
-from textwarp._core.providers.en.expansion import (
+from textwarp._core.providers.en.expansion.core import (
     _expand_ambiguous_contraction,
     _expand_idiomatic_phrases,
     _expand_unambiguous_contraction,

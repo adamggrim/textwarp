@@ -191,7 +191,7 @@ class EnglishProvider(LanguageProvider):
         Returns:
             str: The converted `Doc` text.
         """
-        return en.expansion.expand_contractions(doc)
+        return en.expansion.core.expand_contractions(doc)
 
     def normalize_for_morse(self, text: str) -> str:
         """

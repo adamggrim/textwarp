@@ -1,6 +1,5 @@
 """
-English-specific functions for resolving ambiguous contractions based
-on context.
+Functions for resolving ambiguous English contractions based on context.
 """
 
 from __future__ import annotations
@@ -272,9 +271,11 @@ def disambiguate_whatcha(span: Span) -> str:
     next_text_lower = next_token.lower_
     tag = next_token.tag_
 
-    if after_next_token and (
-        next_text_lower == 'ai'
-        and after_next_token.lower_ in en.contractions.N_T_SUFFIX_VARIANTS
+    suffix_variants = en.expansion.variants.N_T_SUFFIX_VARIANTS
+    if (
+        after_next_token
+        and next_text_lower == 'ai'
+        and after_next_token.lower_ in suffix_variants
     ):
         return ''
 
