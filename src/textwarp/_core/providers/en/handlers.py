@@ -182,7 +182,8 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
         return_idx = span.end_char
         expanded_text = 'cannot' if base_verb == 'can' else f'{base_verb} not'
 
-    cased_text = apply_expansion_casing(span.text, expanded_text)
+    original_replaced_text = doc.text[span.start_char : return_idx]
+    cased_text = apply_expansion_casing(original_replaced_text, expanded_text)
     return cased_text, return_idx
 
 
