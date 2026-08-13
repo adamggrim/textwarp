@@ -3,9 +3,8 @@
 from textwarp._core.providers.en.disambiguation import (
     disambiguate_ain_t,
     disambiguate_d,
-    disambiguate_gotta,
+    disambiguate_gotta_or_wanna,
     disambiguate_s,
-    disambiguate_wanna,
     disambiguate_whatcha
 )
 
@@ -45,12 +44,18 @@ def test_disambiguate_d(get_contraction_span):
     )) == 'had'
 
 
-def test_disambiguate_gotta(get_contraction_span):
-    assert disambiguate_gotta(get_contraction_span(
+def test_disambiguate_gotta_or_wanna(get_contraction_span):
+    assert disambiguate_gotta_or_wanna(get_contraction_span(
         '’Cause I gotta have faith.', 'gotta'
     )) == 'to'
-    assert disambiguate_gotta(get_contraction_span(
+    assert disambiguate_gotta_or_wanna(get_contraction_span(
         'I gotta feelin’.', 'gotta'
+    )) == 'a'
+    assert disambiguate_gotta_or_wanna(get_contraction_span(
+        'I wanna hold your hand.', 'wanna'
+    )) == 'to'
+    assert disambiguate_gotta_or_wanna(get_contraction_span(
+        'You wanna piece of me?', 'wanna'
     )) == 'a'
 
 
@@ -68,13 +73,6 @@ def test_disambiguate_s(get_contraction_span):
     )) == 'does'
 
 
-def test_disambiguate_wanna(get_contraction_span):
-    assert disambiguate_wanna(get_contraction_span(
-        'I wanna hold your hand.', 'wanna'
-    )) == 'to'
-    assert disambiguate_wanna(get_contraction_span(
-        'You wanna piece of me?', 'wanna'
-    )) == 'a'
 
 
 def test_disambiguate_whatcha(get_contraction_span):

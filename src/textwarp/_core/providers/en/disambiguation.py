@@ -188,12 +188,12 @@ def disambiguate_d(span: Span) -> str:
     return 'would'
 
 
-def disambiguate_gotta(span: Span) -> str:
+def disambiguate_gotta_or_wanna(span: Span) -> str:
     """
-    Disambiguate the suffix for a "gotta" contraction.
+    Disambiguate the suffix for a "gotta" or "wanna" contraction.
 
-    This function assumes the `Span` is already an identified "gotta"
-    contraction.
+    This function assumes the `Span` is already an identified "gotta" or
+    "wanna" contraction.
     """
     return _disambiguate_a_or_to(span)
 
@@ -239,14 +239,9 @@ def disambiguate_s(span: Span) -> str:
             curr_idx = token.i + 1
             continue
 
-def disambiguate_wanna(span: Span) -> str:
-    """
-    Disambiguate the suffix for a "wanna" contraction.
+        break
 
-    This function assumes the `Span` is already an identified "wanna"
-    contraction.
-    """
-    return _disambiguate_a_or_to(span)
+    return 'is'
 
 
 def disambiguate_whatcha(span: Span) -> str:

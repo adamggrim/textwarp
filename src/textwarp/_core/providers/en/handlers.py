@@ -70,7 +70,7 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
     if span.text.lower() != 'gotta':
         return None
 
-    suffix = en.disambiguation.disambiguate_gotta(span)
+    suffix = en.disambiguation.disambiguate_gotta_or_wanna(span)
     prefix = ''
 
     if suffix == 'to':
@@ -91,11 +91,6 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
 
             if is_have_auxiliary:
                 has_aux = True
-                break
-            elif prev_token.pos_ == 'ADV':
-                curr_idx -= 1
-            else:
-                break
 
         if not has_aux:
             subject = en.utils.find_subject_token(span[0])
@@ -240,7 +235,7 @@ def handle_wanna(span: Span) -> tuple[str, int] | None:
     if span.text.lower() != 'wanna':
         return None
 
-    base_verb = en.disambiguation.disambiguate_wanna(span)
+    base_verb = en.disambiguation.disambiguate_gotta_or_wanna(span)
 
     expanded_text: str = f'want {base_verb}'
     cased_text: str = apply_expansion_casing(span.text, expanded_text)
