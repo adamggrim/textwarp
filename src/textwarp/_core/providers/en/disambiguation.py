@@ -21,9 +21,8 @@ from textwarp._core.providers.en.constants import (
 __all__ = [
     'disambiguate_ain_t',
     'disambiguate_d',
-    'disambiguate_gotta',
+    'disambiguate_gotta_or_wanna',
     'disambiguate_s',
-    'disambiguate_wanna',
     'disambiguate_whatcha'
 ]
 
@@ -46,9 +45,11 @@ def _is_present_participle(token: Token) -> bool:
 
     if text_lower.endswith('in'):
         doc = token.doc
+        next_token = en.utils.get_next_lexical_token(
+            doc, token.i + 1, skip_pos={POSTag.SPACE}
+        )
         is_followed_by_quote = (
-            token.i + 1 < len(doc)
-            and doc[token.i + 1].text in QUOTATION_MARKS
+            next_token and next_token.text in QUOTATION_MARKS
         )
 
         if is_followed_by_quote:
@@ -63,7 +64,7 @@ def _disambiguate_a_or_to(span: Span) -> str:
     and "to".
     """
     doc = span.doc
-    next_token = doc[span.end] if span.end < len(doc) else None
+    next_token = en.utils.get_next_lexical_token(doc, span.end)
 
     is_valid_noun_phrase = (
         next_token
@@ -95,11 +96,17 @@ def disambiguate_ain_t(span: Span) -> str:
     doc = span.doc
     verb_token = span[0]
     subject_token = en.utils.find_subject_token(verb_token)
-    next_token = doc[span.end] if span.end < len(doc) else None
+    next_token = en.utils.get_next_lexical_token(
+        doc, span.end, skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+    )
 
     action_verb = next_token
     if next_token and subject_token and next_token.i == subject_token.i:
-        action_verb = doc[span.end + 1] if span.end + 1 < len(doc) else None
+        action_verb = en.utils.get_next_lexical_token(
+            doc,
+            next_token.i + 1,
+            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        )
 
     is_singular = True
     is_first_person_i = False
@@ -147,8 +154,15 @@ def disambiguate_d(span: Span) -> str:
         )
     )
 
-    for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
-        token = doc[i]
+    curr_idx = suffix_token.i + 1
+    while curr_idx < len(doc):
+        token = en.utils.get_next_lexical_token(
+            doc,
+            curr_idx,
+            skip_pos={POSTag.SPACE, POSTag.PUNCT}
+        )
+        if not token:
+            break
 
         is_better_or_participle = (
             token.lower_ == 'better'
@@ -162,6 +176,14 @@ def disambiguate_d(span: Span) -> str:
             if token.lemma_ in en.constants.PREFERENCE_VERBS:
                 return 'would'
             return 'did' if is_wh_question else 'would'
+
+        if token.pos_ in {
+            POSTag.PRON, POSTag.NOUN, POSTag.PROPN, POSTag.DET, POSTag.ADV
+        }:
+            curr_idx = token.i + 1
+            continue
+
+        break
 
     return 'would'
 
