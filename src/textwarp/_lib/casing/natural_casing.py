@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 from textwarp._core.context import ctx
 from textwarp._core.enums import Casing
-from textwarp._core.utils import change_first_letter_case
+from textwarp._core.utils import change_first_alphabetical_case
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
 from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
@@ -302,7 +302,7 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
                 preserve_mixed_case=False
             )
             if is_capitalized_pos:
-                processed_parts.append(change_first_letter_case(
+                processed_parts.append(change_first_alphabetical_case(
                     normalized_text, str.upper
                 ))
             else:

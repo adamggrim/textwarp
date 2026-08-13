@@ -8,14 +8,14 @@ from pathlib import Path
 from textwarp._core.types import JSONType
 
 __all__ = [
-    'change_first_letter_case',
+    'change_first_alphabetical_case',
     'find_first_alphabetical_idx',
     'load_json_data',
     'starts_uppercase'
 ]
 
 
-def change_first_letter_case(
+def change_first_alphabetical_case(
     text: str,
     casing_func: Callable[[str], str]
 ) -> str:

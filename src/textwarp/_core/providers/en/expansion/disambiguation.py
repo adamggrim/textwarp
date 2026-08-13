@@ -145,7 +145,7 @@ def disambiguate_d(span: Span) -> str:
     if suffix_token.i >= len(doc) - 1:
         return 'would'
 
-    is_wh_question = (
+    starts_with_wh_word = (
         span[0].lower_ in en.constants.WH_WORDS
         or (
             span.start > 0
@@ -174,7 +174,7 @@ def disambiguate_d(span: Span) -> str:
         if token.tag_ in en.constants.BASE_VERB_TAGS:
             if token.lemma_ in en.constants.PREFERENCE_VERBS:
                 return 'would'
-            return 'did' if is_wh_question else 'would'
+            return 'did' if starts_with_wh_word else 'would'
 
         if token.pos_ in {
             POSTag.PRON, POSTag.NOUN, POSTag.PROPN, POSTag.DET, POSTag.ADV

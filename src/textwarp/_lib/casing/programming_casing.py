@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from textwarp._core.constants import patterns
 from textwarp._core.enums import CaseSeparator, TokenType
-from textwarp._core.utils import change_first_letter_case
+from textwarp._core.utils import change_first_alphabetical_case
 from textwarp._lib.casing.lexing import get_normalized_tokens
 from textwarp._lib.casing.string_casing import case_from_string
 
@@ -30,7 +30,7 @@ def _format_camel_first_word(word: str) -> str:
 
     if word.isupper():
         return word.lower()
-    return change_first_letter_case(word, str.lower)
+    return change_first_alphabetical_case(word, str.lower)
 
 
 def _is_separator_case(text: str) -> bool:
@@ -79,12 +79,12 @@ def _word_to_pascal(word: str) -> str:
     if patterns.cases.get_pascal_word().match(word):
         return word
     if patterns.cases.get_camel_word().match(word):
-        return change_first_letter_case(word, str.upper)
+        return change_first_alphabetical_case(word, str.upper)
 
     # Uppercase the first letter for dictionary lookups.
     cased_word = case_from_string(word)
 
-    return change_first_letter_case(cased_word, str.upper)
+    return change_first_alphabetical_case(cased_word, str.upper)
 
 
 def to_camel_case(text: str) -> str:
