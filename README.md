@@ -1,6 +1,6 @@
 # Textwarp
 
-`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and returns the result.
+`textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and returns the output.
 
 ## Requirements
 
@@ -230,12 +230,15 @@ textwarp/
   │ │ │ │ └── warping.py: English-specific regular expression patterns for text warping
   │ │ │ ├── __init__.py: Exposes English-specific language provider modules
   │ │ │ ├── casing.py: English-specific string casing logic
-  │ │ │ ├── constants.py: English-specific NLP constants
-  │ │ │ ├── contractions.py: Sets used in English contraction variants
-  │ │ │ ├── disambiguation.py: English-specific functions for resolving ambiguous contractions based on context
-  │ │ │ ├── encoding.py: English-specific functions for encoding and decoding text
-  │ │ │ ├── handlers.py: English-specific functions for handling specific types of contractions
-  │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
+  │ │ │ │ ├── constants.py: English-specific NLP constants
+  │ │ │ │ ├── encoding.py: Functions for encoding and decoding English text
+  │ │ │ │ ├── expansion/
+  │ │ │ │ │ ├── __init__.py: Exposes English contraction expansion logic
+  │ │ │ │ │ ├── core.py: Core logic for expanding English contractions
+  │ │ │ │ │ ├── disambiguation.py: Functions for resolving ambiguous English contractions based on context
+  │ │ │ │ │ ├── strategies.py: Functions for handling specific types of English contractions
+  │ │ │ │ │ └── variants.py: Sets used in English contraction variants
+  │ │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
   │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
   │ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
   │ │ │ └── utils.py: English-specific utility functions
