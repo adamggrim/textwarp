@@ -145,7 +145,7 @@ def handle_negation(span: Span) -> tuple[str, int] | None:
 
     is_aint_contraction = (
         prev_token.lower_ == 'ai'
-        and suffix_token.lower_ in en.contractions.AIN_T_SUFFIX_VARIANTS
+        and suffix_token.lower_ in en.contractions.N_T_SUFFIX_VARIANTS
     )
 
     if is_aint_contraction:

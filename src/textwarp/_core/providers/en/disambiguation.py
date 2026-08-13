@@ -256,7 +256,7 @@ def disambiguate_whatcha(span: Span) -> str:
 
     if after_next_token and (
         next_text_lower == 'ai'
-        and after_next_token.lower_ in en.contractions.AIN_T_SUFFIX_VARIANTS
+        and after_next_token.lower_ in en.contractions.N_T_SUFFIX_VARIANTS
     ):
         return ''
 
