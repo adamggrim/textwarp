@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Span, Token
 
 from textwarp._core.constants import NOUN_TAGS
+from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
 from textwarp._core.providers.en.constants import (
     PARTICIPLE_SUFFIXES,
@@ -187,12 +188,22 @@ def disambiguate_s(span: Span) -> str:
     if suffix_token.i > 0 and doc[suffix_token.i - 1].lower_ == 'let':
         return 'us'
 
-    for i in range(suffix_token.i + 1, min(suffix_token.i + 4, len(doc))):
-        token = doc[i]
+    curr_idx = suffix_token.i + 1
+    while curr_idx < len(doc):
+        token = en.utils.get_next_lexical_token(
+            doc,
+            curr_idx,
+            skip_pos={POSTag.SPACE, POSTag.PUNCT}
+        )
+        if not token:
+            break
+
         tag = token.tag_
 
         if token.lower_ == 'gotta':
             return 'has'
+        if token.pos_ == POSTag.DET:
+            return 'is'
         if tag in en.constants.BASE_VERB_TAGS:
             return 'does'
         if tag in en.constants.PARTICIPLE_TAGS:
@@ -200,8 +211,11 @@ def disambiguate_s(span: Span) -> str:
         if _is_present_participle(token):
             return 'is'
 
-    return 'is'
-
+        if token.pos_ in {
+            POSTag.PRON, POSTag.NOUN, POSTag.PROPN, POSTag.DET, POSTag.ADV
+        }:
+            curr_idx = token.i + 1
+            continue
 
 def disambiguate_wanna(span: Span) -> str:
     """
@@ -222,13 +236,16 @@ def disambiguate_whatcha(span: Span) -> str:
     """
     doc = span.doc
 
-    curr_idx = span.end
-    while curr_idx < len(doc) and doc[curr_idx].pos_ == 'ADV':
-        curr_idx += 1
-
-    next_token = doc[curr_idx] if curr_idx < len(doc) else None
+    next_token = en.utils.get_next_lexical_token(
+        doc, span.end, skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+    )
     after_next_token = (
-        doc[curr_idx + 1] if curr_idx + 1 < len(doc) else None
+        en.utils.get_next_lexical_token(
+            doc,
+            next_token.i + 1,
+            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        )
+        if next_token else None
     )
 
     if not next_token:

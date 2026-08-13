@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
 from textwarp._lib.contractions import apply_expansion_casing
 
@@ -76,11 +77,13 @@ def handle_gotta(span: Span) -> tuple[str, int] | None:
         doc = span.doc
 
         has_aux = False
-        curr_idx = span.start - 1
+        prev_token = en.utils.get_prev_lexical_token(
+            doc,
+            span.start - 1,
+            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        )
 
-        while curr_idx >= 0:
-            prev_token = doc[curr_idx]
-
+        if prev_token:
             is_have_auxiliary = (
                 prev_token.lower_ in en.constants.HAVE_AUXILIARIES
                 or prev_token.lower_ == "'s"

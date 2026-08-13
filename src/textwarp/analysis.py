@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING
 
 import regex as re
 
+from textwarp._core.enums import POSTag
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
@@ -162,10 +164,15 @@ def count_pos(content: str | Doc) -> POSCounts:
     contractions as separate words.
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
-    tags = [token.pos_ for token in doc if not token.is_space]
+
+    tags = [
+        POSTag._value2member_map_.get(token.pos_, POSTag.X)
+        for token in doc
+        if not token.is_space
+    ]
     counts = Counter(tags)
 
-    tag_counts: dict[str, int] = {
+    tag_counts: dict[POSTag, int] = {
         tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
     }
     total_word_count = sum(1 for token in doc if token.pos_ in POS_WORD_TAGS)

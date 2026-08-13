@@ -5,6 +5,7 @@ from textwarp._core.constants.nlp import (
     POS_TAGS,
     POS_WORD_TAGS
 )
+from textwarp._core.enums import POSTag
 
 
 def test_nlp_tag_sets_are_frozensets():
@@ -12,9 +13,9 @@ def test_nlp_tag_sets_are_frozensets():
 
 
 def test_noun_tags():
-    assert 'NOUN' in NOUN_TAGS
-    assert 'PROPN' in NOUN_TAGS
-    assert 'VERB' not in NOUN_TAGS
+    assert POSTag.NOUN in NOUN_TAGS
+    assert POSTag.PROPN in NOUN_TAGS
+    assert POSTag.VERB not in NOUN_TAGS
 
 
 def test_pos_tags_structure():
@@ -24,7 +25,7 @@ def test_pos_tags_structure():
     for tag_pair in POS_TAGS:
         assert isinstance(tag_pair, tuple)
         assert len(tag_pair) == 2
-        assert isinstance(tag_pair[0], str)
+        assert isinstance(tag_pair[0], POSTag)
         assert isinstance(tag_pair[1], str)
 
 
@@ -34,6 +35,6 @@ def test_pos_word_tags():
     (other) tag.
     """
     assert isinstance(POS_WORD_TAGS, frozenset)
-    assert 'NOUN' in POS_WORD_TAGS
-    assert 'VERB' in POS_WORD_TAGS
-    assert 'X' not in POS_WORD_TAGS
+    assert POSTag.NOUN in POS_WORD_TAGS
+    assert POSTag.VERB in POS_WORD_TAGS
+    assert POSTag.X not in POS_WORD_TAGS

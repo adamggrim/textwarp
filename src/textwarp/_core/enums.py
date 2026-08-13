@@ -12,6 +12,7 @@ __all__ = [
     'Casing',
     'CountLabels',
     'ModelPriority',
+    'POSTag',
     'PresenceCheckType',
     'RegexBoundary'
 ]
@@ -50,6 +51,29 @@ class ModelPriority(str, Enum):
     """
     ACCURACY = 'accuracy'
     SPEED = 'speed'
+
+
+@unique
+class POSTag(str, Enum):
+    """Universal parts-of-speech tags used by spaCy."""
+    ADJ = 'ADJ'
+    ADP = 'ADP'
+    ADV = 'ADV'
+    AUX = 'AUX'
+    CCONJ = 'CCONJ'
+    DET = 'DET'
+    INTJ = 'INTJ'
+    NOUN = 'NOUN'
+    NUM = 'NUM'
+    PART = 'PART'
+    PRON = 'PRON'
+    PROPN = 'PROPN'
+    PUNCT = 'PUNCT'
+    SCONJ = 'SCONJ'
+    SYM = 'SYM'
+    VERB = 'VERB'
+    X = 'X'
+    SPACE = 'SPACE'
 
 
 @unique
