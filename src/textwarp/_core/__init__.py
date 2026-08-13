@@ -25,7 +25,11 @@ from textwarp._core.exceptions import (
 )
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._core.types import EntityCasingContext, JSONType
-from textwarp._core.utils import find_first_alphabetical_idx, load_json_data
+from textwarp._core.utils import (
+    find_first_alphabetical_idx,
+    load_json_data,
+    starts_uppercase
+)
 
 __all__ = [
     'CaseNotFoundError',
@@ -57,5 +61,6 @@ __all__ = [
     'load_json_data',
     'maps',
     'nlp',
-    'patterns'
+    'patterns',
+    'starts_uppercase'
 ]

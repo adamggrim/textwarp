@@ -10,7 +10,8 @@ from textwarp._core.types import JSONType
 __all__ = [
     'change_first_letter_case',
     'find_first_alphabetical_idx',
-    'load_json_data'
+    'load_json_data',
+    'starts_uppercase'
 ]
 
 
@@ -83,3 +84,18 @@ def load_json_data(
         resource = resource.joinpath(part)
 
     return json.loads(resource.read_text(encoding='utf-8'))
+
+
+def starts_uppercase(text: str) -> bool:
+    """
+    Check if the first alphabetical character in the text is uppercase.
+
+    Args:
+        text: The string to check.
+
+    Returns:
+        bool: `True` if the first alphabetical character is uppercase,
+            otherwise `False`.
+    """
+    idx = find_first_alphabetical_idx(text)
+    return idx is not None and text[idx].isupper()

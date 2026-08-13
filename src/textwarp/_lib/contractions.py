@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Doc
 
 from textwarp._core.context import ctx
-from textwarp._core.utils import find_first_alphabetical_idx
+from textwarp._core.utils import starts_uppercase
 from textwarp._lib.casing.string_casing import case_from_string
 
 __all__ = ['expand_contractions']
@@ -28,14 +28,6 @@ def apply_expansion_casing(
     Returns:
         str: The expanded text in the original text's casing.
     """
-    def _starts_capitalized(text: str) -> bool:
-        """
-        Check if the first alphabetical character in the text is
-        uppercase.
-        """
-        idx = find_first_alphabetical_idx(text)
-        return idx is not None and text[idx].isupper()
-
     if not original_text or not expanded_text:
         return expanded_text
 
@@ -49,13 +41,13 @@ def apply_expansion_casing(
 
     is_title_case = (
         len(original_parts) > 1
-        and all(_starts_capitalized(part) for part in original_parts)
+        and all(starts_uppercase(part) for part in original_parts)
     )
 
     if is_title_case:
         return ' '.join(case_from_string(part) for part in expanded_parts)
 
-    if _starts_capitalized(original_text):
+    if starts_uppercase(original_text):
         first_part: str = case_from_string(expanded_parts[0])
 
         remaining_parts = [
