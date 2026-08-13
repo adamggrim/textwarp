@@ -60,7 +60,10 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
     # Fallback B: Look immediately after the suffix (inverted order).
     start_idx = verb_token.i + 1
-    if start_idx < len(doc) and doc[start_idx].lower_ == "n't":
+    if (
+        start_idx < len(doc)
+        and doc[start_idx].lower_ in en.contractions.N_T_SUFFIX_VARIANTS
+    ):
         start_idx += 1
 
     end_idx = min(start_idx + 6, len(doc))
