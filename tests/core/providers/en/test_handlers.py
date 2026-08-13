@@ -76,6 +76,16 @@ def test_handle_negation_inverted(get_contraction_span):
     assert expanded == 'Did I not'
 
 
+def test_handle_negation_inverted_capitalized(get_contraction_span):
+    span = get_contraction_span(
+        'Didn’t It Rain', 'Didn’t'
+    )
+    result = handle_negation(span)
+    assert result is not None
+    expanded, _ = result
+    assert expanded == 'Did It Not'
+
+
 def test_handle_s(get_contraction_span):
     span = get_contraction_span('Here’s Johnny', 'Here’s')
     result = handle_s(span)
