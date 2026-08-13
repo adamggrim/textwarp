@@ -6,14 +6,17 @@ from collections.abc import Container
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spacy.tokens import Token
+    from spacy.tokens import Doc, Token
 
+from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
 from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = [
     'find_subject_token',
-    'get_negative_contraction_base_verb'
+    'get_negative_contraction_base_verb',
+    'get_next_lexical_token',
+    'get_prev_lexical_token'
 ]
 
 

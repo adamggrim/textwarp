@@ -207,7 +207,8 @@ def disambiguate_s(span: Span) -> str:
     doc = span.doc
     suffix_token = span[-1]
 
-    if suffix_token.i > 0 and doc[suffix_token.i - 1].lower_ == 'let':
+    prev_token = en.utils.get_prev_lexical_token(doc, suffix_token.i)
+    if prev_token and prev_token.lower_ == 'let':
         return 'us'
 
     curr_idx = suffix_token.i + 1
