@@ -27,9 +27,6 @@ __all__ = [
     'ENTER_WPM_PROMPT',
     'EXIT_MSG',
     'HELP_DESCRIPTION',
-    'MISSING_MARKO_ERROR_MSG',
-    'MISSING_PYPERCLIP_ERROR_MSG',
-    'MISSING_SPACY_ERROR_MSG',
     'MODIFIED_TEXT_COPIED_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'REGEX_NOT_FOUND_MSG',
@@ -66,15 +63,3 @@ HELP_DESCRIPTION: Final = _(
     'Specify which text warping function to apply to the clipboard.'
 )
 MODIFIED_TEXT_COPIED_MSG: Final = _('Modified text copied to clipboard.')
-MISSING_MARKO_ERROR_MSG: Final = _(
-    "Error: Markdown support requires 'marko'. Install it using: pip install "
-    'textwarp[markdown]'
-)
-MISSING_PYPERCLIP_ERROR_MSG: Final = _(
-    "Error: Clipboard support requires 'pyperclip'. Install it using: pip "
-    'install textwarp[clipboard]'
-)
-MISSING_SPACY_ERROR_MSG: Final = _(
-    "Error: NLP features require 'spacy'. Install it using: pip install "
-    'textwarp[nlp]'
-)

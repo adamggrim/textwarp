@@ -10,7 +10,6 @@ from types import ModuleType
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
-    MISSING_PYPERCLIP_ERROR_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
@@ -20,6 +19,7 @@ from textwarp._cli.validation import (
     validate_clipboard
 )
 from textwarp._commands import replacement
+from textwarp._core.exceptions import MissingDependencyError
 
 _ = gettext.gettext
 
@@ -41,7 +41,12 @@ def _get_pyperclip() -> ModuleType:
         import pyperclip
         return pyperclip
     except ImportError:
-        print_wrapped(MISSING_PYPERCLIP_ERROR_MSG)
+        error = MissingDependencyError(
+            'pyperclip',
+            'Clipboard support',
+            'clipboard'
+        )
+        print_wrapped(str(error))
         sys.exit(1)
 
 

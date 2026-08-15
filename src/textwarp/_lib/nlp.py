@@ -28,7 +28,7 @@ def _load_spacy() -> ModuleType:
         return spacy
     except ImportError as e:
         from textwarp._core.exceptions import MissingDependencyError
-        raise MissingDependencyError(str(e)) from e
+        raise MissingDependencyError('spacy', 'NLP support', 'nlp') from e
 
 
 @cache

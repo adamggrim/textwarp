@@ -56,6 +56,17 @@ class MissingDependencyError(TextwarpError):
     Exception raised when a required optional dependency is not
     installed.
     """
+    def __init__(
+        self,
+        package_name: str,
+        feature_name: str,
+        optional_dependency: str
+    ) -> None:
+        message = (
+            f"Error: {feature_name} requires '{package_name}'. "
+            f'Install it using: pip install textwarp[{optional_dependency}]'
+        )
+        super().__init__(message)
 
 
 class MissingModelError(TextwarpError):

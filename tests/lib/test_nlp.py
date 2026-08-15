@@ -112,6 +112,6 @@ def test_load_spacy_raises_missing_dependency_error(monkeypatch):
 
     with pytest.raises(
         MissingDependencyError,
-        match="No module named 'spacy'"
+        match="Error: NLP support requires 'spacy'."
     ):
         _load_spacy()

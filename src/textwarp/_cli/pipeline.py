@@ -16,12 +16,7 @@ from textwarp._cli.args import (
     ARGS_MAP,
     SPACY_COMMANDS
 )
-from textwarp._cli.constants.messages import (
-    MISSING_MARKO_ERROR_MSG,
-    MISSING_PYPERCLIP_ERROR_MSG,
-    MISSING_SPACY_ERROR_MSG,
-    MODIFIED_TEXT_COPIED_MSG
-)
+from textwarp._cli.constants.messages import MODIFIED_TEXT_COPIED_MSG
 from textwarp._cli.runners import clear_clipboard
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
@@ -81,8 +76,8 @@ def _preload_spacy() -> None:
     try:
         from textwarp._lib.nlp import _get_nlp
         _get_nlp()
-    except MissingDependencyError:
-        print_wrapped(MISSING_SPACY_ERROR_MSG)
+    except MissingDependencyError as e:
+        print_wrapped(str(e))
         sys.exit(1)
 
 
@@ -272,7 +267,11 @@ def route_output(
         try:
             import pyperclip
         except ImportError:
-            print_wrapped(MISSING_PYPERCLIP_ERROR_MSG)
+            error = MissingDependencyError(
+                'pyperclip',
+                'Clipboard support',
+                'clipboard')
+            print_wrapped(str(error))
             sys.exit(1)
 
         pyperclip.copy(result)
@@ -310,7 +309,8 @@ def route_text(
     try:
         from textwarp._lib.markdown import process_markdown, strip_markdown
     except ImportError:
-        print_wrapped(MISSING_MARKO_ERROR_MSG)
+        error = MissingDependencyError('marko', 'Markdown support', 'markdown')
+        print_wrapped(str(error))
         sys.exit(1)
 
     if is_analysis_pipeline(pipeline):

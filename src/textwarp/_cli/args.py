@@ -6,7 +6,6 @@ from collections.abc import Callable
 from types import ModuleType
 from typing import Any, Final
 
-from textwarp._cli.constants.messages import MISSING_SPACY_ERROR_MSG
 from textwarp._cli.ui import print_wrapped
 from textwarp._core.context import N_
 from textwarp._core.exceptions import MissingDependencyError
@@ -30,8 +29,8 @@ def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
                 module_name, package=__package__
             )
             return getattr(mod, func_name)(*args, **kwargs)
-        except MissingDependencyError:
-            print_wrapped(MISSING_SPACY_ERROR_MSG)
+        except MissingDependencyError as e:
+            print_wrapped(str(e))
             sys.exit(1)
     return wrapper
 
