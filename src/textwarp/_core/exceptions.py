@@ -5,6 +5,7 @@ __all__ = [
     'EmptyClipboardError',
     'InvalidCaseNameError',
     'InvalidRegexError',
+    'MissingDependencyError',
     'MissingModelError',
     'NoCaseNameError',
     'NoRegexError',
@@ -47,6 +48,13 @@ class InvalidRegexError(TextwarpValidationError):
     """
     Exception raised when the provided regular expression string is not
     a valid regular expression.
+    """
+
+
+class MissingDependencyError(TextwarpError):
+    """
+    Exception raised when a required optional dependency is not
+    installed.
     """
 
 

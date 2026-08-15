@@ -1,11 +1,15 @@
 """A map of command-line arguments to functions and help messages."""
 
 import importlib
+import sys
 from collections.abc import Callable
 from types import ModuleType
 from typing import Any, Final
 
+from textwarp._cli.constants.messages import MISSING_SPACY_ERROR_MSG
+from textwarp._cli.ui import print_wrapped
 from textwarp._core.context import N_
+from textwarp._core.exceptions import MissingDependencyError
 
 __all__ = [
     'ANALYSIS_COMMANDS',
@@ -21,10 +25,14 @@ __all__ = [
 def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
     """Import a module and function only when called."""
     def wrapper(*args: Any, **kwargs: Any) -> str:
-        mod: ModuleType = importlib.import_module(
-            module_name, package=__package__
-        )
-        return getattr(mod, func_name)(*args, **kwargs)
+        try:
+            mod: ModuleType = importlib.import_module(
+                module_name, package=__package__
+            )
+            return getattr(mod, func_name)(*args, **kwargs)
+        except MissingDependencyError:
+            print_wrapped(MISSING_SPACY_ERROR_MSG)
+            sys.exit(1)
     return wrapper
 
 

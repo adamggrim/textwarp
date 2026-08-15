@@ -5,7 +5,11 @@ numbers.
 
 from typing import TYPE_CHECKING
 
-from textwarp._core.providers.en.constants import ORDINAL_SUFFIX_MAP, ORDINAL_SUFFIXES
+from textwarp._core.providers.en.constants import (
+    ORDINAL_SUFFIX_MAP, 
+    ORDINAL_SUFFIXES
+)
+from textwarp._lib.nlp import process_as_doc
 
 if TYPE_CHECKING:
     from spacy.tokens import Doc
@@ -13,7 +17,6 @@ if TYPE_CHECKING:
 
 def _get_nlp_doc(text: str) -> 'Doc':
     """Helper to initialize the NLP document."""
-    from textwarp._lib.nlp import process_as_doc
     return process_as_doc(text, disable=['parser', 'ner', 'lemmatizer'])
 
 

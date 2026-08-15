@@ -16,10 +16,19 @@ from textwarp._cli.args import (
     ARGS_MAP,
     SPACY_COMMANDS
 )
+from textwarp._cli.constants.messages import (
+    MISSING_MARKO_ERROR_MSG,
+    MISSING_PYPERCLIP_ERROR_MSG,
+    MISSING_SPACY_ERROR_MSG,
+    MODIFIED_TEXT_COPIED_MSG
+)
 from textwarp._cli.runners import clear_clipboard
+from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
 from textwarp._commands import replacement
+from textwarp._core.exceptions import MissingDependencyError
 from textwarp._core.types import Pipeline
+from textwarp._lib.nlp import process_as_doc
 
 _ = gettext.gettext
 
@@ -40,7 +49,6 @@ def _run_pipeline_segment(
     for cmd_name, func in pipeline:
         if cmd_name in SPACY_COMMANDS:
             if isinstance(content, str):
-                from textwarp._lib.nlp import process_as_doc
                 content = process_as_doc(content)
         elif not isinstance(content, str):
             content = content.text
@@ -70,8 +78,12 @@ def _run_pipeline_segment(
 
 def _preload_spacy() -> None:
     """Helper to preload spaCy in the main process."""
-    from textwarp._lib.nlp import _get_nlp
-    _get_nlp()
+    try:
+        from textwarp._lib.nlp import _get_nlp
+        _get_nlp()
+    except MissingDependencyError:
+        print_wrapped(MISSING_SPACY_ERROR_MSG)
+        sys.exit(1)
 
 
 def apply_pipeline(
@@ -106,7 +118,6 @@ def apply_pipeline(
     content = text
 
     if imports_spacy:
-        from textwarp._cli.spinner import run_with_spinner
         if requires_input:
             run_with_spinner(_preload_spacy)
             return _run_pipeline_segment(
@@ -258,10 +269,6 @@ def route_output(
         )
 
     if copy_to_clipboard:
-        from textwarp._cli.constants.messages import (
-            MISSING_PYPERCLIP_ERROR_MSG,
-            MODIFIED_TEXT_COPIED_MSG
-        )
         try:
             import pyperclip
         except ImportError:
@@ -303,12 +310,7 @@ def route_text(
     try:
         from textwarp._lib.markdown import process_markdown, strip_markdown
     except ImportError:
-        print_wrapped(
-            _(
-                "Error: Markdown support requires 'marko'. Install it "
-                'using: pip install textwarp[markdown]'
-            )
-        )
+        print_wrapped(MISSING_MARKO_ERROR_MSG)
         sys.exit(1)
 
     if is_analysis_pipeline(pipeline):

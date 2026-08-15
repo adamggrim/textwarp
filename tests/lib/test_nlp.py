@@ -91,3 +91,27 @@ def test_process_as_doc_with_disabled_pipes():
 
     assert not doc.has_annotation('DEP')
     assert not doc.has_annotation('ENT_IOB')
+
+
+def test_load_spacy_raises_missing_dependency_error(monkeypatch):
+    import builtins
+    from textwarp._core.exceptions import MissingDependencyError
+    from textwarp._lib.nlp import _load_spacy
+
+    original_import = builtins.__import__
+
+    def mock_import(name, *args, **kwargs):
+        if name == 'spacy':
+            raise ImportError("No module named 'spacy'")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, '__import__', mock_import)
+
+    # Clear the cache to force the import logic to run
+    _load_spacy.cache_clear()
+
+    with pytest.raises(
+        MissingDependencyError,
+        match="No module named 'spacy'"
+    ):
+        _load_spacy()

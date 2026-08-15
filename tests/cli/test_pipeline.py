@@ -67,7 +67,7 @@ def test_apply_pipeline_spacy_doc_persistence(monkeypatch):
             self.text = text
 
     monkeypatch.setattr(
-        'textwarp._lib.nlp.process_as_doc',
+        'textwarp._cli.pipeline.process_as_doc',
         lambda x: DummyDoc(x) if isinstance(x, str) else x
     )
 

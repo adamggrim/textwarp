@@ -23,8 +23,12 @@ __all__ = ['process_as_doc']
 @cache
 def _load_spacy() -> ModuleType:
     """Lazily load and cache the spaCy module."""
-    import spacy
-    return spacy
+    try:
+        import spacy
+        return spacy
+    except ImportError as e:
+        from textwarp._core.exceptions import MissingDependencyError
+        raise MissingDependencyError(str(e)) from e
 
 
 @cache

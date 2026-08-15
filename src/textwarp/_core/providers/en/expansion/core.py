@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 from textwarp._core.providers import en
 from textwarp._lib.contractions import apply_expansion_casing
+from textwarp._lib.nlp import process_as_doc
 from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = ['expand_contractions']
@@ -109,7 +110,6 @@ def expand_contractions(doc: Doc) -> str:
     text_with_idioms_expanded = _expand_idiomatic_phrases(doc.text)
 
     if text_with_idioms_expanded != doc.text:
-        from textwarp._lib.nlp import process_as_doc
         doc = process_as_doc(text_with_idioms_expanded)
 
     matches = list(
