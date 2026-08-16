@@ -10,25 +10,49 @@
 
 `textwarp` requires the following Python libraries:
 
-- `pyperclip`: For accessing and copying to the clipboard
-- `regex`: For regular expressions with variable-width lookbehinds
-- `spacy[transformers]`: For identifying word context using transformer-based models
+- **regex:** For regular expressions with variable-width lookbehinds
+- **wcwidth:** To determine terminal rendering width for multi-width characters
 
-## Example
+### Optional dependencies
 
-This example demonstrates how to convert clipboard text to camel case using `textwarp`.
+<details>
+<summary>(Click to expand)</summary>
+
+* **Clipboard:** Installs `pyperclip` to read and write to the clipboard.
+* **Markdown (`pip install "textwarp[markdown]"`):** Installs `marko` for parsing Markdown text.
+* **NLP (`pip install "textwarp[nlp]"`):** Installs `spacy[transformers]` for transformer-based text processing.
+
+To install a specific dependency, append its tag inside brackets during installation:
+
+```bash
+python -m pip install "textwarp[clipboard] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
+```
+You can install multiple dependencies at once by separating them with commas:
+
+```bash
+python -m pip install "textwarp[clipboard,markdown,nlp] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
+```
+
+*Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
+</details>
+
+## Example (clipboard)
+
+This example demonstrates how to convert clipboard text to snake case using `textwarp`.
+
+Clipboard copying requires the clipboard extension. Install it using: `pip install "textwarp[clipboard]"`.
 
 1. **Copy text to the clipboard**
 
-    In this example, `textwarp` will modify the following clipboard text: `The mind is its own place`.
+    In this example, `textwarp` will modify the following clipboard text: `subtlest beast of all the field`.
 
 2. **Run the command**
 
-    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --camel-case`
+    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --snake-case`
 
 3. **Paste text from the clipboard**
 
-    `textwarp` will copy the modified text to the clipboard: `theMindIsItsOwnPlace`. To view the modified text, paste from the clipboard.
+    `textwarp` will copy the modified text to the clipboard: `subtlest_beast_of_all_the_field`. To view the modified text, paste from the clipboard.
 
 4. **Continue or exit**
 
@@ -40,6 +64,35 @@ This example demonstrates how to convert clipboard text to camel case using `tex
 
     Exiting the program...
     ```
+
+## Advanced
+
+<details>
+<summary>(Click to expand)</summary>
+
+### File I/O
+
+Process text files directly by passing them as arguments. Use the `-o` or `--output` flag to save the results to a new file.
+
+```bash
+textwarp --uppercase input.txt -o output.txt
+```
+
+### Piping
+
+`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or be copied to the clipboard.
+
+```bash
+echo "is anyone here?" | textwarp --snake-case | textwarp --uppercase
+```
+
+### Inline find and replace
+Use the `-f` (`--find`) and `-r` (`--replace`) to directly find and replace commands.
+
+```bash
+textwarp --replace-text -f "foul" -r "fair" macbeth.txt
+```
+</details>
 
 ## Commands
 
@@ -109,36 +162,11 @@ For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwar
 --word-count             count words
 --zalgo                  c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
 ```
-</details>
-
-## Advanced
-
-### File I/O
-
-Process text files directly by passing them as arguments. Use the `-o` or `--output` flag to save the results to a new file.
-
-```bash
-textwarp --uppercase input.txt -o output.txt
-```
-
-### Piping
-
-`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or be copied to the clipboard.
-
-```bash
-echo "is there anybody in there" | textwarp --snake-case | textwarp --uppercase
-```
-
-### Inline find and replace
-Use the `-f` (`--find`) and `-r` (`--replace`) to directly find and replace commands.
-
-```bash
-textwarp --replace-text -f "marriage" -r "carriage" input.txt
-```
 
 ### Markdown
 
 Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` will transform the text nodes while preserving the original Markdown formatting.
+</details>
 
 ## Structure
 
@@ -286,17 +314,12 @@ Follow these steps to run `textwarp`:
 
 2. **Install the package**: Install `textwarp` and its dependencies using pip.
 
-    On macOS/Linux:
     ```
-    pip3 install git+https://github.com/adamggrim/textwarp.git
+    pip install "textwarp[clipboard,markdown,nlp] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
     ```
+    *Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
 
-    On Windows:
-    ```
-    pip install git+https://github.com/adamggrim/textwarp.git
-    ```
-
-3. **Run the program**: Run the program by calling `textwarp` from the command line with a required argument: `textwarp --camel-case`
+3. **Run the program**: Run the program by calling `textwarp` from the command line with a required argument: `textwarp --binary`
 
 ## License
 
