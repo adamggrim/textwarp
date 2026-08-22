@@ -83,9 +83,6 @@ def cardinal_to_ordinal(text: str) -> str:
 
 def expand_contractions(content: str | Doc) -> str:
     """Expand all contractions in a string or spaCy `Doc`."""
-    if not hasattr(ctx.provider, 'expand_contractions'):
-        return content if isinstance(content, str) else content.text
-
     doc = process_as_doc(content)
     return contractions.expand_contractions(doc)
 
@@ -129,17 +126,15 @@ def punct_to_inside(text: str) -> str:
     """
     Move periods and commas at the end of quotes inside quotation marks.
     """
-    if not hasattr(ctx.provider, 'punct_outside_pattern'):
+    pattern = ctx.provider.punct_outside_pattern
+    if not pattern:
         return text
 
     def _repl(match: re.Match[str]) -> str:
-        """
-        Reorder periods and commas to move them inside quotation marks.
-        """
         quote, punct = match.groups()
         return punct + quote
 
-    return ctx.provider.punct_outside_pattern.sub(_repl, text)
+    return pattern.sub(_repl, text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -147,7 +142,8 @@ def punct_to_outside(text: str) -> str:
     Move periods and commas at the end of quotes to outside quotation
     marks.
     """
-    if not hasattr(ctx.provider, 'punct_inside_pattern'):
+    pattern = ctx.provider.punct_inside_pattern
+    if not pattern:
         return text
 
     def _repl(match: re.Match[str]) -> str:
@@ -158,7 +154,7 @@ def punct_to_outside(text: str) -> str:
         punct, quote = match.groups()
         return quote + punct
 
-    return ctx.provider.punct_inside_pattern.sub(_repl, text)
+    return pattern.sub(_repl, text)
 
 
 def random_case(text: str) -> str:

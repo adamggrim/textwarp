@@ -56,22 +56,12 @@ class LanguageProvider(ABC):
         pass
 
     @property
-    @abstractmethod
-    def punct_inside_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching punctuation inside quotation
-        marks.
-        """
-        pass
+    def punct_inside_pattern(self) -> re.Pattern[str] | None:
+        return None
 
     @property
-    @abstractmethod
-    def punct_outside_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching punctuation outside quotation
-        marks.
-        """
-        pass
+    def punct_outside_pattern(self) -> re.Pattern[str] | None:
+        return None
 
     @property
     @abstractmethod
@@ -110,10 +100,10 @@ class LanguageProvider(ABC):
         """
         return text
 
-    @abstractmethod
     def expand_contractions(self, doc: 'Doc') -> str:
         """Expand all contractions in a spaCy `Doc`."""
-        pass
+        return doc.text
+
     def normalize_for_morse(self, text: str) -> str:
         """
         Normalize a string for Morse code.
