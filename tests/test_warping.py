@@ -13,8 +13,8 @@ from textwarp.warping import (
     from_binary,
     from_hexadecimal,
     from_morse,
-    hyphen_to_en,
     hyphens_to_em,
+    hyphens_to_en,
     ordinal_to_cardinal,
     punct_to_inside,
     punct_to_outside,
@@ -81,7 +81,6 @@ from textwarp.warping import (
             ),
             'WHAT HATH GOD WROUGHT',
         ),
-        (hyphen_to_en, 'Books I-XII', 'Books I–XII'),
         (
             hyphens_to_em,
             (
@@ -93,6 +92,7 @@ from textwarp.warping import (
                 'precisely—)'
             ),
         ),
+        (hyphens_to_en, 'Books I-XII', 'Books I–XII'),
         (ordinal_to_cardinal, 'October 30th', 'October 30'),
         (
             punct_to_inside,

@@ -98,13 +98,13 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('..warping', 'to_hexadecimal'),
         N_('convert to hexadecimal')
     ),
-    'hyphen-to-en': (
-        _lazy_load('..warping', 'hyphen_to_en'),
-        N_('convert hyphens to en dashes')
-    ),
     'hyphens-to-em': (
         _lazy_load('..warping', 'hyphens_to_em'),
         N_('convert consecutive hyphens to em dashes')
+    ),
+    'hyphens-to-en': (
+        _lazy_load('..warping', 'hyphens_to_en'),
+        N_('convert hyphens to en dashes')
     ),
     'kebab-case': (
         _lazy_load('..warping', 'to_kebab_case'),

@@ -125,8 +125,8 @@ For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwar
 --from-hexadecimal       convert from hexadecimal
 --from-morse             convert from Morse code
 --hexadecimal            convert to hexadecimal
---hyphen-to-en           convert hyphens to en dashes
 --hyphens-to-em          convert consecutive hyphens to em dashes
+--hyphens-to-en          convert hyphens to en dashes
 --kebab-case             convert-to-kebab-case
 --line-count             count lines
 --lowercase              convert to lowercase
