@@ -163,10 +163,7 @@ def to_morse(text: str) -> str:
         str: The converted string, with a single space between
             character codes and three spaces between word codes.
     """
-    if hasattr(ctx.provider, 'normalize_for_morse'):
-        normalized_text = ctx.provider.normalize_for_morse(text)
-    else:
-        normalized_text = text.upper()
+    normalized_text = ctx.provider.normalize_for_morse(text)
 
     morse_map = get_morse_map()
 

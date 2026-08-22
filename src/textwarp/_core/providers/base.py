@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import TYPE_CHECKING
+import unicodedata
 
 import regex as re
 
@@ -113,6 +114,18 @@ class LanguageProvider(ABC):
     def expand_contractions(self, doc: 'Doc') -> str:
         """Expand all contractions in a spaCy `Doc`."""
         pass
+    def normalize_for_morse(self, text: str) -> str:
+        """
+        Normalize a string for Morse code.
+        """
+        uppercase_text = text.upper()
+
+        normalized = ''.join(
+            char for char in unicodedata.normalize('NFD', uppercase_text)
+            if unicodedata.category(char) != 'Mn'
+        )
+
+        return normalized
 
     @abstractmethod
     def ordinal_to_cardinal(self, text: str) -> str:
