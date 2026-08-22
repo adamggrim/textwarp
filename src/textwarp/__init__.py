@@ -22,7 +22,6 @@ _MODULE_MAP: dict[str, str] = {
     'from_binary': 'textwarp.warping',
     'from_hexadecimal': 'textwarp.warping',
     'from_morse': 'textwarp.warping',
-    'from_zalgo': 'textwarp.warping',
     'hyphen_to_en': 'textwarp.warping',
     'hyphens_to_em': 'textwarp.warping',
     'ordinal_to_cardinal': 'textwarp.warping',
@@ -47,6 +46,7 @@ _MODULE_MAP: dict[str, str] = {
     'to_snake_case': 'textwarp.warping',
     'to_title_case': 'textwarp.warping',
     'to_zalgo': 'textwarp.warping',
+    'unzalgo': 'textwarp.warping',
     'widen': 'textwarp.warping'
 }
 
@@ -97,6 +97,7 @@ if TYPE_CHECKING:
     def to_snake_case(text: str) -> str: ...
     def to_title_case(content: str | Doc) -> str: ...
     def to_zalgo(text: str) -> str: ...
+    def unzalgo(text: str) -> str: ...
     def widen(text: str) -> str: ...
 
 

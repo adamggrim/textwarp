@@ -94,10 +94,6 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('..warping', 'from_morse'),
         N_('convert from Morse code')
     ),
-    'from-zalgo': (
-        _lazy_load('..warping', 'from_zalgo'),
-        N_('remove Zalgo diacritics')
-    ),
     'hexadecimal': (
         _lazy_load('..warping', 'to_hexadecimal'),
         N_('convert to hexadecimal')
@@ -226,6 +222,11 @@ ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
         _lazy_load('.._commands.analysis', 'ttr'),
         N_('calculate type-token ratio')
     ),
+    'unzalgo': (
+        _lazy_load('..warping', 'unzalgo'),
+        N_('remove Zalgo diacritics')
+    ),
+
     'uppercase': (
         str.upper,
         N_('CONVERT TO ALL CAPS')

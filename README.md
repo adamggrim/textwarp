@@ -124,7 +124,6 @@ For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwar
 --from-binary            convert from binary
 --from-hexadecimal       convert from hexadecimal
 --from-morse             convert from Morse code
---from-zalgo             remove Zalgo diacritics
 --hexadecimal            convert to hexadecimal
 --hyphen-to-en           convert hyphens to en dashes
 --hyphens-to-em          convert consecutive hyphens to em dashes
@@ -157,6 +156,7 @@ For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwar
 --time-to-read           calculate time to read
 --title-case             Convert to Title Case
 --ttr                    calculate type-token ratio
+--unzalgo                remove Zalgo diacritics
 --uppercase              CONVERT TO ALL CAPS
 --widen                  w i d e n  t e x t
 --word-count             count words

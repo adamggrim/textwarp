@@ -13,7 +13,6 @@ from textwarp.warping import (
     from_binary,
     from_hexadecimal,
     from_morse,
-    from_zalgo,
     hyphen_to_en,
     hyphens_to_em,
     ordinal_to_cardinal,
@@ -37,6 +36,7 @@ from textwarp.warping import (
     to_snake_case,
     to_title_case,
     to_zalgo,
+    unzalgo,
     widen
 )
 
@@ -81,7 +81,6 @@ from textwarp.warping import (
             ),
             'WHAT HATH GOD WROUGHT',
         ),
-        (from_zalgo, 'ṅ̼̬͐ă̶̝̰ṟͧč̼̪̲i̷͚̇̃͛s̵̆̄̚ș̵̇ųͫsͦ̉̚', 'narcissus'),
         (hyphen_to_en, 'Books I-XII', 'Books I–XII'),
         (
             hyphens_to_em,
@@ -179,6 +178,7 @@ from textwarp.warping import (
             'the artist formerly known as prince (tafkap)',
             'The Artist Formerly Known as Prince (TAFKAP)',
         ),
+        (unzalgo, 'n̷̡̪̈́̏á̗̣r̙̈ͫc̬͙ͪį̴́ͩs̹̙̣ͧͬs̸̟̀ů̸̬̫ś̺̣', 'narcissus'),
         (widen, 'violet beauregarde', 'v i o l e t   b e a u r e g a r d e'),
     ],
 )
@@ -206,7 +206,7 @@ def test_to_zalgo():
     # Zalgonized text should be longer than the original.
     assert len(zalgonized_text) > len(original_text)
 
-    assert from_zalgo(zalgonized_text) == original_text
+    assert unzalgo(zalgonized_text) == original_text
 
 
 def test_to_zalgo_unicode():
@@ -216,7 +216,7 @@ def test_to_zalgo_unicode():
     )
     zalgonized_text = to_zalgo(original_text)
 
-    cleaned_text = from_zalgo(zalgonized_text)
+    cleaned_text = unzalgo(zalgonized_text)
 
     assert (
         unicodedata.normalize('NFC', cleaned_text)
@@ -226,4 +226,4 @@ def test_to_zalgo_unicode():
 
 @given(strategies.text())
 def test_zalgo_stripping(s):
-    assert from_zalgo(to_zalgo(s)) == from_zalgo(s)
+    assert unzalgo(to_zalgo(s)) == unzalgo(s)

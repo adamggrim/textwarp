@@ -10,10 +10,10 @@ from textwarp._lib.casing import (
 from textwarp._lib.cleaning import strip_html, to_single_spaces
 from textwarp._lib.contractions import expand_contractions
 from textwarp._lib.effects import (
-    from_zalgo,
     randomize,
     reverse,
     to_zalgo,
+    unzalgo,
     widen,
 )
 from textwarp._lib.encoding import (
@@ -40,7 +40,6 @@ __all__ = [
     'from_binary',
     'from_hexadecimal',
     'from_morse',
-    'from_zalgo',
     'map_all_entities',
     'ordinal_to_cardinal',
     'process_as_doc',
@@ -59,5 +58,6 @@ __all__ = [
     'to_separator_case',
     'to_single_spaces',
     'to_zalgo',
+    'unzalgo',
     'widen'
 ]

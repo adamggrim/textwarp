@@ -36,7 +36,6 @@ __all__ = [
     'from_binary',
     'from_hexadecimal',
     'from_morse',
-    'from_zalgo',
     'hyphen_to_en',
     'hyphens_to_em',
     'ordinal_to_cardinal',
@@ -61,6 +60,7 @@ __all__ = [
     'to_snake_case',
     'to_title_case',
     'to_zalgo',
+    'unzalgo',
     'widen'
 ]
 
@@ -100,11 +100,6 @@ def from_hexadecimal(text: str) -> str:
 def from_morse(text: str) -> str:
     """Convert a string from Morse code."""
     return encoding.from_morse(text)
-
-
-def from_zalgo(text: str) -> str:
-    """Remove Zalgo diacritics from a string."""
-    return effects.from_zalgo(text)
 
 
 def hyphen_to_en(text: str) -> str:
@@ -314,6 +309,11 @@ def to_title_case(content: str | Doc) -> str:
 def to_zalgo(text: str) -> str:
     """Convert a string to Zalgo text."""
     return effects.to_zalgo(text)
+
+
+def unzalgo(text: str) -> str:
+    """Remove Zalgo diacritics from a string."""
+    return effects.unzalgo(text)
 
 
 def widen(text: str) -> str:

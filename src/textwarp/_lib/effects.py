@@ -6,10 +6,10 @@ from random import choice, randint, shuffle
 import regex as re
 
 __all__ = [
-    'from_zalgo',
     'randomize',
     'reverse',
     'to_zalgo',
+    'unzalgo',
     'widen'
 ]
 
@@ -30,14 +30,6 @@ DOWN_MARKS = tuple(
 )
 
 _GRAPHEME_PATTERN = re.compile(r'\X')
-
-
-def from_zalgo(text: str) -> str:
-    """Remove Zalgo diacritics from a string."""
-    return ''.join(
-        char for char in text
-        if not unicodedata.combining(char)
-    )
 
 
 def randomize(text: str) -> str:
@@ -66,6 +58,14 @@ def to_zalgo(text: str) -> str:
                 result.append(choice(DOWN_MARKS))
 
     return ''.join(result)
+
+
+def unzalgo(text: str) -> str:
+    """Remove Zalgo diacritics from a string."""
+    return ''.join(
+        char for char in text
+        if not unicodedata.combining(char)
+    )
 
 
 def widen(text: str) -> str:
