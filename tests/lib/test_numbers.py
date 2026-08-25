@@ -20,9 +20,9 @@ def test_cardinal_to_ordinal_isolated(cardinal, expected_ordinal):
 
 
 def test_cardinal_to_ordinal_in_text():
-    text = 'It happens in the 1 scene of the 3 act.'
+    original = 'It happens in the 1 scene of the 3 act.'
     expected = 'It happens in the 1st scene of the 3rd act.'
-    assert cardinal_to_ordinal(text) == expected
+    assert cardinal_to_ordinal(original) == expected
 
 
 def test_cardinal_to_ordinal_ignores_decimals():
@@ -40,6 +40,6 @@ def test_ordinal_to_cardinal_isolated(ordinal, expected_cardinal):
 
 
 def test_ordinal_to_cardinal_in_text():
-    text = '9th concentric circles'
+    original = '9th concentric circles'
     expected = '9 concentric circles'
-    assert ordinal_to_cardinal(text) == expected
+    assert ordinal_to_cardinal(original) == expected

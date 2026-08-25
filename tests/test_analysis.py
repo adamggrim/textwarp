@@ -168,7 +168,7 @@ def test_count_words():
 
 
 def test_extract_uax29_words():
-    text = (
+    original = (
         'it’s\n'
         'spring\n'
         'and\n\n'
@@ -177,7 +177,7 @@ def test_extract_uax29_words():
         'balloonMan         whistles'
     )
 
-    words = _extract_uax29_words(text)
+    words = _extract_uax29_words(original)
 
     assert 'it’s' in words
     assert 'goat' in words

@@ -73,7 +73,7 @@ def test_print_wrapped(monkeypatch, capsys):
         lambda fallback=None: os.terminal_size((20, 24))
     )
 
-    long_text = (
+    text = (
         'It was the best of times, it was the worst of times, it was the age '
         'of wisdom, it was the age of foolishness, it was the epoch of '
         'belief, it was the epoch of incredulity, it was the season of Light, '
@@ -85,7 +85,7 @@ def test_print_wrapped(monkeypatch, capsys):
         'its being received, for good or for evil, in the superlative degree '
         'of comparison only.'
     )
-    print_wrapped(long_text)
+    print_wrapped(text)
 
     captured = capsys.readouterr()
     assert captured.out.startswith('\n')
@@ -102,13 +102,13 @@ def test_print_wrapped_wide_chars(monkeypatch, capsys):
         lambda fallback=None: os.terminal_size((20, 24))
     )
 
-    wide_text = (
+    text = (
         '水 🌊, 土 🪨, 火 🔥, 氣 💨. Long ago, the four nations lived together in '
         'harmony. Then, everything changed when the Fire Nation attacked. '
         'Only the Avatar, master of all four elements, could stop them, but '
         'when the world needed him most, he vanished.'
     )
-    print_wrapped(wide_text)
+    print_wrapped(text)
 
     captured = capsys.readouterr()
     lines = captured.out.strip().split('\n')

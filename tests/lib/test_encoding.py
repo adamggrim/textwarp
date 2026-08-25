@@ -66,16 +66,16 @@ def test_morse_conversion_complex():
 
 
 def test_morse_conversion_unsupported_chars():
-    text = 'A * B'
-    morse = to_morse(text)
+    original = 'A * B'
+    morse = to_morse(original)
 
     assert morse == '.-   -...'
 
 
 def test_morse_conversion_dashes():
     """Test that dashes are normalized to hyphens for Morse code."""
-    text = 'A—Z'
-    morse = to_morse(text)
+    original = 'A—Z'
+    morse = to_morse(original)
 
     assert morse == '.- -....- --..'
 

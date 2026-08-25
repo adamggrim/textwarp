@@ -31,8 +31,8 @@ def test_reverse_handles_symbols():
 
 
 def test_title_case_unicode():
-    text = 'à la recherche du temps perdu'
-    result = to_title_case(text)
+    original = 'à la recherche du temps perdu'
+    result = to_title_case(original)
 
     assert result.startswith('À')
     assert 'du' in result.split()
@@ -56,9 +56,9 @@ def test_all_warping_standard_unicode(warping_func):
     characters without raising `UnicodeEncodeError` or
     `UnicodeDecodeError`.
     """
-    text = 'Die Walküre 🇩🇪 y Don Quijote 🇪🇸'
+    original = 'Die Walküre 🇩🇪 y Don Quijote 🇪🇸'
     try:
-        result = warping_func(text)
+        result = warping_func(original)
         assert isinstance(result, str)
         assert len(result) > 0
     except Exception as e:

@@ -18,14 +18,14 @@ from textwarp._cli.constants.messages import (
 
 
 def test_paste_and_validate(mock_clipboard):
-    expected_text = (
+    expected = (
         'The only limit to the height of your achievements is the reach of '
         'your dreams and your willingness to work for them.'
     )
-    mock_clipboard.copy(expected_text)
+    mock_clipboard.copy(expected)
     result = _paste_and_validate()
 
-    assert result == expected_text
+    assert result == expected
 
 
 def test_paste_and_validate_empty(mock_clipboard, capsys):

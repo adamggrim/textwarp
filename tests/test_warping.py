@@ -187,40 +187,40 @@ def test_deterministic_warping_functions(func, input_str, expected):
 
 
 def test_random_case():
-    input_str = 'Tell all the truth but tell it slant.'
-    result = random_case(input_str)
+    input = 'Tell all the truth but tell it slant.'
+    result = random_case(input)
 
     # Check that the function changes casing while preserving length and
     # characters.
-    assert len(result) == len(input_str)
-    assert result.lower() == input_str.lower()
+    assert len(result) == len(input)
+    assert result.lower() == input.lower()
 
 
 def test_to_zalgo():
-    original_text = (
+    original = (
         'For every sin that he committed, a stain would fleck and wreck its '
         'fairness.'
     )
-    zalgonized_text = to_zalgo(original_text)
+    zalgonized = to_zalgo(original)
 
     # Zalgonized text should be longer than the original.
-    assert len(zalgonized_text) > len(original_text)
+    assert len(zalgonized) > len(original)
 
-    assert unzalgo(zalgonized_text) == original_text
+    assert unzalgo(zalgonized) == original
 
 
 def test_to_zalgo_unicode():
-    original_text = (
+    original = (
         'Un rire de démon, un rire qu’on ne peut avoir que lorsqu’on n’est '
         'plus homme, éclata sur le visage livide du prêtre.'
     )
-    zalgonized_text = to_zalgo(original_text)
+    zalgonized = to_zalgo(original)
 
-    cleaned_text = unzalgo(zalgonized_text)
+    cleaned = unzalgo(zalgonized)
 
     assert (
-        unicodedata.normalize('NFC', cleaned_text)
-        == unicodedata.normalize('NFC', original_text)
+        unicodedata.normalize('NFC', cleaned)
+        == unicodedata.normalize('NFC', original)
     )
 
 

@@ -44,11 +44,11 @@ def test_expand_unambiguous_contraction():
 
 
 def test_expand_contractions():
-    text = (
+    original = (
         'Ain’t it just like the night to play tricks when you’re trying to be '
         'so quiet?'
     )
-    doc = process_as_doc(text)
+    doc = process_as_doc(original)
 
     result = expand_contractions(doc)
 
@@ -59,11 +59,11 @@ def test_expand_contractions():
 
 
 def test_expand_contractions_no_matches():
-    text = (
+    original = (
         'I exist as I am, that is enough.'
     )
-    doc = process_as_doc(text)
+    doc = process_as_doc(original)
 
     result = expand_contractions(doc)
 
-    assert result == text
+    assert result == original

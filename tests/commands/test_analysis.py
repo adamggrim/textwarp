@@ -76,9 +76,9 @@ def test_sentence_count():
 
 def test_time_to_read(simulate_input, capsys):
     simulate_input(['wrong', '250'])
-    dummy_text = 'A Brief History of Time ' * 237
+    text = 'A Brief History of Time ' * 237
 
-    result = analysis.time_to_read(dummy_text)
+    result = analysis.time_to_read(text)
     captured = capsys.readouterr()
 
     assert ENTER_VALID_NUMBER_PROMPT in captured.out
