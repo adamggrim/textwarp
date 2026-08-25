@@ -18,27 +18,30 @@ def _dummy_reverse(text: str) -> str:
 
 def test_apply_pipeline_analysis(monkeypatch):
     """
-    Test that an analysis command stops the pipeline and returns `None`.
+    Test that analysis commands freeze the text stream and join outputs.
     """
     monkeypatch.setattr(
         'textwarp._cli.spinner.run_with_spinner',
         lambda f, *args, **kwargs: f(*args, **kwargs)
     )
-    analysis_called = False
 
-    def mock_analysis(text):
-        nonlocal analysis_called
-        analysis_called = True
+    def mock_word_count(text):
+        return f'Word count: {len(text.split())}'
+
+    def mock_char_count(text):
+        return f'Character count: {len(text)}'
 
     test_pipeline = [
-        ('word-count', mock_analysis),
-        ('lowercase', _dummy_lower)
+        ('lowercase', _dummy_lower),
+        ('word-count', mock_word_count),
+        ('char-count', mock_char_count)
     ]
 
-    result = pipeline.apply_pipeline('test text', test_pipeline)
+    result = pipeline.apply_pipeline('Test text', test_pipeline)
 
-    assert result is None
-    assert analysis_called is True
+    assert 'Word count: 2' in result
+    assert 'Character count: 9' in result
+    assert result == 'Word count: 2\nCharacter count: 9'
 
 
 def test_apply_pipeline_clear(monkeypatch):
@@ -109,8 +112,8 @@ def test_build_valid_pipeline():
     commands.
     """
     parser = argparse.ArgumentParser()
-    argv = ['textwarp', '--strip', '--lowercase', '--snake-case']
-    pipeline_result = pipeline.build_pipeline(argv, parser)
+    active_cmds = ['strip', 'lowercase', 'snake-case']
+    pipeline_result = pipeline.build_pipeline(active_cmds, parser)
 
     assert len(pipeline_result) == 3
     cmd_names = [cmd[0] for cmd in pipeline_result]
@@ -119,8 +122,8 @@ def test_build_valid_pipeline():
 
 def test_build_valid_single_command():
     parser = argparse.ArgumentParser()
-    argv = ['textwarp', '--camel-case']
-    pipeline_result = pipeline.build_pipeline(argv, parser)
+    active_cmds = ['camel-case']
+    pipeline_result = pipeline.build_pipeline(active_cmds, parser)
 
     assert len(pipeline_result) == 1
     cmd_name, func = pipeline_result[0]

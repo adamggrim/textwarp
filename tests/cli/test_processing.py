@@ -154,7 +154,7 @@ def test_process_piped_mode_copy_flag(
 
 def test_process_piped_mode_warping():
     child = pexpect.spawn(
-        f'{sys.executable} -m textwarp --lowercase', encoding='utf-8'
+        f'{sys.executable} -m textwarp lowercase', encoding='utf-8'
     )
     child.sendline('Piped text')
     child.sendeof()

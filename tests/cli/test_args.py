@@ -4,9 +4,8 @@ import pytest
 
 from textwarp._cli.args import (
     ARGS_MAP,
-    CASING_COMMANDS,
     MUTUALLY_EXCLUSIVE_COMMANDS,
-    SEPARATOR_COMMANDS,
+    REPLACEMENT_COMMANDS,
     _lazy_load
 )
 
@@ -41,23 +40,17 @@ def test_args_map_structure():
 def test_command_sets_validity():
     all_mapped_commands = set(ARGS_MAP.keys())
 
-    assert CASING_COMMANDS.issubset(all_mapped_commands), (
-        'Unknown command in CASING_COMMANDS.'
-    )
-    assert SEPARATOR_COMMANDS.issubset(all_mapped_commands), (
-        'Unknown command in SEPARATOR_COMMANDS.'
-    )
     assert MUTUALLY_EXCLUSIVE_COMMANDS.issubset(all_mapped_commands), (
-        'Unknown command in MUTUALLY_EXCLUSIVE_COMMANDS.'
+        'Unknown command in `MUTUALLY_EXCLUSIVE_COMMANDS`.'
+    )
+    assert REPLACEMENT_COMMANDS.issubset(all_mapped_commands), (
+        'Unknown command in `REPLACEMENT_COMMANDS`.'
     )
 
 
 def test_mutually_exclusive_sets():
-    assert CASING_COMMANDS.isdisjoint(MUTUALLY_EXCLUSIVE_COMMANDS), (
-        'Overlap found between casing and mutually exclusive commands.'
-    )
-    assert SEPARATOR_COMMANDS.isdisjoint(MUTUALLY_EXCLUSIVE_COMMANDS), (
-        'Overlap found between separator and mutually exclusive commands.'
+    assert REPLACEMENT_COMMANDS.isdisjoint(MUTUALLY_EXCLUSIVE_COMMANDS), (
+        'Overlap between replacement and mutually exclusive commands.'
     )
 
 

@@ -9,7 +9,7 @@ from textwarp._cli.parsing import parse_args
 
 
 def test_parse_args_copy_flag_default_false(monkeypatch):
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--uppercase'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'uppercase'])
     parsed_args = parse_args()
 
     assert parsed_args.copy_to_clipboard is False
@@ -19,7 +19,7 @@ def test_parse_args_copy_flag_long(monkeypatch):
     """
     Test that the long `--copy` flag sets `copy_to_clipboard` to `True`.
     """
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case', '--copy'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'snake-case', '--copy'])
     parsed_args = parse_args()
 
     assert parsed_args.copy_to_clipboard is True
@@ -29,14 +29,14 @@ def test_parse_args_copy_flag_short(monkeypatch):
     """
     Test that the short `-c` flag sets `copy_to_clipboard` to `True`.
     """
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-c'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'camel-case', '-c'])
     parsed_args = parse_args()
 
     assert parsed_args.copy_to_clipboard is True
 
 
 def test_parse_args_lang_argument(monkeypatch):
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--camel-case', '-l', 'fr'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'camel-case', '-l', 'fr'])
     parsed_args = parse_args()
 
     assert len(parsed_args.pipeline) == 1
@@ -45,7 +45,7 @@ def test_parse_args_lang_argument(monkeypatch):
 
 
 def test_parse_args_lang_default(monkeypatch):
-    monkeypatch.setattr(sys, 'argv', ['textwarp', '--snake-case'])
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'snake-case'])
     parsed_args = parse_args()
 
     assert parsed_args.lang == 'en'

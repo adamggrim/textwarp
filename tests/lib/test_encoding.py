@@ -24,6 +24,14 @@ def test_binary_conversion():
     assert from_binary(binary) == original
 
 
+def test_binary_invalid_input_pass_through():
+    text = (
+        'Gottfried Wilhelm 01001100 01100101 01101001 01100010 01101110 '
+        '01101001 01111010'
+    )
+    assert from_binary(text) == text
+
+
 def test_hexadecimal_conversion():
     original = 'This only is the witchcraft I have used.'
     hex_str = to_hexadecimal(original)
@@ -63,6 +71,15 @@ def test_morse_conversion_complex():
     assert morse == expected
     assert from_morse(morse) == text.upper()
     assert from_morse(morse_irreg_spacing) == text.upper()
+
+
+def test_morse_invalid_input_pass_through():
+    text = (
+        'We intend to begin on the first of February unrestricted submarine '
+        'warfare. We shall endeavor in spite of this to keep the United '
+        'States of America neutral.'
+    )
+    assert from_morse(text) == text
 
 
 def test_morse_conversion_unsupported_chars():
