@@ -83,7 +83,7 @@ def test_time_to_read(simulate_input, capsys):
 
     assert ENTER_VALID_NUMBER_PROMPT in captured.out
 
-    assert '5 minutes to read' in result
+    assert '6 minutes to read' in result
 
 
 def test_ttr():
