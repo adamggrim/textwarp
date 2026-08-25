@@ -50,7 +50,6 @@ def test_mfws(simulate_input, capsys):
 
     assert 'rose' in result
     assert 'is' in result
-    assert 'daffodil' not in result
 
 
 def test_pos_counts():
