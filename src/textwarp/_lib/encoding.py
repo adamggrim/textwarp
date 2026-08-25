@@ -69,10 +69,17 @@ def from_binary(binary_text: str) -> str:
         binary_text: The space-separated binary string to convert.
 
     Returns:
-        str: The converted string.
+        str: The converted string, or the original string if decoding fails.
     """
     binary_chars = binary_text.split()
-    decoded_chars = [chr(int(binary, 2)) for binary in binary_chars]
+    decoded_chars: list[str] = []
+
+    for binary in binary_chars:
+        try:
+            decoded_chars.append(chr(int(binary, 2)))
+        except ValueError:
+            return binary_text
+
     return ''.join(decoded_chars)
 
 
@@ -84,10 +91,14 @@ def from_hexadecimal(text: str) -> str:
         text: The hexadecimal string to convert.
 
     Returns:
-        str: The converted string.
+        str: The converted string, or the original string if decoding
+            fails.
     """
     normalized_text = text.replace(' ', '')
-    return bytes.fromhex(normalized_text).decode('utf-8')
+    try:
+        return bytes.fromhex(normalized_text).decode('utf-8')
+    except ValueError:
+        return text
 
 
 def from_morse(text: str) -> str:
@@ -100,22 +111,28 @@ def from_morse(text: str) -> str:
     Returns:
         str: The converted string (in all caps).
     """
-    text = text.strip()
-    word_gap_pattern, char_gap_pattern = _get_morse_spacing_patterns(text)
+    stripped_text = text.strip()
+    if not stripped_text:
+        return text
 
-    words = word_gap_pattern.split(text)
+    word_gap_pattern, char_gap_pattern = _get_morse_spacing_patterns(
+        stripped_text
+    )
+    words = word_gap_pattern.split(stripped_text)
+
     decoded_words: list[str] = []
-
     reversed_morse_map = get_morse_reversed_map()
 
     for w in words:
         char_codes: list[str] = char_gap_pattern.split(w)
+        decoded_word_chars: list[str] = []
 
-        decoded_word = ''.join(
-            reversed_morse_map.get(code, '') for code in char_codes
-        )
-        if decoded_word:
-            decoded_words.append(decoded_word)
+        for code in char_codes:
+            if code not in reversed_morse_map:
+                return text
+            decoded_word_chars.append(reversed_morse_map[code])
+
+        decoded_words.append(''.join(decoded_word_chars))
 
     return ' '.join(decoded_words)
 

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support for newlines and carriage returns in CLI replacement text.
 
 ### Changed
+* Moved CLI to a chained positional pipeline. Commands no longer require the `--` prefix.
 * Made pyperclip dependency optional.
 * Updated sentence casing algorithm.
 * Add wcwidth dependency to handle multi-width characters.

@@ -48,7 +48,7 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 2. **Run the command**
 
-    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp --snake-case`
+    Once the text is copied to the clipboard, call `textwarp` from the command line. Enter a required argument for the desired clipboard modification: `textwarp snake-case`
 
 3. **Paste text from the clipboard**
 
@@ -75,7 +75,7 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 Process text files directly by passing them as arguments. Use the `-o` or `--output` flag to save the results to a new file.
 
 ```bash
-textwarp --uppercase input.txt -o output.txt
+textwarp uppercase input.txt -o output.txt
 ```
 
 ### Piping
@@ -83,14 +83,14 @@ textwarp --uppercase input.txt -o output.txt
 `textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or be copied to the clipboard.
 
 ```bash
-echo "is anyone here?" | textwarp --snake-case | textwarp --uppercase
+echo "is anyone here?" | textwarp snake-case uppercase
 ```
 
 ### Inline find and replace
-Use the `-f` (`--find`) and `-r` (`--replace`) to directly find and replace commands.
+Use the `-f` (`--find`) and `-r` (`--replace`) flags coupled with your replacement command.
 
 ```bash
-textwarp --replace-text -f "foul" -r "fair" macbeth.txt
+textwarp replace-text -f "foul" -r "fair" macbeth.txt
 ```
 </details>
 
@@ -99,68 +99,73 @@ textwarp --replace-text -f "foul" -r "fair" macbeth.txt
 <details>
 <summary>(Click to expand)</summary>
 
-For a comprehensive list of `textwarp` arguments, type `textwarp -h` or `textwarp --help`:
+For a comprehensive list of `textwarp` commands, type `textwarp -h` or `textwarp --help`:
 ```
--h, --help               show this help message and exit
---version                show version number and exit
--l LANG, --lang LANG     set the language locale
--m, --markdown           parse text as Markdown and preserve formatting
--o FILE, --output FILE   optional path to write the output file
--c, --copy               copy the output to the clipboard
---debug                  enable debug mode to show full error tracebacks
--f FIND, --find FIND     text, case or regular expression to find
--r TEXT, --replace TEXT  replacement text
---alternating-caps       cOnVeRt To AlTeRnAtInG cApS
---binary                 convert to binary
---camel-case             convertToCamelCase
---capitalize             Capitalize The First Character Of Each Word
---cardinal               convert ordinal numbers to cardinal numbers
---char-count             count characters
---clear                  clear clipboard text
---curly-quotes           convert "straight quotes" to “curly quotes”
---dot-case               convert.to.dot.case
---entity-counts          get most frequent entities
---expand-contractions    expand contractions
---from-binary            convert from binary
---from-hexadecimal       convert from hexadecimal
---from-morse             convert from Morse code
---hexadecimal            convert to hexadecimal
---hyphens-to-em          convert consecutive hyphens to em dashes
---hyphens-to-en          convert hyphens to en dashes
---kebab-case             convert-to-kebab-case
---line-count             count lines
---lowercase              convert to lowercase
---mfws                   get most frequent words
---morse                  convert to Morse code
---ordinal                convert cardinal numbers to ordinal numbers
---pascal-case            ConvertToPascalCase
---plain-text             convert to plain text
---pos-counts             count parts of speech
---punct-to-inside        "move punctuation inside quotation marks."
---punct-to-outside       "move punctuation outside quotation marks".
---random-case            randomize the casing of each character
---randomize              randomize characters
---redact                 redact text
---replace-case           find and replace a case
---replace-regex          find and replace a regular expression
---replace-text           find and replace text
---reverse                reverse text
---sentence-case          Convert to sentence case.
---sentence-count         count sentences
---single-spaces          convert consecutive spaces to a single space
---snake-case             convert_to_snake_case
---straight-quotes        convert “curly quotes” to "straight quotes"
---strip                  strip leading and trailing whitespace
---strip-html             strip HTML tags
---swapcase               swap the case of all alphabetical characters
---time-to-read           calculate time to read
---title-case             Convert to Title Case
---ttr                    calculate type-token ratio
---unzalgo                remove Zalgo diacritics
---uppercase              CONVERT TO ALL CAPS
---widen                  w i d e n  t e x t
---word-count             count words
---zalgo                  c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
+Specify a sequence of text warping or analysis commands to apply to the text.
+
+options:
+  -h, --help               show this help message and exit
+  --version                show version number and exit
+  -l LANG, --lang LANG     set the language locale
+  -m, --markdown           parse text as Markdown and preserve formatting
+  -o FILE, --output FILE   optional path to write the output file
+  -c, --copy               copy the output to the clipboard
+  --debug                  enable debug mode to show full error tracebacks
+  -f FIND, --find FIND     text, case or regular expression to find
+  -r TEXT, --replace TEXT  replacement text
+
+commands:
+  alternating-caps     cOnVeRt To AlTeRnAtInG cApS
+  binary               convert to binary
+  camel-case           convertToCamelCase
+  capitalize           Capitalize The First Character Of Each Word
+  cardinal             convert ordinal numbers to cardinal numbers
+  char-count           count characters
+  clear                clear clipboard text
+  curly-quotes         convert "straight quotes" to “curly quotes”
+  dot-case             convert.to.dot.case
+  entity-counts        get most frequent entities
+  expand-contractions  expand contractions
+  from-binary          convert from binary
+  from-hexadecimal     convert from hexadecimal
+  from-morse           convert from Morse code
+  hexadecimal          convert to hexadecimal
+  hyphens-to-em        convert consecutive hyphens to em dashes
+  hyphens-to-en        convert hyphens to en dashes
+  kebab-case           convert-to-kebab-case
+  line-count           count lines
+  lowercase            convert to lowercase
+  mfws                 get most frequent words
+  morse                convert to Morse code
+  ordinal              convert cardinal numbers to ordinal numbers
+  pascal-case          ConvertToPascalCase
+  plain-text           convert to plain text
+  pos-counts           count parts of speech
+  punct-to-inside      "move punctuation inside quotation marks."
+  punct-to-outside     "move punctuation outside quotation marks".
+  random-case          randomize the casing of each character
+  randomize            randomize characters
+  redact               redact text
+  replace-case         find and replace a case
+  replace-regex        find and replace a regular expression
+  replace-text         find and replace text
+  reverse              reverse text
+  sentence-case        Convert to sentence case.
+  sentence-count       count sentences
+  single-spaces        convert consecutive spaces to a single space
+  snake-case           convert_to_snake_case
+  straight-quotes      convert “curly quotes” to "straight quotes"
+  strip                strip leading and trailing whitespace
+  strip-html           strip HTML tags
+  swapcase             swap the case of all alphabetical characters
+  time-to-read         calculate time to read
+  title-case           Convert to Title Case
+  ttr                  calculate type-token ratio
+  unzalgo              remove Zalgo diacritics
+  uppercase            CONVERT TO ALL CAPS
+  widen                w i d e n  t e x t
+  word-count           count words
+  zalgo                c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
 ```
 
 ### Markdown
@@ -303,7 +308,7 @@ textwarp/
   ├── __main__.py: The entry point of the package, containing the main loop
   ├── analysis.py: Public functions for analyzing text
   └── warping.py: Public functions for warping text
-  ```
+```
 </details>
 
 ## Usage
@@ -319,7 +324,7 @@ Follow these steps to run `textwarp`:
     ```
     *Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
 
-3. **Run the program**: Run the program by calling `textwarp` from the command line with a required argument: `textwarp --binary`
+3. **Run the program**: Run the program by calling `textwarp` from the command line with a pipeline command: `textwarp binary`
 
 ## License
 

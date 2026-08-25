@@ -16,7 +16,13 @@ from textwarp._cli.args import (
     ARGS_MAP,
     SPACY_COMMANDS
 )
-from textwarp._cli.constants.messages import MODIFIED_TEXT_COPIED_MSG
+from textwarp._cli.constants.messages import (
+    FILE_WRITE_ERROR_MSG,
+    FILE_WRITE_SUCCESS_MSG,
+    INTERACTIVE_CMD_ERROR_MSG,
+    MODIFIED_TEXT_COPIED_MSG,
+    REPLACEMENT_CMD_ERROR_MSG
+)
 from textwarp._cli.runners import clear_clipboard
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
@@ -41,6 +47,8 @@ def _run_pipeline_segment(
     replacement_arg: str | None
 ) -> str | None:
     """Helper to sequentially apply a list of commands to text."""
+    analysis_results: list[str] = []
+
     for cmd_name, func in pipeline:
         if cmd_name in SPACY_COMMANDS:
             if isinstance(content, str):
@@ -52,7 +60,7 @@ def _run_pipeline_segment(
             clear_clipboard()
             return None
         elif cmd_name in ANALYSIS_COMMANDS:
-            return func(content)
+            analysis_results.append(func(content))
         else:
             func_name = cmd_name.replace('-', '_')
             if (
@@ -67,6 +75,9 @@ def _run_pipeline_segment(
                 )
             else:
                 content = func(content)
+
+    if analysis_results:
+        return '\n'.join(analysis_results)
 
     return content if isinstance(content, str) else content.text
 
@@ -133,13 +144,13 @@ def apply_pipeline(
 
 
 def build_pipeline(
-    argv: list[str], parser: argparse.ArgumentParser
+    active_cmds: list[str], parser: argparse.ArgumentParser
 ) -> Pipeline:
     """
     Construct the execution pipeline from command-line arguments.
 
     Args:
-        argv: The list of command-line arguments.
+        active_cmds: The ordered list of valid commands.
         parser: The `ArgumentParser` instance used to display error
             messages or help text.
 
@@ -151,15 +162,9 @@ def build_pipeline(
     """
     pipeline: Pipeline = []
 
-    for arg in argv[1:]:
-        if not arg.startswith('-'):
-            continue
-
-        cmd_key = arg.lstrip('-')
-
-        if cmd_key in ARGS_MAP:
-            func = ARGS_MAP[cmd_key][0]
-            pipeline.append((cmd_key, func))
+    for cmd_key in active_cmds:
+        func = ARGS_MAP[cmd_key][0]
+        pipeline.append((cmd_key, func))
 
     if not pipeline:
         parser.print_help(sys.stderr)
@@ -196,16 +201,12 @@ def handle_output(
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(result)
             print_wrapped(
-                _(
-                    "Modified text successfully written to '{output_file}'."
-                ).format(output_file=output_file)
+                _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
             )
         except Exception as e:
             if debug:
                 raise
-            print_wrapped(
-                _('Error writing to output file: {error}').format(error=e)
-            )
+            print_wrapped(_(FILE_WRITE_ERROR_MSG).format(error=e))
             sys.exit(1)
     else:
         default_action(result)
@@ -314,9 +315,9 @@ def route_text(
         sys.exit(1)
 
     if is_analysis_pipeline(pipeline):
-        clean_text = strip_markdown(text)
+        stripped = strip_markdown(text)
         return apply_pipeline(
-            clean_text, pipeline, arg_to_replace, replacement_arg
+            stripped, pipeline, arg_to_replace, replacement_arg
         )
     else:
         def transform_chunk(chunk: str) -> str:
@@ -356,20 +357,11 @@ def validate_piped_commands(
 
         if func_name in INTEGER_PROMPT_FUNC_NAMES:
             print_wrapped(
-                _(
-                    "The '--{cmd_name}' command requires interactive input "
-                    "and cannot be used in file or piped mode."
-                ).format(cmd_name=cmd_name)
+                _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd_name)
             )
             sys.exit(1)
 
         if func_name in REPLACEMENT_FUNC_NAMES:
             if arg_to_replace is None or replacement_arg is None:
-                print_wrapped(
-                    _(
-                        'Replacement commands require --find and '
-                        '--replace arguments when used in file or piped '
-                        'mode.'
-                    )
-                )
+                print_wrapped(_(REPLACEMENT_CMD_ERROR_MSG))
                 sys.exit(1)

@@ -58,11 +58,19 @@ def parse_args() -> ParsedArgs:
     except PackageNotFoundError:
         __version__ = _('unknown (not installed)')
 
+    epilog_lines = [_('commands:')]
+    for arg_key, (func, help_msg) in sorted(ARGS_MAP.items()):
+        epilog_lines.append(f'  {arg_key:<20} {_(help_msg)}')
+
     parser = argparse.ArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
         description=_(HELP_DESCRIPTION),
-        usage=_('%(prog)s [options] [input_files ...] [-o output_file]')
+        usage=_(
+            '%(prog)s [options] [commands ...] [input_files ...] '
+            '[-o output_file]'
+        ),
+        epilog='\n'.join(epilog_lines)
     )
 
     parser.add_argument(
@@ -123,18 +131,11 @@ def parse_args() -> ParsedArgs:
         help=_('replacement text')
     )
 
-    for arg_key, (_func, help_msg) in ARGS_MAP.items():
-        parser.add_argument(
-            f'--{arg_key}',
-            action='store_true',
-            help=_(help_msg)
-        )
-
     parser.add_argument(
-        'input_files',
+        'commands',
         nargs='*',
         type=str,
-        help=_('optional path to one or more input text files')
+        help=argparse.SUPPRESS
     )
 
     # If there are no arguments or piped input, print the help messages
@@ -145,13 +146,16 @@ def parse_args() -> ParsedArgs:
 
     args: argparse.Namespace = parser.parse_args()
 
-    validate_command_combinations(args, parser)
-    pipeline = build_pipeline(sys.argv, parser)
+    active_cmds = [p for p in args.commands if p in ARGS_MAP]
+    input_files = [p for p in args.commands if p not in ARGS_MAP]
+
+    validate_command_combinations(active_cmds, args, parser)
+    pipeline = build_pipeline(active_cmds, parser)
 
     return ParsedArgs(
         pipeline=pipeline,
         lang=args.lang,
-        input_files=args.input_files,
+        input_files=input_files,
         output_file=args.output_file,
         markdown=args.markdown,
         find=args.find,

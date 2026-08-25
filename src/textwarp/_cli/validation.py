@@ -5,11 +5,17 @@ import gettext
 import regex as re
 
 from textwarp._cli.args import (
+    ANALYSIS_COMMANDS,
     ARGS_MAP,
-    CASING_COMMANDS,
     MUTUALLY_EXCLUSIVE_COMMANDS,
-    REPLACEMENT_COMMANDS,
-    SEPARATOR_COMMANDS
+    REPLACEMENT_COMMANDS
+)
+from textwarp._cli.constants.messages import (
+    ANALYSIS_ORDER_ERROR_MSG,
+    EXCLUSIVE_CMD_ERROR_MSG,
+    FIND_REPLACE_ARG_ERROR_MSG,
+    MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
+    MULTIPLE_REPLACEMENT_ERROR_MSG
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
@@ -82,6 +88,7 @@ def validate_clipboard(clipboard: str) -> None:
 
 
 def validate_command_combinations(
+    active_cmds: list[str],
     args: argparse.Namespace,
     parser: argparse.ArgumentParser
 ) -> None:
@@ -89,6 +96,7 @@ def validate_command_combinations(
     Validate that combined command-line arguments do not conflict.
 
     Args:
+        active_cmds: The ordered list of active commands.
         args: The parsed command-line arguments.
         parser: The `ArgumentParser` instance used to display error
             messages.
@@ -96,61 +104,40 @@ def validate_command_combinations(
     Raises:
         SystemExit: If there is any invalid combination of arguments.
     """
-    active_cmds = [
-        key for key in ARGS_MAP
-        if getattr(args, key.replace('-', '_'), False)
-    ]
-
-    active_separators = [c for c in active_cmds if c in SEPARATOR_COMMANDS]
-    active_casings = [c for c in active_cmds if c in CASING_COMMANDS]
     active_mutually_exclusives = [
         c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
     ]
+    active_replacements = [c for c in active_cmds if c in REPLACEMENT_COMMANDS]
 
-    if len(active_separators) > 1:
-        parser.error(
-            _('Cannot combine multiple separator styles: {styles}').format(
-                styles=', '.join(active_separators)
+    saw_analysis = False
+    for cmd in active_cmds:
+        if cmd in ANALYSIS_COMMANDS:
+            saw_analysis = True
+        elif saw_analysis:
+            parser.error(
+                _(ANALYSIS_ORDER_ERROR_MSG).format(cmd=cmd)
             )
-        )
-    if len(active_casings) > 1:
-        parser.error(
-            _('Cannot combine multiple casing styles: {styles}').format(
-                styles=', '.join(active_casings)
-            )
-        )
+
     if len(active_mutually_exclusives) > 1:
         parser.error(
-            _('Cannot combine multiple exclusive commands: {commands}').format(
+            _(MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG).format(
                 commands=', '.join(active_mutually_exclusives)
             )
         )
-    if active_mutually_exclusives and (active_separators or active_casings):
+    if active_mutually_exclusives and len(active_cmds) > 1:
         cmd = active_mutually_exclusives[0]
-        msg = _(
-            "Command '{cmd}' cannot be combined with casing or separator "
-            'commands.'
-        )
-        parser.error(msg.format(cmd=cmd))
+        parser.error(_(EXCLUSIVE_CMD_ERROR_MSG).format(cmd=cmd))
 
-    is_replacement_cmd = any(c in REPLACEMENT_COMMANDS for c in active_cmds)
-    if (args.find or args.replace) and not is_replacement_cmd:
+    if len(active_replacements) > 1:
         parser.error(
-            _(
-                'The --find (-f) and --replace (-r) arguments can only '
-                'be used with replacement commands (--replace, '
-                '--replace-case, --replace-regex).'
+            _(MULTIPLE_REPLACEMENT_ERROR_MSG).format(
+                commands=', '.join(active_replacements)
             )
         )
 
-    if args.markdown:
-        if active_separators:
-            parser.error(
-                _(
-                    'The --markdown flag cannot be combined with manual '
-                    'separator commands: {styles}'
-                ).format(styles=', '.join(active_separators))
-            )
+    is_replacement_cmd = len(active_replacements) > 0
+    if (args.find or args.replace) and not is_replacement_cmd:
+        parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
 
 
 def validate_regex(regex: str) -> None:

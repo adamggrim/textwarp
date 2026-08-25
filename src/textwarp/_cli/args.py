@@ -13,10 +13,8 @@ from textwarp._core.exceptions import MissingDependencyError
 __all__ = [
     'ANALYSIS_COMMANDS',
     'ARGS_MAP',
-    'CASING_COMMANDS',
     'MUTUALLY_EXCLUSIVE_COMMANDS',
     'REPLACEMENT_COMMANDS',
-    'SEPARATOR_COMMANDS',
     'SPACY_COMMANDS'
 ]
 
@@ -257,54 +255,14 @@ ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
     'word-count'
 })
 
-# Can be combined with `SEPARATOR_COMMANDS`. Mutually exclusive with
-# each other.
-CASING_COMMANDS: Final[frozenset[str]] = frozenset({
-    'alternating-caps',
-    'capitalize',
-    'lowercase',
-    'random-case',
-    'sentence-case',
-    'swapcase',
-    'title-case',
-    'uppercase'
-})
-
 # Cannot be combined with any other warping or analysis commands.
-MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({
-    'binary',
-    'from-binary',
-    'hexadecimal',
-    'from-hexadecimal',
-    'morse',
-    'from-morse',
-    'char-count',
-    'entity-counts',
-    'line-count',
-    'mfws',
-    'pos-counts',
-    'sentence-count',
-    'time-to-read',
-    'ttr',
-    'word-count'
-})
+MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({'clear',})
 
+# Mutually exclusive with each other.
 REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
     'replace-case',
     'replace-regex',
     'replace-text'
-})
-
-# Can be combined with `CASING_COMMANDS`. Mutually exclusive with each
-# other.
-SEPARATOR_COMMANDS: Final[frozenset[str]] = frozenset({
-    'camel-case',
-    'dot-case',
-    'kebab-case',
-    'pascal-case',
-    'snake-case',
-    'single-spaces',
-    'widen'
 })
 
 # Commands that require spaCy installation.

@@ -4,6 +4,11 @@ import gettext
 import sys
 from collections.abc import Callable
 
+from textwarp._cli.constants.messages import (
+    BINARY_FILE_ERROR_MSG,
+    FILE_ACCESS_ERROR_MSG,
+    PIPED_INPUT_ERROR_MSG
+)
 from textwarp._cli.parsing import ParsedArgs
 from textwarp._cli.pipeline import (
     REPLACEMENT_FUNC_NAMES,
@@ -45,18 +50,13 @@ def process_file_mode(args: ParsedArgs) -> None:
                 text = f.read()
         except UnicodeDecodeError:
             print_wrapped(
-                _(
-                    "Error: '{input_file}' appears to be a binary file. "
-                    'Please provide a valid text file.'
-                ).format(input_file=file_path)
+                _(BINARY_FILE_ERROR_MSG).format(input_file=file_path)
             )
             sys.exit(1)
         except OSError as e:
             print_wrapped(
-                _("Error accessing file '{file_path}': {error}").format(
-                    file_path=file_path,
-                    error=e
-                ))
+                _(FILE_ACCESS_ERROR_MSG).format(file_path=file_path, error=e)
+            )
             sys.exit(1)
 
         if text.endswith('\n'):
@@ -188,7 +188,5 @@ def process_piped_mode(args: ParsedArgs) -> None:
     except Exception as e:
         if args.debug:
             raise
-        print_wrapped(
-            _('Error processing input: {error}').format(error=e)
-        )
+        print_wrapped(_(PIPED_INPUT_ERROR_MSG).format(error=e))
         sys.exit(1)
