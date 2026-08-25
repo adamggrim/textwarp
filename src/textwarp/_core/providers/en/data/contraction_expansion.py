@@ -11,6 +11,7 @@ __all__ = [
     'get_ambiguous_map',
     'get_common_stateless_participles',
     'get_idiomatic_map',
+    'get_infinitive_exceptions',
     'get_unambiguous_map',
     'get_whatcha_are_words',
     'get_whatcha_have_words'

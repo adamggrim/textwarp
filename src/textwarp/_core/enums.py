@@ -14,7 +14,8 @@ __all__ = [
     'ModelPriority',
     'POSTag',
     'PresenceCheckType',
-    'RegexBoundary'
+    'RegexBoundary',
+    'TokenType'
 ]
 
 
