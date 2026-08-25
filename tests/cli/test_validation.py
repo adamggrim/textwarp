@@ -2,7 +2,17 @@
 
 import argparse
 import pytest
+import regex as re
 
+from textwarp._cli.constants.messages import (
+    CASE_EMPTY_ERROR_MSG,
+    CASE_WHITESPACE_ERROR_MSG,
+    CLIPBOARD_EMPTY_ERROR_MSG,
+    CLIPBOARD_WHITESPACE_ERROR_MSG,
+    INVALID_CASE_ERROR_MSG,
+    REGEX_EMPTY_ERROR_MSG,
+    TEXT_EMPTY_ERROR_MSG
+)
 from textwarp._cli.validation import (
     validate_case_name,
     validate_clipboard,
@@ -27,13 +37,19 @@ def test_validate_case_name():
     validate_case_name('snake case')
     validate_case_name('PASCAL')
 
-    with pytest.raises(NoCaseNameError):
+    with pytest.raises(NoCaseNameError, match=re.escape(CASE_EMPTY_ERROR_MSG)):
         validate_case_name('')
 
-    with pytest.raises(WhitespaceCaseNameError):
+    with pytest.raises(
+        WhitespaceCaseNameError,
+        match=re.escape(CASE_WHITESPACE_ERROR_MSG)
+    ):
         validate_case_name('   ')
 
-    with pytest.raises(InvalidCaseNameError):
+    with pytest.raises(
+        InvalidCaseNameError,
+        match=re.escape(INVALID_CASE_ERROR_MSG)
+    ):
         validate_case_name('Jarndyce and Jarndyce')
 
 
@@ -43,10 +59,16 @@ def test_validate_clipboard():
         'the constituting of human virtue.'
     )
 
-    with pytest.raises(EmptyClipboardError):
+    with pytest.raises(
+        EmptyClipboardError,
+        match=re.escape(CLIPBOARD_EMPTY_ERROR_MSG)
+    ):
         validate_clipboard('')
 
-    with pytest.raises(WhitespaceClipboardError):
+    with pytest.raises(
+        WhitespaceClipboardError,
+        match=re.escape(CLIPBOARD_WHITESPACE_ERROR_MSG)
+    ):
         validate_clipboard('   \n \t  ')
 
 
@@ -54,7 +76,7 @@ def test_validate_regex():
     validate_regex(r'^[a-z]+$')
     validate_regex(r'(?<=madeleine)À la recherche du temps perdu')
 
-    with pytest.raises(NoRegexError):
+    with pytest.raises(NoRegexError, match=re.escape(REGEX_EMPTY_ERROR_MSG)):
         validate_regex('')
 
     with pytest.raises(InvalidRegexError):
@@ -65,7 +87,7 @@ def test_validate_text():
     validate_text('Truth will out.')
     validate_text(' ')
 
-    with pytest.raises(NoTextError):
+    with pytest.raises(NoTextError, match=re.escape(TEXT_EMPTY_ERROR_MSG)):
         validate_text('')
 
 def test_validate_command_combinations_mutually_exclusive():

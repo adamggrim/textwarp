@@ -13,9 +13,10 @@ from textwarp._cli.runners import (
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
+    CLIPBOARD_EMPTY_ERROR_MSG,
+    LINUX_XCLIP_WARNING_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
-
 
 def test_paste_and_validate(mock_clipboard):
     expected = (
@@ -33,7 +34,7 @@ def test_paste_and_validate_empty(mock_clipboard, capsys):
     assert _paste_and_validate() is None
 
     captured = capsys.readouterr()
-    assert 'Clipboard is empty.' in captured.out
+    assert CLIPBOARD_EMPTY_ERROR_MSG in captured.out
 
 
 def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
@@ -44,8 +45,13 @@ def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
 
     assert _paste_and_validate() is None
     captured = capsys.readouterr()
-    assert CLIPBOARD_ACCESS_ERROR_MSG in captured.out
-    assert 'sudo apt install xclip' in captured.out
+
+    normalized_out = ' '.join(captured.out.split())
+    expected_error = ' '.join(CLIPBOARD_ACCESS_ERROR_MSG.split())
+    expected_warning = ' '.join(LINUX_XCLIP_WARNING_MSG.split())
+
+    assert expected_error in normalized_out
+    assert expected_warning in normalized_out
 
 
 def test_clear_clipboard(mock_clipboard, capsys):

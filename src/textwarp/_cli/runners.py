@@ -10,7 +10,9 @@ from types import ModuleType
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
-    MODIFIED_TEXT_COPIED_MSG
+    LINUX_XCLIP_WARNING_MSG,
+    MODIFIED_TEXT_COPIED_MSG,
+    UNEXPECTED_CLIPBOARD_ERROR_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import (
@@ -63,15 +65,12 @@ def _paste_and_validate() -> str | None:
     except pyperclip.PyperclipException as e:
         msg = CLIPBOARD_ACCESS_ERROR_MSG + str(e)
         if 'xclip' in str(e) or 'xsel' in str(e):
-            msg += _(
-                "\nOn Linux, you may need to install 'xclip' or 'xsel' "
-                '(e.g., sudo apt install xclip).'
-            )
+            msg += LINUX_XCLIP_WARNING_MSG
         print_wrapped(msg)
         return None
     except Exception:
         _logger.exception('Unexpected clipboard error.')
-        print_wrapped(_('An unexpected error occurred while accessing the clipboard.'))
+        print_wrapped(UNEXPECTED_CLIPBOARD_ERROR_MSG)
         return None
 
 

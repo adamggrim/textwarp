@@ -6,16 +6,22 @@ import regex as re
 
 from textwarp._cli.args import (
     ANALYSIS_COMMANDS,
-    ARGS_MAP,
     MUTUALLY_EXCLUSIVE_COMMANDS,
     REPLACEMENT_COMMANDS
 )
 from textwarp._cli.constants.messages import (
     ANALYSIS_ORDER_ERROR_MSG,
+    CASE_EMPTY_ERROR_MSG,
+    CASE_WHITESPACE_ERROR_MSG,
+    CLIPBOARD_EMPTY_ERROR_MSG,
+    CLIPBOARD_WHITESPACE_ERROR_MSG,
     EXCLUSIVE_CMD_ERROR_MSG,
     FIND_REPLACE_ARG_ERROR_MSG,
+    INVALID_CASE_ERROR_MSG,
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
-    MULTIPLE_REPLACEMENT_ERROR_MSG
+    MULTIPLE_REPLACEMENT_ERROR_MSG,
+    REGEX_EMPTY_ERROR_MSG,
+    TEXT_EMPTY_ERROR_MSG
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.exceptions import (
@@ -34,6 +40,7 @@ _ = gettext.gettext
 __all__ = [
     'validate_case_name',
     'validate_clipboard',
+    'validate_command_combinations',
     'validate_regex',
     'validate_text'
 ]
@@ -57,11 +64,11 @@ def validate_case_name(case_name: str) -> None:
         InvalidCaseNameError: If the input is not a valid case name.
     """
     if case_name == '':
-        raise NoCaseNameError(_('Case input is empty.'))
+        raise NoCaseNameError(_(CASE_EMPTY_ERROR_MSG))
     elif case_name.strip() == '':
-        raise WhitespaceCaseNameError(_('Case contains only whitespace.'))
+        raise WhitespaceCaseNameError(_(CASE_WHITESPACE_ERROR_MSG))
     elif case_name.lower() not in CASE_NAMES_FUNC_MAP:
-        raise InvalidCaseNameError(_('Invalid case.'))
+        raise InvalidCaseNameError(_(INVALID_CASE_ERROR_MSG))
 
 
 def validate_clipboard(clipboard: str) -> None:
@@ -80,11 +87,9 @@ def validate_clipboard(clipboard: str) -> None:
             whitespace.
     """
     if clipboard == '':
-        raise EmptyClipboardError(_('Clipboard is empty.'))
+        raise EmptyClipboardError(_(CLIPBOARD_EMPTY_ERROR_MSG))
     elif clipboard.strip() == '':
-        raise WhitespaceClipboardError(
-            _('Clipboard contains only whitespace.')
-        )
+        raise WhitespaceClipboardError(_(CLIPBOARD_WHITESPACE_ERROR_MSG))
 
 
 def validate_command_combinations(
@@ -156,7 +161,7 @@ def validate_regex(regex: str) -> None:
             expression.
     """
     if regex == '':
-        raise NoRegexError(_('Regex input is empty.'))
+        raise NoRegexError(_(REGEX_EMPTY_ERROR_MSG))
 
     try:
         re.compile(regex)
@@ -175,4 +180,4 @@ def validate_text(text: str) -> None:
         NoTextError: If the text string is empty.
     """
     if text == '':
-        raise NoTextError(_('Text input is empty.'))
+        raise NoTextError(_(TEXT_EMPTY_ERROR_MSG))

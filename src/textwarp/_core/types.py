@@ -7,7 +7,7 @@ from typing import (
     TypedDict
 )
 
-__all__ = ['EntityCasingContext', 'JSONType']
+__all__ = ['EntityCasingContext', 'JSONType', 'Pipeline', 'PipelineItem']
 
 
 class EntityCasingContext(TypedDict, total=False):

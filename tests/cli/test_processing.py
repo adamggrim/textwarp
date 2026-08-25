@@ -6,11 +6,12 @@ import sys
 import pytest
 
 from textwarp._cli import processing
+from textwarp._cli.constants.messages import (
+    BINARY_FILE_ERROR_MSG,
+    FILE_WRITE_SUCCESS_MSG,
+    MODIFIED_TEXT_COPIED_MSG
+)
 from textwarp._cli.parsing import ParsedArgs
-
-
-def _dummy_lower(text: str) -> str:
-    return text.lower()
 
 
 def test_process_file_mode_binary_file(tmp_path, capsys):
@@ -36,7 +37,9 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
 
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
-    assert 'binary file' in captured.out.replace('\n', ' ')
+
+    expected_msg = BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
+    assert expected_msg in captured.out.replace('\n', ' ')
 
 
 def test_process_file_mode_file_not_found(capsys):
@@ -85,7 +88,9 @@ def test_process_file_mode_success(tmp_path, capsys):
 
     assert output_file.read_text(encoding='utf-8') == 'FILE CONTENT'
     captured = capsys.readouterr()
-    assert 'successfully written' in captured.out
+
+    expected_msg = FILE_WRITE_SUCCESS_MSG.format(output_file=str(output_file))
+    assert expected_msg in captured.out.replace('\n', ' ')
 
 
 def test_process_interactive_mode_replacement(monkeypatch):
@@ -149,7 +154,7 @@ def test_process_piped_mode_copy_flag(
     assert mock_clipboard.paste() == 'PIPED TEXT'
 
     captured = capsys.readouterr()
-    assert 'Modified text copied to clipboard.' in captured.out
+    assert MODIFIED_TEXT_COPIED_MSG in captured.out
 
 
 def test_process_piped_mode_warping():
