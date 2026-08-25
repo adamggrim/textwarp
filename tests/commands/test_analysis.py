@@ -76,7 +76,7 @@ def test_sentence_count():
 
 def test_time_to_read(simulate_input, capsys):
     simulate_input(['wrong', '250'])
-    text = 'A Brief History of Time ' * 237
+    text = 'A Brief History of Time ' * 300
 
     result = analysis.time_to_read(text)
     captured = capsys.readouterr()

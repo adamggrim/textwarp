@@ -17,10 +17,12 @@ _MORSE_CHAR_GAP_PATTERN = re.compile(r'(?<=[.-]) (?=[.-])')
 
 
 def test_binary_conversion():
-    original = 'Turing'
+    original = 'Harriot'
     binary = to_binary(original)
 
-    assert binary == '01010100 01110101 01110010 01101001 01101110 01100111'
+    assert binary == (
+        '01001000 01100001 01110010 01110010 01101001 01101111 01110100'
+    )
     assert from_binary(binary) == original
 
 
@@ -33,14 +35,25 @@ def test_binary_invalid_input_pass_through():
 
 
 def test_hexadecimal_conversion():
-    original = 'This only is the witchcraft I have used.'
+    original = (
+        'I saw Sarah Good with the Devil! I saw Goody Osburn with the Devil! '
+        'I saw Bridget Bishop with the Devil!'
+    )
     hex_str = to_hexadecimal(original)
 
     assert hex_str == (
-        '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 69 74 '
-        '63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 73 65 64 2e'
+        '49 20 73 61 77 20 53 61 72 61 68 20 47 6f 6f 64 20 77 69 74 68 20 74 '
+        '68 65 20 44 65 76 69 6c 21 20 49 20 73 61 77 20 47 6f 6f 64 79 20 4f '
+        '73 62 75 72 6e 20 77 69 74 68 20 74 68 65 20 44 65 76 69 6c 21 20 49 '
+        '20 73 61 77 20 42 72 69 64 67 65 74 20 42 69 73 68 6f 70 20 77 69 74 '
+        '68 20 74 68 65 20 44 65 76 69 6c 21'
     )
     assert from_hexadecimal(hex_str) == original
+
+
+def test_hexadecimal_invalid_input_pass_through():
+    text = 'These things must be done delicately, or you hurt the spell.'
+    assert from_hexadecimal(text) == text
 
 
 def test_morse_conversion_basic():
@@ -52,8 +65,11 @@ def test_morse_conversion_basic():
 
 
 def test_morse_conversion_complex():
-    text = 'What hath God wrought?'
-    morse = to_morse(text)
+    original = (
+        'May both oceans be dry before a foot of all the land that lies '
+        'between them shall belong to any other than one united country.'
+    )
+    morse = to_morse(original)
 
     morse_irreg_word_spacing = _MORSE_WORD_GAP_PATTERN.sub(
         lambda _: ' ' * 24,
@@ -65,12 +81,17 @@ def test_morse_conversion_complex():
     )
 
     expected = (
-        '.-- .... .- -   .... .- - ....   --. --- -..   .-- .-. --- '
-        '..- --. .... - ..--..'
+        '-- .- -.--   -... --- - ....   --- -.-. . .- -. ...   -... .   '
+        '-.. .-. -.--   -... . ..-. --- .-. .   .-   ..-. --- --- -   '
+        '--- ..-.   .- .-.. .-..   - .... .   .-.. .- -. -..   - .... .- -   '
+        '.-.. .. . ...   -... . - .-- . . -.   - .... . --   '
+        '... .... .- .-.. .-..   -... . .-.. --- -. --.   - ---   '
+        '.- -. -.--   --- - .... . .-.   - .... .- -.   --- -. .   '
+        '..- -. .. - . -..   -.-. --- ..- -. - .-. -.-- .-.-.-'
     )
     assert morse == expected
-    assert from_morse(morse) == text.upper()
-    assert from_morse(morse_irreg_spacing) == text.upper()
+    assert from_morse(morse) == original.upper()
+    assert from_morse(morse_irreg_spacing) == original.upper()
 
 
 def test_morse_invalid_input_pass_through():
