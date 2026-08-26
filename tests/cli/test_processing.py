@@ -5,6 +5,7 @@ import sys
 
 import pytest
 
+from tests.helpers import normalize_output
 from textwarp._cli import processing
 from textwarp._cli.constants.messages import (
     BINARY_FILE_ERROR_MSG,
@@ -38,8 +39,10 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
 
-    expected_msg = BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
-    assert expected_msg in captured.out.replace('\n', ' ')
+    expected_msg = normalize_output(
+        BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
+    )
+    assert expected_msg in normalize_output(captured.out)
 
 
 def test_process_file_mode_file_not_found(capsys):
@@ -89,8 +92,10 @@ def test_process_file_mode_success(tmp_path, capsys):
     assert output_file.read_text(encoding='utf-8') == 'FILE CONTENT'
     captured = capsys.readouterr()
 
-    expected_msg = FILE_WRITE_SUCCESS_MSG.format(output_file=str(output_file))
-    assert expected_msg in captured.out.replace('\n', ' ')
+    expected_msg = normalize_output(
+        FILE_WRITE_SUCCESS_MSG.format(output_file=str(output_file))
+    )
+    assert expected_msg in normalize_output(captured.out)
 
 
 def test_process_interactive_mode_replacement(monkeypatch):

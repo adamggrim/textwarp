@@ -2,6 +2,7 @@
 
 import pyperclip
 
+from tests.helpers import normalize_output
 from textwarp._cli.runners import (
     _paste_and_validate,
     _replace_and_copy,
@@ -46,9 +47,9 @@ def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
     assert _paste_and_validate() is None
     captured = capsys.readouterr()
 
-    normalized_out = ' '.join(captured.out.split())
-    expected_error = ' '.join(CLIPBOARD_ACCESS_ERROR_MSG.split())
-    expected_warning = ' '.join(LINUX_XCLIP_WARNING_MSG.split())
+    normalized_out = normalize_output(captured.out)
+    expected_error = normalize_output(CLIPBOARD_ACCESS_ERROR_MSG)
+    expected_warning = normalize_output(LINUX_XCLIP_WARNING_MSG)
 
     assert expected_error in normalized_out
     assert expected_warning in normalized_out
