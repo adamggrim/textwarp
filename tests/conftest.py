@@ -9,10 +9,7 @@ from textwarp._lib.nlp import process_as_doc
 
 @pytest.fixture
 def get_contraction_span():
-    """
-    Fixture that returns a helper function to extract the spaCy `Span`
-    for a given contraction in a string.
-    """
+    """Extract the spaCy `Span` for a given contraction in a string."""
     def _get_span(text: str, contraction: str) -> Span:
         doc = process_as_doc(text)
         start_char = text.lower().find(contraction.lower())
@@ -57,6 +54,7 @@ def simulate_input(monkeypatch):
     def _setup_input(inputs):
         input_iterator = iter(inputs)
         monkeypatch.setattr('builtins.input', lambda: next(input_iterator))
+
     return _setup_input
 
 
