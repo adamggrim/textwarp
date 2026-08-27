@@ -18,8 +18,8 @@ from textwarp._cli.constants.messages import (
     INVALID_CASE_ERROR_MSG,
     LINUX_XCLIP_WARNING_MSG,
     REGEX_EMPTY_ERROR_MSG,
+    REPLACEMENT_TEXT_NOT_FOUND_MSG,
     TEXT_EMPTY_ERROR_MSG,
-    TEXT_NOT_FOUND_MSG,
     UNEXPECTED_CLIPBOARD_ERROR_MSG
 )
 
@@ -41,7 +41,7 @@ from textwarp._cli.constants.messages import (
     LINUX_XCLIP_WARNING_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
-    TEXT_NOT_FOUND_MSG,
+    REPLACEMENT_TEXT_NOT_FOUND_MSG,
     UNEXPECTED_CLIPBOARD_ERROR_MSG
 ])
 def test_msgs_are_strings_and_not_empty(message):
@@ -56,7 +56,7 @@ def test_exit_msg_content():
 
 def test_not_found_msgs():
     assert 'not found' in CASE_NOT_FOUND_MSG.lower()
-    assert 'not found' in TEXT_NOT_FOUND_MSG.lower()
+    assert 'not found' in REPLACEMENT_TEXT_NOT_FOUND_MSG.lower()
 
 
 def test_prompt_msgs():

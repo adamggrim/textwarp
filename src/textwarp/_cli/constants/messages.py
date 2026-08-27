@@ -39,8 +39,8 @@ __all__ = [
     'PIPED_INPUT_ERROR_MSG',
     'REGEX_NOT_FOUND_MSG',
     'REPLACEMENT_CMD_ERROR_MSG',
+    'REPLACEMENT_TEXT_NOT_FOUND_MSG',
     'TEXT_EMPTY_ERROR_MSG',
-    'TEXT_NOT_FOUND_MSG',
     'UNEXPECTED_CLIPBOARD_ERROR_MSG'
 ]
 
@@ -118,8 +118,8 @@ REPLACEMENT_CMD_ERROR_MSG: Final = _(
     'Replacement commands require --find and --replace arguments when used '
     'in file or piped mode.'
 )
+REPLACEMENT_TEXT_NOT_FOUND_MSG: Final = _('Replacement text not found.')
 TEXT_EMPTY_ERROR_MSG: Final = _('Text input is empty.')
-TEXT_NOT_FOUND_MSG: Final = _('Text not found.')
 UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = _(
     'An unexpected error occurred while accessing the clipboard.'
 )

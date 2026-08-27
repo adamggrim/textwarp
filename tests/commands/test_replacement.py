@@ -8,7 +8,7 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT,
     REGEX_NOT_FOUND_MSG,
-    TEXT_NOT_FOUND_MSG
+    REPLACEMENT_TEXT_NOT_FOUND_MSG
 )
 from textwarp._commands import replacement
 
@@ -97,7 +97,7 @@ def test_replace_text_not_found(simulate_input, capsys):
     )
     captured = capsys.readouterr()
 
-    assert TEXT_NOT_FOUND_MSG in captured.out
+    assert REPLACEMENT_TEXT_NOT_FOUND_MSG in captured.out
     assert 'coffee' in result
 
 
