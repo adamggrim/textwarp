@@ -180,7 +180,6 @@ Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` wil
 
 ```
 textwarp/
-└── src/
   ├── _cli/
   │ ├── constants/
   │ │ ├── __init__.py: Exposes command-line inputs and messages
@@ -305,7 +304,7 @@ textwarp/
   │ ├── punctuation.py: Functions for converting between straight and curly quotes
   │ └── replacement.py: Functions for finding and replacing text
   ├── __init__.py: A Python package for analyzing and transforming text
-  ├── __main__.py: The entry point of the package, containing the main loop
+  ├── __main__.py: The entry point for the package
   ├── analysis.py: Public functions for analyzing text
   └── warping.py: Public functions for warping text
 ```

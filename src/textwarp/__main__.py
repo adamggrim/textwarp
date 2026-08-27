@@ -1,4 +1,4 @@
-"""The entry point of the package, containing the main loop."""
+"""The entry point for the package."""
 
 from __future__ import annotations
 
