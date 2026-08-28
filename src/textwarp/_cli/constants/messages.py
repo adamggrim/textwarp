@@ -10,7 +10,7 @@ _ = gettext.gettext
 __all__ = [
     'ANY_OTHER_TEXT_PROMPT',
     'CASE_EMPTY_ERROR_MSG',
-    'CASE_NOT_FOUND_MSG',
+    'CASE_TO_REPLACE_NOT_FOUND_MSG',
     'CASE_WHITESPACE_ERROR_MSG',
     'CLIPBOARD_ACCESS_ERROR_MSG',
     'CLIPBOARD_CLEARED_MSG',
@@ -37,10 +37,10 @@ __all__ = [
     'MODIFIED_TEXT_COPIED_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'PIPED_INPUT_ERROR_MSG',
-    'REGEX_NOT_FOUND_MSG',
+    'REGEX_TO_REPLACE_NOT_FOUND_MSG',
     'REPLACEMENT_CMD_ERROR_MSG',
-    'REPLACEMENT_TEXT_NOT_FOUND_MSG',
     'TEXT_EMPTY_ERROR_MSG',
+    'TEXT_TO_REPLACE_NOT_FOUND_MSG',
     'UNEXPECTED_CLIPBOARD_ERROR_MSG'
 ]
 
@@ -56,7 +56,7 @@ BINARY_FILE_ERROR_MSG: Final = _(
     "valid text file."
 )
 CASE_EMPTY_ERROR_MSG: Final = _('Case input is empty.')
-CASE_NOT_FOUND_MSG: Final = _('Case not found.')
+CASE_TO_REPLACE_NOT_FOUND_MSG: Final = _('Case to replace not found.')
 CASE_WHITESPACE_ERROR_MSG: Final = _('Case contains only whitespace.')
 CLIPBOARD_ACCESS_ERROR_MSG: Final = _('Error accessing clipboard: ')
 CLIPBOARD_CLEARED_MSG: Final = _('Clipboard text cleared.')
@@ -113,13 +113,15 @@ MULTIPLE_REPLACEMENT_ERROR_MSG: Final = _(
 NO_ENTITIES_FOUND_MSG: Final = _('No entities found.')
 PIPED_INPUT_ERROR_MSG: Final = _('Error processing input: {error}')
 REGEX_EMPTY_ERROR_MSG: Final = _('Regex input is empty.')
-REGEX_NOT_FOUND_MSG: Final = _('Regular expression not found.')
+REGEX_TO_REPLACE_NOT_FOUND_MSG: Final = _(
+    'Regular expression to replace not found.'
+)
 REPLACEMENT_CMD_ERROR_MSG: Final = _(
     'Replacement commands require --find and --replace arguments when used '
     'in file or piped mode.'
 )
-REPLACEMENT_TEXT_NOT_FOUND_MSG: Final = _('Replacement text not found.')
 TEXT_EMPTY_ERROR_MSG: Final = _('Text input is empty.')
+TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = _('Text to replace not found.')
 UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = _(
     'An unexpected error occurred while accessing the clipboard.'
 )

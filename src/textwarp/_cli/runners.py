@@ -100,12 +100,17 @@ def replace_text(command_name: str) -> None:
     Apply the selected replacement function to the clipboard and prompt
     the user for any other clipboard input.
     """
-    command_func = getattr(
-        replacement,
-        command_name
+    prompt_name = (
+        f"prompt_for_{command_name.replace('replace_', 'replacement_')}"
     )
 
-    configured_func = command_func()
+    prompt_func = getattr(replacement, prompt_name)
+    exec_func = getattr(replacement, command_name)
+
+    arg_to_replace, replacement_arg = prompt_func()
+
+    def configured_func(text: str) -> str:
+        return exec_func(text, arg_to_replace, replacement_arg)
 
     run_command_loop(
         configured_func,

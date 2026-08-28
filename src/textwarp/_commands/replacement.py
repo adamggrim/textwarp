@@ -15,9 +15,9 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT,
-    CASE_NOT_FOUND_MSG,
-    REGEX_NOT_FOUND_MSG,
-    REPLACEMENT_TEXT_NOT_FOUND_MSG
+    CASE_TO_REPLACE_NOT_FOUND_MSG,
+    REGEX_TO_REPLACE_NOT_FOUND_MSG,
+    TEXT_TO_REPLACE_NOT_FOUND_MSG
 )
 from textwarp._cli.constants.inputs import get_exit_inputs, get_no_inputs
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
@@ -34,6 +34,9 @@ from textwarp._lib import replacement as lib_replacement
 _ = gettext.gettext
 
 __all__ = [
+    'prompt_for_replacement_case',
+    'prompt_for_replacement_regex',
+    'prompt_for_replacement_text',
     'replace_case',
     'replace_regex',
     'replace_text'
@@ -99,49 +102,98 @@ def _prompt_for_valid_input(
             current_prompt = enter_valid_text_prompt
 
 
-def replace_case(
-    text: str | None = None,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
-) -> str | Callable[[str], str]:
+def prompt_for_replacement_case() -> tuple[str, str]:
     """
-    Prompt the user or extract arguments for a case to replace and a
-    replacement case, and return the transformed text.
+    Prompt the user for a case to replace and a replacement case.
+
+    Returns:
+        tuple[str, str]: A tuple containing:
+            1. The original case name to search for.
+            2. The new case name to apply as a replacement.
+    """
+    arg_to_replace = _prompt_for_valid_input(
+        ENTER_CASE_TO_REPLACE_PROMPT,
+        validate_case_name,
+        ENTER_VALID_CASE_PROMPT,
+        allow_early_exit=True
+    ).lower()
+
+    replacement_arg = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_CASE_PROMPT,
+        validate_case_name,
+        ENTER_VALID_CASE_PROMPT,
+        allow_early_exit=True
+    ).lower()
+
+    return arg_to_replace, replacement_arg
+
+
+def prompt_for_replacement_regex() -> tuple[str, str]:
+    """
+    Prompt the user for a regular expression to find and a string
+    to replace it.
+
+    Returns:
+        tuple[str, str]: A tuple containing:
+            1. The regular expression pattern to search for.
+            2. The replacement text.
+    """
+    arg_to_replace = _prompt_for_valid_input(
+        ENTER_REGEX_PROMPT,
+        validate_regex,
+        ENTER_VALID_REGEX_PROMPT
+    )
+    replacement_arg = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_TEXT_PROMPT,
+        # Accept any text (including empty text) for replacement.
+        lambda x: None,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    return arg_to_replace, replacement_arg
+
+
+def prompt_for_replacement_text() -> tuple[str, str]:
+    """
+    Prompt the user for a string to find and a string to replace it with.
+
+    Returns:
+        tuple[str, str]: A tuple containing:
+            1. The exact string to search for.
+            2. The replacement string.
+    """
+    arg_to_replace = _prompt_for_valid_input(
+        ENTER_TEXT_TO_REPLACE_PROMPT,
+        validate_text,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    replacement_arg = _prompt_for_valid_input(
+        ENTER_REPLACEMENT_TEXT_PROMPT,
+        # Accept any text (including empty text) for replacement.
+        lambda x: None,
+        ENTER_VALID_TEXT_PROMPT
+    )
+    return arg_to_replace, replacement_arg
+
+
+def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
+    """
+    Extract arguments for a case to replace and a replacement case,
+    and return the transformed text.
 
     Args:
         text: The string to transform.
-        arg_to_replace: An optional case to replace. If not
-            provided, the function will prompt the user for one.
-        replacement_arg: An optional replacement case name. If not
-            provided, the function will prompt the user for one.
+        arg_to_replace: The case to replace.
+        replacement_arg: The replacement case name.
 
     Returns:
-        str | Callable[[str], str]: The transformed text, or a closure if text is None.
+        str: The transformed text.
     """
-    if arg_to_replace is None or replacement_arg is None:
-        arg_to_replace = _prompt_for_valid_input(
-            ENTER_CASE_TO_REPLACE_PROMPT,
-            validate_case_name,
-            ENTER_VALID_CASE_PROMPT,
-            allow_early_exit=True
-        ).lower()
-
-        replacement_arg = _prompt_for_valid_input(
-            ENTER_REPLACEMENT_CASE_PROMPT,
-            validate_case_name,
-            ENTER_VALID_CASE_PROMPT,
-            allow_early_exit=True
-        ).lower()
-
-    if text is None:
-        return lambda t: replace_case(t, arg_to_replace, replacement_arg)
-
     validate_case_name(arg_to_replace)
     case_to_replace_name = arg_to_replace.lower()
     search_pattern = get_case_names_regex_map().get(case_to_replace_name)
 
     if search_pattern and not search_pattern.search(text):
-        print_wrapped(_(CASE_NOT_FOUND_MSG))
+        print_wrapped(_(CASE_TO_REPLACE_NOT_FOUND_MSG))
         return text
 
     validate_case_name(replacement_arg)
@@ -155,34 +207,22 @@ def replace_case(
     )
 
 
-def replace_regex(
-    text: str | None = None,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
-) -> str | Callable[[str], str]:
+def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
     """
-    Prompt the user or extract arguments for a regular expression to
-    find and a string to replace it, and return the transformed text.
+    Extract arguments for a regular expression to find and a string
+    to replace it, and return the transformed text.
+
+    Args:
+        text: The string to transform.
+        arg_to_replace: The regular expression to search for.
+        replacement_arg: The replacement string.
+
+    Returns:
+        str: The transformed text.
     """
-    if arg_to_replace is None or replacement_arg is None:
-        arg_to_replace = _prompt_for_valid_input(
-            ENTER_REGEX_PROMPT,
-            validate_regex,
-            ENTER_VALID_REGEX_PROMPT
-        )
-        replacement_arg = _prompt_for_valid_input(
-            ENTER_REPLACEMENT_TEXT_PROMPT,
-            # Accept any text (including empty text) for replacement.
-            lambda x: None,
-            ENTER_VALID_TEXT_PROMPT
-        )
-
-    if text is None:
-        return lambda t: replace_regex(t, arg_to_replace, replacement_arg)
-
     validate_regex(arg_to_replace)
     if not re.search(arg_to_replace, text):
-        print_wrapped(_(REGEX_NOT_FOUND_MSG))
+        print_wrapped(_(REGEX_TO_REPLACE_NOT_FOUND_MSG))
         return text
 
     parsed_replacement = _parse_cli_escapes(replacement_arg)
@@ -192,44 +232,22 @@ def replace_regex(
     )
 
 
-def replace_text(
-    text: str | None = None,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
-) -> str | Callable[[str], str]:
+def replace_text(text: str, arg_to_replace: str, replacement_arg: str) -> str:
     """
-    Prompt the user or extract arguments for a string to replace and a
-    string to replace it, and return the transformed text.
+    Extract arguments for a string to replace and a string to replace it,
+    and return the transformed text.
 
     Args:
         text: The string to transform.
-        arg_to_replace: An optional string to replace. If not provided,
-            the function will prompt the user for one.
-        replacement_arg: An optional replacement string. If not
-            provided, the function will prompt the user for one.
+        arg_to_replace: The specific string to find and replace.
+        replacement_arg: The string to replace the match with.
 
     Returns:
-        str | Callable[[str], str]: The transformed text, or a closure if text is None.
+        str: The transformed text.
     """
-    if arg_to_replace is None or replacement_arg is None:
-        arg_to_replace = _prompt_for_valid_input(
-            ENTER_TEXT_TO_REPLACE_PROMPT,
-            validate_text,
-            ENTER_VALID_TEXT_PROMPT
-        )
-        replacement_arg = _prompt_for_valid_input(
-            ENTER_REPLACEMENT_TEXT_PROMPT,
-            # Accept any text (including empty text) for replacement.
-            lambda x: None,
-            ENTER_VALID_TEXT_PROMPT
-        )
-
-    if text is None:
-        return lambda t: replace_text(t, arg_to_replace, replacement_arg)
-
     validate_text(arg_to_replace)
     if arg_to_replace not in text:
-        print_wrapped(_(REPLACEMENT_TEXT_NOT_FOUND_MSG))
+        print_wrapped(_(TEXT_TO_REPLACE_NOT_FOUND_MSG))
         return text
 
     parsed_replacement = _parse_cli_escapes(replacement_arg)

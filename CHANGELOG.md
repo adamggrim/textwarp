@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Moved CLI to a chained positional pipeline. Commands no longer require the `--` prefix.
 * Made pyperclip dependency optional.
+* Refactored replacement functions to loop on the replacement instead of prompting for new replacement text each time.
 * Updated sentence casing algorithm.
 * Add wcwidth dependency to handle multi-width characters.
 * Improved error handling.

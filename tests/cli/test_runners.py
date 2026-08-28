@@ -127,5 +127,10 @@ def test_replace_text_lookup(monkeypatch):
         mock_run_command_loop
     )
 
+    monkeypatch.setattr(
+        'textwarp._commands.replacement.prompt_for_replacement_case',
+        lambda: ('camel', 'snake')
+    )
+
     replace_text('replace_case')
     assert loop_called is True
