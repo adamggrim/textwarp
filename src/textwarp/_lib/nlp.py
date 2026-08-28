@@ -116,10 +116,4 @@ def process_as_doc(
                 return nlp(content)
         return nlp(content)
 
-    spacy = _load_spacy()
-    if isinstance(content, spacy.tokens.Doc):
-        return content
-
-    raise TypeError(
-        f'Expected str or spaCy Doc. Received {type(content).__name__}'
-    )
+    return content
