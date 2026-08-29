@@ -23,7 +23,8 @@ from textwarp._cli.runners import (
     run_command_loop,
     warp_and_copy
 )
-from textwarp._cli.ui import print_wrapped, program_exit
+from textwarp._cli.ui import program_exit
+from textwarp._core.exceptions import TextwarpError
 
 _ = gettext.gettext
 
@@ -48,16 +49,14 @@ def process_file_mode(args: ParsedArgs) -> None:
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 text = f.read()
-        except UnicodeDecodeError:
-            print_wrapped(
+        except UnicodeDecodeError as e:
+            raise TextwarpError(
                 _(BINARY_FILE_ERROR_MSG).format(input_file=file_path)
-            )
-            sys.exit(1)
+            ) from e
         except OSError as e:
-            print_wrapped(
+            raise TextwarpError(
                 _(FILE_ACCESS_ERROR_MSG).format(file_path=file_path, error=e)
-            )
-            sys.exit(1)
+            ) from e
 
         if text.endswith('\n'):
             text = text[:-1]
@@ -81,8 +80,7 @@ def process_file_mode(args: ParsedArgs) -> None:
         route_output(
             final_output,
             args.output_file,
-            args.copy_to_clipboard,
-            args.debug
+            args.copy_to_clipboard
         )
 
 
@@ -130,8 +128,7 @@ def process_interactive_mode(args: ParsedArgs) -> None:
                 route_output(
                     result,
                     args.output_file,
-                    args.copy_to_clipboard,
-                    args.debug
+                    args.copy_to_clipboard
                 )
 
         run_command_loop(pipeline_runner, action_handler=route_analysis_output)
@@ -145,7 +142,6 @@ def process_interactive_mode(args: ParsedArgs) -> None:
             handle_output(
                 result,
                 args.output_file,
-                args.debug,
                 default_action=lambda r: warp_and_copy(lambda _: r, text)
             )
 
@@ -181,12 +177,8 @@ def process_piped_mode(args: ParsedArgs) -> None:
             route_output(
                 result,
                 args.output_file,
-                args.copy_to_clipboard,
-                args.debug
+                args.copy_to_clipboard
             )
 
     except Exception as e:
-        if args.debug:
-            raise
-        print_wrapped(_(PIPED_INPUT_ERROR_MSG).format(error=e))
-        sys.exit(1)
+        raise TextwarpError(_(PIPED_INPUT_ERROR_MSG).format(error=e)) from e

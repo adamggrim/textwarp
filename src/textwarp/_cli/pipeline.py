@@ -27,7 +27,11 @@ from textwarp._cli.runners import clear_clipboard
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
 from textwarp._commands import replacement
-from textwarp._core.exceptions import MissingDependencyError
+from textwarp._core.exceptions import (
+    MissingDependencyError,
+    TextwarpError,
+    TextwarpValidationError
+)
 from textwarp._core.types import Pipeline
 from textwarp._lib.nlp import process_as_doc
 
@@ -84,12 +88,8 @@ def _run_pipeline_segment(
 
 def _preload_spacy() -> None:
     """Helper to preload spaCy in the main process."""
-    try:
-        from textwarp._lib.nlp import _get_nlp
-        _get_nlp()
-    except MissingDependencyError as e:
-        print_wrapped(str(e))
-        sys.exit(1)
+    from textwarp._lib.nlp import _get_nlp
+    _get_nlp()
 
 
 def apply_pipeline(
@@ -176,7 +176,6 @@ def build_pipeline(
 def handle_output(
     result: str | None,
     output_file: str | None,
-    debug: bool,
     default_action: Callable[[str], None]
 ) -> None:
     """
@@ -191,7 +190,7 @@ def handle_output(
             action on the result string.
 
     Raises:
-        SystemExit: If there is an error writing to the output file.
+        TextwarpError: If there is an error writing to the output file.
     """
     if result is None:
         return
@@ -204,10 +203,7 @@ def handle_output(
                 _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
             )
         except Exception as e:
-            if debug:
-                raise
-            print_wrapped(_(FILE_WRITE_ERROR_MSG).format(error=e))
-            sys.exit(1)
+            raise TextwarpError(_(FILE_WRITE_ERROR_MSG).format(error=e)) from e
     else:
         default_action(result)
 
@@ -244,7 +240,6 @@ def route_output(
     result: str,
     output_file: str | None,
     copy_to_clipboard: bool,
-    debug: bool
 ) -> None:
     """
     Route the transformed text to a file, the clipboard or the terminal.
@@ -255,25 +250,21 @@ def route_output(
             print to `stdout`.
         copy_to_clipboard: Whether to copy the output to the clipboard
             instead of printing or writing to a file.
-
-    Raises:
-        SystemExit: If there is an error processing the input.
     """
     if output_file:
         handle_output(
-            result, output_file, debug, default_action=lambda x: None
+            result, output_file, default_action=lambda x: None
         )
 
     if copy_to_clipboard:
         try:
             import pyperclip
-        except ImportError:
-            error = MissingDependencyError(
+        except ImportError as e:
+            raise MissingDependencyError(
                 'pyperclip',
                 'Clipboard support',
-                'clipboard')
-            print_wrapped(str(error))
-            sys.exit(1)
+                'clipboard'
+            ) from e
 
         pyperclip.copy(result)
         print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
@@ -309,10 +300,10 @@ def route_text(
 
     try:
         from textwarp._lib.markdown import process_markdown, strip_markdown
-    except ImportError:
-        error = MissingDependencyError('marko', 'Markdown support', 'markdown')
-        print_wrapped(str(error))
-        sys.exit(1)
+    except ImportError as e:
+        raise MissingDependencyError(
+            'marko', 'Markdown support', 'markdown'
+        ) from e
 
     if is_analysis_pipeline(pipeline):
         stripped = strip_markdown(text)
@@ -349,19 +340,19 @@ def validate_piped_commands(
             provided.
         replacement_arg: The replacement case, regex or substring, if
             provided.
+
     Raises:
-        SystemExit: If an intermediate input command is used in pipeline mode.
+            TextwarpValidationError: For an intermediate input command used in
+                pipeline mode.
     """
     for cmd_name, func in pipeline:
         func_name = cmd_name.replace('-', '_')
 
         if func_name in INTEGER_PROMPT_FUNC_NAMES:
-            print_wrapped(
+            raise TextwarpValidationError(
                 _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd_name)
             )
-            sys.exit(1)
 
         if func_name in REPLACEMENT_FUNC_NAMES:
             if arg_to_replace is None or replacement_arg is None:
-                print_wrapped(_(REPLACEMENT_CMD_ERROR_MSG))
-                sys.exit(1)
+                raise TextwarpValidationError(_(REPLACEMENT_CMD_ERROR_MSG))

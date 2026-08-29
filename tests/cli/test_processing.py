@@ -4,6 +4,7 @@ import pexpect
 import sys
 
 import pytest
+import regex as re
 
 from tests.helpers import normalize_output
 from textwarp._cli import processing
@@ -13,9 +14,10 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MSG
 )
 from textwarp._cli.parsing import ParsedArgs
+from textwarp._core.exceptions import TextwarpError
 
 
-def test_process_file_mode_binary_file(tmp_path, capsys):
+def test_process_file_mode_binary_file(tmp_path):
     binary_file = tmp_path / 'image.png'
     binary_file.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
 
@@ -33,19 +35,13 @@ def test_process_file_mode_binary_file(tmp_path, capsys):
         debug=False
     )
 
-    with pytest.raises(SystemExit) as excinfo:
+    expected_msg = BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
+
+    with pytest.raises(TextwarpError, match=re.escape(expected_msg)):
         processing.process_file_mode(args)
 
-    assert excinfo.value.code == 1
-    captured = capsys.readouterr()
 
-    expected_msg = normalize_output(
-        BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
-    )
-    assert expected_msg in normalize_output(captured.out)
-
-
-def test_process_file_mode_file_not_found(capsys):
+def test_process_file_mode_file_not_found():
     pipeline = [('uppercase', str.upper)]
 
     args = ParsedArgs(
@@ -60,12 +56,8 @@ def test_process_file_mode_file_not_found(capsys):
         debug=False
     )
 
-    with pytest.raises(SystemExit) as excinfo:
+    with pytest.raises(TextwarpError, match='Error accessing file'):
         processing.process_file_mode(args)
-
-    assert excinfo.value.code == 1
-    captured = capsys.readouterr()
-    assert 'Error accessing file' in captured.out
 
 
 def test_process_file_mode_success(tmp_path, capsys):

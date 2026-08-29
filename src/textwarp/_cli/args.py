@@ -22,14 +22,10 @@ __all__ = [
 def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
     """Import a module and function only when called."""
     def wrapper(*args: Any, **kwargs: Any) -> str:
-        try:
-            mod: ModuleType = importlib.import_module(
-                module_name, package=__package__
-            )
-            return getattr(mod, func_name)(*args, **kwargs)
-        except MissingDependencyError as e:
-            print_wrapped(str(e))
-            sys.exit(1)
+        mod: ModuleType = importlib.import_module(
+            module_name, package=__package__
+        )
+        return getattr(mod, func_name)(*args, **kwargs)
     return wrapper
 
 

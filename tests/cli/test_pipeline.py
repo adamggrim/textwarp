@@ -6,7 +6,10 @@ import sys
 import pytest
 
 from textwarp._cli import pipeline
-
+from textwarp._core.exceptions import (
+    MissingDependencyError,
+    TextwarpValidationError
+)
 
 def _dummy_lower(text: str) -> str:
     return text.lower()
@@ -131,30 +134,22 @@ def test_build_valid_single_command():
     assert callable(func)
 
 
-def test_validate_piped_commands_rejects_replacement(monkeypatch):
-    monkeypatch.setattr(
-        pipeline,
-        'print_wrapped',
-        lambda *args, **kwargs: None
-    )
-
+def test_validate_piped_commands_rejects_replacement():
     test_pipeline = [('replace-text', lambda x: x)]
 
-    with pytest.raises(SystemExit) as excinfo:
+    with pytest.raises(
+        TextwarpValidationError,
+        match='Replacement commands require'
+    ):
         pipeline.validate_piped_commands(test_pipeline, None, None)
-
-    assert excinfo.value.code == 1
 
 
 def test_missing_marko_dependency(monkeypatch, capsys):
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 
-    with pytest.raises(SystemExit) as excinfo:
+    with pytest.raises(
+        MissingDependencyError, match="Markdown support requires 'marko'"
+    ):
         pipeline.route_text(
             '## Rain also is of the process', pipeline=[], parse_markdown=True
         )
-
-    assert excinfo.value.code == 1
-
-    captured = capsys.readouterr()
-    assert "Markdown support requires 'marko'" in captured.out

@@ -42,14 +42,12 @@ def _get_pyperclip() -> ModuleType:
     try:
         import pyperclip
         return pyperclip
-    except ImportError:
-        error = MissingDependencyError(
+    except ImportError as e:
+        raise MissingDependencyError(
             'pyperclip',
             'Clipboard support',
             'clipboard'
-        )
-        print_wrapped(str(error))
-        sys.exit(1)
+        ) from e
 
 
 def _paste_and_validate() -> str | None:

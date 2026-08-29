@@ -10,7 +10,7 @@ from textwarp._cli.processing import (
     process_interactive_mode,
     process_piped_mode
 )
-from textwarp._cli.ui import print_padding, program_exit
+from textwarp._cli.ui import print_padding, print_wrapped, program_exit
 from textwarp._core.context import ctx
 
 
@@ -19,11 +19,13 @@ def main() -> None:
     Run the main loop for text transformation or analysis.
 
     Raises:
-        SystemExit: If there is an error with the input file, output file,
-            or if the command combinations are invalid.
+        SystemExit: If there is an error with the input file, output
+            file, or if the command combinations are invalid.
     """
+    debug_mode = False
     try:
         parsed_args = parse_args()
+        debug_mode = parsed_args.debug
 
         if not parsed_args.pipeline:
             return
@@ -40,6 +42,11 @@ def main() -> None:
     except KeyboardInterrupt:
         print_padding()
         program_exit()
+    except Exception as e:
+        if debug_mode:
+            raise
+        print_wrapped(str(e))
+        sys.exit(1)
 
 
 if __name__ == '__main__':
