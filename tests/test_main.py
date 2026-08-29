@@ -69,3 +69,41 @@ def test_main_sets_locale(monkeypatch):
 
     from textwarp._core.context import ctx
     assert ctx.locale == 'en'
+
+
+def test_main_global_exception_handler(monkeypatch, capsys):
+    def mock_parse_args():
+        raise ValueError('Unexpected configuration error')
+
+    monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
+
+    with pytest.raises(SystemExit) as excinfo:
+        __main__.main()
+
+    assert excinfo.value.code == 1
+    captured = capsys.readouterr()
+    assert 'Unexpected configuration error' in captured.out
+
+
+def test_main_global_exception_handler_debug_mode(monkeypatch):
+    def mock_parse_args():
+        return ParsedArgs(
+            pipeline=[('lowercase', lambda x: x)],
+            lang='en',
+            input_files=['dummy.txt'],
+            output_file=None,
+            markdown=False,
+            find=None,
+            replace=None,
+            copy_to_clipboard=False,
+            debug=True
+        )
+
+    def mock_process_file_mode(args):
+        raise ValueError('Detailed debug error')
+
+    monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
+    monkeypatch.setattr(__main__, 'process_file_mode', mock_process_file_mode)
+
+    with pytest.raises(ValueError, match='Detailed debug error'):
+        __main__.main()
