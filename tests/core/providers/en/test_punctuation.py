@@ -25,8 +25,8 @@ def test_remove_apostrophes():
         "I imagine they'll call for your removal"
     ) == 'I imagine theyll call for your removal'
     assert remove_apostrophes(
-        '‘Lost all my possessions.’'
-    ) == '‘Lost all my possessions.’'
+        '‘Imagine no possessions.’'
+    ) == '‘Imagine no possessions.’'
 
 
 def test_straight_to_curly():
