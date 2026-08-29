@@ -12,9 +12,9 @@ __all__ = [
     'get_ambiguous_contraction',
     'get_any_apostrophe',
     'get_apostrophe_in_word',
+    'get_common_stateless_participles',
     'get_contraction',
     'get_contraction_suffixes_pattern',
-    'get_common_stateless_participles',
     'get_idiomatic_phrases',
     'get_map_suffix_exceptions_pattern',
     'get_name_prefix_exception_pattern',
@@ -86,6 +86,20 @@ def get_apostrophe_in_word() -> re.Pattern[str]:
 
 
 @cache
+def get_common_stateless_participles() -> re.Pattern[str]:
+    """
+    Get a regular expression matching common stateless participles
+    (e.g., "doin", "makin", etc.).
+
+    Returns:
+        re.Pattern[str]: A compiled regular expression pattern.
+    """
+    return patterns.warping.create_words_regex(
+        en.data.contraction_expansion.get_common_stateless_participles()
+    )
+
+
+@cache
 def get_contraction() -> re.Pattern[str]:
     """
     Get a regular expression matching any expandable contraction.
@@ -110,20 +124,6 @@ def get_contraction_suffixes_pattern() -> re.Pattern[str]:
     """
     return patterns.warping.create_words_regex(
         en.data.entity_casing.get_contraction_suffixes()
-    )
-
-
-@cache
-def get_common_stateless_participles() -> re.Pattern[str]:
-    """
-    Get a regular expression matching common stateless participles
-    (e.g., "doin", "makin", etc.).
-
-    Returns:
-        re.Pattern[str]: A compiled regular expression pattern.
-    """
-    return patterns.warping.create_words_regex(
-        en.data.contraction_expansion.get_common_stateless_participles()
     )
 
 

@@ -3,7 +3,6 @@
 import gettext
 import shutil
 import sys
-import textwrap
 import time
 from typing import NoReturn
 
