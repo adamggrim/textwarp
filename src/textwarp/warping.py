@@ -83,7 +83,7 @@ def cardinal_to_ordinal(text: str) -> str:
 
 def expand_contractions(content: str | Doc) -> str:
     """Expand all contractions in a string or spaCy `Doc`."""
-    doc = process_as_doc(content)
+    doc = process_as_doc(content, disable=['ner', 'lemmatizer'])
     return contractions.expand_contractions(doc)
 
 
