@@ -202,7 +202,7 @@ def handle_output(
             print_wrapped(
                 _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
             )
-        except Exception as e:
+        except OSError as e:
             raise TextwarpError(_(FILE_WRITE_ERROR_MSG).format(error=e)) from e
     else:
         default_action(result)

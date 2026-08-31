@@ -2,7 +2,6 @@
 
 import gettext
 import logging
-import sys
 from collections.abc import Callable
 from typing import TypeAlias
 from types import ModuleType
@@ -66,7 +65,7 @@ def _paste_and_validate() -> str | None:
             msg += LINUX_XCLIP_WARNING_MSG
         print_wrapped(msg)
         return None
-    except Exception:
+    except OSError:
         _logger.exception('Unexpected clipboard error.')
         print_wrapped(UNEXPECTED_CLIPBOARD_ERROR_MSG)
         return None

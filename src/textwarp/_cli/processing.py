@@ -180,5 +180,5 @@ def process_piped_mode(args: ParsedArgs) -> None:
                 args.copy_to_clipboard
             )
 
-    except Exception as e:
+    except (OSError, UnicodeDecodeError) as e:
         raise TextwarpError(_(PIPED_INPUT_ERROR_MSG).format(error=e)) from e
