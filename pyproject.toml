@@ -34,7 +34,7 @@ textwarp = "textwarp.__main__:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-"*" = ["*.json", "**/*.json"]
+"*" = ["*.json", "**/*.json", "py.typed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
