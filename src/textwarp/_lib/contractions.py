@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spacy.tokens import Doc
+    from spacy.tokens import Doc, Span
 
 from textwarp._core.context import ctx
 from textwarp._core.utils import starts_uppercase
@@ -16,7 +16,8 @@ __all__ = ['apply_expansion_casing', 'expand_contractions']
 
 def apply_expansion_casing(
     original_text: str,
-    expanded_text: str
+    expanded_text: str,
+    span_context: Span | None = None
 ) -> str:
     """
     Apply the original text casing to the expanded text.
@@ -24,6 +25,7 @@ def apply_expansion_casing(
     Args:
         original_text: The original text.
         expanded_text: The expanded text (not yet cased).
+        span_context: Optional spaCy `Span` context to determine casing.
 
     Returns:
         str: The expanded text in the original text's casing.
@@ -36,26 +38,25 @@ def apply_expansion_casing(
     if original_text.islower():
         return expanded_text.lower()
 
-    original_parts: list[str] = original_text.split()
-    expanded_parts: list[str] = expanded_text.split()
+    if span_context is not None:
+        try:
+            tokens = span_context.sent
+        except ValueError:
+            tokens = span_context.doc
+        words = [t.text for t in tokens if t.is_alpha]
+    else:
+        words = original_text.split()
 
-    is_title_case = (
-        len(original_parts) > 1
-        and all(starts_uppercase(part) for part in original_parts)
-    )
+    expanded_parts = expanded_text.split()
 
-    if is_title_case:
-        return ' '.join(case_from_string(part) for part in expanded_parts)
+    if len(words) > 1 and all(starts_uppercase(w) for w in words):
+        return ' '.join(case_from_string(p) for p in expanded_parts)
 
     if starts_uppercase(original_text):
-        first_part: str = case_from_string(expanded_parts[0])
-
-        remaining_parts = [
-            case_from_string(part, lowercase_by_default=True)
-            for part in expanded_parts[1:]
-        ]
-
-        return ' '.join([first_part] + remaining_parts)
+        return ' '.join(
+            case_from_string(p, lowercase_by_default=bool(i))
+            for i, p in enumerate(expanded_parts)
+        )
 
     return expanded_text
 

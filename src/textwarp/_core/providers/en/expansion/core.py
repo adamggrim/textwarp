@@ -84,7 +84,8 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
 
 def _expand_unambiguous_contraction(
     contraction: str,
-    contractions_map: Mapping[str, str]
+    contractions_map: Mapping[str, str],
+    span_context: Span | None = None
 ) -> str:
     """
     Replace an unambiguous contraction with its expanded version using
@@ -94,6 +95,7 @@ def _expand_unambiguous_contraction(
         contraction: The contraction to expand.
         contractions_map: A mapping of each unambiguous contraction to
             its expansion.
+        span_context: Optional spaCy `Span` context to determine casing.
 
     Returns:
         str: The expanded contraction.
@@ -102,7 +104,9 @@ def _expand_unambiguous_contraction(
     expanded_contraction: str = contractions_map.get(
         straight_contraction, contraction
     )
-    return apply_expansion_casing(contraction, expanded_contraction)
+    return apply_expansion_casing(
+        contraction, expanded_contraction, span_context=span_context
+    )
 
 
 def expand_contractions(doc: Doc) -> str:
@@ -130,6 +134,7 @@ def expand_contractions(doc: Doc) -> str:
 
         expanded_parts.append(doc.text[prev_idx:start_idx])
         contraction: str = match.group(0)
+        span: Span | None = doc.char_span(start_idx, end_idx)
 
         is_negation: bool = bool(
             en.patterns.get_n_t_suffix().search(contraction)
@@ -140,23 +145,22 @@ def expand_contractions(doc: Doc) -> str:
             )
         )
 
-        if is_negation or is_ambiguous:
-            span: Span | None = doc.char_span(start_idx, end_idx)
-            if span:
-                expanded_text: str
-                new_end_idx: int
+        if (is_negation or is_ambiguous) and span:
+            expanded_text: str
+            new_end_idx: int
 
-                expanded_text, new_end_idx = _expand_ambiguous_contraction(
-                    contraction, span
-                )
-                expanded_parts.append(expanded_text)
-                prev_idx = new_end_idx
-                skip_until_idx = new_end_idx
-                continue
+            expanded_text, new_end_idx = _expand_ambiguous_contraction(
+                contraction, span
+            )
+            expanded_parts.append(expanded_text)
+            prev_idx = new_end_idx
+            skip_until_idx = new_end_idx
+            continue
 
         cased_expansion: str = _expand_unambiguous_contraction(
             contraction,
-            en.data.contraction_expansion.get_unambiguous_map()
+            en.data.contraction_expansion.get_unambiguous_map(),
+            span_context=span
         )
 
         expanded_parts.append(cased_expansion)

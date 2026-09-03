@@ -2,16 +2,14 @@
 
 from __future__ import annotations
 
-from spacy.tokens import Doc, Token
 from typing import TYPE_CHECKING
 
 from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
-from textwarp._core.utils import starts_uppercase
 from textwarp._lib.contractions import apply_expansion_casing
 
 if TYPE_CHECKING:
-    from spacy.tokens import Span
+    from spacy.tokens import Doc, Span, Token
 
 __all__ = [
     'expand_d_contraction',
@@ -214,8 +212,13 @@ def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
         expanded_text = 'cannot' if base_verb == 'can' else f'{base_verb} not'
 
     original_replaced_text = doc.text[span.start_char : return_idx]
+    replaced_span = doc.char_span(span.start_char, return_idx)
 
-    cased_text = apply_expansion_casing(original_replaced_text, expanded_text)
+    cased_text = apply_expansion_casing(
+        original_replaced_text,
+        expanded_text,
+        span_context=replaced_span or span
+    )
     return cased_text, return_idx
 
 
