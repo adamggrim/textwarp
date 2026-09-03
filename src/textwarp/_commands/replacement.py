@@ -7,6 +7,7 @@ import regex as re
 
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.constants.messages import (
+    CASE_TO_REPLACE_NOT_FOUND_MSG,
     ENTER_CASE_TO_REPLACE_PROMPT,
     ENTER_REGEX_PROMPT,
     ENTER_REPLACEMENT_CASE_PROMPT,
@@ -15,7 +16,6 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
     ENTER_VALID_TEXT_PROMPT,
-    CASE_TO_REPLACE_NOT_FOUND_MSG,
     REGEX_TO_REPLACE_NOT_FOUND_MSG,
     TEXT_TO_REPLACE_NOT_FOUND_MSG
 )

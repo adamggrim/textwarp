@@ -8,10 +8,10 @@ from textwarp._core.constants.patterns import (
 )
 
 __all__ = [
-    'get_case_names_regex_map',
     'NOUN_TAGS',
     'POS_TAGS',
     'POS_WORD_TAGS',
     'cases',
+    'get_case_names_regex_map',
     'warping'
 ]
