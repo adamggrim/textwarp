@@ -1,22 +1,34 @@
 """A map of command-line arguments to functions and help messages."""
 
 import importlib
-import sys
 from collections.abc import Callable
+from dataclasses import dataclass
+from enum import Enum, auto
 from types import ModuleType
 from typing import Any, Final
 
-from textwarp._cli.ui import print_wrapped
 from textwarp._core.context import N_
-from textwarp._core.exceptions import MissingDependencyError
 
-__all__ = [
-    'ANALYSIS_COMMANDS',
-    'ARGS_MAP',
-    'MUTUALLY_EXCLUSIVE_COMMANDS',
-    'REPLACEMENT_COMMANDS',
-    'SPACY_COMMANDS'
-]
+__all__ = ['ARGS_MAP', 'CLICommand', 'CommandType']
+
+
+class CommandType(Enum):
+    """Categories for pipeline commands."""
+    ANALYSIS = auto()
+    REPLACEMENT = auto()
+    STANDALONE = auto()
+    WARPING = auto()
+
+
+@dataclass(frozen=True)
+class CLICommand:
+    """A single piipeline command and its configuration."""
+    name: str
+    func: Callable[..., Any]
+    help_text: str
+    command_type: CommandType
+    requires_intermediate_input: bool = False
+    requires_spacy: bool = False
 
 
 def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
@@ -30,246 +42,324 @@ def _lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
 
 
 # A dictionary for all warping, analysis, replacement and
-# clearing commands.
-ARGS_MAP: Final[dict[str, tuple[Callable[[str], str], str]]] = {
-    'alternating-caps': (
-        _lazy_load('..warping', 'to_alternating_caps'),
-        N_('cOnVeRt To AlTeRnAtInG cApS')
+# standalone commands.
+ARGS_MAP: Final[dict[str, CLICommand]] = {
+    'alternating-caps': CLICommand(
+        name='alternating-caps',
+        func=_lazy_load('.._lib.effects', 'to_alternating_caps'),
+        help_text=N_('cOnVeRt To AlTeRnAtInG cApS'),
+        command_type=CommandType.WARPING
     ),
-    'binary': (
-        _lazy_load('..warping', 'to_binary'),
-        N_('convert to binary')
+    'binary': CLICommand(
+        name='binary',
+        func=_lazy_load('.._lib.encoding', 'to_binary'),
+        help_text=N_('convert to binary'),
+        command_type=CommandType.WARPING
     ),
-    'camel-case': (
-        _lazy_load('..warping', 'to_camel_case'),
-        N_('convertToCamelCase')
+    'camel-case': CLICommand(
+        name='camel-case',
+        func=_lazy_load('.._lib.casing', 'to_camel_case'),
+        help_text=N_('convertToCamelCase'),
+        command_type=CommandType.WARPING
     ),
-    'capitalize': (
-        _lazy_load('..warping', 'capitalize'),
-        N_('Capitalize The First Character Of Each Word')
+    'capitalize': CLICommand(
+        name='capitalize',
+        func=_lazy_load('.._lib.casing', 'capitalize'),
+        help_text=N_('Capitalize The First Character Of Each Word'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'cardinal': (
-        _lazy_load('..warping', 'ordinal_to_cardinal'),
-        N_('convert ordinal numbers to cardinal numbers')
+    'cardinal': CLICommand(
+        name='cardinal',
+        func=_lazy_load('.._lib.numbers', 'ordinal_to_cardinal'),
+        help_text=N_('convert ordinal numbers to cardinal numbers'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'char-count': (
-        _lazy_load('.._commands.analysis', 'char_count'),
-        N_('count characters')
+    'char-count': CLICommand(
+        name='char-count',
+        func=_lazy_load('.._commands.analysis', 'char_count'),
+        help_text=N_('count characters'),
+        command_type=CommandType.ANALYSIS
     ),
-    'clear': (
-        lambda text: '',
-        N_('clear clipboard text')
+    'clear': CLICommand(
+        name='clear',
+        func=lambda text: '',
+        help_text=N_('clear clipboard text'),
+        command_type=CommandType.STANDALONE
     ),
-    'curly-quotes': (
-        _lazy_load('.._lib.punctuation', 'straight_to_curly'),
-        N_('convert "straight quotes" to “curly quotes”')
+    'curly-quotes': CLICommand(
+        name='curly-quotes',
+        func=_lazy_load('.._lib.punctuation', 'straight_to_curly'),
+        help_text=N_('convert "straight quotes" to “curly quotes”'),
+        command_type=CommandType.WARPING
     ),
-    'dot-case': (
-        _lazy_load('..warping', 'to_dot_case'),
-        N_('convert.to.dot.case')
+    'dot-case': CLICommand(
+        name='dot-case',
+        func=_lazy_load('.._lib.casing', 'to_dot_case'),
+        help_text=N_('convert.to.dot.case'),
+        command_type=CommandType.WARPING
     ),
-    'entity-counts': (
-        _lazy_load('.._commands.analysis', 'entity_counts'),
-        N_('get most frequent entities')
+    'entity-counts': CLICommand(
+        name='entity-counts',
+        func=_lazy_load('.._commands.analysis', 'entity_counts'),
+        help_text=N_('get most frequent entities'),
+        command_type=CommandType.ANALYSIS,
+        requires_intermediate_input=True,
+        requires_spacy=True
     ),
-    'expand-contractions': (
-        _lazy_load('..warping', 'expand_contractions'),
-        N_('expand contractions')
+    'expand-contractions': CLICommand(
+        name='expand-contractions',
+        func=_lazy_load('.._lib.contractions', 'expand_contractions'),
+        help_text=N_('expand contractions'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'from-binary': (
-        _lazy_load('..warping', 'from_binary'),
-        N_('convert from binary')
+    'from-binary': CLICommand(
+        name='from-binary',
+        func=_lazy_load('.._lib.encoding', 'from_binary'),
+        help_text=N_('convert from binary'),
+        command_type=CommandType.WARPING
     ),
-    'from-hexadecimal': (
-        _lazy_load('..warping', 'from_hexadecimal'),
-        N_('convert from hexadecimal')
+    'from-hexadecimal': CLICommand(
+        name='from-hexadecimal',
+        func=_lazy_load('.._lib.encoding', 'from_hexadecimal'),
+        help_text=N_('convert from hexadecimal'),
+        command_type=CommandType.WARPING
     ),
-    'from-morse': (
-        _lazy_load('..warping', 'from_morse'),
-        N_('convert from Morse code')
+    'from-morse': CLICommand(
+        name='from-morse',
+        func=_lazy_load('.._lib.encoding', 'from_morse'),
+        help_text=N_('convert from Morse code'),
+        command_type=CommandType.WARPING
     ),
-    'hexadecimal': (
-        _lazy_load('..warping', 'to_hexadecimal'),
-        N_('convert to hexadecimal')
+    'hexadecimal': CLICommand(
+        name='hexadecimal',
+        func=_lazy_load('.._lib.encoding', 'to_hexadecimal'),
+        help_text=N_('convert to hexadecimal'),
+        command_type=CommandType.WARPING
     ),
-    'hyphens-to-em': (
-        _lazy_load('..warping', 'hyphens_to_em'),
-        N_('convert consecutive hyphens to em dashes')
+    'hyphens-to-em': CLICommand(
+        name='hyphens-to-em',
+        func=_lazy_load('.._lib.punctuation', 'hyphens_to_em'),
+        help_text=N_('convert consecutive hyphens to em dashes'),
+        command_type=CommandType.WARPING
     ),
-    'hyphens-to-en': (
-        _lazy_load('..warping', 'hyphens_to_en'),
-        N_('convert hyphens to en dashes')
+    'hyphens-to-en': CLICommand(
+        name='hyphens-to-en',
+        func=_lazy_load('.._lib.punctuation', 'hyphens_to_en'),
+        help_text=N_('convert hyphens to en dashes'),
+        command_type=CommandType.WARPING
     ),
-    'kebab-case': (
-        _lazy_load('..warping', 'to_kebab_case'),
-        N_('convert-to-kebab-case')
+    'kebab-case': CLICommand(
+        name='kebab-case',
+        func=_lazy_load('.._lib.casing', 'to_kebab_case'),
+        help_text=N_('convert-to-kebab-case'),
+        command_type=CommandType.WARPING
     ),
-    'line-count': (
-        _lazy_load('.._commands.analysis', 'line_count'),
-        N_('count lines')
+    'line-count': CLICommand(
+        name='line-count',
+        func=_lazy_load('.._commands.analysis', 'line_count'),
+        help_text=N_('count lines'),
+        command_type=CommandType.ANALYSIS
     ),
-    'lowercase': (
-        str.lower,
-        N_('convert to lowercase')
+    'lowercase': CLICommand(
+        name='lowercase',
+        func=str.lower,
+        help_text=N_('convert to lowercase'),
+        command_type=CommandType.WARPING
     ),
-    'mfws': (
-        _lazy_load('.._commands.analysis', 'mfws'),
-        N_('get most frequent words')
+    'mfws': CLICommand(
+        name='mfws',
+        func=_lazy_load('.._commands.analysis', 'mfws'),
+        help_text=N_('get most frequent words'),
+        command_type=CommandType.ANALYSIS,
+        requires_intermediate_input=True
     ),
-    'morse': (
-        _lazy_load('..warping', 'to_morse'),
-        N_('convert to Morse code')
+    'morse': CLICommand(
+        name='morse',
+        func=_lazy_load('.._lib.encoding', 'to_morse'),
+        help_text=N_('convert to Morse code'),
+        command_type=CommandType.WARPING
     ),
-    'ordinal': (
-        _lazy_load('..warping', 'cardinal_to_ordinal'),
-        N_('convert cardinal numbers to ordinal numbers')
+    'ordinal': CLICommand(
+        name='ordinal',
+        func=_lazy_load('.._lib.numbers', 'cardinal_to_ordinal'),
+        help_text=N_('convert cardinal numbers to ordinal numbers'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'pascal-case': (
-        _lazy_load('..warping', 'to_pascal_case'),
-        N_('ConvertToPascalCase')
+    'pascal-case': CLICommand(
+        name='pascal-case',
+        func=_lazy_load('.._lib.casing', 'to_pascal_case'),
+        help_text=N_('ConvertToPascalCase'),
+        command_type=CommandType.WARPING
     ),
-    'plain-text': (
-        str,
-        N_('convert to plain text')
+    'plain-text': CLICommand(
+        name='plain-text',
+        func=str,
+        help_text=N_('convert to plain text'),
+        command_type=CommandType.WARPING
     ),
-    'pos-counts': (
-        _lazy_load('.._commands.analysis', 'pos_counts'),
-        N_('count parts of speech')
+    'pos-counts': CLICommand(
+        name='pos-counts',
+        func=_lazy_load('.._commands.analysis', 'pos_counts'),
+        help_text=N_('count parts of speech'),
+        command_type=CommandType.ANALYSIS,
+        requires_spacy=True
     ),
-    'punct-to-inside': (
-        _lazy_load('..warping', 'punct_to_inside'),
-        N_('"move punctuation inside quotation marks."')
+    'punct-to-inside': CLICommand(
+        name='punct-to-inside',
+        func=_lazy_load('.._lib.punctuation', 'punct_to_inside'),
+        help_text=N_('"move punctuation inside quotation marks."'),
+        command_type=CommandType.WARPING
     ),
-    'punct-to-outside': (
-        _lazy_load('..warping', 'punct_to_outside'),
-        N_('"move punctuation outside quotation marks".')
+    'punct-to-outside': CLICommand(
+        name='punct-to-outside',
+        func=_lazy_load('.._lib.punctuation', 'punct_to_outside'),
+        help_text=N_('"move punctuation outside quotation marks".'),
+        command_type=CommandType.WARPING
     ),
-    'random-case': (
-        _lazy_load('..warping', 'random_case'),
-        N_('randomize the casing of each character')
+    'random-case': CLICommand(
+        name='random-case',
+        func=_lazy_load('.._lib.effects', 'random_case'),
+        help_text=N_('randomize the casing of each character'),
+        command_type=CommandType.WARPING
     ),
-    'randomize': (
-        _lazy_load('..warping', 'randomize'),
-        N_('randomize characters')
+    'randomize': CLICommand(
+        name='randomize',
+        func=_lazy_load('.._lib.effects', 'randomize'),
+        help_text=N_('randomize characters'),
+        command_type=CommandType.WARPING
     ),
-    'redact': (
-        _lazy_load('..warping', 'redact'),
-        N_('redact text')
+    'redact': CLICommand(
+        name='redact',
+        func=_lazy_load('.._lib.effects', 'redact'),
+        help_text=N_('redact text'),
+        command_type=CommandType.WARPING
     ),
-    'replace-case': (
-        _lazy_load('.._commands.replacement', 'replace_case'),
-        N_('find and replace a case')
+    'replace-case': CLICommand(
+        name='replace-case',
+        func=_lazy_load('.._commands.replacement', 'replace_case'),
+        help_text=N_('find and replace a case'),
+        command_type=CommandType.REPLACEMENT
     ),
-    'replace-regex': (
-        _lazy_load('.._commands.replacement', 'replace_regex'),
-        N_('find and replace a regular expression')
+    'replace-regex': CLICommand(
+        name='replace-regex',
+        func=_lazy_load('.._commands.replacement', 'replace_regex'),
+        help_text=N_('find and replace a regular expression'),
+        command_type=CommandType.REPLACEMENT
     ),
-    'replace-text': (
-        _lazy_load('.._commands.replacement', 'replace_text'),
-        N_('find and replace text')
+    'replace-text': CLICommand(
+        name='replace-text',
+        func=_lazy_load('.._commands.replacement', 'replace_text'),
+        help_text=N_('find and replace text'),
+        command_type=CommandType.REPLACEMENT
     ),
-    'reverse': (
-        _lazy_load('..warping', 'reverse'),
-        N_('reverse text')
+    'reverse': CLICommand(
+        name='reverse',
+        func=_lazy_load('.._lib.effects', 'reverse'),
+        help_text=N_('reverse text'),
+        command_type=CommandType.WARPING
     ),
-    'sentence-case': (
-        _lazy_load('..warping', 'to_sentence_case'),
-        N_('Convert to sentence case.')
+    'sentence-case': CLICommand(
+        name='sentence-case',
+        func=_lazy_load('.._lib.casing', 'to_sentence_case'),
+        help_text=N_('Convert to sentence case.'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'sentence-count': (
-        _lazy_load('.._commands.analysis', 'sentence_count'),
-        N_('count sentences')
+    'sentence-count': CLICommand(
+        name='sentence-count',
+        func=_lazy_load('.._commands.analysis', 'sentence_count'),
+        help_text=N_('count sentences'),
+        command_type=CommandType.ANALYSIS,
+        requires_spacy=True
     ),
-    'single-spaces': (
-        _lazy_load('..warping', 'to_single_spaces'),
-        N_('convert consecutive spaces to a single space')
+    'single-spaces': CLICommand(
+        name='single-spaces',
+        func=_lazy_load('.._lib.cleaning', 'to_single_spaces'),
+        help_text=N_('convert consecutive spaces to a single space'),
+        command_type=CommandType.WARPING
     ),
-    'snake-case': (
-        _lazy_load('..warping', 'to_snake_case'),
-        N_('convert_to_snake_case')
+    'snake-case': CLICommand(
+        name='snake-case',
+        func=_lazy_load('.._lib.casing', 'to_snake_case'),
+        help_text=N_('convert_to_snake_case'),
+        command_type=CommandType.WARPING
     ),
-    'straight-quotes': (
-        _lazy_load('.._lib.punctuation', 'curly_to_straight'),
-        N_('convert “curly quotes” to "straight quotes"')
+    'straight-quotes': CLICommand(
+        name='straight-quotes',
+        func=_lazy_load('.._lib.punctuation', 'curly_to_straight'),
+        help_text=N_('convert “curly quotes” to "straight quotes"'),
+        command_type=CommandType.WARPING
     ),
-    'strip': (
-        str.strip,
-        N_('strip leading and trailing whitespace')
+    'strip': CLICommand(
+        name='strip',
+        func=str.strip,
+        help_text=N_('strip leading and trailing whitespace'),
+        command_type=CommandType.WARPING
     ),
-    'strip-html': (
-        _lazy_load('..warping', 'strip_html'),
-        N_('strip HTML tags')
+    'strip-html': CLICommand(
+        name='strip-html',
+        func=_lazy_load('.._lib.cleaning', 'strip_html'),
+        help_text=N_('strip HTML tags'),
+        command_type=CommandType.WARPING
     ),
-    'swapcase': (
-        str.swapcase,
-        N_('swap the case of all alphabetical characters')
+    'swapcase': CLICommand(
+        name='swapcase',
+        func=str.swapcase,
+        help_text=N_('swap the case of all alphabetical characters'),
+        command_type=CommandType.WARPING
     ),
-    'time-to-read': (
-        _lazy_load('.._commands.analysis', 'time_to_read'),
-        N_('calculate time to read')
+    'time-to-read': CLICommand(
+        name='time-to-read',
+        func=_lazy_load('.._commands.analysis', 'time_to_read'),
+        help_text=N_('calculate time to read'),
+        command_type=CommandType.ANALYSIS,
+        requires_intermediate_input=True
     ),
-    'title-case': (
-        _lazy_load('..warping', 'to_title_case'),
-        N_('Convert to Title Case')
+    'title-case': CLICommand(
+        name='title-case',
+        func=_lazy_load('.._lib.casing', 'to_title_case'),
+        help_text=N_('Convert to Title Case'),
+        command_type=CommandType.WARPING,
+        requires_spacy=True
     ),
-    'ttr': (
-        _lazy_load('.._commands.analysis', 'ttr'),
-        N_('calculate type-token ratio')
+    'ttr': CLICommand(
+        name='ttr',
+        func=_lazy_load('.._commands.analysis', 'ttr'),
+        help_text=N_('calculate type-token ratio'),
+        command_type=CommandType.ANALYSIS
     ),
-    'unzalgo': (
-        _lazy_load('..warping', 'unzalgo'),
-        N_('remove Zalgo diacritics')
+    'unzalgo': CLICommand(
+        name='unzalgo',
+        func=_lazy_load('.._lib.effects', 'unzalgo'),
+        help_text=N_('remove Zalgo diacritics'),
+        command_type=CommandType.WARPING
     ),
-
-    'uppercase': (
-        str.upper,
-        N_('CONVERT TO ALL CAPS')
+    'uppercase': CLICommand(
+        name='uppercase',
+        func=str.upper,
+        help_text=N_('CONVERT TO ALL CAPS'),
+        command_type=CommandType.WARPING
     ),
-    'widen': (
-        _lazy_load('..warping', 'widen'),
-        N_('w i d e n  t e x t')
+    'widen': CLICommand(
+        name='widen',
+        func=_lazy_load('.._lib.effects', 'widen'),
+        help_text=N_('w i d e n  t e x t'),
+        command_type=CommandType.WARPING
     ),
-    'word-count': (
-        _lazy_load('.._commands.analysis', 'word_count'),
-        N_('count words')
+    'word-count': CLICommand(
+        name='word-count',
+        func=_lazy_load('.._commands.analysis', 'word_count'),
+        help_text=N_('count words'),
+        command_type=CommandType.ANALYSIS
     ),
-    'zalgo': (
-        _lazy_load('..warping', 'to_zalgo'),
-        N_('c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ')
+    'zalgo': CLICommand(
+        name='zalgo',
+        func=_lazy_load('.._lib.effects', 'to_zalgo'),
+        help_text=N_('c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ'),
+        command_type=CommandType.WARPING
     )
 }
-
-ANALYSIS_COMMANDS: Final[frozenset[str]] = frozenset({
-    'char-count',
-    'entity-counts',
-    'line-count',
-    'mfws',
-    'pos-counts',
-    'sentence-count',
-    'time-to-read',
-    'ttr',
-    'word-count'
-})
-
-# Cannot be combined with any other warping or analysis commands.
-MUTUALLY_EXCLUSIVE_COMMANDS: Final[frozenset[str]] = frozenset({'clear',})
-
-# Mutually exclusive with each other.
-REPLACEMENT_COMMANDS: Final[frozenset[str]] = frozenset({
-    'replace-case',
-    'replace-regex',
-    'replace-text'
-})
-
-# Commands that require spaCy installation.
-SPACY_COMMANDS: Final[frozenset[str]] = frozenset({
-    'capitalize',
-    'cardinal',
-    'entity-counts',
-    'expand-contractions',
-    'ordinal',
-    'pos-counts',
-    'sentence-case',
-    'sentence-count',
-    'title-case'
-})

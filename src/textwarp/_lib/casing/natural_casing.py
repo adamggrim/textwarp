@@ -12,13 +12,14 @@ if TYPE_CHECKING:
     )
 
 from textwarp._core.context import ctx
-from textwarp._core.enums import Casing
+from textwarp._core.enums import Casing, ModelPriority
 from textwarp._core.utils import change_first_alphabetical_case
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
 from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
+from textwarp._lib.nlp import process_as_doc
 
-__all__ = ['to_natural_case']
+__all__ = ['capitalize', 'to_natural_case', 'to_sentence_case', 'to_title_case']
 
 
 def _find_first_word_token_idx(
@@ -237,6 +238,15 @@ def _to_title_case_from_token(
     return token_text.lower()
 
 
+def capitalize(content: str | Doc) -> str:
+    """
+    Capitalize each word in a string or spaCy `Doc`, handling special
+    name prefixes and preserving other mid-word capitalizations.
+    """
+    doc = process_as_doc(content)
+    return to_natural_case(doc, Casing.START)
+
+
 def to_natural_case(doc: Doc, casing: Casing) -> str:
     """
     Apply sentence, start or title case to a spaCy `Doc`, capitalizing
@@ -328,3 +338,19 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
         i += 1
 
     return ''.join(processed_parts)
+
+
+def to_sentence_case(content: str | Doc) -> str:
+    """Convert a string or spaCy `Doc` to sentence case."""
+    doc = process_as_doc(content)
+    return to_natural_case(doc, Casing.SENTENCE)
+
+
+def to_title_case(content: str | Doc) -> str:
+    """
+    Convert a string or spaCy `Doc` to title case, handling special
+    name prefixes and preserving other mid-word capitalizations.
+    """
+    # Use the large spaCy model for identifying titles within titles.
+    doc = process_as_doc(content, model_priority=ModelPriority.ACCURACY)
+    return to_natural_case(doc, Casing.TITLE)

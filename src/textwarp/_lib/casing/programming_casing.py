@@ -10,8 +10,11 @@ from textwarp._lib.casing.string_casing import case_from_string
 
 __all__ = [
     'to_camel_case',
+    'to_dot_case',
+    'to_kebab_case',
     'to_pascal_case',
-    'to_separator_case'
+    'to_separator_case',
+    'to_snake_case'
 ]
 
 
@@ -130,3 +133,18 @@ def to_separator_case(
 
     cased_text = ''.join(parts)
     return cased_text.rstrip(separator.value)
+
+
+def to_dot_case(text: str) -> str:
+    """Convert a string to dot case."""
+    return to_separator_case(text, CaseSeparator.DOT)
+
+
+def to_kebab_case(text: str) -> str:
+    """Convert a string to kebab case."""
+    return to_separator_case(text, CaseSeparator.KEBAB)
+
+
+def to_snake_case(text: str) -> str:
+    """Convert a string to snake case."""
+    return to_separator_case(text, CaseSeparator.SNAKE)

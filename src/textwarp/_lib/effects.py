@@ -5,9 +5,14 @@ from random import choice, randint, shuffle
 
 import regex as re
 
+from textwarp._core.constants import patterns
+
 __all__ = [
+    'random_case',
     'randomize',
+    'redact',
     'reverse',
+    'to_alternating_caps',
     'to_zalgo',
     'unzalgo',
     'widen'
@@ -74,3 +79,45 @@ def widen(text: str) -> str:
     last one.
     """
     return ' '.join(text)
+
+
+def random_case(text: str) -> str:
+    """Randomize the casing of each character in a string."""
+    result: list[str] = []
+
+    for char in text:
+        if char.isalpha():
+            if choice([True, False]):
+                result.append(char.upper())
+            else:
+                result.append(char.lower())
+        else:
+            result.append(char)
+
+    return ''.join(result)
+
+
+def redact(text: str) -> str:
+    """
+    Redact a string by replacing each word character with a black
+    square.
+    """
+    return patterns.warping.get_word_char().sub('█', text)
+
+
+def to_alternating_caps(text: str) -> str:
+    """Convert a string to alternating caps."""
+    result: list[str] = []
+    upper = False
+
+    for char in text:
+        if char.isalpha():
+            if upper:
+                result.append(char.upper())
+            else:
+                result.append(char.lower())
+            upper = not upper
+        else:
+            result.append(char)
+
+    return ''.join(result)
