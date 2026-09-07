@@ -272,7 +272,7 @@ textwarp/
   │ │ │ │ │ └── variants.py: Sets used in English contraction variants
   │ │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
   │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
-  │ │ │ ├── punctuation.py: English-specific functions for converting between straight and curly quotes
+  │ │ │ ├── punctuation.py: English-specific functions handling punctuation
   │ │ │ └── utils.py: English-specific utility functions
   │ │ ├── __init__.py: Exposes strategy pattern classes containing language-specific logic
   │ │ └── base.py: Abstract base class for language providers
@@ -301,7 +301,7 @@ textwarp/
   │ | ├── markdown.py: Functions for parsing Markdown and transforming ASTs
   │ | ├── nlp.py: Functions for lazy spaCy loading and text processing
   │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
-  │ ├── punctuation.py: Functions for converting between straight and curly quotes
+  │ ├── punctuation.py: Functions handling punctuation
   │ └── replacement.py: Functions for finding and replacing text
   ├── __init__.py: A Python package for analyzing and transforming text
   ├── __main__.py: The entry point for the package
