@@ -1,6 +1,8 @@
 """English-specific NLP constants."""
 
 from typing import Final
+from textwarp._core.context import N_
+from textwarp._core.enums import POSTag
 from textwarp._core.utils import load_json_data
 
 __all__ = [
@@ -9,11 +11,14 @@ __all__ = [
     'HAVE_AUXILIARIES',
     'LEFT_SEARCH_STOP_TAGS',
     'NOUN_PHRASE_TAGS',
+    'NOUN_TAGS',
     'OPEN_QUOTES',
     'ORDINAL_SUFFIX_MAP',
     'ORDINAL_SUFFIXES',
     'PARTICIPLE_SUFFIXES',
     'PARTICIPLE_TAGS',
+    'POS_TAGS',
+    'POS_WORD_TAGS',
     'PREFERENCE_VERBS',
     'PROPER_NOUN_ENTITIES',
     'QUOTATION_MARKS',
@@ -26,39 +31,53 @@ __all__ = [
 ]
 
 BASE_VERB_TAGS: frozenset[str]
-
 CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
     '‘': "'",
     '’': "'",
     '“': '"',
     '”': '"'
 })
-
 HAVE_AUXILIARIES: frozenset[str]
 LEFT_SEARCH_STOP_TAGS: frozenset[str]
 NOUN_PHRASE_TAGS: frozenset[str]
+NOUN_TAGS: Final[frozenset[POSTag]] = frozenset({POSTag.NOUN, POSTag.PROPN})
 OPEN_QUOTES: frozenset[str]
-
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',
     2: 'nd',
     3: 'rd'
 }
-
 ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
     'nd', 'nds',
     'rd', 'rds',
     'st', 'sts',
     'th', 'ths',
 )
-
+PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
 PARTICIPLE_TAGS: frozenset[str]
-
+POS_TAGS: Final[tuple[tuple[POSTag, str], ...]] = (
+    (POSTag.ADJ, N_('Adjectives')),
+    (POSTag.ADP, N_('Adpositions')),
+    (POSTag.ADV, N_('Adverbs')),
+    (POSTag.AUX, N_('Auxiliaries')),
+    (POSTag.CCONJ, N_('Coordinating Conjunctions')),
+    (POSTag.DET, N_('Determiners')),
+    (POSTag.INTJ, N_('Interjections')),
+    (POSTag.NOUN, N_('Nouns')),
+    (POSTag.NUM, N_('Numbers')),
+    (POSTag.PART, N_('Particles')),
+    (POSTag.PRON, N_('Pronouns')),
+    (POSTag.PROPN, N_('Proper Nouns')),
+    (POSTag.SCONJ, N_('Subordinating Conjunctions')),
+    (POSTag.VERB, N_('Verbs')),
+    (POSTag.X, N_('Other'))
+)
+POS_WORD_TAGS: Final[frozenset[POSTag]] = frozenset(
+    item[0] for item in POS_TAGS if item[0] != POSTag.X
+)
 PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
     {'care', 'mind', 'prefer'}
 )
-
-PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
 PROPER_NOUN_ENTITIES: frozenset[str]
 QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
 RIGHT_SEARCH_STOP_TAGS: frozenset[str]
