@@ -63,8 +63,8 @@ def apply_expansion_casing(
 
 def expand_contractions(doc: Doc) -> str:
     """
-    Expand all contractions in a spaCy `Doc` using the active language
-    provider.
+    Expand all contractions in a string or spaCy `Doc` using the active
+    language provider.
 
     Args:
         doc: A spaCy `Doc`.

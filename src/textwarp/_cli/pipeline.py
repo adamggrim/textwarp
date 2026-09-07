@@ -106,7 +106,7 @@ def apply_pipeline(
         pipeline: A list of tuples containing:
             - The command-line argument string (e.g., `word-count`).
             - The corresponding callable function (e.g., `word_count`).
-        arg_to_replace: The case, regex or substring to replace, if
+        arg_to_replace: The case, regex or target substring, if
             provided. Defaults to `None`.
         replacement_arg: The replacement case, regex or substring, if
             provided. Defaults to `None`.
@@ -286,7 +286,7 @@ def route_text(
         text: The input text to process.
         pipeline: The pipeline list of command tuples.
         parse_markdown: Whether to parse text as Markdown.
-        arg_to_replace: The case, regex or substring to replace.
+        arg_to_replace: The case, regex or target substring.
         replacement_arg: The replacement case, regex or substring.
 
     Returns:
@@ -336,14 +336,14 @@ def validate_piped_commands(
     Args:
         pipeline: A list of tuples containing command names and their
             corresponding functions.
-        arg_to_replace: The case, regex or substring to replace, if
+        arg_to_replace: The case, regex or target substring, if
             provided.
         replacement_arg: The replacement case, regex or substring, if
             provided.
 
     Raises:
-            TextwarpValidationError: For an intermediate input command used in
-                pipeline mode.
+            TextwarpValidationError: For an intermediate input command
+                used in pipeline mode.
     """
     for cmd_name, func in pipeline:
         func_name = cmd_name.replace('-', '_')

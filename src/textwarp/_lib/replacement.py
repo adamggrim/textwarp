@@ -46,7 +46,7 @@ def replace_regex(
     Args:
         text: The string to transform.
         regex_text: The regular expression to find.
-        replacement_text: The string to replace the match with.
+        replacement_text: The replacement text.
 
     Returns:
         str: The transformed text.
@@ -65,8 +65,8 @@ def replace_text(
 
     Args:
         text: The string to transform.
-        text_to_replace: The string to replace.
-        replacement_text: The string to replace the match with.
+        text_to_replace: The text to replace.
+        replacement_text: The replacement text.
 
     Returns:
         str: The transformed text.

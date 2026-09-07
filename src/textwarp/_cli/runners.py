@@ -77,7 +77,7 @@ def _replace_and_copy(
 ) -> None:
     """
     Transform text using a replacement command and copy the result.
-    Print if the text to replace was not found.
+    Print if the target text was not found.
     """
     pyperclip = _get_pyperclip()
     transformation: str = command_func(clipboard)

@@ -209,13 +209,13 @@ def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
 
 def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
     """
-    Extract arguments for a regular expression to find and a string
-    to replace it, and return the transformed text.
+    Extract arguments for a target regular expression and a string to
+    replace it, and return the transformed text.
 
     Args:
         text: The string to transform.
         arg_to_replace: The regular expression to search for.
-        replacement_arg: The replacement string.
+        replacement_arg: The replacement text.
 
     Returns:
         str: The transformed text.
@@ -234,13 +234,13 @@ def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
 
 def replace_text(text: str, arg_to_replace: str, replacement_arg: str) -> str:
     """
-    Extract arguments for a string to replace and a string to replace it,
+    Extract arguments for a target string and a string to replace it,
     and return the transformed text.
 
     Args:
         text: The string to transform.
         arg_to_replace: The specific string to find and replace.
-        replacement_arg: The string to replace the match with.
+        replacement_arg: The replacement text.
 
     Returns:
         str: The transformed text.
