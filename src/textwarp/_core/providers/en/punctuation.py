@@ -1,7 +1,4 @@
-"""
-English-specific functions for converting between straight and curly
-quotes.
-"""
+"""English-specific functions handling punctuation."""
 
 from textwarp._core.providers import en
 from textwarp._core.providers.en.constants import CURLY_TO_STRAIGHT_TABLE
