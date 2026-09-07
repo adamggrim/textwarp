@@ -7,6 +7,8 @@ import unicodedata
 
 import regex as re
 
+from textwarp._core.enums import POSTag
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc
     from textwarp._core.types import EntityCasingContext
@@ -42,8 +44,29 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
+    def noun_tags(self) -> frozenset[POSTag]:
+        """Language-specific parts-of-speech tags for nouns."""
+        pass
+
+    @property
+    @abstractmethod
     def open_quotes(self) -> frozenset[str]:
         """Opening quote characters for the locale."""
+        pass
+
+    @property
+    @abstractmethod
+    def pos_tags(self) -> tuple[tuple[POSTag, str], ...]:
+        """
+        Language-specific parts-of-speech tags and their localized
+        labels.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def pos_word_tags(self) -> frozenset[POSTag]:
+        """Parts-of-speech tags that count as distinct words."""
         pass
 
     @property

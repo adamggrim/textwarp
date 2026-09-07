@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from spacy.tokens import Doc
     from textwarp._core.types import EntityCasingContext
 
+from textwarp._core.enums import POSTag
 from textwarp._core.providers.base import LanguageProvider
 from textwarp._core.providers import en
 
@@ -59,6 +60,11 @@ class EnglishProvider(LanguageProvider):
         return en.constants.NOUN_PHRASE_TAGS
 
     @property
+    def noun_tags(self) -> frozenset[POSTag]:
+        """English parts-of-speech tags for nouns."""
+        return en.constants.NOUN_TAGS
+
+    @property
     def open_quotes(self) -> frozenset[str]:
         """Opening quote characters for the locale."""
         return en.constants.OPEN_QUOTES
@@ -71,6 +77,17 @@ class EnglishProvider(LanguageProvider):
         verb tense.)
         """
         return en.constants.PARTICIPLE_TAGS
+
+
+    @property
+    def pos_tags(self) -> tuple[tuple[POSTag, str], ...]:
+        """English parts-of-speech tags and their localized labels."""
+        return en.constants.POS_TAGS
+
+    @property
+    def pos_word_tags(self) -> frozenset[POSTag]:
+        """Parts-of-speech tags that count as distinct words in English."""
+        return en.constants.POS_WORD_TAGS
 
     @property
     def proper_noun_entities(self) -> frozenset[str]:
