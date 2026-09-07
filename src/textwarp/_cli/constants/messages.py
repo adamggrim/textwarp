@@ -36,6 +36,7 @@ __all__ = [
     'MODIFIED_TEXT_COPIED_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'PIPED_INPUT_ERROR_MSG',
+    'FILE_SIZE_LIMIT_ERROR_MSG',
     'REGEX_TO_REPLACE_NOT_FOUND_MSG',
     'REPLACEMENT_CMD_ERROR_MSG',
     'TEXT_EMPTY_ERROR_MSG',
@@ -82,6 +83,9 @@ EXCLUSIVE_CMD_ERROR_MSG: Final = _(
 EXIT_MSG: Final = _('Exiting the program...')
 FILE_ACCESS_ERROR_MSG: Final = _("Error accessing file '{file_path}': {error}")
 FILE_WRITE_ERROR_MSG: Final = _('Error writing to output file: {error}')
+FILE_SIZE_LIMIT_ERROR_MSG: Final = _(
+    'File exceeds {limit}MB limit.'
+)
 FILE_WRITE_SUCCESS_MSG: Final = _(
     "Modified text successfully written to '{output_file}'."
 )
