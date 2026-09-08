@@ -4,11 +4,7 @@ import argparse
 import gettext
 import regex as re
 
-from textwarp._cli.args import (
-    ANALYSIS_COMMANDS,
-    MUTUALLY_EXCLUSIVE_COMMANDS,
-    REPLACEMENT_COMMANDS
-)
+from textwarp._cli.args import ARGS_MAP, CommandType
 from textwarp._cli.constants.messages import (
     ANALYSIS_ORDER_ERROR_MSG,
     CASE_EMPTY_ERROR_MSG,
@@ -109,28 +105,34 @@ def validate_command_combinations(
     Raises:
         SystemExit: If there is any invalid combination of arguments.
     """
-    active_mutually_exclusives = [
-        c for c in active_cmds if c in MUTUALLY_EXCLUSIVE_COMMANDS
+    active_standalones = [
+        c
+        for c in active_cmds
+        if ARGS_MAP[c].command_type == CommandType.STANDALONE
     ]
-    active_replacements = [c for c in active_cmds if c in REPLACEMENT_COMMANDS]
+    active_replacements = [
+        c
+        for c in active_cmds
+        if ARGS_MAP[c].command_type == CommandType.REPLACEMENT
+    ]
 
-    saw_analysis = False
+    first_analysis_cmd_seen = False
     for cmd in active_cmds:
-        if cmd in ANALYSIS_COMMANDS:
-            saw_analysis = True
-        elif saw_analysis:
+        if ARGS_MAP[cmd].command_type == CommandType.ANALYSIS:
+            first_analysis_cmd_seen = True
+        elif first_analysis_cmd_seen:
             parser.error(
                 _(ANALYSIS_ORDER_ERROR_MSG).format(cmd=cmd)
             )
 
-    if len(active_mutually_exclusives) > 1:
+    if len(active_standalones) > 1:
         parser.error(
             _(MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG).format(
-                commands=', '.join(active_mutually_exclusives)
+                commands=', '.join(active_standalones)
             )
         )
-    if active_mutually_exclusives and len(active_cmds) > 1:
-        cmd = active_mutually_exclusives[0]
+    if active_standalones and len(active_cmds) > 1:
+        cmd = active_standalones[0]
         parser.error(_(EXCLUSIVE_CMD_ERROR_MSG).format(cmd=cmd))
 
     if len(active_replacements) > 1:
