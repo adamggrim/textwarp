@@ -3,7 +3,7 @@
 import gettext
 
 from textwarp._cli.spinner import run_with_spinner
-from textwarp.analysis import (
+from textwarp._lib.analysis import (
     calculate_time_to_read,
     calculate_ttr,
     count_chars,
