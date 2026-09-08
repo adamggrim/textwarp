@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span, Token
 
-from textwarp._core.constants import NOUN_TAGS
 from textwarp._core.enums import POSTag
 from textwarp._core.providers import en
 from textwarp._core.providers.en.constants import (
@@ -114,7 +113,7 @@ def disambiguate_ain_t(span: Span) -> str:
         subj_text = subject_token.lower_
         is_singular = (
             subj_text in en.constants.THIRD_PERSON_SINGULAR_PRONOUNS
-            or subject_token.tag_ in NOUN_TAGS
+            or subject_token.tag_ in en.constants.NOUN_TAGS
         )
         is_first_person_i = (subj_text == 'i')
 

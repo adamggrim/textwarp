@@ -4,7 +4,7 @@ import gettext
 from dataclasses import dataclass, field
 from typing import final
 
-from textwarp._core.constants.nlp import POS_TAGS
+from textwarp._core.context import ctx
 from textwarp._core.enums import POSTag
 
 _ = gettext.gettext
@@ -61,7 +61,7 @@ class POSCounts:
         """
         return [
             (_(name), self.get_pos_counts(tag), self.get_percentage(tag))
-            for tag, name in POS_TAGS
+            for tag, name in ctx.provider.pos_tags
         ]
 
 

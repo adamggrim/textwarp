@@ -13,7 +13,7 @@ from textwarp._core.enums import POSTag
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
-from textwarp._core.constants.nlp import POS_TAGS, POS_WORD_TAGS
+from textwarp._core.context import ctx
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib.nlp import process_as_doc
 
@@ -173,9 +173,12 @@ def count_pos(content: str | Doc) -> POSCounts:
     counts = Counter(tags)
 
     tag_counts: dict[POSTag, int] = {
-        tag_pair[0]: counts.get(tag_pair[0], 0) for tag_pair in POS_TAGS
+        tag_pair[0]: counts.get(tag_pair[0], 0)
+        for tag_pair in ctx.provider.pos_tags
     }
-    total_word_count = sum(1 for token in doc if token.pos_ in POS_WORD_TAGS)
+    total_word_count = sum(
+        1 for token in doc if token.pos_ in ctx.provider.pos_word_tags
+    )
 
     return POSCounts(
         word_count=total_word_count,
