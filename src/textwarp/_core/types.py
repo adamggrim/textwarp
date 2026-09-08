@@ -1,11 +1,14 @@
 """Generic type definitions used across the package."""
 
 from typing import (
+    TYPE_CHECKING,
     Any,
-    Callable,
     TypeAlias,
     TypedDict
 )
+
+if TYPE_CHECKING:
+    from textwarp._cli.args import CLICommand
 
 __all__ = ['EntityCasingContext', 'JSONType', 'Pipeline', 'PipelineItem']
 
@@ -30,6 +33,6 @@ JSONType: TypeAlias = (
     dict[str, Any] | list[Any] | str | int | float | bool | None
 )
 
-PipelineItem: TypeAlias = tuple[str, Callable[..., str]]
+PipelineItem: TypeAlias = 'CLICommand'
 
 Pipeline: TypeAlias = list[PipelineItem]

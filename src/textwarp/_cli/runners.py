@@ -13,6 +13,7 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MSG,
     UNEXPECTED_CLIPBOARD_ERROR_MSG
 )
+from textwarp._cli import ui
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import (
     EmptyClipboardError,
@@ -101,7 +102,7 @@ def replace_text(command_name: str) -> None:
         f"prompt_for_{command_name.replace('replace_', 'replacement_')}"
     )
 
-    prompt_func = getattr(replacement, prompt_name)
+    prompt_func = getattr(ui, prompt_name)
     exec_func = getattr(replacement, command_name)
 
     arg_to_replace, replacement_arg = prompt_func()

@@ -5,17 +5,13 @@ from __future__ import annotations
 import gettext
 import sys
 from collections.abc import Callable
-from typing import Final, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import argparse
     from spacy.tokens import Doc
 
-from textwarp._cli.args import (
-    ANALYSIS_COMMANDS,
-    ARGS_MAP,
-    SPACY_COMMANDS
-)
+from textwarp._cli.args import ARGS_MAP,CommandType
 from textwarp._cli.constants.messages import (
     FILE_WRITE_ERROR_MSG,
     FILE_WRITE_SUCCESS_MSG,
@@ -26,7 +22,6 @@ from textwarp._cli.constants.messages import (
 from textwarp._cli.runners import clear_clipboard
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
-from textwarp._commands import replacement
 from textwarp._core.exceptions import (
     MissingDependencyError,
     TextwarpError,
@@ -36,12 +31,6 @@ from textwarp._core.types import Pipeline
 from textwarp._lib.nlp import process_as_doc
 
 _ = gettext.gettext
-
-REPLACEMENT_FUNC_NAMES: Final[frozenset[str]] = frozenset(replacement.__all__)
-
-INTEGER_PROMPT_FUNC_NAMES: Final[frozenset[str]] = frozenset({
-    'entity_counts', 'mfws', 'time_to_read'
-})
 
 
 def _run_pipeline_segment(
@@ -53,32 +42,30 @@ def _run_pipeline_segment(
     """Helper to sequentially apply a list of commands to text."""
     analysis_results: list[str] = []
 
-    for cmd_name, func in pipeline:
-        if cmd_name in SPACY_COMMANDS:
+    for cmd in pipeline:
+        if cmd.requires_spacy:
             if isinstance(content, str):
                 content = process_as_doc(content)
         elif not isinstance(content, str):
             content = content.text
 
-        if cmd_name == 'clear':
+        if cmd.command_type == CommandType.ANALYSIS:
+            analysis_results.append(cmd.func(content))
+        elif (
+            cmd.command_type == CommandType.REPLACEMENT
+            and arg_to_replace is not None
+            and replacement_arg is not None
+        ):
+            content = cmd.func(
+                content,
+                arg_to_replace=arg_to_replace,
+                replacement_arg=replacement_arg
+            )
+        elif cmd.command_type == CommandType.STANDALONE:
             clear_clipboard()
             return None
-        elif cmd_name in ANALYSIS_COMMANDS:
-            analysis_results.append(func(content))
         else:
-            func_name = cmd_name.replace('-', '_')
-            if (
-                func_name in REPLACEMENT_FUNC_NAMES
-                and arg_to_replace is not None
-                and replacement_arg is not None
-            ):
-                content = func(
-                    content,
-                    arg_to_replace=arg_to_replace,
-                    replacement_arg=replacement_arg
-                )
-            else:
-                content = func(content)
+            content = cmd.func(content)
 
     if analysis_results:
         return '\n'.join(analysis_results)
@@ -116,7 +103,7 @@ def apply_pipeline(
             from the pipeline, or `None` if the pipeline executes an
             analysis command.
     """
-    imports_spacy = any(cmd in SPACY_COMMANDS for cmd, _ in pipeline)
+    imports_spacy = any(cmd.requires_spacy for cmd in pipeline)
     requires_input = requires_intermediate_input(
         pipeline, arg_to_replace, replacement_arg
     )
@@ -163,8 +150,7 @@ def build_pipeline(
     pipeline: Pipeline = []
 
     for cmd_key in active_cmds:
-        func = ARGS_MAP[cmd_key][0]
-        pipeline.append((cmd_key, func))
+        pipeline.append(ARGS_MAP[cmd_key])
 
     if not pipeline:
         parser.print_help(sys.stderr)
@@ -210,7 +196,7 @@ def handle_output(
 
 def is_analysis_pipeline(pipeline: Pipeline) -> bool:
     """Check if any command in the pipeline is an analysis command."""
-    return any(cmd in ANALYSIS_COMMANDS for cmd, _ in pipeline)
+    return any(cmd.command_type == CommandType.ANALYSIS for cmd in pipeline)
 
 
 def requires_intermediate_input(
@@ -222,13 +208,11 @@ def requires_intermediate_input(
     Check whether the pipeline contains commands that prompt for input
     after the initial argument.
     """
-    for cmd_name, _ in pipeline:
-        normalized_name = cmd_name.replace('-', '_')
-
-        if normalized_name in INTEGER_PROMPT_FUNC_NAMES:
+    for cmd in pipeline:
+        if cmd.requires_intermediate_input:
             return True
         if (
-            normalized_name in REPLACEMENT_FUNC_NAMES
+            cmd.command_type == CommandType.REPLACEMENT
             and (arg_to_replace is None or replacement_arg is None)
         ):
             return True
@@ -345,14 +329,14 @@ def validate_piped_commands(
             TextwarpValidationError: For an intermediate input command
                 used in pipeline mode.
     """
-    for cmd_name, func in pipeline:
-        func_name = cmd_name.replace('-', '_')
-
-        if func_name in INTEGER_PROMPT_FUNC_NAMES:
+    for cmd in pipeline:
+        if cmd.requires_intermediate_input:
             raise TextwarpValidationError(
-                _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd_name)
+                _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd.name)
             )
 
-        if func_name in REPLACEMENT_FUNC_NAMES:
-            if arg_to_replace is None or replacement_arg is None:
-                raise TextwarpValidationError(_(REPLACEMENT_CMD_ERROR_MSG))
+        if (
+            cmd.command_type == CommandType.REPLACEMENT
+            and (arg_to_replace is None or replacement_arg is None)
+        ):
+            raise TextwarpValidationError(_(REPLACEMENT_CMD_ERROR_MSG))

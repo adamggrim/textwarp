@@ -59,8 +59,8 @@ def parse_args() -> ParsedArgs:
         __version__ = _('unknown (not installed)')
 
     epilog_lines = [_('commands:')]
-    for arg_key, (func, help_msg) in sorted(ARGS_MAP.items()):
-        epilog_lines.append(f'  {arg_key:<20} {_(help_msg)}')
+    for arg_key, cmd in sorted(ARGS_MAP.items()):
+        epilog_lines.append(f'  {arg_key:<20} {_(cmd.help_text)}')
 
     parser = argparse.ArgumentParser(
         prog='textwarp',
