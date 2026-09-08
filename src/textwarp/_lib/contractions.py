@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 from textwarp._core.context import ctx
 from textwarp._core.utils import starts_uppercase
 from textwarp._lib.casing.string_casing import case_from_string
+from textwarp._lib.nlp import process_as_doc
 
 __all__ = ['apply_expansion_casing', 'expand_contractions']
 
@@ -61,15 +62,16 @@ def apply_expansion_casing(
     return expanded_text
 
 
-def expand_contractions(doc: Doc) -> str:
+def expand_contractions(content: str | Doc) -> str:
     """
     Expand all contractions in a string or spaCy `Doc` using the active
     language provider.
 
     Args:
-        doc: A spaCy `Doc`.
+        content: A string or spaCy `Doc`.
 
     Returns:
         str: The converted `Doc` text.
     """
+    doc = process_as_doc(content)
     return ctx.provider.expand_contractions(doc)
