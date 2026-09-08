@@ -1,5 +1,7 @@
 """Tests for lazy spaCy loading and text processing."""
 
+from unittest.mock import MagicMock
+
 import pytest
 import spacy
 
@@ -51,27 +53,26 @@ def test_nlp_fallback_logic(monkeypatch):
     Mock `spacy.util.is_package` to simulate a missing `sm` model
     and verify it tries the next in ranking.
     """
-    def mock_is_package(name):
-        if name == 'en_core_web_sm':
-            return False
-        if name == 'en_core_web_md':
-            return True
-        return False
+    mock_is_package = MagicMock(side_effect=lambda name: name == 'en_core_web_md')
+    mock_load_spacy = MagicMock(side_effect=lambda x: f'loaded_{x}')
 
     monkeypatch.setattr(spacy.util, 'is_package', mock_is_package)
-    monkeypatch.setattr(
-        'textwarp._lib.nlp._load_spacy_model', lambda x: f'loaded_{x}'
-    )
+    monkeypatch.setattr('textwarp._lib.nlp._load_spacy_model', mock_load_spacy)
 
     result = _get_nlp(model_priority=ModelPriority.SPEED)
     assert result == 'loaded_en_core_web_md'
+    mock_is_package.assert_called()
+    mock_load_spacy.assert_called_once_with('en_core_web_md')
 
 
 def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
     from textwarp._core.exceptions import MissingModelError
 
-    monkeypatch.setattr(spacy.util, 'is_package', lambda x: False)
-    monkeypatch.setattr(spacy.util, 'get_installed_models', lambda: [])
+    mock_is_package = MagicMock(return_value=False)
+    mock_get_installed = MagicMock(return_value=[])
+
+    monkeypatch.setattr(spacy.util, 'is_package', mock_is_package)
+    monkeypatch.setattr(spacy.util, 'get_installed_models', mock_get_installed)
 
     with pytest.raises(MissingModelError, match='No EN spaCy models found.'):
         _get_nlp(model_priority=ModelPriority.SPEED)
@@ -93,14 +94,14 @@ def test_load_spacy_raises_missing_dependency_error(monkeypatch):
 
     original_import = builtins.__import__
 
-    def mock_import(name, *args, **kwargs):
+    def _import_side_effect(name, *args, **kwargs):
         if name == 'spacy':
             raise ImportError("No module named 'spacy'")
         return original_import(name, *args, **kwargs)
 
+    mock_import = MagicMock(side_effect=_import_side_effect)
     monkeypatch.setattr(builtins, '__import__', mock_import)
 
-    # Clear the cache to force the import logic to run
     _load_spacy.cache_clear()
 
     with pytest.raises(

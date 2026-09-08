@@ -2,7 +2,7 @@
 
 import pytest
 
-from textwarp.warping import (
+from textwarp import (
     capitalize,
     random_case,
     randomize,

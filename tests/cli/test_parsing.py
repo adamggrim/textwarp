@@ -2,6 +2,7 @@
 
 import sys
 from importlib.metadata import PackageNotFoundError
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -40,7 +41,7 @@ def test_parse_args_lang_argument(monkeypatch):
     parsed_args = parse_args()
 
     assert len(parsed_args.pipeline) == 1
-    assert parsed_args.pipeline[0][0] == 'camel-case'
+    assert parsed_args.pipeline[0].name == 'camel-case'
     assert parsed_args.lang == 'fr'
 
 
@@ -53,7 +54,7 @@ def test_parse_args_lang_default(monkeypatch):
 
 def test_parse_args_no_args_prints_help(monkeypatch, capsys):
     monkeypatch.setattr(sys, 'argv', ['textwarp'])
-    monkeypatch.setattr(sys.stdin, 'isatty', lambda: True)
+    monkeypatch.setattr(sys.stdin, 'isatty', MagicMock(return_value=True))
 
     with pytest.raises(SystemExit) as excinfo:
         parse_args()
@@ -64,12 +65,7 @@ def test_parse_args_no_args_prints_help(monkeypatch, capsys):
 
 
 def test_parse_args_version_fallback(monkeypatch, capsys):
-    """
-    Test that the `--version` argument handles when the package metadata
-    is not found.
-    """
-    def mock_version(pkg_name):
-        raise PackageNotFoundError()
+    mock_version = MagicMock(side_effect=PackageNotFoundError)
 
     monkeypatch.setattr('textwarp._cli.parsing.version', mock_version)
     monkeypatch.setattr(sys, 'argv', ['textwarp', '--version'])
@@ -78,6 +74,5 @@ def test_parse_args_version_fallback(monkeypatch, capsys):
         parse_args()
 
     assert excinfo.value.code == 0
-
     captured = capsys.readouterr()
     assert 'unknown (not installed)' in captured.out

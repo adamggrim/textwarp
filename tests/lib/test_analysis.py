@@ -1,9 +1,11 @@
 """Tests for analysis functions."""
 
+from unittest.mock import MagicMock
+
 from textwarp._core.enums import ModelPriority
 from textwarp._lib.nlp import _get_nlp, _load_spacy_model
-from textwarp.analysis import (
-    _extract_uax29_words,
+from textwarp._lib.analysis import _extract_uax29_words
+from textwarp import (
     calculate_time_to_read,
     calculate_ttr,
     count_chars,
@@ -194,20 +196,19 @@ def test_get_nlp_transformer_import_error(monkeypatch):
     """
     original_load = _load_spacy_model
 
-    def mock_load_spacy_model(model_name):
-        """
-        Mock function to simulate an `ImportError` for
-        'en_core_web_trf'.
-        """
+    def _load_side_effect(model_name):
         if model_name == 'en_core_web_trf':
             raise ImportError('spacy-transformers is not installed')
         return original_load(model_name)
 
+    mock_load_spacy = MagicMock(side_effect=_load_side_effect)
+
     monkeypatch.setattr(
         'textwarp._lib.nlp._load_spacy_model',
-        mock_load_spacy_model
+        mock_load_spacy
     )
 
     nlp_instance = _get_nlp(model_priority=ModelPriority.ACCURACY)
 
     assert nlp_instance is not None
+    mock_load_spacy.assert_called()

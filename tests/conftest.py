@@ -1,5 +1,7 @@
 """Tests for global fixtures and configurations."""
 
+from unittest.mock import MagicMock
+
 import pytest
 from spacy.tokens import Span
 
@@ -52,8 +54,7 @@ def mock_clipboard(monkeypatch):
 def simulate_input(monkeypatch):
     """Simulate a sequence of user inputs."""
     def _setup_input(inputs):
-        input_iterator = iter(inputs)
-        monkeypatch.setattr('builtins.input', lambda: next(input_iterator))
+        monkeypatch.setattr('builtins.input', MagicMock(side_effect=inputs))
 
     return _setup_input
 

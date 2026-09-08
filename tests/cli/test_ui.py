@@ -2,6 +2,8 @@
 
 import os
 import shutil
+from unittest.mock import MagicMock
+
 import pytest
 from wcwidth import wcswidth
 
@@ -20,18 +22,13 @@ from textwarp._cli.constants.messages import (
 
 
 def test_get_input_delay(simulate_input, monkeypatch):
-    sleep_called = False
-
-    def mock_sleep(seconds):
-        nonlocal sleep_called
-        sleep_called = True
-        assert seconds == 0.5
+    mock_sleep = MagicMock()
 
     monkeypatch.setattr('time.sleep', mock_sleep)
     simulate_input(['y'])
 
     get_input()
-    assert sleep_called is True
+    mock_sleep.assert_called_once_with(0.5)
 
 
 def test_get_input_no_or_exit(simulate_input):
@@ -67,11 +64,8 @@ def test_print_padding(capsys):
 
 
 def test_print_wrapped(monkeypatch, capsys):
-    monkeypatch.setattr(
-        shutil,
-        'get_terminal_size',
-        lambda fallback=None: os.terminal_size((20, 24))
-    )
+    mock_terminal_size = MagicMock(return_value=os.terminal_size((20, 24)))
+    monkeypatch.setattr(shutil, 'get_terminal_size', mock_terminal_size)
 
     text = (
         'It was the best of times, it was the worst of times, it was the age '
@@ -96,11 +90,8 @@ def test_print_wrapped(monkeypatch, capsys):
 
 
 def test_print_wrapped_wide_chars(monkeypatch, capsys):
-    monkeypatch.setattr(
-        shutil,
-        'get_terminal_size',
-        lambda fallback=None: os.terminal_size((20, 24))
-    )
+    mock_terminal_size = MagicMock(return_value=os.terminal_size((20, 24)))
+    monkeypatch.setattr(shutil, 'get_terminal_size', mock_terminal_size)
 
     text = (
         '水 🌊, 土 🪨, 火 🔥, 氣 💨. Long ago, the four nations lived together in '

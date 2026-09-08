@@ -27,7 +27,7 @@ def test_type_aliases():
     assert JSONType is not None
 
     assert PipelineItem is not None
-    assert typing.get_origin(PipelineItem) is tuple
+    assert PipelineItem == 'CLICommand'
 
     assert Pipeline is not None
     assert typing.get_origin(Pipeline) is list

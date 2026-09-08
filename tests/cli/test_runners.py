@@ -1,5 +1,7 @@
 """Tests for command-line runner logic and clipboard interaction."""
 
+from unittest.mock import MagicMock
+
 import pyperclip
 
 from tests.helpers import normalize_output
@@ -39,8 +41,9 @@ def test_paste_and_validate_empty(mock_clipboard, capsys):
 
 
 def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
-    def mock_paste():
-        raise pyperclip.PyperclipException('xclip or xsel not found')
+    mock_paste = MagicMock(
+        side_effect=pyperclip.PyperclipException('xclip or xsel not found')
+    )
 
     monkeypatch.setattr(pyperclip, 'paste', mock_paste)
 
@@ -53,6 +56,7 @@ def test_paste_and_validate_pyperclip_exception(monkeypatch, capsys):
 
     assert expected_error in normalized_out
     assert expected_warning in normalized_out
+    mock_paste.assert_called_once()
 
 
 def test_clear_clipboard(mock_clipboard, capsys):
@@ -102,25 +106,17 @@ def test_run_command_loop(monkeypatch, mock_clipboard):
 
     monkeypatch.setattr('textwarp._cli.runners.get_input', lambda: False)
 
-    executed = False
-    def dummy_command(text):
-        nonlocal executed
-        executed = True
-        assert text == 'Tomorrow, and tomorrow, and tomorrow'
-        return text
+    mock_command = MagicMock()
 
-    run_command_loop(dummy_command)
-    assert executed is True
+    run_command_loop(mock_command)
+
+    mock_command.assert_called_once_with(
+        'Tomorrow, and tomorrow, and tomorrow'
+    )
 
 
 def test_replace_text_lookup(monkeypatch):
-    loop_called = False
-
-    def mock_run_command_loop(command_func, action_handler):
-        nonlocal loop_called
-        loop_called = True
-        assert callable(command_func)
-        assert action_handler == _replace_and_copy
+    mock_run_command_loop = MagicMock()
 
     monkeypatch.setattr(
         'textwarp._cli.runners.run_command_loop',
@@ -128,9 +124,10 @@ def test_replace_text_lookup(monkeypatch):
     )
 
     monkeypatch.setattr(
-        'textwarp._commands.replacement.prompt_for_replacement_case',
+        'textwarp._cli.ui.prompt_for_replacement_case',
         lambda: ('camel', 'snake')
     )
 
     replace_text('replace_case')
-    assert loop_called is True
+
+    mock_run_command_loop.assert_called_once()

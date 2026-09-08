@@ -4,14 +4,14 @@ import pytest
 
 from textwarp._cli.args import (
     ARGS_MAP,
-    MUTUALLY_EXCLUSIVE_COMMANDS,
-    REPLACEMENT_COMMANDS,
+    CLICommand,
+    CommandType,
     _lazy_load
 )
 
 
 def test_lazy_load():
-    lazy_func = _lazy_load('..warping', 'to_title_case')
+    lazy_func = _lazy_load('.._lib.casing', 'to_title_case')
 
     assert callable(lazy_func)
     assert lazy_func('bartleby, the scrivener') == 'Bartleby, the Scrivener'
@@ -19,39 +19,27 @@ def test_lazy_load():
 
 def test_args_map_structure():
     """
-    Test that every entry in `ARGS_MAP` has a valid callable function
-    and help string.
+    Test that every entry in `ARGS_MAP` is a properly configured CLICommand.
     """
-    for cmd_name, (func, help_text) in ARGS_MAP.items():
+    for cmd_name, cmd in ARGS_MAP.items():
         assert isinstance(cmd_name, str), (
             f'Command name {cmd_name} is not a string.'
         )
-        assert callable(func), (
+        assert isinstance(cmd, CLICommand), (
+            f'Value for {cmd_name} is not a CLICommand.'
+        )
+        assert callable(cmd.func), (
             f'The function mapped to {cmd_name} is not callable.'
         )
-        assert isinstance(help_text, str), (
+        assert isinstance(cmd.help_text, str), (
             f'The help text for {cmd_name} is not a string.'
         )
-        assert len(help_text.strip()) > 0, (
+        assert len(cmd.help_text.strip()) > 0, (
             f'The help text for {cmd_name} is empty.'
         )
-
-
-def test_command_sets_validity():
-    all_mapped_commands = set(ARGS_MAP.keys())
-
-    assert MUTUALLY_EXCLUSIVE_COMMANDS.issubset(all_mapped_commands), (
-        'Unknown command in `MUTUALLY_EXCLUSIVE_COMMANDS`.'
-    )
-    assert REPLACEMENT_COMMANDS.issubset(all_mapped_commands), (
-        'Unknown command in `REPLACEMENT_COMMANDS`.'
-    )
-
-
-def test_mutually_exclusive_sets():
-    assert REPLACEMENT_COMMANDS.isdisjoint(MUTUALLY_EXCLUSIVE_COMMANDS), (
-        'Overlap between replacement and mutually exclusive commands.'
-    )
+        assert isinstance(cmd.command_type, CommandType), (
+            f'The command type for {cmd_name} is not a valid CommandType.'
+        )
 
 
 @pytest.mark.parametrize(
@@ -78,5 +66,5 @@ def test_mutually_exclusive_sets():
     ],
 )
 def test_built_in_string_functions(command, input_text, expected_output):
-    func = ARGS_MAP[command][0]
+    func = ARGS_MAP[command].func
     assert func(input_text) == expected_output

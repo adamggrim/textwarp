@@ -2,7 +2,7 @@
 
 from textwarp._core.enums import POSTag
 from textwarp._core.models import POSCounts, WordCount
-from textwarp._core.constants.nlp import POS_TAGS
+from textwarp._core.providers.en.constants import POS_TAGS
 
 
 def test_word_count_initialization():
