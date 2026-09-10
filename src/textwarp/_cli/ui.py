@@ -135,6 +135,11 @@ def get_input(prompt_delay: float = 0.5) -> bool:
         print_wrapped(_(ENTER_VALID_RESPONSE_PROMPT))
 
 
+def get_terminal_width() -> int:
+    """Get the current terminal width."""
+    return shutil.get_terminal_size(fallback=(80, 24)).columns
+
+
 def print_padding() -> None:
     """Print a blank line for padding."""
     print('')
@@ -144,33 +149,9 @@ def print_wrapped(text: str) -> None:
     """
     Wrap printing based on the width of the terminal and add a newline
     character to the start of the string.
-
-    Args:
-        text: The string to print.
     """
-    terminal_size = shutil.get_terminal_size(fallback=(80, 24)).columns
-    print_size = terminal_size - 1
-
-    words = text.split()
-    lines: list[str] = []
-    current_line: list[str] = []
-    current_width = 0
-
-    for word in words:
-        word_width = max(0, wcswidth(word))
-
-        if current_line and current_width + 1 + word_width > print_size:
-            lines.append(' '.join(current_line))
-            current_line = [word]
-            current_width = word_width
-        else:
-            current_line.append(word)
-            current_width += word_width + (1 if len(current_line) > 1 else 0)
-
-    if current_line:
-        lines.append(' '.join(current_line))
-
-    wrapped_text = '\n'.join(lines)
+    print_size = get_terminal_width() - 1
+    wrapped_text = '\n'.join(wrap_text(text, print_size))
     print('\n' + wrapped_text)
 
 
@@ -193,15 +174,6 @@ def prompt_for_integer(
 ) -> int:
     """
     Prompt the user for a valid positive integer.
-
-    Args:
-        prompt_text: The initial prompt to display.
-        error_text: The error message displayed on invalid input.
-        allow_early_exit: Whether to allow the user to exit early by
-            entering an exit input.
-
-    Returns:
-        int: A valid integer provided by the user.
     """
     print_wrapped(prompt_text)
     user_input: str = input().strip()
@@ -290,3 +262,26 @@ def prompt_for_replacement_text() -> tuple[str, str]:
             ENTER_VALID_TEXT_PROMPT
         )
     )
+
+def wrap_text(text: str, width: int) -> list[str]:
+    """Wrap text based on visual terminal rendering width."""
+    words = text.split()
+    lines: list[str] = []
+    current_line: list[str] = []
+    current_width = 0
+
+    for word in words:
+        word_width = max(0, wcswidth(word))
+
+        if current_line and current_width + 1 + word_width > width:
+            lines.append(' '.join(current_line))
+            current_line = [word]
+            current_width = word_width
+        else:
+            current_line.append(word)
+            current_width += word_width + (1 if current_line else 0)
+
+    if current_line:
+        lines.append(' '.join(current_line))
+
+    return lines

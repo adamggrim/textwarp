@@ -5,10 +5,13 @@ import gettext
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
+import textwrap
+from typing_extensions import Final
 
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
 from textwarp._cli.pipeline import build_pipeline
+from textwarp._cli.ui import get_terminal_width, wrap_text
 from textwarp._core.types import Pipeline
 from textwarp._cli.validation import validate_command_combinations
 
@@ -16,6 +19,12 @@ _ = gettext.gettext
 
 __all__ = ['parse_args', 'ParsedArgs']
 
+_INDENT: Final = 2
+_CMD_WIDTH: Final = 20
+_SEPARATOR: Final = 1
+_LEFT_MARGIN: Final = (
+    _INDENT + _CMD_WIDTH + _SEPARATOR
+)
 
 @dataclass(frozen=True)
 class ParsedArgs:
@@ -49,8 +58,9 @@ def parse_args() -> ParsedArgs:
         A custom help formatter to align help messages neatly based on
         the maximum argument width.
         """
-        # Use `RawTextHelpFormatter` to preserve consecutive spaces.
-        return argparse.RawTextHelpFormatter(
+        # Use `RawDescriptionHelpFormatter` to preserve command
+        # formatting.
+        return argparse.RawDescriptionHelpFormatter(
             prog, max_help_position=79
         )
 
@@ -59,9 +69,25 @@ def parse_args() -> ParsedArgs:
     except PackageNotFoundError:
         __version__ = _('unknown (not installed)')
 
+    terminal_width = get_terminal_width()
+    text_width = max(terminal_width - (_LEFT_MARGIN + 2), 10)
+
     epilog_lines = [_('commands:')]
     for arg_key, cmd in sorted(ARGS_MAP.items()):
-        epilog_lines.append(f'  {arg_key:<20} {_(cmd.help_text)}')
+        help_text = _(cmd.help_text)
+        wrapped_help = wrap_text(help_text, text_width)
+
+        if wrapped_help:
+            epilog_lines.append(
+                f"{' ' * _INDENT}"
+                f'{arg_key:<{_CMD_WIDTH}}'
+                f'{' ' * _SEPARATOR}'
+                f'{wrapped_help[0]}'
+            )
+            for line in wrapped_help[1:]:
+                epilog_lines.append(f"{' ' * _LEFT_MARGIN}{line}")
+        else:
+            epilog_lines.append(f"{' ' * _INDENT}{arg_key:<{_CMD_WIDTH}}")
 
     parser = argparse.ArgumentParser(
         prog='textwarp',
