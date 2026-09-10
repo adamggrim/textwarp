@@ -38,10 +38,6 @@ from textwarp._core.exceptions import TextwarpError
 
 _ = gettext.gettext
 
-MAX_MEMORY_MB: Final = 100
-MAX_MEMORY_BYTES: Final = MAX_MEMORY_MB * 1024 * 1024
-
-
 @contextmanager
 def _managed_output_stream(
     output_file: str | None,
@@ -214,7 +210,6 @@ def process_file_mode(args: ParsedArgs) -> None:
     validate_piped_commands(args.pipeline, args.find, args.replace)
 
     is_analysis = is_analysis_pipeline(args.pipeline)
-
     is_regex_only_pipeline = (
         len(args.pipeline) == 1 and args.pipeline[0].name == 'replace-regex'
     )
@@ -232,9 +227,10 @@ def process_file_mode(args: ParsedArgs) -> None:
         return
 
     combined_results: list[str] = []
+    max_memory_bytes = args.max_file_mb * 1024 * 1024
 
     for file_path in args.input_files:
-        if os.path.getsize(file_path) > MAX_MEMORY_BYTES:
+        if os.path.getsize(file_path) > max_memory_bytes:
             if (
                 is_regex_only_pipeline
                 and args.find is not None
@@ -247,9 +243,9 @@ def process_file_mode(args: ParsedArgs) -> None:
                     file_path=file_path,
                     error=_(
                         FILE_SIZE_LIMIT_ERROR_MSG
-                    ).format(limit=MAX_MEMORY_MB)
+                    ).format(limit=args.max_file_mb)
                 )
-                print_wrapped(f"Warning: {warning_msg}")
+                print_wrapped(f'Warning: {warning_msg}')
                 continue
 
         text = _read_and_strip_file(file_path)

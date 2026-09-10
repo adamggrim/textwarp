@@ -29,6 +29,7 @@ class ParsedArgs:
     replace: str | None
     copy_to_clipboard: bool
     debug: bool
+    max_file_mb: int
 
 
 def parse_args() -> ParsedArgs:
@@ -129,6 +130,15 @@ def parse_args() -> ParsedArgs:
         metavar='TEXT',
         type=str,
         help=_('replacement text')
+    )
+
+    parser.add_argument(
+        '--max-file-mb',
+        dest='max_file_mb',
+        metavar='MB',
+        type=int,
+        default=100,
+        help=_('maximum file size for in-memory processing')
     )
 
     parser.add_argument(
