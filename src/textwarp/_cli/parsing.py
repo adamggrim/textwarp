@@ -83,7 +83,7 @@ def parse_args() -> ParsedArgs:
             epilog_lines.append(
                 f"{' ' * _INDENT}"
                 f'{arg_key:<{_CMD_WIDTH}}'
-                f'{' ' * _SEPARATOR}'
+                f"{' ' * _SEPARATOR}"
                 f'{wrapped_help[0]}'
             )
             for line in wrapped_help[1:]:
