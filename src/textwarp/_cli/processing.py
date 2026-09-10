@@ -6,7 +6,7 @@ import os
 import sys
 from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
-from typing import IO, Any, Final
+from typing import IO, Any
 
 import regex as re
 
@@ -37,6 +37,7 @@ from textwarp._commands.replacement import _parse_cli_escapes
 from textwarp._core.exceptions import TextwarpError
 
 _ = gettext.gettext
+
 
 @contextmanager
 def _managed_output_stream(

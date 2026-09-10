@@ -7,7 +7,7 @@ import pytest
 
 from textwarp import __main__
 from textwarp._cli.args import ARGS_MAP
-from textwarp._cli.parsing import ParsedArgs
+from textwarp._cli.parsing import DEFAULT_MAX_FILE_MB, ParsedArgs
 
 
 def test_cli_version(capsys, monkeypatch):
@@ -47,7 +47,8 @@ def test_main_sets_locale(monkeypatch):
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     mock_parse_args = MagicMock(return_value=mock_args)
@@ -97,7 +98,8 @@ def test_main_global_exception_handler_debug_mode(monkeypatch):
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=True
+        debug=True,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     mock_parse_args = MagicMock(return_value=mock_args)

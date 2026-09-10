@@ -5,7 +5,6 @@ import gettext
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
-import textwrap
 from typing_extensions import Final
 
 from textwarp._cli.args import ARGS_MAP
@@ -19,12 +18,15 @@ _ = gettext.gettext
 
 __all__ = ['parse_args', 'ParsedArgs']
 
+DEFAULT_MAX_FILE_MB: Final = 100
+
 _INDENT: Final = 2
 _CMD_WIDTH: Final = 20
 _SEPARATOR: Final = 1
 _LEFT_MARGIN: Final = (
     _INDENT + _CMD_WIDTH + _SEPARATOR
 )
+
 
 @dataclass(frozen=True)
 class ParsedArgs:
@@ -163,7 +165,7 @@ def parse_args() -> ParsedArgs:
         dest='max_file_mb',
         metavar='MB',
         type=int,
-        default=100,
+        default=DEFAULT_MAX_FILE_MB,
         help=_('maximum file size for in-memory processing')
     )
 
@@ -197,5 +199,6 @@ def parse_args() -> ParsedArgs:
         find=args.find,
         replace=args.replace,
         copy_to_clipboard=args.copy_to_clipboard,
-        debug=args.debug
+        debug=args.debug,
+        max_file_mb=args.max_file_mb
     )

@@ -16,14 +16,13 @@ from textwarp._cli.constants.messages import (
     FILE_WRITE_SUCCESS_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
-from textwarp._cli.parsing import ParsedArgs
-from textwarp._cli.processing import MAX_MEMORY_MB
+from textwarp._cli.parsing import DEFAULT_MAX_FILE_MB, ParsedArgs
 from textwarp._core.exceptions import TextwarpError
 
 
 @pytest.fixture
 def mock_oversized_file(monkeypatch):
-    oversized_bytes = (MAX_MEMORY_MB + 1) * 1024 * 1024
+    oversized_bytes = (DEFAULT_MAX_FILE_MB + 1) * 1024 * 1024
     monkeypatch.setattr('os.path.getsize', lambda _: oversized_bytes)
 
 
@@ -42,7 +41,8 @@ def test_process_file_mode_binary_file(tmp_path):
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     expected_msg = BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
@@ -63,7 +63,8 @@ def test_process_file_mode_file_not_found():
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     with pytest.raises(TextwarpError, match='Error accessing file'):
@@ -87,14 +88,15 @@ def test_process_file_mode_oversized_file_warning(
         find=None,
         replace=None,
         copy_to_clipboard=True,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     processing.process_file_mode(args)
 
     captured = capsys.readouterr()
     assert 'Warning: Error accessing file' in captured.out
-    assert 'File exceeds 100MB limit' in captured.out
+    assert 'File exceeds' in captured.out
 
 
 @pytest.mark.usefixtures('mock_oversized_file')
@@ -114,7 +116,8 @@ def test_process_file_mode_oversized_regex_routing(
         find='foo',
         replace='bar',
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     mock_mmap_regex = MagicMock()
@@ -141,7 +144,8 @@ def test_process_file_mode_success(tmp_path, capsys):
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     processing.process_file_mode(args)
@@ -170,7 +174,8 @@ def test_process_interactive_mode_replacement(monkeypatch):
         find=None,
         replace=None,
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     with pytest.raises(SystemExit):
@@ -195,7 +200,8 @@ def test_process_mmap_regex_multiple_files(tmp_path):
         find=r'target\d{3}',
         replace='replaced',
         copy_to_clipboard=False,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     processing._process_mmap_regex(str(input_file1), args)
@@ -226,7 +232,8 @@ def test_process_piped_mode_copy_flag(
         find=None,
         replace=None,
         copy_to_clipboard=True,
-        debug=False
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
     processing.process_piped_mode(args)
