@@ -7,7 +7,7 @@ import unicodedata
 
 import regex as re
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 
 if TYPE_CHECKING:
     from spacy.tokens import Doc
@@ -44,7 +44,7 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def noun_tags(self) -> frozenset[POSTag]:
+    def noun_tags(self) -> frozenset[UniversalPOSTag]:
         """Language-specific parts-of-speech tags for nouns."""
         pass
 
@@ -56,7 +56,7 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def pos_tags(self) -> tuple[tuple[POSTag, str], ...]:
+    def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
         """
         Language-specific parts-of-speech tags and their localized
         labels.
@@ -65,7 +65,7 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def pos_word_tags(self) -> frozenset[POSTag]:
+    def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
         """Parts-of-speech tags that count as distinct words."""
         pass
 

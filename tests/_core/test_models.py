@@ -1,6 +1,6 @@
 """Tests for core analytical models."""
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._core.providers.en.constants import POS_TAGS
 
@@ -23,30 +23,30 @@ def test_pos_counts_initialization():
 def test_pos_counts_get_pos_counts():
     pos_counts = POSCounts(
         word_count=4,
-        tag_counts={POSTag.NOUN: 1, POSTag.VERB: 1}
+        tag_counts={MainPOSTag.NOUN: 1, MainPOSTag.VERB: 1}
     )
 
-    assert pos_counts.get_pos_counts(POSTag.ADJ) == 0
-    assert pos_counts.get_pos_counts(POSTag.NOUN) == 1
-    assert pos_counts.get_pos_counts(POSTag.VERB) == 1
+    assert pos_counts.get_pos_counts(MainPOSTag.ADJ) == 0
+    assert pos_counts.get_pos_counts(MainPOSTag.NOUN) == 1
+    assert pos_counts.get_pos_counts(MainPOSTag.VERB) == 1
 
 
 def test_pos_counts_get_percentage():
-    pos_counts = POSCounts(word_count=10, tag_counts={POSTag.NOUN: 4})
+    pos_counts = POSCounts(word_count=10, tag_counts={MainPOSTag.NOUN: 4})
 
-    assert pos_counts.get_percentage(POSTag.NOUN) == 40.0
+    assert pos_counts.get_percentage(MainPOSTag.NOUN) == 40.0
 
 
 def test_pos_counts_get_percentage_zero_word_count():
-    pos_counts = POSCounts(word_count=0, tag_counts={POSTag.NOUN: 4})
+    pos_counts = POSCounts(word_count=0, tag_counts={MainPOSTag.NOUN: 4})
 
-    assert pos_counts.get_percentage(POSTag.NOUN) == 0.0
+    assert pos_counts.get_percentage(MainPOSTag.NOUN) == 0.0
 
 
 def test_pos_counts_get_pos_data():
     pos_counts = POSCounts(
         word_count=20,
-        tag_counts={POSTag.NOUN: 10, POSTag.VERB: 5}
+        tag_counts={MainPOSTag.NOUN: 10, MainPOSTag.VERB: 5}
     )
     pos_data = pos_counts.get_pos_data()
 

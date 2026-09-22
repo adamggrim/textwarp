@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import final
 
 from textwarp._core.context import ctx
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag
 
 _ = gettext.gettext
 
@@ -20,14 +20,14 @@ class POSCounts:
     speech.
     """
     word_count: int = 0
-    tag_counts: dict[POSTag, int] = field(default_factory=dict)
+    tag_counts: dict[MainPOSTag, int] = field(default_factory=dict)
 
-    def get_pos_counts(self, tag: POSTag) -> int:
+    def get_pos_counts(self, tag: MainPOSTag) -> int:
         """
         Get the count for a given parts-of-speech tag.
 
         Args:
-            tag: The parts-of-speech tag from the `POSTag` enum.
+            tag: The parts-of-speech tag from the `MainPOSTag` enum.
 
         Returns:
             int: The count for the given parts-of-speech tag, or 0 if
@@ -35,13 +35,13 @@ class POSCounts:
         """
         return self.tag_counts.get(tag, 0)
 
-    def get_percentage(self, tag: POSTag) -> float:
+    def get_percentage(self, tag: MainPOSTag) -> float:
         """
         Get the percentage of a given part of speech in the total word
         count.
 
         Args:
-            tag: The parts-of-speech tag from the `POSTag` enum.
+            tag: The parts-of-speech tag from the `MainPOSTag` enum.
 
         Returns:
             float: The calculated percentage, or 0.0 if

@@ -1,6 +1,6 @@
 """Tests for contraction utility functions."""
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers.en.utils import (
     find_subject_token,
     get_negative_contraction_base_verb,
@@ -42,7 +42,11 @@ def test_get_next_lexical_token():
     doc = process_as_doc('I’d only ever kissed before.')
     token = get_next_lexical_token(
         doc, 2,
-        skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        skip_pos={
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.PUNCT,
+            UniversalPOSTag.SPACE
+        }
     )
 
     assert token is not None
@@ -57,7 +61,11 @@ def test_get_prev_lexical_token():
     token = get_prev_lexical_token(
         doc,
         start_idx,
-        skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        skip_pos={
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.PUNCT,
+            UniversalPOSTag.SPACE
+        }
     )
 
     assert token is not None
@@ -66,7 +74,12 @@ def test_get_prev_lexical_token():
 
 def test_lexical_token_bounds():
     doc = process_as_doc('Here, there and everywhere')
-    skip_tags = {POSTag.SPACE, POSTag.PUNCT, POSTag.ADV, POSTag.CCONJ}
+    skip_tags = {
+        UniversalPOSTag.ADV,
+        UniversalPOSTag.CCONJ,
+        UniversalPOSTag.PUNCT,
+        UniversalPOSTag.SPACE
+    }
     next_token = get_next_lexical_token(
         doc,
         0,

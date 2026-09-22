@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 import regex as re
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 
 if TYPE_CHECKING:
     from spacy.tokens import Doc
@@ -30,6 +30,7 @@ __all__ = [
 ]
 
 _BOUNDARY_PATTERN = re.compile(r'\b', flags=re.V1 | re.WORD)
+
 
 def _extract_uax29_words(text: str) -> list[str]:
     """
@@ -165,20 +166,46 @@ def count_pos(content: str | Doc) -> POSCounts:
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
 
-    tags = [
-        POSTag._value2member_map_.get(token.pos_, POSTag.X)
-        for token in doc
-        if not token.is_space
-    ]
+    # Map the granular spaCy UPOS tags to our decoupled presentation layer
+    pos_mapping = {
+        UniversalPOSTag.ADJ: MainPOSTag.ADJ,
+        UniversalPOSTag.ADP: MainPOSTag.ADP,
+        UniversalPOSTag.ADV: MainPOSTag.ADV,
+        UniversalPOSTag.AUX: MainPOSTag.VERB,
+        UniversalPOSTag.CCONJ: MainPOSTag.CONJ,
+        UniversalPOSTag.DET: MainPOSTag.ADJ,
+        UniversalPOSTag.INTJ: MainPOSTag.INTJ,
+        UniversalPOSTag.NOUN: MainPOSTag.NOUN,
+        UniversalPOSTag.PART: MainPOSTag.ADV,
+        UniversalPOSTag.PRON: MainPOSTag.PRON,
+        UniversalPOSTag.PROPN: MainPOSTag.NOUN,
+        UniversalPOSTag.SCONJ: MainPOSTag.CONJ,
+        UniversalPOSTag.VERB: MainPOSTag.VERB
+    }
+
+    tags = []
+    total_word_count = 0
+
+    for token in doc:
+        if token.is_space or token.is_punct or token.pos_ == 'SYM':
+            continue
+
+        original_tag = UniversalPOSTag._value2member_map_.get(
+            token.pos_,
+            UniversalPOSTag.X
+        )
+        if original_tag in ctx.provider.pos_word_tags:
+            total_word_count += 1
+
+        mapped_tag = pos_mapping.get(original_tag, MainPOSTag.OTHER)
+        tags.append(mapped_tag)
+
     counts = Counter(tags)
 
-    tag_counts: dict[POSTag, int] = {
+    tag_counts: dict[MainPOSTag, int] = {
         tag_pair[0]: counts.get(tag_pair[0], 0)
         for tag_pair in ctx.provider.pos_tags
     }
-    total_word_count = sum(
-        1 for token in doc if token.pos_ in ctx.provider.pos_word_tags
-    )
 
     return POSCounts(
         word_count=total_word_count,

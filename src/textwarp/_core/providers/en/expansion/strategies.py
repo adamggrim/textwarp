@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers import en
 from textwarp._lib.contractions import apply_expansion_casing
 
@@ -133,7 +133,11 @@ def expand_gotta(span: Span) -> tuple[str, int] | None:
         prev_token = en.utils.get_prev_lexical_token(
             doc,
             span.start - 1,
-            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+            skip_pos={
+                UniversalPOSTag.ADV,
+                UniversalPOSTag.PUNCT,
+                UniversalPOSTag.SPACE
+            }
         )
 
         if prev_token:

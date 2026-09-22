@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Token
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers import en
 from textwarp._lib.punctuation import curly_to_straight
 
@@ -85,7 +85,9 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 def get_prev_lexical_token(
     doc: Doc,
     start_idx: int,
-    skip_pos: Container[POSTag] = frozenset({POSTag.SPACE, POSTag.PUNCT})
+    skip_pos: Container[UniversalPOSTag] = frozenset(
+        {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
+    )
 ) -> Token | None:
     """
     Find the previous lexical token, skipping selected parts of speech.
@@ -135,7 +137,9 @@ def get_negative_contraction_base_verb(contraction: str) -> str | None:
 def get_next_lexical_token(
     doc: Doc,
     start_idx: int,
-    skip_pos: Container[POSTag] = frozenset({POSTag.SPACE, POSTag.PUNCT})
+    skip_pos: Container[UniversalPOSTag] = frozenset(
+        {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
+    )
 ) -> Token | None:
     """
     Find the next lexical token, skipping selected parts of speech.

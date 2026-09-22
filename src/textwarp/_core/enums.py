@@ -11,11 +11,12 @@ __all__ = [
     'CaseSeparator',
     'Casing',
     'CountLabels',
+    'MainPOSTag',
     'ModelPriority',
-    'POSTag',
     'PresenceCheckType',
     'RegexBoundary',
-    'TokenType'
+    'TokenType',
+    'UniversalPOSTag'
 ]
 
 
@@ -55,7 +56,21 @@ class ModelPriority(str, Enum):
 
 
 @unique
-class POSTag(str, Enum):
+class MainPOSTag(str, Enum):
+    """Main grammatical categories for presentation and general output."""
+    ADJ = 'ADJ'
+    ADP = 'ADP'
+    ADV = 'ADV'
+    CONJ = 'CONJ'
+    INTJ = 'INTJ'
+    NOUN = 'NOUN'
+    PRON = 'PRON'
+    VERB = 'VERB'
+    OTHER = 'OTHER'
+
+
+@unique
+class UniversalPOSTag(str, Enum):
     """Universal parts-of-speech tags used by spaCy."""
     ADJ = 'ADJ'
     ADP = 'ADP'
@@ -75,7 +90,6 @@ class POSTag(str, Enum):
     VERB = 'VERB'
     X = 'X'
     SPACE = 'SPACE'
-
 
 @unique
 class PresenceCheckType(Enum):

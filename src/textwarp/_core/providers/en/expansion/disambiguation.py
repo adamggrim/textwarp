@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from spacy.tokens import Span, Token
 
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers import en
 from textwarp._core.providers.en.constants import (
     PARTICIPLE_SUFFIXES,
@@ -44,7 +44,7 @@ def _is_present_participle(token: Token) -> bool:
     if text_lower.endswith('in'):
         doc = token.doc
         next_token = en.utils.get_next_lexical_token(
-            doc, token.i + 1, skip_pos={POSTag.SPACE}
+            doc, token.i + 1, skip_pos={UniversalPOSTag.SPACE}
         )
         is_followed_by_quote = (
             next_token and next_token.text in QUOTATION_MARKS
@@ -95,7 +95,11 @@ def disambiguate_ain_t(span: Span) -> str:
     verb_token = span[0]
     subject_token = en.utils.find_subject_token(verb_token)
     next_token = en.utils.get_next_lexical_token(
-        doc, span.end, skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        doc, span.end, skip_pos={
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.PUNCT,
+            UniversalPOSTag.SPACE
+        }
     )
 
     action_verb = next_token
@@ -103,7 +107,11 @@ def disambiguate_ain_t(span: Span) -> str:
         action_verb = en.utils.get_next_lexical_token(
             doc,
             next_token.i + 1,
-            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+            skip_pos={
+                UniversalPOSTag.ADV,
+                UniversalPOSTag.PUNCT,
+                UniversalPOSTag.SPACE
+            }
         )
 
     is_singular = True
@@ -157,7 +165,7 @@ def disambiguate_d(span: Span) -> str:
         token = en.utils.get_next_lexical_token(
             doc,
             curr_idx,
-            skip_pos={POSTag.SPACE, POSTag.PUNCT}
+            skip_pos={UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
         )
         if not token:
             break
@@ -176,7 +184,11 @@ def disambiguate_d(span: Span) -> str:
             return 'did' if starts_with_wh_word else 'would'
 
         if token.pos_ in {
-            POSTag.PRON, POSTag.NOUN, POSTag.PROPN, POSTag.DET, POSTag.ADV
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.DET,
+            UniversalPOSTag.NOUN,
+            UniversalPOSTag.PRON,
+            UniversalPOSTag.PROPN
         }:
             curr_idx = token.i + 1
             continue
@@ -214,7 +226,7 @@ def disambiguate_s(span: Span) -> str:
         token = en.utils.get_next_lexical_token(
             doc,
             curr_idx,
-            skip_pos={POSTag.SPACE, POSTag.PUNCT}
+            skip_pos={UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
         )
         if not token:
             break
@@ -223,7 +235,7 @@ def disambiguate_s(span: Span) -> str:
 
         if token.lower_ == 'gotta':
             return 'has'
-        if token.pos_ == POSTag.DET:
+        if token.pos_ == UniversalPOSTag.DET:
             return 'is'
         if tag in en.constants.BASE_VERB_TAGS:
             return 'does'
@@ -233,7 +245,11 @@ def disambiguate_s(span: Span) -> str:
             return 'is'
 
         if token.pos_ in {
-            POSTag.PRON, POSTag.NOUN, POSTag.PROPN, POSTag.DET, POSTag.ADV
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.DET,
+            UniversalPOSTag.NOUN,
+            UniversalPOSTag.PRON,
+            UniversalPOSTag.PROPN
         }:
             curr_idx = token.i + 1
             continue
@@ -253,13 +269,21 @@ def disambiguate_whatcha(span: Span) -> str:
     doc = span.doc
 
     next_token = en.utils.get_next_lexical_token(
-        doc, span.end, skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+        doc, span.end, skip_pos={
+            UniversalPOSTag.ADV,
+            UniversalPOSTag.PUNCT,
+            UniversalPOSTag.SPACE
+        }
     )
     after_next_token = (
         en.utils.get_next_lexical_token(
             doc,
             next_token.i + 1,
-            skip_pos={POSTag.SPACE, POSTag.PUNCT, POSTag.ADV}
+            skip_pos={
+                UniversalPOSTag.ADV,
+                UniversalPOSTag.PUNCT,
+                UniversalPOSTag.SPACE
+            }
         )
         if next_token else None
     )

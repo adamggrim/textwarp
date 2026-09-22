@@ -7,7 +7,7 @@ from textwarp._cli.formatting import (
     format_pos_counts,
     format_time_to_read
 )
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag
 from textwarp._core.models import POSCounts, WordCount
 
 
@@ -52,7 +52,7 @@ def test_format_mfws():
 def test_format_pos_counts():
     mock_pos_counts = POSCounts(
         word_count=20,
-        tag_counts={POSTag.NOUN: 10, POSTag.VERB: 5}
+        tag_counts={MainPOSTag.NOUN: 10, MainPOSTag.VERB: 5}
     )
     result = format_pos_counts(mock_pos_counts)
 

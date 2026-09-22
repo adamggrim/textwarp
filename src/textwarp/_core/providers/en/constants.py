@@ -2,7 +2,7 @@
 
 from typing import Final
 from textwarp._core.context import N_
-from textwarp._core.enums import POSTag
+from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 from textwarp._core.utils import load_json_data
 
 __all__ = [
@@ -40,7 +40,7 @@ CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
 HAVE_AUXILIARIES: frozenset[str]
 LEFT_SEARCH_STOP_TAGS: frozenset[str]
 NOUN_PHRASE_TAGS: frozenset[str]
-NOUN_TAGS: Final[frozenset[POSTag]] = frozenset({POSTag.NOUN, POSTag.PROPN})
+NOUN_TAGS: Final[frozenset[UniversalPOSTag]] = frozenset({UniversalPOSTag.NOUN, UniversalPOSTag.PROPN})
 OPEN_QUOTES: frozenset[str]
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',
@@ -55,25 +55,24 @@ ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
 )
 PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
 PARTICIPLE_TAGS: frozenset[str]
-POS_TAGS: Final[tuple[tuple[POSTag, str], ...]] = (
-    (POSTag.ADJ, N_('Adjectives')),
-    (POSTag.ADP, N_('Adpositions')),
-    (POSTag.ADV, N_('Adverbs')),
-    (POSTag.AUX, N_('Auxiliaries')),
-    (POSTag.CCONJ, N_('Coordinating Conjunctions')),
-    (POSTag.DET, N_('Determiners')),
-    (POSTag.INTJ, N_('Interjections')),
-    (POSTag.NOUN, N_('Nouns')),
-    (POSTag.NUM, N_('Numbers')),
-    (POSTag.PART, N_('Particles')),
-    (POSTag.PRON, N_('Pronouns')),
-    (POSTag.PROPN, N_('Proper Nouns')),
-    (POSTag.SCONJ, N_('Subordinating Conjunctions')),
-    (POSTag.VERB, N_('Verbs')),
-    (POSTag.X, N_('Other'))
+POS_TAGS: Final[tuple[tuple[MainPOSTag, str], ...]] = (
+    (MainPOSTag.NOUN, N_('Nouns')),
+    (MainPOSTag.PRON, N_('Pronouns')),
+    (MainPOSTag.VERB, N_('Verbs')),
+    (MainPOSTag.ADJ, N_('Adjectives')),
+    (MainPOSTag.ADV, N_('Adverbs')),
+    (MainPOSTag.ADP, N_('Prepositions')),
+    (MainPOSTag.CONJ, N_('Conjunctions')),
+    (MainPOSTag.INTJ, N_('Interjections')),
+    (MainPOSTag.OTHER, N_('Other'))
 )
-POS_WORD_TAGS: Final[frozenset[POSTag]] = frozenset(
-    item[0] for item in POS_TAGS if item[0] != POSTag.X
+POS_WORD_TAGS: Final[frozenset[UniversalPOSTag]] = frozenset(
+    tag for tag in UniversalPOSTag if tag not in {
+        UniversalPOSTag.PUNCT,
+        UniversalPOSTag.SPACE,
+        UniversalPOSTag.SYM,
+        UniversalPOSTag.X
+    }
 )
 PREFERENCE_VERBS: Final[frozenset[str]] = frozenset(
     {'care', 'mind', 'prefer'}
