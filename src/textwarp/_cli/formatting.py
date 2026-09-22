@@ -1,7 +1,7 @@
 """Functions for formatting analysis into readable strings."""
 
-from collections.abc import Sequence
 import gettext
+from collections.abc import Sequence
 
 from wcwidth import wcswidth
 

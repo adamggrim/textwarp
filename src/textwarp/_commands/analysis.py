@@ -2,7 +2,25 @@
 
 import gettext
 
+from textwarp._cli.constants.messages import (
+    ENTER_ENTITY_COUNT_PROMPT,
+    ENTER_MFW_COUNT_PROMPT,
+    ENTER_VALID_NUMBER_PROMPT,
+    ENTER_WPM_PROMPT,
+    NO_ENTITIES_FOUND_MSG
+)
+from textwarp._cli.formatting import (
+    format_count,
+    format_entity_counts,
+    format_mfws,
+    format_pos_counts,
+    format_time_to_read,
+    format_ttr
+)
 from textwarp._cli.spinner import run_with_spinner
+from textwarp._cli.ui import prompt_for_integer
+from textwarp._core.enums import CountLabels
+from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib.analysis import (
     calculate_time_to_read,
     calculate_ttr,
@@ -14,24 +32,6 @@ from textwarp._lib.analysis import (
     count_sents,
     count_words
 )
-from textwarp._cli.constants.messages import (
-    ENTER_ENTITY_COUNT_PROMPT,
-    ENTER_MFW_COUNT_PROMPT,
-    ENTER_VALID_NUMBER_PROMPT,
-    ENTER_WPM_PROMPT,
-    NO_ENTITIES_FOUND_MSG
-)
-from textwarp._core.enums import CountLabels
-from textwarp._core.models import POSCounts, WordCount
-from textwarp._cli.formatting import (
-    format_count,
-    format_entity_counts,
-    format_mfws,
-    format_pos_counts,
-    format_time_to_read,
-    format_ttr
-)
-from textwarp._cli.ui import prompt_for_integer
 
 _ = gettext.gettext
 

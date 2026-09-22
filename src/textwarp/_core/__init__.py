@@ -1,5 +1,5 @@
-from textwarp._core.encoding import get_morse_map, get_morse_reversed_map
 from textwarp._core.constants import maps, patterns
+from textwarp._core.encoding import get_morse_map, get_morse_reversed_map
 from textwarp._core.enums import (
     CaseSeparator,
     Casing,

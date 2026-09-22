@@ -2,9 +2,9 @@
 
 import contextvars
 import gettext
+import importlib
 import logging
 import os
-import importlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 

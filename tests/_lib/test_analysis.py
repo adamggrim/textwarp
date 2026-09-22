@@ -2,9 +2,6 @@
 
 from unittest.mock import MagicMock
 
-from textwarp._core.enums import ModelPriority
-from textwarp._lib.nlp import _get_nlp, _load_spacy_model
-from textwarp._lib.analysis import _extract_uax29_words
 from textwarp import (
     calculate_time_to_read,
     calculate_ttr,
@@ -16,7 +13,10 @@ from textwarp import (
     count_sents,
     count_words
 )
+from textwarp._core.enums import ModelPriority
 from textwarp._core.models import POSCounts
+from textwarp._lib.analysis import _extract_uax29_words
+from textwarp._lib.nlp import _get_nlp, _load_spacy_model
 
 CALCULATE_TTR_TEXT = (
     'The girl in the tea shop\n'

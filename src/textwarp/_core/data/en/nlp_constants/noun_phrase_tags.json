@@ -1,15 +1,15 @@
 [
+    "DT",
     "JJ",
     "JJR",
     "JJS",
-    "DT",
+    "NN",
+    "NNP",
+    "NNPS",
+    "NNS",
     "PDT",
-    "WDT",
     "PRP",
     "PRP$",
-    "WP",
-    "NN",
-    "NNS",
-    "NNP",
-    "NNPS"
+    "WDT",
+    "WP"
 ]

@@ -4,6 +4,7 @@ import gettext
 import shutil
 import sys
 import time
+from collections.abc import Callable
 from typing import NoReturn
 
 from wcwidth import wcswidth
@@ -13,8 +14,6 @@ from textwarp._cli.constants.inputs import (
     get_no_inputs,
     get_yes_inputs
 )
-from collections.abc import Callable
-
 from textwarp._cli.constants.messages import (
     ANY_OTHER_TEXT_PROMPT,
     ENTER_CASE_TO_REPLACE_PROMPT,

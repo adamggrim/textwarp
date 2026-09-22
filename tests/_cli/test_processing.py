@@ -1,10 +1,9 @@
 """Tests for execution modes and pipeline processing."""
 
+import sys
 from unittest.mock import MagicMock
 
 import pexpect
-import sys
-
 import pytest
 import regex as re
 

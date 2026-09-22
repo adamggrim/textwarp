@@ -3,11 +3,11 @@ import json
 
 import pytest
 
-from textwarp._core.providers.en.data.entity_casing import get_absolute_map
 from textwarp._core.providers.en.data.contraction_expansion import (
     get_ambiguous_map,
     get_unambiguous_map
 )
+from textwarp._core.providers.en.data.entity_casing import get_absolute_map
 
 
 def get_json_files():
