@@ -3,7 +3,9 @@
 import gettext
 import mmap
 import os
+import shutil
 import sys
+import tempfile
 from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
 from typing import IO, Any
@@ -40,36 +42,62 @@ _ = gettext.gettext
 
 
 @contextmanager
-def _managed_output_stream(
+def atomic_write(
+    file_path: str,
+    mode: str = 'w'
+) -> Generator[IO[Any], None, None]:
+    """
+    Safely write to a file by staging writes to a temporary file
+    and atomically swapping it upon completion.
+    """
+    dir_name = os.path.dirname(file_path) or '.'
+    kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
+
+    try:
+        temp_file = tempfile.NamedTemporaryFile(
+            dir=dir_name,
+            mode=mode,
+            delete=False,
+            **kwargs
+        )
+    except OSError as e:
+        raise TextwarpError(
+            _(FILE_WRITE_ERROR_MSG).format(error=e)
+        ) from e
+
+    temp_path = temp_file.name
+
+    if 'a' in mode and os.path.exists(file_path):
+        temp_file.close()
+        shutil.copy2(file_path, temp_path)
+        temp_file = open(temp_path, mode, **kwargs)
+    try:
+        yield temp_file
+    except Exception:
+        temp_file.close()
+        os.unlink(temp_path)
+        raise
+    else:
+        temp_file.close()
+        os.replace(temp_path, file_path)
+
+
+@contextmanager
+def _open_output_stream(
     output_file: str | None,
     mode: str = 'w'
 ) -> Generator[IO[Any], None, None]:
     """
-    Manage an output stream, yielding either a file handle or stdout.
-
-    Args:
-        output_file: The path to the output file, or `None` for stdout.
-        mode: The mode for opening the file (`w` or `ab`).
-
-    Raises:
-        TextwarpError: If there is an error opening the output file.
+    Open an output stream, yielding either a file handle or stdout.
     """
     if output_file:
-        try:
-            kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
-            f = open(output_file, mode, **kwargs)
-        except OSError as e:
-            raise TextwarpError(
-                _(FILE_WRITE_ERROR_MSG).format(error=e)
-            ) from e
-        try:
+        with atomic_write(output_file, mode) as f:
             yield f
-        finally:
-            f.close()
-            if 'b' not in mode:
-                print_wrapped(
-                    _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
-                )
+
+        if 'b' not in mode:
+            print_wrapped(
+                _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
+            )
     else:
         yield sys.stdout.buffer if 'b' in mode else sys.stdout
 
@@ -154,7 +182,7 @@ def _process_file_stream(args: ParsedArgs) -> None:
     Raises:
         SystemExit: If there is an error reading or writing files.
     """
-    with _managed_output_stream(args.output_file, 'w') as output_stream:
+    with _open_output_stream(args.output_file, 'w') as output_stream:
         for file_path in args.input_files:
             with _file_open(file_path, 'r') as f:
                 for line in f:
@@ -187,7 +215,7 @@ def _process_mmap_regex(file_path: str, args: ParsedArgs) -> None:
     pattern = re.compile(args.find.encode('utf-8'))
     replacement = _parse_cli_escapes(args.replace).encode('utf-8')
 
-    with _managed_output_stream(args.output_file, 'ab') as output_stream:
+    with _open_output_stream(args.output_file, 'ab') as output_stream:
         with _file_open(file_path, 'rb') as f:
             with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
                 for chunk in _iter_mmap_replacements(mm, pattern, replacement):
