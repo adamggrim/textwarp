@@ -71,7 +71,7 @@ class MainPOSTag(str, Enum):
 
 @unique
 class UniversalPOSTag(str, Enum):
-    """Universal parts-of-speech tags used by spaCy."""
+    """Universal part-of-speech tags used by spaCy."""
     ADJ = 'ADJ'
     ADP = 'ADP'
     ADV = 'ADV'

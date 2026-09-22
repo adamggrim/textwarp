@@ -24,13 +24,13 @@ class POSCounts:
 
     def get_pos_counts(self, tag: MainPOSTag) -> int:
         """
-        Get the count for a given parts-of-speech tag.
+        Get the count for a given part-of-speech tag.
 
         Args:
-            tag: The parts-of-speech tag from the `MainPOSTag` enum.
+            tag: The part-of-speech tag from the `MainPOSTag` enum.
 
         Returns:
-            int: The count for the given parts-of-speech tag, or 0 if
+            int: The count for the given part-of-speech tag, or 0 if
                 not found.
         """
         return self.tag_counts.get(tag, 0)
@@ -41,7 +41,7 @@ class POSCounts:
         count.
 
         Args:
-            tag: The parts-of-speech tag from the `MainPOSTag` enum.
+            tag: The part-of-speech tag from the `MainPOSTag` enum.
 
         Returns:
             float: The calculated percentage, or 0.0 if

@@ -36,7 +36,7 @@ class EnglishProvider(LanguageProvider):
 
     @property
     def base_verb_tags(self) -> frozenset[str]:
-        """Fine-grained parts-of-speech tags for base verb forms."""
+        """Fine-grained part-of-speech tags for base verb forms."""
         return en.constants.BASE_VERB_TAGS
 
     @property
@@ -54,14 +54,14 @@ class EnglishProvider(LanguageProvider):
     @property
     def noun_phrase_tags(self) -> frozenset[str]:
         """
-        Fine-grained parts-of-speech tags for the first word of a noun
+        Fine-grained part-of-speech tags for the first word of a noun
         phrase.
         """
         return en.constants.NOUN_PHRASE_TAGS
 
     @property
     def noun_tags(self) -> frozenset[UniversalPOSTag]:
-        """English parts-of-speech tags for nouns."""
+        """English part-of-speech tags for nouns."""
         return en.constants.NOUN_TAGS
 
     @property
@@ -72,7 +72,7 @@ class EnglishProvider(LanguageProvider):
     @property
     def participle_tags(self) -> frozenset[str]:
         """
-        Fine-grained parts-of-speech tags for past tense and past
+        Fine-grained part-of-speech tags for past tense and past
         participle verb forms. (Fine-grained tags used to distinguish
         verb tense.)
         """
@@ -81,12 +81,12 @@ class EnglishProvider(LanguageProvider):
 
     @property
     def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
-        """English parts-of-speech tags and their localized labels."""
+        """English part-of-speech tags and their localized labels."""
         return en.constants.POS_TAGS
 
     @property
     def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
-        """Parts-of-speech tags that count as distinct words in English."""
+        """part-of-speech tags that count as distinct words in English."""
         return en.constants.POS_WORD_TAGS
 
     @property
@@ -113,7 +113,7 @@ class EnglishProvider(LanguageProvider):
     @property
     def singular_noun_tags(self) -> frozenset[str]:
         """
-        Fine-grained parts-of-speech tags for singular nouns and proper
+        Fine-grained part-of-speech tags for singular nouns and proper
         nouns.
         """
         return en.constants.SINGULAR_NOUN_TAGS
@@ -139,7 +139,7 @@ class EnglishProvider(LanguageProvider):
     @property
     def title_case_tag_exceptions(self) -> frozenset[str]:
         """
-        Fine-grained parts-of-speech tag exceptions for title case
+        Fine-grained part-of-speech tag exceptions for title case
         capitalization. (Fine-grained tags used to distinguish articles
         from possessives.)
         """

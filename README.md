@@ -224,18 +224,18 @@ textwarp/
   │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
   │ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
   │ │ │ ├── nlp_constants/
-  │ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
+  │ │ │ │ ├── base_verb_tags.json: Lists fine-grained part-of-speech tags for base verb forms
   │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
-  │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking left
-  │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained parts-of-speech tags for the first word of a noun phrase
+  │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking left
+  │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained part-of-speech tags for the first word of a noun phrase
   │ │ │ │ ├── open_quotes.json: Lists opening quote characters
-  │ │ │ │ ├── participle_tags.json: Lists fine-grained parts-of-speech tags for past tense and past participle verb forms
+  │ │ │ │ ├── participle_tags.json: Lists fine-grained part-of-speech tags for past tense and past participle verb forms
   │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
-  │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
-  │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
-  │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns and nouns
+  │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking right
+  │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained part-of-speech tags for singular nouns and proper nouns
+  │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained part-of-speech tags for pronouns, proper nouns and nouns
   │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
-  │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained parts-of-speech tag exceptions for title case capitalization
+  │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained part-of-speech tag exceptions for title case capitalization
   │ │ │ │ └── wh_words.json: Lists wh-words that start questions
   │ │ │ ├── string_casing/
   │ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
