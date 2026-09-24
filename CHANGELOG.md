@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New `--debug` argument.
 * New `--strip-html` command.
 * Support for newlines and carriage returns in CLI replacement text.
+* Pre-commit hooks support
 
 ### Changed
 * Moved CLI to a chained positional pipeline. Commands no longer require the `--` prefix.

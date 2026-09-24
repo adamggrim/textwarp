@@ -1,0 +1,6 @@
+- id: textwarp
+  name: textwarp
+  description: Package for analyzing and transforming text
+  entry: textwarp
+  language: python
+  types: [text]
