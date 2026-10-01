@@ -2,15 +2,19 @@
 
 from __future__ import annotations
 
+import os
+import shutil
 import sys
-from collections.abc import Callable
-from typing import TYPE_CHECKING
+import tempfile
+from collections.abc import Callable, Generator
+from contextlib import contextmanager
+from typing import IO, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     import argparse
     from spacy.tokens import Doc
 
-from textwarp._cli.args import ARGS_MAP,CommandType
+from textwarp._cli.args import ARGS_MAP, CommandType
 from textwarp._cli.constants.messages import (
     FILE_WRITE_ERROR_MSG,
     FILE_WRITE_SUCCESS_MSG,
@@ -157,6 +161,59 @@ def build_pipeline(
     return pipeline
 
 
+@contextmanager
+def atomic_write(
+    file_path: str,
+    mode: str = 'w'
+) -> Generator[IO[Any], None, None]:
+    """
+    Safely write to a file by staging writes to a temporary file
+    and atomically swapping it upon completion.
+    """
+    dir_name = os.path.dirname(file_path) or '.'
+    kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
+
+    try:
+        temp_file = tempfile.NamedTemporaryFile(
+            dir=dir_name,
+            mode=mode,
+            delete=False,
+            **kwargs
+        )
+    except OSError as e:
+        raise TextwarpError(
+            _(FILE_WRITE_ERROR_MSG).format(error=e)
+        ) from e
+
+    temp_path = temp_file.name
+
+    try:
+        if 'a' in mode and os.path.exists(file_path):
+            temp_file.close()
+            shutil.copy2(file_path, temp_path)
+            temp_file = open(temp_path, mode, **kwargs)
+        yield temp_file
+    except Exception as e:
+        temp_file.close()
+        if os.path.exists(temp_path):
+            os.unlink(temp_path)
+        if isinstance(e, OSError) and not isinstance(e, TextwarpError):
+            raise TextwarpError(
+                _(FILE_WRITE_ERROR_MSG).format(error=e)
+            ) from e
+        raise
+    else:
+        temp_file.close()
+        try:
+            os.replace(temp_path, file_path)
+        except OSError as e:
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+            raise TextwarpError(
+                _(FILE_WRITE_ERROR_MSG).format(error=e)
+            ) from e
+
+
 def handle_output(
     result: str | None,
     output_file: str | None,
@@ -180,14 +237,11 @@ def handle_output(
         return
 
     if output_file:
-        try:
-            with open(output_file, 'w', encoding='utf-8') as f:
-                f.write(result)
-            print_wrapped(
-                _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
-            )
-        except OSError as e:
-            raise TextwarpError(_(FILE_WRITE_ERROR_MSG).format(error=e)) from e
+        with atomic_write(output_file, 'w') as f:
+            f.write(result)
+        print_wrapped(
+            _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
+        )
     else:
         default_action(result)
 

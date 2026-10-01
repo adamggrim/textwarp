@@ -2,9 +2,7 @@
 
 import mmap
 import os
-import shutil
 import sys
-import tempfile
 from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
 from typing import IO, Any
@@ -16,12 +14,12 @@ from textwarp._cli.constants.messages import (
     BINARY_FILE_ERROR_MSG,
     FILE_ACCESS_ERROR_MSG,
     FILE_SIZE_LIMIT_ERROR_MSG,
-    FILE_WRITE_ERROR_MSG,
     FILE_WRITE_SUCCESS_MSG,
     PIPED_INPUT_ERROR_MSG
 )
 from textwarp._cli.parsing import ParsedArgs
 from textwarp._cli.pipeline import (
+    atomic_write,
     handle_output,
     is_analysis_pipeline,
     route_output,
@@ -37,47 +35,6 @@ from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._commands.replacement import _parse_cli_escapes
 from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpError
-
-
-@contextmanager
-def atomic_write(
-    file_path: str,
-    mode: str = 'w'
-) -> Generator[IO[Any], None, None]:
-    """
-    Safely write to a file by staging writes to a temporary file
-    and atomically swapping it upon completion.
-    """
-    dir_name = os.path.dirname(file_path) or '.'
-    kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
-
-    try:
-        temp_file = tempfile.NamedTemporaryFile(
-            dir=dir_name,
-            mode=mode,
-            delete=False,
-            **kwargs
-        )
-    except OSError as e:
-        raise TextwarpError(
-            _(FILE_WRITE_ERROR_MSG).format(error=e)
-        ) from e
-
-    temp_path = temp_file.name
-
-    if 'a' in mode and os.path.exists(file_path):
-        temp_file.close()
-        shutil.copy2(file_path, temp_path)
-        temp_file = open(temp_path, mode, **kwargs)
-    try:
-        yield temp_file
-    except Exception:
-        temp_file.close()
-        os.unlink(temp_path)
-        raise
-    else:
-        temp_file.close()
-        os.replace(temp_path, file_path)
 
 
 @contextmanager
