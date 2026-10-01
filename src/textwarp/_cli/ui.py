@@ -275,8 +275,8 @@ def wrap_text(text: str, width: int) -> list[str]:
             current_line = [word]
             current_width = word_width
         else:
-            current_line.append(word)
             current_width += word_width + (1 if current_line else 0)
+            current_line.append(word)
 
     if current_line:
         lines.append(' '.join(current_line))
