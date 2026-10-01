@@ -3,9 +3,9 @@
 import contextvars
 import gettext
 import importlib
+import importlib.resources
 import logging
 from functools import cache
-from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
@@ -16,8 +16,6 @@ __all__ = ['_', 'ctx', 'N_', 'ngettext']
 logger = logging.getLogger(__name__)
 
 SUPPORTED_LOCALES: Final[frozenset[str]] = frozenset({'en'})
-
-_LOCALES_DIR: Final[Path] = Path(__file__).parent.parent.parent / 'locales'
 
 _active_locale: contextvars.ContextVar[str] = contextvars.ContextVar(
     'locale', default='en'
@@ -30,12 +28,16 @@ _active_provider: contextvars.ContextVar[
 @cache
 def _get_translations(locale: str) -> gettext.NullTranslations:
     """Load and cache the gettext translation object for a locale."""
-    return gettext.translation(
-        'textwarp',
-        localedir=str(_LOCALES_DIR),
-        languages=[locale],
-        fallback=True
+    locales_resource = importlib.resources.files('textwarp').joinpath(
+        'locales'
     )
+    with importlib.resources.as_file(locales_resource) as locales_dir:
+        return gettext.translation(
+            'textwarp',
+            localedir=str(locales_dir),
+            languages=[locale],
+            fallback=True
+        )
 
 
 class TextwarpContext:
