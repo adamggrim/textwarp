@@ -69,18 +69,15 @@ def from_binary(binary_text: str) -> str:
         binary_text: The space-separated binary string to convert.
 
     Returns:
-        str: The converted string, or the original string if decoding fails.
+        str: The converted string, or the original string if decoding
+            fails.
     """
-    binary_chars = binary_text.split()
-    decoded_chars: list[str] = []
+    binary_bytes = binary_text.split()
 
-    for binary in binary_chars:
-        try:
-            decoded_chars.append(chr(int(binary, 2)))
-        except ValueError:
-            return binary_text
-
-    return ''.join(decoded_chars)
+    try:
+        return bytes(int(byte, 2) for byte in binary_bytes).decode('utf-8')
+    except ValueError:
+        return binary_text
 
 
 def from_hexadecimal(text: str) -> str:
@@ -145,11 +142,10 @@ def to_binary(text: str) -> str:
         text: The string to convert.
 
     Returns:
-        str: The converted string in binary, with each character's
-            binary value separated by a space.
+        str: The converted string in binary, with each UTF-8 byte's
+            8-bit binary value separated by a space.
     """
-    binary_chars = [format(ord(char), '08b') for char in text]
-    return ' '.join(binary_chars)
+    return ' '.join(format(byte, '08b') for byte in text.encode('utf-8'))
 
 
 def to_hexadecimal(text: str) -> str:

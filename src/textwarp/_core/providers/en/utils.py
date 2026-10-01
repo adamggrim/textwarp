@@ -59,8 +59,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
         if candidate.pos_ in en.constants.LEFT_SEARCH_STOP_TAGS:
             break
 
-        curr_idx -= 1
-
     # Fallback B: Look immediately after the suffix (inverted order).
     start_idx = verb_token.i + 1
     if (
