@@ -1,6 +1,6 @@
 """
-Functions for parsing Markdown and transforming Markdown Abstract Syntax
-Trees (ASTs).
+Functions for parsing Markdown and transforming Abstract Syntax Trees
+(ASTs).
 """
 
 import contextvars

@@ -8,12 +8,11 @@ from typing import TYPE_CHECKING
 
 import regex as re
 
-from textwarp._core.enums import MainPOSTag, UniversalPOSTag
-
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
 from textwarp._core.context import ctx
+from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib.nlp import process_as_doc
 

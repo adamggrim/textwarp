@@ -32,6 +32,12 @@ from textwarp._commands.replacement import parse_cli_escapes
 from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpError
 
+__all__ = [
+    'process_file_mode',
+    'process_interactive_mode',
+    'process_piped_mode'
+]
+
 
 @contextmanager
 def _open_output_stream(
@@ -163,17 +169,24 @@ def _process_mmap_regex(file_path: str, args: ParsedArgs) -> None:
         OSError: If there is an error mapping the file or writing the
             output.
     """
+    assert args.find is not None
+    assert args.replace is not None
+
     pattern = re.compile(args.find.encode('utf-8'))
     replacement = parse_cli_escapes(args.replace).encode('utf-8')
+    is_first_file = not args.input_files or file_path == args.input_files[0]
+    mode = 'wb' if is_first_file else 'ab'
 
-    with _open_output_stream(args.output_file, 'ab') as output_stream:
-        with _file_open(file_path, 'rb') as f:
-            with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
-                for chunk in _iter_mmap_replacements(mm, pattern, replacement):
-                    output_stream.write(chunk)
+    with (
+        _open_output_stream(args.output_file, mode) as output_stream,
+        _file_open(file_path, 'rb') as f,
+        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
+    ):
+        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
+            output_stream.write(chunk)
 
-                if len(args.input_files) > 1:
-                    output_stream.write(b'\n')
+        if len(args.input_files) > 1:
+            output_stream.write(b'\n')
 
 
 def process_file_mode(args: ParsedArgs) -> None:

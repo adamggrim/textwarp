@@ -14,7 +14,7 @@ from textwarp._core.context import _, ctx
 from textwarp._core.enums import ModelPriority
 from textwarp._core.exceptions import MissingModelError
 
-__all__ = ['process_as_doc']
+__all__ = ['get_nlp', 'process_as_doc']
 
 
 @cache

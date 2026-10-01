@@ -20,6 +20,7 @@ from textwarp._core.context import _
 from textwarp._lib import replacement as lib_replacement
 
 __all__ = [
+    'parse_cli_escapes',
     'replace_case',
     'replace_regex',
     'replace_text'

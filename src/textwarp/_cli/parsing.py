@@ -4,8 +4,7 @@ import argparse
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
-
-from typing_extensions import Final
+from typing import Final
 
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
@@ -15,7 +14,7 @@ from textwarp._cli.validation import validate_command_combinations
 from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 
-__all__ = ['parse_args', 'ParsedArgs']
+__all__ = ['ParsedArgs', 'parse_args']
 
 DEFAULT_MAX_FILE_MB: Final = 100
 

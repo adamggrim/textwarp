@@ -9,7 +9,7 @@ from typing import Any, Final
 
 from textwarp._core.context import N_
 
-__all__ = ['ARGS_MAP', 'CLICommand', 'CommandType']
+__all__ = ['ARGS_MAP', 'CLICommand', 'CommandType', 'lazy_load']
 
 
 class CommandType(Enum):

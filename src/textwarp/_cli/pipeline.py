@@ -35,6 +35,18 @@ from textwarp._core.exceptions import (
 from textwarp._core.types import Pipeline
 from textwarp._lib.nlp import process_as_doc
 
+__all__ = [
+    'apply_pipeline',
+    'atomic_write',
+    'build_pipeline',
+    'handle_output',
+    'is_analysis_pipeline',
+    'requires_intermediate_input',
+    'route_output',
+    'route_text',
+    'validate_piped_commands'
+]
+
 
 def _run_pipeline_segment(
     content: str | Doc,
