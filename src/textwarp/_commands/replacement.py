@@ -1,6 +1,5 @@
 """Runners for find-and-replace commands."""
 
-import gettext
 import regex as re
 
 from textwarp._cli.spinner import run_with_spinner
@@ -17,9 +16,8 @@ from textwarp._cli.validation import (
     validate_regex,
     validate_text
 )
+from textwarp._core.context import _
 from textwarp._lib import replacement as lib_replacement
-
-_ = gettext.gettext
 
 __all__ = [
     'replace_case',

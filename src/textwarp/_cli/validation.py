@@ -1,7 +1,6 @@
 """Validators for text, clipboard and regular expression content."""
 
 import argparse
-import gettext
 import regex as re
 
 from textwarp._cli.args import ARGS_MAP, CommandType
@@ -30,8 +29,7 @@ from textwarp._core.exceptions import (
     WhitespaceCaseNameError,
     WhitespaceClipboardError
 )
-
-_ = gettext.gettext
+from textwarp._core.context import _
 
 __all__ = [
     'validate_case_name',

@@ -1,6 +1,5 @@
 """Main loop logic for executing commands."""
 
-import gettext
 import logging
 from collections.abc import Callable
 from typing import TypeAlias
@@ -21,9 +20,8 @@ from textwarp._cli.validation import (
     validate_clipboard
 )
 from textwarp._commands import replacement
+from textwarp._core.context import _
 from textwarp._core.exceptions import MissingDependencyError
-
-_ = gettext.gettext
 
 __all__ = [
     'clear_clipboard',
@@ -61,14 +59,14 @@ def _paste_and_validate() -> str | None:
         print_wrapped(str(e))
         return None
     except pyperclip.PyperclipException as e:
-        msg = CLIPBOARD_ACCESS_ERROR_MSG + str(e)
+        msg = _(CLIPBOARD_ACCESS_ERROR_MSG) + str(e)
         if 'xclip' in str(e) or 'xsel' in str(e):
-            msg += LINUX_XCLIP_WARNING_MSG
+            msg += _(LINUX_XCLIP_WARNING_MSG)
         print_wrapped(msg)
         return None
     except OSError:
         _logger.exception('Unexpected clipboard error.')
-        print_wrapped(UNEXPECTED_CLIPBOARD_ERROR_MSG)
+        print_wrapped(_(UNEXPECTED_CLIPBOARD_ERROR_MSG))
         return None
 
 

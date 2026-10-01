@@ -1,7 +1,5 @@
 """Runners for analysis commands."""
 
-import gettext
-
 from textwarp._cli.constants.messages import (
     ENTER_ENTITY_COUNT_PROMPT,
     ENTER_MFW_COUNT_PROMPT,
@@ -32,8 +30,7 @@ from textwarp._lib.analysis import (
     count_sents,
     count_words
 )
-
-_ = gettext.gettext
+from textwarp._core.context import _
 
 __all__ = [
     'char_count',

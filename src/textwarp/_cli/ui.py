@@ -1,6 +1,5 @@
 """Functions for handling console input and output."""
 
-import gettext
 import shutil
 import sys
 import time
@@ -27,14 +26,13 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_TEXT_PROMPT,
     EXIT_MSG
 )
+from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpValidationError
 from textwarp._cli.validation import (
     validate_case_name,
     validate_regex,
     validate_text
 )
-
-_ = gettext.gettext
 
 __all__ = [
     'get_input',
@@ -58,7 +56,7 @@ def _prompt_for_valid_input(
     current_prompt = enter_text_prompt
 
     while True:
-        print_wrapped(current_prompt)
+        print_wrapped(_(current_prompt))
         user_input = input().rstrip('\n')
 
         exit_commands: set[str] = set(get_exit_inputs() | get_no_inputs())

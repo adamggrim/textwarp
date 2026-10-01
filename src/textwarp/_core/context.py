@@ -4,20 +4,20 @@ import contextvars
 import gettext
 import importlib
 import logging
-import os
+from functools import cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
     from textwarp._core.providers.base import LanguageProvider
 
-__all__ = ['ctx', 'N_']
-
-_ = gettext.gettext
+__all__ = ['_', 'ctx', 'N_', 'ngettext']
 
 logger = logging.getLogger(__name__)
 
 SUPPORTED_LOCALES: Final[frozenset[str]] = frozenset({'en'})
+
+_LOCALES_DIR: Final[Path] = Path(__file__).parent.parent.parent / 'locales'
 
 _active_locale: contextvars.ContextVar[str] = contextvars.ContextVar(
     'locale', default='en'
@@ -27,17 +27,22 @@ _active_provider: contextvars.ContextVar[
 ] = contextvars.ContextVar('provider', default=None)
 
 
+@cache
+def _get_translations(locale: str) -> gettext.NullTranslations:
+    """Load and cache the gettext translation object for a locale."""
+    return gettext.translation(
+        'textwarp',
+        localedir=str(_LOCALES_DIR),
+        languages=[locale],
+        fallback=True
+    )
+
+
 class TextwarpContext:
     """
     Manage the active language locale and its corresponding provider
     safely across threads.
     """
-    def __init__(self) -> None:
-        """
-        Initialize the context with the default locale and provider.
-        """
-        self._set_up_gettext()
-
     @property
     def locale(self) -> str:
         """Get the active language locale."""
@@ -116,8 +121,6 @@ class TextwarpContext:
             from textwarp._core.providers.en.provider import EnglishProvider
             self._provider = EnglishProvider()
 
-        self._set_up_gettext()
-
         if fallback_triggered:
             msg = _(
                 "Warning: Language '{locale}' is not supported. Falling back "
@@ -125,26 +128,20 @@ class TextwarpContext:
             ).format(locale=locale)
             logger.warning(msg)
 
-    def _set_up_gettext(self) -> None:
-        """Configure gettext for the active locale."""
-        os.environ['LANGUAGE'] = self.locale
-        locales_dir = Path(__file__).parent.parent.parent / 'locales'
-
-        try:
-            gettext.bindtextdomain('textwarp', str(locales_dir))
-            gettext.textdomain('textwarp')
-            translation = gettext.translation(
-                'textwarp',
-                localedir=str(locales_dir),
-                languages=[self.locale],
-                fallback=True
-            )
-            translation.install()
-        except FileNotFoundError:
-            pass
-
 
 ctx = TextwarpContext()
+
+
+def _(message: str) -> str:
+    """Translate a string using the active context locale."""
+    return _get_translations(ctx.locale).gettext(message)
+
+
+def ngettext(singular: str, plural: str, n: int) -> str:
+    """
+    Translate a pluralizable string using the active context locale.
+    """
+    return _get_translations(ctx.locale).ngettext(singular, plural, n)
 
 
 def N_(message: str) -> str:

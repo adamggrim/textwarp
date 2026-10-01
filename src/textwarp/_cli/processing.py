@@ -1,6 +1,5 @@
 """Execution modes for pipeline processing."""
 
-import gettext
 import mmap
 import os
 import shutil
@@ -36,9 +35,8 @@ from textwarp._cli.runners import (
 )
 from textwarp._cli.ui import print_wrapped, program_exit
 from textwarp._commands.replacement import _parse_cli_escapes
+from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpError
-
-_ = gettext.gettext
 
 
 @contextmanager

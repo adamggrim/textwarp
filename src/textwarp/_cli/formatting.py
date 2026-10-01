@@ -1,14 +1,11 @@
 """Functions for formatting analysis into readable strings."""
 
-import gettext
 from collections.abc import Sequence
 
 from wcwidth import wcswidth
 
+from textwarp._core.context import _, ngettext
 from textwarp._core.models import POSCounts, WordCount
-
-_ = gettext.gettext
-ngettext = gettext.ngettext
 
 __all__ = [
     'format_count',

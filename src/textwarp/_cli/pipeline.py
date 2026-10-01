@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import gettext
 import sys
 from collections.abc import Callable
 from typing import TYPE_CHECKING
@@ -27,10 +26,9 @@ from textwarp._core.exceptions import (
     TextwarpError,
     TextwarpValidationError
 )
+from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 from textwarp._lib.nlp import process_as_doc
-
-_ = gettext.gettext
 
 
 def _run_pipeline_segment(

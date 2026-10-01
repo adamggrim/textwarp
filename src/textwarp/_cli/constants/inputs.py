@@ -1,6 +1,4 @@
-import gettext
-
-_ = gettext.gettext
+from textwarp._core.context import _
 
 __all__ = [
     'get_exit_inputs',
@@ -10,17 +8,15 @@ __all__ = [
 
 
 def get_exit_inputs() -> frozenset[str]:
-    """Get a cached `frozenset` of inputs for exiting the program."""
-    _ = gettext.gettext
+    """Get a `frozenset` of inputs for exiting the program."""
     return frozenset({_('quit'), _('q'), _('exit'), _('e')})
 
 
 def get_no_inputs() -> frozenset[str]:
     """
-    Get a cached `frozenset` of inputs for indicating a negative
+    Get a `frozenset` of inputs for indicating a negative
     response.
     """
-    _ = gettext.gettext
     return frozenset({
         _('no'),
         _('n')
@@ -29,10 +25,9 @@ def get_no_inputs() -> frozenset[str]:
 
 def get_yes_inputs() -> frozenset[str]:
     """
-    Get a cached `frozenset` of inputs for indicating an affirmative
+    Get a `frozenset` of inputs for indicating an affirmative
     response.
     """
-    _ = gettext.gettext
     return frozenset({
         _('yes'),
         _('y')

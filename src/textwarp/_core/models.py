@@ -1,13 +1,10 @@
 """Classes for parts-of-speech counts and word counts."""
 
-import gettext
 from dataclasses import dataclass, field
 from typing import final
 
-from textwarp._core.context import ctx
+from textwarp._core.context import _, ctx
 from textwarp._core.enums import MainPOSTag
-
-_ = gettext.gettext
 
 __all__ = ['POSCounts', 'WordCount']
 

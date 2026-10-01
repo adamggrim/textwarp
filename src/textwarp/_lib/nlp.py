@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import gettext
 from functools import cache
 from types import ModuleType
 from typing import TYPE_CHECKING
@@ -11,11 +10,9 @@ if TYPE_CHECKING:
     import spacy.language
     from spacy.tokens import Doc
 
-from textwarp._core.context import ctx
+from textwarp._core.context import _, ctx
 from textwarp._core.enums import ModelPriority
 from textwarp._core.exceptions import MissingModelError
-
-_ = gettext.gettext
 
 __all__ = ['process_as_doc']
 
