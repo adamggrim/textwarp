@@ -1,11 +1,8 @@
 """Strings for displaying command-line messages."""
 
-import gettext
 from typing import Final
 
 from textwarp._core.context import N_
-
-_ = gettext.gettext
 
 __all__ = [
     'ANY_OTHER_TEXT_PROMPT',
@@ -44,87 +41,87 @@ __all__ = [
     'UNEXPECTED_CLIPBOARD_ERROR_MSG'
 ]
 
-ANALYSIS_ORDER_ERROR_MSG: Final = _(
+ANALYSIS_ORDER_ERROR_MSG: Final = N_(
     "Command '{cmd}' cannot follow an analysis command. Analysis commands "
     "must be placed at the end of the pipeline."
 )
 ANY_OTHER_TEXT_PROMPT: Final = N_(
     'Any other text? (y/n) (Copy text to clipboard):'
 )
-BINARY_FILE_ERROR_MSG: Final = _(
+BINARY_FILE_ERROR_MSG: Final = N_(
     "Error: '{input_file}' appears to be a binary file. Please provide a "
     "valid text file."
 )
-CASE_EMPTY_ERROR_MSG: Final = _('Case input is empty.')
-CASE_TO_REPLACE_NOT_FOUND_MSG: Final = _('Case to replace not found.')
-CASE_WHITESPACE_ERROR_MSG: Final = _('Case contains only whitespace.')
-CLIPBOARD_ACCESS_ERROR_MSG: Final = _('Error accessing clipboard: ')
-CLIPBOARD_CLEARED_MSG: Final = _('Clipboard text cleared.')
-CLIPBOARD_EMPTY_ERROR_MSG: Final = _('Clipboard is empty.')
-CLIPBOARD_WHITESPACE_ERROR_MSG: Final = _(
+CASE_EMPTY_ERROR_MSG: Final = N_('Case input is empty.')
+CASE_TO_REPLACE_NOT_FOUND_MSG: Final = N_('Case to replace not found.')
+CASE_WHITESPACE_ERROR_MSG: Final = N_('Case contains only whitespace.')
+CLIPBOARD_ACCESS_ERROR_MSG: Final = N_('Error accessing clipboard: ')
+CLIPBOARD_CLEARED_MSG: Final = N_('Clipboard text cleared.')
+CLIPBOARD_EMPTY_ERROR_MSG: Final = N_('Clipboard is empty.')
+CLIPBOARD_WHITESPACE_ERROR_MSG: Final = N_(
     'Clipboard contains only whitespace.'
 )
-ENTER_CASE_TO_REPLACE_PROMPT: Final = _('Enter a case to replace:')
-ENTER_ENTITY_COUNT_PROMPT: Final = _('How many entities?')
-ENTER_MFW_COUNT_PROMPT: Final = _('How many most frequent words?')
-ENTER_REGEX_PROMPT: Final = _('Enter a regular expression to replace:')
-ENTER_REPLACEMENT_CASE_PROMPT: Final = _('Enter a replacement case:')
-ENTER_REPLACEMENT_TEXT_PROMPT: Final = _('Enter replacement text:')
-ENTER_TEXT_TO_REPLACE_PROMPT: Final = _('Enter text to replace:')
-ENTER_VALID_CASE_PROMPT: Final = _('Please enter a valid case.')
-ENTER_VALID_NUMBER_PROMPT: Final = _('Please enter a valid number.')
-ENTER_VALID_REGEX_PROMPT: Final = _('Please enter a valid regular expression.')
-ENTER_VALID_RESPONSE_PROMPT: Final = _('Please enter a valid response (y/n).')
-ENTER_VALID_TEXT_PROMPT: Final = _('Please enter valid text.')
-ENTER_WPM_PROMPT: Final = _('How many words per minute?')
-EXCLUSIVE_CMD_ERROR_MSG: Final = _(
+ENTER_CASE_TO_REPLACE_PROMPT: Final = N_('Enter a case to replace:')
+ENTER_ENTITY_COUNT_PROMPT: Final = N_('How many entities?')
+ENTER_MFW_COUNT_PROMPT: Final = N_('How many most frequent words?')
+ENTER_REGEX_PROMPT: Final = N_('Enter a regular expression to replace:')
+ENTER_REPLACEMENT_CASE_PROMPT: Final = N_('Enter a replacement case:')
+ENTER_REPLACEMENT_TEXT_PROMPT: Final = N_('Enter replacement text:')
+ENTER_TEXT_TO_REPLACE_PROMPT: Final = N_('Enter text to replace:')
+ENTER_VALID_CASE_PROMPT: Final = N_('Please enter a valid case.')
+ENTER_VALID_NUMBER_PROMPT: Final = N_('Please enter a valid number.')
+ENTER_VALID_REGEX_PROMPT: Final = N_('Please enter a valid regular expression.')
+ENTER_VALID_RESPONSE_PROMPT: Final = N_('Please enter a valid response (y/n).')
+ENTER_VALID_TEXT_PROMPT: Final = N_('Please enter valid text.')
+ENTER_WPM_PROMPT: Final = N_('How many words per minute?')
+EXCLUSIVE_CMD_ERROR_MSG: Final = N_(
     "Command '{cmd}' cannot be combined with other commands."
 )
-EXIT_MSG: Final = _('Exiting the program...')
-FILE_ACCESS_ERROR_MSG: Final = _("Error accessing file '{file_path}': {error}")
-FILE_WRITE_ERROR_MSG: Final = _('Error writing to output file: {error}')
-FILE_SIZE_LIMIT_ERROR_MSG: Final = _(
+EXIT_MSG: Final = N_('Exiting the program...')
+FILE_ACCESS_ERROR_MSG: Final = N_("Error accessing file '{file_path}': {error}")
+FILE_WRITE_ERROR_MSG: Final = N_('Error writing to output file: {error}')
+FILE_SIZE_LIMIT_ERROR_MSG: Final = N_(
     'File exceeds {limit}MB limit.'
 )
-FILE_WRITE_SUCCESS_MSG: Final = _(
+FILE_WRITE_SUCCESS_MSG: Final = N_(
     "Modified text successfully written to '{output_file}'."
 )
-FIND_REPLACE_ARG_ERROR_MSG: Final = _(
+FIND_REPLACE_ARG_ERROR_MSG: Final = N_(
     'The --find (-f) and --replace (-r) arguments can only be used with '
     'replacement commands (replace-text, replace-case, replace-regex).'
 )
-HELP_DESCRIPTION: Final = _(
+HELP_DESCRIPTION: Final = N_(
     'Specify a sequence of text warping or analysis commands to apply to the '
     'text.'
 )
-INTERACTIVE_CMD_ERROR_MSG: Final = _(
+INTERACTIVE_CMD_ERROR_MSG: Final = N_(
     "The '{cmd_name}' command requires interactive input and cannot be used "
     'in file or piped mode.'
 )
-INVALID_CASE_ERROR_MSG: Final = _('Invalid case.')
-LINUX_XCLIP_WARNING_MSG: Final = _(
+INVALID_CASE_ERROR_MSG: Final = N_('Invalid case.')
+LINUX_XCLIP_WARNING_MSG: Final = N_(
     "\nOn Linux, you may need to install 'xclip' or 'xsel' "
     '(e.g., sudo apt install xclip).'
 )
-MODIFIED_TEXT_COPIED_MSG: Final = _('Modified text copied to clipboard.')
-MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG: Final = _(
+MODIFIED_TEXT_COPIED_MSG: Final = N_('Modified text copied to clipboard.')
+MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG: Final = N_(
     'Cannot combine multiple mutually exclusive commands: {commands}'
 )
-MULTIPLE_REPLACEMENT_ERROR_MSG: Final = _(
+MULTIPLE_REPLACEMENT_ERROR_MSG: Final = N_(
     'Cannot combine multiple replacement commands: {commands}'
 )
-NO_ENTITIES_FOUND_MSG: Final = _('No entities found.')
-PIPED_INPUT_ERROR_MSG: Final = _('Error processing input: {error}')
-REGEX_EMPTY_ERROR_MSG: Final = _('Regex input is empty.')
-REGEX_TO_REPLACE_NOT_FOUND_MSG: Final = _(
+NO_ENTITIES_FOUND_MSG: Final = N_('No entities found.')
+PIPED_INPUT_ERROR_MSG: Final = N_('Error processing input: {error}')
+REGEX_EMPTY_ERROR_MSG: Final = N_('Regex input is empty.')
+REGEX_TO_REPLACE_NOT_FOUND_MSG: Final = N_(
     'Regular expression to replace not found.'
 )
-REPLACEMENT_CMD_ERROR_MSG: Final = _(
+REPLACEMENT_CMD_ERROR_MSG: Final = N_(
     'Replacement commands require --find and --replace arguments when used '
     'in file or piped mode.'
 )
-TEXT_EMPTY_ERROR_MSG: Final = _('Text input is empty.')
-TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = _('Text to replace not found.')
-UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = _(
+TEXT_EMPTY_ERROR_MSG: Final = N_('Text input is empty.')
+TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = N_('Text to replace not found.')
+UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = N_(
     'An unexpected error occurred while accessing the clipboard.'
 )
