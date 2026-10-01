@@ -2,9 +2,10 @@
 
 import logging
 from collections.abc import Callable
-from typing import TypeAlias
 from types import ModuleType
+from typing import TypeAlias
 
+from textwarp._cli import ui
 from textwarp._cli.constants.messages import (
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
@@ -12,7 +13,6 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MSG,
     UNEXPECTED_CLIPBOARD_ERROR_MSG
 )
-from textwarp._cli import ui
 from textwarp._cli.ui import get_input, print_wrapped
 from textwarp._cli.validation import (
     EmptyClipboardError,

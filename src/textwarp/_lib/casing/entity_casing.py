@@ -6,6 +6,7 @@ from functools import cache
 from typing import TYPE_CHECKING
 
 import regex as re
+
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 

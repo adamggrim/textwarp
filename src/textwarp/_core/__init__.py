@@ -7,7 +7,7 @@ from textwarp._core.enums import (
     MainPOSTag,
     PresenceCheckType,
     RegexBoundary,
-    UniversalPOSTag,
+    UniversalPOSTag
 )
 from textwarp._core.exceptions import (
     CaseNotFoundError,

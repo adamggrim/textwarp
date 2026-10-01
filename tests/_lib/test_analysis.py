@@ -16,7 +16,7 @@ from textwarp import (
 from textwarp._core.enums import ModelPriority
 from textwarp._core.models import POSCounts
 from textwarp._lib.analysis import _extract_uax29_words
-from textwarp._lib.nlp import _get_nlp, _load_spacy_model
+from textwarp._lib.nlp import _load_spacy_model, get_nlp
 
 CALCULATE_TTR_TEXT = (
     'The girl in the tea shop\n'
@@ -208,7 +208,7 @@ def test_get_nlp_transformer_import_error(monkeypatch):
         mock_load_spacy
     )
 
-    nlp_instance = _get_nlp(model_priority=ModelPriority.ACCURACY)
+    nlp_instance = get_nlp(model_priority=ModelPriority.ACCURACY)
 
     assert nlp_instance is not None
     mock_load_spacy.assert_called()

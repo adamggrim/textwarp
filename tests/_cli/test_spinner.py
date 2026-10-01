@@ -1,6 +1,7 @@
 """Tests for the command-line spinner."""
 
 import sys
+
 from textwarp._cli.spinner import AcceleratingSpinner
 
 

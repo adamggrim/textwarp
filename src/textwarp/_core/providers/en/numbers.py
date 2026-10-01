@@ -6,7 +6,7 @@ numbers.
 from typing import TYPE_CHECKING
 
 from textwarp._core.providers.en.constants import (
-    ORDINAL_SUFFIX_MAP, 
+    ORDINAL_SUFFIX_MAP,
     ORDINAL_SUFFIXES
 )
 from textwarp._lib.nlp import process_as_doc

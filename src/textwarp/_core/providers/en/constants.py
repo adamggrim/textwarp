@@ -1,6 +1,7 @@
 """English-specific NLP constants."""
 
 from typing import Final
+
 from textwarp._core.context import N_
 from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 from textwarp._core.utils import load_json_data

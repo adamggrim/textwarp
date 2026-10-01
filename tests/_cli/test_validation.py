@@ -1,6 +1,7 @@
 """Tests for command-line input and clipboard validation."""
 
 import argparse
+
 import pytest
 import regex as re
 

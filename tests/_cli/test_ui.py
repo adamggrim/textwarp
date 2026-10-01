@@ -7,17 +7,17 @@ from unittest.mock import MagicMock
 import pytest
 from wcwidth import wcswidth
 
+from textwarp._cli.constants.messages import (
+    ANY_OTHER_TEXT_PROMPT,
+    ENTER_VALID_RESPONSE_PROMPT,
+    EXIT_MSG
+)
 from textwarp._cli.ui import (
     get_input,
     print_padding,
     print_wrapped,
     program_exit,
     prompt_for_integer
-)
-from textwarp._cli.constants.messages import (
-    ANY_OTHER_TEXT_PROMPT,
-    ENTER_VALID_RESPONSE_PROMPT,
-    EXIT_MSG
 )
 
 

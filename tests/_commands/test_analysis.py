@@ -1,7 +1,7 @@
 """Tests for analysis commands."""
 
-from textwarp._commands import analysis
 from textwarp._cli.constants.messages import ENTER_VALID_NUMBER_PROMPT
+from textwarp._commands import analysis
 
 
 def test_char_count():

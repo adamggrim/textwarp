@@ -11,6 +11,7 @@ from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 
 if TYPE_CHECKING:
     from spacy.tokens import Doc
+
     from textwarp._core.types import EntityCasingContext
 
 __all__ = ['LanguageProvider']

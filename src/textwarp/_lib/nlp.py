@@ -35,7 +35,7 @@ def _load_spacy_model(model_name: str) -> spacy.language.Language:
     return spacy.load(model_name)
 
 
-def _get_nlp(
+def get_nlp(
     model_priority: ModelPriority = ModelPriority.SPEED
 ) -> spacy.language.Language:
     """
@@ -107,7 +107,7 @@ def process_as_doc(
         Doc: The processed spaCy `Doc`.
     """
     if isinstance(content, str):
-        nlp = _get_nlp(model_priority)
+        nlp = get_nlp(model_priority)
         if disable:
             with nlp.select_pipes(disable=disable):
                 return nlp(content)

@@ -4,11 +4,7 @@ import regex as re
 
 from textwarp._core.enums import CaseSeparator
 from textwarp._lib.casing.programming_casing import to_separator_case
-from textwarp._lib.replacement import (
-    replace_case,
-    replace_regex,
-    replace_text
-)
+from textwarp._lib.replacement import replace_case, replace_regex, replace_text
 
 
 def test_replace_case():

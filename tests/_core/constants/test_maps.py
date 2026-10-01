@@ -1,7 +1,8 @@
 """Tests for constant lookup maps."""
 
-import regex as re
 from types import MappingProxyType
+
+import regex as re
 
 from textwarp._core.constants.maps import get_case_names_regex_map
 

@@ -2,16 +2,11 @@
 
 import pytest
 
-from textwarp._cli.args import (
-    ARGS_MAP,
-    CLICommand,
-    CommandType,
-    _lazy_load
-)
+from textwarp._cli.args import ARGS_MAP, CLICommand, CommandType, lazy_load
 
 
 def test_lazy_load():
-    lazy_func = _lazy_load('.._lib.casing', 'to_title_case')
+    lazy_func = lazy_load('.._lib.casing', 'to_title_case')
 
     assert callable(lazy_func)
     assert lazy_func('bartleby, the scrivener') == 'Bartleby, the Scrivener'

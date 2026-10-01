@@ -6,8 +6,8 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Final
 
-from textwarp._core.utils import load_json_data
 from textwarp._core.types import EntityCasingContext
+from textwarp._core.utils import load_json_data
 
 DIR: Final = Path('entity_casing')
 

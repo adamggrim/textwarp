@@ -17,6 +17,7 @@ from textwarp._cli.formatting import (
 )
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import prompt_for_integer
+from textwarp._core.context import _
 from textwarp._core.enums import CountLabels
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib.analysis import (
@@ -30,7 +31,6 @@ from textwarp._lib.analysis import (
     count_sents,
     count_words
 )
-from textwarp._core.context import _
 
 __all__ = [
     'char_count',

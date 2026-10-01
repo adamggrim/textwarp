@@ -1,7 +1,6 @@
 """Exposes core regular expression patterns."""
 
-from textwarp._core.constants.patterns import cases
-from textwarp._core.constants.patterns import warping
+from textwarp._core.constants.patterns import cases, warping
 
 __all__ = [
     'cases',

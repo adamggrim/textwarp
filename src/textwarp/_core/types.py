@@ -1,11 +1,6 @@
 """Generic type definitions used across the package."""
 
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    TypeAlias,
-    TypedDict
-)
+from typing import TYPE_CHECKING, Any, TypeAlias, TypedDict
 
 if TYPE_CHECKING:
     from textwarp._cli.args import CLICommand

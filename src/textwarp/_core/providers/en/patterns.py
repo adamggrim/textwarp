@@ -5,8 +5,8 @@ from functools import cache
 import regex as re
 
 from textwarp._core.constants import patterns
-from textwarp._core.providers import en
 from textwarp._core.enums import RegexBoundary
+from textwarp._core.providers import en
 
 __all__ = [
     'get_ambiguous_contraction',

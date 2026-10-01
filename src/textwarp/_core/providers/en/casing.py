@@ -5,7 +5,6 @@ from collections.abc import Callable, Mapping
 from textwarp._core.constants import patterns
 from textwarp._core.providers import en
 
-
 __all__ = [
     'case_from_string',
     'should_always_lowercase'

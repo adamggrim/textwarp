@@ -5,11 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spacy.tokens import (
-        Doc,
-        Span,
-        Token
-    )
+    from spacy.tokens import Doc, Span, Token
 
 from textwarp._core.context import ctx
 from textwarp._core.enums import Casing, ModelPriority

@@ -1,7 +1,7 @@
 """A Python package for analyzing and transforming text."""
 
 import importlib
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from textwarp._core.models import POSCounts, WordCount
 

@@ -12,6 +12,7 @@ from typing import IO, TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     import argparse
+
     from spacy.tokens import Doc
 
 from textwarp._cli.args import ARGS_MAP, CommandType
@@ -25,12 +26,12 @@ from textwarp._cli.constants.messages import (
 from textwarp._cli.runners import clear_clipboard
 from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
+from textwarp._core.context import _
 from textwarp._core.exceptions import (
     MissingDependencyError,
     TextwarpError,
     TextwarpValidationError
 )
-from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 from textwarp._lib.nlp import process_as_doc
 
@@ -77,8 +78,8 @@ def _run_pipeline_segment(
 
 def _preload_spacy() -> None:
     """Helper to preload spaCy in the main process."""
-    from textwarp._lib.nlp import _get_nlp
-    _get_nlp()
+    from textwarp._lib.nlp import get_nlp
+    get_nlp()
 
 
 def apply_pipeline(

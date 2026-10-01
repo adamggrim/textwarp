@@ -14,7 +14,7 @@ from textwarp._lib.effects import (
     reverse,
     to_zalgo,
     unzalgo,
-    widen,
+    widen
 )
 from textwarp._lib.encoding import (
     from_binary,

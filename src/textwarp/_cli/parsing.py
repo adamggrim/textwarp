@@ -4,15 +4,16 @@ import argparse
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
+
 from typing_extensions import Final
 
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
 from textwarp._cli.pipeline import build_pipeline
 from textwarp._cli.ui import get_terminal_width, wrap_text
+from textwarp._cli.validation import validate_command_combinations
 from textwarp._core.context import _
 from textwarp._core.types import Pipeline
-from textwarp._cli.validation import validate_command_combinations
 
 __all__ = ['parse_args', 'ParsedArgs']
 

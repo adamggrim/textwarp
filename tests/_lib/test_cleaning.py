@@ -2,10 +2,7 @@
 
 from hypothesis import given, strategies
 
-from textwarp._lib.cleaning import (
-    strip_html,
-    to_single_spaces
-)
+from textwarp._lib.cleaning import strip_html, to_single_spaces
 
 
 def test_strip_html():

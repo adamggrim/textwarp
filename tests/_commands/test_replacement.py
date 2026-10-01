@@ -136,7 +136,7 @@ def test_parse_cli_escapes():
         '\t\tNemesianus Ec. IV.\r \\'
     )
 
-    assert replacement._parse_cli_escapes(raw_input) == expected_output
+    assert replacement.parse_cli_escapes(raw_input) == expected_output
 
 
 def test_replace_regex_with_escapes(simulate_input):

@@ -5,8 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 from spacy.tokens import Span
 
-from textwarp._lib.nlp import _load_spacy_model
-from textwarp._lib.nlp import process_as_doc
+from textwarp._lib.nlp import _load_spacy_model, process_as_doc
 
 
 @pytest.fixture

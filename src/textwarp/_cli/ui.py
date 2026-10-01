@@ -26,13 +26,13 @@ from textwarp._cli.constants.messages import (
     ENTER_VALID_TEXT_PROMPT,
     EXIT_MSG
 )
-from textwarp._core.context import _
-from textwarp._core.exceptions import TextwarpValidationError
 from textwarp._cli.validation import (
     validate_case_name,
     validate_regex,
     validate_text
 )
+from textwarp._core.context import _
+from textwarp._core.exceptions import TextwarpValidationError
 
 __all__ = [
     'get_input',

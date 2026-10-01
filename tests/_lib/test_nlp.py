@@ -6,7 +6,7 @@ import pytest
 import spacy
 
 from textwarp._core.enums import ModelPriority
-from textwarp._lib.nlp import _get_nlp, process_as_doc
+from textwarp._lib.nlp import get_nlp, process_as_doc
 
 
 def test_process_as_doc_disable_pipes():
@@ -41,8 +41,8 @@ def test_get_nlp_priority_branching():
     Test that `_get_nlp` respects the `ModelPriority` enum and
     successfully returns a `Language` object for both branches.
     """
-    nlp_speed = _get_nlp(model_priority=ModelPriority.SPEED)
-    nlp_accuracy = _get_nlp(model_priority=ModelPriority.ACCURACY)
+    nlp_speed = get_nlp(model_priority=ModelPriority.SPEED)
+    nlp_accuracy = get_nlp(model_priority=ModelPriority.ACCURACY)
 
     assert nlp_speed is not None
     assert nlp_accuracy is not None
@@ -59,7 +59,7 @@ def test_nlp_fallback_logic(monkeypatch):
     monkeypatch.setattr(spacy.util, 'is_package', mock_is_package)
     monkeypatch.setattr('textwarp._lib.nlp._load_spacy_model', mock_load_spacy)
 
-    result = _get_nlp(model_priority=ModelPriority.SPEED)
+    result = get_nlp(model_priority=ModelPriority.SPEED)
     assert result == 'loaded_en_core_web_md'
     mock_is_package.assert_called()
     mock_load_spacy.assert_called_once_with('en_core_web_md')
@@ -75,7 +75,7 @@ def test_nlp_no_models_found_raises_missing_model_error(monkeypatch):
     monkeypatch.setattr(spacy.util, 'get_installed_models', mock_get_installed)
 
     with pytest.raises(MissingModelError, match='No EN spaCy models found.'):
-        _get_nlp(model_priority=ModelPriority.SPEED)
+        get_nlp(model_priority=ModelPriority.SPEED)
 
 
 def test_process_as_doc_with_disabled_pipes():
@@ -89,6 +89,7 @@ def test_process_as_doc_with_disabled_pipes():
 
 def test_load_spacy_raises_missing_dependency_error(monkeypatch):
     import builtins
+
     from textwarp._core.exceptions import MissingDependencyError
     from textwarp._lib.nlp import _load_spacy
 

@@ -2,20 +2,20 @@
 
 import regex as re
 
-from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.constants.messages import (
     CASE_TO_REPLACE_NOT_FOUND_MSG,
     REGEX_TO_REPLACE_NOT_FOUND_MSG,
     TEXT_TO_REPLACE_NOT_FOUND_MSG
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
-from textwarp._core.constants.maps import get_case_names_regex_map
+from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
 from textwarp._cli.validation import (
     validate_case_name,
     validate_regex,
     validate_text
 )
+from textwarp._core.constants.maps import get_case_names_regex_map
 from textwarp._core.context import _
 from textwarp._lib import replacement as lib_replacement
 
@@ -34,7 +34,7 @@ _ESCAPE_MAP = {
 }
 
 
-def _parse_cli_escapes(text: str) -> str:
+def parse_cli_escapes(text: str) -> str:
     """
     Convert CLI escape strings into their corresponding whitespace
     characters.
@@ -96,7 +96,7 @@ def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
         print_wrapped(_(REGEX_TO_REPLACE_NOT_FOUND_MSG))
         return text
 
-    parsed_replacement = _parse_cli_escapes(replacement_arg)
+    parsed_replacement = parse_cli_escapes(replacement_arg)
 
     return run_with_spinner(
         lib_replacement.replace_regex, text, arg_to_replace, parsed_replacement
@@ -121,7 +121,7 @@ def replace_text(text: str, arg_to_replace: str, replacement_arg: str) -> str:
         print_wrapped(_(TEXT_TO_REPLACE_NOT_FOUND_MSG))
         return text
 
-    parsed_replacement = _parse_cli_escapes(replacement_arg)
+    parsed_replacement = parse_cli_escapes(replacement_arg)
 
     return run_with_spinner(
         lib_replacement.replace_text, text, arg_to_replace, parsed_replacement

@@ -5,6 +5,13 @@ from unittest.mock import MagicMock
 import pyperclip
 
 from tests.helpers import normalize_output
+from textwarp._cli.constants.messages import (
+    CLIPBOARD_ACCESS_ERROR_MSG,
+    CLIPBOARD_CLEARED_MSG,
+    CLIPBOARD_EMPTY_ERROR_MSG,
+    LINUX_XCLIP_WARNING_MSG,
+    MODIFIED_TEXT_COPIED_MSG
+)
 from textwarp._cli.runners import (
     _paste_and_validate,
     _replace_and_copy,
@@ -13,13 +20,7 @@ from textwarp._cli.runners import (
     run_command_loop,
     warp_and_copy
 )
-from textwarp._cli.constants.messages import (
-    CLIPBOARD_ACCESS_ERROR_MSG,
-    CLIPBOARD_CLEARED_MSG,
-    CLIPBOARD_EMPTY_ERROR_MSG,
-    LINUX_XCLIP_WARNING_MSG,
-    MODIFIED_TEXT_COPIED_MSG
-)
+
 
 def test_paste_and_validate(mock_clipboard):
     expected = (

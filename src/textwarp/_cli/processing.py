@@ -26,13 +26,9 @@ from textwarp._cli.pipeline import (
     route_text,
     validate_piped_commands
 )
-from textwarp._cli.runners import (
-    replace_text,
-    run_command_loop,
-    warp_and_copy
-)
+from textwarp._cli.runners import replace_text, run_command_loop, warp_and_copy
 from textwarp._cli.ui import print_wrapped, program_exit
-from textwarp._commands.replacement import _parse_cli_escapes
+from textwarp._commands.replacement import parse_cli_escapes
 from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpError
 
@@ -168,7 +164,7 @@ def _process_mmap_regex(file_path: str, args: ParsedArgs) -> None:
             output.
     """
     pattern = re.compile(args.find.encode('utf-8'))
-    replacement = _parse_cli_escapes(args.replace).encode('utf-8')
+    replacement = parse_cli_escapes(args.replace).encode('utf-8')
 
     with _open_output_stream(args.output_file, 'ab') as output_stream:
         with _file_open(file_path, 'rb') as f:
