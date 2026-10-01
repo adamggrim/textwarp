@@ -207,8 +207,7 @@ textwarp/
   │ │ │ ├── cases.py: Universal regular expressions for identifying cases
   │ │ │ └── warping.py: Universal regular expressions for text warping
   │ │ ├── __init__.py: Exposes constants for use across the package
-  │ │ ├── maps.py: Maps used across the package for lookups
-  │ │ └── nlp.py: Objects used across the package for spaCy processing
+  │ │ └── maps.py: Maps used across the package for lookups
   │ ├── data/
   │ │ ├── en/
   │ │ │ ├── contraction_expansion/
@@ -257,20 +256,18 @@ textwarp/
   │ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
   │ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
   │ │ │ │ └── token_casing.py: Functions for loading English token casing rules
-  │ │ │ ├── patterns/
-  │ │ │ │ ├── __init__.py: Exposes English-specific regular expression patterns
-  │ │ │ │ └── warping.py: English-specific regular expression patterns for text warping
+  │ │ │ ├── expansion/
+  │ │ │ │ ├── __init__.py: Exposes English contraction expansion logic
+  │ │ │ │ ├── core.py: Core logic for expanding English contractions
+  │ │ │ │ ├── disambiguation.py: Functions for resolving ambiguous English contractions based on context
+  │ │ │ │ ├── strategies.py: Functions for handling specific types of English contractions
+  │ │ │ │ └── variants.py: Sets used in English contraction variants
   │ │ │ ├── __init__.py: Exposes English-specific language provider modules
   │ │ │ ├── casing.py: English-specific string casing logic
-  │ │ │ │ ├── constants.py: English-specific NLP constants
-  │ │ │ │ ├── encoding.py: Functions for encoding and decoding English text
-  │ │ │ │ ├── expansion/
-  │ │ │ │ │ ├── __init__.py: Exposes English contraction expansion logic
-  │ │ │ │ │ ├── core.py: Core logic for expanding English contractions
-  │ │ │ │ │ ├── disambiguation.py: Functions for resolving ambiguous English contractions based on context
-  │ │ │ │ │ ├── strategies.py: Functions for handling specific types of English contractions
-  │ │ │ │ │ └── variants.py: Sets used in English contraction variants
-  │ │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
+  │ │ │ ├── constants.py: English-specific NLP constants
+  │ │ │ ├── encoding.py: Functions for encoding and decoding English text
+  │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
+  │ │ │ ├── patterns.py: English-specific regular expression patterns for text warping
   │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
   │ │ │ ├── punctuation.py: English-specific functions handling punctuation
   │ │ │ └── utils.py: English-specific utility functions
@@ -293,20 +290,20 @@ textwarp/
   │ │ ├── programming_casing.py: Functions for converting between programming cases
   │ │ ├── string_casing.py: Functions for capitalizing strings through dictionary lookup
   │ │ └── token_casing.py: Logic for spaCy-based token capitalization
-  │ | ├── __init__.py: Exposes library functions for use across the package
-  │ | ├── cleaning.py: Functions for cleaning and sanitizing text
-  │ | ├── contractions.py: Main logic for expanding contractions
-  │ | ├── effects.py: Functions that apply visual effects to text
-  │ | ├── encoding.py: Functions for encoding and decoding text
-  │ | ├── markdown.py: Functions for parsing Markdown and transforming ASTs
-  │ | ├── nlp.py: Functions for lazy spaCy loading and text processing
+  │ ├── __init__.py: Exposes library functions for use across the package
+  │ ├── analysis.py: Public functions for analyzing text
+  │ ├── cleaning.py: Functions for cleaning and sanitizing text
+  │ ├── contractions.py: Main logic for expanding contractions
+  │ ├── effects.py: Functions that apply visual effects to text
+  │ ├── encoding.py: Functions for encoding and decoding text
+  │ ├── markdown.py: Functions for parsing Markdown and transforming Abstract Syntax Trees (ASTs)
+  │ ├── nlp.py: Functions for lazy spaCy loading and text processing
   │ ├── numbers.py: Functions for converting between cardinal and ordinal numbers
   │ ├── punctuation.py: Functions handling punctuation
   │ └── replacement.py: Functions for finding and replacing text
   ├── __init__.py: A Python package for analyzing and transforming text
   ├── __main__.py: The entry point for the package
-  ├── analysis.py: Public functions for analyzing text
-  └── warping.py: Public functions for warping text
+  └── py.typed: Marker file for PEP 561 type checking support
 ```
 </details>
 
