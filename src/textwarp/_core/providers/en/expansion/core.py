@@ -134,7 +134,11 @@ def expand_contractions(doc: Doc) -> str:
 
         expanded_parts.append(doc.text[prev_idx:start_idx])
         contraction: str = match.group(0)
-        span: Span | None = doc.char_span(start_idx, end_idx)
+        span: Span | None = (
+            doc.char_span(start_idx, end_idx)
+            or doc.char_span(start_idx, end_idx, alignment_mode='contract')
+            or doc.char_span(start_idx, end_idx, alignment_mode='expand')
+        )
 
         is_negation: bool = bool(
             en.patterns.get_n_t_suffix().search(contraction)
@@ -147,10 +151,15 @@ def expand_contractions(doc: Doc) -> str:
 
         if (is_negation or is_ambiguous) and span:
             expanded_text: str
-            new_end_idx: int
+            span_end_idx: int
 
-            expanded_text, new_end_idx = _expand_ambiguous_contraction(
+            expanded_text, span_end_idx = _expand_ambiguous_contraction(
                 contraction, span
+            )
+            # Only advance past `end_idx` if an inverted negative
+            # contraction consumes the following subject span.
+            new_end_idx = (
+                span_end_idx if span_end_idx > span.end_char else end_idx
             )
             expanded_parts.append(expanded_text)
             prev_idx = new_end_idx
