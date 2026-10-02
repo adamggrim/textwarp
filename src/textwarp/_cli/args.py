@@ -117,19 +117,19 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
     ),
     'from-binary': CLICommand(
         name='from-binary',
-        func=lazy_load('.._lib.encoding', 'from_binary'),
+        func=lazy_load('.._commands.encoding', 'from_binary'),
         help_text=N_('convert from binary'),
         command_type=CommandType.WARPING
     ),
     'from-hexadecimal': CLICommand(
         name='from-hexadecimal',
-        func=lazy_load('.._lib.encoding', 'from_hexadecimal'),
+        func=lazy_load('.._commands.encoding', 'from_hexadecimal'),
         help_text=N_('convert from hexadecimal'),
         command_type=CommandType.WARPING
     ),
     'from-morse': CLICommand(
         name='from-morse',
-        func=lazy_load('.._lib.encoding', 'from_morse'),
+        func=lazy_load('.._commands.encoding', 'from_morse'),
         help_text=N_('convert from Morse code'),
         command_type=CommandType.WARPING
     ),

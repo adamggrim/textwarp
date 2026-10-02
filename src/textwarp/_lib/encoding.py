@@ -69,15 +69,14 @@ def from_binary(binary_text: str) -> str:
         binary_text: The space-separated binary string to convert.
 
     Returns:
-        str: The converted string, or the original string if decoding
-            fails.
+        str: The converted string.
+
+    Raises:
+        ValueError: If `binary_text` contains an invalid binary
+        sequence.
     """
     binary_bytes = binary_text.split()
-
-    try:
-        return bytes(int(byte, 2) for byte in binary_bytes).decode('utf-8')
-    except ValueError:
-        return binary_text
+    return bytes(int(byte, 2) for byte in binary_bytes).decode('utf-8')
 
 
 def from_hexadecimal(text: str) -> str:
@@ -88,14 +87,13 @@ def from_hexadecimal(text: str) -> str:
         text: The hexadecimal string to convert.
 
     Returns:
-        str: The converted string, or the original string if decoding
-            fails.
+        str: The converted string.
+
+    Raises:
+        ValueError: If `text` contains an invalid hexadecimal sequence.
     """
     normalized_text = text.replace(' ', '')
-    try:
-        return bytes.fromhex(normalized_text).decode('utf-8')
-    except ValueError:
-        return text
+    return bytes.fromhex(normalized_text).decode('utf-8')
 
 
 def from_morse(text: str) -> str:
@@ -107,6 +105,9 @@ def from_morse(text: str) -> str:
 
     Returns:
         str: The converted string (in all caps).
+
+    Raises:
+        ValueError: If `text` contains an invalid Morse code sequence.
     """
     stripped_text = text.strip()
     if not stripped_text:
@@ -126,7 +127,7 @@ def from_morse(text: str) -> str:
 
         for code in char_codes:
             if code not in reversed_morse_map:
-                return text
+                raise ValueError(f'Invalid Morse code sequence: {code!r}')
             decoded_word_chars.append(reversed_morse_map[code])
 
         decoded_words.append(''.join(decoded_word_chars))

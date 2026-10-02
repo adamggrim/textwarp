@@ -1,5 +1,6 @@
 """Tests for text encoding and decoding functions."""
 
+import pytest
 import regex as re
 from hypothesis import given, strategies
 
@@ -26,12 +27,13 @@ def test_binary_conversion():
     assert from_binary(binary) == original
 
 
-def test_binary_invalid_input_pass_through():
+def test_binary_invalid_input_raises():
     text = (
         'Gottfried Wilhelm 01001100 01100101 01101001 01100010 01101110 '
         '01101001 01111010'
     )
-    assert from_binary(text) == text
+    with pytest.raises(ValueError):
+        from_binary(text)
 
 
 def test_hexadecimal_conversion():
@@ -51,9 +53,10 @@ def test_hexadecimal_conversion():
     assert from_hexadecimal(hex_str) == original
 
 
-def test_hexadecimal_invalid_input_pass_through():
+def test_hexadecimal_invalid_input_raises():
     text = 'These things must be done delicately, or you hurt the spell.'
-    assert from_hexadecimal(text) == text
+    with pytest.raises(ValueError):
+        from_hexadecimal(text)
 
 
 def test_morse_conversion_basic():
@@ -94,13 +97,14 @@ def test_morse_conversion_complex():
     assert from_morse(morse_irreg_spacing) == original.upper()
 
 
-def test_morse_invalid_input_pass_through():
+def test_morse_invalid_input_raises():
     text = (
         'We intend to begin on the first of February unrestricted submarine '
         'warfare. We shall endeavor in spite of this to keep the United '
         'States of America neutral.'
     )
-    assert from_morse(text) == text
+    with pytest.raises(ValueError, match='Invalid Morse code sequence'):
+        from_morse(text)
 
 
 def test_morse_conversion_unsupported_chars():

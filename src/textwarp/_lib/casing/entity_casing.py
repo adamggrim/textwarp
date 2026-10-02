@@ -10,6 +10,8 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
+    from textwarp._core.providers.base import LanguageProvider
+
 from textwarp._core.context import ctx
 from textwarp._core.types import EntityCasingContext
 
@@ -85,12 +87,14 @@ def _check_for_ngrams(
 
 
 @cache
-def _get_custom_entities_pattern(locale: str) -> re.Pattern[str]:
+def _get_custom_entities_pattern(
+    provider: LanguageProvider
+) -> re.Pattern[str]:
     """
     Build and cache the regular expression for finding custom entities.
     """
-    absolute_entities_map = ctx.provider.absolute_casings_map
-    contextual_entities_map = ctx.provider.contextual_casings_map
+    absolute_entities_map = provider.absolute_casings_map
+    contextual_entities_map = provider.contextual_casings_map
 
     all_keys: set[str] = (
         absolute_entities_map.keys()
@@ -122,10 +126,11 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
                 3. The cased entity.
     """
     custom_entities_map: dict[int, tuple[Span, int, str]] = {}
-    absolute_entities_map = ctx.provider.absolute_casings_map
-    contextual_entities_map = ctx.provider.contextual_casings_map
+    provider = ctx.provider
+    absolute_entities_map = provider.absolute_casings_map
+    contextual_entities_map = provider.contextual_casings_map
 
-    keys_pattern = _get_custom_entities_pattern(ctx.locale)
+    keys_pattern = _get_custom_entities_pattern(provider)
 
     for match in keys_pattern.finditer(doc.text):
         start_char, end_char = match.span()

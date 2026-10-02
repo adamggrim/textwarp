@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 from textwarp._core.context import ctx
 from textwarp._core.utils import starts_uppercase
 from textwarp._lib.casing.string_casing import case_from_string
-from textwarp._lib.nlp import process_as_doc
 
 __all__ = ['apply_expansion_casing', 'expand_contractions']
 
