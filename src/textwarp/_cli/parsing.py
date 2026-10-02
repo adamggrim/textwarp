@@ -17,8 +17,9 @@ from textwarp._cli.validation import (
 from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 
-__all__ = ['ParsedArgs', 'parse_args']
+__all__ = ['BYTES_PER_MB', 'DEFAULT_MAX_FILE_MB', 'ParsedArgs', 'parse_args']
 
+BYTES_PER_MB: Final = 1024 * 1024
 DEFAULT_MAX_FILE_MB: Final = 100
 
 _INDENT: Final = 2

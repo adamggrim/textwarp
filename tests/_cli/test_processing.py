@@ -17,13 +17,13 @@ from textwarp._cli.constants.messages import (
     FILE_WRITE_SUCCESS_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
-from textwarp._cli.parsing import DEFAULT_MAX_FILE_MB, ParsedArgs
+from textwarp._cli.parsing import BYTES_PER_MB, DEFAULT_MAX_FILE_MB, ParsedArgs
 from textwarp._core.exceptions import TextwarpError
 
 
 @pytest.fixture
 def mock_oversized_file(monkeypatch):
-    oversized_bytes = (DEFAULT_MAX_FILE_MB + 1) * 1024 * 1024
+    oversized_bytes = (DEFAULT_MAX_FILE_MB + 1) * BYTES_PER_MB
     monkeypatch.setattr('os.path.getsize', lambda _: oversized_bytes)
 
 

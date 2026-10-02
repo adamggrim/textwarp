@@ -17,7 +17,7 @@ from textwarp._cli.constants.messages import (
     FILE_WRITE_SUCCESS_MSG,
     PIPED_INPUT_ERROR_MSG
 )
-from textwarp._cli.parsing import ParsedArgs
+from textwarp._cli.parsing import BYTES_PER_MB, ParsedArgs
 from textwarp._cli.pipeline import (
     atomic_write,
     handle_output,
@@ -248,7 +248,7 @@ def process_file_mode(args: ParsedArgs) -> None:
         return
 
     combined_results: list[str] = []
-    max_memory_bytes = args.max_file_mb * 1024 * 1024
+    max_memory_bytes = args.max_file_mb * BYTES_PER_MB
 
     if (
         is_regex_only_pipeline
