@@ -52,12 +52,18 @@ def _run_pipeline_segment(
     content: str | Doc,
     pipeline: Pipeline,
     arg_to_replace: str | None,
-    replacement_arg: str | None
+    replacement_arg: str | None,
+    top: int | None = None,
+    wpm: int | None = None
 ) -> str | None:
     """Helper to sequentially apply a list of commands to text."""
     analysis_results: list[str] = []
 
     for cmd in pipeline:
+        if cmd.name == 'expand-contractions' and isinstance(content, str):
+            content = cmd.func(content)
+            continue
+
         if cmd.requires_spacy:
             if isinstance(content, str):
                 content = process_as_doc(content)
@@ -65,7 +71,12 @@ def _run_pipeline_segment(
             content = content.text
 
         if cmd.command_type == CommandType.ANALYSIS:
-            analysis_results.append(cmd.func(content))
+            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
+                analysis_results.append(cmd.func(content, top))
+            elif cmd.name == 'time-to-read' and wpm is not None:
+                analysis_results.append(cmd.func(content, wpm))
+            else:
+                analysis_results.append(cmd.func(content))
         elif (
             cmd.command_type == CommandType.REPLACEMENT
             and arg_to_replace is not None
@@ -98,7 +109,9 @@ def apply_pipeline(
     text: str | Doc,
     pipeline: Pipeline,
     arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
+    replacement_arg: str | None = None,
+    top: int | None = None,
+    wpm: int | None = None
 ) -> str | None:
     """
     Apply a sequence of pipeline functions to a string.
@@ -112,6 +125,8 @@ def apply_pipeline(
             provided. Defaults to `None`.
         replacement_arg: The replacement case, regex or substring, if
             provided. Defaults to `None`.
+        top: The number of ranked items to display. Defaults to `None`.
+        wpm: The words per minute. Defaults to `None`.
 
     Returns:
         str | None: The transformed string after applying all functions
@@ -120,7 +135,7 @@ def apply_pipeline(
     """
     imports_spacy = any(cmd.requires_spacy for cmd in pipeline)
     requires_input = requires_intermediate_input(
-        pipeline, arg_to_replace, replacement_arg
+        pipeline, arg_to_replace, replacement_arg, top=top, wpm=wpm
     )
 
     content = text
@@ -129,7 +144,12 @@ def apply_pipeline(
         if requires_input:
             run_with_spinner(_preload_spacy)
             return _run_pipeline_segment(
-                content, pipeline, arg_to_replace, replacement_arg
+                content,
+                pipeline,
+                arg_to_replace,
+                replacement_arg,
+                top=top,
+                wpm=wpm
             )
         else:
             return run_with_spinner(
@@ -137,11 +157,18 @@ def apply_pipeline(
                 content,
                 pipeline,
                 arg_to_replace,
-                replacement_arg
+                replacement_arg,
+                top,
+                wpm
             )
     else:
         return _run_pipeline_segment(
-            content, pipeline, arg_to_replace, replacement_arg
+            content,
+            pipeline,
+            arg_to_replace,
+            replacement_arg,
+            top=top,
+            wpm=wpm
         )
 
 
@@ -267,7 +294,9 @@ def is_analysis_pipeline(pipeline: Pipeline) -> bool:
 def requires_intermediate_input(
     pipeline: Pipeline,
     arg_to_replace: str | None,
-    replacement_arg: str | None
+    replacement_arg: str | None,
+    top: int | None = None,
+    wpm: int | None = None
 ) -> bool:
     """
     Check whether the pipeline contains commands that prompt for input
@@ -275,6 +304,10 @@ def requires_intermediate_input(
     """
     for cmd in pipeline:
         if cmd.requires_intermediate_input:
+            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
+                continue
+            if cmd.name == 'time-to-read' and wpm is not None:
+                continue
             return True
         if (
             cmd.command_type == CommandType.REPLACEMENT
@@ -326,7 +359,9 @@ def route_text(
     pipeline: Pipeline,
     parse_markdown: bool,
     arg_to_replace: str | None = None,
-    replacement_arg: str | None = None
+    replacement_arg: str | None = None,
+    top: int | None = None,
+    wpm: int | None = None
 ) -> str | None:
     """
     Determine whether to process text as Markdown or a plain string.
@@ -337,6 +372,8 @@ def route_text(
         parse_markdown: Whether to parse text as Markdown.
         arg_to_replace: The case, regex or target substring.
         replacement_arg: The replacement case, regex or substring.
+        top: The number of ranked items to display. Defaults to `None`.
+        wpm: The words per minute. Defaults to `None`.
 
     Returns:
         str | None: The transformed text after processing, or `None` if
@@ -344,7 +381,12 @@ def route_text(
     """
     if not parse_markdown:
         return apply_pipeline(
-            text, pipeline, arg_to_replace, replacement_arg
+            text,
+            pipeline,
+            arg_to_replace,
+            replacement_arg,
+            top=top,
+            wpm=wpm
         )
 
     try:
@@ -357,7 +399,12 @@ def route_text(
     if is_analysis_pipeline(pipeline):
         stripped = strip_markdown(text)
         return apply_pipeline(
-            stripped, pipeline, arg_to_replace, replacement_arg
+            stripped,
+            pipeline,
+            arg_to_replace,
+            replacement_arg,
+            top=top,
+            wpm=wpm
         )
     else:
         def transform_chunk(chunk: str) -> str:
@@ -366,7 +413,12 @@ def route_text(
             Tree (AST).
             """
             res = apply_pipeline(
-                chunk, pipeline, arg_to_replace, replacement_arg
+                chunk,
+                pipeline,
+                arg_to_replace,
+                replacement_arg,
+                top=top,
+                wpm=wpm
             )
             return res if res is not None else chunk
 
@@ -376,7 +428,9 @@ def route_text(
 def validate_piped_commands(
     pipeline: Pipeline,
     arg_to_replace: str | None,
-    replacement_arg: str | None
+    replacement_arg: str | None,
+    top: int | None = None,
+    wpm: int | None = None
 ) -> None:
     """
     Ensure that commands requiring intermediate input are not used in
@@ -396,6 +450,10 @@ def validate_piped_commands(
     """
     for cmd in pipeline:
         if cmd.requires_intermediate_input:
+            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
+                continue
+            if cmd.name == 'time-to-read' and wpm is not None:
+                continue
             raise TextwarpValidationError(
                 _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd.name)
             )

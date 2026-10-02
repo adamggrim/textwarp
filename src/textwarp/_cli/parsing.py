@@ -42,6 +42,8 @@ class ParsedArgs:
     copy_to_clipboard: bool
     debug: bool
     max_file_mb: int
+    top: int | None = None
+    wpm: int | None = None
 
 
 def parse_args() -> ParsedArgs:
@@ -181,6 +183,24 @@ def parse_args() -> ParsedArgs:
     )
 
     parser.add_argument(
+        '-n', '--top',
+        dest='top',
+        metavar='N',
+        type=int,
+        default=None,
+        help=_('number of ranked items to display for analysis')
+    )
+
+    parser.add_argument(
+        '-w', '--wpm',
+        dest='wpm',
+        metavar='WPM',
+        type=int,
+        default=None,
+        help=_('words per minute for analysis')
+    )
+
+    parser.add_argument(
         'commands',
         nargs='*',
         type=str,
@@ -222,5 +242,7 @@ def parse_args() -> ParsedArgs:
         replace=args.replace,
         copy_to_clipboard=args.copy_to_clipboard,
         debug=args.debug,
-        max_file_mb=args.max_file_mb
+        max_file_mb=args.max_file_mb,
+        top=args.top,
+        wpm=args.wpm
     )

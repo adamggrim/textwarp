@@ -20,10 +20,13 @@ from textwarp._cli.constants.messages import (
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
+    POSITIVE_INT_ARG_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
+    TOP_ARG_ERROR_MSG,
     UNRECOGNIZED_CMD_ERROR_MSG,
-    UNRECOGNIZED_CMD_HINT_ERROR_MSG
+    UNRECOGNIZED_CMD_HINT_ERROR_MSG,
+    WPM_ARG_ERROR_MSG
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.context import _
@@ -151,6 +154,24 @@ def validate_command_combinations(
     is_replacement_cmd = len(active_replacements) > 0
     if (args.find or args.replace) and not is_replacement_cmd:
         parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
+
+    top = getattr(args, 'top', None)
+    if top is not None:
+        if not any(c in {'entity-counts', 'mfws'} for c in active_cmds):
+            parser.error(_(TOP_ARG_ERROR_MSG))
+        if top <= 0:
+            parser.error(
+                _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--top (-n)')
+            )
+
+    wpm = getattr(args, 'wpm', None)
+    if wpm is not None:
+        if 'time-to-read' not in active_cmds:
+            parser.error(_(WPM_ARG_ERROR_MSG))
+        if wpm <= 0:
+            parser.error(
+                _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--wpm (-w)')
+            )
 
 
 def validate_positional_args(

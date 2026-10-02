@@ -1,5 +1,9 @@
 """Runners for analysis commands."""
 
+from __future__ import annotations
+
+from spacy.tokens import Doc
+
 from textwarp._cli.constants.messages import (
     ENTER_ENTITY_COUNT_PROMPT,
     ENTER_MFW_COUNT_PROMPT,
@@ -56,20 +60,29 @@ def char_count(text: str) -> str:
     return format_count(CountLabels.CHAR.value, count)
 
 
-def entity_counts(text: str) -> str:
+def entity_counts(
+    content: str | Doc,
+    count_limit: int | None = None
+) -> str:
     """
     Analyze, format and print most frequent entities output.
 
     Args:
-        text: The string to process.
+        content: The string or spaCy `Doc` to process.
+        count_limit: Optional number of entities to return.
     """
-    count_limit: int = prompt_for_integer(
-        _(ENTER_ENTITY_COUNT_PROMPT),
-        _(ENTER_VALID_NUMBER_PROMPT),
-        allow_early_exit=True
-    )
+    if count_limit is None:
+        count_limit = prompt_for_integer(
+            _(ENTER_ENTITY_COUNT_PROMPT),
+            _(ENTER_VALID_NUMBER_PROMPT),
+            allow_early_exit=True
+        )
+        data: list[WordCount] = run_with_spinner(
+            count_entities, content, count_limit
+        )
+    else:
+        data = count_entities(content, count_limit)
 
-    data: list[WordCount] = run_with_spinner(count_entities, text, count_limit)
     if not data:
         return _(NO_ENTITIES_FOUND_MSG)
     return format_entity_counts(data)
@@ -87,20 +100,25 @@ def line_count(text: str) -> str:
 
 
 
-def mfws(text: str) -> str:
+def mfws(
+    content: str | Doc,
+    count_limit: int | None = None
+) -> str:
     """
     Analyze, format and print most frequent words output.
 
     Args:
-        text: The string to process.
+        content: The string or spaCy `Doc` to process.
+        count_limit: Optional number of most frequent words to return.
     """
-    count_limit: int = prompt_for_integer(
-        _(ENTER_MFW_COUNT_PROMPT),
-        _(ENTER_VALID_NUMBER_PROMPT),
-        allow_early_exit=True
-    )
+    if count_limit is None:
+        count_limit = prompt_for_integer(
+            _(ENTER_MFW_COUNT_PROMPT),
+            _(ENTER_VALID_NUMBER_PROMPT),
+            allow_early_exit=True
+        )
 
-    data: list[WordCount] = count_mfws(text, count_limit)
+    data: list[WordCount] = count_mfws(content, count_limit)
 
     return format_mfws(data)
 
@@ -127,19 +145,25 @@ def sentence_count(text: str) -> str:
     return format_count(CountLabels.SENTENCE.value, count)
 
 
-def time_to_read(text: str) -> str:
+def time_to_read(
+    content: str | Doc,
+    wpm: int | None = None
+) -> str:
     """
     Analyze, format and print time-to-read output.
 
     Args:
-        text: The string to process.
+        content: The string or spaCy `Doc` to process.
+        wpm: Optional reading speed in words per minute.
     """
-    wpm: int = prompt_for_integer(
-        _(ENTER_WPM_PROMPT),
-        _(ENTER_VALID_NUMBER_PROMPT),
-        allow_early_exit=True
-    )
+    if wpm is None:
+        wpm = prompt_for_integer(
+            _(ENTER_WPM_PROMPT),
+            _(ENTER_VALID_NUMBER_PROMPT),
+            allow_early_exit=True
+        )
 
+    text = content if isinstance(content, str) else content.text
     minutes: int = calculate_time_to_read(text, wpm)
 
     return format_time_to_read(minutes)

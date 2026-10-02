@@ -46,7 +46,7 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
 
     Args:
         text: The string to analyze.
-        wpm: The number of words per minute to return.
+        wpm: The number of words per minute.
 
     Returns:
         int: The minutes to read the string. Rounded up if
@@ -64,7 +64,7 @@ def calculate_ttr(content: str | Doc) -> float:
     Calculate the type-token ratio for a string.
 
     Args:
-        content: The string or spaCy `Doc` to analyze.
+        content: The string or spaCy `Doc`.
 
     Returns:
         float: The calculated type-token ratio, or 0.0 if empty.
@@ -91,7 +91,7 @@ def count_entities(content: str | Doc, num_entities: int) -> list[WordCount]:
 
     Args:
         content: The string or spaCy `Doc` to analyze.
-        num_entities: The number of most frequent entities to return.
+        num_entities: The number of most frequent entities.
 
     Returns:
         list[WordCount]: A list of `WordCount` objects, containing an
@@ -130,7 +130,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
 
     Args:
         content: The string or spaCy `Doc` to analyze.
-        num_mfws: The number of most frequent words to return.
+        num_mfws: The number of most frequent words.
 
     Returns:
         list[WordCount]: A list of `WordCount` objects, containing a

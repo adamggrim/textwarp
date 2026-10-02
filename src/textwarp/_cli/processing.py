@@ -131,7 +131,8 @@ def _iter_mmap_replacements(
 
 def _process_file_stream(args: ParsedArgs) -> None:
     """
-    Process files line-by-line to avoid loading oversized files into memory.
+    Process files line-by-line to avoid loading oversized files into
+    memory.
 
     Args:
         args: The parsed command-line arguments.
@@ -148,7 +149,9 @@ def _process_file_stream(args: ParsedArgs) -> None:
                         args.pipeline,
                         args.markdown,
                         args.find,
-                        args.replace
+                        args.replace,
+                        top=args.top,
+                        wpm=args.wpm
                     )
                     if result is not None:
                         output_stream.write(result + '\n')
@@ -200,7 +203,9 @@ def process_file_mode(args: ParsedArgs) -> None:
         SystemExit: If the input file is unreadable or if there is an
             error writing to the output file.
     """
-    validate_piped_commands(args.pipeline, args.find, args.replace)
+    validate_piped_commands(
+        args.pipeline, args.find, args.replace, top=args.top, wpm=args.wpm
+    )
 
     is_analysis = is_analysis_pipeline(args.pipeline)
     is_regex_only_pipeline = (
@@ -248,7 +253,9 @@ def process_file_mode(args: ParsedArgs) -> None:
             args.pipeline,
             args.markdown,
             args.find,
-            args.replace
+            args.replace,
+            top=args.top,
+            wpm=args.wpm
         )
 
         if result is not None:
@@ -279,7 +286,13 @@ def _interactive_pipeline_runner(text: str, args: ParsedArgs) -> str | None:
         The processed text, or None if no output is produced.
     """
     return route_text(
-        text, args.pipeline, args.markdown, args.find, args.replace
+        text,
+        args.pipeline,
+        args.markdown,
+        args.find,
+        args.replace,
+        top=args.top,
+        wpm=args.wpm
     )
 
 
@@ -361,7 +374,9 @@ def process_piped_mode(args: ParsedArgs) -> None:
     Raises:
         SystemExit: If there is an error processing the input.
     """
-    validate_piped_commands(args.pipeline, args.find, args.replace)
+    validate_piped_commands(
+        args.pipeline, args.find, args.replace, top=args.top, wpm=args.wpm
+    )
 
     try:
         text = sys.stdin.read().removesuffix('\n')
@@ -371,7 +386,9 @@ def process_piped_mode(args: ParsedArgs) -> None:
             args.pipeline,
             args.markdown,
             args.find,
-            args.replace
+            args.replace,
+            top=args.top,
+            wpm=args.wpm
         )
 
         if result is not None:

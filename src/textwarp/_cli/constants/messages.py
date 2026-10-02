@@ -46,14 +46,17 @@ __all__ = [
     'MULTIPLE_REPLACEMENT_ERROR_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'PIPED_INPUT_ERROR_MSG',
+    'POSITIVE_INT_ARG_ERROR_MSG',
     'REGEX_EMPTY_ERROR_MSG',
     'REGEX_TO_REPLACE_NOT_FOUND_MSG',
     'REPLACEMENT_CMD_ERROR_MSG',
     'TEXT_EMPTY_ERROR_MSG',
     'TEXT_TO_REPLACE_NOT_FOUND_MSG',
+    'TOP_ARG_ERROR_MSG',
     'UNEXPECTED_CLIPBOARD_ERROR_MSG',
     'UNRECOGNIZED_CMD_ERROR_MSG',
-    'UNRECOGNIZED_CMD_HINT_ERROR_MSG'
+    'UNRECOGNIZED_CMD_HINT_ERROR_MSG',
+    'WPM_ARG_ERROR_MSG'
 ]
 
 ANALYSIS_ORDER_ERROR_MSG: Final = N_(
@@ -113,8 +116,8 @@ FILE_WRITE_SUCCESS_MSG: Final = N_(
     "Modified text successfully written to '{output_file}'."
 )
 FIND_REPLACE_ARG_ERROR_MSG: Final = N_(
-    'The --find (-f) and --replace (-r) arguments can only be used with '
-    'replacement commands (replace-text, replace-case, replace-regex).'
+    "The '--find (-f)' and '--replace (-r)' arguments can only be used with "
+    "replacement commands ('replace-text', 'replace-case', 'replace-regex')."
 )
 HELP_DESCRIPTION: Final = N_(
     'Specify a sequence of text warping or analysis commands to apply to the '
@@ -138,16 +141,22 @@ MULTIPLE_REPLACEMENT_ERROR_MSG: Final = N_(
 )
 NO_ENTITIES_FOUND_MSG: Final = N_('No entities found.')
 PIPED_INPUT_ERROR_MSG: Final = N_('Error processing input: {error}')
+POSITIVE_INT_ARG_ERROR_MSG: Final = N_(
+    'The {flag} argument must be a positive integer.'
+)
 REGEX_EMPTY_ERROR_MSG: Final = N_('Regex input is empty.')
 REGEX_TO_REPLACE_NOT_FOUND_MSG: Final = N_(
     'Regular expression to replace not found.'
 )
 REPLACEMENT_CMD_ERROR_MSG: Final = N_(
-    'Replacement commands require --find and --replace arguments when used '
-    'in file or piped mode.'
+    "Replacement commands require '--find' and '--replace' arguments when "
+    'used in file or piped mode.'
 )
 TEXT_EMPTY_ERROR_MSG: Final = N_('Text input is empty.')
 TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = N_('Text to replace not found.')
+TOP_ARG_ERROR_MSG: Final = N_(
+    "The --top (-n) argument can only be used with 'entity-counts' or 'mfws'."
+)
 UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = N_(
     'An unexpected error occurred while accessing the clipboard.'
 )
@@ -156,4 +165,7 @@ UNRECOGNIZED_CMD_ERROR_MSG: Final = N_(
 )
 UNRECOGNIZED_CMD_HINT_ERROR_MSG: Final = N_(
     "Unrecognized command: '{cmd}'. Did you mean '{match}'?"
+)
+WPM_ARG_ERROR_MSG: Final = N_(
+    "The --wpm (-w) argument can only be used with 'time-to-read'."
 )
