@@ -71,7 +71,6 @@ def expand_contractions(content: str | Doc) -> str:
         content: A string or spaCy `Doc`.
 
     Returns:
-        str: The converted `Doc` text.
+        str: The converted text.
     """
-    doc = process_as_doc(content)
-    return ctx.provider.expand_contractions(doc)
+    return ctx.provider.expand_contractions(content)

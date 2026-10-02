@@ -10,7 +10,7 @@ from textwarp._core.utils import load_json_data
 __all__ = [
     'get_ambiguous_map',
     'get_common_stateless_participles',
-    'get_idiomatic_map',
+    'get_idioms_map',
     'get_infinitive_exceptions',
     'get_unambiguous_map',
     'get_whatcha_are_words',
@@ -37,10 +37,10 @@ def get_common_stateless_participles() -> tuple[str, ...]:
 
 
 @cache
-def get_idiomatic_map() -> Mapping[str, str]:
+def get_idioms_map() -> Mapping[str, str]:
     """Get a cached map of idiomatic phrases."""
     return MappingProxyType(
-        load_json_data(DIR / 'idiomatic_phrases.json', locale='en')
+        load_json_data(DIR / 'idioms.json', locale='en')
     )
 
 

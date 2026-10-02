@@ -5,7 +5,7 @@ from textwarp._core.providers.en.data.contraction_expansion import (
 )
 from textwarp._core.providers.en.expansion.core import (
     _expand_ambiguous_contraction,
-    _expand_idiomatic_phrases,
+    _expand_idioms,
     _expand_unambiguous_contraction,
     expand_contractions
 )
@@ -21,9 +21,9 @@ def test_expand_ambiguous_contraction(get_contraction_span):
     assert end_idx == span.end_char
 
 
-def test_expand_idiomatic_phrases_casing():
+def test_expand_idioms_casing():
     phrase = ('Ain’t Got No, I Got Life.')
-    expanded = _expand_idiomatic_phrases(phrase)
+    expanded = _expand_idioms(phrase)
 
     assert expanded == ('Ain’t Got Any, I Got Life.')
 

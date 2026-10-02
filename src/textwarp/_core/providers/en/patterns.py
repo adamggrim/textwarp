@@ -15,7 +15,7 @@ __all__ = [
     'get_common_stateless_participles',
     'get_contraction',
     'get_contraction_suffixes_pattern',
-    'get_idiomatic_phrases',
+    'get_idioms',
     'get_map_suffix_exceptions_pattern',
     'get_name_prefix_exception_pattern',
     'get_n_t_suffix',
@@ -128,7 +128,7 @@ def get_contraction_suffixes_pattern() -> re.Pattern[str]:
 
 
 @cache
-def get_idiomatic_phrases() -> re.Pattern[str]:
+def get_idioms() -> re.Pattern[str]:
     """
     Get a regular expression matching idiomatic phrases with their
     corresponding expansion.
@@ -137,7 +137,7 @@ def get_idiomatic_phrases() -> re.Pattern[str]:
         re.Pattern[str]: A compiled regular expression pattern.
     """
     return patterns.warping.create_words_regex(
-        en.data.contraction_expansion.get_idiomatic_map().keys()
+        en.data.contraction_expansion.get_idioms_map().keys()
     )
 
 

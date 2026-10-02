@@ -54,18 +54,18 @@ def _expand_ambiguous_contraction(
     return contraction, original_end_char_idx
 
 
-def _expand_idiomatic_phrases(phrase: str) -> str:
+def _expand_idioms(phrase: str) -> str:
     """
     Expand multi-word idiomatic phrases before expanding standard
     contractions.
     """
-    idiom_map = en.data.contraction_expansion.get_idiomatic_map()
+    idioms_map = en.data.contraction_expansion.get_idioms_map()
 
     def _replace_idiom(match: re.Match[str]) -> str:
         """Replace a matched idiomatic phrase with its expansion."""
         original_phrase = match.group(0)
         straight_match = curly_to_straight(original_phrase).lower()
-        expanded_text = idiom_map.get(straight_match, original_phrase)
+        expanded_text = idioms_map.get(straight_match, original_phrase)
 
         apostrophe_match = en.patterns.get_any_apostrophe().search(
             original_phrase
@@ -77,7 +77,7 @@ def _expand_idiomatic_phrases(phrase: str) -> str:
 
         return apply_expansion_casing(original_phrase, expanded_text)
 
-    return en.patterns.get_idiomatic_phrases().sub(
+    return en.patterns.get_idioms().sub(
         _replace_idiom, phrase
     )
 
@@ -109,18 +109,21 @@ def _expand_unambiguous_contraction(
     )
 
 
-def expand_contractions(doc: Doc) -> str:
-    """Expand all contractions in a spaCy `Doc`."""
-    text_with_idioms_expanded = _expand_idiomatic_phrases(doc.text)
-
-    if text_with_idioms_expanded != doc.text:
-        doc = process_as_doc(text_with_idioms_expanded)
+def expand_contractions(content: str | Doc) -> str:
+    """Expand all contractions in a string or spaCy `Doc`."""
+    raw_text = content if isinstance(content, str) else content.text
+    text_with_expanded_idioms = _expand_idioms(raw_text)
 
     matches = list(
-        en.patterns.get_contraction().finditer(doc.text)
+        en.patterns.get_contraction().finditer(text_with_expanded_idioms)
     )
     if not matches:
-        return doc.text
+        return text_with_expanded_idioms
+
+    if isinstance(content, str) or text_with_expanded_idioms != raw_text:
+        doc = process_as_doc(text_with_expanded_idioms)
+    else:
+        doc = content
 
     expanded_parts: list[str] = []
     prev_idx = 0

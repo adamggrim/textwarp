@@ -124,9 +124,9 @@ class LanguageProvider(ABC):
         """
         return text
 
-    def expand_contractions(self, doc: 'Doc') -> str:
-        """Expand all contractions in a spaCy `Doc`."""
-        return doc.text
+    def expand_contractions(self, content: 'str | Doc') -> str:
+        """Expand all contractions in a string or spaCy `Doc`."""
+        return content if isinstance(content, str) else content.text
 
     def normalize_for_morse(self, text: str) -> str:
         """

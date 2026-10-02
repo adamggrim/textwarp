@@ -12,7 +12,7 @@ def test_contraction_expansion_config():
         contraction_expansion.get_common_stateless_participles(), tuple
     )
     assert isinstance(
-        contraction_expansion.get_idiomatic_map(), MappingProxyType
+        contraction_expansion.get_idioms_map(), MappingProxyType
     )
     assert isinstance(
         contraction_expansion.get_unambiguous_map(), MappingProxyType

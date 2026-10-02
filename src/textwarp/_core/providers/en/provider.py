@@ -199,17 +199,17 @@ class EnglishProvider(LanguageProvider):
         """
         return en.punctuation.curly_to_straight(text)
 
-    def expand_contractions(self, doc: Doc) -> str:
+    def expand_contractions(self, content: str | Doc) -> str:
         """
-        Expand all contractions in a spaCy `Doc`.
+        Expand all contractions in a string or spaCy `Doc`.
 
         Args:
-            doc: A spaCy `Doc`.
+            content: A string or spaCy `Doc`.
 
         Returns:
-            str: The converted `Doc` text.
+            str: The converted text.
         """
-        return en.expansion.core.expand_contractions(doc)
+        return en.expansion.core.expand_contractions(content)
 
     def normalize_for_morse(self, text: str) -> str:
         """
