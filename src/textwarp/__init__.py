@@ -114,8 +114,8 @@ def __getattr__(name: str) -> Any:
     """
     if name in _MODULE_MAP:
         mod = importlib.import_module(_MODULE_MAP[name])
-        val = getattr(mod, name)
-        globals()[name] = getattr(mod, name)
-        return val
+        attr = getattr(mod, name)
+        globals()[name] = attr
+        return attr
 
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
