@@ -5,7 +5,9 @@ from typing import Final
 from textwarp._core.context import N_
 
 __all__ = [
+    'ANALYSIS_ORDER_ERROR_MSG',
     'ANY_OTHER_TEXT_PROMPT',
+    'BINARY_FILE_ERROR_MSG',
     'CASE_EMPTY_ERROR_MSG',
     'CASE_TO_REPLACE_NOT_FOUND_MSG',
     'CASE_WHITESPACE_ERROR_MSG',
@@ -13,6 +15,7 @@ __all__ = [
     'CLIPBOARD_CLEARED_MSG',
     'CLIPBOARD_EMPTY_ERROR_MSG',
     'CLIPBOARD_WHITESPACE_ERROR_MSG',
+    'CMD_AFTER_FILE_ERROR_MSG',
     'ENTER_CASE_TO_REPLACE_PROMPT',
     'ENTER_ENTITY_COUNT_PROMPT',
     'ENTER_MFW_COUNT_PROMPT',
@@ -26,24 +29,36 @@ __all__ = [
     'ENTER_VALID_RESPONSE_PROMPT',
     'ENTER_VALID_TEXT_PROMPT',
     'ENTER_WPM_PROMPT',
+    'EXCLUSIVE_CMD_ERROR_MSG',
     'EXIT_MSG',
+    'FILE_ACCESS_ERROR_MSG',
+    'FILE_NOT_FOUND_CMD_HINT_ERROR_MSG',
+    'FILE_SIZE_LIMIT_ERROR_MSG',
+    'FILE_WRITE_ERROR_MSG',
+    'FILE_WRITE_SUCCESS_MSG',
+    'FIND_REPLACE_ARG_ERROR_MSG',
     'HELP_DESCRIPTION',
     'INTERACTIVE_CMD_ERROR_MSG',
     'INVALID_CASE_ERROR_MSG',
+    'LINUX_XCLIP_WARNING_MSG',
     'MODIFIED_TEXT_COPIED_MSG',
+    'MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG',
+    'MULTIPLE_REPLACEMENT_ERROR_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'PIPED_INPUT_ERROR_MSG',
-    'FILE_SIZE_LIMIT_ERROR_MSG',
+    'REGEX_EMPTY_ERROR_MSG',
     'REGEX_TO_REPLACE_NOT_FOUND_MSG',
     'REPLACEMENT_CMD_ERROR_MSG',
     'TEXT_EMPTY_ERROR_MSG',
     'TEXT_TO_REPLACE_NOT_FOUND_MSG',
-    'UNEXPECTED_CLIPBOARD_ERROR_MSG'
+    'UNEXPECTED_CLIPBOARD_ERROR_MSG',
+    'UNRECOGNIZED_CMD_ERROR_MSG',
+    'UNRECOGNIZED_CMD_HINT_ERROR_MSG'
 ]
 
 ANALYSIS_ORDER_ERROR_MSG: Final = N_(
     "Command '{cmd}' cannot follow an analysis command. Analysis commands "
-    "must be placed at the end of the pipeline."
+    'belong at the end of the pipeline.'
 )
 ANY_OTHER_TEXT_PROMPT: Final = N_(
     'Any other text? (y/n) (Copy text to clipboard):'
@@ -61,6 +76,10 @@ CLIPBOARD_EMPTY_ERROR_MSG: Final = N_('Clipboard is empty.')
 CLIPBOARD_WHITESPACE_ERROR_MSG: Final = N_(
     'Clipboard contains only whitespace.'
 )
+CMD_AFTER_FILE_ERROR_MSG: Final = N_(
+    "Command '{cmd}' cannot follow an input file. Commands must "
+    'precede input files.'
+)
 ENTER_CASE_TO_REPLACE_PROMPT: Final = N_('Enter a case to replace:')
 ENTER_ENTITY_COUNT_PROMPT: Final = N_('How many entities?')
 ENTER_MFW_COUNT_PROMPT: Final = N_('How many most frequent words?')
@@ -70,7 +89,9 @@ ENTER_REPLACEMENT_TEXT_PROMPT: Final = N_('Enter replacement text:')
 ENTER_TEXT_TO_REPLACE_PROMPT: Final = N_('Enter text to replace:')
 ENTER_VALID_CASE_PROMPT: Final = N_('Please enter a valid case.')
 ENTER_VALID_NUMBER_PROMPT: Final = N_('Please enter a valid number.')
-ENTER_VALID_REGEX_PROMPT: Final = N_('Please enter a valid regular expression.')
+ENTER_VALID_REGEX_PROMPT: Final = N_(
+    'Please enter a valid regular expression.'
+)
 ENTER_VALID_RESPONSE_PROMPT: Final = N_('Please enter a valid response (y/n).')
 ENTER_VALID_TEXT_PROMPT: Final = N_('Please enter valid text.')
 ENTER_WPM_PROMPT: Final = N_('How many words per minute?')
@@ -78,11 +99,16 @@ EXCLUSIVE_CMD_ERROR_MSG: Final = N_(
     "Command '{cmd}' cannot be combined with other commands."
 )
 EXIT_MSG: Final = N_('Exiting the program...')
-FILE_ACCESS_ERROR_MSG: Final = N_("Error accessing file '{file_path}': {error}")
-FILE_WRITE_ERROR_MSG: Final = N_('Error writing to output file: {error}')
+FILE_ACCESS_ERROR_MSG: Final = N_(
+    "Error accessing file '{file_path}': {error}"
+)
+FILE_NOT_FOUND_CMD_HINT_ERROR_MSG: Final = N_(
+    "File '{file}' not found. Did you mean command '{match}'?"
+)
 FILE_SIZE_LIMIT_ERROR_MSG: Final = N_(
     'File exceeds {limit}MB limit.'
 )
+FILE_WRITE_ERROR_MSG: Final = N_('Error writing to output file: {error}')
 FILE_WRITE_SUCCESS_MSG: Final = N_(
     "Modified text successfully written to '{output_file}'."
 )
@@ -124,4 +150,10 @@ TEXT_EMPTY_ERROR_MSG: Final = N_('Text input is empty.')
 TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = N_('Text to replace not found.')
 UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = N_(
     'An unexpected error occurred while accessing the clipboard.'
+)
+UNRECOGNIZED_CMD_ERROR_MSG: Final = N_(
+    "Unrecognized command: '{cmd}'."
+)
+UNRECOGNIZED_CMD_HINT_ERROR_MSG: Final = N_(
+    "Unrecognized command: '{cmd}'. Did you mean '{match}'?"
 )

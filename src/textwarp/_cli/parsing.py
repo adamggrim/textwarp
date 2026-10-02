@@ -10,7 +10,10 @@ from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
 from textwarp._cli.pipeline import build_pipeline
 from textwarp._cli.ui import get_terminal_width, wrap_text
-from textwarp._cli.validation import validate_command_combinations
+from textwarp._cli.validation import (
+    validate_command_combinations,
+    validate_positional_args
+)
 from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 
@@ -95,7 +98,7 @@ def parse_args() -> ParsedArgs:
         description=_(HELP_DESCRIPTION),
         usage=_(
             '%(prog)s [options] [commands ...] [input_files ...] '
-            '[-o output_file]'
+            '[-i FILE ...] [-o FILE]'
         ),
         epilog='\n'.join(epilog_lines)
     )
@@ -119,6 +122,16 @@ def parse_args() -> ParsedArgs:
         dest='markdown',
         action='store_true',
         help=_('parse text as Markdown and preserve formatting')
+    )
+
+    parser.add_argument(
+        '-i', '--input',
+        dest='explicit_input_files',
+        metavar='FILE',
+        nargs='+',
+        type=str,
+        default=[],
+        help=_('optional input file path(s)')
     )
 
     parser.add_argument(
@@ -182,8 +195,19 @@ def parse_args() -> ParsedArgs:
 
     args: argparse.Namespace = parser.parse_args()
 
-    active_cmds = [p for p in args.commands if p in ARGS_MAP]
-    input_files = [p for p in args.commands if p not in ARGS_MAP]
+    active_cmds: list[str] = []
+    positional_files: list[str] = []
+    parsing_files = False
+
+    for token in args.commands:
+        if not parsing_files and token in ARGS_MAP:
+            active_cmds.append(token)
+        else:
+            parsing_files = True
+            positional_files.append(token)
+
+    validate_positional_args(active_cmds, positional_files, parser)
+    input_files = [*positional_files, *args.explicit_input_files]
 
     validate_command_combinations(active_cmds, args, parser)
     pipeline = build_pipeline(active_cmds, parser)

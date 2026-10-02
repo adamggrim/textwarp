@@ -1,6 +1,8 @@
 """Validators for text, clipboard and regular expression content."""
 
 import argparse
+import difflib
+import os
 
 import regex as re
 
@@ -11,13 +13,17 @@ from textwarp._cli.constants.messages import (
     CASE_WHITESPACE_ERROR_MSG,
     CLIPBOARD_EMPTY_ERROR_MSG,
     CLIPBOARD_WHITESPACE_ERROR_MSG,
+    CMD_AFTER_FILE_ERROR_MSG,
     EXCLUSIVE_CMD_ERROR_MSG,
+    FILE_NOT_FOUND_CMD_HINT_ERROR_MSG,
     FIND_REPLACE_ARG_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
-    TEXT_EMPTY_ERROR_MSG
+    TEXT_EMPTY_ERROR_MSG,
+    UNRECOGNIZED_CMD_ERROR_MSG,
+    UNRECOGNIZED_CMD_HINT_ERROR_MSG
 )
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 from textwarp._core.context import _
@@ -36,6 +42,7 @@ __all__ = [
     'validate_case_name',
     'validate_clipboard',
     'validate_command_combinations',
+    'validate_positional_args',
     'validate_regex',
     'validate_text'
 ]
@@ -144,6 +151,52 @@ def validate_command_combinations(
     is_replacement_cmd = len(active_replacements) > 0
     if (args.find or args.replace) and not is_replacement_cmd:
         parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
+
+
+def validate_positional_args(
+    active_cmds: list[str],
+    positional_files: list[str],
+    parser: argparse.ArgumentParser
+) -> None:
+    """
+    Validate positional command and file arguments for typos or
+    misordered tokens.
+
+    Args:
+        active_cmds: The ordered list of active commands.
+        positional_files: The list of positional file arguments.
+        parser: The `ArgumentParser` instance used to display error
+            messages.
+
+    Raises:
+        SystemExit: If an unrecognized or misordered command is found.
+    """
+    if not active_cmds and positional_files:
+        unknown = positional_files[0]
+        matches = difflib.get_close_matches(unknown, ARGS_MAP.keys(), n=1)
+        if matches:
+            parser.error(
+                _(UNRECOGNIZED_CMD_HINT_ERROR_MSG).format(
+                    cmd=unknown, match=matches[0]
+                )
+            )
+        parser.error(_(UNRECOGNIZED_CMD_ERROR_MSG).format(cmd=unknown))
+
+    for file_candidate in positional_files:
+        if not os.path.exists(file_candidate):
+            if file_candidate in ARGS_MAP:
+                parser.error(
+                    _(CMD_AFTER_FILE_ERROR_MSG).format(cmd=file_candidate)
+                )
+            matches = difflib.get_close_matches(
+                file_candidate, ARGS_MAP.keys(), n=1
+            )
+            if matches:
+                parser.error(
+                    _(FILE_NOT_FOUND_CMD_HINT_ERROR_MSG).format(
+                        file=file_candidate, match=matches[0]
+                    )
+                )
 
 
 def validate_regex(regex: str) -> None:

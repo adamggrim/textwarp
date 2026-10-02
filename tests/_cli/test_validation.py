@@ -10,14 +10,17 @@ from textwarp._cli.constants.messages import (
     CASE_WHITESPACE_ERROR_MSG,
     CLIPBOARD_EMPTY_ERROR_MSG,
     CLIPBOARD_WHITESPACE_ERROR_MSG,
+    CMD_AFTER_FILE_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
-    TEXT_EMPTY_ERROR_MSG
+    TEXT_EMPTY_ERROR_MSG,
+    UNRECOGNIZED_CMD_HINT_ERROR_MSG
 )
 from textwarp._cli.validation import (
     validate_case_name,
     validate_clipboard,
     validate_command_combinations,
+    validate_positional_args,
     validate_regex,
     validate_text
 )
@@ -130,3 +133,29 @@ def test_validate_command_combinations_stray_find_replace():
 
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds, args, parser)
+
+
+def test_validate_positional_args_unrecognized_cmd(capsys):
+    parser = argparse.ArgumentParser()
+
+    with pytest.raises(SystemExit):
+        validate_positional_args([], ['camelcase'], parser)
+
+    captured = capsys.readouterr()
+    expected = UNRECOGNIZED_CMD_HINT_ERROR_MSG.format(
+        cmd='camelcase', match='camel-case'
+    )
+    assert expected in captured.err
+
+
+def test_validate_positional_args_cmd_after_file(capsys):
+    parser = argparse.ArgumentParser()
+
+    with pytest.raises(SystemExit):
+        validate_positional_args(
+            ['uppercase'], ['missing.txt', 'lowercase'], parser
+        )
+
+    captured = capsys.readouterr()
+    expected = CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
+    assert expected in captured.err
