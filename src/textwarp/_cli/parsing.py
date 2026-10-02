@@ -98,7 +98,7 @@ def parse_args() -> ParsedArgs:
         description=_(HELP_DESCRIPTION),
         usage=_(
             '%(prog)s [options] [commands ...] [input_files ...] '
-            '[-i FILE ...] [-o FILE]'
+            '[-i FILE] [-o FILE]'
         ),
         epilog='\n'.join(epilog_lines)
     )
@@ -127,11 +127,11 @@ def parse_args() -> ParsedArgs:
     parser.add_argument(
         '-i', '--input',
         dest='explicit_input_files',
+        action='append',
         metavar='FILE',
-        nargs='+',
         type=str,
         default=[],
-        help=_('optional input file path(s)')
+        help=_('optional path for reading an input file')
     )
 
     parser.add_argument(
@@ -139,7 +139,7 @@ def parse_args() -> ParsedArgs:
         dest='output_file',
         metavar='FILE',
         type=str,
-        help=_('optional path to write the output file')
+        help=_('optional path for writing the output file')
     )
 
     parser.add_argument(
