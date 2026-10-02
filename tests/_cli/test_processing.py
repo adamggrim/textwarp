@@ -137,7 +137,9 @@ def test_process_file_mode_oversized_regex_routing(
 
     processing.process_file_mode(args)
 
-    mock_mmap_regex.assert_called_once_with(str(input_file), args)
+    mock_mmap_regex.assert_called_once_with(
+        str(input_file), args, sys.stdout.buffer
+    )
 
 
 def test_process_file_mode_success(tmp_path, capsys):
@@ -196,6 +198,7 @@ def test_process_interactive_mode_replacement(monkeypatch):
     mock_replace_text.assert_called_once_with('replace_case')
 
 
+@pytest.mark.usefixtures('mock_oversized_file')
 def test_process_mmap_regex_multiple_files(tmp_path):
     input_file1 = tmp_path / 'input1.txt'
     input_file1.write_text('first target123', encoding='utf-8')
@@ -216,8 +219,7 @@ def test_process_mmap_regex_multiple_files(tmp_path):
         max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
-    processing._process_mmap_regex(str(input_file1), args)
-    processing._process_mmap_regex(str(input_file2), args)
+    processing.process_file_mode(args)
 
     assert (
         output_file.read_text(encoding='utf-8')

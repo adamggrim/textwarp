@@ -51,10 +51,9 @@ def _open_output_stream(
         with atomic_write(output_file, mode) as f:
             yield f
 
-        if 'b' not in mode:
-            print_wrapped(
-                _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
-            )
+        print_wrapped(
+            _(FILE_WRITE_SUCCESS_MSG).format(output_file=output_file)
+        )
     else:
         yield sys.stdout.buffer if 'b' in mode else sys.stdout
 
@@ -157,7 +156,42 @@ def _process_file_stream(args: ParsedArgs) -> None:
                         output_stream.write(result + '\n')
 
 
-def _process_mmap_regex(file_path: str, args: ParsedArgs) -> None:
+def _write_mmap_regex_to_stream(
+    file_path: str,
+    args: ParsedArgs,
+    output_stream: IO[bytes]
+) -> None:
+    """
+    Write memory-mapped regex replacements for a single file to a
+    stream.
+
+    Args:
+        file_path: The path to the input file.
+        args: The parsed command-line arguments.
+        output_stream: An open binary stream to write to.
+    """
+    assert args.find is not None
+    assert args.replace is not None
+
+    pattern = re.compile(args.find.encode('utf-8'))
+    replacement = parse_cli_escapes(args.replace).encode('utf-8')
+
+    with (
+        _file_open(file_path, 'rb') as f,
+        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
+    ):
+        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
+            output_stream.write(chunk)
+
+        if len(args.input_files) > 1:
+            output_stream.write(b'\n')
+
+
+def _process_mmap_regex(
+    file_path: str,
+    args: ParsedArgs,
+    output_stream: IO[bytes] | None = None
+) -> None:
     """
     Perform a regex replacement on an oversized file using memory
     mapping.
@@ -167,29 +201,18 @@ def _process_mmap_regex(file_path: str, args: ParsedArgs) -> None:
     Args:
         file_path: The path to the input file.
         args: The parsed command-line arguments.
+        output_stream: An optional open binary stream to write to.
 
     Raises:
         OSError: If there is an error mapping the file or writing the
             output.
     """
-    assert args.find is not None
-    assert args.replace is not None
+    if output_stream is not None:
+        _write_mmap_regex_to_stream(file_path, args, output_stream)
+        return
 
-    pattern = re.compile(args.find.encode('utf-8'))
-    replacement = parse_cli_escapes(args.replace).encode('utf-8')
-    is_first_file = not args.input_files or file_path == args.input_files[0]
-    mode = 'wb' if is_first_file else 'ab'
-
-    with (
-        _open_output_stream(args.output_file, mode) as output_stream,
-        _file_open(file_path, 'rb') as f,
-        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
-    ):
-        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
-            output_stream.write(chunk)
-
-        if len(args.input_files) > 1:
-            output_stream.write(b'\n')
+    with _open_output_stream(args.output_file, 'wb') as stream:
+        _write_mmap_regex_to_stream(file_path, args, stream)
 
 
 def process_file_mode(args: ParsedArgs) -> None:
@@ -227,24 +250,48 @@ def process_file_mode(args: ParsedArgs) -> None:
     combined_results: list[str] = []
     max_memory_bytes = args.max_file_mb * 1024 * 1024
 
+    if (
+        is_regex_only_pipeline
+        and args.find is not None
+        and args.replace is not None
+        and not args.markdown
+        and not args.copy_to_clipboard
+        and any(
+            os.path.exists(fp) and os.path.getsize(fp) > max_memory_bytes
+            for fp in args.input_files
+        )
+    ):
+        with _open_output_stream(args.output_file, 'wb') as output_stream:
+            for file_path in args.input_files:
+                if os.path.getsize(file_path) > max_memory_bytes:
+                    _process_mmap_regex(file_path, args, output_stream)
+                else:
+                    text = _read_and_strip_file(file_path)
+                    result = route_text(
+                        text,
+                        args.pipeline,
+                        args.markdown,
+                        args.find,
+                        args.replace,
+                        top=args.top,
+                        wpm=args.wpm
+                    )
+                    if result is not None:
+                        output_stream.write(result.encode('utf-8'))
+                        if len(args.input_files) > 1:
+                            output_stream.write(b'\n')
+        return
+
     for file_path in args.input_files:
         if os.path.getsize(file_path) > max_memory_bytes:
-            if (
-                is_regex_only_pipeline
-                and args.find is not None
-                and args.replace is not None
-            ):
-                _process_mmap_regex(file_path, args)
-                continue
-            else:
-                warning_msg = _(FILE_ACCESS_ERROR_MSG).format(
-                    file_path=file_path,
-                    error=_(
-                        FILE_SIZE_LIMIT_ERROR_MSG
-                    ).format(limit=args.max_file_mb)
-                )
-                print_wrapped(f'Warning: {warning_msg}')
-                continue
+            warning_msg = _(FILE_ACCESS_ERROR_MSG).format(
+                file_path=file_path,
+                error=_(
+                    FILE_SIZE_LIMIT_ERROR_MSG
+                ).format(limit=args.max_file_mb)
+            )
+            print_wrapped(f'Warning: {warning_msg}')
+            continue
 
         text = _read_and_strip_file(file_path)
 
