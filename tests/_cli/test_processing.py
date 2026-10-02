@@ -12,6 +12,8 @@ from textwarp._cli import processing
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import (
     BINARY_FILE_ERROR_MSG,
+    FILE_ACCESS_ERROR_MSG,
+    FILE_SIZE_LIMIT_ERROR_MSG,
     FILE_WRITE_SUCCESS_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
@@ -52,11 +54,12 @@ def test_process_file_mode_binary_file(tmp_path):
 
 def test_process_file_mode_file_not_found():
     pipeline = [ARGS_MAP['uppercase']]
+    missing_file = 'does_not_exist.txt'
 
     args = ParsedArgs(
         pipeline=pipeline,
         lang='en',
-        input_files=['does_not_exist.txt'],
+        input_files=[missing_file],
         output_file=None,
         markdown=False,
         find=None,
@@ -66,7 +69,10 @@ def test_process_file_mode_file_not_found():
         max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
-    with pytest.raises(TextwarpError, match='Error accessing file'):
+    expected_prefix = FILE_ACCESS_ERROR_MSG.format(
+        file_path=missing_file, error=''
+    )
+    with pytest.raises(TextwarpError, match=re.escape(expected_prefix)):
         processing.process_file_mode(args)
 
 
@@ -94,8 +100,15 @@ def test_process_file_mode_oversized_file_warning(
     processing.process_file_mode(args)
 
     captured = capsys.readouterr()
-    assert 'Warning: Error accessing file' in captured.out
-    assert 'File exceeds' in captured.out
+    expected_error = FILE_SIZE_LIMIT_ERROR_MSG.format(
+        limit=DEFAULT_MAX_FILE_MB
+    )
+    expected_warning = normalize_output(
+        FILE_ACCESS_ERROR_MSG.format(
+            file_path=str(input_file), error=expected_error
+        )
+    )
+    assert expected_warning in normalize_output(captured.out)
 
 
 @pytest.mark.usefixtures('mock_oversized_file')

@@ -6,12 +6,16 @@ import pytest
 import regex as re
 
 from textwarp._cli.constants.messages import (
+    ANALYSIS_ORDER_ERROR_MSG,
     CASE_EMPTY_ERROR_MSG,
     CASE_WHITESPACE_ERROR_MSG,
     CLIPBOARD_EMPTY_ERROR_MSG,
     CLIPBOARD_WHITESPACE_ERROR_MSG,
     CMD_AFTER_FILE_ERROR_MSG,
+    EXCLUSIVE_CMD_ERROR_MSG,
+    FIND_REPLACE_ARG_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
+    MULTIPLE_REPLACEMENT_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
     UNRECOGNIZED_CMD_HINT_ERROR_MSG
@@ -94,7 +98,8 @@ def test_validate_text():
     with pytest.raises(NoTextError, match=re.escape(TEXT_EMPTY_ERROR_MSG)):
         validate_text('')
 
-def test_validate_command_combinations_mutually_exclusive():
+
+def test_validate_command_combinations_mutually_exclusive(capsys):
     parser = argparse.ArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
     active_cmds = ['clear', 'uppercase']
@@ -102,8 +107,11 @@ def test_validate_command_combinations_mutually_exclusive():
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds, args, parser)
 
+    captured = capsys.readouterr()
+    assert EXCLUSIVE_CMD_ERROR_MSG.format(cmd='clear') in captured.err
 
-def test_validate_command_combinations_multiple_replacements():
+
+def test_validate_command_combinations_multiple_replacements(capsys):
     parser = argparse.ArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
     active_cmds = ['replace-text', 'replace-case']
@@ -111,8 +119,14 @@ def test_validate_command_combinations_multiple_replacements():
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds, args, parser)
 
+    captured = capsys.readouterr()
+    expected = MULTIPLE_REPLACEMENT_ERROR_MSG.format(
+        commands='replace-text, replace-case'
+    )
+    assert expected in captured.err
 
-def test_validate_command_combinations_analysis_order():
+
+def test_validate_command_combinations_analysis_order(capsys):
     parser = argparse.ArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
 
@@ -123,8 +137,11 @@ def test_validate_command_combinations_analysis_order():
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds_invalid, args, parser)
 
+    captured = capsys.readouterr()
+    assert ANALYSIS_ORDER_ERROR_MSG.format(cmd='uppercase') in captured.err
 
-def test_validate_command_combinations_stray_find_replace():
+
+def test_validate_command_combinations_stray_find_replace(capsys):
     parser = argparse.ArgumentParser()
     args = argparse.Namespace(
         find='apple', replace='knowledge', markdown=False
@@ -133,6 +150,9 @@ def test_validate_command_combinations_stray_find_replace():
 
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds, args, parser)
+
+    captured = capsys.readouterr()
+    assert FIND_REPLACE_ARG_ERROR_MSG in captured.err
 
 
 def test_validate_positional_args_unrecognized_cmd(capsys):
