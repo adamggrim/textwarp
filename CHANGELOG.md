@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Logarithmically accelerating spinner for spaCy commands.
 * New `--debug` argument.
-* New `--strip-html` command.
+* New `-i` (`--input`) argument for explicit input file paths.
+* New `strip-html` command.
 * Support for newlines and carriage returns in CLI replacement text.
-* Pre-commit hooks support
+* Pre-commit hooks support.
 
 ### Changed
 * Moved CLI to a chained positional pipeline. Commands no longer require the `--` prefix.
