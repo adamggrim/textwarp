@@ -5,9 +5,11 @@ import sys
 from unittest.mock import MagicMock
 
 import pytest
+import regex as re
 
 from textwarp._cli import pipeline
 from textwarp._cli.args import CLICommand, CommandType
+from textwarp._cli.constants.messages import REPLACEMENT_CMD_ERROR_MSG
 from textwarp._core.exceptions import (
     MissingDependencyError,
     TextwarpValidationError
@@ -159,7 +161,7 @@ def test_validate_piped_commands_rejects_replacement():
 
     with pytest.raises(
         TextwarpValidationError,
-        match='Replacement commands require'
+        match=re.escape(REPLACEMENT_CMD_ERROR_MSG)
     ):
         pipeline.validate_piped_commands(test_pipeline, None, None)
 

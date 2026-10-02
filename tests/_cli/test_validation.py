@@ -13,11 +13,13 @@ from textwarp._cli.constants.messages import (
     CLIPBOARD_WHITESPACE_ERROR_MSG,
     CMD_AFTER_FILE_ERROR_MSG,
     EXCLUSIVE_CMD_ERROR_MSG,
+    FILE_NOT_FOUND_CMD_HINT_ERROR_MSG,
     FIND_REPLACE_ARG_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
+    UNRECOGNIZED_CMD_ERROR_MSG,
     UNRECOGNIZED_CMD_HINT_ERROR_MSG
 )
 from textwarp._cli.validation import (
@@ -168,6 +170,17 @@ def test_validate_positional_args_unrecognized_cmd(capsys):
     assert expected in captured.err
 
 
+def test_validate_positional_args_unrecognized_cmd_no_hint(capsys):
+    parser = argparse.ArgumentParser()
+
+    with pytest.raises(SystemExit):
+        validate_positional_args([], ['zzzzzzzzzz'], parser)
+
+    captured = capsys.readouterr()
+    expected = UNRECOGNIZED_CMD_ERROR_MSG.format(cmd='zzzzzzzzzz')
+    assert expected in captured.err
+
+
 def test_validate_positional_args_cmd_after_file(capsys):
     parser = argparse.ArgumentParser()
 
@@ -178,4 +191,19 @@ def test_validate_positional_args_cmd_after_file(capsys):
 
     captured = capsys.readouterr()
     expected = CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
+    assert expected in captured.err
+
+
+def test_validate_positional_args_file_not_found_cmd_hint(capsys):
+    parser = argparse.ArgumentParser()
+
+    with pytest.raises(SystemExit):
+        validate_positional_args(
+            ['uppercase'], ['camelcase'], parser
+        )
+
+    captured = capsys.readouterr()
+    expected = FILE_NOT_FOUND_CMD_HINT_ERROR_MSG.format(
+        file='camelcase', match='camel-case'
+    )
     assert expected in captured.err
