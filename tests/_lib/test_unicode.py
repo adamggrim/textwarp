@@ -38,7 +38,7 @@ def test_title_case_unicode():
     assert 'du' in result.split()
     assert result in (
         'À La Recherche du Temps Perdu',
-        'À la Recherche du Temps Perdu' # Acccount for `en_core_web_sm`.
+        'À la Recherche du Temps Perdu'  # Account for `en_core_web_sm`.
     )
 
 

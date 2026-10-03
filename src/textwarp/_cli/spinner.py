@@ -68,7 +68,7 @@ def _spinner_worker(
 class AcceleratingSpinner:
     """
     A class for displaying a logarithmically accelerating spinner and
-    offloading other work to a background process.
+    offloading other work to a background thread.
     """
     def __init__(
         self,
@@ -119,7 +119,7 @@ class AcceleratingSpinner:
     def run(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
         """
         Run a function on the main process while the logarithmically
-        accelerating spinner runs on a background process.
+        accelerating spinner runs on a background thread.
         """
         if self._disabled:
             return func(*args, **kwargs)
