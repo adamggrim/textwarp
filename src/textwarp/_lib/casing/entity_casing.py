@@ -88,11 +88,12 @@ def _check_for_ngrams(
 
 @cache
 def _get_custom_entities_pattern(
-    provider: LanguageProvider
+    provider_type: type[LanguageProvider]
 ) -> re.Pattern[str]:
     """
     Build and cache the regular expression for finding custom entities.
     """
+    provider = provider_type()
     absolute_entities_map = provider.absolute_casings_map
     contextual_entities_map = provider.contextual_casings_map
 
@@ -130,7 +131,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
     absolute_entities_map = provider.absolute_casings_map
     contextual_entities_map = provider.contextual_casings_map
 
-    keys_pattern = _get_custom_entities_pattern(provider)
+    keys_pattern = _get_custom_entities_pattern(type(provider))
 
     for match in keys_pattern.finditer(doc.text):
         start_char, end_char = match.span()
