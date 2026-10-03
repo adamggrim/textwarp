@@ -3,14 +3,16 @@
 import logging
 from collections.abc import Callable
 from types import ModuleType
-from typing import TypeAlias
+from typing import Final, TypeAlias
 
-from textwarp._cli import ui
 from textwarp._cli.constants.messages import (
+    CASE_TO_REPLACE_NOT_FOUND_MSG,
     CLIPBOARD_ACCESS_ERROR_MSG,
     CLIPBOARD_CLEARED_MSG,
     LINUX_XCLIP_WARNING_MSG,
     MODIFIED_TEXT_COPIED_MSG,
+    REGEX_TO_REPLACE_NOT_FOUND_MSG,
+    TEXT_TO_REPLACE_NOT_FOUND_MSG,
     UNEXPECTED_CLIPBOARD_ERROR_MSG
 )
 from textwarp._cli.ui import get_input, print_wrapped
@@ -19,18 +21,24 @@ from textwarp._cli.validation import (
     WhitespaceClipboardError,
     validate_clipboard
 )
-from textwarp._commands import replacement
 from textwarp._core.context import _
 from textwarp._core.exceptions import MissingDependencyError
 
 __all__ = [
+    'NOT_FOUND_MSG_MAP',
     'clear_clipboard',
-    'replace_text',
+    'replace_and_copy',
     'run_command_loop',
     'warp_and_copy'
 ]
 
 _ActionHandler: TypeAlias = Callable[[Callable[[str], str | None], str], None]
+
+NOT_FOUND_MSG_MAP: Final[dict[str, str]] = {
+    'replace-case': CASE_TO_REPLACE_NOT_FOUND_MSG,
+    'replace-regex': REGEX_TO_REPLACE_NOT_FOUND_MSG,
+    'replace-text': TEXT_TO_REPLACE_NOT_FOUND_MSG
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -70,20 +78,6 @@ def _paste_and_validate() -> str | None:
         return None
 
 
-def _replace_and_copy(
-    command_func: Callable[[str], str],
-    clipboard: str
-) -> None:
-    """
-    Transform text using a replacement command and copy the result.
-    Print if the target text was not found.
-    """
-    pyperclip = _get_pyperclip()
-    transformation: str = command_func(clipboard)
-    pyperclip.copy(transformation)
-    print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
-
-
 def clear_clipboard() -> None:
     """Clear clipboard text."""
     pyperclip = _get_pyperclip()
@@ -91,27 +85,22 @@ def clear_clipboard() -> None:
     print_wrapped(_(CLIPBOARD_CLEARED_MSG))
 
 
-def replace_text(command_name: str) -> None:
+def replace_and_copy(
+    command_func: Callable[[str], str],
+    clipboard: str,
+    not_found_msg: str = TEXT_TO_REPLACE_NOT_FOUND_MSG
+) -> None:
     """
-    Apply the selected replacement function to the clipboard and prompt
-    the user for any other clipboard input.
+    Transform text using a replacement command and copy the result.
+    Print if the target text was not found.
     """
-    prompt_name = (
-        f"prompt_for_{command_name.replace('replace_', 'replacement_')}"
-    )
-
-    prompt_func = getattr(ui, prompt_name)
-    exec_func = getattr(replacement, command_name)
-
-    arg_to_replace, replacement_arg = prompt_func()
-
-    def configured_func(text: str) -> str:
-        return exec_func(text, arg_to_replace, replacement_arg)
-
-    run_command_loop(
-        configured_func,
-        _replace_and_copy
-    )
+    pyperclip = _get_pyperclip()
+    transformation: str = command_func(clipboard)
+    if transformation == clipboard:
+        print_wrapped(_(not_found_msg))
+        return
+    pyperclip.copy(transformation)
+    print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
 
 
 def run_command_loop(

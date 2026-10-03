@@ -2,21 +2,13 @@
 
 import regex as re
 
-from textwarp._cli.constants.messages import (
-    CASE_TO_REPLACE_NOT_FOUND_MSG,
-    REGEX_TO_REPLACE_NOT_FOUND_MSG,
-    TEXT_TO_REPLACE_NOT_FOUND_MSG
-)
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
-from textwarp._cli.spinner import run_with_spinner
-from textwarp._cli.ui import print_wrapped
 from textwarp._cli.validation import (
     validate_case_name,
     validate_regex,
     validate_text
 )
 from textwarp._core.constants.maps import get_case_names_regex_map
-from textwarp._core.context import _
 from textwarp._lib import replacement as lib_replacement
 
 __all__ = [
@@ -61,22 +53,15 @@ def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
         str: The transformed text.
     """
     validate_case_name(arg_to_replace)
-    case_to_replace_name = arg_to_replace.lower()
-    search_pattern = get_case_names_regex_map().get(case_to_replace_name)
-
-    if search_pattern and not search_pattern.search(text):
-        print_wrapped(_(CASE_TO_REPLACE_NOT_FOUND_MSG))
-        return text
-
     validate_case_name(replacement_arg)
+
+    case_to_replace_name = arg_to_replace.lower()
     replacement_case_name = replacement_arg.lower()
 
     search_pattern = get_case_names_regex_map()[case_to_replace_name]
     conversion_func = CASE_NAMES_FUNC_MAP[replacement_case_name]
 
-    return run_with_spinner(
-        lib_replacement.replace_case, text, search_pattern, conversion_func
-    )
+    return lib_replacement.replace_case(text, search_pattern, conversion_func)
 
 
 def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
@@ -93,14 +78,10 @@ def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
         str: The transformed text.
     """
     validate_regex(arg_to_replace)
-    if not re.search(arg_to_replace, text):
-        print_wrapped(_(REGEX_TO_REPLACE_NOT_FOUND_MSG))
-        return text
-
     parsed_replacement = parse_cli_escapes(replacement_arg)
 
-    return run_with_spinner(
-        lib_replacement.replace_regex, text, arg_to_replace, parsed_replacement
+    return lib_replacement.replace_regex(
+        text, arg_to_replace, parsed_replacement
     )
 
 
@@ -111,19 +92,17 @@ def replace_text(text: str, arg_to_replace: str, replacement_arg: str) -> str:
 
     Args:
         text: The string to transform.
-        arg_to_replace: The specific string to find and replace.
+        arg_to_replace: The string to find and replace.
         replacement_arg: The replacement text.
 
     Returns:
         str: The transformed text.
     """
     validate_text(arg_to_replace)
-    if arg_to_replace not in text:
-        print_wrapped(_(TEXT_TO_REPLACE_NOT_FOUND_MSG))
-        return text
-
     parsed_replacement = parse_cli_escapes(replacement_arg)
 
-    return run_with_spinner(
-        lib_replacement.replace_text, text, arg_to_replace, parsed_replacement
+    return lib_replacement.replace_text(
+        text,
+        arg_to_replace,
+        parsed_replacement
     )
