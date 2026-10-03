@@ -95,6 +95,11 @@ def _file_open(
         ) from e
 
 
+def _strip_line_ending(text: str) -> str:
+    """Strip a single line ending."""
+    return text.removesuffix('\n').removesuffix('\r')
+
+
 def _read_and_strip_file(file_path: str) -> str:
     """
     Read a text file and strip its trailing newline.
@@ -109,7 +114,8 @@ def _read_and_strip_file(file_path: str) -> str:
         TextwarpError: If the file is inaccessible or binary.
     """
     with _file_open(file_path, 'r') as f:
-        return f.read().removesuffix('\n')
+        content: str = f.read()
+        return _strip_line_ending(content)
 
 
 def _iter_mmap_replacements(
@@ -142,6 +148,72 @@ def _iter_mmap_replacements(
         yield mm[offset : min(offset + BYTES_PER_MB, mm_len)]
 
 
+def _write_mmap_regex_to_stream(
+    file_path: str,
+    args: ParsedArgs,
+    output_stream: IO[bytes]
+) -> None:
+    """
+    Write memory-mapped regex replacements for a single file to a
+    stream.
+
+    Args:
+        file_path: The path to the input file.
+        args: The parsed CLI arguments.
+        output_stream: An open binary stream to write to.
+    """
+    assert args.find is not None
+    assert args.replace is not None
+
+    validate_regex(args.find)
+
+    if os.path.getsize(file_path) == 0:
+        if len(args.input_files) > 1:
+            output_stream.write(b'\n')
+        return
+
+    pattern = re.compile(args.find.encode('utf-8'))
+    replacement = parse_cli_escapes(args.replace).encode('utf-8')
+
+    with (
+        _file_open(file_path, 'rb') as f,
+        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
+    ):
+        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
+            output_stream.write(chunk)
+
+        if len(args.input_files) > 1:
+            output_stream.write(b'\n')
+
+
+def _process_mmap_regex(
+    file_path: str,
+    args: ParsedArgs,
+    output_stream: IO[bytes] | None = None
+) -> None:
+    """
+    Perform a regex replacement on an oversized file using memory
+    mapping.
+
+    Preserves the entire context for multi-line regular expressions.
+
+    Args:
+        file_path: The path to the input file.
+        args: The parsed CLI arguments.
+        output_stream: An optional open binary stream to write to.
+
+    Raises:
+        OSError: If there is an error mapping the file or writing the
+            output.
+    """
+    if output_stream is not None:
+        _write_mmap_regex_to_stream(file_path, args, output_stream)
+        return
+
+    with _open_output_stream(args.output_file, 'wb') as stream:
+        _write_mmap_regex_to_stream(file_path, args, stream)
+
+
 def _process_file_stream(args: ParsedArgs) -> None:
     """
     Process files line-by-line to avoid loading oversized files into
@@ -158,7 +230,7 @@ def _process_file_stream(args: ParsedArgs) -> None:
             with _file_open(file_path, 'r') as f:
                 for line in f:
                     result = route_text(
-                        line.removesuffix('\n'),
+                        _strip_line_ending(line),
                         args.pipeline,
                         args.markdown,
                         args.find,
@@ -168,6 +240,38 @@ def _process_file_stream(args: ParsedArgs) -> None:
                     )
                     if result is not None:
                         output_stream.write(result + '\n')
+
+
+def _process_mixed_mmap_files(
+    args: ParsedArgs,
+    max_memory_bytes: int
+) -> None:
+    """
+    Process regex replacements across a mix of oversized and standard
+    files.
+    """
+    with _open_output_stream(args.output_file, 'wb') as output_stream:
+        for file_path in args.input_files:
+            if (
+                os.path.exists(file_path)
+                and os.path.getsize(file_path) > max_memory_bytes
+            ):
+                _process_mmap_regex(file_path, args, output_stream)
+            else:
+                text = _read_and_strip_file(file_path)
+                result = route_text(
+                    text,
+                    args.pipeline,
+                    args.markdown,
+                    args.find,
+                    args.replace,
+                    top=args.top,
+                    wpm=args.wpm
+                )
+                if result is not None:
+                    output_stream.write(result.encode('utf-8'))
+                    if len(args.input_files) > 1:
+                        output_stream.write(b'\n')
 
 
 def _process_in_memory_files(
@@ -215,98 +319,6 @@ def _process_in_memory_files(
             args.output_file,
             args.copy_to_clipboard
         )
-
-
-def _process_mixed_mmap_files(
-    args: ParsedArgs,
-    max_memory_bytes: int
-) -> None:
-    """
-    Process regex replacements across a mix of oversized and standard
-    files.
-    """
-    with _open_output_stream(args.output_file, 'wb') as output_stream:
-        for file_path in args.input_files:
-            if (
-                os.path.exists(file_path)
-                and os.path.getsize(file_path) > max_memory_bytes
-            ):
-                _process_mmap_regex(file_path, args, output_stream)
-            else:
-                text = _read_and_strip_file(file_path)
-                result = route_text(
-                    text,
-                    args.pipeline,
-                    args.markdown,
-                    args.find,
-                    args.replace,
-                    top=args.top,
-                    wpm=args.wpm
-                )
-                if result is not None:
-                    output_stream.write(result.encode('utf-8'))
-                    if len(args.input_files) > 1:
-                        output_stream.write(b'\n')
-
-
-def _write_mmap_regex_to_stream(
-    file_path: str,
-    args: ParsedArgs,
-    output_stream: IO[bytes]
-) -> None:
-    """
-    Write memory-mapped regex replacements for a single file to a
-    stream.
-
-    Args:
-        file_path: The path to the input file.
-        args: The parsed CLI arguments.
-        output_stream: An open binary stream to write to.
-    """
-    assert args.find is not None
-    assert args.replace is not None
-
-    validate_regex(args.find)
-    pattern = re.compile(args.find.encode('utf-8'))
-    replacement = parse_cli_escapes(args.replace).encode('utf-8')
-
-    with (
-        _file_open(file_path, 'rb') as f,
-        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
-    ):
-        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
-            output_stream.write(chunk)
-
-        if len(args.input_files) > 1:
-            output_stream.write(b'\n')
-
-
-def _process_mmap_regex(
-    file_path: str,
-    args: ParsedArgs,
-    output_stream: IO[bytes] | None = None
-) -> None:
-    """
-    Perform a regex replacement on an oversized file using memory
-    mapping.
-
-    Preserves the entire context for multi-line regular expressions.
-
-    Args:
-        file_path: The path to the input file.
-        args: The parsed CLI arguments.
-        output_stream: An optional open binary stream to write to.
-
-    Raises:
-        OSError: If there is an error mapping the file or writing the
-            output.
-    """
-    if output_stream is not None:
-        _write_mmap_regex_to_stream(file_path, args, output_stream)
-        return
-
-    with _open_output_stream(args.output_file, 'wb') as stream:
-        _write_mmap_regex_to_stream(file_path, args, stream)
 
 
 def process_file_mode(args: ParsedArgs) -> None:
@@ -481,7 +493,7 @@ def process_piped_mode(args: ParsedArgs) -> None:
     )
 
     try:
-        text = sys.stdin.read().removesuffix('\n')
+        text = _strip_line_ending(sys.stdin.read())
 
         result = route_text(
             text,
