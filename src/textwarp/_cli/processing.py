@@ -123,7 +123,7 @@ def _iter_mmap_replacements(
     last_end = 0
     for match in pattern.finditer(mm):
         yield mm[last_end:match.start()]
-        yield match.expand(replacement)
+        yield pattern.match(mm[match.start():match.end()]).expand(replacement)
         last_end = match.end()
     yield mm[last_end:]
 
