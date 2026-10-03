@@ -173,6 +173,12 @@ def validate_command_combinations(
                 _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--wpm (-w)')
             )
 
+    max_file_mb = getattr(args, 'max_file_mb', None)
+    if max_file_mb is not None and max_file_mb <= 0:
+        parser.error(
+            _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--max-file-mb')
+        )
+
 
 def validate_positional_args(
     active_cmds: list[str],
