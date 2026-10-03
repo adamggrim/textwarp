@@ -1,9 +1,9 @@
 """CLI spinner for loading heavy dependencies."""
 
 import math
-import multiprocessing
 import random
 import sys
+import threading
 import time
 from collections.abc import Callable
 from typing import Any
@@ -126,8 +126,8 @@ class AcceleratingSpinner:
 
         self._hide_cursor()
 
-        stop_event = multiprocessing.Event()
-        spinner_process = multiprocessing.Process(
+        stop_event = threading.Event()
+        spinner_thread = threading.Thread(
             target=_spinner_worker,
             args=(
                 stop_event,
@@ -135,15 +135,16 @@ class AcceleratingSpinner:
                 self.initial_fps,
                 self.peak_animation_fps,
                 self.loop_delay
-            )
+            ),
+            daemon=True
         )
 
         try:
-            spinner_process.start()
+            spinner_thread.start()
             return func(*args, **kwargs)
         finally:
             stop_event.set()
-            spinner_process.join()
+            spinner_thread.join()
             self._show_cursor()
 
 
