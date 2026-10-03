@@ -5,10 +5,12 @@ import os
 import sys
 from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
+from dataclasses import replace as dc_replace
 from typing import IO, Any
 
 import regex as re
 
+from textwarp._cli import ui
 from textwarp._cli.args import CommandType
 from textwarp._cli.constants.messages import (
     BINARY_FILE_ERROR_MSG,
@@ -26,8 +28,14 @@ from textwarp._cli.pipeline import (
     route_text,
     validate_piped_commands
 )
-from textwarp._cli.runners import replace_text, run_command_loop, warp_and_copy
-from textwarp._cli.ui import print_wrapped, program_exit
+from textwarp._cli.runners import (
+    NOT_FOUND_MSG_MAP,
+    replace_and_copy,
+    run_command_loop,
+    warp_and_copy
+)
+from textwarp._cli.ui import print_wrapped
+from textwarp._cli.validation import validate_regex
 from textwarp._commands.replacement import parse_cli_escapes
 from textwarp._core.context import _
 from textwarp._core.exceptions import TextwarpError
@@ -106,7 +114,7 @@ def _read_and_strip_file(file_path: str) -> str:
 
 def _iter_mmap_replacements(
     mm: mmap.mmap,
-    pattern: re.Pattern,
+    pattern: re.Pattern[bytes],
     replacement: bytes
 ) -> Iterator[bytes]:
     """
@@ -121,11 +129,17 @@ def _iter_mmap_replacements(
         Chunks of the updated byte stream.
     """
     last_end = 0
+
     for match in pattern.finditer(mm):
-        yield mm[last_end:match.start()]
-        yield pattern.match(mm[match.start():match.end()]).expand(replacement)
+        start = match.start()
+        for offset in range(last_end, start, BYTES_PER_MB):
+            yield mm[offset : min(offset + BYTES_PER_MB, start)]
+        yield match.expand(replacement)
         last_end = match.end()
-    yield mm[last_end:]
+
+    mm_len = len(mm)
+    for offset in range(last_end, mm_len, BYTES_PER_MB):
+        yield mm[offset : min(offset + BYTES_PER_MB, mm_len)]
 
 
 def _process_file_stream(args: ParsedArgs) -> None:
@@ -156,6 +170,85 @@ def _process_file_stream(args: ParsedArgs) -> None:
                         output_stream.write(result + '\n')
 
 
+def _process_in_memory_files(
+    args: ParsedArgs,
+    max_memory_bytes: int,
+    is_analysis: bool
+) -> None:
+    """Process files in memory and route the combined output."""
+    combined_results: list[str] = []
+
+    for file_path in args.input_files:
+        if (
+            os.path.exists(file_path)
+            and os.path.getsize(file_path) > max_memory_bytes
+        ):
+            warning_msg = _(FILE_ACCESS_ERROR_MSG).format(
+                file_path=file_path,
+                error=_(
+                    FILE_SIZE_LIMIT_ERROR_MSG
+                ).format(limit=args.max_file_mb)
+            )
+            print_wrapped(f'Warning: {warning_msg}')
+            continue
+
+        text = _read_and_strip_file(file_path)
+        result = route_text(
+            text,
+            args.pipeline,
+            args.markdown,
+            args.find,
+            args.replace,
+            top=args.top,
+            wpm=args.wpm
+        )
+
+        if result is not None:
+            if is_analysis and len(args.input_files) > 1:
+                result = f'\n--- {file_path} ---\n{result}'
+            combined_results.append(result)
+
+    if combined_results:
+        final_output = '\n'.join(combined_results)
+        route_output(
+            final_output,
+            args.output_file,
+            args.copy_to_clipboard
+        )
+
+
+def _process_mixed_mmap_files(
+    args: ParsedArgs,
+    max_memory_bytes: int
+) -> None:
+    """
+    Process regex replacements across a mix of oversized and standard
+    files.
+    """
+    with _open_output_stream(args.output_file, 'wb') as output_stream:
+        for file_path in args.input_files:
+            if (
+                os.path.exists(file_path)
+                and os.path.getsize(file_path) > max_memory_bytes
+            ):
+                _process_mmap_regex(file_path, args, output_stream)
+            else:
+                text = _read_and_strip_file(file_path)
+                result = route_text(
+                    text,
+                    args.pipeline,
+                    args.markdown,
+                    args.find,
+                    args.replace,
+                    top=args.top,
+                    wpm=args.wpm
+                )
+                if result is not None:
+                    output_stream.write(result.encode('utf-8'))
+                    if len(args.input_files) > 1:
+                        output_stream.write(b'\n')
+
+
 def _write_mmap_regex_to_stream(
     file_path: str,
     args: ParsedArgs,
@@ -173,6 +266,7 @@ def _write_mmap_regex_to_stream(
     assert args.find is not None
     assert args.replace is not None
 
+    validate_regex(args.find)
     pattern = re.compile(args.find.encode('utf-8'))
     replacement = parse_cli_escapes(args.replace).encode('utf-8')
 
@@ -234,90 +328,36 @@ def process_file_mode(args: ParsedArgs) -> None:
     is_regex_only_pipeline = (
         len(args.pipeline) == 1 and args.pipeline[0].name == 'replace-regex'
     )
+    max_memory_bytes = args.max_file_mb * BYTES_PER_MB
+    has_oversized_file = any(
+        os.path.exists(fp) and os.path.getsize(fp) > max_memory_bytes
+        for fp in args.input_files
+    )
 
-    can_stream = not (
+    can_stream = has_oversized_file and not (
         is_analysis
         or args.markdown
         or args.copy_to_clipboard
         or is_regex_only_pipeline
         or any(cmd.requires_spacy for cmd in args.pipeline)
     )
-
     if can_stream:
         _process_file_stream(args)
         return
 
-    combined_results: list[str] = []
-    max_memory_bytes = args.max_file_mb * BYTES_PER_MB
-
-    if (
-        is_regex_only_pipeline
+    can_mmap_regex = (
+        has_oversized_file
+        and is_regex_only_pipeline
         and args.find is not None
         and args.replace is not None
         and not args.markdown
         and not args.copy_to_clipboard
-        and any(
-            os.path.exists(fp) and os.path.getsize(fp) > max_memory_bytes
-            for fp in args.input_files
-        )
-    ):
-        with _open_output_stream(args.output_file, 'wb') as output_stream:
-            for file_path in args.input_files:
-                if os.path.getsize(file_path) > max_memory_bytes:
-                    _process_mmap_regex(file_path, args, output_stream)
-                else:
-                    text = _read_and_strip_file(file_path)
-                    result = route_text(
-                        text,
-                        args.pipeline,
-                        args.markdown,
-                        args.find,
-                        args.replace,
-                        top=args.top,
-                        wpm=args.wpm
-                    )
-                    if result is not None:
-                        output_stream.write(result.encode('utf-8'))
-                        if len(args.input_files) > 1:
-                            output_stream.write(b'\n')
+    )
+    if can_mmap_regex:
+        _process_mixed_mmap_files(args, max_memory_bytes)
         return
 
-    for file_path in args.input_files:
-        if os.path.getsize(file_path) > max_memory_bytes:
-            warning_msg = _(FILE_ACCESS_ERROR_MSG).format(
-                file_path=file_path,
-                error=_(
-                    FILE_SIZE_LIMIT_ERROR_MSG
-                ).format(limit=args.max_file_mb)
-            )
-            print_wrapped(f'Warning: {warning_msg}')
-            continue
-
-        text = _read_and_strip_file(file_path)
-
-        result = route_text(
-            text,
-            args.pipeline,
-            args.markdown,
-            args.find,
-            args.replace,
-            top=args.top,
-            wpm=args.wpm
-        )
-
-        if result is not None:
-            if is_analysis and len(args.input_files) > 1:
-                result = f'\n--- {file_path} ---\n{result}'
-
-            combined_results.append(result)
-
-    if combined_results:
-        final_output = '\n'.join(combined_results)
-        route_output(
-            final_output,
-            args.output_file,
-            args.copy_to_clipboard
-        )
+    _process_in_memory_files(args, max_memory_bytes, is_analysis)
 
 
 def _interactive_pipeline_runner(text: str, args: ParsedArgs) -> str | None:
@@ -347,7 +387,8 @@ def _unified_action_handler(
     func: Callable[[str], str | None],
     text: str,
     args: ParsedArgs,
-    is_analysis: bool
+    is_analysis: bool,
+    not_found_msg: str | None = None
 ) -> None:
     """
     Route the output from interactive mode to the destination.
@@ -358,6 +399,8 @@ def _unified_action_handler(
         args: The parsed CLI arguments.
         is_analysis: Whether the current pipeline performs text
             analysis.
+        not_found_msg: Optional message to display when a replacement
+            target is not found.
     """
     result = func(text)
     if result is None:
@@ -368,6 +411,14 @@ def _unified_action_handler(
             result,
             args.output_file,
             args.copy_to_clipboard
+        )
+    elif not_found_msg is not None:
+        handle_output(
+            result,
+            args.output_file,
+            default_action=lambda r: replace_and_copy(
+                lambda _: r, text, not_found_msg
+            )
         )
     else:
         handle_output(
@@ -385,27 +436,32 @@ def process_interactive_mode(args: ParsedArgs) -> None:
 
     Args:
         args: The parsed CLI arguments.
-
-    Raises:
-        SystemExit: If the user exits the loop or a replacement command
-            is in the pipeline.
     """
-    first_cmd = args.pipeline[0]
+    replacement_cmd = next(
+        (
+            cmd for cmd in args.pipeline
+            if cmd.command_type == CommandType.REPLACEMENT
+        ),
+        None
+    )
+    not_found_msg: str | None = None
 
-    if (
-        first_cmd.command_type == CommandType.REPLACEMENT
-        and args.find is None
-        and args.replace is None
-    ):
-        replace_text(first_cmd.name.replace('-', '_'))
-        program_exit()
+    if replacement_cmd is not None:
+        not_found_msg = NOT_FOUND_MSG_MAP.get(replacement_cmd.name)
+        if args.find is None or args.replace is None:
+            prompt_name = (
+                f"prompt_for_"
+                f"{replacement_cmd.name.replace('-', '_').replace('replace_', 'replacement_')}"
+            )
+            find_arg, replace_arg = getattr(ui, prompt_name)()
+            args = dc_replace(args, find=find_arg, replace=replace_arg)
 
     is_analysis = is_analysis_pipeline(args.pipeline)
 
     run_command_loop(
         lambda text: _interactive_pipeline_runner(text, args),
         action_handler=lambda func, text: _unified_action_handler(
-            func, text, args, is_analysis
+            func, text, args, is_analysis, not_found_msg
         )
     )
 
