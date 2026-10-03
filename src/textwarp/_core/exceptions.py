@@ -1,7 +1,6 @@
 """Custom exceptions for clipboard and validation errors."""
 
 __all__ = [
-    'CaseNotFoundError',
     'EmptyClipboardError',
     'InvalidCaseNameError',
     'InvalidRegexError',
@@ -10,8 +9,6 @@ __all__ = [
     'NoCaseNameError',
     'NoRegexError',
     'NoTextError',
-    'RegexNotFoundError',
-    'TextNotFoundError',
     'TextwarpError',
     'TextwarpValidationError',
     'WhitespaceCaseNameError',
@@ -25,13 +22,6 @@ class TextwarpError(Exception):
 
 class TextwarpValidationError(TextwarpError):
     """Base class for all textwarp validation errors."""
-
-
-class CaseNotFoundError(TextwarpValidationError):
-    """
-    Exception raised when the provided case is not found in the searched
-    text.
-    """
 
 
 class EmptyClipboardError(TextwarpValidationError):
@@ -83,20 +73,6 @@ class NoCaseNameError(TextwarpValidationError):
 
 class NoTextError(TextwarpValidationError):
     """Exception raised when the provided text string is empty."""
-
-
-class RegexNotFoundError(TextwarpValidationError):
-    """
-    Exception raised when the provided regex string is not found in the
-    searched text.
-    """
-
-
-class TextNotFoundError(TextwarpValidationError):
-    """
-    Exception raised when the provided text to replace is not found in
-    the searched text.
-    """
 
 
 class WhitespaceCaseNameError(TextwarpValidationError):

@@ -5,12 +5,10 @@ from textwarp._core.enums import (
     Casing,
     CountLabels,
     MainPOSTag,
-    PresenceCheckType,
     RegexBoundary,
     UniversalPOSTag
 )
 from textwarp._core.exceptions import (
-    CaseNotFoundError,
     EmptyClipboardError,
     InvalidCaseNameError,
     InvalidRegexError,
@@ -19,8 +17,6 @@ from textwarp._core.exceptions import (
     NoCaseNameError,
     NoRegexError,
     NoTextError,
-    RegexNotFoundError,
-    TextNotFoundError,
     TextwarpError,
     TextwarpValidationError,
     WhitespaceCaseNameError,
@@ -35,7 +31,6 @@ from textwarp._core.utils import (
 )
 
 __all__ = [
-    'CaseNotFoundError',
     'CaseSeparator',
     'Casing',
     'CountLabels',
@@ -51,10 +46,7 @@ __all__ = [
     'NoRegexError',
     'NoTextError',
     'POSCounts',
-    'PresenceCheckType',
     'RegexBoundary',
-    'RegexNotFoundError',
-    'TextNotFoundError',
     'TextwarpError',
     'TextwarpValidationError',
     'UniversalPOSTag',

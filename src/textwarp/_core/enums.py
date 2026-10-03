@@ -1,5 +1,5 @@
 """
-Enumerations for casing, count labels, presence checking and regular
+Enumerations for casing, count labels, parts of speech and regular
 expression boundaries.
 """
 
@@ -13,7 +13,6 @@ __all__ = [
     'CountLabels',
     'MainPOSTag',
     'ModelPriority',
-    'PresenceCheckType',
     'RegexBoundary',
     'TokenType',
     'UniversalPOSTag'
@@ -90,16 +89,6 @@ class UniversalPOSTag(str, Enum):
     VERB = 'VERB'
     X = 'X'
     SPACE = 'SPACE'
-
-@unique
-class PresenceCheckType(Enum):
-    """
-    Specify whether to check for the presence of a case (e.g., camel
-    case or snake case), regular expression or substring.
-    """
-    CASE = auto()
-    REGEX = auto()
-    SUBSTRING = auto()
 
 
 @unique
