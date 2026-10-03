@@ -189,10 +189,11 @@ def count_pos(content: str | Doc) -> POSCounts:
         if token.is_space or token.is_punct or token.pos_ == 'SYM':
             continue
 
-        original_tag = UniversalPOSTag._value2member_map_.get(
-            token.pos_,
-            UniversalPOSTag.X
-        )
+        try:
+            original_tag = UniversalPOSTag(token.pos_)
+        except ValueError:
+            original_tag = UniversalPOSTag.X
+
         if original_tag in ctx.provider.pos_word_tags:
             total_word_count += 1
 
