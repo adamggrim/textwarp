@@ -54,7 +54,7 @@ ORDINAL_SUFFIXES: Final[tuple[str, ...]] = (
     'st', 'sts',
     'th', 'ths',
 )
-PARTICIPLE_SUFFIXES: tuple = ("in'", 'in’')
+PARTICIPLE_SUFFIXES: Final[tuple[str, ...]] = ("in'", 'in’')
 PARTICIPLE_TAGS: frozenset[str]
 POS_TAGS: Final[tuple[tuple[MainPOSTag, str], ...]] = (
     (MainPOSTag.NOUN, N_('Nouns')),
