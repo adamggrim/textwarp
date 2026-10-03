@@ -119,7 +119,7 @@ def apply_pipeline(
     Args:
         text: The string or spaCy `Doc` to transform.
         pipeline: A list of tuples containing:
-            - The command-line argument string (e.g., `word-count`).
+            - The CLI argument string (e.g., `word-count`).
             - The corresponding callable function (e.g., `word_count`).
         arg_to_replace: The case, regex or target substring, if
             provided. Defaults to `None`.
@@ -176,7 +176,7 @@ def build_pipeline(
     active_cmds: list[str], parser: argparse.ArgumentParser
 ) -> Pipeline:
     """
-    Construct the execution pipeline from command-line arguments.
+    Construct the execution pipeline from CLI arguments.
 
     Args:
         active_cmds: The ordered list of valid commands.

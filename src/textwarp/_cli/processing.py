@@ -134,7 +134,7 @@ def _process_file_stream(args: ParsedArgs) -> None:
     memory.
 
     Args:
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
 
     Raises:
         SystemExit: If there is an error reading or writing files.
@@ -167,7 +167,7 @@ def _write_mmap_regex_to_stream(
 
     Args:
         file_path: The path to the input file.
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
         output_stream: An open binary stream to write to.
     """
     assert args.find is not None
@@ -200,7 +200,7 @@ def _process_mmap_regex(
 
     Args:
         file_path: The path to the input file.
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
         output_stream: An optional open binary stream to write to.
 
     Raises:
@@ -220,7 +220,7 @@ def process_file_mode(args: ParsedArgs) -> None:
     Handle file input and output mode.
 
     Args:
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
 
     Raises:
         SystemExit: If the input file is unreadable or if there is an
@@ -327,7 +327,7 @@ def _interactive_pipeline_runner(text: str, args: ParsedArgs) -> str | None:
 
     Args:
         text: The text to process.
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
 
     Returns:
         The processed text, or None if no output is produced.
@@ -355,7 +355,7 @@ def _unified_action_handler(
     Args:
         func: The pipeline runner function to execute.
         text: The input text to process.
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
         is_analysis: Whether the current pipeline performs text
             analysis.
     """
@@ -379,13 +379,12 @@ def _unified_action_handler(
 
 def process_interactive_mode(args: ParsedArgs) -> None:
     """
-    Handle the interactive CLI interface for user input without files or
-    piping.
+    Handle the interactive CLI for user input without files or piping.
 
     This mode acts as a wrapper around the package's core pipeline engine.
 
     Args:
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
 
     Raises:
         SystemExit: If the user exits the loop or a replacement command
@@ -416,7 +415,7 @@ def process_piped_mode(args: ParsedArgs) -> None:
     Handle input when data is piped into the script.
 
     Args:
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
 
     Raises:
         SystemExit: If there is an error processing the input.

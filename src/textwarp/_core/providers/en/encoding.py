@@ -1,4 +1,4 @@
-"""Functions for encoding and decoding English text."""
+"""Functions for English-specific encoding and decoding."""
 
 from textwarp._core.constants import patterns
 from textwarp._lib.punctuation import curly_to_straight

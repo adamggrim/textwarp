@@ -1,4 +1,4 @@
-"""A map of command-line arguments to functions and help messages."""
+"""A map of CLI arguments to functions and help messages."""
 
 import importlib
 from collections.abc import Callable
@@ -22,7 +22,7 @@ class CommandType(Enum):
 
 @dataclass(frozen=True)
 class CLICommand:
-    """A single piipeline command and its configuration."""
+    """A single pipeline command and its configuration."""
     name: str
     func: Callable[..., Any]
     help_text: str

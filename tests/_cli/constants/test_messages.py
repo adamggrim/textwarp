@@ -1,4 +1,4 @@
-"""Tests for command-line message constants."""
+"""Tests for CLI message constants."""
 
 import pytest
 

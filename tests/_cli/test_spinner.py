@@ -1,4 +1,4 @@
-"""Tests for the command-line spinner."""
+"""Tests for the CLI spinner."""
 
 import sys
 

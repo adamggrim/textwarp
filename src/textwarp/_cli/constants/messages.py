@@ -1,4 +1,4 @@
-"""Strings for displaying command-line messages."""
+"""Strings for displaying CLI messages."""
 
 from typing import Final
 

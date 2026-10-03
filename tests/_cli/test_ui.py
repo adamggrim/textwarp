@@ -1,4 +1,4 @@
-"""Tests for command-line input and output functions."""
+"""Tests for CLI input and output functions."""
 
 import os
 import shutil

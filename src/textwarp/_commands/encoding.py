@@ -1,4 +1,4 @@
-"""Runners for forgiving CLI decoding commands."""
+"""Runners for encoding and decoding commands."""
 
 from textwarp._lib import encoding as lib_encoding
 

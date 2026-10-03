@@ -1,4 +1,4 @@
-"""Command-line spinner for loading heavy dependencies."""
+"""CLI spinner for loading heavy dependencies."""
 
 import math
 import multiprocessing

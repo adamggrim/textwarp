@@ -1,4 +1,4 @@
-"""Tests for command-line argument parsing."""
+"""Tests for CLI argument parsing."""
 
 import sys
 from importlib.metadata import PackageNotFoundError

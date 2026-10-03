@@ -103,11 +103,11 @@ def validate_command_combinations(
     parser: argparse.ArgumentParser
 ) -> None:
     """
-    Validate that combined command-line arguments do not conflict.
+    Validate that combined CLI arguments do not conflict.
 
     Args:
         active_cmds: The ordered list of active commands.
-        args: The parsed command-line arguments.
+        args: The parsed CLI arguments.
         parser: The `ArgumentParser` instance used to display error
             messages.
 

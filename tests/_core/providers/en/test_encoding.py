@@ -1,4 +1,4 @@
-"""Tests for English-specific text encoding functions."""
+"""Tests for English-specific encoding and decoding functions."""
 
 from textwarp._core.providers.en.encoding import normalize_for_morse
 

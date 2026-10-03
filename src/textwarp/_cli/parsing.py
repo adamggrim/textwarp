@@ -1,4 +1,4 @@
-"""Command-line argument parsing using argparse."""
+"""CLI argument parsing using argparse."""
 
 import argparse
 import sys
@@ -32,7 +32,7 @@ _LEFT_MARGIN: Final = (
 
 @dataclass(frozen=True)
 class ParsedArgs:
-    """Data class containing parsed command-line arguments."""
+    """Data class containing parsed CLI arguments."""
     pipeline: Pipeline
     lang: str
     input_files: list[str]
@@ -49,7 +49,7 @@ class ParsedArgs:
 
 def parse_args() -> ParsedArgs:
     """
-    Parse command-line arguments for a text warping or analysis
+    Parse CLI arguments for a text warping or analysis
     function name and the language locale.
 
     Returns:

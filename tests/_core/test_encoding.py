@@ -1,4 +1,4 @@
-"""Tests for core encoding maps and data loading."""
+"""Tests for encoding and decoding data loading."""
 
 from types import MappingProxyType
 

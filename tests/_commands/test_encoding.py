@@ -1,4 +1,4 @@
-"""Tests for CLI encoding command wrappers."""
+"""Tests for encoding and decoding commands."""
 
 from textwarp._commands import encoding
 

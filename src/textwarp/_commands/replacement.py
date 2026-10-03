@@ -37,8 +37,8 @@ _ESCAPE_MAP = {
 
 def parse_cli_escapes(text: str) -> str:
     """
-    Convert CLI escape strings into their corresponding whitespace
-    characters.
+    Convert command-line escape strings into their corresponding
+    whitespace characters.
     """
     def _replace_escape(match: re.Match[str]) -> str:
         return _ESCAPE_MAP[match.group(0)]

@@ -1,4 +1,4 @@
-"""Tests for command-line arguments mapping and lazy loading."""
+"""Tests for CLI arguments mapping and lazy loading."""
 
 import pytest
 

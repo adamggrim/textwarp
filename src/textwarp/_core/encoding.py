@@ -1,4 +1,4 @@
-"""Functions for loading universal encoding data."""
+"""Functions for encoding and decoding data loading."""
 
 from collections.abc import Mapping
 from functools import cache
