@@ -183,23 +183,24 @@ Use the `-m` or `--markdown` flag to parse the input in Markdown. `textwarp` wil
 textwarp/
   ├── _cli/
   │ ├── constants/
-  │ │ ├── __init__.py: Exposes command-line inputs and messages
-  │ │ ├── inputs.py: Sets for command-line input
-  │ │ └── messages.py: Strings for displaying command-line messages
+  │ │ ├── __init__.py: Exposes CLI inputs and messages
+  │ │ ├── inputs.py: Sets for CLI input
+  │ │ └── messages.py: Strings for displaying CLI messages
   │ ├── __init__.py: Initializes the _cli sub-package
-  │ ├── args.py: A map of command-line arguments to functions and help messages
+  │ ├── args.py: A map of CLI arguments to functions and help messages
   │ ├── dispatch.py: A map of string inputs to case conversion functions
   │ ├── formatting.py: Functions for formatting analysis into readable strings
-  │ ├── parsing.py: Command-line argument parsing using argparse
+  │ ├── parsing.py: CLI argument parsing using argparse
   │ ├── pipeline.py: Pipeline output routing
   │ ├── processing.py: Execution modes for pipeline processing
   │ ├── runners.py: Main loop logic for executing commands
-  │ ├── spinner.py: Command-line spinner for loading heavy dependencies
+  │ ├── spinner.py: CLI spinner for loading heavy dependencies
   │ ├── ui.py: Functions for handling console input and output
   │ └── validation.py: Validators for text, clipboard and regular expression content
   ├── _commands/
-  │ ├── __init__.py: Namespace for analysis and replacement commands
+  │ ├── __init__.py: Namespace for analysis, encoding and replacement commands
   │ ├── analysis.py: Runners for analysis commands
+  │ ├── encoding.py: Runners for encoding and decoding commands
   │ └── replacement.py: Runners for find-and-replace commands
   ├── _core/
   │ ├── constants/
@@ -266,7 +267,7 @@ textwarp/
   │ │ │ ├── __init__.py: Exposes English-specific language provider modules
   │ │ │ ├── casing.py: English-specific string casing logic
   │ │ │ ├── constants.py: English-specific NLP constants
-  │ │ │ ├── encoding.py: Functions for encoding and decoding English text
+  │ │ │ ├── encoding.py: Functions for English-specific encoding and decoding
   │ │ │ ├── numbers.py: English-specific functions for converting between cardinal and ordinal numbers
   │ │ │ ├── patterns.py: English-specific regular expression patterns for text warping
   │ │ │ ├── provider.py: English-specific `LanguageProvider` implementation
@@ -276,7 +277,7 @@ textwarp/
   │ │ └── base.py: Abstract base class for language providers
   │ ├── __init__.py: Exposes core configuration, constants and models
   │ ├── context.py: Thread-safe global context for the active locale and provider
-  │ ├── encoding.py: Functions for loading universal encoding data
+  │ ├── encoding.py: Functions for encoding and decoding data loading
   │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
   │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
   │ ├── models.py: Classes for parts-of-speech counts and word counts
