@@ -64,13 +64,11 @@ def _disambiguate_a_or_to(span: Span) -> str:
     doc = span.doc
     next_token = en.utils.get_next_lexical_token(doc, span.end)
 
-    is_valid_noun_phrase = (
-        next_token
+    if (
+        next_token is not None
         and next_token.tag_ in en.constants.NOUN_PHRASE_TAGS
         and next_token.tag_ != 'VB'
-    )
-
-    if is_valid_noun_phrase:
+    ):
         is_infinitive_exception = (
             next_token.lower_
             in en.data.contraction_expansion.get_infinitive_exceptions()

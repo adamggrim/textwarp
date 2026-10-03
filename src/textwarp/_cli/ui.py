@@ -74,8 +74,8 @@ def _prompt_for_valid_input(
 
 
 def _prompt_for_valid_replacement_pair(
-    target_config: tuple[str, Callable[[str], None] | None, str],
-    replacement_config: tuple[str, Callable[[str], None] | None, str],
+    target_config: tuple[str, Callable[[str], None], str],
+    replacement_config: tuple[str, Callable[[str], None], str],
     allow_early_exit: bool = False,
     transform: Callable[[str], str] | None = None
 ) -> tuple[str, str]:

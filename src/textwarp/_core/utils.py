@@ -4,8 +4,7 @@ import importlib.resources
 import json
 from collections.abc import Callable
 from pathlib import Path
-
-from textwarp._core.types import JSONType
+from typing import Any
 
 __all__ = [
     'change_first_alphabetical_case',
@@ -59,7 +58,7 @@ def find_first_alphabetical_idx(text: str) -> int | None:
 def load_json_data(
     relative_path: str | Path,
     locale: str | None = None
-) -> JSONType:
+) -> Any:
     """
     Load JSON content from the data directory, optionally scoped by
     locale.
@@ -70,7 +69,7 @@ def load_json_data(
         locale: An optional locale for the path (e.g., 'en').
 
     Returns:
-        JSONType: The loaded JSON content.
+        Any: The loaded JSON content.
     """
     pkg_files = importlib.resources.files(__package__.split('.')[0])
 
@@ -79,9 +78,9 @@ def load_json_data(
     else:
         parts = Path(relative_path).parts
 
-    resource = pkg_files.joinpath('_core', 'data')
+    resource = pkg_files / '_core' / 'data'
     for part in parts:
-        resource = resource.joinpath(part)
+        resource = resource / part
 
     return json.loads(resource.read_text(encoding='utf-8'))
 

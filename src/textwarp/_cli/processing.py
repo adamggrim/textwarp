@@ -82,8 +82,8 @@ def _file_open(
         TextwarpError: If the file is inaccessible or in binary.
     """
     try:
-        kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
-        with open(file_path, mode, **kwargs) as f:
+        encoding = None if 'b' in mode else 'utf-8'
+        with open(file_path, mode, encoding=encoding) as f:
             yield f
     except UnicodeDecodeError as e:
         raise TextwarpError(

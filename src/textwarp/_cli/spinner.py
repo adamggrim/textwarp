@@ -6,7 +6,9 @@ import sys
 import threading
 import time
 from collections.abc import Callable
-from typing import Any
+from typing import Any, TypeVar
+
+_T = TypeVar('_T')
 
 __all__ = ['AcceleratingSpinner', 'run_with_spinner']
 
@@ -116,7 +118,7 @@ class AcceleratingSpinner:
             except (OSError, ValueError):
                 pass
 
-    def run(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
+    def run(self, func: Callable[..., _T], *args: Any, **kwargs: Any) -> _T:
         """
         Run a function on the main process while the logarithmically
         accelerating spinner runs on a background thread.

@@ -49,7 +49,7 @@ def punct_to_inside(text: str) -> str:
 
     def _repl(match: re.Match[str]) -> str:
         quote, punct = match.groups()
-        return punct + quote
+        return f'{punct}{quote}'
 
     return pattern.sub(_repl, text)
 
@@ -65,11 +65,10 @@ def punct_to_outside(text: str) -> str:
 
     def _repl(match: re.Match[str]) -> str:
         """
-        Reorder periods and commas to move them outside quotation
-        marks.
+        Reorder periods and commas to move them outside quotation marks.
         """
         punct, quote = match.groups()
-        return quote + punct
+        return f'{quote}{punct}'
 
     return pattern.sub(_repl, text)
 

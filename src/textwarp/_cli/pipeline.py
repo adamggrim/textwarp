@@ -211,14 +211,14 @@ def atomic_write(
     and atomically swapping it upon completion.
     """
     dir_name = os.path.dirname(file_path) or '.'
-    kwargs = {'encoding': 'utf-8'} if 'b' not in mode else {}
+    encoding = None if 'b' in mode else 'utf-8'
 
     try:
-        temp_file = tempfile.NamedTemporaryFile(
+        temp_file: IO[Any] = tempfile.NamedTemporaryFile(
             dir=dir_name,
             mode=mode,
             delete=False,
-            **kwargs
+            encoding=encoding
         )
     except OSError as e:
         raise TextwarpError(
@@ -231,7 +231,7 @@ def atomic_write(
         if 'a' in mode and os.path.exists(file_path):
             temp_file.close()
             shutil.copy2(file_path, temp_path)
-            temp_file = open(temp_path, mode, **kwargs)
+            temp_file = open(temp_path, mode, encoding=encoding)
         yield temp_file
     except Exception as e:
         temp_file.close()
