@@ -4,12 +4,9 @@ import pytest
 
 from textwarp._cli import ui
 from textwarp._cli.constants.messages import (
-    CASE_TO_REPLACE_NOT_FOUND_MSG,
     ENTER_VALID_CASE_PROMPT,
     ENTER_VALID_REGEX_PROMPT,
-    ENTER_VALID_TEXT_PROMPT,
-    REGEX_TO_REPLACE_NOT_FOUND_MSG,
-    TEXT_TO_REPLACE_NOT_FOUND_MSG
+    ENTER_VALID_TEXT_PROMPT
 )
 from textwarp._commands import replacement
 
@@ -31,7 +28,7 @@ def test_replace_case(simulate_input, capsys):
     assert result == 'PascalCase'
 
 
-def test_replace_case_not_found(simulate_input, capsys):
+def test_replace_case_not_found(simulate_input):
     simulate_input(['camel', 'snake'])
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_case()
@@ -40,9 +37,7 @@ def test_replace_case_not_found(simulate_input, capsys):
         arg_to_replace,
         replacement_arg
     )
-    captured = capsys.readouterr()
 
-    assert CASE_TO_REPLACE_NOT_FOUND_MSG in captured.out
     assert result == CASE_TEST_STRING
 
 
@@ -74,7 +69,7 @@ def test_replace_regex(simulate_input, capsys):
     )
 
 
-def test_replace_regex_not_found(simulate_input, capsys):
+def test_replace_regex_not_found(simulate_input):
     simulate_input([r'\d{6}', 'replacement'])
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_regex()
@@ -83,9 +78,7 @@ def test_replace_regex_not_found(simulate_input, capsys):
         arg_to_replace,
         replacement_arg
     )
-    captured = capsys.readouterr()
 
-    assert REGEX_TO_REPLACE_NOT_FOUND_MSG in captured.out
     assert result == (
         'Il ne fut même plus Jean Valjean; il fut le numéro 24601.'
     )
@@ -108,7 +101,7 @@ def test_replace_text(simulate_input, capsys):
     assert 'hemlock' not in result
 
 
-def test_replace_text_not_found(simulate_input, capsys):
+def test_replace_text_not_found(simulate_input):
     simulate_input(['cyanide', 'coffee'])
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_text()
@@ -118,9 +111,7 @@ def test_replace_text_not_found(simulate_input, capsys):
         arg_to_replace,
         replacement_arg
     )
-    captured = capsys.readouterr()
 
-    assert TEXT_TO_REPLACE_NOT_FOUND_MSG in captured.out
     assert 'coffee' in result
 
 

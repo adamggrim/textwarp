@@ -4,7 +4,6 @@ import pytest
 import regex as re
 
 from textwarp._core.exceptions import (
-    CaseNotFoundError,
     EmptyClipboardError,
     InvalidCaseNameError,
     InvalidRegexError,
@@ -12,8 +11,6 @@ from textwarp._core.exceptions import (
     NoCaseNameError,
     NoRegexError,
     NoTextError,
-    RegexNotFoundError,
-    TextNotFoundError,
     TextwarpValidationError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
@@ -21,7 +18,6 @@ from textwarp._core.exceptions import (
 
 
 @pytest.mark.parametrize('exception_class', [
-    CaseNotFoundError,
     EmptyClipboardError,
     InvalidCaseNameError,
     InvalidRegexError,
@@ -29,8 +25,6 @@ from textwarp._core.exceptions import (
     NoCaseNameError,
     NoRegexError,
     NoTextError,
-    RegexNotFoundError,
-    TextNotFoundError,
     TextwarpValidationError,
     WhitespaceCaseNameError,
     WhitespaceClipboardError
@@ -45,11 +39,6 @@ def test_exceptions_inherit_from_base_exception(exception_class):
         NoTextError,
         'It is a tale\nTold by an idiot, full of sound and fury,\n'
         'Signifying nothing.'
-    ),
-    (
-        TextNotFoundError,
-        'I found myself within a forest dark,\n'
-        'For the straightforward pathway had been lost.'
     )
 ])
 def test_exception_msgs(exception_class, error_msg):

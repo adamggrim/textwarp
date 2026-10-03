@@ -10,13 +10,13 @@ from textwarp._cli.constants.messages import (
     CLIPBOARD_CLEARED_MSG,
     CLIPBOARD_EMPTY_ERROR_MSG,
     LINUX_XCLIP_WARNING_MSG,
-    MODIFIED_TEXT_COPIED_MSG
+    MODIFIED_TEXT_COPIED_MSG,
+    TEXT_TO_REPLACE_NOT_FOUND_MSG
 )
 from textwarp._cli.runners import (
     _paste_and_validate,
-    _replace_and_copy,
     clear_clipboard,
-    replace_text,
+    replace_and_copy,
     run_command_loop,
     warp_and_copy
 )
@@ -81,7 +81,7 @@ def test_replace_and_copy_success(mock_clipboard, capsys):
     def dummy_replace(text):
         return text.replace('Evermore', 'Nevermore')
 
-    _replace_and_copy(dummy_replace, 'Evermore.')
+    replace_and_copy(dummy_replace, 'Evermore.')
 
     assert mock_clipboard.paste() == 'Nevermore.'
     captured = capsys.readouterr()
@@ -95,11 +95,11 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
     quote = ('There is no there there.')
 
     mock_clipboard.copy(quote)
-    _replace_and_copy(dummy_replace, quote)
+    replace_and_copy(dummy_replace, quote)
 
     assert mock_clipboard.paste() == quote
     captured = capsys.readouterr()
-    assert MODIFIED_TEXT_COPIED_MSG in captured.out
+    assert TEXT_TO_REPLACE_NOT_FOUND_MSG in captured.out
 
 
 def test_run_command_loop(monkeypatch, mock_clipboard):
@@ -114,21 +114,3 @@ def test_run_command_loop(monkeypatch, mock_clipboard):
     mock_command.assert_called_once_with(
         'Tomorrow, and tomorrow, and tomorrow'
     )
-
-
-def test_replace_text_lookup(monkeypatch):
-    mock_run_command_loop = MagicMock()
-
-    monkeypatch.setattr(
-        'textwarp._cli.runners.run_command_loop',
-        mock_run_command_loop
-    )
-
-    monkeypatch.setattr(
-        'textwarp._cli.ui.prompt_for_replacement_case',
-        lambda: ('camel', 'snake')
-    )
-
-    replace_text('replace_case')
-
-    mock_run_command_loop.assert_called_once()

@@ -185,10 +185,13 @@ def test_process_file_mode_success(tmp_path, capsys):
 
 
 def test_process_interactive_mode_replacement(monkeypatch):
-    mock_replace_text = MagicMock()
+    mock_prompt = MagicMock(return_value=('snake', 'pascal'))
+    mock_loop = MagicMock()
 
-    monkeypatch.setattr(processing, 'replace_text', mock_replace_text)
-    monkeypatch.setattr(processing, 'program_exit', lambda: sys.exit(0))
+    monkeypatch.setattr(
+        'textwarp._cli.ui.prompt_for_replacement_case', mock_prompt
+    )
+    monkeypatch.setattr(processing, 'run_command_loop', mock_loop)
 
     args = ParsedArgs(
         pipeline=[ARGS_MAP['replace-case']],
@@ -203,10 +206,10 @@ def test_process_interactive_mode_replacement(monkeypatch):
         max_file_mb=DEFAULT_MAX_FILE_MB
     )
 
-    with pytest.raises(SystemExit):
-        processing.process_interactive_mode(args)
+    processing.process_interactive_mode(args)
 
-    mock_replace_text.assert_called_once_with('replace_case')
+    mock_prompt.assert_called_once()
+    mock_loop.assert_called_once()
 
 
 @pytest.mark.usefixtures('mock_oversized_file')

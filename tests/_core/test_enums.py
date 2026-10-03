@@ -5,7 +5,6 @@ from textwarp._core.enums import (
     Casing,
     CountLabels,
     ModelPriority,
-    PresenceCheckType,
     RegexBoundary
 )
 
@@ -29,12 +28,6 @@ def test_count_labels_values():
     assert CountLabels.SENTENCE == 'Sentence'
     assert CountLabels.WORD == 'Word'
     assert CountLabels.WORD != 'Paragraph'
-
-
-def test_presence_check_type_enums():
-    assert isinstance(PresenceCheckType.CASE, PresenceCheckType)
-    assert isinstance(PresenceCheckType.REGEX, PresenceCheckType)
-    assert isinstance(PresenceCheckType.SUBSTRING, PresenceCheckType)
 
 
 def test_regex_boundary_enums():
