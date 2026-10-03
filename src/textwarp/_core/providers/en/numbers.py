@@ -22,7 +22,7 @@ def _get_nlp_doc(text: str) -> 'Doc':
 
 def _get_ordinal_suffix(number: int) -> str:
     """Determine the correct ordinal suffix for a given integer."""
-    if 10 <= number % 100 <= 20:
+    if 11 <= number % 100 <= 13:
         return 'th'
     return ORDINAL_SUFFIX_MAP.get(number % 10, 'th')
 
