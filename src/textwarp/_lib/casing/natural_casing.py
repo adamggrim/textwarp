@@ -260,17 +260,15 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
 
     processed_parts: list[str] = []
     token_idxs: set[int] = set()
-    indices_to_lowercase: set[int] = set()
+    indices_to_lowercase: set[int] = _find_force_lowercase_idxs(doc)
     i = 0
 
     if casing == Casing.SENTENCE:
         token_idxs = _find_sentence_start_idxs(doc)
-        indices_to_lowercase = _find_force_lowercase_idxs(doc)
     elif casing == Casing.START:
         token_idxs = _find_start_case_idxs(doc)
     elif casing == Casing.TITLE:
         token_idxs = _find_title_case_idxs(doc)
-        indices_to_lowercase = _find_force_lowercase_idxs(doc)
 
     while i < len(doc):
         if i in entity_map:
@@ -322,13 +320,20 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
                 )
             )
         else:
-            processed_parts.append(
-                case_from_string(
-                    token_text,
-                    lowercase_by_default=False,
-                    preserve_mixed_case=True
+            if (
+                token.i > 0
+                and doc[token.i - 1].whitespace_ == ''
+                and ctx.provider.should_always_lowercase(token_text)
+            ):
+                processed_parts.append(token_text.lower())
+            else:
+                processed_parts.append(
+                    case_from_string(
+                        token_text,
+                        lowercase_by_default=False,
+                        preserve_mixed_case=True
+                    )
                 )
-            )
 
         processed_parts.append(token.whitespace_)
         i += 1
