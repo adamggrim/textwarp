@@ -25,12 +25,12 @@
 To install a specific dependency, append its tag inside brackets during installation:
 
 ```bash
-python -m pip install "textwarp[clipboard] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
+python -m pip install "textwarp[clipboard] @ git+https://github.com/adamggrim/textwarp.git"
 ```
 You can install multiple dependencies at once by separating them with commas:
 
 ```bash
-python -m pip install "textwarp[clipboard,markdown,nlp] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
+python -m pip install "textwarp[clipboard,markdown,nlp] @ git+https://github.com/adamggrim/textwarp.git"
 ```
 
 *Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
@@ -278,7 +278,7 @@ textwarp/
   │ ├── __init__.py: Exposes core configuration, constants and models
   │ ├── context.py: Thread-safe global context for the active locale and provider
   │ ├── encoding.py: Functions for encoding and decoding data loading
-  │ ├── enums.py: Enumerations for casing, count labels, presence checking and regular expression boundaries
+  │ ├── enums.py: Enumerations for casing, count labels, parts of speech and regular expression boundaries
   │ ├── exceptions.py: Custom exceptions for clipboard and validation errors
   │ ├── models.py: Classes for parts-of-speech counts and word counts
   │ ├── types.py: Generic type definitions used across the package
@@ -313,12 +313,12 @@ textwarp/
 
 Follow these steps to run `textwarp`:
 
-1. **Prerequisites**: Verify that you have Python 3.10 or later. You can install Python at `https://www.python.org/downloads/`. Install Git at `https://git-scm.com/install/`.
+1. **Prerequisites**: Verify that you have Python 3.10 or later. You can install Python at [python.org/downloads](https://www.python.org/downloads/) and Git at [git-scm.com/install](https://git-scm.com/install/).
 
 2. **Install the package**: Install `textwarp` and its dependencies using pip.
 
     ```
-    pip install "textwarp[clipboard,markdown,nlp] @ git+[https://github.com/adamggrim/textwarp.git](https://github.com/adamggrim/textwarp.git)"
+    pip install "textwarp[clipboard,markdown,nlp] @ git+https://github.com/adamggrim/textwarp.git"
     ```
     *Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
 
