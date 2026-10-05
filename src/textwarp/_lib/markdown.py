@@ -4,7 +4,9 @@ Functions for parsing Markdown and transforming Abstract Syntax Trees
 """
 
 import contextvars
-from collections.abc import Callable
+import threading
+from collections.abc import Callable, Generator
+from contextlib import contextmanager
 from typing import Any
 
 import marko
@@ -12,7 +14,6 @@ from marko.md_renderer import MarkdownRenderer
 
 __all__ = ['process_markdown', 'strip_markdown']
 
-# Thread-safe context variable for the active transformation function.
 _active_transform: contextvars.ContextVar[Callable[[str], str] | None] = (
     contextvars.ContextVar('active_transform', default=None)
 )
@@ -29,7 +30,42 @@ class _TextwarpRenderer(MarkdownRenderer):
         return element.children
 
 
-_markdown_parser = marko.Markdown(renderer=_TextwarpRenderer)
+class _ThreadLocalMarkdownPool(threading.local):
+    """Thread-local storage for a reusable Markdown parser instance."""
+
+    def __init__(self) -> None:
+        self.parser: marko.Markdown | None = None
+        self.in_use: bool = False
+
+
+_pool = _ThreadLocalMarkdownPool()
+
+
+@contextmanager
+def _checkout_parser(
+    transform_func: Callable[[str], str]
+) -> Generator[marko.Markdown, None, None]:
+    """
+    Provide a thread-local `marko.Markdown` instance, or a temporary
+    instance if the thread's parser is already active in a nested call.
+    """
+    token = _active_transform.set(transform_func)
+    if _pool.in_use:
+        try:
+            yield marko.Markdown(renderer=_TextwarpRenderer)
+        finally:
+            _active_transform.reset(token)
+        return
+
+    if _pool.parser is None:
+        _pool.parser = marko.Markdown(renderer=_TextwarpRenderer)
+
+    _pool.in_use = True
+    try:
+        yield _pool.parser
+    finally:
+        _pool.in_use = False
+        _active_transform.reset(token)
 
 
 def process_markdown(text: str, transform_func: Callable[[str], str]) -> str:
@@ -37,11 +73,8 @@ def process_markdown(text: str, transform_func: Callable[[str], str]) -> str:
     Parse a Markdown string into an Abstract Syntax Tree (AST), apply a
     transformation function and translate the string back into Markdown.
     """
-    token = _active_transform.set(transform_func)
-    try:
-        return _markdown_parser.convert(text)
-    finally:
-        _active_transform.reset(token)
+    with _checkout_parser(transform_func) as parser:
+        return parser.convert(text)
 
 
 def strip_markdown(text: str) -> str:
