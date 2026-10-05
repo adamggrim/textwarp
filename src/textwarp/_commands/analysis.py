@@ -19,7 +19,6 @@ from textwarp._cli.formatting import (
     format_time_to_read,
     format_ttr
 )
-from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import prompt_for_integer
 from textwarp._core.context import _
 from textwarp._core.enums import CountLabels
@@ -60,28 +59,15 @@ def char_count(text: str) -> str:
     return format_count(CountLabels.CHAR.value, count)
 
 
-def entity_counts(
-    content: str | Doc,
-    count_limit: int | None = None
-) -> str:
+def entity_counts(content: str | Doc, count_limit: int) -> str:
     """
     Analyze, format and print most frequent entities output.
 
     Args:
         content: The string or spaCy `Doc` to process.
-        count_limit: Optional number of entities to return.
+        count_limit: The number of entities to return.
     """
-    if count_limit is None:
-        count_limit = prompt_for_integer(
-            _(ENTER_ENTITY_COUNT_PROMPT),
-            _(ENTER_VALID_NUMBER_PROMPT),
-            allow_early_exit=True
-        )
-        data: list[WordCount] = run_with_spinner(
-            count_entities, content, count_limit
-        )
-    else:
-        data = count_entities(content, count_limit)
+    data: list[WordCount] = count_entities(content, count_limit)
 
     if not data:
         return _(NO_ENTITIES_FOUND_MSG)

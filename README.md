@@ -11,6 +11,7 @@
 `textwarp` requires the following Python libraries:
 
 - **regex:** For regular expressions with variable-width lookbehinds
+- **seawhirl:** For accelerating terminal spinners
 - **wcwidth:** To determine terminal rendering width for multi-width characters
 
 ### Optional dependencies
@@ -194,7 +195,6 @@ textwarp/
   │ ├── pipeline.py: Pipeline output routing
   │ ├── processing.py: Execution modes for pipeline processing
   │ ├── runners.py: Main loop logic for executing commands
-  │ ├── spinner.py: CLI spinner for loading heavy dependencies
   │ ├── ui.py: Functions for handling console input and output
   │ └── validation.py: Validators for text, clipboard and regular expression content
   ├── _commands/

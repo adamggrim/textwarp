@@ -25,13 +25,7 @@ def _dummy_reverse(text: str) -> str:
 
 
 def test_apply_pipeline_analysis(monkeypatch):
-    """
-    Test that analysis commands freeze the text stream and join outputs.
-    """
-    mock_spinner = MagicMock(
-        side_effect=lambda f, *args, **kwargs: f(*args, **kwargs)
-    )
-    monkeypatch.setattr('textwarp._cli.spinner.run_with_spinner', mock_spinner)
+    monkeypatch.setattr('textwarp._cli.pipeline.Spinner', MagicMock())
 
     mock_word_count = MagicMock(
         side_effect=lambda text: f'Word count: {len(text.split())}'
@@ -69,10 +63,7 @@ def test_apply_pipeline_clear(monkeypatch):
 
 
 def test_apply_pipeline_spacy_doc_persistence(monkeypatch):
-    mock_spinner = MagicMock(
-        side_effect=lambda f, *args, **kwargs: f(*args, **kwargs)
-    )
-    monkeypatch.setattr('textwarp._cli.spinner.run_with_spinner', mock_spinner)
+    monkeypatch.setattr('textwarp._cli.pipeline.Spinner', MagicMock())
 
     class DummyDoc:
         def __init__(self, text):

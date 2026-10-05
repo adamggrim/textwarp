@@ -13,7 +13,8 @@ authors = [
   { name = "Adam Grim" }
 ]
 dependencies = [
-    "regex>=2023.6.3",
+    "regex>=2023.12.25",
+    "seawhirl @ git+https://github.com/adamggrim/seawhirl.git",
     "wcwidth>=0.2.0"
 ]
 requires-python = ">=3.10"

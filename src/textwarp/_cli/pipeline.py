@@ -15,6 +15,8 @@ if TYPE_CHECKING:
 
     from spacy.tokens import Doc
 
+from seawhirl import Spinner
+
 from textwarp._cli.args import ARGS_MAP, CommandType
 from textwarp._cli.constants.messages import (
     FILE_WRITE_ERROR_MSG,
@@ -24,7 +26,6 @@ from textwarp._cli.constants.messages import (
     REPLACEMENT_CMD_ERROR_MSG
 )
 from textwarp._cli.runners import clear_clipboard
-from textwarp._cli.spinner import run_with_spinner
 from textwarp._cli.ui import print_wrapped
 from textwarp._core.context import _
 from textwarp._core.exceptions import (
@@ -141,34 +142,9 @@ def apply_pipeline(
     content = text
 
     if imports_spacy:
-        if requires_input:
-            run_with_spinner(_preload_spacy)
-            return _run_pipeline_segment(
-                content,
-                pipeline,
-                arg_to_replace,
-                replacement_arg,
-                top=top,
-                wpm=wpm
-            )
-        else:
-            return run_with_spinner(
-                _run_pipeline_segment,
-                content,
-                pipeline,
-                arg_to_replace,
-                replacement_arg,
-                top,
-                wpm
-            )
-    else:
-        return _run_pipeline_segment(
-            content,
-            pipeline,
-            arg_to_replace,
-            replacement_arg,
-            top=top,
-            wpm=wpm
+        with Spinner():
+            return _run_pipeline_segment(text, pipeline)
+    return _run_pipeline_segment(text, pipeline)
         )
 
 
