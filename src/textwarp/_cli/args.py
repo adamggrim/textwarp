@@ -7,6 +7,11 @@ from enum import Enum, auto
 from types import ModuleType
 from typing import Any, Final
 
+from textwarp._cli.constants.messages import (
+    ENTER_ENTITY_COUNT_PROMPT,
+    ENTER_MFW_COUNT_PROMPT,
+    ENTER_WPM_PROMPT
+)
 from textwarp._core.context import N_
 
 __all__ = ['ARGS_MAP', 'CLICommand', 'CommandType', 'lazy_load']
@@ -27,8 +32,10 @@ class CLICommand:
     func: Callable[..., Any]
     help_text: str
     command_type: CommandType
-    requires_intermediate_input: bool = False
     requires_spacy: bool = False
+    arg_field: str | None = None
+    prompt_msg: str | None = None
+    replacement_prompt: Callable[[], tuple[str, str]] | None = None
 
 
 def lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
@@ -105,8 +112,9 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._commands.analysis', 'entity_counts'),
         help_text=N_('get most frequent entities'),
         command_type=CommandType.ANALYSIS,
-        requires_intermediate_input=True,
-        requires_spacy=True
+        requires_spacy=True,
+        arg_field='top',
+        prompt_msg=ENTER_ENTITY_COUNT_PROMPT
     ),
     'expand-contractions': CLICommand(
         name='expand-contractions',
@@ -174,7 +182,8 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._commands.analysis', 'mfws'),
         help_text=N_('get most frequent words'),
         command_type=CommandType.ANALYSIS,
-        requires_intermediate_input=True
+        arg_field='top',
+        prompt_msg=ENTER_MFW_COUNT_PROMPT
     ),
     'morse': CLICommand(
         name='morse',
@@ -242,19 +251,28 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         name='replace-case',
         func=lazy_load('.._commands.replacement', 'replace_case'),
         help_text=N_('find and replace a case'),
-        command_type=CommandType.REPLACEMENT
+        command_type=CommandType.REPLACEMENT,
+        replacement_prompt=lazy_load(
+            '.._cli.ui',
+            'prompt_for_replacement_case'
+        )
     ),
     'replace-regex': CLICommand(
         name='replace-regex',
         func=lazy_load('.._commands.replacement', 'replace_regex'),
         help_text=N_('find and replace a regular expression'),
-        command_type=CommandType.REPLACEMENT
+        command_type=CommandType.REPLACEMENT,
+        replacement_prompt=lazy_load(
+            '.._cli.ui',
+            'prompt_for_replacement_regex'
+        )
     ),
     'replace-text': CLICommand(
         name='replace-text',
         func=lazy_load('.._commands.replacement', 'replace_text'),
         help_text=N_('find and replace text'),
-        command_type=CommandType.REPLACEMENT
+        command_type=CommandType.REPLACEMENT,
+        replacement_prompt=lazy_load('.._cli.ui', 'prompt_for_replacement_text')
     ),
     'reverse': CLICommand(
         name='reverse',
@@ -317,7 +335,8 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._commands.analysis', 'time_to_read'),
         help_text=N_('calculate time to read'),
         command_type=CommandType.ANALYSIS,
-        requires_intermediate_input=True
+        arg_field='wpm',
+        prompt_msg=ENTER_WPM_PROMPT
     ),
     'title-case': CLICommand(
         name='title-case',

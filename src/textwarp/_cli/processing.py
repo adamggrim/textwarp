@@ -1,16 +1,15 @@
 """Execution modes for pipeline processing."""
 
+import codecs
 import mmap
 import os
 import sys
 from collections.abc import Callable, Generator, Iterator
 from contextlib import contextmanager
-from dataclasses import replace as dc_replace
 from typing import IO, Any
 
 import regex as re
 
-from textwarp._cli import ui
 from textwarp._cli.args import CommandType
 from textwarp._cli.constants.messages import (
     BINARY_FILE_ERROR_MSG,
@@ -22,11 +21,11 @@ from textwarp._cli.constants.messages import (
 from textwarp._cli.parsing import BYTES_PER_MB, ParsedArgs
 from textwarp._cli.pipeline import (
     atomic_write,
+    bind_pipeline,
     handle_output,
     is_analysis_pipeline,
     route_output,
-    route_text,
-    validate_piped_commands
+    route_text
 )
 from textwarp._cli.runners import (
     NOT_FOUND_MSG_MAP,
@@ -120,32 +119,49 @@ def _read_and_strip_file(file_path: str) -> str:
 
 def _iter_mmap_replacements(
     mm: mmap.mmap,
-    pattern: re.Pattern[bytes],
-    replacement: bytes
+    pattern: re.Pattern[str],
+    replacement: str
 ) -> Iterator[bytes]:
     """
-    Yield chunks of a memory-mapped file with replacements applied.
+    Yield UTF-8 encoded chunks of a memory-mapped file with Unicode
+    regex replacements applied safely across multi-byte boundaries.
 
     Args:
         mm: A memory-mapped file.
         pattern: A compiled regular expression pattern.
-        replacement: A byte string replacement.
+        replacement: A string replacement.
 
     Yields:
-        Chunks of the updated byte stream.
+        Chunks of the updated UTF-8 byte stream.
     """
-    last_end = 0
-
-    for match in pattern.finditer(mm):
-        start = match.start()
-        for offset in range(last_end, start, BYTES_PER_MB):
-            yield mm[offset : min(offset + BYTES_PER_MB, start)]
-        yield match.expand(replacement)
-        last_end = match.end()
-
+    decoder = codecs.getincrementaldecoder('utf-8')(errors='strict')
     mm_len = len(mm)
-    for offset in range(last_end, mm_len, BYTES_PER_MB):
-        yield mm[offset : min(offset + BYTES_PER_MB, mm_len)]
+    buffer = ''
+
+    for offset in range(0, mm_len, BYTES_PER_MB):
+        raw_chunk = mm[offset : min(offset + BYTES_PER_MB, mm_len)]
+        is_eof = (offset + BYTES_PER_MB >= mm_len)
+        buffer += decoder.decode(raw_chunk, final=is_eof)
+
+        if not is_eof:
+            split_idx = buffer.rfind('\n')
+            if split_idx == -1 and len(buffer) >= BYTES_PER_MB * 4:
+                split_idx = max(buffer.rfind(' '), buffer.rfind('\t'))
+                if split_idx == -1:
+                    split_idx = len(buffer) - 1024
+
+            if split_idx == -1:
+                continue
+
+            processable, buffer = (
+                buffer[: split_idx + 1],
+                buffer[split_idx + 1 :]
+            )
+        else:
+            processable, buffer = buffer, ''
+
+        if processable:
+            yield pattern.sub(replacement, processable).encode('utf-8')
 
 
 def _write_mmap_regex_to_stream(
@@ -172,15 +188,20 @@ def _write_mmap_regex_to_stream(
             output_stream.write(b'\n')
         return
 
-    pattern = re.compile(args.find.encode('utf-8'))
-    replacement = parse_cli_escapes(args.replace).encode('utf-8')
+    pattern = re.compile(args.find)
+    replacement = parse_cli_escapes(args.replace)
 
     with (
         _file_open(file_path, 'rb') as f,
         mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm
     ):
-        for chunk in _iter_mmap_replacements(mm, pattern, replacement):
-            output_stream.write(chunk)
+        try:
+            for chunk in _iter_mmap_replacements(mm, pattern, replacement):
+                output_stream.write(chunk)
+        except UnicodeDecodeError as e:
+            raise TextwarpError(
+                _(BINARY_FILE_ERROR_MSG).format(input_file=file_path)
+            ) from e
 
         if len(args.input_files) > 1:
             output_stream.write(b'\n')
@@ -232,11 +253,7 @@ def _process_file_stream(args: ParsedArgs) -> None:
                     result = route_text(
                         _strip_line_ending(line),
                         args.pipeline,
-                        args.markdown,
-                        args.find,
-                        args.replace,
-                        top=args.top,
-                        wpm=args.wpm
+                        args.markdown
                     )
                     if result is not None:
                         output_stream.write(result + '\n')
@@ -247,8 +264,7 @@ def _process_mixed_mmap_files(
     max_memory_bytes: int
 ) -> None:
     """
-    Process regex replacements across a mix of oversized and standard
-    files.
+    Process regex replacements across oversized and standard files.
     """
     with _open_output_stream(args.output_file, 'wb') as output_stream:
         for file_path in args.input_files:
@@ -262,11 +278,7 @@ def _process_mixed_mmap_files(
                 result = route_text(
                     text,
                     args.pipeline,
-                    args.markdown,
-                    args.find,
-                    args.replace,
-                    top=args.top,
-                    wpm=args.wpm
+                    args.markdown
                 )
                 if result is not None:
                     output_stream.write(result.encode('utf-8'))
@@ -300,11 +312,7 @@ def _process_in_memory_files(
         result = route_text(
             text,
             args.pipeline,
-            args.markdown,
-            args.find,
-            args.replace,
-            top=args.top,
-            wpm=args.wpm
+            args.markdown
         )
 
         if result is not None:
@@ -332,9 +340,7 @@ def process_file_mode(args: ParsedArgs) -> None:
         SystemExit: If the input file is unreadable or if there is an
             error writing to the output file.
     """
-    validate_piped_commands(
-        args.pipeline, args.find, args.replace, top=args.top, wpm=args.wpm
-    )
+    args = bind_pipeline(args, interactive=False)
 
     is_analysis = is_analysis_pipeline(args.pipeline)
     is_regex_only_pipeline = (
@@ -387,11 +393,7 @@ def _interactive_pipeline_runner(text: str, args: ParsedArgs) -> str | None:
     return route_text(
         text,
         args.pipeline,
-        args.markdown,
-        args.find,
-        args.replace,
-        top=args.top,
-        wpm=args.wpm
+        args.markdown
     )
 
 
@@ -449,6 +451,8 @@ def process_interactive_mode(args: ParsedArgs) -> None:
     Args:
         args: The parsed CLI arguments.
     """
+    args = bind_pipeline(args, interactive=True)
+
     replacement_cmd = next(
         (
             cmd for cmd in args.pipeline
@@ -456,18 +460,11 @@ def process_interactive_mode(args: ParsedArgs) -> None:
         ),
         None
     )
-    not_found_msg: str | None = None
-
-    if replacement_cmd is not None:
-        not_found_msg = NOT_FOUND_MSG_MAP.get(replacement_cmd.name)
-        if args.find is None or args.replace is None:
-            prompt_name = (
-                f"prompt_for_"
-                f"{replacement_cmd.name.replace('-', '_').replace('replace_', 'replacement_')}"
-            )
-            find_arg, replace_arg = getattr(ui, prompt_name)()
-            args = dc_replace(args, find=find_arg, replace=replace_arg)
-
+    not_found_msg = (
+        NOT_FOUND_MSG_MAP.get(replacement_cmd.name)
+        if replacement_cmd is not None
+        else None
+    )
     is_analysis = is_analysis_pipeline(args.pipeline)
 
     run_command_loop(
@@ -488,9 +485,7 @@ def process_piped_mode(args: ParsedArgs) -> None:
     Raises:
         SystemExit: If there is an error processing the input.
     """
-    validate_piped_commands(
-        args.pipeline, args.find, args.replace, top=args.top, wpm=args.wpm
-    )
+    args = bind_pipeline(args, interactive=False)
 
     try:
         text = _strip_line_ending(sys.stdin.read())
@@ -498,11 +493,7 @@ def process_piped_mode(args: ParsedArgs) -> None:
         result = route_text(
             text,
             args.pipeline,
-            args.markdown,
-            args.find,
-            args.replace,
-            top=args.top,
-            wpm=args.wpm
+            args.markdown
         )
 
         if result is not None:

@@ -155,9 +155,13 @@ def validate_command_combinations(
     if (args.find or args.replace) and not is_replacement_cmd:
         parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
 
+    active_arg_fields = {
+        ARGS_MAP[c].arg_field for c in active_cmds if ARGS_MAP[c].arg_field
+    }
+
     top = getattr(args, 'top', None)
     if top is not None:
-        if not any(c in {'entity-counts', 'mfws'} for c in active_cmds):
+        if 'top' not in active_arg_fields:
             parser.error(_(TOP_ARG_ERROR_MSG))
         if top <= 0:
             parser.error(
@@ -166,7 +170,7 @@ def validate_command_combinations(
 
     wpm = getattr(args, 'wpm', None)
     if wpm is not None:
-        if 'time-to-read' not in active_cmds:
+        if 'wpm' not in active_arg_fields:
             parser.error(_(WPM_ARG_ERROR_MSG))
         if wpm <= 0:
             parser.error(
