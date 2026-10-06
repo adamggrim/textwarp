@@ -4,6 +4,8 @@ import pytest
 
 from textwarp._cli.args import ARGS_MAP, CLICommand, CommandType, lazy_load
 
+_PLAIN_TEXT_QUOTE = 'An honest tale speeds best being plainly told.'
+
 
 def test_lazy_load():
     lazy_func = lazy_load('.._lib.casing', 'to_title_case')
@@ -48,8 +50,8 @@ def test_args_map_structure():
         ),
         (
             'plain-text',
-            'An honest tale speeds best being plainly told.',
-            'An honest tale speeds best being plainly told.',
+            _PLAIN_TEXT_QUOTE,
+            _PLAIN_TEXT_QUOTE,
         ),
         ('strip', '  off, you lendings  ', 'off, you lendings'),
         (

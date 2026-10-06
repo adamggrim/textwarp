@@ -44,10 +44,11 @@ def test_case_from_string_prefixed_surname_exception():
 
 
 def test_case_from_string_mixed_case():
-    assert case_from_string('camelCase') == 'camelCase'
+    mixed_word = 'camelCase'
+    assert case_from_string(mixed_word) == mixed_word
 
     assert (
-        case_from_string('camelCase', preserve_mixed_case=False) == 'Camelcase'
+        case_from_string(mixed_word, preserve_mixed_case=False) == 'Camelcase'
     )
 
 

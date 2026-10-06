@@ -21,12 +21,11 @@ def test_curly_to_straight():
 
 
 def test_remove_apostrophes():
+    single_quoted = '‘Imagine no possessions.’'
     assert remove_apostrophes(
         "I imagine they'll call for your removal"
     ) == 'I imagine theyll call for your removal'
-    assert remove_apostrophes(
-        '‘Imagine no possessions.’'
-    ) == '‘Imagine no possessions.’'
+    assert remove_apostrophes(single_quoted) == single_quoted
 
 
 def test_straight_to_curly():

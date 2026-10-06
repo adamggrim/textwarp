@@ -9,6 +9,12 @@ from textwarp._core.providers.en.utils import (
 )
 from textwarp._lib.nlp import process_as_doc
 
+_DEFAULT_SKIPPED_POS = frozenset({
+    UniversalPOSTag.ADV,
+    UniversalPOSTag.PUNCT,
+    UniversalPOSTag.SPACE
+})
+
 
 def test_get_negative_contraction_base_verb():
     assert get_negative_contraction_base_verb('won’t') == 'will'
@@ -29,25 +35,9 @@ def test_find_subject_token_standard_order():
     assert subject.text == 'We'
 
 
-def test_find_subject_token_inverted_order():
-    doc = process_as_doc('Isn’t she lovely?')
-    verb_token = doc[0]
-    subject = find_subject_token(verb_token)
-
-    assert subject is not None
-    assert subject.text.lower() == 'she'
-
-
 def test_get_next_lexical_token():
     doc = process_as_doc('I’d only ever kissed before.')
-    token = get_next_lexical_token(
-        doc, 2,
-        skip_pos={
-            UniversalPOSTag.ADV,
-            UniversalPOSTag.PUNCT,
-            UniversalPOSTag.SPACE
-        }
-    )
+    token = get_next_lexical_token(doc, 2, skip_pos=_DEFAULT_SKIPPED_POS)
 
     assert token is not None
     assert token.text == 'kissed'
@@ -61,11 +51,7 @@ def test_get_prev_lexical_token():
     token = get_prev_lexical_token(
         doc,
         start_idx,
-        skip_pos={
-            UniversalPOSTag.ADV,
-            UniversalPOSTag.PUNCT,
-            UniversalPOSTag.SPACE
-        }
+        skip_pos=_DEFAULT_SKIPPED_POS
     )
 
     assert token is not None

@@ -103,7 +103,8 @@ def test_replace_and_copy_not_found(mock_clipboard, capsys):
 
 
 def test_run_command_loop(monkeypatch, mock_clipboard):
-    mock_clipboard.copy('Tomorrow, and tomorrow, and tomorrow')
+    quote = 'Tomorrow, and tomorrow, and tomorrow'
+    mock_clipboard.copy(quote)
 
     monkeypatch.setattr('textwarp._cli.runners.get_input', lambda: False)
 
@@ -111,6 +112,4 @@ def test_run_command_loop(monkeypatch, mock_clipboard):
 
     run_command_loop(mock_command)
 
-    mock_command.assert_called_once_with(
-        'Tomorrow, and tomorrow, and tomorrow'
-    )
+    mock_command.assert_called_once_with(quote)

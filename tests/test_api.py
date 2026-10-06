@@ -4,6 +4,36 @@ import pytest
 
 import textwarp
 
+_BINARY_PLAIN = 'creatio ex nihilo'
+_BINARY_ENCODED = (
+    '01100011 01110010 01100101 01100001 01110100 01101001 '
+    '01101111 00100000 01100101 01111000 00100000 01101110 '
+    '01101001 01101000 01101001 01101100 01101111'
+)
+_CARDINAL_DATE = 'October 30'
+_ORDINAL_DATE = 'October 30th'
+_HEX_PLAIN = 'This only is the witchcraft I have used.'
+_HEX_ENCODED = (
+    '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 '
+    '69 74 63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 '
+    '73 65 64 2e'
+)
+_MORSE_PLAIN = 'What hath God wrought'
+_MORSE_ENCODED = (
+    '.-- .... .- -   .... .- - ....   --. --- -..   '
+    '.-- .-. --- ..- --. .... -'
+)
+
+
+def _assert_api_result(result, expected):
+    if expected is not None:
+        if isinstance(expected, list):
+            assert isinstance(result, list)
+        else:
+            assert result == expected
+    else:
+        assert result is not None
+
 
 @pytest.mark.parametrize(
     'func_name, text, expected',
@@ -19,7 +49,7 @@ import textwarp
             None
         ),
         ('capitalize', 'das kapital', 'Das Kapital'),
-        ('cardinal_to_ordinal', 'October 30', 'October 30th'),
+        ('cardinal_to_ordinal', _CARDINAL_DATE, _ORDINAL_DATE),
         ('count_chars', 'Six Characters in Search of an Author', 37),
         (
             'count_lines',
@@ -50,32 +80,9 @@ import textwarp
             'I’m opening out like the largest telescope that ever was!',
             'I am opening out like the largest telescope that ever was!',
         ),
-        (
-            'from_binary',
-            (
-                '01100011 01110010 01100101 01100001 01110100 01101001 '
-                '01101111 00100000 01100101 01111000 00100000 01101110 '
-                '01101001 01101000 01101001 01101100 01101111'
-            ),
-            'creatio ex nihilo',
-        ),
-        (
-            'from_hexadecimal',
-            (
-                '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 '
-                '69 74 63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 '
-                '73 65 64 2e'
-            ),
-            'This only is the witchcraft I have used.',
-        ),
-        (
-            'from_morse',
-            (
-                '.-- .... .- -   .... .- - ....   --. --- -..   .-- '
-                '.-. --- ..- --. .... -'
-            ),
-            'WHAT HATH GOD WROUGHT',
-        ),
+        ('from_binary', _BINARY_ENCODED, _BINARY_PLAIN),
+        ('from_hexadecimal', _HEX_ENCODED, _HEX_PLAIN),
+        ('from_morse', _MORSE_ENCODED, _MORSE_PLAIN.upper()),
         (
             'hyphens_to_em',
             (
@@ -88,7 +95,7 @@ import textwarp
             ),
         ),
         ('hyphens_to_en', 'Books I-XII', 'Books I–XII'),
-        ('ordinal_to_cardinal', 'October 30th', 'October 30'),
+        ('ordinal_to_cardinal', _ORDINAL_DATE, _CARDINAL_DATE),
         (
             'punct_to_inside',
             '“Get in, loser, we’re going shopping”.',
@@ -118,35 +125,12 @@ import textwarp
             'absorbent and yellow and porous',
             'aBsOrBeNt AnD yElLoW aNd PoRoUs'
         ),
-        (
-            'to_binary',
-            'creatio ex nihilo',
-            (
-                '01100011 01110010 01100101 01100001 01110100 01101001 '
-                '01101111 00100000 01100101 01111000 00100000 01101110 '
-                '01101001 01101000 01101001 01101100 01101111'
-            ),
-        ),
+        ('to_binary', _BINARY_PLAIN, _BINARY_ENCODED),
         ('to_camel_case', 'i.see.the.camel', 'iSeeTheCamel'),
         ('to_dot_case', 'lookAgainAtThatDot', 'look.again.at.that.dot'),
-        (
-            'to_hexadecimal',
-            'This only is the witchcraft I have used.',
-            (
-                '54 68 69 73 20 6f 6e 6c 79 20 69 73 20 74 68 65 20 77 '
-                '69 74 63 68 63 72 61 66 74 20 49 20 68 61 76 65 20 75 '
-                '73 65 64 2e'
-            ),
-        ),
+        ('to_hexadecimal', _HEX_PLAIN, _HEX_ENCODED),
         ('to_kebab_case', 'headsOnTheStakes', 'heads-on-the-stakes'),
-        (
-            'to_morse',
-            'What hath God wrought',
-            (
-                '.-- .... .- -   .... .- - ....   --. --- -..   '
-                '.-- .-. --- ..- --. .... -'
-            ),
-        ),
+        ('to_morse', _MORSE_PLAIN, _MORSE_ENCODED),
         ('to_pascal_case', 'laPascaline', 'LaPascaline'),
         (
             'to_sentence_case',
@@ -183,15 +167,7 @@ def test_single_arg_functions(func_name, text, expected):
     route to their underlying implementations, and execute.
     """
     func = getattr(textwarp, func_name)
-    result = func(text)
-
-    if expected is not None:
-        if isinstance(expected, list):
-            assert isinstance(result, list)
-        else:
-            assert result == expected
-    else:
-        assert result is not None
+    _assert_api_result(func(text), expected)
 
 
 @pytest.mark.parametrize(
@@ -213,12 +189,4 @@ def test_two_arg_functions(func_name, text, param, expected):
     route to their underlying implementations, and execute.
     """
     func = getattr(textwarp, func_name)
-    result = func(text, param)
-
-    if expected is not None:
-        if isinstance(expected, list):
-            assert isinstance(result, list)
-        else:
-            assert result == expected
-    else:
-        assert result is not None
+    _assert_api_result(func(text, param), expected)

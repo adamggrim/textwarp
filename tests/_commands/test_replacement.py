@@ -10,7 +10,12 @@ from textwarp._cli.constants.messages import (
 )
 from textwarp._commands import replacement
 
-CASE_TEST_STRING = 'pascal_case'
+CASE_TEST_TEXT = 'pascal_case'
+REGEX_TEST_TEXT = 'Il ne fut même plus Jean Valjean; il fut le numéro 24601.'
+TEXT_TEST_TEXT = (
+    'My heart aches, and a drowsy numbness pains\n'
+    'My sense, as though of hemlock I had drunk.'
+)
 
 
 def test_replace_case(simulate_input, capsys):
@@ -18,7 +23,7 @@ def test_replace_case(simulate_input, capsys):
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_case()
     result = replacement.replace_case(
-        CASE_TEST_STRING,
+        CASE_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
@@ -33,12 +38,12 @@ def test_replace_case_not_found(simulate_input):
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_case()
     result = replacement.replace_case(
-        CASE_TEST_STRING,
+        CASE_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
 
-    assert result == CASE_TEST_STRING
+    assert result == CASE_TEST_TEXT
 
 
 def test_replace_case_early_exit(simulate_input):
@@ -52,11 +57,11 @@ def test_replace_regex(simulate_input, capsys):
     target_regex = r'\d{5}'
     replacement_str = 'vingt-quatre mille six cent un'
 
-    simulate_input([r'[invalid', target_regex, replacement_str])
+    simulate_input([r'[javert', target_regex, replacement_str])
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_regex()
     result = replacement.replace_regex(
-        'Il ne fut même plus Jean Valjean; il fut le numéro 24601.',
+        REGEX_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
@@ -70,18 +75,16 @@ def test_replace_regex(simulate_input, capsys):
 
 
 def test_replace_regex_not_found(simulate_input):
-    simulate_input([r'\d{6}', 'replacement'])
+    simulate_input([r'\d{6}', 'Monsieur Madeleine'])
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_regex()
     result = replacement.replace_regex(
-        'Il ne fut même plus Jean Valjean; il fut le numéro 24601.',
+        REGEX_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
 
-    assert result == (
-        'Il ne fut même plus Jean Valjean; il fut le numéro 24601.'
-    )
+    assert result == REGEX_TEST_TEXT
 
 
 def test_replace_text(simulate_input, capsys):
@@ -89,8 +92,7 @@ def test_replace_text(simulate_input, capsys):
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_text()
     result = replacement.replace_text(
-        'My heart aches, and a drowsy numbness pains\n'
-        'My sense, as though of hemlock I had drunk.',
+        TEXT_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
@@ -106,13 +108,12 @@ def test_replace_text_not_found(simulate_input):
 
     arg_to_replace, replacement_arg = ui.prompt_for_replacement_text()
     result = replacement.replace_text(
-        'My heart aches, and a drowsy numbness pains\n'
-        'My sense, as though of coffee I had drunk.',
+        TEXT_TEST_TEXT,
         arg_to_replace,
         replacement_arg
     )
 
-    assert 'coffee' in result
+    assert result == TEXT_TEST_TEXT
 
 
 def test_parse_cli_escapes():

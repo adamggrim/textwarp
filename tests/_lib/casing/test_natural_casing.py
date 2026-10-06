@@ -24,10 +24,11 @@ def test_to_natural_case_sentence():
         'personality.'
     )
 
-    doc_sentence = process_as_doc('The Love Song of J. Alfred Prufrock.')
+    title_text = 'The Love Song of J. Alfred Prufrock.'
+    doc_sentence = process_as_doc(title_text)
     result = to_natural_case(doc_sentence, Casing.SENTENCE)
 
-    assert result == 'The Love Song of J. Alfred Prufrock.'
+    assert result == title_text
 
 
 def test_to_natural_case_start():

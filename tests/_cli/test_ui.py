@@ -20,6 +20,9 @@ from textwarp._cli.ui import (
     prompt_for_integer
 )
 
+_MOCK_TERM_COLS = 20
+_MAX_LINE_WIDTH = _MOCK_TERM_COLS - 1
+
 
 def test_get_input_delay(simulate_input, monkeypatch):
     mock_sleep = MagicMock()
@@ -48,7 +51,7 @@ def test_get_input_yes(simulate_input):
 
 
 def test_get_input_invalid_then_valid(simulate_input, capsys):
-    simulate_input(['invalid', 'wrong', 'y'])
+    simulate_input(['無', 'नेति नेति', 'y'])
 
     assert get_input() is True
 
@@ -63,10 +66,16 @@ def test_print_padding(capsys):
     assert captured.out == '\n'
 
 
-def test_print_wrapped(monkeypatch, capsys):
-    mock_terminal_size = MagicMock(return_value=os.terminal_size((20, 24)))
+@pytest.fixture
+def mock_narrow_terminal(monkeypatch):
+    mock_terminal_size = MagicMock(
+        return_value=os.terminal_size((_MOCK_TERM_COLS, 24))
+    )
     monkeypatch.setattr(shutil, 'get_terminal_size', mock_terminal_size)
 
+
+@pytest.mark.usefixtures('mock_narrow_terminal')
+def test_print_wrapped(capsys):
     text = (
         'It was the best of times, it was the worst of times, it was the age '
         'of wisdom, it was the age of foolishness, it was the epoch of '
@@ -86,13 +95,11 @@ def test_print_wrapped(monkeypatch, capsys):
 
     lines = captured.out.strip().split('\n')
     for line in lines:
-        assert len(line) <= 19
+        assert len(line) <= _MAX_LINE_WIDTH
 
 
-def test_print_wrapped_wide_chars(monkeypatch, capsys):
-    mock_terminal_size = MagicMock(return_value=os.terminal_size((20, 24)))
-    monkeypatch.setattr(shutil, 'get_terminal_size', mock_terminal_size)
-
+@pytest.mark.usefixtures('mock_narrow_terminal')
+def test_print_wrapped_wide_chars(capsys):
     text = (
         '水 🌊, 土 🪨, 火 🔥, 氣 💨. Long ago, the four nations lived together in '
         'harmony. Then, everything changed when the Fire Nation attacked. '
@@ -105,7 +112,7 @@ def test_print_wrapped_wide_chars(monkeypatch, capsys):
     lines = captured.out.strip().split('\n')
 
     for line in lines:
-        assert wcswidth(line) <= 19
+        assert wcswidth(line) <= _MAX_LINE_WIDTH
 
 
 def test_program_exit(capsys):
@@ -120,23 +127,33 @@ def test_prompt_for_integer_exit(simulate_input, capsys):
     simulate_input(['q'])
 
     with pytest.raises(SystemExit):
-        prompt_for_integer('Enter number:', 'Invalid', allow_early_exit=True)
+        prompt_for_integer(
+            'Mr. Turtle, how many licks does it take?',
+            'I never made it without biting. Ask Mr. Owl.',
+            allow_early_exit=True
+        )
 
     captured = capsys.readouterr()
     assert EXIT_MSG in captured.out
 
 
 def test_prompt_for_integer_valid(simulate_input):
-    simulate_input(['200'])
-    assert prompt_for_integer('Enter number:', 'Invalid number.') == 200
+    simulate_input(['3'])
+    assert prompt_for_integer(
+        'Mr. Owl, how many licks does it take?',
+        'A-one, a two-hoo, three... (CRUNCH!)'
+    ) == 3
 
 
 def test_prompt_for_integer_invalid_then_valid(simulate_input, capsys):
-    simulate_input(['abc', '-5', '0', '7'])
+    simulate_input(['owl', '-252', '0', '364'])
 
-    assert prompt_for_integer('Enter number:', 'Invalid number.') == 7
+    prompt = 'How many licks?'
+    error = 'The world may never know.'
+
+    assert prompt_for_integer(prompt, error) == 364
 
     captured = capsys.readouterr()
-    assert 'Enter number:' in captured.out
-    assert 'Invalid number.' in captured.out
-    assert captured.out.count('Invalid number.') == 3
+    assert prompt in captured.out
+    assert error in captured.out
+    assert captured.out.count(error) == 3

@@ -24,7 +24,7 @@ def test_case_names_func_map_keys():
 
 
 def test_case_names_func_map_execution():
-    test_string = 'The Strange Case of Dr Jekyll and Mr Hyde'
+    TEST_TEXT = 'The Strange Case of Dr Jekyll and Mr Hyde'
 
     expected_outputs = {
         'camel': 'theStrangeCaseOfDrJekyllAndMrHyde',
@@ -37,4 +37,4 @@ def test_case_names_func_map_execution():
     }
 
     for case, expected in expected_outputs.items():
-        assert CASE_NAMES_FUNC_MAP[case](test_string) == expected
+        assert CASE_NAMES_FUNC_MAP[case](TEST_TEXT) == expected
