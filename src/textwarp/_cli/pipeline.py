@@ -15,10 +15,17 @@ if TYPE_CHECKING:
 
     from spacy.tokens import Doc
 
+from dataclasses import replace as dc_replace
+from functools import partial
+
 from seawhirl import Spinner
+
+if TYPE_CHECKING:
+    from textwarp._cli.parsing import ParsedArgs
 
 from textwarp._cli.args import ARGS_MAP, CommandType
 from textwarp._cli.constants.messages import (
+    ENTER_VALID_NUMBER_PROMPT,
     FILE_WRITE_ERROR_MSG,
     FILE_WRITE_SUCCESS_MSG,
     INTERACTIVE_CMD_ERROR_MSG,
@@ -26,7 +33,7 @@ from textwarp._cli.constants.messages import (
     REPLACEMENT_CMD_ERROR_MSG
 )
 from textwarp._cli.runners import clear_clipboard
-from textwarp._cli.ui import print_wrapped
+from textwarp._cli.ui import print_wrapped, prompt_for_integer
 from textwarp._core.context import _
 from textwarp._core.exceptions import (
     MissingDependencyError,
@@ -39,10 +46,10 @@ from textwarp._lib.nlp import process_as_doc
 __all__ = [
     'apply_pipeline',
     'atomic_write',
+    'bind_pipeline',
     'build_pipeline',
     'handle_output',
     'is_analysis_pipeline',
-    'requires_intermediate_input',
     'route_output',
     'route_text',
     'validate_piped_commands'
@@ -51,20 +58,12 @@ __all__ = [
 
 def _run_pipeline_segment(
     content: str | Doc,
-    pipeline: Pipeline,
-    arg_to_replace: str | None,
-    replacement_arg: str | None,
-    top: int | None = None,
-    wpm: int | None = None
+    pipeline: Pipeline
 ) -> str | None:
-    """Helper to sequentially apply a list of commands to text."""
+    """Sequentially apply a list of pre-bound commands to text."""
     analysis_results: list[str] = []
 
     for cmd in pipeline:
-        if cmd.name == 'expand-contractions' and isinstance(content, str):
-            content = cmd.func(content)
-            continue
-
         if cmd.requires_spacy:
             if isinstance(content, str):
                 content = process_as_doc(content)
@@ -72,22 +71,7 @@ def _run_pipeline_segment(
             content = content.text
 
         if cmd.command_type == CommandType.ANALYSIS:
-            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
-                analysis_results.append(cmd.func(content, top))
-            elif cmd.name == 'time-to-read' and wpm is not None:
-                analysis_results.append(cmd.func(content, wpm))
-            else:
-                analysis_results.append(cmd.func(content))
-        elif (
-            cmd.command_type == CommandType.REPLACEMENT
-            and arg_to_replace is not None
-            and replacement_arg is not None
-        ):
-            content = cmd.func(
-                content,
-                arg_to_replace=arg_to_replace,
-                replacement_arg=replacement_arg
-            )
+            analysis_results.append(cmd.func(content))
         elif cmd.command_type == CommandType.STANDALONE:
             clear_clipboard()
             return None
@@ -100,52 +84,96 @@ def _run_pipeline_segment(
     return content if isinstance(content, str) else content.text
 
 
-def _preload_spacy() -> None:
-    """Helper to preload spaCy in the main process."""
-    from textwarp._lib.nlp import get_nlp
-    get_nlp()
-
-
 def apply_pipeline(
     text: str | Doc,
-    pipeline: Pipeline,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None,
-    top: int | None = None,
-    wpm: int | None = None
+    pipeline: Pipeline
 ) -> str | None:
     """
-    Apply a sequence of pipeline functions to a string.
+    Apply a sequence of pre-bound pipeline functions to a string.
 
     Args:
         text: The string or spaCy `Doc` to transform.
-        pipeline: A list of tuples containing:
-            - The CLI argument string (e.g., `word-count`).
-            - The corresponding callable function (e.g., `word_count`).
-        arg_to_replace: The case, regex or target substring, if
-            provided. Defaults to `None`.
-        replacement_arg: The replacement case, regex or substring, if
-            provided. Defaults to `None`.
-        top: The number of ranked items to display. Defaults to `None`.
-        wpm: The words per minute. Defaults to `None`.
+        pipeline: A list of `CLICommand` objects with bound parameters.
 
     Returns:
         str | None: The transformed string after applying all functions
-            from the pipeline, or `None` if the pipeline executes an
-            analysis command.
+            from the pipeline, or `None` if the pipeline executes a
+            standalone command.
     """
     imports_spacy = any(cmd.requires_spacy for cmd in pipeline)
-    requires_input = requires_intermediate_input(
-        pipeline, arg_to_replace, replacement_arg, top=top, wpm=wpm
-    )
-
-    content = text
 
     if imports_spacy:
         with Spinner():
             return _run_pipeline_segment(text, pipeline)
     return _run_pipeline_segment(text, pipeline)
+
+
+def bind_pipeline(
+    args: ParsedArgs,
+    interactive: bool = False
+) -> ParsedArgs:
+    """
+    Parse command parameters from CLI flags or interactive prompts and
+    bind them to the pipeline's command functions.
+
+    Args:
+        args: The parsed CLI arguments.
+        interactive: Whether to prompt the user for missing arguments.
+            Raises `TextwarpValidationError` if `False`.
+
+    Returns:
+        ParsedArgs: Updated arguments containing the pre-bound pipeline.
+    """
+    if not interactive:
+        validate_piped_commands(
+            args.pipeline,
+            args.find,
+            args.replace,
+            top=args.top,
+            wpm=args.wpm
         )
+
+    bound_pipeline: Pipeline = []
+
+    for cmd in args.pipeline:
+        if cmd.command_type == CommandType.REPLACEMENT:
+            find_val, replace_val = args.find, args.replace
+            if (find_val is None or replace_val is None) and interactive:
+                assert cmd.replacement_prompt is not None
+                find_val, replace_val = cmd.replacement_prompt()
+                args = dc_replace(args, find=find_val, replace=replace_val)
+
+            if find_val is not None and replace_val is not None:
+                cmd = dc_replace(
+                    cmd,
+                    func=partial(
+                        cmd.func,
+                        arg_to_replace=find_val,
+                        replacement_arg=replace_val
+                    )
+                )
+
+        elif cmd.arg_field is not None:
+            val = getattr(args, cmd.arg_field, None)
+            if val is None and interactive and cmd.prompt_msg is not None:
+                val = prompt_for_integer(
+                    _(cmd.prompt_msg),
+                    _(ENTER_VALID_NUMBER_PROMPT),
+                    allow_early_exit=True
+                )
+                args = dc_replace(args, **{cmd.arg_field: val})
+
+            if val is not None:
+                cmd = dc_replace(
+                    cmd,
+                    func=partial(cmd.func, count_limit=val)
+                    if cmd.arg_field == 'top'
+                    else partial(cmd.func, wpm=val)
+                )
+
+        bound_pipeline.append(cmd)
+
+    return dc_replace(args, pipeline=bound_pipeline)
 
 
 def build_pipeline(
@@ -267,33 +295,6 @@ def is_analysis_pipeline(pipeline: Pipeline) -> bool:
     return any(cmd.command_type == CommandType.ANALYSIS for cmd in pipeline)
 
 
-def requires_intermediate_input(
-    pipeline: Pipeline,
-    arg_to_replace: str | None,
-    replacement_arg: str | None,
-    top: int | None = None,
-    wpm: int | None = None
-) -> bool:
-    """
-    Check whether the pipeline contains commands that prompt for input
-    after the initial argument.
-    """
-    for cmd in pipeline:
-        if cmd.requires_intermediate_input:
-            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
-                continue
-            if cmd.name == 'time-to-read' and wpm is not None:
-                continue
-            return True
-        if (
-            cmd.command_type == CommandType.REPLACEMENT
-            and (arg_to_replace is None or replacement_arg is None)
-        ):
-            return True
-
-    return False
-
-
 def route_output(
     result: str,
     output_file: str | None,
@@ -333,37 +334,22 @@ def route_output(
 def route_text(
     text: str,
     pipeline: Pipeline,
-    parse_markdown: bool,
-    arg_to_replace: str | None = None,
-    replacement_arg: str | None = None,
-    top: int | None = None,
-    wpm: int | None = None
+    parse_markdown: bool
 ) -> str | None:
     """
     Determine whether to process text as Markdown or a plain string.
 
     Args:
         text: The input text to process.
-        pipeline: The pipeline list of command tuples.
+        pipeline: The pipeline list of pre-bound `CLICommand` objects.
         parse_markdown: Whether to parse text as Markdown.
-        arg_to_replace: The case, regex or target substring.
-        replacement_arg: The replacement case, regex or substring.
-        top: The number of ranked items to display. Defaults to `None`.
-        wpm: The words per minute. Defaults to `None`.
 
     Returns:
         str | None: The transformed text after processing, or `None` if
-            the pipeline executed an analysis command.
+            the pipeline executed a standalone command.
     """
     if not parse_markdown:
-        return apply_pipeline(
-            text,
-            pipeline,
-            arg_to_replace,
-            replacement_arg,
-            top=top,
-            wpm=wpm
-        )
+        return apply_pipeline(text, pipeline)
 
     try:
         from textwarp._lib.markdown import process_markdown, strip_markdown
@@ -374,28 +360,14 @@ def route_text(
 
     if is_analysis_pipeline(pipeline):
         stripped = strip_markdown(text)
-        return apply_pipeline(
-            stripped,
-            pipeline,
-            arg_to_replace,
-            replacement_arg,
-            top=top,
-            wpm=wpm
-        )
+        return apply_pipeline(stripped, pipeline)
     else:
         def transform_chunk(chunk: str) -> str:
             """
             Transform a chunk of text from the Markdown Abstract Syntax
             Tree (AST).
             """
-            res = apply_pipeline(
-                chunk,
-                pipeline,
-                arg_to_replace,
-                replacement_arg,
-                top=top,
-                wpm=wpm
-            )
+            res = apply_pipeline(chunk, pipeline)
             return res if res is not None else chunk
 
         return process_markdown(text, transform_chunk)
@@ -405,31 +377,27 @@ def validate_piped_commands(
     pipeline: Pipeline,
     arg_to_replace: str | None,
     replacement_arg: str | None,
-    top: int | None = None,
-    wpm: int | None = None
+    **kwargs: Any
 ) -> None:
     """
     Ensure that commands requiring intermediate input are not used in
     pipeline/file mode without the necessary arguments.
 
     Args:
-        pipeline: A list of tuples containing command names and their
-            corresponding functions.
+        pipeline: A list of `CLICommand` objects.
         arg_to_replace: The case, regex or target substring, if
             provided.
         replacement_arg: The replacement case, regex or substring, if
             provided.
+        **kwargs: Optional command parameter values keyed by `arg_field`
+            (e.g., `top`, `wpm`).
 
     Raises:
-            TextwarpValidationError: For an intermediate input command
-                used in pipeline mode.
+        TextwarpValidationError: For an intermediate input command
+            used in pipeline mode without its required flag.
     """
     for cmd in pipeline:
-        if cmd.requires_intermediate_input:
-            if cmd.name in {'entity-counts', 'mfws'} and top is not None:
-                continue
-            if cmd.name == 'time-to-read' and wpm is not None:
-                continue
+        if cmd.arg_field is not None and kwargs.get(cmd.arg_field) is None:
             raise TextwarpValidationError(
                 _(INTERACTIVE_CMD_ERROR_MSG).format(cmd_name=cmd.name)
             )
