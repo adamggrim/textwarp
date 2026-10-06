@@ -36,7 +36,7 @@ def replace_case(
 
 def replace_regex(
     text: str,
-    regex_text: str,
+    regex_pattern: str | re.Pattern[str],
     replacement_text: str
 ) -> str:
     """
@@ -45,13 +45,15 @@ def replace_regex(
 
     Args:
         text: The string to transform.
-        regex_text: The regular expression to find.
+        regex_pattern: The regular expression string or compiled pattern.
         replacement_text: The replacement text.
 
     Returns:
         str: The transformed text.
     """
-    return re.sub(regex_text, replacement_text, text)
+    if isinstance(regex_pattern, re.Pattern):
+        return regex_pattern.sub(replacement_text, text)
+    return re.sub(regex_pattern, replacement_text, text)
 
 
 def replace_text(
