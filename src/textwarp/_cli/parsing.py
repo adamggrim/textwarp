@@ -4,7 +4,7 @@ import argparse
 import sys
 from dataclasses import dataclass
 from importlib.metadata import PackageNotFoundError, version
-from typing import Final
+from typing import Final, NoReturn
 
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import HELP_DESCRIPTION
@@ -17,7 +17,13 @@ from textwarp._cli.validation import (
 from textwarp._core.context import _
 from textwarp._core.types import Pipeline
 
-__all__ = ['BYTES_PER_MB', 'DEFAULT_MAX_FILE_MB', 'ParsedArgs', 'parse_args']
+__all__ = [
+    'BYTES_PER_MB',
+    'DEFAULT_MAX_FILE_MB',
+    'ParsedArgs',
+    'TextwarpArgumentParser',
+    'parse_args'
+]
 
 BYTES_PER_MB: Final = 1024 * 1024
 DEFAULT_MAX_FILE_MB: Final = 100
@@ -45,6 +51,14 @@ class ParsedArgs:
     max_file_mb: int
     top: int | None = None
     wpm: int | None = None
+
+
+class TextwarpArgumentParser(argparse.ArgumentParser):
+    """Custom `ArgumentParser` for clean CLI error messages."""
+
+    def error(self, message: str) -> NoReturn:
+        formatted = message[0].upper() + message[1:] if message else message
+        self.exit(2, _('\nError: {message}\n').format(message=formatted))
 
 
 def parse_args() -> ParsedArgs:
@@ -95,7 +109,7 @@ def parse_args() -> ParsedArgs:
         else:
             epilog_lines.append(f"{' ' * _INDENT}{arg_key:<{_CMD_WIDTH}}")
 
-    parser = argparse.ArgumentParser(
+    parser = TextwarpArgumentParser(
         prog='textwarp',
         formatter_class=formatter,
         description=_(HELP_DESCRIPTION),
