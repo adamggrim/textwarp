@@ -7,12 +7,15 @@ from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 from textwarp._core.utils import load_json_data
 
 __all__ = [
+    'AUX_DEP_TAGS',
     'BASE_VERB_TAGS',
     'CURLY_TO_STRAIGHT_TABLE',
+    'DEMONSTRATIVE_PRONOUNS',
     'HAVE_AUXILIARIES',
     'LEFT_SEARCH_STOP_TAGS',
     'NOUN_PHRASE_TAGS',
     'NOUN_TAGS',
+    'NSUBJ_DEP_TAGS',
     'OPEN_QUOTES',
     'ORDINAL_SUFFIX_MAP',
     'ORDINAL_SUFFIXES',
@@ -31,14 +34,18 @@ __all__ = [
     'WH_WORDS'
 ]
 
+AUX_DEP_TAGS: Final[frozenset[str]] = frozenset({'aux', 'auxpass'})
 BASE_VERB_TAGS: frozenset[str]
-COMPOUND_DEP_TAGS: Final[frozenset[str]] = frozenset({'compound', 'flat', 'name'})
+COMPOUND_DEP_TAGS: Final[frozenset[str]] = frozenset(
+    {'compound', 'flat', 'name'}
+)
 CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
     '‘': "'",
     '’': "'",
     '“': '"',
     '”': '"'
 })
+DEMONSTRATIVE_PRONOUNS: Final[frozenset[str]] = frozenset({'that', 'this'})
 HAVE_AUXILIARIES: frozenset[str]
 LEFT_SEARCH_STOP_TAGS: frozenset[str]
 NOUN_PHRASE_TAGS: frozenset[str]
@@ -46,6 +53,7 @@ NOUN_TAGS: Final[frozenset[UniversalPOSTag]] = frozenset(
     {UniversalPOSTag.NOUN,
      UniversalPOSTag.PROPN}
 )
+NSUBJ_DEP_TAGS: Final[frozenset[str]] = frozenset({'nsubj', 'nsubjpass'})
 OPEN_QUOTES: frozenset[str]
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',

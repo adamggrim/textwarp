@@ -21,6 +21,20 @@ __all__ = [
 ]
 
 
+def _is_demonstrative_subject(token: Token) -> bool:
+    """
+    Determine if a token is a demonstrative pronoun ('that', 'this')
+    acting as a subject before a determiner (e.g., 'Ain't That a
+    Shame').
+    """
+    doc = token.doc
+    return (
+        token.lower_ in en.constants.DEMONSTRATIVE_PRONOUNS
+        and token.i + 1 < len(doc)
+        and doc[token.i + 1].pos_ == UniversalPOSTag.DET
+    )
+
+
 def find_subject_end_token(subject_token: Token) -> Token:
     """
     Find the final token of a subject phrase in an inverted contraction.
@@ -77,14 +91,28 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
     doc = verb_token.doc
 
-    for child in verb_token.children:
-        if child.dep_ in {'nsubj', 'nsubjpass'}:
-            return child
+    # Find the index immediately after the contraction suffix.
+    right_start_idx = verb_token.i + 1
+    if (
+        right_start_idx < len(doc)
+        and doc[right_start_idx].lower_
+        in en.expansion.variants.N_T_SUFFIX_VARIANTS
+    ):
+        right_start_idx += 1
 
-    if verb_token.dep_ in {'aux', 'auxpass'}:
-        for child in verb_token.head.children:
-            if child.dep_ in {'nsubj', 'nsubjpass'}:
-                return child
+    dep_candidates = list(verb_token.children)
+    if verb_token.dep_ in en.constants.AUX_DEP_TAGS:
+        dep_candidates.extend(verb_token.head.children)
+
+    for child in dep_candidates:
+        if child.dep_ in en.constants.NSUBJ_DEP_TAGS:
+            # If the parser found a subject to the right, ensure it did
+            # not skip over an intervening demonstrative pronoun.
+            if child.i > right_start_idx:
+                for k in range(right_start_idx, child.i):
+                    if _is_demonstrative_subject(doc[k]):
+                        return doc[k]
+            return child
 
     # Fallback A: Look immediately before the verb (standard order).
     for curr_idx in range(verb_token.i - 1, -1, -1):
@@ -95,19 +123,15 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
             break
 
     # Fallback B: Look immediately after the suffix (inverted order).
-    start_idx = verb_token.i + 1
-    if (
-        start_idx < len(doc)
-        and doc[start_idx].lower_ in en.expansion.variants.N_T_SUFFIX_VARIANTS
-    ):
-        start_idx += 1
+    end_idx = min(right_start_idx + 6, len(doc))
 
-    end_idx = min(start_idx + 6, len(doc))
-
-    for j in range(start_idx, end_idx):
+    for j in range(right_start_idx, end_idx):
         candidate = doc[j]
 
-        if candidate.pos_ in en.constants.SUBJECT_POS_TAGS:
+        if (
+            candidate.pos_ in en.constants.SUBJECT_POS_TAGS
+            or _is_demonstrative_subject(candidate)
+        ):
             return candidate
         if candidate.pos_ in en.constants.RIGHT_SEARCH_STOP_TAGS:
             break
