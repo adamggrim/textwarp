@@ -1,3 +1,5 @@
+"""Tests for JSON data integrity and casing maps."""
+
 import importlib.resources
 import json
 

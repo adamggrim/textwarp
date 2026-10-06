@@ -1,3 +1,5 @@
+"""Sets for accepted CLI inputs."""
+
 from textwarp._core.context import _
 
 __all__ = [
