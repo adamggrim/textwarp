@@ -43,7 +43,12 @@ def apply_expansion_casing(
             tokens = span_context.sent
         except ValueError:
             tokens = span_context.doc
-        words = [t.text for t in tokens if t.is_alpha]
+        words = [
+            t.text for t in tokens
+            if t.is_alpha
+            and t.tag_ not in ctx.provider.title_case_tag_exceptions
+            and not ctx.provider.should_always_lowercase(t.text)
+        ]
     else:
         words = original_text.split()
 
