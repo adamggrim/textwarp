@@ -13,11 +13,46 @@ from textwarp._core.providers import en
 from textwarp._lib.punctuation import curly_to_straight
 
 __all__ = [
+    'find_subject_end_token',
     'find_subject_token',
     'get_negative_contraction_base_verb',
     'get_next_lexical_token',
-    'get_prev_lexical_token'
+    'get_prev_lexical_token',
 ]
+
+
+def find_subject_end_token(subject_token: Token) -> Token:
+    """
+    Find the final token of a subject phrase in an inverted contraction.
+    """
+    if subject_token.pos_ in {UniversalPOSTag.PRON, UniversalPOSTag.DET}:
+        return subject_token
+
+    doc = subject_token.doc
+
+    while (
+        subject_token.dep_ in en.constants.SUBJECT_MODIFIER_DEP_TAGS
+        and subject_token.head.i > subject_token.i
+    ):
+        subject_token = subject_token.head
+
+    subject_end_token = subject_token.right_edge
+
+    while subject_end_token.i + 1 < len(doc):
+        next_token = doc[subject_end_token.i + 1]
+        if next_token.dep_ in en.constants.COMPOUND_DEP_TAGS or (
+            next_token.is_title
+            and subject_end_token.is_title
+            and next_token.pos_ not in {
+                UniversalPOSTag.VERB,
+                UniversalPOSTag.AUX
+            }
+        ):
+            subject_end_token = next_token
+        else:
+            break
+
+    return subject_end_token
 
 
 def find_subject_token(verb_token: Token | None) -> Token | None:

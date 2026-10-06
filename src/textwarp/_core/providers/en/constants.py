@@ -32,6 +32,7 @@ __all__ = [
 ]
 
 BASE_VERB_TAGS: frozenset[str]
+COMPOUND_DEP_TAGS: Final[frozenset[str]] = frozenset({'compound', 'flat', 'name'})
 CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
     '‘': "'",
     '’': "'",
@@ -41,7 +42,10 @@ CURLY_TO_STRAIGHT_TABLE: Final[dict[int, str]] = str.maketrans({
 HAVE_AUXILIARIES: frozenset[str]
 LEFT_SEARCH_STOP_TAGS: frozenset[str]
 NOUN_PHRASE_TAGS: frozenset[str]
-NOUN_TAGS: Final[frozenset[UniversalPOSTag]] = frozenset({UniversalPOSTag.NOUN, UniversalPOSTag.PROPN})
+NOUN_TAGS: Final[frozenset[UniversalPOSTag]] = frozenset(
+    {UniversalPOSTag.NOUN,
+     UniversalPOSTag.PROPN}
+)
 OPEN_QUOTES: frozenset[str]
 ORDINAL_SUFFIX_MAP: Final[dict[int, str]] = {
     1: 'st',
@@ -82,6 +86,9 @@ PROPER_NOUN_ENTITIES: frozenset[str]
 QUOTATION_MARKS: frozenset[str] = frozenset({'"', "'"})
 RIGHT_SEARCH_STOP_TAGS: frozenset[str]
 SINGULAR_NOUN_TAGS: frozenset[str]
+SUBJECT_MODIFIER_DEP_TAGS: Final[frozenset[str]] = frozenset(
+     {'amod', 'compound', 'flat', 'name', 'nmod'}
+ )
 SUBJECT_POS_TAGS: frozenset[str]
 THIRD_PERSON_SINGULAR_PRONOUNS: frozenset[str]
 TITLE_CASE_TAG_EXCEPTIONS: frozenset[str]

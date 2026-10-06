@@ -41,25 +41,7 @@ def _expand_inverted_negative(
             1. The expanded version of the matched contraction.
             2. The end index of the expanded contraction.
     """
-    while (
-        subject_token.dep_ in {'compound', 'amod', 'nmod', 'flat', 'name'}
-        and subject_token.head.i > subject_token.i
-    ):
-        subject_token = subject_token.head
-
-    subject_end_token = subject_token.right_edge
-
-    while subject_end_token.i + 1 < len(doc):
-        next_token = doc[subject_end_token.i + 1]
-        if next_token.dep_ in {'compound', 'flat', 'name'} or (
-            next_token.is_title
-            and subject_end_token.is_title
-            and subject_end_token.pos_ != 'PRON'
-            and next_token.pos_ not in {'VERB', 'AUX'}
-        ):
-            subject_end_token = next_token
-        else:
-            break
+    subject_end_token = en.utils.find_subject_end_token(subject_token)
 
     if subject_end_token.i < span.end:
         subject_end_token = subject_token
