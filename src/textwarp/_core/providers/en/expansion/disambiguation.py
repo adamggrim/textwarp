@@ -119,7 +119,7 @@ def disambiguate_ain_t(span: Span) -> str:
         subj_text = subject_token.lower_
         is_singular = (
             subj_text in en.constants.THIRD_PERSON_SINGULAR_PRONOUNS
-            or subject_token.tag_ in en.constants.NOUN_TAGS
+            or subject_token.tag_ in en.constants.SINGULAR_NOUN_TAGS
         )
         is_first_person_i = (subj_text == 'i')
 
