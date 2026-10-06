@@ -60,13 +60,13 @@ def load_json_data(
     locale: str | None = None
 ) -> Any:
     """
-    Load JSON content from the data directory, optionally scoped by
-    locale.
+    Load JSON content from the universal data directory or a
+    locale-specific provider's data directory.
 
     Args:
         relative_path: The path to the JSON file relative to the data
             directory.
-        locale: An optional locale for the path (e.g., 'en').
+        locale: An optional locale for the provider (e.g., 'en').
 
     Returns:
         Any: The loaded JSON content.
@@ -74,12 +74,11 @@ def load_json_data(
     pkg_files = importlib.resources.files(__package__.split('.')[0])
 
     if locale:
-        parts = (locale,) + Path(relative_path).parts
+        resource = pkg_files / '_core' / 'providers' / locale / 'data'
     else:
-        parts = Path(relative_path).parts
+        resource = pkg_files / '_core' / 'data'
 
-    resource = pkg_files / '_core' / 'data'
-    for part in parts:
+    for part in Path(relative_path).parts:
         resource = resource / part
 
     return json.loads(resource.read_text(encoding='utf-8'))

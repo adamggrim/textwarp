@@ -211,49 +211,48 @@ textwarp/
   │ │ ├── __init__.py: Exposes constants for use across the package
   │ │ └── maps.py: Maps used across the package for lookups
   │ ├── data/
-  │ │ ├── en/
-  │ │ │ ├── contraction_expansion/
-  │ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
-  │ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
-  │ │ │ │ ├── idioms.json: Maps idiomatic phrases to their expansions
-  │ │ │ │ ├── infinitive_exceptions.json: Lists words that expand to "to" despite noun tags
-  │ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
-  │ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
-  │ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
-  │ │ │ ├── entity_casing/
-  │ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
-  │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
-  │ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
-  │ │ │ ├── nlp_constants/
-  │ │ │ │ ├── base_verb_tags.json: Lists fine-grained part-of-speech tags for base verb forms
-  │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
-  │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking left
-  │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained part-of-speech tags for the first word of a noun phrase
-  │ │ │ │ ├── open_quotes.json: Lists opening quote characters
-  │ │ │ │ ├── participle_tags.json: Lists fine-grained part-of-speech tags for past tense and past participle verb forms
-  │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
-  │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking right
-  │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained part-of-speech tags for singular nouns and proper nouns
-  │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained part-of-speech tags for pronouns, proper nouns and nouns
-  │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
-  │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained part-of-speech tag exceptions for title case capitalization
-  │ │ │ │ └── wh_words.json: Lists wh-words that start questions
-  │ │ │ ├── string_casing/
-  │ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
-  │ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
-  │ │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
-  │ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
-  │ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
-  │ │ │ │ └── surname_prefixes.json: Lists common name prefixes
-  │ │ │ ├── token_casing/
-  │ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
-  │ │ │ └── elision_words.json: Lists commonly elided words
   │ │ └── morse_map.json: Maps characters to their Morse code equivalent
   │ ├── providers/
   │ │ ├── en/
   │ │ │ ├── data/
+  │ │ │ │ ├── contraction_expansion/
+  │ │ │ │ │ ├── ambiguous_contractions.json: Lists contractions with multiple possible expansions
+  │ │ │ │ │ ├── common_stateless_participles.json: Lists common stateless participles
+  │ │ │ │ │ ├── idioms.json: Maps idiomatic phrases to their expansions
+  │ │ │ │ │ ├── infinitive_exceptions.json: Lists words that expand to "to" despite noun tags
+  │ │ │ │ │ ├── unambiguous_contractions_map.json: Maps each contraction to a single expansion
+  │ │ │ │ │ ├── whatcha_are_words.json: Lists words that expand to "are" in "whatcha" expansion
+  │ │ │ │ │ └── whatcha_have_words.json: Lists words that expand to "have" in "whatcha" expansion
+  │ │ │ │ ├── entity_casing/
+  │ │ │ │ │ ├── absolute_casings_map.json: Maps entities that are always capitalized the same way
+  │ │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
+  │ │ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
+  │ │ │ │ ├── nlp_constants/
+  │ │ │ │ │ ├── base_verb_tags.json: Lists fine-grained part-of-speech tags for base verb forms
+  │ │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
+  │ │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking left
+  │ │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained part-of-speech tags for the first word of a noun phrase
+  │ │ │ │ │ ├── open_quotes.json: Lists opening quote characters
+  │ │ │ │ │ ├── participle_tags.json: Lists fine-grained part-of-speech tags for past tense and past participle verb forms
+  │ │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
+  │ │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking right
+  │ │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained part-of-speech tags for singular nouns and proper nouns
+  │ │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained part-of-speech tags for pronouns, proper nouns and nouns
+  │ │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
+  │ │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained part-of-speech tag exceptions for title case capitalization
+  │ │ │ │ │ └── wh_words.json: Lists wh-words that start questions
+  │ │ │ │ ├── string_casing/
+  │ │ │ │ │ ├── absolute_casings_map.json: Maps words that are always cased the same way to their cased version
+  │ │ │ │ │ ├── lowercase_abbreviations.json: Lists abbreviations that should always be lowercase
+  │ │ │ │ │ ├── map_suffix_exceptions.json: Lists suffixes to split off from map-capitalized words
+  │ │ │ │ │ ├── prefixed_surnames_map.json: Maps prefixed surnames to their capitalized version
+  │ │ │ │ │ ├── surname_prefix_exceptions.json: Lists words that start with surname prefixes but are not surnames
+  │ │ │ │ │ └── surname_prefixes.json: Lists common name prefixes
+  │ │ │ │ ├── token_casing/
+  │ │ │ │ │ └── lowercase_particles.json: List of name particles to keep lowercase
   │ │ │ │ ├── __init__.py: Exposes English-specific data modules
   │ │ │ │ ├── contraction_expansion.py: Functions for loading English contraction expansion rules
+  │ │ │ │ ├── elision_words.json: Lists commonly elided words
   │ │ │ │ ├── entity_casing.py: Functions for loading English entity casing rules
   │ │ │ │ ├── punctuation.py: Functions for loading English punctuation rules
   │ │ │ │ ├── string_casing.py: Functions for loading English string casing exceptions and prefixes
