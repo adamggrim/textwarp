@@ -166,3 +166,36 @@ def test_missing_marko_dependency(monkeypatch, capsys):
         pipeline.route_text(
             '## Rain also is of the process', pipeline=[], parse_markdown=True
         )
+
+
+def test_bind_pipeline_interactive_analysis_prompt(monkeypatch):
+    mock_prompt = MagicMock(return_value=8)
+    monkeypatch.setattr(
+        'textwarp._cli.pipeline.prompt_for_integer', mock_prompt
+    )
+
+    from textwarp._cli.args import ARGS_MAP
+    from textwarp._cli.parsing import DEFAULT_MAX_FILE_MB, ParsedArgs
+
+    args = ParsedArgs(
+        pipeline=[ARGS_MAP['mfws']],
+        lang='en',
+        input_files=[],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False,
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB
+    )
+
+    bound_args = pipeline.bind_pipeline(args, interactive=True)
+
+    mock_prompt.assert_called_once()
+    assert bound_args.top == 8
+    result = pipeline.apply_pipeline(
+        'punch wine bread cheese apples pipes and tobacco',
+        bound_args.pipeline
+    )
+    assert "'pipes'" in result
