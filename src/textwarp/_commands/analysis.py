@@ -4,13 +4,7 @@ from __future__ import annotations
 
 from spacy.tokens import Doc
 
-from textwarp._cli.constants.messages import (
-    ENTER_ENTITY_COUNT_PROMPT,
-    ENTER_MFW_COUNT_PROMPT,
-    ENTER_VALID_NUMBER_PROMPT,
-    ENTER_WPM_PROMPT,
-    NO_ENTITIES_FOUND_MSG
-)
+from textwarp._cli.constants.messages import NO_ENTITIES_FOUND_MSG
 from textwarp._cli.formatting import (
     format_count,
     format_entity_counts,
@@ -19,7 +13,6 @@ from textwarp._cli.formatting import (
     format_time_to_read,
     format_ttr
 )
-from textwarp._cli.ui import prompt_for_integer
 from textwarp._core.context import _
 from textwarp._core.enums import CountLabels
 from textwarp._core.models import POSCounts, WordCount
@@ -85,25 +78,14 @@ def line_count(text: str) -> str:
     return format_count(CountLabels.LINE.value, count)
 
 
-
-def mfws(
-    content: str | Doc,
-    count_limit: int | None = None
-) -> str:
+def mfws(content: str | Doc, count_limit: int) -> str:
     """
     Analyze, format and print most frequent words output.
 
     Args:
         content: The string or spaCy `Doc` to process.
-        count_limit: Optional number of most frequent words to return.
+        count_limit: The number of most frequent words to return.
     """
-    if count_limit is None:
-        count_limit = prompt_for_integer(
-            _(ENTER_MFW_COUNT_PROMPT),
-            _(ENTER_VALID_NUMBER_PROMPT),
-            allow_early_exit=True
-        )
-
     data: list[WordCount] = count_mfws(content, count_limit)
 
     return format_mfws(data)
@@ -131,24 +113,14 @@ def sentence_count(text: str) -> str:
     return format_count(CountLabels.SENTENCE.value, count)
 
 
-def time_to_read(
-    content: str | Doc,
-    wpm: int | None = None
-) -> str:
+def time_to_read(content: str | Doc, wpm: int) -> str:
     """
     Analyze, format and print time-to-read output.
 
     Args:
         content: The string or spaCy `Doc` to process.
-        wpm: Optional reading speed in words per minute.
+        wpm: The reading speed in words per minute.
     """
-    if wpm is None:
-        wpm = prompt_for_integer(
-            _(ENTER_WPM_PROMPT),
-            _(ENTER_VALID_NUMBER_PROMPT),
-            allow_early_exit=True
-        )
-
     text = content if isinstance(content, str) else content.text
     minutes: int = calculate_time_to_read(text, wpm)
 
