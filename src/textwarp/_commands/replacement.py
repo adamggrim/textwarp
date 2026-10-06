@@ -1,5 +1,7 @@
 """Runners for find-and-replace commands."""
 
+from functools import cache
+
 import regex as re
 
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
@@ -37,6 +39,16 @@ def parse_cli_escapes(text: str) -> str:
 
     # Match a backslash followed by "n", "r", "t" or another backslash.
     return re.sub(_ESCAPE_PATTERN, _replace_escape, text)
+
+
+@cache
+def _prepare_regex_replacement(
+    arg_to_replace: str,
+    replacement_arg: str
+) -> tuple[re.Pattern[str], str]:
+    """Validate, compile and cache the regex pattern and escape sequences."""
+    validate_regex(arg_to_replace)
+    return re.compile(arg_to_replace), parse_cli_escapes(replacement_arg)
 
 
 def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
@@ -77,11 +89,12 @@ def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
     Returns:
         str: The transformed text.
     """
-    validate_regex(arg_to_replace)
-    parsed_replacement = parse_cli_escapes(replacement_arg)
+    compiled_pattern, parsed_replacement = _prepare_regex_replacement(
+        arg_to_replace, replacement_arg
+    )
 
     return lib_replacement.replace_regex(
-        text, arg_to_replace, parsed_replacement
+        text, compiled_pattern, parsed_replacement
     )
 
 
