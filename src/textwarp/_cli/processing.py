@@ -303,7 +303,7 @@ def _process_in_memory_files(
                 file_path=file_path,
                 error=_(
                     FILE_SIZE_LIMIT_ERROR_MSG
-                ).format(limit=args.max_file_mb)
+                ).format(max=args.max_file_mb)
             )
             print_wrapped(f'Warning: {warning_msg}')
             continue

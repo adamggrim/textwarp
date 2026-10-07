@@ -109,7 +109,7 @@ FILE_NOT_FOUND_CMD_HINT_ERROR_MSG: Final = N_(
     "File '{file}' not found. Did you mean command '{match}'?"
 )
 FILE_SIZE_LIMIT_ERROR_MSG: Final = N_(
-    'File exceeds {limit}MB limit.'
+    'File exceeds {max}MB limit.'
 )
 FILE_WRITE_ERROR_MSG: Final = N_('Error writing to output file: {error}')
 FILE_WRITE_SUCCESS_MSG: Final = N_(
