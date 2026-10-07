@@ -115,6 +115,9 @@ options:
   --debug                  enable debug mode to show full error tracebacks
   -f FIND, --find FIND     text, case or regular expression to find
   -r TEXT, --replace TEXT  replacement text
+  --max-file-mb MB         maximum file size for in-memory processing
+  -n N, --number N         number of ranked items to display for analysis
+  -w WPM, --wpm WPM        words per minute for analysis
 
 commands:
   alternating-caps     cOnVeRt To AlTeRnAtInG cApS
@@ -185,7 +188,7 @@ textwarp/
   ├── _cli/
   │ ├── constants/
   │ │ ├── __init__.py: Exposes CLI inputs and messages
-  │ │ ├── inputs.py: Sets for CLI input
+  │ │ ├── inputs.py: Sets for accepted CLI inputs
   │ │ └── messages.py: Strings for displaying CLI messages
   │ ├── __init__.py: Initializes the _cli sub-package
   │ ├── args.py: A map of CLI arguments to functions and help messages
