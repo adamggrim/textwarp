@@ -152,7 +152,10 @@ def validate_command_combinations(
         )
 
     is_replacement_cmd = len(active_replacements) > 0
-    if (args.find or args.replace) and not is_replacement_cmd:
+    if (
+        (args.find is not None or args.replace is not None)
+        and not is_replacement_cmd
+    ):
         parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
 
     active_arg_fields = {
