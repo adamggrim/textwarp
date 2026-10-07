@@ -7,7 +7,6 @@ from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal
 
 @pytest.mark.parametrize('cardinal, expected_ordinal', [
     ('1', '1st'),
-    ('1', '1st'),
     ('2', '2nd'),
     ('3', '3rd'),
     ('5', '5th'),
@@ -27,7 +26,8 @@ def test_cardinal_to_ordinal_in_text():
 
 
 def test_cardinal_to_ordinal_ignores_decimals():
-    assert cardinal_to_ordinal('811.52') == '811.52'
+    decimal_str = '811.52'
+    assert cardinal_to_ordinal(decimal_str) == decimal_str
 
 
 @pytest.mark.parametrize('ordinal, expected_cardinal', [

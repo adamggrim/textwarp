@@ -13,8 +13,8 @@ from textwarp._core.providers.en.data.entity_casing import get_absolute_map
 
 
 def get_json_files():
-    """Helper function to find all JSON files in the data directory."""
-    data_dir = importlib.resources.files('textwarp').joinpath('_core', 'data')
+    """Helper function to find all JSON files in `_core`."""
+    core_dir = importlib.resources.files('textwarp').joinpath('_core')
 
     def _find_json(directory):
         for item in directory.iterdir():
@@ -23,7 +23,7 @@ def get_json_files():
             elif item.name.endswith('.json'):
                 yield item
 
-    return list(_find_json(data_dir))
+    return list(_find_json(core_dir))
 
 
 def test_absolute_casings_keys_are_lowercase():

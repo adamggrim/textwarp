@@ -7,7 +7,7 @@ import pexpect
 import pytest
 import regex as re
 
-from tests.helpers import normalize_output
+from tests.helpers import make_parsed_args, normalize_output
 from textwarp._cli import processing
 from textwarp._cli.args import ARGS_MAP
 from textwarp._cli.constants.messages import (
@@ -17,7 +17,7 @@ from textwarp._cli.constants.messages import (
     FILE_WRITE_SUCCESS_MSG,
     MODIFIED_TEXT_COPIED_MSG
 )
-from textwarp._cli.parsing import BYTES_PER_MB, DEFAULT_MAX_FILE_MB, ParsedArgs
+from textwarp._cli.parsing import BYTES_PER_MB, DEFAULT_MAX_FILE_MB
 from textwarp._core.exceptions import TextwarpError
 
 
@@ -31,21 +31,7 @@ def test_process_file_mode_binary_file(tmp_path):
     binary_file = tmp_path / 'las_meninas.png'
     binary_file.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
 
-    pipeline = [ARGS_MAP['uppercase']]
-
-    args = ParsedArgs(
-        pipeline=pipeline,
-        lang='en',
-        input_files=[str(binary_file)],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
-    )
-
+    args = make_parsed_args(input_files=[str(binary_file)])
     expected_msg = BINARY_FILE_ERROR_MSG.format(input_file=str(binary_file))
 
     with pytest.raises(TextwarpError, match=re.escape(expected_msg)):
@@ -53,21 +39,8 @@ def test_process_file_mode_binary_file(tmp_path):
 
 
 def test_process_file_mode_file_not_found():
-    pipeline = [ARGS_MAP['uppercase']]
     missing_file = 'airy_nothing.txt'
-
-    args = ParsedArgs(
-        pipeline=pipeline,
-        lang='en',
-        input_files=[missing_file],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
-    )
+    args = make_parsed_args(input_files=[missing_file])
 
     expected_prefix = FILE_ACCESS_ERROR_MSG.format(
         file_path=missing_file, error=''
@@ -88,24 +61,16 @@ def test_process_file_mode_oversized_file_warning(
         encoding='utf-8'
     )
 
-    args = ParsedArgs(
-        pipeline=[ARGS_MAP['uppercase']],
-        lang='en',
+    args = make_parsed_args(
         input_files=[str(input_file)],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=True,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
+        copy_to_clipboard=True
     )
 
     processing.process_file_mode(args)
 
     captured = capsys.readouterr()
     expected_error = FILE_SIZE_LIMIT_ERROR_MSG.format(
-        limit=DEFAULT_MAX_FILE_MB
+        max=DEFAULT_MAX_FILE_MB
     )
     expected_warning = normalize_output(
         FILE_ACCESS_ERROR_MSG.format(
@@ -127,17 +92,11 @@ def test_process_file_mode_oversized_regex_routing(
         encoding='utf-8'
     )
 
-    args = ParsedArgs(
+    args = make_parsed_args(
         pipeline=[ARGS_MAP['replace-regex']],
-        lang='en',
         input_files=[str(input_file)],
-        output_file=None,
-        markdown=False,
         find=r'(?<!no eran )gigantes',
-        replace='molinos de viento',
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
+        replace='molinos de viento'
     )
 
     mock_mmap_regex = MagicMock()
@@ -145,9 +104,12 @@ def test_process_file_mode_oversized_regex_routing(
 
     processing.process_file_mode(args)
 
-    mock_mmap_regex.assert_called_once_with(
-        str(input_file), args, sys.stdout.buffer
-    )
+    mock_mmap_regex.assert_called_once()
+    call_args = mock_mmap_regex.call_args[0]
+    assert call_args[0] == str(input_file)
+    assert call_args[1].find == args.find
+    assert call_args[1].replace == args.replace
+    assert call_args[2] is sys.stdout.buffer
 
 
 def test_process_file_mode_success(tmp_path, capsys):
@@ -155,19 +117,9 @@ def test_process_file_mode_success(tmp_path, capsys):
     input_file.write_text('copier comme autrefois', encoding='utf-8')
     output_file = tmp_path / 'pecuchet.txt'
 
-    pipeline = [ARGS_MAP['uppercase']]
-
-    args = ParsedArgs(
-        pipeline=pipeline,
-        lang='en',
+    args = make_parsed_args(
         input_files=[str(input_file)],
-        output_file=str(output_file),
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
+        output_file=str(output_file)
     )
 
     processing.process_file_mode(args)
@@ -193,18 +145,7 @@ def test_process_interactive_mode_replacement(monkeypatch):
     )
     monkeypatch.setattr(processing, 'run_command_loop', mock_loop)
 
-    args = ParsedArgs(
-        pipeline=[ARGS_MAP['replace-case']],
-        lang='en',
-        input_files=[],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
-    )
+    args = make_parsed_args(pipeline=[ARGS_MAP['replace-case']])
 
     processing.process_interactive_mode(args)
 
@@ -227,17 +168,12 @@ def test_process_mmap_regex_multiple_files(tmp_path):
     )
     output_file = tmp_path / 'hephaestus.txt'
 
-    args = ParsedArgs(
+    args = make_parsed_args(
         pipeline=[ARGS_MAP['replace-regex']],
-        lang='en',
         input_files=[str(input_file1), str(input_file2)],
         output_file=str(output_file),
-        markdown=False,
         find=r'(?:τέτταρας|ἕκαστον)',
-        replace='δύο',
-        copy_to_clipboard=False,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
+        replace='δύο'
     )
 
     processing.process_file_mode(args)
@@ -260,20 +196,7 @@ def test_process_piped_mode_copy_flag(
     mock_read = MagicMock(return_value='Ceci n’est pas une pipe\n')
     monkeypatch.setattr(sys.stdin, 'read', mock_read)
 
-    pipeline = [ARGS_MAP['uppercase']]
-
-    args = ParsedArgs(
-        pipeline=pipeline,
-        lang='en',
-        input_files=[],
-        output_file=None,
-        markdown=False,
-        find=None,
-        replace=None,
-        copy_to_clipboard=True,
-        debug=False,
-        max_file_mb=DEFAULT_MAX_FILE_MB
-    )
+    args = make_parsed_args(copy_to_clipboard=True)
 
     processing.process_piped_mode(args)
 

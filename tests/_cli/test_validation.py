@@ -22,6 +22,7 @@ from textwarp._cli.constants.messages import (
     UNRECOGNIZED_CMD_ERROR_MSG,
     UNRECOGNIZED_CMD_HINT_ERROR_MSG
 )
+from textwarp._cli.parsing import TextwarpArgumentParser
 from textwarp._cli.validation import (
     validate_case_name,
     validate_clipboard,
@@ -83,7 +84,7 @@ def test_validate_clipboard():
 
 
 def test_validate_regex():
-    validate_regex(r'^[a-z]+$')
+    validate_regex(r'^(\w)(?:(?1)|\w?)\1$')
     validate_regex(r'(?<=madeleine)À la recherche du temps perdu')
 
     with pytest.raises(NoRegexError, match=re.escape(REGEX_EMPTY_ERROR_MSG)):
@@ -102,7 +103,7 @@ def test_validate_text():
 
 
 def test_validate_command_combinations_mutually_exclusive(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
     active_cmds = ['clear', 'uppercase']
 
@@ -110,11 +111,13 @@ def test_validate_command_combinations_mutually_exclusive(capsys):
         validate_command_combinations(active_cmds, args, parser)
 
     captured = capsys.readouterr()
-    assert EXCLUSIVE_CMD_ERROR_MSG.format(cmd='clear') in captured.err
+    expected = f"Error: {EXCLUSIVE_CMD_ERROR_MSG.format(cmd='clear')}"
+    assert expected in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_command_combinations_multiple_replacements(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
     active_cmds = ['replace-text', 'replace-case']
 
@@ -122,14 +125,15 @@ def test_validate_command_combinations_multiple_replacements(capsys):
         validate_command_combinations(active_cmds, args, parser)
 
     captured = capsys.readouterr()
-    expected = MULTIPLE_REPLACEMENT_ERROR_MSG.format(
+    expected_msg = MULTIPLE_REPLACEMENT_ERROR_MSG.format(
         commands='replace-text, replace-case'
     )
-    assert expected in captured.err
+    assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_command_combinations_analysis_order(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
     args = argparse.Namespace(find=None, replace=None, markdown=False)
 
     active_cmds_valid = ['uppercase', 'word-count', 'char-count']
@@ -140,11 +144,13 @@ def test_validate_command_combinations_analysis_order(capsys):
         validate_command_combinations(active_cmds_invalid, args, parser)
 
     captured = capsys.readouterr()
-    assert ANALYSIS_ORDER_ERROR_MSG.format(cmd='uppercase') in captured.err
+    expected = f"Error: {ANALYSIS_ORDER_ERROR_MSG.format(cmd='uppercase')}"
+    assert expected in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_command_combinations_stray_find_replace(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
     args = argparse.Namespace(
         find='apple', replace='knowledge', markdown=False
     )
@@ -154,48 +160,54 @@ def test_validate_command_combinations_stray_find_replace(capsys):
         validate_command_combinations(active_cmds, args, parser)
 
     captured = capsys.readouterr()
-    assert FIND_REPLACE_ARG_ERROR_MSG in captured.err
+    assert f'Error: {FIND_REPLACE_ARG_ERROR_MSG}' in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_positional_args_unrecognized_cmd(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
         validate_positional_args([], ['camelcase'], parser)
 
     captured = capsys.readouterr()
-    expected = UNRECOGNIZED_CMD_HINT_ERROR_MSG.format(
+    expected_msg = UNRECOGNIZED_CMD_HINT_ERROR_MSG.format(
         cmd='camelcase', match='camel-case'
     )
-    assert expected in captured.err
+    assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_positional_args_unrecognized_cmd_no_hint(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
-        validate_positional_args([], ['zzzzzzzzzz'], parser)
+        validate_positional_args([], ['raphèl-mai-amècche-zabì-almi'], parser)
 
     captured = capsys.readouterr()
-    expected = UNRECOGNIZED_CMD_ERROR_MSG.format(cmd='zzzzzzzzzz')
-    assert expected in captured.err
+    expected_msg = UNRECOGNIZED_CMD_ERROR_MSG.format(
+        cmd='raphèl-mai-amècche-zabì-almi'
+    )
+    assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_positional_args_cmd_after_file(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
         validate_positional_args(
-            ['uppercase'], ['missing.txt', 'lowercase'], parser
+            ['uppercase'], ['button.txt', 'lowercase'], parser
         )
 
     captured = capsys.readouterr()
-    expected = CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
-    assert expected in captured.err
+    expected_msg = CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
+    assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err
 
 
 def test_validate_positional_args_file_not_found_cmd_hint(capsys):
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
         validate_positional_args(
@@ -203,7 +215,8 @@ def test_validate_positional_args_file_not_found_cmd_hint(capsys):
         )
 
     captured = capsys.readouterr()
-    expected = FILE_NOT_FOUND_CMD_HINT_ERROR_MSG.format(
+    expected_msg = FILE_NOT_FOUND_CMD_HINT_ERROR_MSG.format(
         file='camelcase', match='camel-case'
     )
-    assert expected in captured.err
+    assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err

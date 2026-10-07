@@ -1,6 +1,5 @@
 """Tests for analysis commands."""
 
-from textwarp._cli.constants.messages import ENTER_VALID_NUMBER_PROMPT
 from textwarp._commands import analysis
 
 
@@ -9,19 +8,15 @@ def test_char_count():
     assert 'Character count: 16' in result
 
 
-def test_entity_counts(simulate_input, capsys):
-    simulate_input(['invalid', '3'])
-
+def test_entity_counts():
     result = analysis.entity_counts(
         'How a Ship having passed the Line was driven by storms to the cold '
         'Country towards the South Pole; and how from thence she made her '
         'course to the tropical Latitude of the Great Pacific Ocean; and of '
         'the strange things that befell; and in what manner the Ancyent '
-        'Marinere came back to his own Country.'
+        'Marinere came back to his own Country.',
+        limit=3
     )
-    captured = capsys.readouterr()
-
-    assert ENTER_VALID_NUMBER_PROMPT in captured.out
 
     lines = [line for line in result.split('\n') if line.strip()]
     assert len(lines) <= 3
@@ -40,20 +35,18 @@ def test_line_count():
     assert 'Line count: 4' in result
 
 
-def test_mfws(simulate_input, capsys):
-    simulate_input(['invalid', '2'])
-
-    result = analysis.mfws('Rose is a rose is a rose is a rose.')
-    captured = capsys.readouterr()
-
-    assert ENTER_VALID_NUMBER_PROMPT in captured.out
+def test_mfws():
+    result = analysis.mfws(
+        'Rose is a rose is a rose is a rose.',
+        limit=2
+    )
 
     assert 'rose' in result
     assert 'is' in result
 
 
 def test_pos_counts():
-    result = analysis.pos_counts('Colorless green ideas sleep furiously.')
+    result = analysis.pos_counts('The present King of France is bald.')
 
     lines = [line for line in result.split('\n') if line.strip()]
     assert len(lines) > 0
@@ -73,14 +66,10 @@ def test_sentence_count():
     assert 'Sentence count: 2' in result
 
 
-def test_time_to_read(simulate_input, capsys):
-    simulate_input(['wrong', '250'])
+def test_time_to_read():
     text = 'A Brief History of Time ' * 300
 
-    result = analysis.time_to_read(text)
-    captured = capsys.readouterr()
-
-    assert ENTER_VALID_NUMBER_PROMPT in captured.out
+    result = analysis.time_to_read(text, wpm=250)
 
     assert '6 minutes to read' in result
 

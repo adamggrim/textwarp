@@ -75,9 +75,8 @@ def test_main_sets_locale(monkeypatch):
 
 
 def test_main_global_exception_handler(monkeypatch, capsys):
-    mock_parse_args = MagicMock(
-        side_effect=ValueError('Unexpected configuration error')
-    )
+    error_msg = '’Tis all in pieces, all coherence gone'
+    mock_parse_args = MagicMock(side_effect=ValueError(error_msg))
     monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
 
     with pytest.raises(SystemExit) as excinfo:
@@ -85,14 +84,14 @@ def test_main_global_exception_handler(monkeypatch, capsys):
 
     assert excinfo.value.code == 1
     captured = capsys.readouterr()
-    assert 'Unexpected configuration error' in captured.out
+    assert error_msg in captured.out
 
 
 def test_main_global_exception_handler_debug_mode(monkeypatch):
     mock_args = ParsedArgs(
         pipeline=[ARGS_MAP['lowercase']],
         lang='en',
-        input_files=['dummy.txt'],
+        input_files=['electrum.txt'],
         output_file=None,
         markdown=False,
         find=None,

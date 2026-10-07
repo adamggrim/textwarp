@@ -6,10 +6,11 @@ from textwarp._lib.cleaning import strip_html, to_single_spaces
 
 
 def test_strip_html():
+    plain_text = 'I edit Wikipedia.'
     assert strip_html(
         '<p>I do HTML for ’em <b>all</b>!</p>'
     ) == 'I do HTML for ’em all!'
-    assert strip_html('I edit Wikipedia.') == 'I edit Wikipedia.'
+    assert strip_html(plain_text) == plain_text
     assert strip_html(
         'AV club &lt; glee club &gt; chess team'
     ) == 'AV club < glee club > chess team'

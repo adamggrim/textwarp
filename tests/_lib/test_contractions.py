@@ -6,14 +6,17 @@ from textwarp._lib.contractions import (
 )
 from textwarp._lib.nlp import process_as_doc
 
+CANT_EXPANDED = 'can not'
 
 def test_apply_expansion_casing_lower():
-    assert apply_expansion_casing('can’t', 'can not') == 'can not'
+    assert apply_expansion_casing('can’t', CANT_EXPANDED) == CANT_EXPANDED
 
 
 def test_apply_expansion_casing_upper():
-    assert apply_expansion_casing('CAN’T', 'can not') == 'CAN NOT'
-
+    assert apply_expansion_casing(
+        'CAN’T',
+        CANT_EXPANDED,
+    ) == CANT_EXPANDED.upper()
 
 def test_apply_expansion_casing_sentence():
     assert apply_expansion_casing('Won’t', 'will not') == 'Will not'
@@ -23,7 +26,10 @@ def test_apply_expansion_casing_sentence():
 
 
 def test_apply_expansion_casing_title():
-    assert apply_expansion_casing('Don’t Don’t', 'do not do not') == 'Do Not Do Not'
+    assert apply_expansion_casing(
+        'Don’t Don’t',
+        'do not do not'
+    ) == 'Do Not Do Not'
 
 
 def test_expand_contractions_no_contractions():
@@ -75,4 +81,6 @@ def test_expand_contractions_chained():
         'I shouldn’t’ve said that. I should not have said that.'
     )
     result = expand_contractions(doc)
-    assert result == 'I should not have said that. I should not have said that.'
+    assert result == (
+        'I should not have said that. I should not have said that.'
+    )

@@ -1,6 +1,5 @@
 """Tests for pipeline output routing."""
 
-import argparse
 import sys
 from unittest.mock import MagicMock
 
@@ -10,6 +9,7 @@ import regex as re
 from textwarp._cli import pipeline
 from textwarp._cli.args import CLICommand, CommandType
 from textwarp._cli.constants.messages import REPLACEMENT_CMD_ERROR_MSG
+from textwarp._cli.parsing import TextwarpArgumentParser
 from textwarp._core.exceptions import (
     MissingDependencyError,
     TextwarpValidationError
@@ -40,11 +40,14 @@ def test_apply_pipeline_analysis(monkeypatch):
         CLICommand('char-count', mock_char_count, '', CommandType.ANALYSIS)
     ]
 
-    result = pipeline.apply_pipeline('Test text', test_pipeline)
+    result = pipeline.apply_pipeline(
+        'To number the streaks of the tulip',
+        test_pipeline
+    )
 
-    assert 'Word count: 2' in result
-    assert 'Character count: 9' in result
-    assert result == 'Word count: 2\nCharacter count: 9'
+    assert 'Word count: 7' in result
+    assert 'Character count: 34' in result
+    assert result == 'Word count: 7\nCharacter count: 34'
     mock_word_count.assert_called_once()
     mock_char_count.assert_called_once()
 
@@ -57,7 +60,10 @@ def test_apply_pipeline_clear(monkeypatch):
     test_pipeline = [
         CLICommand('clear', lambda x: x, '', CommandType.STANDALONE)
     ]
-    pipeline.apply_pipeline('some text', test_pipeline)
+    pipeline.apply_pipeline(
+        'scribit damnatque tabellas, et notat et delet',
+        test_pipeline
+    )
 
     mock_clear.assert_called_once()
 
@@ -95,11 +101,10 @@ def test_apply_pipeline_spacy_doc_persistence(monkeypatch):
         )
     ]
 
-    result = pipeline.apply_pipeline(
-        'La persistència de la memòria', test_pipeline
-    )
+    input_text = 'La persistència de la memòria'
+    result = pipeline.apply_pipeline(input_text, test_pipeline)
 
-    assert result == 'La persistència de la memòria'
+    assert result == input_text
     assert mock_spacy_cmd.call_count == 2
 
     first_call_arg = mock_spacy_cmd.call_args_list[0][0][0]
@@ -125,23 +130,23 @@ def test_build_valid_pipeline():
     Test building a pipeline with multiple valid, non-conflicting
     commands.
     """
-    parser = argparse.ArgumentParser()
+    parser = TextwarpArgumentParser()
     active_cmds = ['strip', 'lowercase', 'snake-case']
     pipeline_result = pipeline.build_pipeline(active_cmds, parser)
 
-    assert len(pipeline_result) == 3
+    assert len(pipeline_result) == len(active_cmds)
     cmd_names = [cmd.name for cmd in pipeline_result]
-    assert cmd_names == ['strip', 'lowercase', 'snake-case']
+    assert cmd_names == active_cmds
 
 
 def test_build_valid_single_command():
-    parser = argparse.ArgumentParser()
-    active_cmds = ['camel-case']
-    pipeline_result = pipeline.build_pipeline(active_cmds, parser)
+    parser = TextwarpArgumentParser()
+    cmd_name = 'camel-case'
+    pipeline_result = pipeline.build_pipeline([cmd_name], parser)
 
     assert len(pipeline_result) == 1
     cmd = pipeline_result[0]
-    assert cmd.name == 'camel-case'
+    assert cmd.name == cmd_name
     assert callable(cmd.func)
 
 
@@ -157,7 +162,7 @@ def test_validate_piped_commands_rejects_replacement():
         pipeline.validate_piped_commands(test_pipeline, None, None)
 
 
-def test_missing_marko_dependency(monkeypatch, capsys):
+def test_missing_marko_dependency(monkeypatch):
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 
     with pytest.raises(
@@ -193,7 +198,7 @@ def test_bind_pipeline_interactive_analysis_prompt(monkeypatch):
     bound_args = pipeline.bind_pipeline(args, interactive=True)
 
     mock_prompt.assert_called_once()
-    assert bound_args.top == 8
+    assert bound_args.number == 8
     result = pipeline.apply_pipeline(
         'punch wine bread cheese apples pipes and tobacco',
         bound_args.pipeline
