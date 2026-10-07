@@ -46,8 +46,7 @@ def apply_expansion_casing(
         words = [
             t.text for t in tokens
             if t.is_alpha
-            and t.tag_ not in ctx.provider.title_case_tag_exceptions
-            and not ctx.provider.should_always_lowercase(t.text)
+            and ctx.provider.should_capitalize_in_title(t)
         ]
     else:
         words = original_text.split()

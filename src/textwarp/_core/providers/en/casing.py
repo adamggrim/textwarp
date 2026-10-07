@@ -1,13 +1,20 @@
 """English-specific string casing logic."""
 
+from __future__ import annotations
+
 from collections.abc import Callable, Mapping
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Token
 
 from textwarp._core.constants import patterns
 from textwarp._core.providers import en
 
 __all__ = [
     'case_from_string',
-    'should_always_lowercase'
+    'is_lowercase_particle_or_affix',
+    'should_capitalize_in_title'
 ]
 
 
@@ -223,10 +230,10 @@ def case_from_string(
     return word.capitalize() if not lowercase_by_default else lower_word
 
 
-def should_always_lowercase(text: str) -> bool:
+def is_lowercase_particle_or_affix(text: str) -> bool:
     """
-    Determine if a specific token string should always be lowercase
-    (e.g., particles like "von" or contraction suffixes like "n't").
+    Determine if a specific token string is a lowercase particle (e.g.,
+    "von") or contraction suffix (e.g., "n't").
     """
     return (
         text.lower() in en.data.token_casing.get_lowercase_particles()
@@ -235,3 +242,15 @@ def should_always_lowercase(text: str) -> bool:
             .fullmatch(text)
         )
     )
+
+
+def should_capitalize_in_title(token: Token) -> bool:
+    """
+    Determine whether to capitalize a spaCy `Token` for title case
+    based on part of speech or length.
+    """
+    if is_lowercase_particle_or_affix(token.text):
+        return False
+    if len(token.text) >= 5:
+        return True
+    return token.tag_ not in en.constants.TITLE_CASE_TAG_EXCEPTIONS

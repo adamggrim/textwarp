@@ -13,9 +13,9 @@ from textwarp import (
     count_sents,
     count_words
 )
+from textwarp._core.context import ctx
 from textwarp._core.enums import ModelPriority
 from textwarp._core.models import POSCounts
-from textwarp._lib.analysis import _extract_uax29_words
 from textwarp._lib.nlp import _load_spacy_model, get_nlp
 
 CALCULATE_TTR_TEXT = (
@@ -179,7 +179,7 @@ def test_extract_uax29_words():
         'balloonMan         whistles'
     )
 
-    words = _extract_uax29_words(original)
+    words = ctx.provider.extract_words(original)
 
     assert 'it’s' in words
     assert 'goat' in words

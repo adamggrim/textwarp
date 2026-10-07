@@ -1,10 +1,14 @@
 """English-specific functions handling punctuation."""
 
+import regex as re
+
 from textwarp._core.providers import en
 from textwarp._core.providers.en.constants import CURLY_TO_STRAIGHT_TABLE
 
 __all__ = [
     'curly_to_straight',
+    'punct_to_inside',
+    'punct_to_outside',
     'remove_apostrophes',
     'straight_to_curly'
 ]
@@ -21,6 +25,29 @@ def curly_to_straight(text: str) -> str:
         str: The converted string.
     """
     return text.translate(CURLY_TO_STRAIGHT_TABLE)
+
+
+def punct_to_inside(text: str) -> str:
+    """
+    Move periods and commas at the end of quotes inside quotation marks.
+    """
+    def _repl(match: re.Match[str]) -> str:
+        quote, punct = match.groups()
+        return f'{punct}{quote}'
+
+    return en.patterns.get_punct_outside().sub(_repl, text)
+
+
+def punct_to_outside(text: str) -> str:
+    """
+    Move periods and commas at the end of quotes outside quotation
+    marks.
+    """
+    def _repl(match: re.Match[str]) -> str:
+        punct, quote = match.groups()
+        return f'{quote}{punct}'
+
+    return en.patterns.get_punct_inside().sub(_repl, text)
 
 
 def remove_apostrophes(text: str) -> str:

@@ -1,7 +1,5 @@
 """Functions handling punctuation."""
 
-import regex as re
-
 from textwarp._core.constants import patterns
 from textwarp._core.context import ctx
 
@@ -43,15 +41,7 @@ def punct_to_inside(text: str) -> str:
     """
     Move periods and commas at the end of quotes inside quotation marks.
     """
-    pattern = ctx.provider.punct_outside_pattern
-    if not pattern:
-        return text
-
-    def _repl(match: re.Match[str]) -> str:
-        quote, punct = match.groups()
-        return f'{punct}{quote}'
-
-    return pattern.sub(_repl, text)
+    return ctx.provider.punct_to_inside(text)
 
 
 def punct_to_outside(text: str) -> str:
@@ -59,18 +49,7 @@ def punct_to_outside(text: str) -> str:
     Move periods and commas at the end of quotes to outside quotation
     marks.
     """
-    pattern = ctx.provider.punct_inside_pattern
-    if not pattern:
-        return text
-
-    def _repl(match: re.Match[str]) -> str:
-        """
-        Reorder periods and commas to move them outside quotation marks.
-        """
-        punct, quote = match.groups()
-        return f'{quote}{punct}'
-
-    return pattern.sub(_repl, text)
+    return ctx.provider.punct_to_outside(text)
 
 
 def remove_apostrophes(text: str) -> str:

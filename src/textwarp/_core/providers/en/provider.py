@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import regex as re
 
 if TYPE_CHECKING:
-    from spacy.tokens import Doc
+    from spacy.tokens import Doc, Span, Token
 
     from textwarp._core.types import EntityCasingContext
 
@@ -28,19 +28,6 @@ class EnglishProvider(LanguageProvider):
         return en.data.entity_casing.get_absolute_map()
 
     @property
-    def apostrophe_in_word_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching either apostrophes within words
-        or elisions.
-        """
-        return en.patterns.get_apostrophe_in_word()
-
-    @property
-    def base_verb_tags(self) -> frozenset[str]:
-        """Fine-grained part-of-speech tags for base verb forms."""
-        return en.constants.BASE_VERB_TAGS
-
-    @property
     def contextual_casings_map(self) -> Mapping[
         str, tuple['EntityCasingContext', ...]
     ]:
@@ -48,76 +35,43 @@ class EnglishProvider(LanguageProvider):
         return en.data.entity_casing.get_contextual_map()
 
     @property
-    def have_auxiliaries(self) -> frozenset[str]:
-        """Auxiliary verbs forms of "have"."""
-        return en.constants.HAVE_AUXILIARIES
-
-    @property
-    def noun_phrase_tags(self) -> frozenset[str]:
-        """
-        Fine-grained part-of-speech tags for the first word of a noun
-        phrase.
-        """
-        return en.constants.NOUN_PHRASE_TAGS
-
-    @property
-    def noun_tags(self) -> frozenset[UniversalPOSTag]:
-        """English part-of-speech tags for nouns."""
-        return en.constants.NOUN_TAGS
-
-    @property
     def open_quotes(self) -> frozenset[str]:
         """Opening quote characters for the locale."""
         return en.constants.OPEN_QUOTES
 
     @property
-    def participle_tags(self) -> frozenset[str]:
-        """
-        Fine-grained part-of-speech tags for past tense and past
-        participle verb forms. (Fine-grained tags used to distinguish
-        verb tense.)
-        """
-        return en.constants.PARTICIPLE_TAGS
-
-
-    @property
     def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
-        """English part-of-speech tags and their localized labels."""
+        """Part-of-speech tags and their localized labels."""
         return en.constants.POS_TAGS
 
     @property
+    def pos_mapping(self) -> Mapping[UniversalPOSTag, MainPOSTag]:
+        """Mapping of Universal POS tags to Main POS tags."""
+        return {
+            UniversalPOSTag.ADJ: MainPOSTag.ADJ,
+            UniversalPOSTag.ADP: MainPOSTag.ADP,
+            UniversalPOSTag.ADV: MainPOSTag.ADV,
+            UniversalPOSTag.AUX: MainPOSTag.VERB,
+            UniversalPOSTag.CCONJ: MainPOSTag.CONJ,
+            UniversalPOSTag.DET: MainPOSTag.ADJ,
+            UniversalPOSTag.INTJ: MainPOSTag.INTJ,
+            UniversalPOSTag.NOUN: MainPOSTag.NOUN,
+            UniversalPOSTag.PART: MainPOSTag.ADV,
+            UniversalPOSTag.PRON: MainPOSTag.PRON,
+            UniversalPOSTag.PROPN: MainPOSTag.NOUN,
+            UniversalPOSTag.SCONJ: MainPOSTag.CONJ,
+            UniversalPOSTag.VERB: MainPOSTag.VERB
+        }
+
+    @property
     def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
-        """part-of-speech tags that count as distinct words in English."""
+        """Part-of-speech tags that count as distinct words."""
         return en.constants.POS_WORD_TAGS
 
     @property
     def proper_noun_entities(self) -> frozenset[str]:
         """Named entities that are typically proper nouns."""
         return en.constants.PROPER_NOUN_ENTITIES
-
-    @property
-    def punct_inside_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching punctuation inside quotation
-        marks.
-        """
-        return en.patterns.get_punct_inside()
-
-    @property
-    def punct_outside_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching punctuation outside quotation
-        marks.
-        """
-        return en.patterns.get_punct_outside()
-
-    @property
-    def singular_noun_tags(self) -> frozenset[str]:
-        """
-        Fine-grained part-of-speech tags for singular nouns and proper
-        nouns.
-        """
-        return en.constants.SINGULAR_NOUN_TAGS
 
     @property
     def spacy_models(self) -> tuple[str, ...]:
@@ -128,28 +82,6 @@ class EnglishProvider(LanguageProvider):
             'en_core_web_lg',
             'en_core_web_trf'
         )
-
-    @property
-    def third_person_singular_pronouns(self) -> frozenset[str]:
-        """
-        Third-person singular pronouns for subject-verb agreement
-        checks.
-        """
-        return en.constants.THIRD_PERSON_SINGULAR_PRONOUNS
-
-    @property
-    def title_case_tag_exceptions(self) -> frozenset[str]:
-        """
-        Fine-grained part-of-speech tag exceptions for title case
-        capitalization. (Fine-grained tags used to distinguish articles
-        from possessives.)
-        """
-        return en.constants.TITLE_CASE_TAG_EXCEPTIONS
-
-    @property
-    def wh_words(self) -> frozenset[str]:
-        """Wh-words that start questions."""
-        return en.constants.WH_WORDS
 
     def cardinal_to_ordinal(self, text: str) -> str:
         """
@@ -199,6 +131,50 @@ class EnglishProvider(LanguageProvider):
         """
         return en.punctuation.curly_to_straight(text)
 
+    def extract_words(self, text: str) -> list[str]:
+        """
+        Extract words using Unicode Standard Annex (UAX) #29 text 
+        segmentation.
+        """
+        pattern = re.compile(r'\b', flags=re.V1 | re.WORD)
+        segments = pattern.split(text)
+        return [seg for seg in segments if any(c.isalnum() for c in seg)]
+
+    def get_title_case_idxs(self, text_container: Doc | Span) -> set[int]:
+        """Get the indices of tokens to capitalize for title case."""
+        def _find_first_word(start_idx: int) -> int | None:
+            for i in range(start_idx, len(text_container)):
+                token = text_container[i]
+                if not token.is_space and not token.is_punct:
+                    return token.i
+            return None
+
+        position_idxs: set[int] = set()
+
+        for i, token in enumerate(text_container):
+            is_valid_punctuation_boundary = (
+                (token.text == ':' or token.text in self.open_quotes)
+                and token.i + 1 < len(text_container)
+            )
+
+            if i == 0 or token.is_sent_start:
+                first_word_idx = _find_first_word(i)
+                if first_word_idx is not None:
+                    position_idxs.add(first_word_idx)
+            elif is_valid_punctuation_boundary:
+                first_word_idx = _find_first_word(i + 1)
+                if first_word_idx is not None:
+                    position_idxs.add(first_word_idx)
+            elif self.should_capitalize_in_title(token):
+                position_idxs.add(token.i)
+
+        for token in reversed(text_container):
+            if not token.is_space and not token.is_punct:
+                position_idxs.add(token.i)
+                break
+
+        return position_idxs
+
     def expand_contractions(self, content: str | Doc) -> str:
         """
         Expand all contractions in a string or spaCy `Doc`.
@@ -224,6 +200,20 @@ class EnglishProvider(LanguageProvider):
         """
         return en.encoding.normalize_for_morse(text)
 
+    def is_lowercase_particle_or_affix(self, text: str) -> bool:
+        """
+        Determine if a token string is a particle or contraction suffix
+        that should remain lowercase.
+
+        Args:
+            text: The string to check.
+
+        Returns:
+            bool: `True` if the string should remain lowercase,
+                otherwise `False`.
+        """
+        return en.casing.is_lowercase_particle_or_affix(text)
+
     def ordinal_to_cardinal(self, text: str) -> str:
         """
         Convert ordinal numbers in a string to cardinal numbers.
@@ -235,6 +225,20 @@ class EnglishProvider(LanguageProvider):
             str: The converted string.
         """
         return en.numbers.ordinal_to_cardinal(text)
+
+    def punct_to_inside(self, text: str) -> str:
+        """
+        Move periods and commas at the end of quotes inside quotation
+        marks.
+        """
+        return en.punctuation.punct_to_inside(text)
+
+    def punct_to_outside(self, text: str) -> str:
+        """
+        Move periods and commas at the end of quotes outside quotation
+        marks.
+        """
+        return en.punctuation.punct_to_outside(text)
 
     def remove_apostrophes(self, text: str) -> str:
         """
@@ -248,20 +252,12 @@ class EnglishProvider(LanguageProvider):
         """
         return en.punctuation.remove_apostrophes(text)
 
-    def should_always_lowercase(self, text: str) -> bool:
+    def should_capitalize_in_title(self, token: Token) -> bool:
         """
-        Determine if a specific token string should always remain
-        lowercase (e.g., particles like "von" or contraction suffixes
-        like "n't").
-
-        Args:
-            text: The string to check.
-
-        Returns:
-            bool: `True` if the string should always be lowercase,
-                otherwise `False`.
+        Determine whether to capitalize a spaCy `Token` for title case
+        based on its part of speech or length.
         """
-        return en.casing.should_always_lowercase(text)
+        return en.casing.should_capitalize_in_title(token)
 
     def straight_to_curly(self, text: str) -> str:
         """

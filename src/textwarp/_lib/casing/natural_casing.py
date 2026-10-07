@@ -12,10 +12,14 @@ from textwarp._core.enums import Casing, ModelPriority
 from textwarp._core.utils import change_first_alphabetical_case
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.casing.string_casing import case_from_string
-from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
 from textwarp._lib.nlp import process_as_doc
 
-__all__ = ['capitalize', 'to_natural_case', 'to_sentence_case', 'to_title_case']
+__all__ = [
+    'capitalize',
+    'to_natural_case',
+    'to_sentence_case',
+    'to_title_case'
+]
 
 
 def _find_first_word_token_idx(
@@ -50,7 +54,7 @@ def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
         text_container: The spaCy `Doc` or `Span` to search.
 
     Returns:
-        set[int]: A set of token indices that should be lowercased.
+        set[int]: A set of token indices to lowercase.
     """
     def is_capitalized(word: str) -> bool:
         return word[0].isupper() and (len(word) == 1 or word[1:].islower())
@@ -126,53 +130,6 @@ def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
     return word_idxs
 
 
-def _find_title_case_idxs(text_container: Doc | Span) -> set[int]:
-    """
-    Find the indices of tokens that should be capitalized for title
-    case.
-
-    This includes tokens at the start of a sentence, after a colon, at
-    the end of the `Doc` or that should be capitalized based on their
-    part of speech or length.
-
-    Args:
-        text_container: The spaCy `Doc` or `Span` to search.
-
-    Returns:
-        set[int]: A set of token indices that should be capitalized for
-            title case.
-    """
-    position_idxs: set[int] = set()
-
-    for i, token in enumerate(text_container):
-        is_valid_punctuation_boundary = (
-            (token.text == ':' or token.text in ctx.provider.open_quotes)
-            and token.i + 1 < len(text_container)
-        )
-
-        if i == 0 or token.is_sent_start:
-            first_word_idx: int | None = _find_first_word_token_idx(
-                i, text_container
-            )
-            if first_word_idx is not None:
-                position_idxs.add(first_word_idx)
-        elif is_valid_punctuation_boundary:
-            first_word_idx = _find_first_word_token_idx(
-                i + 1, text_container
-            )
-            if first_word_idx is not None:
-                position_idxs.add(first_word_idx)
-        elif should_capitalize_pos_or_length(token):
-            position_idxs.add(token.i)
-
-    for token in reversed(text_container):
-        if not token.is_space and not token.is_punct:
-            position_idxs.add(token.i)
-            break
-
-    return position_idxs
-
-
 def _to_title_case_from_doc(
     text_container: Doc | Span,
     indices_to_lowercase: set[int]
@@ -188,7 +145,7 @@ def _to_title_case_from_doc(
     Returns:
         str: The converted string.
     """
-    position_idxs = _find_title_case_idxs(text_container)
+    position_idxs = ctx.provider.get_title_case_idxs(text_container)
     processed_parts: list[str] = []
 
     for token in text_container:
@@ -213,19 +170,22 @@ def _to_title_case_from_token(
     should_capitalize_for_title: bool
 ) -> str:
     """
-    Convert a spaCy `Token` to title case, handling special name prefixes
-    and preserving other mid-word capitalizations.
+    Convert a spaCy `Token` to title case, handling special name
+    prefixes and preserving other mid-word capitalizations.
 
     Args:
         token: The spaCy `Token` to convert.
         token_text: The normalized token text.
-        should_capitalize_for_title: A flag indicating whether the
-            token should be capitalized.
+        should_capitalize_for_title: A flag indicating whether to
+            capitalize the token for title case.
 
     Returns:
         str: The converted token.
     """
-    if token.is_space or ctx.provider.should_always_lowercase(token_text):
+    if (
+        token.is_space
+        or ctx.provider.is_lowercase_particle_or_affix(token_text)
+    ):
         return token_text
     if token_text.isupper():
         return token_text
@@ -268,7 +228,7 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
     elif casing == Casing.START:
         token_idxs = _find_start_case_idxs(doc)
     elif casing == Casing.TITLE:
-        token_idxs = _find_title_case_idxs(doc)
+        token_idxs = ctx.provider.get_title_case_idxs(doc)
 
     while i < len(doc):
         if i in entity_map:
@@ -323,7 +283,7 @@ def to_natural_case(doc: Doc, casing: Casing) -> str:
             if (
                 token.i > 0
                 and doc[token.i - 1].whitespace_ == ''
-                and ctx.provider.should_always_lowercase(token_text)
+                and ctx.provider.is_lowercase_particle_or_affix(token_text)
             ):
                 processed_parts.append(token_text.lower())
             else:

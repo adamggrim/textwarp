@@ -6,8 +6,6 @@ from collections import Counter
 from math import ceil
 from typing import TYPE_CHECKING
 
-import regex as re
-
 if TYPE_CHECKING:
     from spacy.tokens import Doc
 
@@ -27,17 +25,6 @@ __all__ = [
     'count_sents',
     'count_words'
 ]
-
-_BOUNDARY_PATTERN = re.compile(r'\b', flags=re.V1 | re.WORD)
-
-
-def _extract_uax29_words(text: str) -> list[str]:
-    """
-    Extract words using Unicode Standard Annex (UAX) #29 text
-    segmentation.
-    """
-    segments = _BOUNDARY_PATTERN.split(text)
-    return [seg for seg in segments if any(c.isalnum() for c in seg)]
 
 
 def calculate_time_to_read(text: str, wpm: int) -> int:
@@ -70,7 +57,7 @@ def calculate_ttr(content: str | Doc) -> float:
         float: The calculated type-token ratio, or 0.0 if empty.
     """
     text = content.text if not isinstance(content, str) else content
-    words = [w.lower() for w in _extract_uax29_words(text)]
+    words = [w.lower() for w in ctx.provider.extract_words(text)]
     total_words = len(words)
 
     if total_words == 0:
@@ -137,7 +124,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
             word and its count.
     """
     text = content.text if not isinstance(content, str) else content
-    words = [w.lower() for w in _extract_uax29_words(text)]
+    words = [w.lower() for w in ctx.provider.extract_words(text)]
     total_word_count = len(words)
 
     if total_word_count == 0:
@@ -165,22 +152,7 @@ def count_pos(content: str | Doc) -> POSCounts:
     """
     doc = process_as_doc(content, disable=['ner', 'lemmatizer', 'parser'])
 
-    # Map the granular spaCy UPOS tags to our decoupled presentation layer
-    pos_mapping = {
-        UniversalPOSTag.ADJ: MainPOSTag.ADJ,
-        UniversalPOSTag.ADP: MainPOSTag.ADP,
-        UniversalPOSTag.ADV: MainPOSTag.ADV,
-        UniversalPOSTag.AUX: MainPOSTag.VERB,
-        UniversalPOSTag.CCONJ: MainPOSTag.CONJ,
-        UniversalPOSTag.DET: MainPOSTag.ADJ,
-        UniversalPOSTag.INTJ: MainPOSTag.INTJ,
-        UniversalPOSTag.NOUN: MainPOSTag.NOUN,
-        UniversalPOSTag.PART: MainPOSTag.ADV,
-        UniversalPOSTag.PRON: MainPOSTag.PRON,
-        UniversalPOSTag.PROPN: MainPOSTag.NOUN,
-        UniversalPOSTag.SCONJ: MainPOSTag.CONJ,
-        UniversalPOSTag.VERB: MainPOSTag.VERB
-    }
+    pos_mapping = ctx.provider.pos_mapping
 
     tags = []
     total_word_count = 0
@@ -222,4 +194,4 @@ def count_sents(content: str | Doc) -> int:
 def count_words(content: str | Doc) -> int:
     """Count the number of words in a string."""
     text = content.text if not isinstance(content, str) else content
-    return len(_extract_uax29_words(text))
+    return len(ctx.provider.extract_words(text))

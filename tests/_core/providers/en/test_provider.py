@@ -7,13 +7,10 @@ from textwarp._lib.nlp import process_as_doc
 def test_english_provider_properties():
     provider = EnglishProvider()
     assert isinstance(provider.spacy_models, tuple)
-    assert isinstance(provider.base_verb_tags, frozenset)
-    assert isinstance(provider.have_auxiliaries, frozenset)
-    assert isinstance(provider.third_person_singular_pronouns, frozenset)
-    assert isinstance(provider.title_case_tag_exceptions, frozenset)
-    assert isinstance(provider.wh_words, frozenset)
-    assert 'who' in provider.wh_words
-    assert 'why' in provider.wh_words
+    assert isinstance(provider.open_quotes, frozenset)
+    assert isinstance(provider.pos_tags, tuple)
+    assert isinstance(provider.pos_word_tags, frozenset)
+    assert isinstance(provider.proper_noun_entities, frozenset)
 
 
 def test_cardinal_to_ordinal():
@@ -49,9 +46,9 @@ def test_expand_contractions():
     )
 
 
-def test_should_always_lowercase():
+def test_is_lowercase_particle_or_affix():
     provider = EnglishProvider()
 
-    assert provider.should_always_lowercase('von') is True
-    assert provider.should_always_lowercase("n't") is True
-    assert provider.should_always_lowercase('The') is False
+    assert provider.is_lowercase_particle_or_affix('von') is True
+    assert provider.is_lowercase_particle_or_affix("n't") is True
+    assert provider.is_lowercase_particle_or_affix('The') is False

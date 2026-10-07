@@ -2,9 +2,25 @@
 
 from textwarp._core.providers.en.punctuation import (
     curly_to_straight,
+    punct_to_inside,
+    punct_to_outside,
     remove_apostrophes,
     straight_to_curly
 )
+
+
+def test_punct_to_inside():
+    assert (
+        punct_to_inside('“Get in, loser, we’re going shopping”.')
+        == '“Get in, loser, we’re going shopping.”'
+    )
+
+
+def test_punct_to_outside():
+    assert (
+        punct_to_outside('“You can’t sit with us.”')
+        == '“You can’t sit with us”.'
+    )
 
 
 def test_curly_to_straight():

@@ -5,12 +5,10 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import TYPE_CHECKING
 
-import regex as re
-
 from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 
 if TYPE_CHECKING:
-    from spacy.tokens import Doc
+    from spacy.tokens import Doc, Span, Token
 
     from textwarp._core.types import EntityCasingContext
 
@@ -28,25 +26,10 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def apostrophe_in_word_pattern(self) -> re.Pattern[str]:
-        """
-        Regular expression for matching either apostrophes within words
-        or elisions.
-        """
-        pass
-
-    @property
-    @abstractmethod
     def contextual_casings_map(self) -> Mapping[
         str, tuple['EntityCasingContext', ...]
     ]:
         """Mapping for contextual entity casing."""
-        pass
-
-    @property
-    @abstractmethod
-    def noun_tags(self) -> frozenset[UniversalPOSTag]:
-        """Language-specific part-of-speech tags for nouns."""
         pass
 
     @property
@@ -67,7 +50,7 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
-        """part-of-speech tags that count as distinct words."""
+        """Part-of-speech tags that count as distinct words."""
         pass
 
     @property
@@ -80,14 +63,6 @@ class LanguageProvider(ABC):
         pass
 
     @property
-    def punct_inside_pattern(self) -> re.Pattern[str] | None:
-        return None
-
-    @property
-    def punct_outside_pattern(self) -> re.Pattern[str] | None:
-        return None
-
-    @property
     @abstractmethod
     def spacy_models(self) -> tuple[str, ...]:
         """Ranking of spaCy models by speed."""
@@ -95,9 +70,9 @@ class LanguageProvider(ABC):
 
     @property
     @abstractmethod
-    def title_case_tag_exceptions(self) -> frozenset[str]:
+    def pos_mapping(self) -> Mapping[UniversalPOSTag, MainPOSTag]:
         """
-        Part-of-speech tag exceptions for title case capitalization.
+        Mapping from `UniversalPOSTag` to the simplified `MainPOSTag`.
         """
         pass
 
@@ -116,6 +91,16 @@ class LanguageProvider(ABC):
         preserve_mixed_case: bool = True
     ) -> str:
         """Capitalize a word according to language-specific rules."""
+        pass
+
+    @abstractmethod
+    def extract_words(self, text: str) -> list[str]:
+        """Extract lexical words from a raw string."""
+        pass
+
+    @abstractmethod
+    def get_title_case_idxs(self, text_container: 'Doc | Span') -> set[int]:
+        """Get the indices of tokens to capitalize for title case."""
         pass
 
     def curly_to_straight(self, text: str) -> str:
@@ -142,11 +127,31 @@ class LanguageProvider(ABC):
         return normalized
 
     @abstractmethod
+    def is_lowercase_particle_or_affix(self, text: str) -> bool:
+        """
+        Determine if a token string is a particle or affix that should
+        remain lowercase.
+        """
+        pass
+
+    @abstractmethod
     def ordinal_to_cardinal(self, text: str) -> str:
         """
         Convert ordinal numbers in a string to cardinal numbers.
         """
         pass
+
+    def punct_to_inside(self, text: str) -> str:
+        """
+        Move punctuation at the end of quotes inside quotation marks.
+        """
+        return text
+
+    def punct_to_outside(self, text: str) -> str:
+        """
+        Move punctuation at the end of quotes outside quotation marks.
+        """
+        return text
 
     def remove_apostrophes(self, text: str) -> str:
         """
@@ -155,10 +160,10 @@ class LanguageProvider(ABC):
         return text
 
     @abstractmethod
-    def should_always_lowercase(self, text: str) -> bool:
+    def should_capitalize_in_title(self, token: 'Token') -> bool:
         """
-        Determine if a specific token string should always remain
-        lowercase.
+        Determine whether to capitalize a spaCy `Token` based on
+        language-specific rules.
         """
         pass
 
