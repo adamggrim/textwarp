@@ -129,7 +129,7 @@ def bind_pipeline(
             args.pipeline,
             args.find,
             args.replace,
-            top=args.top,
+            number=args.number,
             wpm=args.wpm
         )
 
@@ -167,7 +167,7 @@ def bind_pipeline(
                 cmd = dc_replace(
                     cmd,
                     func=partial(cmd.func, count_limit=val)
-                    if cmd.arg_field == 'top'
+                    if cmd.arg_field == 'number'
                     else partial(cmd.func, wpm=val)
                 )
 
@@ -390,7 +390,7 @@ def validate_piped_commands(
         replacement_arg: The replacement case, regex or substring, if
             provided.
         **kwargs: Optional command parameter values keyed by `arg_field`
-            (e.g., `top`, `wpm`).
+            (e.g., `number`, `wpm`).
 
     Raises:
         TextwarpValidationError: For an intermediate input command

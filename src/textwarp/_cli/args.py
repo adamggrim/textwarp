@@ -113,7 +113,7 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         help_text=N_('get most frequent entities'),
         command_type=CommandType.ANALYSIS,
         requires_spacy=True,
-        arg_field='top',
+        arg_field='number',
         prompt_msg=ENTER_ENTITY_COUNT_PROMPT
     ),
     'expand-contractions': CLICommand(
@@ -182,7 +182,7 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._commands.analysis', 'mfws'),
         help_text=N_('get most frequent words'),
         command_type=CommandType.ANALYSIS,
-        arg_field='top',
+        arg_field='number',
         prompt_msg=ENTER_MFW_COUNT_PROMPT
     ),
     'morse': CLICommand(

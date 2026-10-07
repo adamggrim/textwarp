@@ -20,10 +20,10 @@ from textwarp._cli.constants.messages import (
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
+    NUMBER_ARG_ERROR_MSG,
     POSITIVE_INT_ARG_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
-    TOP_ARG_ERROR_MSG,
     UNRECOGNIZED_CMD_ERROR_MSG,
     UNRECOGNIZED_CMD_HINT_ERROR_MSG,
     WPM_ARG_ERROR_MSG
@@ -159,13 +159,13 @@ def validate_command_combinations(
         ARGS_MAP[c].arg_field for c in active_cmds if ARGS_MAP[c].arg_field
     }
 
-    top = getattr(args, 'top', None)
-    if top is not None:
-        if 'top' not in active_arg_fields:
-            parser.error(_(TOP_ARG_ERROR_MSG))
-        if top <= 0:
+    number = getattr(args, 'number', None)
+    if number is not None:
+        if 'number' not in active_arg_fields:
+            parser.error(_(NUMBER_ARG_ERROR_MSG))
+        if number <= 0:
             parser.error(
-                _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--top (-n)')
+                _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--number (-n)')
             )
 
     wpm = getattr(args, 'wpm', None)

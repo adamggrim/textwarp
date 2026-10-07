@@ -45,6 +45,7 @@ __all__ = [
     'MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG',
     'MULTIPLE_REPLACEMENT_ERROR_MSG',
     'NO_ENTITIES_FOUND_MSG',
+    'NUMBER_ARG_ERROR_MSG',
     'PIPED_INPUT_ERROR_MSG',
     'POSITIVE_INT_ARG_ERROR_MSG',
     'REGEX_EMPTY_ERROR_MSG',
@@ -52,7 +53,6 @@ __all__ = [
     'REPLACEMENT_CMD_ERROR_MSG',
     'TEXT_EMPTY_ERROR_MSG',
     'TEXT_TO_REPLACE_NOT_FOUND_MSG',
-    'TOP_ARG_ERROR_MSG',
     'UNEXPECTED_CLIPBOARD_ERROR_MSG',
     'UNRECOGNIZED_CMD_ERROR_MSG',
     'UNRECOGNIZED_CMD_HINT_ERROR_MSG',
@@ -140,6 +140,10 @@ MULTIPLE_REPLACEMENT_ERROR_MSG: Final = N_(
     'Cannot combine multiple replacement commands: {commands}'
 )
 NO_ENTITIES_FOUND_MSG: Final = N_('No entities found.')
+NUMBER_ARG_ERROR_MSG: Final = N_(
+    "The --number (-n) argument can only be used with 'entity-counts' or "
+    "'mfws'."
+)
 PIPED_INPUT_ERROR_MSG: Final = N_('Error processing input: {error}')
 POSITIVE_INT_ARG_ERROR_MSG: Final = N_(
     'The {flag} argument must be a positive integer.'
@@ -154,9 +158,6 @@ REPLACEMENT_CMD_ERROR_MSG: Final = N_(
 )
 TEXT_EMPTY_ERROR_MSG: Final = N_('Text input is empty.')
 TEXT_TO_REPLACE_NOT_FOUND_MSG: Final = N_('Text to replace not found.')
-TOP_ARG_ERROR_MSG: Final = N_(
-    "The --top (-n) argument can only be used with 'entity-counts' or 'mfws'."
-)
 UNEXPECTED_CLIPBOARD_ERROR_MSG: Final = N_(
     'An unexpected error occurred while accessing the clipboard.'
 )

@@ -49,7 +49,7 @@ class ParsedArgs:
     copy_to_clipboard: bool
     debug: bool
     max_file_mb: int
-    top: int | None = None
+    number: int | None = None
     wpm: int | None = None
 
 
@@ -198,8 +198,8 @@ def parse_args() -> ParsedArgs:
     )
 
     parser.add_argument(
-        '-n', '--top',
-        dest='top',
+        '-n', '--number',
+        dest='number',
         metavar='N',
         type=int,
         default=None,
@@ -258,6 +258,6 @@ def parse_args() -> ParsedArgs:
         copy_to_clipboard=args.copy_to_clipboard,
         debug=args.debug,
         max_file_mb=args.max_file_mb,
-        top=args.top,
+        number=args.number,
         wpm=args.wpm
     )
