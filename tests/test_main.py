@@ -105,10 +105,14 @@ def test_main_global_exception_handler_debug_mode(monkeypatch):
     mock_parse_args = MagicMock(return_value=mock_args)
     monkeypatch.setattr(__main__, 'parse_args', mock_parse_args)
 
-    mock_process_file = MagicMock(
-        side_effect=ValueError('Detailed debug error')
+    error_msg = (
+        'Et latet et lucet Phaethontide condita gutta,\n'
+        'ut videatur apis nectare clusa suo.\n'
+        'Dignum tantorum pretium tulit illa laborum:\n'
+        'credibile est ipsam sic voluisse mori.'
     )
+    mock_process_file = MagicMock(side_effect=ValueError(error_msg))
     monkeypatch.setattr(__main__, 'process_file_mode', mock_process_file)
 
-    with pytest.raises(ValueError, match='Detailed debug error'):
+    with pytest.raises(ValueError, match=error_msg):
         __main__.main()

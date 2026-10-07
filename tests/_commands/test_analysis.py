@@ -87,14 +87,14 @@ def test_time_to_read(simulate_input, capsys):
 
 def test_ttr():
     result = analysis.ttr(
-        'Bent double, like old beggars under sacks,\n'
-        'Knock-kneed, coughing like hags, we cursed through sludge,\n'
-        'Till on the haunting flares we turned our backs\n'
-        'And towards our distant rest began to trudge.'
+        'Tyger Tyger, burning bright,\n'
+        'In the forests of the night;\n'
+        'What immortal hand or eye,\n'
+        'Could frame thy fearful symmetry?'
     )
 
     assert 'Type-token ratio:' in result
-    assert '0.91' in result
+    assert '0.90' in result
 
 
 def test_word_count():

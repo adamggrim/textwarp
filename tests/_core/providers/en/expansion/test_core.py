@@ -45,16 +45,14 @@ def test_expand_unambiguous_contraction():
 
 def test_expand_contractions():
     original = (
-        'Ain’t it just like the night to play tricks when you’re trying to be '
-        'so quiet?'
+        'Ain’t That a Shame'
     )
     doc = process_as_doc(original)
 
     result = expand_contractions(doc)
 
     assert result == (
-        'Is it not just like the night to play tricks when you are trying to '
-        'be so quiet?'
+        'Is That Not a Shame'
     )
 
 
