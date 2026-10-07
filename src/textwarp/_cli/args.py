@@ -38,9 +38,9 @@ class CLICommand:
     replacement_prompt: Callable[[], tuple[str, str]] | None = None
 
 
-def lazy_load(module_name: str, func_name: str) -> Callable[..., str]:
+def lazy_load(module_name: str, func_name: str) -> Any:
     """Import a module and function only when called."""
-    def wrapper(*args: Any, **kwargs: Any) -> str:
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         mod: ModuleType = importlib.import_module(
             module_name, package=__package__
         )
