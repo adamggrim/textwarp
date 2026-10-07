@@ -166,7 +166,7 @@ def bind_pipeline(
             if val is not None:
                 cmd = dc_replace(
                     cmd,
-                    func=partial(cmd.func, count_limit=val)
+                    func=partial(cmd.func, limit=val)
                     if cmd.arg_field == 'number'
                     else partial(cmd.func, wpm=val)
                 )
