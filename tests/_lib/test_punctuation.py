@@ -1,5 +1,7 @@
 """Tests for straight and curly quote conversion."""
 
+import pytest
+
 from textwarp._lib.punctuation import (
     curly_to_straight,
     remove_apostrophes,
@@ -7,58 +9,54 @@ from textwarp._lib.punctuation import (
 )
 
 
-def test_curly_to_straight():
-    assert (
-        curly_to_straight('“I don’t know what to do!” cried Scrooge.')
-        == '"I don\'t know what to do!" cried Scrooge.'
+@pytest.mark.parametrize('text, expected', [
+    (
+        '“I don’t know what to do!” cried Scrooge.',
+        '"I don\'t know what to do!" cried Scrooge.'
+    ),
+    (
+        '“‘Please, sir, I want some more.’”',
+        '"\'Please, sir, I want some more.\'"'
+    ),
+    (
+        '“It’s enough for a man to understand his own business, and not to '
+        'interfere with other people’s.”',
+        '"It\'s enough for a man to understand his own business, and not to '
+        'interfere with other people\'s."'
     )
-    assert (
-        curly_to_straight('“‘Please, sir, I want some more.’”')
-        == '"\'Please, sir, I want some more.\'"'
+])
+def test_curly_to_straight(text, expected):
+    assert curly_to_straight(text) == expected
+
+@pytest.mark.parametrize('text, expected', [
+    (
+        '"I\'ll buy you a diamond ring, my friend."',
+        '“I’ll buy you a diamond ring, my friend.”'
+    ),
+    (
+        'She said, "I know what it\'s like to be dead."',
+        'She said, “I know what it’s like to be dead.”'
+    ),
+    (
+        '"There\'s nothing you can do that can\'t be done."',
+        '“There’s nothing you can do that can’t be done.”'
+    ),
+    ("'Kronos'", '‘Kronos’'),
+    (" 'Kronos' ", ' ‘Kronos’ '),
+    ("don't", 'don’t'),
+    ("'twas", '’twas'),
+    ("Guns N' Roses", 'Guns N’ Roses'),
+    ("90's", '90’s')
+])
+def test_straight_to_curly(text, expected):
+    assert straight_to_curly(text) == expected
+
+@pytest.mark.parametrize('text, expected', [
+    ("It's a Man's Man's Man's World", 'Its a Mans Mans Mans World'),
+    (
+        'Don’t (Don’t), don’t (Don’t), that’s what you say',
+        'Dont (Dont), dont (Dont), thats what you say'
     )
-    assert (
-        curly_to_straight(
-            '“It’s enough for a man to understand his own business, and not '
-            'to interfere with other people’s.”'
-        )
-        == '"It\'s enough for a man to understand his own business, and not '
-           'to interfere with other people\'s."'
-    )
-
-
-def test_straight_to_curly_double_quotes():
-    assert (
-        straight_to_curly('"I\'ll buy you a diamond ring, my friend."')
-        == '“I’ll buy you a diamond ring, my friend.”'
-    )
-    assert (
-        straight_to_curly('She said, "I know what it\'s like to be dead."')
-        == 'She said, “I know what it’s like to be dead.”'
-    )
-    assert (
-        straight_to_curly('"There\'s nothing you can do that can\'t be done."')
-        == '“There’s nothing you can do that can’t be done.”'
-    )
-
-
-def test_straight_to_curly_single_quotes():
-    assert straight_to_curly("'Kronos'") == '‘Kronos’'
-    assert straight_to_curly(" 'Kronos' ") == ' ‘Kronos’ '
-
-
-def test_straight_to_curly_apostrophes():
-    assert straight_to_curly("don't") == 'don’t'
-    assert straight_to_curly("'twas") == '’twas'
-    assert straight_to_curly("Guns N' Roses") == 'Guns N’ Roses'
-    assert straight_to_curly("90's") == '90’s'
-
-
-def test_remove_apostrophes():
-    assert (
-        remove_apostrophes("It's a Man's Man's Man's World")
-        == 'Its a Mans Mans Mans World'
-    )
-    assert (
-        remove_apostrophes('Don’t (Don’t), don’t (Don’t), that’s what you say')
-        == 'Dont (Dont), dont (Dont), thats what you say'
-    )
+])
+def test_remove_apostrophes(text, expected):
+    assert remove_apostrophes(text) == expected

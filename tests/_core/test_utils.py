@@ -1,5 +1,7 @@
 """Tests for universal utility functions."""
 
+import pytest
+
 from textwarp._core.utils import (
     change_first_alphabetical_case,
     find_first_alphabetical_idx,
@@ -7,42 +9,29 @@ from textwarp._core.utils import (
 )
 
 
-def test_change_first_alphabetical_case():
-    assert change_first_alphabetical_case('bang', str.upper) == 'Bang'
-    assert change_first_alphabetical_case('WHIMPER', str.lower) == 'wHIMPER'
-    assert change_first_alphabetical_case('!!!', str.upper) == '!!!'
+@pytest.mark.parametrize('text, casing_func, expected', [
+    ('bang', str.upper, 'Bang'),
+    ('WHIMPER', str.lower, 'wHIMPER'),
+    ('!!!', str.upper, '!!!')
+])
+def test_change_first_alphabetical_case(text, casing_func, expected):
+    assert change_first_alphabetical_case(text, casing_func) == expected
 
 
-def test_find_first_alphabetical_idx_standard():
-    assert find_first_alphabetical_idx(
-        'To strive, to seek, to find, and not to yield'
-    ) == 0
-    assert find_first_alphabetical_idx(
-        'We shall not cease from exploration'
-    ) == 0
-
-
-def test_find_first_alphabetical_idx_with_numbers():
-    assert find_first_alphabetical_idx(
-        'Freedom is the freedom to say that 2 + 2 = 4.') == 0
-    assert find_first_alphabetical_idx(
-        '451—the temperature at which book-paper catches fire, and burns'
-    ) == 4
-
-
-def test_find_first_alphabetical_idx_with_symbols():
-    """Test strings starting with punctuation or whitespace."""
-    assert find_first_alphabetical_idx(
-        '    dumb blankness, full of meaning'
-    ) == 4
-    assert find_first_alphabetical_idx('(pretending to search)') == 1
-
-
-def test_find_first_alphabetical_idx_no_letters():
-    assert find_first_alphabetical_idx('1885') is None
-    assert find_first_alphabetical_idx('!!!') is None
-    assert find_first_alphabetical_idx('') is None
-    assert find_first_alphabetical_idx('   ') is None
+@pytest.mark.parametrize('text, expected_idx', [
+    ('To strive, to seek, to find, and not to yield', 0),
+    ('We shall not cease from exploration', 0),
+    ('Freedom is the freedom to say that 2 + 2 = 4.', 0),
+    ('451—the temperature at which book-paper catches fire, and burns', 4),
+    ('    dumb blankness, full of meaning', 4),
+    ('(pretending to search)', 1),
+    ('1885', None),
+    ('!!!', None),
+    ('', None),
+    ('   ', None)
+])
+def test_find_first_alphabetical_idx(text, expected_idx):
+    assert find_first_alphabetical_idx(text) == expected_idx
 
 
 def test_load_json_data():

@@ -1,5 +1,6 @@
 """Tests for core warping patterns."""
 
+import pytest
 import regex as re
 
 from textwarp._core.constants.patterns.warping import (
@@ -23,11 +24,21 @@ def test_create_words_regex():
     assert match.group(0).lower() == 'slytherin'
 
 
-def test_get_dash():
+@pytest.mark.parametrize('text, expected_match', [
+    ('I do not like them, Sam-I-am.', False),
+    (
+        'I speak for the trees, for the trees have no tongues. And I’m asking '
+        'you, sir, at the top of my lungs”—', True
+    ),
+    ('1904–1991', True),
+
+])
+def test_get_dash(text, expected_match):
     pattern = get_dash()
-    assert pattern.search('An en dash – is here.') is not None
-    assert pattern.search('An em dash — is here.') is not None
-    assert pattern.search('A standard-hyphen') is None
+    if expected_match:
+        assert pattern.search(text) is not None
+    else:
+        assert pattern.search(text) is None
 
 
 def test_get_em_dash_stand_in():
@@ -43,25 +54,43 @@ def test_get_em_dash_stand_in():
     assert match.group(0) == '--'
 
 
-def test_get_multiple_spaces():
+@pytest.mark.parametrize('text, expected_match', [
+    ('Two  fish', True),
+    ('Red   fish', True),
+    ('Blue fish', False)
+])
+def test_get_multiple_spaces(text, expected_match):
     pattern = get_multiple_spaces()
-    assert pattern.search('Two  fish') is not None
-    assert pattern.search('Red   fish') is not None
-    assert pattern.search('Blue fish') is None
+    if expected_match:
+        assert pattern.search(text) is not None
+    else:
+        assert pattern.search(text) is None
 
 
-def test_get_period_separated_initialism():
+@pytest.mark.parametrize('text, expected_match', [
+    ('U.S.A.', True),
+    ('Ph.D.', True),
+    ('Mrs. Robinson', False),
+    ('This is the end.', False)
+])
+def test_get_period_separated_initialism(text, expected_match):
     pattern = get_period_separated_initialism()
-    assert pattern.search('U.S.A.') is not None
-    assert pattern.search('Ph.D.') is not None
-    assert pattern.search('Mrs. Robinson') is None
-    assert pattern.search('End of sentence.') is None
+    if expected_match:
+        assert pattern.search(text) is not None
+    else:
+        assert pattern.search(text) is None
 
 
-def test_get_word_char():
+@pytest.mark.parametrize('text, is_match', [
+    ('A', True),
+    ('24', True),
+    ('_', True),
+    (' ', False),
+    ('-', False)
+])
+def test_get_word_char(text, is_match):
     pattern = get_word_char()
-    assert pattern.search('A') is not None
-    assert pattern.search('24') is not None
-    assert pattern.search('_') is not None
-    assert pattern.match(' ') is None
-    assert pattern.match('-') is None
+    if is_match:
+        assert pattern.search(text) is not None
+    else:
+        assert pattern.match(text) is None
