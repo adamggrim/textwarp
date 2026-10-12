@@ -161,17 +161,12 @@ def bind_pipeline(
                     _(ENTER_VALID_NUMBER_PROMPT),
                     allow_early_exit=True
                 )
-                if cmd.arg_field == 'number':
-                    args = dc_replace(args, number=val)
-                elif cmd.arg_field == 'wpm':
-                    args = dc_replace(args, wpm=val)
+                args = dc_replace(args, **{cmd.arg_field: val})
 
             if val is not None:
                 cmd = dc_replace(
                     cmd,
-                    func=partial(cmd.func, limit=val)
-                    if cmd.arg_field == 'number'
-                    else partial(cmd.func, wpm=val)
+                    func=partial(cmd.func, **{cmd.arg_field: val})
                 )
 
         bound_pipeline.append(cmd)
@@ -218,14 +213,17 @@ def atomic_write(
     and atomically swapping it upon completion.
     """
     dir_name = os.path.dirname(file_path) or '.'
-    encoding = None if 'b' in mode else 'utf-8'
+    is_binary = 'b' in mode
+    encoding = None if is_binary else 'utf-8'
+    newline = None if is_binary else ''
 
     try:
         temp_file: IO[Any] = tempfile.NamedTemporaryFile(
             dir=dir_name,
             mode=mode,
             delete=False,
-            encoding=encoding
+            encoding=encoding,
+            newline=newline
         )
     except OSError as e:
         raise TextwarpError(
@@ -238,7 +236,9 @@ def atomic_write(
         if 'a' in mode and os.path.exists(file_path):
             temp_file.close()
             shutil.copy2(file_path, temp_path)
-            temp_file = open(temp_path, mode, encoding=encoding)
+            temp_file = open(
+                temp_path, mode, encoding=encoding, newline=newline
+            )
         yield temp_file
     except Exception as e:
         temp_file.close()
@@ -331,7 +331,8 @@ def route_output(
         pyperclip.copy(result)
         print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
     elif not output_file:
-        print('\n' + result)
+        prefix = '\n' if sys.stdout.isatty() else ''
+        print(prefix + result)
 
 
 def route_text(
@@ -362,8 +363,8 @@ def route_text(
         ) from e
 
     if is_analysis_pipeline(pipeline):
-        stripped = strip_markdown(text)
-        return apply_pipeline(stripped, pipeline)
+        stripped_markdown = strip_markdown(text)
+        return apply_pipeline(stripped_markdown, pipeline)
     else:
         def transform_chunk(chunk: str) -> str:
             """
