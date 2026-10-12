@@ -40,11 +40,6 @@ class EnglishProvider(LanguageProvider):
         return en.constants.OPEN_QUOTES
 
     @property
-    def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
-        """Part-of-speech tags and their localized labels."""
-        return en.constants.POS_TAGS
-
-    @property
     def pos_mapping(self) -> Mapping[UniversalPOSTag, MainPOSTag]:
         """Mapping of Universal POS tags to Main POS tags."""
         return {
@@ -64,8 +59,13 @@ class EnglishProvider(LanguageProvider):
         }
 
     @property
+    def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
+        """Parts-of-speech tags and their localized labels."""
+        return en.constants.POS_TAGS
+
+    @property
     def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
-        """Part-of-speech tags that count as distinct words."""
+        """Parts-of-speech tags that count as distinct words."""
         return en.constants.POS_WORD_TAGS
 
     @property
@@ -133,12 +133,24 @@ class EnglishProvider(LanguageProvider):
 
     def extract_words(self, text: str) -> list[str]:
         """
-        Extract words using Unicode Standard Annex (UAX) #29 text 
+        Extract words using Unicode Standard Annex (UAX) #29 text
         segmentation.
         """
         pattern = re.compile(r'\b', flags=re.V1 | re.WORD)
         segments = pattern.split(text)
         return [seg for seg in segments if any(c.isalnum() for c in seg)]
+
+    def expand_contractions(self, content: str | Doc) -> str:
+        """
+        Expand all contractions in a string or spaCy `Doc`.
+
+        Args:
+            content: A string or spaCy `Doc`.
+
+        Returns:
+            str: The converted text.
+        """
+        return en.expansion.core.expand_contractions(content)
 
     def get_title_case_idxs(self, text_container: Doc | Span) -> set[int]:
         """Get the indices of tokens to capitalize for title case."""
@@ -175,31 +187,6 @@ class EnglishProvider(LanguageProvider):
 
         return position_idxs
 
-    def expand_contractions(self, content: str | Doc) -> str:
-        """
-        Expand all contractions in a string or spaCy `Doc`.
-
-        Args:
-            content: A string or spaCy `Doc`.
-
-        Returns:
-            str: The converted text.
-        """
-        return en.expansion.core.expand_contractions(content)
-
-    def normalize_for_morse(self, text: str) -> str:
-        """
-        Normalize a string for Morse code by converting to all caps and
-        replacing non-Morse-compatible characters.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
-        return en.encoding.normalize_for_morse(text)
-
     def is_lowercase_particle_or_affix(self, text: str) -> bool:
         """
         Determine if a token string is a particle or contraction suffix
@@ -213,6 +200,19 @@ class EnglishProvider(LanguageProvider):
                 otherwise `False`.
         """
         return en.casing.is_lowercase_particle_or_affix(text)
+
+    def normalize_for_morse(self, text: str) -> str:
+        """
+        Normalize a string for Morse code by converting to all caps and
+        replacing non-Morse-compatible characters.
+
+        Args:
+            text: The string to convert.
+
+        Returns:
+            str: The converted string.
+        """
+        return en.encoding.normalize_for_morse(text)
 
     def ordinal_to_cardinal(self, text: str) -> str:
         """

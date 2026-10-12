@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Final
 if TYPE_CHECKING:
     from textwarp._core.providers.base import LanguageProvider
 
-__all__ = ['_', 'ctx', 'N_', 'ngettext']
+__all__ = ['N_', '_', 'ctx', 'ngettext']
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +38,34 @@ def _get_translations(locale: str) -> gettext.NullTranslations:
             languages=[locale],
             fallback=True
         )
+
+
+@cache
+def _get_provider_instance(requested_locale: str) -> 'LanguageProvider':
+    """Load and cache the singleton LanguageProvider for a locale."""
+    provider_module = importlib.import_module(
+        f'textwarp._core.providers.{requested_locale}.provider'
+    )
+    class_name = f'{requested_locale.capitalize()}Provider'
+    ProviderClass = getattr(provider_module, class_name, None)
+
+    if ProviderClass:
+        return ProviderClass()
+
+    for attr_name in dir(provider_module):
+        attr = getattr(provider_module, attr_name)
+        if (
+            isinstance(attr, type)
+            and attr.__name__.endswith('Provider')
+            and attr.__name__ != 'LanguageProvider'
+        ):
+            return attr()
+
+    raise ImportError(
+        _('No valid provider class found in {module}').format(
+            module=provider_module
+        )
+    )
 
 
 class TextwarpContext:
@@ -88,40 +116,13 @@ class TextwarpContext:
         fallback_triggered = False
 
         try:
-            provider_module = importlib.import_module(
-                f'textwarp._core.providers.{requested_locale}.provider'
-            )
-
-            class_name = f'{requested_locale.capitalize()}Provider'
-            ProviderClass = getattr(provider_module, class_name, None)
-
-            if ProviderClass:
-                provider_instance = ProviderClass()
-            else:
-                for attr_name in dir(provider_module):
-                    attr = getattr(provider_module, attr_name)
-                    if (
-                        isinstance(attr, type)
-                        and attr.__name__.endswith('Provider')
-                        and attr.__name__ != 'LanguageProvider'
-                    ):
-                        provider_instance = attr()
-                        break
-                else:
-                    raise ImportError(
-                        _('No valid provider class found in {module}').format(
-                            module=provider_module
-                        )
-                    )
-
+            provider_instance = _get_provider_instance(requested_locale)
             self.locale = requested_locale
             self._provider = provider_instance
-
         except (ImportError, ModuleNotFoundError):
             fallback_triggered = requested_locale not in SUPPORTED_LOCALES
             self.locale = 'en'
-            from textwarp._core.providers.en.provider import EnglishProvider
-            self._provider = EnglishProvider()
+            self._provider = _get_provider_instance('en')
 
         if fallback_triggered:
             msg = _(
