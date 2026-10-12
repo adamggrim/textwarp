@@ -49,6 +49,7 @@ class ParsedArgs:
     copy_to_clipboard: bool
     debug: bool
     max_file_mb: int
+    in_place: bool = False
     number: int | None = None
     wpm: int | None = None
 
@@ -115,7 +116,7 @@ def parse_args() -> ParsedArgs:
         description=_(HELP_DESCRIPTION),
         usage=_(
             '%(prog)s [options] [commands ...] [input_files ...] '
-            '[-i FILE] [-o FILE]'
+            '[-o FILE]'
         ),
         epilog='\n'.join(epilog_lines)
     )
@@ -142,21 +143,18 @@ def parse_args() -> ParsedArgs:
     )
 
     parser.add_argument(
-        '-i', '--input',
-        dest='explicit_input_files',
-        action='append',
-        metavar='FILE',
-        type=str,
-        default=[],
-        help=_('optional path for reading an input file')
-    )
-
-    parser.add_argument(
         '-o', '--output',
         dest='output_file',
         metavar='FILE',
         type=str,
         help=_('optional path for writing the output file')
+    )
+
+    parser.add_argument(
+        '-i', '--in-place',
+        dest='in_place',
+        action='store_true',
+        help=_('modify input files in-place')
     )
 
     parser.add_argument(
@@ -242,9 +240,11 @@ def parse_args() -> ParsedArgs:
             positional_files.append(token)
 
     validate_positional_args(active_cmds, positional_files, parser)
-    input_files = [*positional_files, *args.explicit_input_files]
+    input_files = positional_files
 
-    validate_command_combinations(active_cmds, args, parser)
+    validate_command_combinations(
+        active_cmds, args, parser, input_files=input_files
+    )
     pipeline = build_pipeline(active_cmds, parser)
 
     return ParsedArgs(
@@ -258,6 +258,7 @@ def parse_args() -> ParsedArgs:
         copy_to_clipboard=args.copy_to_clipboard,
         debug=args.debug,
         max_file_mb=args.max_file_mb,
+        in_place=args.in_place,
         number=args.number,
         wpm=args.wpm
     )

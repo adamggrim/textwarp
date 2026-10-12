@@ -38,6 +38,9 @@ __all__ = [
     'FILE_WRITE_SUCCESS_MSG',
     'FIND_REPLACE_ARG_ERROR_MSG',
     'HELP_DESCRIPTION',
+    'IN_PLACE_ANALYSIS_ERROR_MSG',
+    'IN_PLACE_CONFLICT_ERROR_MSG',
+    'IN_PLACE_NO_FILES_ERROR_MSG',
     'INTERACTIVE_CMD_ERROR_MSG',
     'INVALID_CASE_ERROR_MSG',
     'LINUX_XCLIP_WARNING_MSG',
@@ -122,6 +125,16 @@ FIND_REPLACE_ARG_ERROR_MSG: Final = N_(
 HELP_DESCRIPTION: Final = N_(
     'Specify a sequence of text warping or analysis commands to apply to the '
     'text.'
+)
+IN_PLACE_ANALYSIS_ERROR_MSG: Final = N_(
+    'The --in-place (-i) flag cannot be used with analysis commands.'
+)
+IN_PLACE_CONFLICT_ERROR_MSG: Final = N_(
+    'The --in-place (-i) flag cannot be combined with --output (-o) or '
+    '--copy (-c).'
+)
+IN_PLACE_NO_FILES_ERROR_MSG: Final = N_(
+    'The --in-place (-i) flag requires at least one input file.'
 )
 INTERACTIVE_CMD_ERROR_MSG: Final = N_(
     "The '{cmd_name}' command requires interactive input and cannot be used "

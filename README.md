@@ -73,10 +73,10 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 ### File I/O
 
-Process text files directly by passing them as arguments. Use the `-o` or `--output` flag to save the results to a new file.
+Process text files directly by passing them as arguments. Use the `-o` (`--output`) flag to save the results to a new file, or `-i` (`--in-place`) to modify the file in-place.
 
 ```bash
-textwarp uppercase input.txt -o output.txt
+textwarp --in-place uppercase input.txt
 ```
 
 ### Piping
@@ -111,6 +111,7 @@ options:
   -m, --markdown           parse text as Markdown and preserve formatting
   -i FILE, --input FILE    optional path for reading an input file
   -o FILE, --output FILE   optional path for writing the output file
+  -i, --in-place           modify input files in-place
   -c, --copy               copy the output to the clipboard
   --debug                  enable debug mode to show full error tracebacks
   -f FIND, --find FIND     text, case or regular expression to find

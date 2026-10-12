@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Logarithmically accelerating spinner for spaCy commands.
 * New `--debug` argument.
-* New `-i` (`--input`) argument for explicit input file paths.
+* New `-i` (`--in-place`) argument for modifying input files in-place.
 * New `strip-html` command.
 * Support for newlines and carriage returns in CLI replacement text.
 * Pre-commit hooks support.
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated sentence casing algorithm.
 * Add wcwidth dependency to handle multi-width characters.
 * Improved error handling.
-* Switched to colloquial part-of-speech tags for analysis output.
+* Switched to colloquial parts-of-speech tags for analysis output.
 * Introduced a half-second input delay for "Any other text?" prompts.
 * Allowed early exit from integer prompts.
 * Expanded internationalization support.

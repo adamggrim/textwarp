@@ -81,8 +81,10 @@ def _file_open(
         TextwarpError: If the file is inaccessible or in binary.
     """
     try:
-        encoding = None if 'b' in mode else 'utf-8'
-        with open(file_path, mode, encoding=encoding) as f:
+        is_binary = 'b' in mode
+        encoding = None if is_binary else 'utf-8'
+        newline = None if is_binary else ''
+        with open(file_path, mode, encoding=encoding, newline=newline) as f:
             yield f
     except UnicodeDecodeError as e:
         raise TextwarpError(
@@ -94,28 +96,39 @@ def _file_open(
         ) from e
 
 
+def _split_line_ending(text: str) -> tuple[str, str]:
+    """Split a string into its content and trailing line ending."""
+    if text.endswith('\r\n'):
+        return text[:-2], '\r\n'
+    if text.endswith('\n'):
+        return text[:-1], '\n'
+    if text.endswith('\r'):
+        return text[:-1], '\r'
+    return text, ''
+
+
 def _strip_line_ending(text: str) -> str:
     """Strip a single line ending."""
-    return text.removesuffix('\n').removesuffix('\r')
+    content, _ = _split_line_ending(text)
+    return content
 
 
-def _read_and_strip_file(file_path: str) -> str:
+def _read_and_strip_file(file_path: str) -> tuple[str, str]:
     """
-    Read a text file and strip its trailing newline.
+    Read a text file and separate its trailing newline.
 
     Args:
         file_path: The path to the input file.
 
     Returns:
-        The file contents with the trailing newline removed.
+        A tuple of (file_contents_without_newline, trailing_newline).
 
     Raises:
         TextwarpError: If the file is inaccessible or binary.
     """
     with _file_open(file_path, 'r') as f:
         content: str = f.read()
-        return _strip_line_ending(content)
-
+        return _split_line_ending(content)
 
 def _iter_mmap_replacements(
     mm: mmap.mmap,
@@ -124,7 +137,8 @@ def _iter_mmap_replacements(
 ) -> Iterator[bytes]:
     """
     Yield UTF-8 encoded chunks of a memory-mapped file with Unicode
-    regex replacements applied safely across multi-byte boundaries.
+    regex replacements applied safely across multi-byte and multi-line
+    chunk boundaries.
 
     Args:
         mm: A memory-mapped file.
@@ -153,15 +167,25 @@ def _iter_mmap_replacements(
             if split_idx == -1:
                 continue
 
-            processable, buffer = (
-                buffer[: split_idx + 1],
-                buffer[split_idx + 1 :]
-            )
+            # Hold back the trailing line to accommodate multi-line
+            # patterns across chunks.
+            transformed = pattern.sub(replacement, buffer[: split_idx + 1])
+            prev_newline = transformed.rfind('\n', 0, len(transformed) - 1)
+
+            if prev_newline != -1:
+                processable = transformed[: prev_newline + 1]
+                buffer = (
+                    transformed[prev_newline + 1 :] + buffer[split_idx + 1 :]
+                )
+            else:
+                processable = transformed
+                buffer = buffer[split_idx + 1 :]
         else:
-            processable, buffer = buffer, ''
+            processable = pattern.sub(replacement, buffer)
+            buffer = ''
 
         if processable:
-            yield pattern.sub(replacement, processable).encode('utf-8')
+            yield processable.encode('utf-8')
 
 
 def _write_mmap_regex_to_stream(
@@ -203,7 +227,7 @@ def _write_mmap_regex_to_stream(
                 _(BINARY_FILE_ERROR_MSG).format(input_file=file_path)
             ) from e
 
-        if len(args.input_files) > 1:
+        if len(args.input_files) > 1 and not args.in_place:
             output_stream.write(b'\n')
 
 
@@ -246,17 +270,35 @@ def _process_file_stream(args: ParsedArgs) -> None:
     Raises:
         SystemExit: If there is an error reading or writing files.
     """
-    with _open_output_stream(args.output_file, 'w') as output_stream:
+    if args.in_place:
         for file_path in args.input_files:
-            with _file_open(file_path, 'r') as f:
+            with (
+                _file_open(file_path, 'r') as f,
+                atomic_write(file_path, 'w') as output_stream
+            ):
                 for line in f:
+                    stripped, line_ending = _split_line_ending(line)
                     result = route_text(
-                        _strip_line_ending(line),
+                        stripped,
                         args.pipeline,
                         args.markdown
                     )
                     if result is not None:
-                        output_stream.write(result + '\n')
+                        output_stream.write(result + (line_ending or '\n'))
+        return
+
+    with _open_output_stream(args.output_file, 'w') as output_stream:
+        for file_path in args.input_files:
+            with _file_open(file_path, 'r') as f:
+                for line in f:
+                    stripped, line_ending = _split_line_ending(line)
+                    result = route_text(
+                        stripped,
+                        args.pipeline,
+                        args.markdown
+                    )
+                    if result is not None:
+                        output_stream.write(result + (line_ending or '\n'))
 
 
 def _process_mixed_mmap_files(
@@ -266,6 +308,26 @@ def _process_mixed_mmap_files(
     """
     Process regex replacements across oversized and standard files.
     """
+    if args.in_place:
+        for file_path in args.input_files:
+            if (
+                os.path.exists(file_path)
+                and os.path.getsize(file_path) > max_memory_bytes
+            ):
+                with atomic_write(file_path, 'wb') as output_stream:
+                    _process_mmap_regex(file_path, args, output_stream)
+            else:
+                text, line_ending = _read_and_strip_file(file_path)
+                result = route_text(
+                    text,
+                    args.pipeline,
+                    args.markdown
+                )
+                if result is not None and result != text:
+                    with atomic_write(file_path, 'w') as f:
+                        f.write(result + (line_ending or '\n'))
+        return
+
     with _open_output_stream(args.output_file, 'wb') as output_stream:
         for file_path in args.input_files:
             if (
@@ -274,7 +336,7 @@ def _process_mixed_mmap_files(
             ):
                 _process_mmap_regex(file_path, args, output_stream)
             else:
-                text = _read_and_strip_file(file_path)
+                text, _ = _read_and_strip_file(file_path)
                 result = route_text(
                     text,
                     args.pipeline,
@@ -308,7 +370,7 @@ def _process_in_memory_files(
             print_wrapped(f'Warning: {warning_msg}')
             continue
 
-        text = _read_and_strip_file(file_path)
+        text, line_ending = _read_and_strip_file(file_path)
         result = route_text(
             text,
             args.pipeline,
@@ -316,9 +378,14 @@ def _process_in_memory_files(
         )
 
         if result is not None:
-            if is_analysis and len(args.input_files) > 1:
-                result = f'\n--- {file_path} ---\n{result}'
-            combined_results.append(result)
+            if args.in_place:
+                if result != text:
+                    with atomic_write(file_path, 'w') as f:
+                        f.write(result + (line_ending or '\n'))
+            else:
+                if is_analysis and len(args.input_files) > 1:
+                    result = f'\n--- {file_path} ---\n{result}'
+                combined_results.append(result)
 
     if combined_results:
         final_output = '\n'.join(combined_results)
