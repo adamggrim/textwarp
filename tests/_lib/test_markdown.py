@@ -12,15 +12,15 @@ def test_strip_markdown_removes_formatting():
         '- Stanza 54\n'
         '[link](https://example.com)'
     )
-    stripped = strip_markdown(markdown)
+    stripped_markdown = strip_markdown(markdown)
 
-    assert 'Canto XI' in stripped
-    assert 'Be bold, be bold' in stripped
-    assert 'Stanza 54' in stripped
-    assert 'link' in stripped
-    assert '**' not in stripped
-    assert '#' not in stripped
-    assert 'https://example.com' not in stripped
+    assert 'Canto XI' in stripped_markdown
+    assert 'Be bold, be bold' in stripped_markdown
+    assert 'Stanza 54' in stripped_markdown
+    assert 'link' in stripped_markdown
+    assert '**' not in stripped_markdown
+    assert '#' not in stripped_markdown
+    assert 'https://example.com' not in stripped_markdown
 
 
 def test_process_markdown_transforms_text_nodes():

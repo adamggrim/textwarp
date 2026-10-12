@@ -136,6 +136,35 @@ def test_process_file_mode_success(tmp_path, capsys):
     assert expected_msg in normalize_output(captured.out)
 
 
+def test_process_file_mode_in_place_multiple_files(tmp_path, capsys):
+    file1 = tmp_path / 'tancredi.txt'
+    file1.write_text(
+        'Se vogliamo che tutto rimanga com’è, bisogna che tutto cambi.\n',
+        encoding='utf-8'
+    )
+    file2 = tmp_path / 'fabrizio.txt'
+    file2.write_text(
+        'Tutto questo non dovrebbe poter durare; però durerà, sempre',
+        encoding='utf-8'
+    )
+
+    args = make_parsed_args(
+        input_files=[str(file1), str(file2)],
+        in_place=True
+    )
+
+    processing.process_file_mode(args)
+
+    assert file1.read_text(encoding='utf-8') == (
+        'SE VOGLIAMO CHE TUTTO RIMANGA COM’È, BISOGNA CHE TUTTO CAMBI.\n'
+    )
+    assert file2.read_text(encoding='utf-8') == (
+        'TUTTO QUESTO NON DOVREBBE POTER DURARE; PERÒ DURERÀ, SEMPRE\n'
+    )
+    captured = capsys.readouterr()
+    assert captured.out == ''
+
+
 def test_process_interactive_mode_replacement(monkeypatch):
     mock_prompt = MagicMock(return_value=('snake', 'pascal'))
     mock_loop = MagicMock()

@@ -15,7 +15,7 @@ def test_entity_counts():
         'course to the tropical Latitude of the Great Pacific Ocean; and of '
         'the strange things that befell; and in what manner the Ancyent '
         'Marinere came back to his own Country.',
-        limit=3
+        number=3
     )
 
     lines = [line for line in result.split('\n') if line.strip()]
@@ -38,7 +38,7 @@ def test_line_count():
 def test_mfws():
     result = analysis.mfws(
         'Rose is a rose is a rose is a rose.',
-        limit=2
+        number=2
     )
 
     assert 'rose' in result

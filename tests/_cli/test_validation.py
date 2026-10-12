@@ -15,6 +15,9 @@ from textwarp._cli.constants.messages import (
     EXCLUSIVE_CMD_ERROR_MSG,
     FILE_NOT_FOUND_CMD_HINT_ERROR_MSG,
     FIND_REPLACE_ARG_ERROR_MSG,
+    IN_PLACE_ANALYSIS_ERROR_MSG,
+    IN_PLACE_CONFLICT_ERROR_MSG,
+    IN_PLACE_NO_FILES_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
@@ -43,44 +46,43 @@ from textwarp._core.exceptions import (
 )
 
 
-def test_validate_case_name():
-    validate_case_name('camel')
-    validate_case_name('snake case')
-    validate_case_name('PASCAL')
-
-    with pytest.raises(NoCaseNameError, match=re.escape(CASE_EMPTY_ERROR_MSG)):
-        validate_case_name('')
-
-    with pytest.raises(
-        WhitespaceCaseNameError,
-        match=re.escape(CASE_WHITESPACE_ERROR_MSG)
-    ):
-        validate_case_name('   ')
-
-    with pytest.raises(
-        InvalidCaseNameError,
-        match=re.escape(INVALID_CASE_ERROR_MSG)
-    ):
-        validate_case_name('Jarndyce and Jarndyce')
+@pytest.mark.parametrize('valid_case', ['camel', 'snake case', 'PASCAL'])
+def test_validate_case_name_valid(valid_case):
+    validate_case_name(valid_case)
 
 
-def test_validate_clipboard():
+@pytest.mark.parametrize(
+    'invalid_case, exception_class, error_msg',
+    [
+        ('', NoCaseNameError, CASE_EMPTY_ERROR_MSG),
+        ('   ', WhitespaceCaseNameError, CASE_WHITESPACE_ERROR_MSG),
+        ('Jarndyce and Jarndyce', InvalidCaseNameError, INVALID_CASE_ERROR_MSG)
+    ]
+)
+def test_validate_case_name_invalid(invalid_case, exception_class, error_msg):
+    with pytest.raises(exception_class, match=re.escape(error_msg)):
+        validate_case_name(invalid_case)
+
+
+def test_validate_clipboard_valid():
     validate_clipboard(
         'The knowledge and survey of vice is in this world so necessary to '
         'the constituting of human virtue.'
     )
 
-    with pytest.raises(
-        EmptyClipboardError,
-        match=re.escape(CLIPBOARD_EMPTY_ERROR_MSG)
-    ):
-        validate_clipboard('')
 
-    with pytest.raises(
-        WhitespaceClipboardError,
-        match=re.escape(CLIPBOARD_WHITESPACE_ERROR_MSG)
-    ):
-        validate_clipboard('   \n \t  ')
+@pytest.mark.parametrize(
+    'invalid_clipboard, exception_class, error_msg',
+    [
+        ('', EmptyClipboardError, CLIPBOARD_EMPTY_ERROR_MSG),
+        ('   \n \t  ', WhitespaceClipboardError, CLIPBOARD_WHITESPACE_ERROR_MSG)
+    ]
+)
+def test_validate_clipboard_invalid(
+    invalid_clipboard, exception_class, error_msg
+):
+    with pytest.raises(exception_class, match=re.escape(error_msg)):
+        validate_clipboard(invalid_clipboard)
 
 
 def test_validate_regex():
@@ -164,59 +166,82 @@ def test_validate_command_combinations_stray_find_replace(capsys):
     assert 'usage:' not in captured.err
 
 
-def test_validate_positional_args_unrecognized_cmd(capsys):
+@pytest.mark.parametrize(
+    'active_cmds, output_file, input_files, expected_msg',
+    [
+        (['uppercase'], None, [], IN_PLACE_NO_FILES_ERROR_MSG),
+        (
+            ['uppercase'],
+            '其出彌遠_其知彌少.txt',
+            ['不出戶.txt', '知天下.txt'],
+            IN_PLACE_CONFLICT_ERROR_MSG
+        ),
+        (
+            ['word-count'],
+            None,
+            ['the_farther_one_travels.txt', 'the_less_one_knows.txt'],
+            IN_PLACE_ANALYSIS_ERROR_MSG
+        ),
+    ]
+)
+def test_validate_command_combinations_in_place_errors(
+    capsys, active_cmds, output_file, input_files, expected_msg
+):
     parser = TextwarpArgumentParser()
-
-    with pytest.raises(SystemExit):
-        validate_positional_args([], ['camelcase'], parser)
-
-    captured = capsys.readouterr()
-    expected_msg = UNRECOGNIZED_CMD_HINT_ERROR_MSG.format(
-        cmd='camelcase', match='camel-case'
+    args = argparse.Namespace(
+        find=None, replace=None, in_place=True,
+        output_file=output_file, copy_to_clipboard=False
     )
-    assert f'Error: {expected_msg}' in captured.err
-    assert 'usage:' not in captured.err
-
-
-def test_validate_positional_args_unrecognized_cmd_no_hint(capsys):
-    parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
-        validate_positional_args([], ['raphèl-mai-amècche-zabì-almi'], parser)
-
-    captured = capsys.readouterr()
-    expected_msg = UNRECOGNIZED_CMD_ERROR_MSG.format(
-        cmd='raphèl-mai-amècche-zabì-almi'
-    )
-    assert f'Error: {expected_msg}' in captured.err
-    assert 'usage:' not in captured.err
-
-
-def test_validate_positional_args_cmd_after_file(capsys):
-    parser = TextwarpArgumentParser()
-
-    with pytest.raises(SystemExit):
-        validate_positional_args(
-            ['uppercase'], ['button.txt', 'lowercase'], parser
+        validate_command_combinations(
+            active_cmds, args, parser, input_files=input_files
         )
 
     captured = capsys.readouterr()
-    expected_msg = CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
     assert f'Error: {expected_msg}' in captured.err
     assert 'usage:' not in captured.err
 
 
-def test_validate_positional_args_file_not_found_cmd_hint(capsys):
+@pytest.mark.parametrize(
+    'active_cmds, positional_files, expected_msg',
+    [
+        (
+            [],
+            ['camelcase'],
+            UNRECOGNIZED_CMD_HINT_ERROR_MSG.format(
+                cmd='camelcase', match='camel-case'
+            )
+        ),
+        (
+            [],
+            ['raphèl-mai-amècche-zabì-almi'],
+            UNRECOGNIZED_CMD_ERROR_MSG.format(
+                cmd='raphèl-mai-amècche-zabì-almi'
+            )
+        ),
+        (
+            ['uppercase'],
+            ['button.txt', 'lowercase'],
+            CMD_AFTER_FILE_ERROR_MSG.format(cmd='lowercase')
+        ),
+        (
+            ['uppercase'],
+            ['camelcase'],
+            FILE_NOT_FOUND_CMD_HINT_ERROR_MSG.format(
+                file='camelcase', match='camel-case'
+            )
+        ),
+    ]
+)
+def test_validate_positional_args_errors(
+    capsys, active_cmds, positional_files, expected_msg
+):
     parser = TextwarpArgumentParser()
 
     with pytest.raises(SystemExit):
-        validate_positional_args(
-            ['uppercase'], ['camelcase'], parser
-        )
+        validate_positional_args(active_cmds, positional_files, parser)
 
     captured = capsys.readouterr()
-    expected_msg = FILE_NOT_FOUND_CMD_HINT_ERROR_MSG.format(
-        file='camelcase', match='camel-case'
-    )
     assert f'Error: {expected_msg}' in captured.err
     assert 'usage:' not in captured.err

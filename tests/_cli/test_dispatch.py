@@ -23,18 +23,18 @@ def test_case_names_func_map_keys():
     assert set(CASE_NAMES_FUNC_MAP.keys()) == expected_keys
 
 
-def test_case_names_func_map_execution():
-    TEST_TEXT = 'The Strange Case of Dr Jekyll and Mr Hyde'
+import pytest
+from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 
-    expected_outputs = {
-        'camel': 'theStrangeCaseOfDrJekyllAndMrHyde',
-        'dot case': 'the.strange.case.of.dr.jekyll.and.mr.hyde',
-        'lower': 'the strange case of dr jekyll and mr hyde',
-        'kebab': 'the-strange-case-of-dr-jekyll-and-mr-hyde',
-        'pascal case': 'TheStrangeCaseOfDrJekyllAndMrHyde',
-        'snake': 'the_strange_case_of_dr_jekyll_and_mr_hyde',
-        'uppercase': 'THE STRANGE CASE OF DR JEKYLL AND MR HYDE',
-    }
-
-    for case, expected in expected_outputs.items():
-        assert CASE_NAMES_FUNC_MAP[case](TEST_TEXT) == expected
+@pytest.mark.parametrize('case_name, expected', [
+    ('camel', 'theStrangeCaseOfDrJekyllAndMrHyde'),
+    ('dot case', 'the.strange.case.of.dr.jekyll.and.mr.hyde'),
+    ('kebab', 'the-strange-case-of-dr-jekyll-and-mr-hyde'),
+    ('lower', 'the strange case of dr jekyll and mr hyde'),
+    ('pascal case', 'TheStrangeCaseOfDrJekyllAndMrHyde'),
+    ('snake', 'the_strange_case_of_dr_jekyll_and_mr_hyde'),
+    ('uppercase', 'THE STRANGE CASE OF DR JEKYLL AND MR HYDE')
+])
+def test_case_names_func_map_execution(case_name, expected):
+    text = 'The Strange Case of Dr Jekyll and Mr Hyde'
+    assert CASE_NAMES_FUNC_MAP[case_name](text) == expected

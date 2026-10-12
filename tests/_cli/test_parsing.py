@@ -17,9 +17,6 @@ def test_parse_args_copy_flag_default_false(monkeypatch):
 
 
 def test_parse_args_copy_flag_long(monkeypatch):
-    """
-    Test that the long `--copy` flag sets `copy_to_clipboard` to `True`.
-    """
     monkeypatch.setattr(sys, 'argv', ['textwarp', 'snake-case', '--copy'])
     parsed_args = parse_args()
 
@@ -27,13 +24,26 @@ def test_parse_args_copy_flag_long(monkeypatch):
 
 
 def test_parse_args_copy_flag_short(monkeypatch):
-    """
-    Test that the short `-c` flag sets `copy_to_clipboard` to `True`.
-    """
     monkeypatch.setattr(sys, 'argv', ['textwarp', 'camel-case', '-c'])
     parsed_args = parse_args()
 
     assert parsed_args.copy_to_clipboard is True
+
+
+@pytest.mark.parametrize('flag', ['--in-place', '-i'])
+def test_parse_args_in_place_flag(monkeypatch, tmp_path, flag):
+    test_file = tmp_path / 'red_queen.txt'
+    test_file.write_text(
+        'Now, here, you see, it takes all the running you can do, to keep in '
+        'the same place.',
+        encoding='utf-8'
+    )
+    monkeypatch.setattr(
+        sys, 'argv', ['textwarp', flag, 'uppercase', str(test_file)]
+    )
+    parsed_args = parse_args()
+
+    assert parsed_args.in_place is True
 
 
 def test_parse_args_lang_argument(monkeypatch):

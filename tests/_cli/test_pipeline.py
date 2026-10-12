@@ -125,6 +125,21 @@ def test_apply_pipeline_warping():
     assert result == 'dne ym si gninnigeb ym ni'
 
 
+def test_route_output_stdout_tty_vs_piped(monkeypatch, capsys):
+    monkeypatch.setattr(sys.stdout, 'isatty', lambda: False)
+    pipeline.route_output(
+        'Between the idea\n'
+        'And the reality',
+        None,
+        False
+    )
+    assert capsys.readouterr().out == 'Between the idea\nAnd the reality\n'
+
+    monkeypatch.setattr(sys.stdout, 'isatty', lambda: True)
+    pipeline.route_output('Falls the Shadow', None, False)
+    assert capsys.readouterr().out == '\nFalls the Shadow\n'
+
+
 def test_build_valid_pipeline():
     """
     Test building a pipeline with multiple valid, non-conflicting
