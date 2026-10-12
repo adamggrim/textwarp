@@ -161,7 +161,10 @@ def bind_pipeline(
                     _(ENTER_VALID_NUMBER_PROMPT),
                     allow_early_exit=True
                 )
-                args = dc_replace(args, **{cmd.arg_field: val})
+                if cmd.arg_field == 'number':
+                    args = dc_replace(args, number=val)
+                elif cmd.arg_field == 'wpm':
+                    args = dc_replace(args, wpm=val)
 
             if val is not None:
                 cmd = dc_replace(

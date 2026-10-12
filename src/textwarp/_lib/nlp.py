@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from functools import cache
 from types import ModuleType
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
     import spacy.language
@@ -32,7 +32,7 @@ def _load_spacy() -> ModuleType:
 def _load_spacy_model(model_name: str) -> spacy.language.Language:
     """Load a spaCy model by name."""
     spacy = _load_spacy()
-    return spacy.load(model_name)
+    return cast('spacy.language.Language', spacy.load(model_name))
 
 
 def get_nlp(

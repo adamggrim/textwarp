@@ -6,7 +6,8 @@ import importlib
 import importlib.resources
 import logging
 from functools import cache
-from typing import TYPE_CHECKING, Final
+from functools import cache
+from typing import TYPE_CHECKING, Final, cast
 
 if TYPE_CHECKING:
     from textwarp._core.providers.base import LanguageProvider
@@ -50,7 +51,7 @@ def _get_provider_instance(requested_locale: str) -> 'LanguageProvider':
     ProviderClass = getattr(provider_module, class_name, None)
 
     if ProviderClass:
-        return ProviderClass()
+        return cast('LanguageProvider', ProviderClass())
 
     for attr_name in dir(provider_module):
         attr = getattr(provider_module, attr_name)
@@ -59,7 +60,7 @@ def _get_provider_instance(requested_locale: str) -> 'LanguageProvider':
             and attr.__name__.endswith('Provider')
             and attr.__name__ != 'LanguageProvider'
         ):
-            return attr()
+            return cast('LanguageProvider', attr())
 
     raise ImportError(
         _('No valid provider class found in {module}').format(

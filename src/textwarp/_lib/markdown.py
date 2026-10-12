@@ -26,8 +26,8 @@ class _TextwarpRenderer(MarkdownRenderer):
         """Apply the transformation function to raw text nodes."""
         handler_func = _active_transform.get()
         if handler_func is not None:
-            return handler_func(element.children)
-        return element.children
+            return handler_func(str(element.children))
+        return str(element.children)
 
 
 class _ThreadLocalMarkdownPool(threading.local):

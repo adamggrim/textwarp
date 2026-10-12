@@ -3,7 +3,7 @@
 import logging
 from collections.abc import Callable
 from types import ModuleType
-from typing import Final, TypeAlias
+from typing import Final, TypeAlias, cast
 
 from textwarp._cli.constants.messages import (
     CASE_TO_REPLACE_NOT_FOUND_MSG,
@@ -47,7 +47,7 @@ def _get_pyperclip() -> ModuleType:
     """Helper to safely import pyperclip or exit with an error."""
     try:
         import pyperclip
-        return pyperclip
+        return cast(ModuleType, pyperclip)
     except ImportError as e:
         raise MissingDependencyError(
             'pyperclip',
@@ -60,7 +60,7 @@ def _paste_and_validate() -> str | None:
     """Paste and validate clipboard text."""
     pyperclip = _get_pyperclip()
     try:
-        clipboard = pyperclip.paste()
+        clipboard = str(pyperclip.paste())
         validate_clipboard(clipboard)
         return clipboard
     except (EmptyClipboardError, WhitespaceClipboardError) as e:
