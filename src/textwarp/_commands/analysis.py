@@ -52,15 +52,15 @@ def char_count(text: str) -> str:
     return format_count(CountLabels.CHAR.value, count)
 
 
-def entity_counts(content: str | Doc, limit: int) -> str:
+def entity_counts(content: str | Doc, number: int) -> str:
     """
     Analyze, format and print most frequent entities output.
 
     Args:
         content: The string or spaCy `Doc` to process.
-        limit: The number of entities to return.
+        number: The number of entities to return.
     """
-    data: list[WordCount] = count_entities(content, limit)
+    data: list[WordCount] = count_entities(content, number)
 
     if not data:
         return _(NO_ENTITIES_FOUND_MSG)
@@ -78,15 +78,15 @@ def line_count(text: str) -> str:
     return format_count(CountLabels.LINE.value, count)
 
 
-def mfws(content: str | Doc, limit: int) -> str:
+def mfws(content: str | Doc, number: int) -> str:
     """
     Analyze, format and print most frequent words output.
 
     Args:
         content: The string or spaCy `Doc` to process.
-        limit: The number of most frequent words to return.
+        number: The number of most frequent words to return.
     """
-    data: list[WordCount] = count_mfws(content, limit)
+    data: list[WordCount] = count_mfws(content, number)
 
     return format_mfws(data)
 
