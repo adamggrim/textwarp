@@ -85,10 +85,10 @@ class UniversalPOSTag(str, Enum):
     PROPN = 'PROPN'
     PUNCT = 'PUNCT'
     SCONJ = 'SCONJ'
+    SPACE = 'SPACE'
     SYM = 'SYM'
     VERB = 'VERB'
     X = 'X'
-    SPACE = 'SPACE'
 
 
 @unique
