@@ -7,7 +7,7 @@ from types import ModuleType
 from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
-    import spacy.language
+    from spacy.language import Language
     from spacy.tokens import Doc
 
 from textwarp._core.context import _, ctx
@@ -29,15 +29,15 @@ def _load_spacy() -> ModuleType:
 
 
 @cache
-def _load_spacy_model(model_name: str) -> spacy.language.Language:
+def _load_spacy_model(model_name: str) -> Language:
     """Load a spaCy model by name."""
     spacy = _load_spacy()
-    return cast('spacy.language.Language', spacy.load(model_name))
+    return cast('Language', spacy.load(model_name))
 
 
 def get_nlp(
     model_priority: ModelPriority = ModelPriority.SPEED
-) -> spacy.language.Language:
+) -> Language:
     """
     Returns the best available spaCy model instance based on speed or
     accuracy for the active language locale.
@@ -47,7 +47,7 @@ def get_nlp(
             `SPEED` or `ACCURACY`. Defaults to `SPEED`.
 
     Returns:
-        spacy.language.Language: The loaded spaCy model instance.
+        Language: The loaded spaCy model instance.
 
     Raises:
         RuntimeError: If no appropriate spaCy models are found for the
