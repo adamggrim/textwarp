@@ -5,7 +5,16 @@ from unittest.mock import MagicMock
 import pytest
 from spacy.tokens import Span
 
+from textwarp._cli.parsing import TextwarpArgumentParser
 from textwarp._lib.nlp import _load_spacy_model, process_as_doc
+
+
+@pytest.fixture
+def cli_parser():
+    """
+    Provide a reusable CLI parser for validation and pipeline tests.
+    """
+    return TextwarpArgumentParser()
 
 
 @pytest.fixture

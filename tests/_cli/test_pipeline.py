@@ -9,7 +9,6 @@ import regex as re
 from textwarp._cli import pipeline
 from textwarp._cli.args import CLICommand, CommandType
 from textwarp._cli.constants.messages import REPLACEMENT_CMD_ERROR_MSG
-from textwarp._cli.parsing import TextwarpArgumentParser
 from textwarp._core.exceptions import (
     MissingDependencyError,
     TextwarpValidationError
@@ -140,24 +139,22 @@ def test_route_output_stdout_tty_vs_piped(monkeypatch, capsys):
     assert capsys.readouterr().out == '\nFalls the Shadow\n'
 
 
-def test_build_valid_pipeline():
+def test_build_valid_pipeline(cli_parser):
     """
     Test building a pipeline with multiple valid, non-conflicting
     commands.
     """
-    parser = TextwarpArgumentParser()
     active_cmds = ['strip', 'lowercase', 'snake-case']
-    pipeline_result = pipeline.build_pipeline(active_cmds, parser)
+    pipeline_result = pipeline.build_pipeline(active_cmds, cli_parser)
 
     assert len(pipeline_result) == len(active_cmds)
     cmd_names = [cmd.name for cmd in pipeline_result]
     assert cmd_names == active_cmds
 
 
-def test_build_valid_single_command():
-    parser = TextwarpArgumentParser()
+def test_build_valid_single_command(cli_parser):
     cmd_name = 'camel-case'
-    pipeline_result = pipeline.build_pipeline([cmd_name], parser)
+    pipeline_result = pipeline.build_pipeline([cmd_name], cli_parser)
 
     assert len(pipeline_result) == 1
     cmd = pipeline_result[0]
