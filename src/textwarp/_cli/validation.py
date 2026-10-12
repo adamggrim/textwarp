@@ -17,6 +17,9 @@ from textwarp._cli.constants.messages import (
     EXCLUSIVE_CMD_ERROR_MSG,
     FILE_NOT_FOUND_CMD_HINT_ERROR_MSG,
     FIND_REPLACE_ARG_ERROR_MSG,
+    IN_PLACE_ANALYSIS_ERROR_MSG,
+    IN_PLACE_CONFLICT_ERROR_MSG,
+    IN_PLACE_NO_FILES_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
@@ -100,7 +103,8 @@ def validate_clipboard(clipboard: str) -> None:
 def validate_command_combinations(
     active_cmds: list[str],
     args: argparse.Namespace,
-    parser: argparse.ArgumentParser
+    parser: argparse.ArgumentParser,
+    input_files: list[str] | None = None
 ) -> None:
     """
     Validate that combined CLI arguments do not conflict.
@@ -153,9 +157,8 @@ def validate_command_combinations(
 
     is_replacement_cmd = len(active_replacements) > 0
     if (
-        (args.find is not None or args.replace is not None)
-        and not is_replacement_cmd
-    ):
+        args.find is not None or args.replace is not None
+    ) and not is_replacement_cmd:
         parser.error(_(FIND_REPLACE_ARG_ERROR_MSG))
 
     active_arg_fields = {
@@ -185,6 +188,16 @@ def validate_command_combinations(
         parser.error(
             _(POSITIVE_INT_ARG_ERROR_MSG).format(flag='--max-file-mb')
         )
+
+    if getattr(args, 'in_place', False):
+        if input_files is not None and not input_files:
+            parser.error(_(IN_PLACE_NO_FILES_ERROR_MSG))
+        if getattr(args, 'output_file', None) or getattr(
+            args, 'copy_to_clipboard', False
+        ):
+            parser.error(_(IN_PLACE_CONFLICT_ERROR_MSG))
+        if first_analysis_cmd_seen:
+            parser.error(_(IN_PLACE_ANALYSIS_ERROR_MSG))
 
 
 def validate_positional_args(
