@@ -42,7 +42,7 @@ class LanguageProvider(ABC):
     @abstractmethod
     def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
         """
-        Language-specific part-of-speech tags and their localized
+        Language-specific parts-of-speech tags and their localized
         labels.
         """
         pass
@@ -50,7 +50,7 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def pos_word_tags(self) -> frozenset[UniversalPOSTag]:
-        """Part-of-speech tags that count as distinct words."""
+        """Parts-of-speech tags that count as distinct words."""
         pass
 
     @property

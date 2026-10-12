@@ -1,5 +1,10 @@
 # Textwarp
 
+[![CI](https://github.com/adamggrim/textwarp/actions/workflows/ci.yml/badge.svg)](https://github.com/adamggrim/textwarp/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 `textwarp` is a Python package for analyzing and transforming text. For the given text, `textwarp` processes clipboard or file input and returns the output.
 
 ## Requirements
@@ -16,9 +21,6 @@
 
 ### Optional dependencies
 
-<details>
-<summary>(Click to expand)</summary>
-
 * **Clipboard:** Installs `pyperclip` to read and write to the clipboard.
 * **Markdown (`pip install "textwarp[markdown]"`):** Installs `marko` for parsing Markdown text.
 * **NLP (`pip install "textwarp[nlp]"`):** Installs `spacy[transformers]` for transformer-based text processing.
@@ -33,9 +35,6 @@ You can install multiple dependencies at once by separating them with commas:
 ```bash
 python -m pip install "textwarp[clipboard,markdown,nlp] @ git+https://github.com/adamggrim/textwarp.git"
 ```
-
-*Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
-</details>
 
 ## Example (clipboard)
 
@@ -57,7 +56,7 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 4. **Continue or exit**
 
-    The program will prompt you to copy any other text to the clipboard. To exit, type `no` (`n`), `quit` (`q`) or `exit` (`e`), or trigger a `KeyboardInterrupt` (Ctrl + C):
+    The program will prompt you to copy any other text to the clipboard. To exit, type `n` (`no`), `q` (`quit`) or `e` (`exit`), or trigger a `KeyboardInterrupt` (Ctrl + C):
 
     ```
     Any other text? (y/n) (Copy text to clipboard):
@@ -67,9 +66,6 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
     ```
 
 ## Advanced
-
-<details>
-<summary>(Click to expand)</summary>
 
 ### File I/O
 
@@ -81,7 +77,7 @@ textwarp --in-place uppercase input.txt
 
 ### Piping
 
-`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or be copied to the clipboard.
+`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or copy to the clipboard.
 
 ```bash
 echo "is anyone here?" | textwarp snake-case uppercase
@@ -93,7 +89,18 @@ Use the `-f` (`--find`) and `-r` (`--replace`) flags coupled with your replaceme
 ```bash
 textwarp replace-text -f "foul" -r "fair" macbeth.txt
 ```
-</details>
+
+### Pre-commit
+
+Use `textwarp` as a pre-commit hook by adding it to `.pre-commit-config.yaml`:
+
+```yaml
+- repo: https://github.com/adamggrim/textwarp
+  rev: v0.6.0
+  hooks:
+    - id: textwarp
+      args: [single-spaces, replace-case, -f, camel, -r, snake]
+```
 
 ## Commands
 
@@ -109,7 +116,6 @@ options:
   --version                show version number and exit
   -l LANG, --lang LANG     set the language locale
   -m, --markdown           parse text as Markdown and preserve formatting
-  -i FILE, --input FILE    optional path for reading an input file
   -o FILE, --output FILE   optional path for writing the output file
   -i, --in-place           modify input files in-place
   -c, --copy               copy the output to the clipboard
@@ -232,16 +238,16 @@ textwarp/
   │ │ │ │ │ ├── contextual_casings_map.json: Maps entities that require context to capitalize
   │ │ │ │ │ └── contraction_suffixes.json: Lists suffixes derived from contractions
   │ │ │ │ ├── nlp_constants/
-  │ │ │ │ │ ├── base_verb_tags.json: Lists fine-grained part-of-speech tags for base verb forms
+  │ │ │ │ │ ├── base_verb_tags.json: Lists fine-grained parts-of-speech tags for base verb forms
   │ │ │ │ │ ├── have_auxiliaries.json: Lists auxiliary verbs forms of "have"
-  │ │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking left
-  │ │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained part-of-speech tags for the first word of a noun phrase
+  │ │ │ │ │ ├── left_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking left
+  │ │ │ │ │ ├── noun_phrase_tags.json: Lists fine-grained parts-of-speech tags for the first word of a noun phrase
   │ │ │ │ │ ├── open_quotes.json: Lists opening quote characters
-  │ │ │ │ │ ├── participle_tags.json: Lists fine-grained part-of-speech tags for past tense and past participle verb forms
+  │ │ │ │ │ ├── participle_tags.json: Lists fine-grained parts-of-speech tags for past tense and past participle verb forms
   │ │ │ │ │ ├── proper_noun_entities.json: Lists named entities that are typically proper nouns
-  │ │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained part-of-speech tags for stopping a subject search when looking right
-  │ │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained part-of-speech tags for singular nouns and proper nouns
-  │ │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained part-of-speech tags for pronouns, proper nouns and nouns
+  │ │ │ │ │ ├── right_search_stop_tags.json: Lists coarse-grained parts-of-speech tags for stopping a subject search when looking right
+  │ │ │ │ │ ├── singular_noun_tags.json: Lists fine-grained parts-of-speech tags for singular nouns and proper nouns
+  │ │ │ │ │ ├── subject_pos_tags.json: Lists coarse-grained parts-of-speech tags for pronouns, proper nouns and nouns
   │ │ │ │ │ ├── third_person_singular_pronouns.json: Lists third-person singular pronouns for subject-verb agreement checks
   │ │ │ │ │ ├── title_case_tag_exceptions.json: Lists fine-grained part-of-speech tag exceptions for title case capitalization
   │ │ │ │ │ └── wh_words.json: Lists wh-words that start questions
@@ -323,7 +329,6 @@ Follow these steps to run `textwarp`:
     ```
     pip install "textwarp[clipboard,markdown,nlp] @ git+https://github.com/adamggrim/textwarp.git"
     ```
-    *Note: On macOS/Linux, you may need to use `pip3` instead of `pip`*.
 
 3. **Run the program**: Run the program by calling `textwarp` from the command line with a pipeline command: `textwarp binary`
 

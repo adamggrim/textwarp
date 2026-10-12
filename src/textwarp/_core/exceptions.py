@@ -17,11 +17,11 @@ __all__ = [
 
 
 class TextwarpError(Exception):
-    """Base class for all textwarp errors."""
+    """Base class for all package errors."""
 
 
 class TextwarpValidationError(TextwarpError):
-    """Base class for all textwarp validation errors."""
+    """Base class for all package validation errors."""
 
 
 class EmptyClipboardError(TextwarpValidationError):
@@ -63,12 +63,12 @@ class MissingModelError(TextwarpError):
     """Exception raised when a required spaCy model is not installed."""
 
 
-class NoRegexError(TextwarpValidationError):
-    """Exception raised when the provided regex string is empty."""
-
-
 class NoCaseNameError(TextwarpValidationError):
     """Exception raised when the provided case name string is empty."""
+
+
+class NoRegexError(TextwarpValidationError):
+    """Exception raised when the provided regex string is empty."""
 
 
 class NoTextError(TextwarpValidationError):
