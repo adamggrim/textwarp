@@ -139,24 +139,6 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
     return None
 
 
-def get_prev_lexical_token(
-    doc: Doc,
-    start_idx: int,
-    skip_pos: Container[UniversalPOSTag] = frozenset(
-        {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
-    )
-) -> Token | None:
-    """
-    Find the previous lexical token, skipping selected parts of speech.
-    """
-    for i in range(start_idx - 1, -1, -1):
-        token = doc[i]
-        if token.pos_ in skip_pos:
-            continue
-        return token
-    return None
-
-
 def get_negative_contraction_base_verb(contraction: str) -> str | None:
     """
     Determine the base verb from a standard negative contraction (e.g.,
@@ -202,6 +184,24 @@ def get_next_lexical_token(
     Find the next lexical token, skipping selected parts of speech.
     """
     for i in range(start_idx, len(doc)):
+        token = doc[i]
+        if token.pos_ in skip_pos:
+            continue
+        return token
+    return None
+
+
+def get_prev_lexical_token(
+    doc: Doc,
+    start_idx: int,
+    skip_pos: Container[UniversalPOSTag] = frozenset(
+        {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
+    )
+) -> Token | None:
+    """
+    Find the previous lexical token, skipping selected parts of speech.
+    """
+    for i in range(start_idx - 1, -1, -1):
         token = doc[i]
         if token.pos_ in skip_pos:
             continue
