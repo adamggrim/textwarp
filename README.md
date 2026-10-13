@@ -67,27 +67,48 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 ## Advanced
 
+### Analysis
+
+Analyze text with a range of analysis commands (`char-count`, `entity-counts`, `line-count`, `mfws`, `pos-counts`, `sentence-count`, `time-to-read`, `ttr`, `word-count`).
+
+Use `-n` (`--number`) to cap ranked results or `-w` (`--wpm`) to calibrate reading speed (words per minute).
+
+```bash
+textwarp pos-counts in_a_station_of_the_metro.txt
+```
+```text
+Nouns          5  (35.71%)
+Pronouns       0   (0.00%)
+Verbs          0   (0.00%)
+Adjectives     6  (42.86%)
+Adverbs        0   (0.00%)
+Prepositions   3  (21.43%)
+Conjunctions   0   (0.00%)
+Interjections  0   (0.00%)
+Other          0   (0.00%)
+```
+
 ### File I/O
 
 Process text files directly by passing them as arguments. Use the `-o` (`--output`) flag to save the results to a new file, or `-i` (`--in-place`) to modify the file in-place.
 
 ```bash
-textwarp --in-place uppercase input.txt
+textwarp plain-text cervantes.txt -o menard.txt
 ```
 
 ### Piping
 
-`textwarp` supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or copy to the clipboard.
+`textwarp` also supports standard input (`stdin`), allowing direct text piping into the command. The transformed text can print to `stdout` or copy to the clipboard.
 
 ```bash
-echo "is anyone here?" | textwarp snake-case uppercase
+echo "ecquis adest" | textwarp reverse widen
 ```
 
 ### Inline find and replace
 Use the `-f` (`--find`) and `-r` (`--replace`) flags coupled with your replacement command.
 
 ```bash
-textwarp replace-text -f "foul" -r "fair" macbeth.txt
+textwarp replace-text -f "Ὀδυσσεύς" -r "Οὖτις" polyphemus.txt
 ```
 
 ### Pre-commit
@@ -199,6 +220,7 @@ textwarp/
   │ │ └── messages.py: Strings for displaying CLI messages
   │ ├── __init__.py: Initializes the _cli sub-package
   │ ├── args.py: A map of CLI arguments to functions and help messages
+  │ ├── cli.py: Command-line orchestration
   │ ├── dispatch.py: A map of string inputs to case conversion functions
   │ ├── formatting.py: Functions for formatting analysis into readable strings
   │ ├── parsing.py: CLI argument parsing using argparse
