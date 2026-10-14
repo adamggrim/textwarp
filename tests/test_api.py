@@ -171,13 +171,25 @@ def test_single_arg_functions(func_name, text, expected):
 @pytest.mark.parametrize(
     'func_name, text, param, expected',
     [
-        ('calculate_time_to_read', 'A time to be born, a time to die', 300, 1),
-        ('count_entities', 'Count von Count', 1, None),
+        (
+            'calculate_time_to_read',
+            'But at my back I always hear\n'
+            'Time’s wingèd chariot hurrying near.',
+            300,
+            1
+        ),
+        (
+            'count_entities',
+            'Entities are not to be multiplied without necessity.',
+            1,
+            None
+        ),
         (
             'count_mfws',
-            'Put out the light, and then put out the light.',
+            'Spam, Spam, Spam, Spam, Spam, Spam, baked beans, Spam, Spam, '
+            'Spam and Spam.',
             1,
-            [WordCount(word='put', count=2, percentage=20.0)]
+            [WordCount(word='spam', count=11, percentage=(11 / 14 * 100))]
         ),
     ]
 )

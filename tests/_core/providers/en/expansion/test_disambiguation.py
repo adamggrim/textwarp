@@ -1,15 +1,7 @@
 """Tests for resolving ambiguous contractions based on context."""
 
-from textwarp._core.providers.en.expansion.disambiguation import (
-    disambiguate_ain_t,
-    disambiguate_d,
-    disambiguate_gotta_or_wanna,
-    disambiguate_s,
-    disambiguate_whatcha
-)
-
-
 import pytest
+
 from textwarp._core.providers.en.expansion.disambiguation import (
     disambiguate_ain_t,
     disambiguate_d,

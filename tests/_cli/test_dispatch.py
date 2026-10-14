@@ -1,5 +1,7 @@
 """Tests for CLI case conversion dispatch mapping."""
 
+import pytest
+
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 
 
@@ -22,9 +24,6 @@ def test_case_names_func_map_keys():
     }
     assert set(CASE_NAMES_FUNC_MAP.keys()) == expected_keys
 
-
-import pytest
-from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP
 
 @pytest.mark.parametrize('case_name, expected', [
     ('camel', 'theStrangeCaseOfDrJekyllAndMrHyde'),
