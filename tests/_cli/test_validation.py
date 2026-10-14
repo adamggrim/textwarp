@@ -141,10 +141,10 @@ def test_validate_command_combinations_multiple_replacements(
 def test_validate_command_combinations_analysis_order(capsys, cli_parser):
     args = argparse.Namespace(find=None, replace=None, markdown=False)
 
-    active_cmds_valid = ['uppercase', 'word-count', 'char-count']
+    active_cmds_valid = ['uppercase', 'count-words', 'count-chars']
     validate_command_combinations(active_cmds_valid, args, cli_parser)
 
-    active_cmds_invalid = ['word-count', 'uppercase']
+    active_cmds_invalid = ['count-words', 'uppercase']
     with pytest.raises(SystemExit):
         validate_command_combinations(active_cmds_invalid, args, cli_parser)
 
@@ -179,7 +179,7 @@ def test_validate_command_combinations_stray_find_replace(capsys, cli_parser):
             IN_PLACE_CONFLICT_ERROR_MSG
         ),
         (
-            ['word-count'],
+            ['count-words'],
             None,
             ['the_farther_one_travels.txt', 'the_less_one_knows.txt'],
             IN_PLACE_ANALYSIS_ERROR_MSG

@@ -69,12 +69,12 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 ### Analysis
 
-Analyze text with a range of analysis commands (`char-count`, `entity-counts`, `line-count`, `mfws`, `pos-counts`, `sentence-count`, `time-to-read`, `ttr`, `word-count`).
+Analyze text with a range of analysis commands (`count-chars`, `count-entities`, `count-lines`, `count-mfws`, `count-pos`, `count-sentences`, `count-words`, `time-to-read`, `ttr`).
 
 Use `-n` (`--number`) to cap ranked results or `-w` (`--wpm`) to calibrate reading speed (words per minute).
 
 ```bash
-textwarp pos-counts in_a_station_of_the_metro.txt
+textwarp count-pos in_a_station_of_the_metro.txt
 ```
 ```text
 Nouns          5  (35.71%)
@@ -153,11 +153,16 @@ commands:
   camel-case           convertToCamelCase
   capitalize           Capitalize The First Character Of Each Word
   cardinal             convert ordinal numbers to cardinal numbers
-  char-count           count characters
   clear                clear clipboard text
+  count-chars          count characters
+  count-entities       get most frequent entities
+  count-lines          count lines
+  count-mfws           get most frequent words
+  count-pos            count parts of speech
+  count-sentences      count sentences
+  count-words          count words
   curly-quotes         convert "straight quotes" to “curly quotes”
   dot-case             convert.to.dot.case
-  entity-counts        get most frequent entities
   expand-contractions  expand contractions
   from-binary          convert from binary
   from-hexadecimal     convert from hexadecimal
@@ -166,14 +171,11 @@ commands:
   hyphens-to-em        convert consecutive hyphens to em dashes
   hyphens-to-en        convert hyphens to en dashes
   kebab-case           convert-to-kebab-case
-  line-count           count lines
   lowercase            convert to lowercase
-  mfws                 get most frequent words
   morse                convert to Morse code
   ordinal              convert cardinal numbers to ordinal numbers
   pascal-case          ConvertToPascalCase
   plain-text           convert to plain text
-  pos-counts           count parts of speech
   punct-to-inside      "move punctuation inside quotation marks."
   punct-to-outside     "move punctuation outside quotation marks".
   random-case          randomize the casing of each character
@@ -184,7 +186,6 @@ commands:
   replace-text         find and replace text
   reverse              reverse text
   sentence-case        Convert to sentence case.
-  sentence-count       count sentences
   single-spaces        convert consecutive spaces to a single space
   snake-case           convert_to_snake_case
   straight-quotes      convert “curly quotes” to "straight quotes"
@@ -196,8 +197,7 @@ commands:
   ttr                  calculate type-token ratio
   unzalgo              remove Zalgo diacritics
   uppercase            CONVERT TO ALL CAPS
-  widen                w i d e n  t e x t
-  word-count           count words
+  widen                w i d e n t e x t
   zalgo                c̵̼̝̦̗ͦ̑̓ö̶̧̹͈́̇n̷̹̟͗͒̇̚v̴̠̟̕e͖͖̺̮̟̐ȑ̺̻̳͚̩̊t̵ͣͮ͛ t̷̰̪̊͒o̵̻̠͂̀ Z̛̻͙̪̉̕ȃ̸̧͔̼͚͐l̸̵͇̪̅ḡ̡̻̟̜̍̄ǫ̵͔ͨ̆ t̸̶̢̤̲̎̋e̶̜͉̎̌x̴̷̨͇͇ͬẗ̸̡̝ͦ
 ```
 

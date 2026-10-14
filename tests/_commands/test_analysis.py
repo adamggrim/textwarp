@@ -3,13 +3,33 @@
 from textwarp._commands import analysis
 
 
-def test_char_count():
-    result = analysis.char_count('Call me Ishmael.')
+def test_calculate_time_to_read():
+    text = 'A Brief History of Time ' * 1988
+
+    result = analysis.calculate_time_to_read(text, wpm=250)
+
+    assert '40 minutes to read' in result
+
+
+def test_calculate_ttr():
+    result = analysis.calculate_ttr(
+        'Tyger Tyger, burning bright,\n'
+        'In the forests of the night;\n'
+        'What immortal hand or eye,\n'
+        'Could frame thy fearful symmetry?'
+    )
+
+    assert 'Type-token ratio:' in result
+    assert '0.90' in result
+
+
+def test_count_chars():
+    result = analysis.count_chars('Call me Ishmael.')
     assert 'Character count: 16' in result
 
 
-def test_entity_counts():
-    result = analysis.entity_counts(
+def test_count_entities():
+    result = analysis.count_entities(
         'How a Ship having passed the Line was driven by storms to the cold '
         'Country towards the South Pole; and how from thence she made her '
         'course to the tropical Latitude of the Great Pacific Ocean; and of '
@@ -24,8 +44,8 @@ def test_entity_counts():
         assert all('%' in line for line in lines)
 
 
-def test_line_count():
-    result = analysis.line_count(
+def test_count_lines():
+    result = analysis.count_lines(
         'so much depends\n'
         'upon\n'
         'a red wheel\n'
@@ -35,8 +55,8 @@ def test_line_count():
     assert 'Line count: 4' in result
 
 
-def test_mfws():
-    result = analysis.mfws(
+def test_count_mfws():
+    result = analysis.count_mfws(
         'Rose is a rose is a rose is a rose.',
         number=2
     )
@@ -45,8 +65,8 @@ def test_mfws():
     assert 'is' in result
 
 
-def test_pos_counts():
-    result = analysis.pos_counts('The present King of France is bald.')
+def test_count_pos():
+    result = analysis.count_pos('The present King of France is bald.')
 
     lines = [line for line in result.split('\n') if line.strip()]
     assert len(lines) > 0
@@ -55,8 +75,8 @@ def test_pos_counts():
         assert any(char.isdigit() for char in line)
 
 
-def test_sentence_count():
-    result = analysis.sentence_count(
+def test_count_sentences():
+    result = analysis.count_sentences(
         'The best lack all conviction, while the worst\n'
         'Are full of passionate intensity.\n'
         'Surely some revelation is at hand;\n'
@@ -66,27 +86,7 @@ def test_sentence_count():
     assert 'Sentence count: 2' in result
 
 
-def test_time_to_read():
-    text = 'A Brief History of Time ' * 300
-
-    result = analysis.time_to_read(text, wpm=250)
-
-    assert '6 minutes to read' in result
-
-
-def test_ttr():
-    result = analysis.ttr(
-        'Tyger Tyger, burning bright,\n'
-        'In the forests of the night;\n'
-        'What immortal hand or eye,\n'
-        'Could frame thy fearful symmetry?'
-    )
-
-    assert 'Type-token ratio:' in result
-    assert '0.90' in result
-
-
-def test_word_count():
-    result = analysis.word_count('Words, words, words.')
+def test_count_words():
+    result = analysis.count_words('Words, words, words.')
 
     assert 'Word count: 3' in result

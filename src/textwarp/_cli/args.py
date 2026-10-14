@@ -83,17 +83,60 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         command_type=CommandType.WARPING,
         requires_spacy=True
     ),
-    'char-count': CLICommand(
-        name='char-count',
-        func=lazy_load('.._commands.analysis', 'char_count'),
-        help_text=N_('count characters'),
-        command_type=CommandType.ANALYSIS
-    ),
     'clear': CLICommand(
         name='clear',
         func=lambda text: '',
         help_text=N_('clear clipboard text'),
         command_type=CommandType.STANDALONE
+    ),
+    'count-chars': CLICommand(
+        name='count-chars',
+        func=lazy_load('.._commands.analysis', 'count_chars'),
+        help_text=N_('count characters'),
+        command_type=CommandType.ANALYSIS
+    ),
+    'count-entities': CLICommand(
+        name='count-entities',
+        func=lazy_load('.._commands.analysis', 'count_entities'),
+        help_text=N_('get most frequent entities'),
+        command_type=CommandType.ANALYSIS,
+        requires_spacy=True,
+        arg_field='number',
+        prompt_msg=ENTER_ENTITY_COUNT_PROMPT
+    ),
+    'count-lines': CLICommand(
+        name='count-lines',
+        func=lazy_load('.._commands.analysis', 'count_lines'),
+        help_text=N_('count lines'),
+        command_type=CommandType.ANALYSIS
+    ),
+    'count-mfws': CLICommand(
+        name='count-mfws',
+        func=lazy_load('.._commands.analysis', 'count_mfws'),
+        help_text=N_('get most frequent words'),
+        command_type=CommandType.ANALYSIS,
+        arg_field='number',
+        prompt_msg=ENTER_MFW_COUNT_PROMPT
+    ),
+    'count-pos': CLICommand(
+        name='count-pos',
+        func=lazy_load('.._commands.analysis', 'count_pos'),
+        help_text=N_('count parts of speech'),
+        command_type=CommandType.ANALYSIS,
+        requires_spacy=True
+    ),
+    'count-sentences': CLICommand(
+        name='count-sentences',
+        func=lazy_load('.._commands.analysis', 'count_sentences'),
+        help_text=N_('count sentences'),
+        command_type=CommandType.ANALYSIS,
+        requires_spacy=True
+    ),
+    'count-words': CLICommand(
+        name='count-words',
+        func=lazy_load('.._commands.analysis', 'count_words'),
+        help_text=N_('count words'),
+        command_type=CommandType.ANALYSIS
     ),
     'curly-quotes': CLICommand(
         name='curly-quotes',
@@ -106,15 +149,6 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._lib.casing', 'to_dot_case'),
         help_text=N_('convert.to.dot.case'),
         command_type=CommandType.WARPING
-    ),
-    'entity-counts': CLICommand(
-        name='entity-counts',
-        func=lazy_load('.._commands.analysis', 'entity_counts'),
-        help_text=N_('get most frequent entities'),
-        command_type=CommandType.ANALYSIS,
-        requires_spacy=True,
-        arg_field='number',
-        prompt_msg=ENTER_ENTITY_COUNT_PROMPT
     ),
     'expand-contractions': CLICommand(
         name='expand-contractions',
@@ -165,25 +199,11 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         help_text=N_('convert-to-kebab-case'),
         command_type=CommandType.WARPING
     ),
-    'line-count': CLICommand(
-        name='line-count',
-        func=lazy_load('.._commands.analysis', 'line_count'),
-        help_text=N_('count lines'),
-        command_type=CommandType.ANALYSIS
-    ),
     'lowercase': CLICommand(
         name='lowercase',
         func=str.lower,
         help_text=N_('convert to lowercase'),
         command_type=CommandType.WARPING
-    ),
-    'mfws': CLICommand(
-        name='mfws',
-        func=lazy_load('.._commands.analysis', 'mfws'),
-        help_text=N_('get most frequent words'),
-        command_type=CommandType.ANALYSIS,
-        arg_field='number',
-        prompt_msg=ENTER_MFW_COUNT_PROMPT
     ),
     'morse': CLICommand(
         name='morse',
@@ -209,13 +229,6 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=str,
         help_text=N_('convert to plain text'),
         command_type=CommandType.WARPING
-    ),
-    'pos-counts': CLICommand(
-        name='pos-counts',
-        func=lazy_load('.._commands.analysis', 'pos_counts'),
-        help_text=N_('count parts of speech'),
-        command_type=CommandType.ANALYSIS,
-        requires_spacy=True
     ),
     'punct-to-inside': CLICommand(
         name='punct-to-inside',
@@ -287,13 +300,6 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         command_type=CommandType.WARPING,
         requires_spacy=True
     ),
-    'sentence-count': CLICommand(
-        name='sentence-count',
-        func=lazy_load('.._commands.analysis', 'sentence_count'),
-        help_text=N_('count sentences'),
-        command_type=CommandType.ANALYSIS,
-        requires_spacy=True
-    ),
     'single-spaces': CLICommand(
         name='single-spaces',
         func=lazy_load('.._lib.cleaning', 'to_single_spaces'),
@@ -332,7 +338,7 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
     ),
     'time-to-read': CLICommand(
         name='time-to-read',
-        func=lazy_load('.._commands.analysis', 'time_to_read'),
+        func=lazy_load('.._commands.analysis', 'calculate_time_to_read'),
         help_text=N_('calculate time to read'),
         command_type=CommandType.ANALYSIS,
         arg_field='wpm',
@@ -347,7 +353,7 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
     ),
     'ttr': CLICommand(
         name='ttr',
-        func=lazy_load('.._commands.analysis', 'ttr'),
+        func=lazy_load('.._commands.analysis', 'calculate_ttr'),
         help_text=N_('calculate type-token ratio'),
         command_type=CommandType.ANALYSIS
     ),
@@ -368,12 +374,6 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         func=lazy_load('.._lib.effects', 'widen'),
         help_text=N_('w i d e n  t e x t'),
         command_type=CommandType.WARPING
-    ),
-    'word-count': CLICommand(
-        name='word-count',
-        func=lazy_load('.._commands.analysis', 'word_count'),
-        help_text=N_('count words'),
-        command_type=CommandType.ANALYSIS
     ),
     'zalgo': CLICommand(
         name='zalgo',

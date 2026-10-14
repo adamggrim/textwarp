@@ -189,7 +189,7 @@ def test_single_arg_functions(func_name, text, expected):
             'Spam, Spam, Spam, Spam, Spam, Spam, baked beans, Spam, Spam, '
             'Spam and Spam.',
             1,
-            [WordCount(word='spam', count=11, percentage=(11 / 14 * 100))]
+            [WordCount(word='spam', count=10, percentage=(10 / 13 * 100))]
         ),
     ]
 )

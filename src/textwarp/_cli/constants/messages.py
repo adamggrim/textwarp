@@ -154,8 +154,8 @@ MULTIPLE_REPLACEMENT_ERROR_MSG: Final = N_(
 )
 NO_ENTITIES_FOUND_MSG: Final = N_('No entities found.')
 NUMBER_ARG_ERROR_MSG: Final = N_(
-    "The --number (-n) argument can only be used with 'entity-counts' or "
-    "'mfws'."
+    "The --number (-n) argument can only be used with 'count-entities' or "
+    "'count-mfws'."
 )
 PIPED_INPUT_ERROR_MSG: Final = N_('Error processing input: {error}')
 POSITIVE_INT_ARG_ERROR_MSG: Final = N_(

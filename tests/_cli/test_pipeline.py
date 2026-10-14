@@ -35,8 +35,8 @@ def test_apply_pipeline_analysis(monkeypatch):
 
     test_pipeline = [
         CLICommand('lowercase', _dummy_lower, '', CommandType.WARPING),
-        CLICommand('word-count', mock_word_count, '', CommandType.ANALYSIS),
-        CLICommand('char-count', mock_char_count, '', CommandType.ANALYSIS)
+        CLICommand('count-words', mock_word_count, '', CommandType.ANALYSIS),
+        CLICommand('count-chars', mock_char_count, '', CommandType.ANALYSIS)
     ]
 
     result = pipeline.apply_pipeline(
@@ -195,7 +195,7 @@ def test_bind_pipeline_interactive_analysis_prompt(monkeypatch):
     from textwarp._cli.parsing import DEFAULT_MAX_FILE_MB, ParsedArgs
 
     args = ParsedArgs(
-        pipeline=[ARGS_MAP['mfws']],
+        pipeline=[ARGS_MAP['count-mfws']],
         lang='en',
         input_files=[],
         output_file=None,
