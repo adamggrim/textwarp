@@ -130,20 +130,74 @@ def _read_and_strip_file(file_path: str) -> tuple[str, str]:
         content: str = f.read()
         return _split_line_ending(content)
 
+
+def _flush_mmap_buffer(
+    buffer: str,
+    pattern: re.Pattern[str],
+    replacement: str
+) -> tuple[str, str]:
+    """
+    Apply regex replacements to a buffer, holding back a tail window
+    for multi-line matches.
+
+    Args:
+        buffer: The accumulated text buffer.
+        pattern: A compiled regular expression pattern.
+        replacement: A replacement string.
+
+    Returns:
+        tuple[str, str]: A tuple of `processable_text` and
+            `remaining_buffer`.
+    """
+    split_idx = buffer.rfind('\n')
+    if split_idx == -1 and len(buffer) >= BYTES_PER_MB * 4:
+        split_idx = max(buffer.rfind(' '), buffer.rfind('\t'))
+        if split_idx == -1:
+            split_idx = len(buffer) - 1024
+
+    if split_idx == -1:
+        return '', buffer
+
+    holdback_limit = max(0, split_idx - 4096)
+    prev_newline = buffer.rfind('\n', 0, holdback_limit)
+    if prev_newline == -1:
+        prev_newline = buffer.rfind('\n', 0, split_idx)
+
+    if prev_newline == -1:
+        return (
+            pattern.sub(replacement, buffer[: split_idx + 1]),
+            buffer[split_idx + 1 :]
+        )
+
+    cutoff = prev_newline + 1
+    parts: list[str] = []
+    last_end = 0
+
+    for match in pattern.finditer(buffer, 0, split_idx + 1):
+        if match.start() >= prev_newline + 1:
+            break
+        parts.append(buffer[last_end : match.start()])
+        parts.append(match.expand(replacement))
+        last_end = match.end()
+        cutoff = max(cutoff, last_end)
+
+    parts.append(buffer[last_end:cutoff])
+    return ''.join(parts), buffer[cutoff:]
+
+
 def _iter_mmap_replacements(
     mm: mmap.mmap,
     pattern: re.Pattern[str],
     replacement: str
 ) -> Iterator[bytes]:
     """
-    Yield UTF-8 encoded chunks of a memory-mapped file with Unicode
-    regex replacements applied safely across multi-byte and multi-line
-    chunk boundaries.
+    Yield UTF-8 chunks of a memory-mapped file with regex replacements
+    applied across chunks.
 
     Args:
         mm: A memory-mapped file.
         pattern: A compiled regular expression pattern.
-        replacement: A string replacement.
+        replacement: A replacement string.
 
     Yields:
         Chunks of the updated UTF-8 byte stream.
@@ -158,28 +212,9 @@ def _iter_mmap_replacements(
         buffer += decoder.decode(raw_chunk, final=is_eof)
 
         if not is_eof:
-            split_idx = buffer.rfind('\n')
-            if split_idx == -1 and len(buffer) >= BYTES_PER_MB * 4:
-                split_idx = max(buffer.rfind(' '), buffer.rfind('\t'))
-                if split_idx == -1:
-                    split_idx = len(buffer) - 1024
-
-            if split_idx == -1:
-                continue
-
-            # Hold back the trailing line to accommodate multi-line
-            # patterns across chunks.
-            transformed = pattern.sub(replacement, buffer[: split_idx + 1])
-            prev_newline = transformed.rfind('\n', 0, len(transformed) - 1)
-
-            if prev_newline != -1:
-                processable = transformed[: prev_newline + 1]
-                buffer = (
-                    transformed[prev_newline + 1 :] + buffer[split_idx + 1 :]
-                )
-            else:
-                processable = transformed
-                buffer = buffer[split_idx + 1 :]
+            processable, buffer = _flush_mmap_buffer(
+                buffer, pattern, replacement
+            )
         else:
             processable = pattern.sub(replacement, buffer)
             buffer = ''

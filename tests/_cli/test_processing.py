@@ -27,6 +27,28 @@ def mock_oversized_file(monkeypatch):
     monkeypatch.setattr('os.path.getsize', lambda _: oversized_bytes)
 
 
+def test_flush_mmap_buffer_multiline_holdback():
+    pattern = re.compile(r'upheld\nHer arms')
+    held_back_tail = 'Apollo shriek’d;—and lo! from all his limbs\nCelestial'
+    buffer = (
+        'During the pain Mnemosyne upheld\n'
+        'Her arms as one who prophesied.—At length\n'
+        f'{held_back_tail}'
+    )
+
+    processable, remaining = processing._flush_mmap_buffer(
+        buffer,
+        pattern,
+        'upheld her arms'
+    )
+
+    assert processable == (
+        'During the pain Mnemosyne upheld her arms as one who '
+        'prophesied.—At length\n'
+    )
+    assert remaining == held_back_tail
+
+
 def test_process_file_mode_binary_file(tmp_path):
     binary_file = tmp_path / 'las_meninas.png'
     binary_file.write_bytes(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR')
@@ -47,6 +69,35 @@ def test_process_file_mode_file_not_found():
     )
     with pytest.raises(TextwarpError, match=re.escape(expected_prefix)):
         processing.process_file_mode(args)
+
+
+def test_process_file_mode_in_place_multiple_files(tmp_path, capsys):
+    file1 = tmp_path / 'tancredi.txt'
+    file1.write_text(
+        'Se vogliamo che tutto rimanga com’è, bisogna che tutto cambi.\n',
+        encoding='utf-8'
+    )
+    file2 = tmp_path / 'fabrizio.txt'
+    file2.write_text(
+        'Tutto questo non dovrebbe poter durare; però durerà, sempre',
+        encoding='utf-8'
+    )
+
+    args = make_parsed_args(
+        input_files=[str(file1), str(file2)],
+        in_place=True
+    )
+
+    processing.process_file_mode(args)
+
+    assert file1.read_text(encoding='utf-8') == (
+        'SE VOGLIAMO CHE TUTTO RIMANGA COM’È, BISOGNA CHE TUTTO CAMBI.\n'
+    )
+    assert file2.read_text(encoding='utf-8') == (
+        'TUTTO QUESTO NON DOVREBBE POTER DURARE; PERÒ DURERÀ, SEMPRE\n'
+    )
+    captured = capsys.readouterr()
+    assert captured.out == ''
 
 
 @pytest.mark.usefixtures('mock_oversized_file')
@@ -134,35 +185,6 @@ def test_process_file_mode_success(tmp_path, capsys):
         FILE_WRITE_SUCCESS_MSG.format(output_file=str(output_file))
     )
     assert expected_msg in normalize_output(captured.out)
-
-
-def test_process_file_mode_in_place_multiple_files(tmp_path, capsys):
-    file1 = tmp_path / 'tancredi.txt'
-    file1.write_text(
-        'Se vogliamo che tutto rimanga com’è, bisogna che tutto cambi.\n',
-        encoding='utf-8'
-    )
-    file2 = tmp_path / 'fabrizio.txt'
-    file2.write_text(
-        'Tutto questo non dovrebbe poter durare; però durerà, sempre',
-        encoding='utf-8'
-    )
-
-    args = make_parsed_args(
-        input_files=[str(file1), str(file2)],
-        in_place=True
-    )
-
-    processing.process_file_mode(args)
-
-    assert file1.read_text(encoding='utf-8') == (
-        'SE VOGLIAMO CHE TUTTO RIMANGA COM’È, BISOGNA CHE TUTTO CAMBI.\n'
-    )
-    assert file2.read_text(encoding='utf-8') == (
-        'TUTTO QUESTO NON DOVREBBE POTER DURARE; PERÒ DURERÀ, SEMPRE\n'
-    )
-    captured = capsys.readouterr()
-    assert captured.out == ''
 
 
 def test_process_interactive_mode_replacement(monkeypatch):
