@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from spacy.tokens import Doc
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spacy.tokens import Doc
 
 from textwarp._cli.constants.messages import NO_ENTITIES_FOUND_MSG
 from textwarp._cli.formatting import (
@@ -91,25 +94,25 @@ def mfws(content: str | Doc, number: int) -> str:
     return format_mfws(data)
 
 
-def pos_counts(text: str) -> str:
+def pos_counts(content: str | Doc) -> str:
     """
     Analyze, format and print parts of speech count output.
 
     Args:
-        text: The string to process.
+        content: The string or spaCy `Doc` to process.
     """
-    counts: POSCounts = count_pos(text)
+    counts: POSCounts = count_pos(content)
     return format_pos_counts(counts)
 
 
-def sentence_count(text: str) -> str:
+def sentence_count(content: str | Doc) -> str:
     """
     Analyze, format and print sentence count output.
 
     Args:
-        text: The string to process.
+        content: The string or spaCy `Doc` to process.
     """
-    count: int = count_sents(text)
+    count: int = count_sents(content)
     return format_count(CountLabels.SENTENCE.value, count)
 
 
