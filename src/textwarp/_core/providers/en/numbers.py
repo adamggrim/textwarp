@@ -5,6 +5,7 @@ numbers.
 
 from typing import TYPE_CHECKING
 
+from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers.en.constants import (
     ORDINAL_SUFFIX_MAP,
     ORDINAL_SUFFIXES
@@ -56,7 +57,6 @@ def cardinal_to_ordinal(text: str) -> str:
     prev_idx = 0
 
     for token in doc:
-        # Isolate the digits or fraction by stripping commas.
         normalized_text = token.text.replace(',', '')
         is_digit = normalized_text.isdigit()
         is_fraction = (
@@ -65,11 +65,10 @@ def cardinal_to_ordinal(text: str) -> str:
             and all(p.isdigit() for p in normalized_text.split('/'))
         )
 
-        if token.pos_ == 'NUM' and (is_digit or is_fraction):
+        if token.pos_ == UniversalPOSTag.NUM and (is_digit or is_fraction):
             start = token.idx
             end = start + len(token)
 
-            # Ignore numbers with decimals.
             if (
                 (start > 0 and text[start - 1] == '.')
                 or (end < len(text) and text[end] == '.')
@@ -77,7 +76,6 @@ def cardinal_to_ordinal(text: str) -> str:
                 continue
 
             if is_digit:
-                # Ignore numbers that are the numerator of a fraction.
                 if (
                     end < len(text) and text[end] == '/'
                 ):
@@ -113,11 +111,9 @@ def ordinal_to_cardinal(text: str) -> str:
     for token in doc:
         lower_text = token.text.lower()
 
-        # Check for standard ordinal suffixes.
         if lower_text.endswith(ORDINAL_SUFFIXES):
             suffix_len = 3 if lower_text.endswith('s') else 2
 
-            # Ensure the remaining base string is a number.
             base_num = token.text[:-suffix_len]
             if base_num and base_num.replace(',', '').isdigit():
                 # Avoid stripping letters from the end of a decimal

@@ -3,6 +3,7 @@
 import pytest
 
 import textwarp
+from textwarp._core.models import WordCount
 
 _BINARY_PLAIN = 'creatio ex nihilo'
 _BINARY_ENCODED = (
@@ -27,10 +28,7 @@ _MORSE_ENCODED = (
 
 def _assert_api_result(result, expected):
     if expected is not None:
-        if isinstance(expected, list):
-            assert isinstance(result, list)
-        else:
-            assert result == expected
+        assert result == expected
     else:
         assert result is not None
 
@@ -174,12 +172,12 @@ def test_single_arg_functions(func_name, text, expected):
     'func_name, text, param, expected',
     [
         ('calculate_time_to_read', 'A time to be born, a time to die', 300, 1),
-        ('count_entities', 'Count von Count', 1, []),
+        ('count_entities', 'Count von Count', 1, None),
         (
             'count_mfws',
             'Put out the light, and then put out the light.',
             1,
-            []
+            [WordCount(word='put', count=2, percentage=20.0)]
         ),
     ]
 )

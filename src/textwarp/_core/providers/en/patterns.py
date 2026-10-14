@@ -49,7 +49,7 @@ def get_any_apostrophe() -> re.Pattern[str]:
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
     """
-    return re.compile(r"['’‘]")
+    return re.compile(patterns.warping.APOSTROPHE_CHAR_CLASS)
 
 
 @cache
@@ -61,6 +61,7 @@ def get_apostrophe_in_word() -> re.Pattern[str]:
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
     """
+    apostrophe = patterns.warping.APOSTROPHE_CHAR_CLASS
     elisions: str = '|'.join(en.data.punctuation.get_elision_words())
     return re.compile(
         rf'''
@@ -68,13 +69,13 @@ def get_apostrophe_in_word() -> re.Pattern[str]:
         (?<=            # Preceded by...
             \p{{L}}     # An alphabetical letter.
         )
-        ['’‘]           # An apostrophe.
+        {apostrophe}    # An apostrophe.
         (?=             # Followed by...
             \p{{L}}     # An alphabetical letter.
         )
         |               # OR
         # PART 2: APOSTROPHE IN ELISION OR DECADE ABBREVIATION
-        ['’‘]           # An apostrophe.
+        {apostrophe}    # An apostrophe.
         (?=             # Followed by...
             {elisions}  # An elision.
             |           # OR
@@ -177,7 +178,10 @@ def get_n_t_suffix() -> re.Pattern[str]:
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
     """
-    return re.compile(r"n['’‘]t$", re.IGNORECASE)
+    return re.compile(
+        rf'n{patterns.warping.APOSTROPHE_CHAR_CLASS}t$',
+        re.IGNORECASE
+    )
 
 
 @cache

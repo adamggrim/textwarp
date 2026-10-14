@@ -186,7 +186,10 @@ def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
 
     if not subject_token and span.end < len(doc):
         next_token = doc[span.end]
-        if next_token.pos_ in {'PROPN', 'PRON'} or next_token.is_title:
+        if (
+            next_token.pos_ in {UniversalPOSTag.PROPN, UniversalPOSTag.PRON}
+            or next_token.is_title
+        ):
             subject_token = next_token
 
     if subject_token and subject_token.i > prev_token.i:

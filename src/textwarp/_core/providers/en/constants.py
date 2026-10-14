@@ -9,6 +9,7 @@ from textwarp._core.utils import load_json_data
 __all__ = [
     'AUX_DEP_TAGS',
     'BASE_VERB_TAGS',
+    'COMPOUND_DEP_TAGS',
     'CURLY_TO_STRAIGHT_TABLE',
     'DEMONSTRATIVE_PRONOUNS',
     'HAVE_AUXILIARIES',
@@ -28,6 +29,7 @@ __all__ = [
     'QUOTATION_MARKS',
     'RIGHT_SEARCH_STOP_TAGS',
     'SINGULAR_NOUN_TAGS',
+    'SUBJECT_MODIFIER_DEP_TAGS',
     'SUBJECT_POS_TAGS',
     'THIRD_PERSON_SINGULAR_PRONOUNS',
     'TITLE_CASE_TAG_EXCEPTIONS',

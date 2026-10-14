@@ -8,6 +8,7 @@ from enum import Enum, auto, unique
 from textwarp._core.context import N_
 
 __all__ = [
+    'CaseName',
     'CaseSeparator',
     'Casing',
     'CountLabels',
@@ -17,6 +18,25 @@ __all__ = [
     'TokenType',
     'UniversalPOSTag'
 ]
+
+
+@unique
+class CaseName(str, Enum):
+    """Valid case name inputs."""
+    CAMEL = 'camel'
+    CAMEL_CASE = 'camel case'
+    DOT = 'dot'
+    DOT_CASE = 'dot case'
+    KEBAB = 'kebab'
+    KEBAB_CASE = 'kebab case'
+    LOWER = 'lower'
+    LOWERCASE = 'lowercase'
+    PASCAL = 'pascal'
+    PASCAL_CASE = 'pascal case'
+    SNAKE = 'snake'
+    SNAKE_CASE = 'snake case'
+    UPPER = 'upper'
+    UPPERCASE = 'uppercase'
 
 
 @unique

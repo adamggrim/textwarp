@@ -6,7 +6,6 @@ import importlib
 import importlib.resources
 import logging
 from functools import cache
-from functools import cache
 from typing import TYPE_CHECKING, Final, cast
 
 if TYPE_CHECKING:

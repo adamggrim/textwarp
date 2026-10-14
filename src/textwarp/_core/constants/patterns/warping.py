@@ -2,12 +2,14 @@
 
 from collections.abc import Iterable
 from functools import cache
+from typing import Final
 
 import regex as re
 
 from textwarp._core.enums import RegexBoundary
 
 __all__ = [
+    'APOSTROPHE_CHAR_CLASS',
     'create_words_regex',
     'get_dash',
     'get_em_dash_stand_in',
@@ -15,6 +17,8 @@ __all__ = [
     'get_period_separated_initialism',
     'get_word_char'
 ]
+
+APOSTROPHE_CHAR_CLASS: Final[str] = r"['’‘]"
 
 
 def create_words_regex(
@@ -26,7 +30,7 @@ def create_words_regex(
     """
     def _add_escaped_apostrophes(word: str) -> str:
         """Add escaped straight and curly apostrophes to a word."""
-        return re.escape(word).replace("'", "['’‘]")
+        return re.escape(word).replace("'", APOSTROPHE_CHAR_CLASS)
 
     if isinstance(words, str):
         pattern_string = _add_escaped_apostrophes(words)
@@ -83,7 +87,9 @@ def get_period_separated_initialism() -> re.Pattern[str]:
     """
     Get a regular expression matching a period-separated initialism.
     """
-    return re.compile(r'\b(?:\p{L}+\.){2,}(?:[\'’‘]\p{L}+)?')
+    return re.compile(
+        rf'\b(?:\p{{L}}+\.){{2,}}(?:{APOSTROPHE_CHAR_CLASS}\p{{L}}+)?'
+    )
 
 
 @cache

@@ -158,7 +158,11 @@ def count_pos(content: str | Doc) -> POSCounts:
     total_word_count = 0
 
     for token in doc:
-        if token.is_space or token.is_punct or token.pos_ == 'SYM':
+        if (
+            token.is_space
+            or token.is_punct
+            or token.pos_ == UniversalPOSTag.SYM
+        ):
             continue
 
         try:

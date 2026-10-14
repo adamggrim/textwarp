@@ -6,6 +6,7 @@ from types import MappingProxyType
 import regex as re
 
 from textwarp._core.constants import patterns
+from textwarp._core.enums import CaseName
 
 __all__ = ['get_case_names_regex_map']
 
@@ -21,18 +22,18 @@ def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
             mapping string inputs to regular expression patterns.
     """
     return MappingProxyType({
-        'camel': patterns.cases.get_camel_word(),
-        'camel case': patterns.cases.get_camel_word(),
-        'dot': patterns.cases.get_dot_word(),
-        'dot case': patterns.cases.get_dot_word(),
-        'kebab': patterns.cases.get_kebab_word(),
-        'kebab case': patterns.cases.get_kebab_word(),
-        'lower': patterns.cases.get_lower_word(),
-        'lowercase': patterns.cases.get_lower_word(),
-        'pascal': patterns.cases.get_pascal_word(),
-        'pascal case': patterns.cases.get_pascal_word(),
-        'snake': patterns.cases.get_snake_word(),
-        'snake case': patterns.cases.get_snake_word(),
-        'upper': patterns.cases.get_upper_word(),
-        'uppercase': patterns.cases.get_upper_word(),
+        CaseName.CAMEL.value: patterns.cases.get_camel_word(),
+        CaseName.CAMEL_CASE.value: patterns.cases.get_camel_word(),
+        CaseName.DOT.value: patterns.cases.get_dot_word(),
+        CaseName.DOT_CASE.value: patterns.cases.get_dot_word(),
+        CaseName.KEBAB.value: patterns.cases.get_kebab_word(),
+        CaseName.KEBAB_CASE.value: patterns.cases.get_kebab_word(),
+        CaseName.LOWER.value: patterns.cases.get_lower_word(),
+        CaseName.LOWERCASE.value: patterns.cases.get_lower_word(),
+        CaseName.PASCAL.value: patterns.cases.get_pascal_word(),
+        CaseName.PASCAL_CASE.value: patterns.cases.get_pascal_word(),
+        CaseName.SNAKE.value: patterns.cases.get_snake_word(),
+        CaseName.SNAKE_CASE.value: patterns.cases.get_snake_word(),
+        CaseName.UPPER.value: patterns.cases.get_upper_word(),
+        CaseName.UPPERCASE.value: patterns.cases.get_upper_word(),
     })

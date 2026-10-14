@@ -1,12 +1,19 @@
 """Tests for internal enumerations."""
 
 from textwarp._core.enums import (
+    CaseName,
     CaseSeparator,
     Casing,
     CountLabels,
     ModelPriority,
     RegexBoundary
 )
+
+
+def test_case_name_values():
+    assert CaseName.CAMEL == 'camel'
+    assert CaseName.SNAKE_CASE == 'snake case'
+    assert len(CaseName) == 14
 
 
 def test_case_separator_values():

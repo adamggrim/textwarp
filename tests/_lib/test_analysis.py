@@ -14,7 +14,7 @@ from textwarp import (
     count_words
 )
 from textwarp._core.context import ctx
-from textwarp._core.enums import ModelPriority
+from textwarp._core.enums import MainPOSTag, ModelPriority
 from textwarp._core.models import POSCounts
 from textwarp._lib.nlp import _load_spacy_model, get_nlp
 
@@ -155,8 +155,8 @@ def test_count_pos():
     assert total_tags > 0
     assert pos_counts.word_count >= total_tags
 
-    assert 0.0 <= pos_counts.get_percentage('NOUN') <= 100.0
-    assert 0.0 <= pos_counts.get_percentage('ADJ') <= 100.0
+    assert 0.0 <= pos_counts.get_percentage(MainPOSTag.NOUN) <= 100.0
+    assert 0.0 <= pos_counts.get_percentage(MainPOSTag.ADJ) <= 100.0
 
 
 def test_count_sents():

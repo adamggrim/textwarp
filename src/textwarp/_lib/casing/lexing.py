@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 from collections.abc import Generator
+from typing import Final
 
-from textwarp._core.enums import TokenType
+from textwarp._core.enums import CaseSeparator, TokenType
 from textwarp._lib.punctuation import remove_apostrophes
 
 __all__ = ['get_normalized_tokens']
+
+_SEPARATOR_CHARS: Final[frozenset[str]] = frozenset(
+    sep.value for sep in CaseSeparator
+)
 
 
 def _chunk_by_alnum(text: str) -> list[str]:
@@ -66,7 +71,7 @@ def _process_non_alnum_chunk(
         return
 
     for char in chunk:
-        if char in '.-_' or char.isspace():
+        if char in _SEPARATOR_CHARS or char.isspace():
             yield TokenType.SEPARATOR, char
         else:
             yield TokenType.SYMBOL, char

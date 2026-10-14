@@ -10,8 +10,6 @@ import regex as re
 if TYPE_CHECKING:
     from spacy.tokens import Doc, Span
 
-    from textwarp._core.providers.base import LanguageProvider
-
 from textwarp._core.context import ctx
 from textwarp._core.types import EntityCasingContext
 
