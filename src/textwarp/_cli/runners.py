@@ -27,6 +27,7 @@ from textwarp._core.exceptions import MissingDependencyError
 __all__ = [
     'NOT_FOUND_MSG_MAP',
     'clear_clipboard',
+    'get_pyperclip',
     'replace_and_copy',
     'run_command_loop',
     'warp_and_copy'
@@ -43,22 +44,9 @@ NOT_FOUND_MSG_MAP: Final[dict[str, str]] = {
 _logger = logging.getLogger(__name__)
 
 
-def _get_pyperclip() -> ModuleType:
-    """Helper to safely import pyperclip or exit with an error."""
-    try:
-        import pyperclip
-        return cast(ModuleType, pyperclip)
-    except ImportError as e:
-        raise MissingDependencyError(
-            'pyperclip',
-            'Clipboard support',
-            'clipboard'
-        ) from e
-
-
 def _paste_and_validate() -> str | None:
     """Paste and validate clipboard text."""
-    pyperclip = _get_pyperclip()
+    pyperclip = get_pyperclip()
     try:
         clipboard = str(pyperclip.paste())
         validate_clipboard(clipboard)
@@ -78,9 +66,22 @@ def _paste_and_validate() -> str | None:
         return None
 
 
+def get_pyperclip() -> ModuleType:
+    """Helper to safely import pyperclip or exit with an error."""
+    try:
+        import pyperclip
+        return cast(ModuleType, pyperclip)
+    except ImportError as e:
+        raise MissingDependencyError(
+            'pyperclip',
+            'Clipboard support',
+            'clipboard'
+        ) from e
+
+
 def clear_clipboard() -> None:
     """Clear clipboard text."""
-    pyperclip = _get_pyperclip()
+    pyperclip = get_pyperclip()
     pyperclip.copy('')
     print_wrapped(_(CLIPBOARD_CLEARED_MSG))
 
@@ -94,7 +95,7 @@ def replace_and_copy(
     Transform text using a replacement command and copy the result.
     Print if the target text was not found.
     """
-    pyperclip = _get_pyperclip()
+    pyperclip = get_pyperclip()
     transformation: str = command_func(clipboard)
     if transformation == clipboard:
         print_wrapped(_(not_found_msg))
@@ -140,7 +141,7 @@ def warp_and_copy(
     Transform text using a given command and copy the result back to the
     clipboard.
     """
-    pyperclip = _get_pyperclip()
+    pyperclip = get_pyperclip()
     transformation: str = command_func(clipboard)
     pyperclip.copy(transformation)
     print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))

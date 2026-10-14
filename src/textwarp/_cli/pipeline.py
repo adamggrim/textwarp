@@ -32,7 +32,7 @@ from textwarp._cli.constants.messages import (
     MODIFIED_TEXT_COPIED_MSG,
     REPLACEMENT_CMD_ERROR_MSG
 )
-from textwarp._cli.runners import clear_clipboard
+from textwarp._cli.runners import clear_clipboard, get_pyperclip
 from textwarp._cli.ui import print_wrapped, prompt_for_integer
 from textwarp._core.context import _
 from textwarp._core.exceptions import (
@@ -322,15 +322,7 @@ def route_output(
         )
 
     if copy_to_clipboard:
-        try:
-            import pyperclip
-        except ImportError as e:
-            raise MissingDependencyError(
-                'pyperclip',
-                'Clipboard support',
-                'clipboard'
-            ) from e
-
+        pyperclip = get_pyperclip()
         pyperclip.copy(result)
         print_wrapped(_(MODIFIED_TEXT_COPIED_MSG))
     elif not output_file:
