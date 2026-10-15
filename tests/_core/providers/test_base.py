@@ -1,5 +1,3 @@
-"""Tests for the LanguageProvider abstract base class."""
-
 import pytest
 
 from textwarp._core.providers.base import LanguageProvider

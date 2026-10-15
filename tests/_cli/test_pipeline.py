@@ -1,5 +1,3 @@
-"""Tests for pipeline output routing."""
-
 import sys
 from unittest.mock import MagicMock
 

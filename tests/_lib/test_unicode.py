@@ -1,5 +1,3 @@
-"""Tests for transformation behavior with non-ASCII and Unicode characters."""
-
 import pytest
 
 from textwarp import (

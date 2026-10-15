@@ -1,5 +1,3 @@
-"""Tests for string capitalization through dictionary lookups."""
-
 from textwarp._lib.casing.string_casing import case_from_string
 
 

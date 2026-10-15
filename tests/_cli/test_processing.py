@@ -1,5 +1,3 @@
-"""Tests for execution modes and pipeline processing."""
-
 import sys
 from unittest.mock import MagicMock
 

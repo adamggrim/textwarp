@@ -1,5 +1,3 @@
-"""Tests for CLI orchestration."""
-
 import sys
 from unittest.mock import MagicMock
 

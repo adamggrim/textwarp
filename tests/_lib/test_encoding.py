@@ -1,5 +1,3 @@
-"""Tests for text encoding and decoding functions."""
-
 import pytest
 import regex as re
 from hypothesis import given, strategies

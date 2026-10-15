@@ -1,5 +1,3 @@
-"""Tests for custom exceptions."""
-
 import pytest
 import regex as re
 

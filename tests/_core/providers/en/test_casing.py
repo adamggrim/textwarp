@@ -1,5 +1,3 @@
-"""Tests for English-specific string casing logic."""
-
 from textwarp._core.providers.en.casing import case_from_string
 
 

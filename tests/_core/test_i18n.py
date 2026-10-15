@@ -1,5 +1,3 @@
-"""Tests for internationalization and locale fallback."""
-
 import logging
 
 from textwarp._core.context import N_, ctx

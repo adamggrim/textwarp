@@ -1,5 +1,3 @@
-"""Tests for encoding and decoding data loading."""
-
 from types import MappingProxyType
 
 from textwarp._core import encoding

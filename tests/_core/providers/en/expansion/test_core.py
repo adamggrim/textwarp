@@ -1,5 +1,3 @@
-"""Tests for English-specific logic for expanding contractions."""
-
 from textwarp._core.providers.en.data.contraction_expansion import (
     get_unambiguous_map
 )

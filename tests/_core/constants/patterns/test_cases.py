@@ -1,5 +1,3 @@
-"""Tests for core case identification patterns."""
-
 import regex as re
 
 from textwarp._core.constants.patterns.cases import (

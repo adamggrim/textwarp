@@ -1,5 +1,3 @@
-"""Tests for CLI case conversion dispatch mapping."""
-
 import pytest
 
 from textwarp._cli.dispatch import CASE_NAMES_FUNC_MAP

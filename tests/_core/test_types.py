@@ -1,5 +1,3 @@
-"""Tests for generic type definitions."""
-
 import typing
 
 from textwarp._core.types import (

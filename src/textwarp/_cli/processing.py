@@ -296,7 +296,7 @@ def _process_file_stream(args: ParsedArgs) -> None:
         args: The parsed CLI arguments.
 
     Raises:
-        SystemExit: If there is an error reading or writing files.
+        TextwarpError: If there is an error reading or writing files.
     """
     if args.in_place:
         for file_path in args.input_files:
@@ -431,8 +431,8 @@ def process_file_mode(args: ParsedArgs) -> None:
         args: The parsed CLI arguments.
 
     Raises:
-        SystemExit: If the input file is unreadable or if there is an
-            error writing to the output file.
+        TextwarpError: If the input file is unreadable, binary, or if
+            there is an error writing to the output file.
     """
     args = bind_pipeline(args, interactive=False)
 
@@ -538,7 +538,7 @@ def process_interactive_mode(args: ParsedArgs) -> None:
     """Handle the interactive CLI for user input without files or
     piping.
 
-    This mode acts as a wrapper around the package's core pipeline 
+    This mode acts as a wrapper around the package's core pipeline
     engine.
 
     Args:
@@ -575,7 +575,7 @@ def process_piped_mode(args: ParsedArgs) -> None:
         args: The parsed CLI arguments.
 
     Raises:
-        SystemExit: If there is an error processing the input.
+        TextwarpError: If there is an error processing the input.
     """
     args = bind_pipeline(args, interactive=False)
 

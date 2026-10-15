@@ -1,5 +1,3 @@
-"""Tests for text cleaning functions."""
-
 from hypothesis import given, strategies
 
 from textwarp._lib.cleaning import strip_html, to_single_spaces

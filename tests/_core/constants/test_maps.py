@@ -1,5 +1,3 @@
-"""Tests for constant lookup maps."""
-
 from types import MappingProxyType
 
 import regex as re

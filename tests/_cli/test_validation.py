@@ -1,5 +1,3 @@
-"""Tests for CLI input and clipboard validation."""
-
 import argparse
 
 import pytest

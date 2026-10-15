@@ -1,5 +1,3 @@
-"""Tests for resolving ambiguous contractions based on context."""
-
 import pytest
 
 from textwarp._core.providers.en.expansion.disambiguation import (

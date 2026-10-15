@@ -1,5 +1,3 @@
-"""Tests for CLI input and output functions."""
-
 import os
 import shutil
 from unittest.mock import MagicMock

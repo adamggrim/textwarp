@@ -1,5 +1,3 @@
-"""Tests for the entry point of the package."""
-
 import runpy
 from unittest.mock import patch
 

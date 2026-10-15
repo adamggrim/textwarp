@@ -1,5 +1,3 @@
-"""Tests for spaCy-based entity capitalization mapping."""
-
 from textwarp._lib.casing.entity_casing import map_all_entities
 from textwarp._lib.nlp import process_as_doc
 

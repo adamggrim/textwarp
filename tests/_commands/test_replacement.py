@@ -1,5 +1,3 @@
-"""Tests for replacement command functions."""
-
 import pytest
 
 from textwarp._cli import ui

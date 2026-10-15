@@ -1,5 +1,3 @@
-"""Tests for CLI message constants."""
-
 import pytest
 
 from textwarp._cli.constants import messages

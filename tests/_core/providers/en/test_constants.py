@@ -1,5 +1,3 @@
-"""Tests for English-specific NLP constants."""
-
 from textwarp._core.enums import MainPOSTag, UniversalPOSTag
 from textwarp._core.providers.en.constants import (
     BASE_VERB_TAGS,

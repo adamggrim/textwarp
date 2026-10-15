@@ -1,5 +1,3 @@
-"""Tests for the global application context."""
-
 from textwarp._core.context import TextwarpContext
 from textwarp._core.providers.en.provider import EnglishProvider
 

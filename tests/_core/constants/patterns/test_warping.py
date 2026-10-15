@@ -1,5 +1,3 @@
-"""Tests for core warping patterns."""
-
 import pytest
 import regex as re
 

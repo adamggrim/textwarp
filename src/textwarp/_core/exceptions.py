@@ -36,7 +36,7 @@ class InvalidCaseNameError(TextwarpValidationError):
 
 class InvalidRegexError(TextwarpValidationError):
     """Exception raised when the provided regular expression string is
-    not invalid.
+    invalid.
     """
 
 

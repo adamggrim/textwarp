@@ -1,5 +1,3 @@
-"""Tests for the root package initialization and lazy loading."""
-
 import pytest
 
 import textwarp

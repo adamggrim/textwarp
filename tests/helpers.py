@@ -1,5 +1,3 @@
-"""Helper functions for the test suite."""
-
 from typing import Any
 
 from textwarp._cli.args import ARGS_MAP

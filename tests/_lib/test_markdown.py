@@ -1,5 +1,3 @@
-"""Tests for Markdown parsing and transformation."""
-
 from hypothesis import given, strategies
 
 from textwarp._lib.markdown import process_markdown, strip_markdown

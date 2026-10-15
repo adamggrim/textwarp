@@ -51,27 +51,13 @@ def calculate_time_to_read(content: str | Doc, wpm: int) -> str:
 
 
 def calculate_ttr(text: str) -> str:
-    """Analyze and format type-token ratio output.
-
-    Args:
-        text: The string to process.
-
-    Returns:
-        str: The formatted type-token ratio string.
-    """
+    """Analyze and format type-token ratio output."""
     ratio: float = lib_analysis.calculate_ttr(text)
     return format_ttr(ratio)
 
 
 def count_chars(text: str) -> str:
-    """Analyze and format character count output.
-
-    Args:
-        text: The string to process.
-
-    Returns:
-        str: The formatted character count string.
-    """
+    """Analyze and format character count output."""
     count: int = lib_analysis.count_chars(text)
     return format_count(CountLabels.CHAR.value, count)
 
@@ -95,14 +81,7 @@ def count_entities(content: str | Doc, number: int) -> str:
 
 
 def count_lines(text: str) -> str:
-    """Analyze and format line count output.
-
-    Args:
-        text: The string to process.
-
-    Returns:
-        str: The formatted line count string.
-    """
+    """Analyze and format line count output."""
     count: int = lib_analysis.count_lines(text)
     return format_count(CountLabels.LINE.value, count)
 
@@ -136,26 +115,12 @@ def count_pos(content: str | Doc) -> str:
 
 
 def count_sentences(content: str | Doc) -> str:
-    """Analyze and format sentence count output.
-
-    Args:
-        content: The string or spaCy `Doc` to process.
-
-    Returns:
-        str: The formatted sentence count string.
-    """
+    """Analyze and format sentence count output."""
     count: int = lib_analysis.count_sents(content)
     return format_count(CountLabels.SENTENCE.value, count)
 
 
 def count_words(text: str) -> str:
-    """Analyze and format word count output.
-
-    Args:
-        text: The string to process.
-
-    Returns:
-        str: The formatted word count string.
-    """
+    """Analyze and format word count output."""
     count: int = lib_analysis.count_words(text)
     return format_count(CountLabels.WORD.value, count)

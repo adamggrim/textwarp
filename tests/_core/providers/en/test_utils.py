@@ -1,5 +1,3 @@
-"""Tests for contraction utility functions."""
-
 from textwarp._core.enums import UniversalPOSTag
 from textwarp._core.providers.en.utils import (
     find_subject_token,

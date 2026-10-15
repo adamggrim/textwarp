@@ -1,5 +1,3 @@
-"""Tests for pure string replacement functions."""
-
 import regex as re
 
 from textwarp._core.enums import CaseSeparator

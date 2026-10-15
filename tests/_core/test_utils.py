@@ -1,5 +1,3 @@
-"""Tests for universal utility functions."""
-
 import pytest
 
 from textwarp._core.utils import (

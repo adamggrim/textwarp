@@ -1,5 +1,3 @@
-"""Tests for encoding and decoding commands."""
-
 from textwarp._commands import encoding
 
 

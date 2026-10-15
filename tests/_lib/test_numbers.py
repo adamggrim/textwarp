@@ -1,5 +1,3 @@
-"""Tests for converting between cardinal and ordinal numbers."""
-
 import pytest
 
 from textwarp._lib.numbers import cardinal_to_ordinal, ordinal_to_cardinal

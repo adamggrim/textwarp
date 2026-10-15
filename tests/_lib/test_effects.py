@@ -1,5 +1,3 @@
-"""Tests for visual and structural text effects."""
-
 import unicodedata
 
 from hypothesis import given, strategies

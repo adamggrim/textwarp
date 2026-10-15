@@ -1,5 +1,3 @@
-"""Tests for English-specific regular expressions."""
-
 from textwarp._core.providers.en.patterns import (
     get_apostrophe_in_word,
     get_n_t_suffix

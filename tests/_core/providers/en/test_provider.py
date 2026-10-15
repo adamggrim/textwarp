@@ -1,5 +1,3 @@
-"""Tests for the EnglishProvider implementation."""
-
 from textwarp._core.providers.en.provider import EnglishProvider
 from textwarp._lib.nlp import process_as_doc
 

@@ -1,5 +1,3 @@
-"""Tests for straight and curly quote conversion."""
-
 import pytest
 
 from textwarp._lib.punctuation import (

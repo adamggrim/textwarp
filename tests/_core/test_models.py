@@ -1,5 +1,3 @@
-"""Tests for core analytical models."""
-
 from textwarp._core.enums import MainPOSTag
 from textwarp._core.models import POSCounts, WordCount
 from textwarp._core.providers.en.constants import POS_TAGS

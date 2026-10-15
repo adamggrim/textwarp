@@ -1,5 +1,3 @@
-"""Tests for CLI input sets."""
-
 from textwarp._cli.constants.inputs import (
     get_exit_inputs,
     get_no_inputs,

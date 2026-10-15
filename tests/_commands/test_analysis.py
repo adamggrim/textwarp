@@ -1,5 +1,3 @@
-"""Tests for analysis commands."""
-
 from textwarp._commands import analysis
 
 

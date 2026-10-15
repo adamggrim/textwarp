@@ -1,5 +1,3 @@
-"""Tests for CLI arguments mapping and lazy loading."""
-
 import pytest
 
 from textwarp._cli.args import ARGS_MAP, CLICommand, CommandType, lazy_load

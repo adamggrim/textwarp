@@ -1,5 +1,3 @@
-"""Tests for spaCy-based token capitalization."""
-
 from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
 from textwarp._lib.nlp import process_as_doc
 

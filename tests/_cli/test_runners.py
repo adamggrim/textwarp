@@ -1,5 +1,3 @@
-"""Tests for CLI runner logic and clipboard interaction."""
-
 from unittest.mock import MagicMock
 
 import pyperclip

@@ -1,4 +1,3 @@
-"""Tests for English-specific punctuation conversions."""
 
 from textwarp._core.providers.en.punctuation import (
     curly_to_straight,

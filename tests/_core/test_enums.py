@@ -1,5 +1,3 @@
-"""Tests for internal enumerations."""
-
 from textwarp._core.enums import (
     CaseName,
     CaseSeparator,

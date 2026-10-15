@@ -1,5 +1,3 @@
-"""Tests for tokenization and chunking functions."""
-
 import pytest
 
 from textwarp._core.enums import TokenType

@@ -1,5 +1,3 @@
-"""Tests for lazy spaCy loading and text processing."""
-
 from unittest.mock import MagicMock
 
 import pytest

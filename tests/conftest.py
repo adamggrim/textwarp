@@ -1,5 +1,3 @@
-"""Tests for global fixtures and configurations."""
-
 from unittest.mock import MagicMock
 
 import pytest

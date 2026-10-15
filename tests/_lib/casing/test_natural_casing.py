@@ -1,5 +1,3 @@
-"""Tests for converting between natural cases."""
-
 from textwarp._core.enums import Casing
 from textwarp._lib.casing.natural_casing import to_natural_case
 from textwarp._lib.nlp import process_as_doc

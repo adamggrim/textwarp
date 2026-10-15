@@ -1,5 +1,3 @@
-"""Tests for English contraction variant sets."""
-
 from textwarp._core.providers.en.expansion.variants import (
     APOSTROPHE_D_VARIANTS,
     APOSTROPHE_S_VARIANTS,

@@ -1,5 +1,3 @@
-"""Tests for the main contraction expansion engine."""
-
 from textwarp._lib.contractions import (
     apply_expansion_casing,
     expand_contractions

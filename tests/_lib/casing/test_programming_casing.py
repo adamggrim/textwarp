@@ -1,5 +1,3 @@
-"""Tests for converting between programming cases."""
-
 import string
 
 from hypothesis import given, strategies

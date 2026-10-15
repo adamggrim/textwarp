@@ -1,5 +1,3 @@
-"""Tests for public API functions."""
-
 import pytest
 
 import textwarp

@@ -1,5 +1,3 @@
-"""Tests for analysis functions."""
-
 from unittest.mock import MagicMock
 
 from textwarp import (

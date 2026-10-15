@@ -1,5 +1,3 @@
-"""Tests for contraction handler functions."""
-
 from textwarp._core.providers.en.expansion.strategies import (
     expand_d_contraction,
     expand_gotta,
