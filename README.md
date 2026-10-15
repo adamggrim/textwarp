@@ -69,7 +69,7 @@ Clipboard copying requires the clipboard extension. Install it using: `pip insta
 
 ### Analysis
 
-Analyze text with a range of analysis commands (`count-chars`, `count-entities`, `count-lines`, `count-mfws`, `count-pos`, `count-sentences`, `count-words`, `time-to-read`, `ttr`).
+Analyze text with a range of analysis commands (`count-chars`, `count-entities`, `count-lines`, `count-mfws`, `count-pos`, `count-sents`, `count-words`, `time-to-read`, `ttr`).
 
 Use `-n` (`--number`) to cap ranked results or `-w` (`--wpm`) to calibrate reading speed (words per minute).
 
@@ -86,6 +86,18 @@ Prepositions   3  (21.43%)
 Conjunctions   0   (0.00%)
 Interjections  0   (0.00%)
 Other          0   (0.00%)
+```
+
+### Python API
+
+Import `textwarp` into another project to transform or analyze strings outside of the command line.
+
+```python
+import textwarp
+
+textwarp.to_title_case('the tragedy of coriolanus')
+
+textwarp.count_words('There is a world elsewhere.')
 ```
 
 ### File I/O
@@ -159,7 +171,7 @@ commands:
   count-lines          count lines
   count-mfws           get most frequent words
   count-pos            count parts of speech
-  count-sentences      count sentences
+  count-sents          count sentences
   count-words          count words
   curly-quotes         convert "straight quotes" to “curly quotes”
   dot-case             convert.to.dot.case
