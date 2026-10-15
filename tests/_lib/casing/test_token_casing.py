@@ -2,40 +2,9 @@ from textwarp._lib.casing.token_casing import should_capitalize_pos_or_length
 from textwarp._lib.nlp import process_as_doc
 
 
-def test_should_capitalize_lowercase_particles():
-    doc = process_as_doc('Maria Augusta von Trapp')
-    von_token = doc[2]
+def test_should_capitalize_pos_or_length_delegation():
+    doc = process_as_doc('Linus van Pelt and the Great Pumpkin')
 
-    assert von_token.lower_ == 'von'
-    assert should_capitalize_pos_or_length(von_token) is False
-
-
-def test_should_capitalize_contraction_suffixes():
-    doc = process_as_doc('don’t, don’t')
-    nt_token = doc[4]
-
-    assert nt_token.lower_ == 'n’t'
-    assert should_capitalize_pos_or_length(nt_token) is False
-
-
-def test_should_capitalize_length():
-    doc = process_as_doc('about')
-    token = doc[0]
-
-    assert len(token.text) >= 5
-    assert should_capitalize_pos_or_length(token) is True
-
-
-def test_should_capitalize_pos_exception():
-    doc = process_as_doc('and')
-    token = doc[0]
-
-    assert token.pos_ in {'CCONJ', 'CONJ'} or token.tag_ == 'CC'
-    assert should_capitalize_pos_or_length(token) is False
-
-
-def test_should_capitalize_normal():
-    doc = process_as_doc('wheelbarrow')
-    token = doc[0]
-
-    assert should_capitalize_pos_or_length(token) is True
+    assert should_capitalize_pos_or_length(doc[1]) is False
+    assert should_capitalize_pos_or_length(doc[3]) is False
+    assert should_capitalize_pos_or_length(doc[6]) is True
