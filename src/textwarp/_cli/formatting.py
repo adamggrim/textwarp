@@ -21,8 +21,7 @@ def _format_table(
     data_rows: Sequence[tuple[str, ...]],
     padding: int = 2
 ) -> str:
-    """
-    Create a neatly aligned, multi-line table from tuples of strings.
+    """Create a neatly aligned, multi-line table from tuples of strings.
 
     Args:
         data_rows: A list of rows, where each row is a tuple of strings.
@@ -71,15 +70,14 @@ def _format_table(
 
 
 def format_count(name: str, count: int) -> str:
-    """
-    Return a string indicating the count of a specific analysis.
+    """Return a string indicating a count.
 
     Args:
         name: The name of the count.
         count: The count to display.
 
     Returns:
-        str: A formatted string indicating the name and count.
+        str: A formatted string indicating the count.
     """
     translated_name = _(name)
 
@@ -90,9 +88,7 @@ def format_count(name: str, count: int) -> str:
 
 
 def format_entity_counts(entities: list[WordCount]) -> str:
-    """
-    Return a string indicating the most frequent entities in a given
-    string.
+    """Return a string indicating the most frequent entities.
 
     Args:
         entities: A list of `WordCount` objects, containing an entity
@@ -114,9 +110,7 @@ def format_entity_counts(entities: list[WordCount]) -> str:
 
 
 def format_mfws(mfws: list[WordCount]) -> str:
-    """
-    Return a string indicating the most frequent words in a given
-    string.
+    """Return a string indicating the most frequent words.
 
     Args:
         mfws: A list of `WordCount` objects, containing a word and its
@@ -138,9 +132,7 @@ def format_mfws(mfws: list[WordCount]) -> str:
 
 
 def format_pos_counts(pos_counts: POSCounts) -> str:
-    """
-    Return a dynamically formatted string indicating parts of speech
-    counts for a given `POSCounts` object.
+    """Return a string indicating parts of speech counts.
 
     Args:
         pos_counts: The parts of speech counts.
@@ -163,8 +155,7 @@ def format_pos_counts(pos_counts: POSCounts) -> str:
 
 
 def format_time_to_read(minutes_to_read: int) -> str:
-    """
-    Return a string indicating the time to read a string.
+    """Return a string indicating the time to read.
 
     Args:
         minutes_to_read (int): The number of minutes.
@@ -205,8 +196,7 @@ def format_time_to_read(minutes_to_read: int) -> str:
 
 
 def format_ttr(ttr: float) -> str:
-    """
-    Return a string indicating the type-token ratio.
+    """Return a string indicating the type-token ratio.
 
     Args:
         ttr (float): The type-token ratio.

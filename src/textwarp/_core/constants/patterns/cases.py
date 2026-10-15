@@ -17,8 +17,7 @@ __all__ = [
 
 @cache
 def get_camel_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching any camel case word.
+    """Get a regular expression matching a camel case word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -28,8 +27,7 @@ def get_camel_word() -> re.Pattern[str]:
 
 @cache
 def get_dot_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a dot case word.
+    """Get a regular expression matching a dot case word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -39,8 +37,7 @@ def get_dot_word() -> re.Pattern[str]:
 
 @cache
 def get_kebab_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a kebab case word.
+    """Get a regular expression matching a kebab case word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -50,9 +47,8 @@ def get_kebab_word() -> re.Pattern[str]:
 
 @cache
 def get_lower_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a lowercase word and any optional
-    separators.
+    """Get a regular expression matching a lowercase word, including
+    optional separators.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -74,8 +70,7 @@ def get_lower_word() -> re.Pattern[str]:
 
 @cache
 def get_pascal_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a Pascal case word.
+    """Get a regular expression matching a Pascal case word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -85,8 +80,7 @@ def get_pascal_word() -> re.Pattern[str]:
 
 @cache
 def get_snake_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a snake case word.
+    """Get a regular expression matching a snake case word.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.
@@ -96,9 +90,8 @@ def get_snake_word() -> re.Pattern[str]:
 
 @cache
 def get_upper_word() -> re.Pattern[str]:
-    """
-    Get a regular expression matching an uppercase word and any optional
-    separators.
+    """Get a regular expression matching an uppercase word, including
+    optional separators.
 
     Returns:
         re.Pattern[str]: A compiled regular expression pattern.

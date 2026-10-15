@@ -29,21 +29,19 @@ class EmptyClipboardError(TextwarpValidationError):
 
 
 class InvalidCaseNameError(TextwarpValidationError):
-    """
-    Exception raised when the provided case name string is invalid.
+    """Exception raised when the provided case name string is
+    invalid.
     """
 
 
 class InvalidRegexError(TextwarpValidationError):
-    """
-    Exception raised when the provided regular expression string is not
-    a valid regular expression.
+    """Exception raised when the provided regular expression string is
+    not invalid.
     """
 
 
 class MissingDependencyError(TextwarpError):
-    """
-    Exception raised when a required optional dependency is not
+    """Exception raised when a required optional dependency is not
     installed.
     """
     def __init__(

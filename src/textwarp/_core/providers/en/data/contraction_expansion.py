@@ -46,11 +46,12 @@ def get_idioms_map() -> Mapping[str, str]:
 
 @cache
 def get_infinitive_exceptions() -> frozenset[str]:
+    """Get a cached `frozenset` of words that expand to "to" despite
+    noun tags.
     """
-    Get a cached `frozenset` of words that expand to "to" despite noun
-    tags.
-    """
-    return frozenset(load_json_data(DIR / 'infinitive_exceptions.json', locale='en'))
+    return frozenset(
+        load_json_data(DIR / 'infinitive_exceptions.json', locale='en')
+    )
 
 
 @cache
@@ -63,15 +64,11 @@ def get_unambiguous_map() -> Mapping[str, str]:
 
 @cache
 def get_whatcha_are_words() -> tuple[str, ...]:
-    """
-    Get a cached tuple of "whatcha" "are" replacement words.
-    """
+    """Get a cached tuple of "whatcha" "are" replacement words."""
     return tuple(load_json_data(DIR / 'whatcha_are_words.json', locale='en'))
 
 
 @cache
 def get_whatcha_have_words() -> tuple[str, ...]:
-    """
-    Get a cached tuple of "whatcha" "have" replacement words.
-    """
+    """Get a cached tuple of "whatcha" "have" replacement words."""
     return tuple(load_json_data(DIR / 'whatcha_have_words.json', locale='en'))

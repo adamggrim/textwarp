@@ -23,9 +23,8 @@ _SPACES_PATTERN = re.compile(r' +')
 def _get_morse_spacing_patterns(
     text: str
 ) -> tuple[re.Pattern[str], re.Pattern[str]]:
-    """
-    Determine the number of spaces for character and word separators in
-    a given Morse string.
+    """Determine the number of spaces for character and word separators
+    in a given Morse string.
 
     Args:
         text: The Morse string to analyze.
@@ -62,8 +61,7 @@ def _get_morse_spacing_patterns(
 
 
 def from_binary(binary_text: str) -> str:
-    """
-    Convert a string from binary.
+    """Convert a string from binary.
 
     Args:
         binary_text: The space-separated binary string to convert.
@@ -80,8 +78,7 @@ def from_binary(binary_text: str) -> str:
 
 
 def from_hexadecimal(text: str) -> str:
-    """
-    Convert a string from hexadecimal.
+    """Convert a string from hexadecimal.
 
     Args:
         text: The hexadecimal string to convert.
@@ -97,8 +94,7 @@ def from_hexadecimal(text: str) -> str:
 
 
 def from_morse(text: str) -> str:
-    """
-    Convert a string from Morse code.
+    """Convert a string from Morse code.
 
     Args:
         text: The Morse string to convert.
@@ -136,8 +132,7 @@ def from_morse(text: str) -> str:
 
 
 def to_binary(text: str) -> str:
-    """
-    Convert a string to binary.
+    """Convert a string to binary.
 
     Args:
         text: The string to convert.
@@ -150,8 +145,7 @@ def to_binary(text: str) -> str:
 
 
 def to_hexadecimal(text: str) -> str:
-    """
-    Convert a string to hexadecimal.
+    """Convert a string to hexadecimal.
 
     Args:
         text: The string to convert.
@@ -164,8 +158,7 @@ def to_hexadecimal(text: str) -> str:
 
 
 def to_morse(text: str) -> str:
-    """
-    Convert a string to Morse code.
+    """Convert a string to Morse code.
 
     Letters (A-Z), numbers (0-9) and common punctuation (., ?, !, ,, :,
     ;, +, -, =, @, (, ), ", ', /, &) are all supported.

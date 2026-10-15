@@ -26,8 +26,7 @@ __all__ = [
 
 
 def _is_present_participle(token: Token) -> bool:
-    """
-    Check if a token is a present participle (VBG), accounting for
+    """Check if a token is a present participle (VBG), accounting for
     words that end in "in'".
     """
     if token.tag_ == 'VBG':
@@ -57,8 +56,7 @@ def _is_present_participle(token: Token) -> bool:
 
 
 def _disambiguate_a_or_to(span: Span) -> str:
-    """
-    Shared logic for "gotta" and "wanna" disambiguation between "a"
+    """Shared logic for "gotta" and "wanna" disambiguation between "a"
     and "to".
     """
     doc = span.doc
@@ -83,8 +81,7 @@ def _disambiguate_a_or_to(span: Span) -> str:
 
 
 def disambiguate_ain_t(span: Span) -> str:
-    """
-    Disambiguate the base verb for an "ain't" contraction.
+    """Disambiguate the base verb for an "ain't" contraction.
 
     This function assumes the "n't" `Span` is already an identified
     "ain't" contraction (preceded by "ai").
@@ -139,8 +136,7 @@ def disambiguate_ain_t(span: Span) -> str:
 
 
 def disambiguate_d(span: Span) -> str:
-    """
-    Disambiguate the base verb for an "'d" contraction.
+    """Disambiguate the base verb for an "'d" contraction.
 
     This function assumes the `Span` is already a "'d" contraction.
     """
@@ -197,8 +193,7 @@ def disambiguate_d(span: Span) -> str:
 
 
 def disambiguate_gotta_or_wanna(span: Span) -> str:
-    """
-    Disambiguate the suffix for a "gotta" or "wanna" contraction.
+    """Disambiguate the suffix for a "gotta" or "wanna" contraction.
 
     This function assumes the `Span` is already an identified "gotta" or
     "wanna" contraction.
@@ -207,8 +202,7 @@ def disambiguate_gotta_or_wanna(span: Span) -> str:
 
 
 def disambiguate_s(span: Span) -> str:
-    """
-    Disambiguate the base verb for an "'s" contraction.
+    """Disambiguate the base verb for an "'s" contraction.
 
     This function assumes the `Span` is already an "'s" contraction.
     """
@@ -258,8 +252,7 @@ def disambiguate_s(span: Span) -> str:
 
 
 def disambiguate_whatcha(span: Span) -> str:
-    """
-    Disambiguate the base verb for a "whatcha" contraction.
+    """Disambiguate the base verb for a "whatcha" contraction.
 
     This function assumes the `Span` has already been identified as a
     "whatcha" contraction.

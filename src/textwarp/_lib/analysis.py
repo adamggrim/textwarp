@@ -28,8 +28,7 @@ __all__ = [
 
 
 def calculate_time_to_read(text: str, wpm: int) -> int:
-    """
-    Calculate the minutes to read a string.
+    """Calculate the minutes to read a string.
 
     Args:
         text: The string to analyze.
@@ -47,8 +46,7 @@ def calculate_time_to_read(text: str, wpm: int) -> int:
 
 
 def calculate_ttr(content: str | Doc) -> float:
-    """
-    Calculate the type-token ratio for a string.
+    """Calculate the type-token ratio for a string.
 
     Args:
         content: The string or spaCy `Doc`.
@@ -73,8 +71,7 @@ def count_chars(text: str) -> int:
 
 
 def count_entities(content: str | Doc, num_entities: int) -> list[WordCount]:
-    """
-    Count the most frequent entities in a string.
+    """Count the most frequent entities in a string.
 
     Args:
         content: The string or spaCy `Doc` to analyze.
@@ -112,8 +109,7 @@ def count_lines(text: str) -> int:
 
 
 def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
-    """
-    Count the most frequent words in a string.
+    """Count the most frequent words in a string.
 
     Args:
         content: The string or spaCy `Doc` to analyze.
@@ -144,8 +140,7 @@ def count_mfws(content: str | Doc, num_mfws: int) -> list[WordCount]:
 
 
 def count_pos(content: str | Doc) -> POSCounts:
-    """
-    Count the parts of speech in a string.
+    """Count the parts of speech in a string.
 
     This function counts hyphenated words (e.g., "man-eaters") and
     contractions as separate words.

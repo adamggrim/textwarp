@@ -25,8 +25,8 @@ def test_case_from_string_absolute_map():
 
 
 def test_case_from_string_map_suffix():
-    """
-    Test that dictionary capitalization preserves contraction suffixes.
+    """Test that dictionary capitalization preserves contraction
+    suffixes.
     """
     assert case_from_string("nato's") == "NATO's"
     assert case_from_string("ceo's") == "CEO's"
@@ -36,11 +36,20 @@ def test_case_from_string_prefixed_surname():
     assert case_from_string('mcdonald') == 'McDonald'
     assert case_from_string('o’connor') == 'O’Connor'
     assert case_from_string('macarthur') == 'MacArthur'
+    assert case_from_string('macewan') == 'MacEwan'
+    assert case_from_string('mackay') == 'MacKay'
 
 
 def test_case_from_string_prefixed_surname_exception():
     assert case_from_string('macaw') == 'Macaw'
     assert case_from_string('machine') == 'Machine'
+    assert case_from_string('macchiato') == 'Macchiato'
+    assert case_from_string('macaque') == 'Macaque'
+    assert case_from_string('macaroon') == 'Macaroon'
+    assert case_from_string('mace') == 'Mace'
+    assert case_from_string('mach') == 'Mach'
+    assert case_from_string('mack') == 'Mack'
+    assert case_from_string("o'clock") == "O'clock"
 
 
 def test_case_from_string_mixed_case():

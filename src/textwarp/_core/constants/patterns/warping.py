@@ -25,8 +25,8 @@ def create_words_regex(
     words: str | Iterable[str],
     boundary: RegexBoundary = RegexBoundary.WORD_BOUNDARY
 ) -> re.Pattern[str]:
-    """
-    Create a regular expression that matches any word in the given list.
+    """Create a regular expression that matches any word in the given
+    list.
     """
     def _add_escaped_apostrophes(word: str) -> str:
         """Add escaped straight and curly apostrophes to a word."""
@@ -67,25 +67,22 @@ def get_dash() -> re.Pattern[str]:
 
 @cache
 def get_em_dash_stand_in() -> re.Pattern[str]:
-    """
-    Get a regular expression matching characters that function as an em
-    dash.
+    """Get a regular expression matching characters that function as an
+    em dash.
     """
     return re.compile(r'\s?--?\s?')
 
 
 @cache
 def get_multiple_spaces() -> re.Pattern[str]:
-    """
-    Get a regular expression matching two or more consecutive spaces.
+    """Get a regular expression matching two or more consecutive spaces.
     """
     return re.compile(r'(?<=\S) {2,}')
 
 
 @cache
 def get_period_separated_initialism() -> re.Pattern[str]:
-    """
-    Get a regular expression matching a period-separated initialism.
+    """Get a regular expression matching a period-separated initialism.
     """
     return re.compile(
         rf'\b(?:\p{{L}}+\.){{2,}}(?:{APOSTROPHE_CHAR_CLASS}\p{{L}}+)?'

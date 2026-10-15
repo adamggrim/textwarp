@@ -18,8 +18,7 @@ def change_first_alphabetical_case(
     text: str,
     casing_func: Callable[[str], str]
 ) -> str:
-    """
-    Change the case of the first letter of a string without modifying
+    """Change the case of the first letter of a string without modifying
     any other letters.
 
     Args:
@@ -39,8 +38,7 @@ def change_first_alphabetical_case(
 
 
 def find_first_alphabetical_idx(text: str) -> int | None:
-    """
-    Find the index of the first alphabetical character in a string.
+    """Find the index of the first alphabetical character in a string.
 
     Args:
         text: The string to search.
@@ -59,8 +57,7 @@ def load_json_data(
     relative_path: str | Path,
     locale: str | None = None
 ) -> Any:
-    """
-    Load JSON content from the universal data directory or a
+    """Load JSON content from the universal data directory or a
     locale-specific provider's data directory.
 
     Args:
@@ -85,8 +82,8 @@ def load_json_data(
 
 
 def starts_uppercase(text: str) -> bool:
-    """
-    Check if the first alphabetical character in the text is uppercase.
+    """Check if the first alphabetical character in the text is
+    uppercase.
 
     Args:
         text: The string to check.

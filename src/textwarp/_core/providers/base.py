@@ -41,8 +41,7 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def pos_tags(self) -> tuple[tuple[MainPOSTag, str], ...]:
-        """
-        Language-specific parts-of-speech tags and their localized
+        """Language-specific parts-of-speech tags and their localized
         labels.
         """
         pass
@@ -56,9 +55,8 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def proper_noun_entities(self) -> frozenset[str]:
-        """
-        Named entities that are typically proper nouns for the locale's
-        model.
+        """Named entities that are typically proper nouns for the
+        locale's model.
         """
         pass
 
@@ -71,15 +69,14 @@ class LanguageProvider(ABC):
     @property
     @abstractmethod
     def pos_mapping(self) -> Mapping[UniversalPOSTag, MainPOSTag]:
-        """
-        Mapping from `UniversalPOSTag` to the simplified `MainPOSTag`.
+        """Mapping from `UniversalPOSTag` to the simplified
+        `MainPOSTag`.
         """
         pass
 
     @abstractmethod
     def cardinal_to_ordinal(self, text: str) -> str:
-        """
-        Convert cardinal numbers in a string to ordinal numbers.
+        """Convert cardinal numbers to ordinal numbers.
         """
         pass
 
@@ -105,12 +102,12 @@ class LanguageProvider(ABC):
 
     def curly_to_straight(self, text: str) -> str:
         """
-        Convert curly quotes in a string to straight quotes.
+        Convert curly quotes to straight quotes.
         """
         return text
 
     def expand_contractions(self, content: 'str | Doc') -> str:
-        """Expand all contractions in a string or spaCy `Doc`."""
+        """Expand all contractions or spaCy `Doc`."""
         return content if isinstance(content, str) else content.text
 
     def normalize_for_morse(self, text: str) -> str:
@@ -128,47 +125,43 @@ class LanguageProvider(ABC):
 
     @abstractmethod
     def is_lowercase_particle_or_affix(self, text: str) -> bool:
-        """
-        Determine if a token string is a particle or affix that should
-        remain lowercase.
+        """Determine if a token string is a particle or affix that
+        should remain lowercase.
         """
         pass
 
     @abstractmethod
     def ordinal_to_cardinal(self, text: str) -> str:
-        """
-        Convert ordinal numbers in a string to cardinal numbers.
+        """Convert ordinal numbers to cardinal numbers.
         """
         pass
 
     def punct_to_inside(self, text: str) -> str:
-        """
-        Move punctuation at the end of quotes inside quotation marks.
+        """Move punctuation at the end of quotes inside quotation
+        marks.
         """
         return text
 
     def punct_to_outside(self, text: str) -> str:
-        """
-        Move punctuation at the end of quotes outside quotation marks.
+        """Move punctuation at the end of quotes outside quotation
+        marks.
         """
         return text
 
     def remove_apostrophes(self, text: str) -> str:
-        """
-        Remove apostrophes from a string without removing single quotes.
+        """Remove apostrophes from a string without removing single
+        quotes.
         """
         return text
 
     @abstractmethod
     def should_capitalize_in_title(self, token: 'Token') -> bool:
-        """
-        Determine whether to capitalize a spaCy `Token` based on
+        """Determine whether to capitalize a spaCy `Token` based on
         language-specific rules.
         """
         pass
 
     def straight_to_curly(self, text: str) -> str:
-        """
-        Convert straight quotes in a string to curly quotes.
+        """Convert straight quotes to curly quotes.
         """
         return text

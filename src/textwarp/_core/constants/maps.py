@@ -13,9 +13,8 @@ __all__ = ['get_case_names_regex_map']
 
 @cache
 def get_case_names_regex_map() -> MappingProxyType[str, re.Pattern[str]]:
-    """
-    Get a map of valid case name inputs to their corresponding compiled
-    regular expressions.
+    """Get a map of valid case name inputs to their corresponding
+    compiled regular expressions.
 
     Returns:
         MappingProxyType[str, re.Pattern[str]]: A read-only dictionary

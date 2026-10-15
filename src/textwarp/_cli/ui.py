@@ -79,8 +79,7 @@ def _prompt_for_valid_replacement_pair(
     allow_early_exit: bool = False,
     transform: Callable[[str], str] | None = None
 ) -> tuple[str, str]:
-    """
-    Prompt the user for a target string and its replacement.
+    """Prompt the user for a target string and its replacement.
 
     Args:
         target_config: A tuple containing the target prompt message, a
@@ -113,8 +112,7 @@ def _prompt_for_valid_replacement_pair(
 
 
 def get_input(prompt_delay: float = 0.5) -> bool:
-    """
-    Prompt the user on whether to process the clipboard and return a
+    """Prompt the user on whether to process the clipboard and return a
     Boolean representing whether to continue.
 
     Returns:
@@ -143,9 +141,8 @@ def print_padding() -> None:
 
 
 def print_wrapped(text: str) -> None:
-    """
-    Wrap printing based on the width of the terminal and add a newline
-    character to the start of the string.
+    """Wrap printing based on the width of the terminal and add a
+    newline character to the start of the string.
     """
     print_size = get_terminal_width() - 1
     wrapped_text = '\n'.join(wrap_text(text, print_size))
@@ -153,8 +150,7 @@ def print_wrapped(text: str) -> None:
 
 
 def program_exit() -> NoReturn:
-    """
-    Print a message that the program is exiting, then exit the program.
+    """Print a message that the program is exiting, then exit.
 
     Raises:
         SystemExit: Raised to terminate the application.
@@ -169,9 +165,7 @@ def prompt_for_integer(
     error_text: str,
     allow_early_exit: bool = False
 ) -> int:
-    """
-    Prompt the user for a valid positive integer.
-    """
+    """Prompt the user for a valid positive integer."""
     print_wrapped(prompt_text)
     user_input: str = input().strip()
 
@@ -190,8 +184,7 @@ def prompt_for_integer(
 
 
 def prompt_for_replacement_case() -> tuple[str, str]:
-    """
-    Prompt for a target case and replacement case.
+    """Prompt for a target and replacement case.
 
     Returns:
         tuple[str, str]: A tuple containing:
@@ -215,8 +208,7 @@ def prompt_for_replacement_case() -> tuple[str, str]:
 
 
 def prompt_for_replacement_regex() -> tuple[str, str]:
-    """
-    Prompt for a target regular expression and replacement text.
+    """Prompt for a target regular expression and replacement text.
 
     Returns:
         tuple[str, str]: A tuple containing:
@@ -238,8 +230,7 @@ def prompt_for_replacement_regex() -> tuple[str, str]:
 
 
 def prompt_for_replacement_text() -> tuple[str, str]:
-    """
-    Prompt for target text and replacement text.
+    """Prompt for target text and replacement text.
 
     Returns:
         tuple[str, str]: A tuple containing:
@@ -261,7 +252,7 @@ def prompt_for_replacement_text() -> tuple[str, str]:
     )
 
 def wrap_text(text: str, width: int) -> list[str]:
-    """Wrap text based on visual terminal rendering width."""
+    """Wrap text based on visual terminal width."""
     words = text.split()
     lines: list[str] = []
     current_line: list[str] = []

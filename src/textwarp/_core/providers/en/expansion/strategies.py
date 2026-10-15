@@ -26,8 +26,8 @@ def _expand_inverted_negative(
     subject_token: Token,
     base_verb: str
 ) -> tuple[str, int]:
-    """
-    Handle expansion for inverted negative contractions (e.g., "Didn't I").
+    """Handle expansion for inverted negative contractions (e.g.,
+    "Didn't I").
 
     Args:
         doc: The spaCy `Doc` containing the tokens.
@@ -59,8 +59,7 @@ def _expand_inverted_negative(
 
 
 def expand_d_contraction(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched "'d" contraction with its expanded version.
+    """Replace a matched "'d" contraction with its expanded version.
 
     Args:
         span: The spaCy `Span` containing the contraction.
@@ -68,7 +67,7 @@ def expand_d_contraction(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise `None`.
+            2. The end index of the expanded contraction, otherwise `None`.
     """
     if not span.text.lower().endswith(
         tuple(en.expansion.variants.APOSTROPHE_D_VARIANTS)
@@ -90,8 +89,7 @@ def expand_d_contraction(span: Span) -> tuple[str, int] | None:
 
 
 def expand_gotta(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched "gotta" contraction with its expanded version.
+    """Replace a matched "gotta" contraction with its expanded version.
 
     Args:
         span: The spaCy `Span` containing the contraction.
@@ -99,7 +97,7 @@ def expand_gotta(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise
+            2. The end index of the expanded contraction, otherwise
                 `None`.
     """
     if span.text.lower() != 'gotta':
@@ -145,9 +143,8 @@ def expand_gotta(span: Span) -> tuple[str, int] | None:
 
 
 def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched negative contraction (including "ain't") with its
-    expanded version.
+    """Replace a matched negative contraction (including "ain't") with
+    its expanded version.
 
     This function handles "ain't", standard-order contractions and
     inversion contractions.
@@ -158,7 +155,7 @@ def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise
+            2. The end index of the expanded contraction, otherwise
                 `None`.
     """
     if not en.patterns.get_n_t_suffix().search(span.text.lower()):
@@ -212,8 +209,7 @@ def expand_negative_contraction(span: Span) -> tuple[str, int] | None:
 
 
 def expand_s_contraction(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched "'s" contraction with its expanded version.
+    """Replace a matched "'s" contraction with its expanded version.
 
     Args:
         span: The spaCy `Span` containing the contraction.
@@ -221,7 +217,7 @@ def expand_s_contraction(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise
+            2. The end index of the expanded contraction, otherwise
                 `None`.
     """
     if not span.text.lower().endswith(
@@ -245,8 +241,7 @@ def expand_s_contraction(span: Span) -> tuple[str, int] | None:
 
 
 def expand_wanna(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched "wanna" contraction with its expanded version.
+    """Replace a matched "wanna" contraction with its expanded version.
 
     Args:
         span: The spaCy `Span` containing the contraction.
@@ -254,7 +249,7 @@ def expand_wanna(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise
+            2. The end index of the expanded contraction, otherwise
                 `None`.
     """
     if span.text.lower() != 'wanna':
@@ -268,8 +263,8 @@ def expand_wanna(span: Span) -> tuple[str, int] | None:
 
 
 def expand_whatcha(span: Span) -> tuple[str, int] | None:
-    """
-    Replace a matched "whatcha" contraction with its expanded version.
+    """Replace a matched "whatcha" contraction with its expanded
+    version.
 
     Args:
         span: The spaCy `Span` containing the contraction.
@@ -277,7 +272,7 @@ def expand_whatcha(span: Span) -> tuple[str, int] | None:
     Returns:
         tuple[str, int] | None: A tuple containing:
             1. The expanded version of the matched contraction.
-            2. The end index of the expanded contraction; otherwise
+            2. The end index of the expanded contraction, otherwise
                 `None`.
     """
     if span.text.lower() != 'whatcha':

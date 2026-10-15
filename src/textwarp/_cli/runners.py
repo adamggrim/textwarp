@@ -91,8 +91,7 @@ def replace_and_copy(
     clipboard: str,
     not_found_msg: str = TEXT_TO_REPLACE_NOT_FOUND_MSG
 ) -> None:
-    """
-    Transform text using a replacement command and copy the result.
+    """Transform text using a replacement command and copy the result.
     Print if the target text was not found.
     """
     pyperclip = get_pyperclip()
@@ -108,8 +107,7 @@ def run_command_loop(
     command_func: Callable[[str], str | None],
     action_handler: _ActionHandler | None = None
 ) -> None:
-    """
-    Run a module command to transform or analyze clipboard text.
+    """Run a module command to transform or analyze clipboard text.
 
     Args:
         command_func: The command function.

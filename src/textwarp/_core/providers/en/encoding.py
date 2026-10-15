@@ -5,8 +5,7 @@ from textwarp._lib.punctuation import curly_to_straight
 
 
 def normalize_for_morse(text: str) -> str:
-    """
-    Normalize a string for Morse code by converting to all caps and
+    """Normalize a string for Morse code by converting to all caps and
     replacing non-Morse-compatible characters.
 
     Args:

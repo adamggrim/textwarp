@@ -26,8 +26,7 @@ def _find_first_word_token_idx(
     start_idx: int,
     text_container: Doc | Span
 ) -> int | None:
-    """
-    Find the index of the first non-space, non-punctuation token in a
+    """Find the index of the first non-space, non-punctuation token in a
     spaCy `Doc` or `Span`.
 
     Args:
@@ -46,8 +45,7 @@ def _find_first_word_token_idx(
 
 
 def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
-    """
-    Find indices of tokens to forcefully lowercase if the entire sentence
+    """Find indices of tokens to force-lowercase if the entire sentence
     shares the same casing (e.g., all uppercase or all capitalized).
 
     Args:
@@ -89,8 +87,7 @@ def _find_force_lowercase_idxs(text_container: Doc | Span) -> set[int]:
 
 
 def _find_sentence_start_idxs(text_container: Doc | Span) -> set[int]:
-    """
-    Find the index of the first word token in each sentence.
+    """Find the index of the first word token in each sentence.
 
     Args:
         text_container: The spaCy `Doc` or `Span` to search.
@@ -111,8 +108,7 @@ def _find_sentence_start_idxs(text_container: Doc | Span) -> set[int]:
 
 
 def _find_start_case_idxs(text_container: Doc | Span) -> set[int]:
-    """
-    Find the indices of tokens that should be capitalized for start
+    """Find the indices of tokens that should be capitalized for start
     case (i.e., all word tokens).
 
     Args:
@@ -134,13 +130,12 @@ def _to_title_case_from_doc(
     text_container: Doc | Span,
     indices_to_lowercase: set[int]
 ) -> str:
-    """
-    Convert a spaCy `Doc` or `Span` to a title case string, handling special
-    name prefixes and preserving other mid-word capitalizations.
+    """Convert a spaCy `Doc` or `Span` to a title case string, handling
+    special name prefixes and preserving other mid-word capitalizations.
 
     Args:
         text_container: The spaCy `Doc` or `Span` to convert.
-        indices_to_lowercase: A set of token indices to forcefully lowercase.
+        indices_to_lowercase: A set of token indices to force-lowercase.
 
     Returns:
         str: The converted string.
@@ -169,8 +164,7 @@ def _to_title_case_from_token(
     token_text: str,
     should_capitalize_for_title: bool
 ) -> str:
-    """
-    Convert a spaCy `Token` to title case, handling special name
+    """Convert a spaCy `Token` to title case, handling special name
     prefixes and preserving other mid-word capitalizations.
 
     Args:
@@ -195,8 +189,7 @@ def _to_title_case_from_token(
 
 
 def capitalize(content: str | Doc) -> str:
-    """
-    Capitalize each word in a string or spaCy `Doc`, handling special
+    """Capitalize each word in a string or spaCy `Doc`, handling special
     name prefixes and preserving other mid-word capitalizations.
     """
     doc = process_as_doc(content)
@@ -204,9 +197,8 @@ def capitalize(content: str | Doc) -> str:
 
 
 def to_natural_case(doc: Doc, casing: Casing) -> str:
-    """
-    Apply sentence, start or title case to a spaCy `Doc`, capitalizing
-    any proper noun entities.
+    """Apply sentence, start or title case to a spaCy `Doc`,
+    capitalizing any proper noun entities.
 
     Args:
         doc (Doc): A spaCy `Doc`.
@@ -308,8 +300,7 @@ def to_sentence_case(content: str | Doc) -> str:
 
 
 def to_title_case(content: str | Doc) -> str:
-    """
-    Convert a string or spaCy `Doc` to title case, handling special
+    """Convert a string or spaCy `Doc` to title case, handling special
     name prefixes and preserving other mid-word capitalizations.
     """
     # Use the large spaCy model for identifying titles within titles.

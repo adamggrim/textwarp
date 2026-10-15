@@ -15,9 +15,6 @@ def test_lazy_load():
 
 
 def test_args_map_structure():
-    """
-    Test that every entry in `ARGS_MAP` is a properly configured CLICommand.
-    """
     for cmd_name, cmd in ARGS_MAP.items():
         assert isinstance(cmd_name, str), (
             f'Command name {cmd_name} is not a string.'

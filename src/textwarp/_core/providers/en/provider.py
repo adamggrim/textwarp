@@ -84,15 +84,7 @@ class EnglishProvider(LanguageProvider):
         )
 
     def cardinal_to_ordinal(self, text: str) -> str:
-        """
-        Convert cardinal numbers in a string to ordinal numbers.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
+        """Convert cardinal numbers in a string to ordinal numbers."""
         return en.numbers.cardinal_to_ordinal(text)
 
     def case_from_string(
@@ -101,9 +93,8 @@ class EnglishProvider(LanguageProvider):
         lowercase_by_default: bool = False,
         preserve_mixed_case: bool = True
     ) -> str:
-        """
-        Capitalize a word, handling special name prefixes and preserving
-        other mid-word capitalizations.
+        """Capitalize a word, handling special name prefixes and
+        preserving other mid-word capitalizations.
 
         Args:
             word: The word to capitalize.
@@ -120,20 +111,11 @@ class EnglishProvider(LanguageProvider):
         )
 
     def curly_to_straight(self, text: str) -> str:
-        """
-        Convert curly quotes in a string to straight quotes.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
+        """Convert curly quotes in a string to straight quotes."""
         return en.punctuation.curly_to_straight(text)
 
     def extract_words(self, text: str) -> list[str]:
-        """
-        Extract words using Unicode Standard Annex (UAX) #29 text
+        """Extract words using Unicode Standard Annex (UAX) #29 text
         segmentation.
         """
         pattern = re.compile(r'\b', flags=re.V1 | re.WORD)
@@ -141,15 +123,7 @@ class EnglishProvider(LanguageProvider):
         return [seg for seg in segments if any(c.isalnum() for c in seg)]
 
     def expand_contractions(self, content: str | Doc) -> str:
-        """
-        Expand all contractions in a string or spaCy `Doc`.
-
-        Args:
-            content: A string or spaCy `Doc`.
-
-        Returns:
-            str: The converted text.
-        """
+        """Expand all contractions in a string or spaCy `Doc`."""
         return en.expansion.core.expand_contractions(content)
 
     def get_title_case_idxs(self, text_container: Doc | Span) -> set[int]:
@@ -188,8 +162,7 @@ class EnglishProvider(LanguageProvider):
         return position_idxs
 
     def is_lowercase_particle_or_affix(self, text: str) -> bool:
-        """
-        Determine if a token string is a particle or contraction suffix
+        """Determine if a token string is a particle or contraction suffix
         that should remain lowercase.
 
         Args:
@@ -202,71 +175,39 @@ class EnglishProvider(LanguageProvider):
         return en.casing.is_lowercase_particle_or_affix(text)
 
     def normalize_for_morse(self, text: str) -> str:
-        """
-        Normalize a string for Morse code by converting to all caps and
-        replacing non-Morse-compatible characters.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
+        """Normalize a string for Morse code by converting to all caps
+        and replacing non-Morse-compatible characters.
         """
         return en.encoding.normalize_for_morse(text)
 
     def ordinal_to_cardinal(self, text: str) -> str:
-        """
-        Convert ordinal numbers in a string to cardinal numbers.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
+        """Convert ordinal numbers in a string to cardinal numbers."""
         return en.numbers.ordinal_to_cardinal(text)
 
     def punct_to_inside(self, text: str) -> str:
-        """
-        Move periods and commas at the end of quotes inside quotation
+        """Move periods and commas at the end of quotes inside quotation
         marks.
         """
         return en.punctuation.punct_to_inside(text)
 
     def punct_to_outside(self, text: str) -> str:
-        """
-        Move periods and commas at the end of quotes outside quotation
-        marks.
+        """Move periods and commas at the end of quotes outside
+        quotation marks.
         """
         return en.punctuation.punct_to_outside(text)
 
     def remove_apostrophes(self, text: str) -> str:
-        """
-        Remove apostrophes from a string without removing single quotes.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
+        """Remove apostrophes from a string without removing single
+        quotes.
         """
         return en.punctuation.remove_apostrophes(text)
 
     def should_capitalize_in_title(self, token: Token) -> bool:
-        """
-        Determine whether to capitalize a spaCy `Token` for title case
-        based on its part of speech or length.
+        """Determine whether to capitalize a spaCy `Token` for title
+        case based on its part of speech or length.
         """
         return en.casing.should_capitalize_in_title(token)
 
     def straight_to_curly(self, text: str) -> str:
-        """
-        Convert straight quotes in a string to curly quotes.
-
-        Args:
-            text: The string to convert.
-
-        Returns:
-            str: The converted string.
-        """
+        """Convert straight quotes in a string to curly quotes."""
         return en.punctuation.straight_to_curly(text)

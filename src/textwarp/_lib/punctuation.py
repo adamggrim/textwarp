@@ -15,64 +15,39 @@ __all__ = [
 
 
 def curly_to_straight(text: str) -> str:
-    """
-    Convert curly quotes in a string to straight quotes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert curly quotes to straight quotes."""
     return ctx.provider.curly_to_straight(text)
 
 
 def hyphens_to_em(text: str) -> str:
-    """Convert em dash stand-ins in a string to em dashes."""
+    """Convert em dash stand-ins to em dashes."""
     return patterns.warping.get_em_dash_stand_in().sub('—', text)
 
 
 def hyphens_to_en(text: str) -> str:
-    """Convert hyphens in a string to en dashes."""
+    """Convert hyphens to en dashes."""
     return text.replace('-', '–')
 
 
 def punct_to_inside(text: str) -> str:
-    """
-    Move periods and commas at the end of quotes inside quotation marks.
+    """Move periods and commas at the end of quotes inside quotation
+    marks.
     """
     return ctx.provider.punct_to_inside(text)
 
 
 def punct_to_outside(text: str) -> str:
-    """
-    Move periods and commas at the end of quotes to outside quotation
+    """Move periods and commas at the end of quotes outside quotation
     marks.
     """
     return ctx.provider.punct_to_outside(text)
 
 
 def remove_apostrophes(text: str) -> str:
-    """
-    Remove apostrophes from a string without removing single quotes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Remove apostrophes without removing single quotes."""
     return ctx.provider.remove_apostrophes(text)
 
 
 def straight_to_curly(text: str) -> str:
-    """
-    Convert straight quotes in a string to curly quotes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert straight quotes to curly quotes."""
     return ctx.provider.straight_to_curly(text)

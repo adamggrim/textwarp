@@ -13,7 +13,7 @@ from textwarp._core.providers.en.data.entity_casing import get_absolute_map
 
 
 def get_json_files():
-    """Helper function to find all JSON files in `_core`."""
+    """Helper to find all JSON files in `_core`."""
     core_dir = importlib.resources.files('textwarp').joinpath('_core')
 
     def _find_json(directory):

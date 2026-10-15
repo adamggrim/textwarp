@@ -51,8 +51,7 @@ def test_title_case_unicode():
     to_sentence_case
 ])
 def test_all_warping_standard_unicode(warping_func):
-    """
-    Smoke test to ensure that warping functions process non-ASCII
+    """Smoke test to ensure that warping functions process non-ASCII
     characters without raising `UnicodeEncodeError` or
     `UnicodeDecodeError`.
     """

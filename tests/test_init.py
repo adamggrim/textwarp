@@ -7,9 +7,8 @@ import textwarp
 
 @pytest.mark.parametrize('attr_name', textwarp.__all__)
 def test_lazy_loading_all_attributes(attr_name):
-    """
-    Verify that all attributes exposed in `__all__` are mapped to valid,
-    callable functions.
+    """Verify that all attributes exposed in `__all__` are mapped to
+    valid, callable functions.
     """
     attr = getattr(textwarp, attr_name)
     assert callable(attr), f"Attribute '{attr_name}' is not callable."
@@ -24,8 +23,7 @@ def test_lazy_loading_invalid_attribute():
 
 
 def test_all_list_matches_module_map():
-    """
-    Verify that the `__all__` list matches the keys available in the
+    """Verify that the `__all__` list matches the keys available in the
     internal `_MODULE_MAP`.
     """
     assert set(textwarp.__all__) == set(textwarp._MODULE_MAP.keys())

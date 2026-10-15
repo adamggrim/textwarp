@@ -189,10 +189,8 @@ def test_extract_uax29_words():
 
 
 def test_get_nlp_transformer_import_error(monkeypatch):
-    """
-    Test that `_get_nlp` gracefully catches an `ImportError` (e.g.,
-    missing `spacy-transformers`) and falls back to the next ranked
-    model.
+    """Test that `_get_nlp` gracefully catches an `ImportError` and
+    falls back to the next ranked model.
     """
     original_load = _load_spacy_model
 

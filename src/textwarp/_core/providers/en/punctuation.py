@@ -15,21 +15,13 @@ __all__ = [
 
 
 def curly_to_straight(text: str) -> str:
-    """
-    Convert curly quotes in a string to straight quotes.
-
-    Args:
-        text: The string to convert.
-
-    Returns:
-        str: The converted string.
-    """
+    """Convert curly quotes in a string to straight quotes."""
     return text.translate(CURLY_TO_STRAIGHT_TABLE)
 
 
 def punct_to_inside(text: str) -> str:
-    """
-    Move periods and commas at the end of quotes inside quotation marks.
+    """Move periods and commas at the end of quotes inside quotation
+    marks.
     """
     def _repl(match: re.Match[str]) -> str:
         quote, punct = match.groups()
@@ -39,8 +31,7 @@ def punct_to_inside(text: str) -> str:
 
 
 def punct_to_outside(text: str) -> str:
-    """
-    Move periods and commas at the end of quotes outside quotation
+    """Move periods and commas at the end of quotes outside quotation
     marks.
     """
     def _repl(match: re.Match[str]) -> str:
@@ -51,8 +42,7 @@ def punct_to_outside(text: str) -> str:
 
 
 def remove_apostrophes(text: str) -> str:
-    """
-    Remove apostrophes from a string without removing single quotes.
+    """Remove apostrophes from a string without removing single quotes.
 
     Args:
         text: The string to convert.
@@ -64,8 +54,7 @@ def remove_apostrophes(text: str) -> str:
 
 
 def straight_to_curly(text: str) -> str:
-    """
-    Convert straight quotes in a string to curly quotes.
+    """Convert straight quotes in a string to curly quotes.
 
     Args:
         text: The string to convert.

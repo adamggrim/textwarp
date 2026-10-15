@@ -140,10 +140,6 @@ def test_route_output_stdout_tty_vs_piped(monkeypatch, capsys):
 
 
 def test_build_valid_pipeline(cli_parser):
-    """
-    Test building a pipeline with multiple valid, non-conflicting
-    commands.
-    """
     active_cmds = ['strip', 'lowercase', 'snake-case']
     pipeline_result = pipeline.build_pipeline(active_cmds, cli_parser)
 

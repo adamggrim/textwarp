@@ -22,8 +22,7 @@ def _expand_ambiguous_contraction(
     contraction: str,
     span: Span
 ) -> tuple[str, int]:
-    """
-    Replace an ambiguous contraction with its expanded version.
+    """Replace an ambiguous contraction with its expanded version.
 
     Args:
         contraction: The contraction to expand.
@@ -55,8 +54,7 @@ def _expand_ambiguous_contraction(
 
 
 def _expand_idioms(phrase: str) -> str:
-    """
-    Expand multi-word idiomatic phrases before expanding standard
+    """Expand multi-word idiomatic phrases before expanding standard
     contractions.
     """
     idioms_map = en.data.contraction_expansion.get_idioms_map()
@@ -87,9 +85,8 @@ def _expand_unambiguous_contraction(
     contractions_map: Mapping[str, str],
     span_context: Span | None = None
 ) -> str:
-    """
-    Replace an unambiguous contraction with its expanded version using
-    the contractions map.
+    """Replace an unambiguous contraction with its expanded version
+    using the contractions map.
 
     Args:
         contraction: The contraction to expand.

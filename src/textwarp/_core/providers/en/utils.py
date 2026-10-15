@@ -22,10 +22,8 @@ __all__ = [
 
 
 def _is_demonstrative_subject(token: Token) -> bool:
-    """
-    Determine if a token is a demonstrative pronoun ('that', 'this')
-    acting as a subject before a determiner (e.g., 'Ain't That a
-    Shame').
+    """Determine if a token is a demonstrative pronoun ('that', 'this')
+    acting as a subject before a determiner.
     """
     doc = token.doc
     return (
@@ -36,8 +34,8 @@ def _is_demonstrative_subject(token: Token) -> bool:
 
 
 def find_subject_end_token(subject_token: Token) -> Token:
-    """
-    Find the final token of a subject phrase in an inverted contraction.
+    """Find the final token of a subject phrase in an inverted
+    contraction.
     """
     if subject_token.pos_ in {UniversalPOSTag.PRON, UniversalPOSTag.DET}:
         return subject_token
@@ -70,18 +68,13 @@ def find_subject_end_token(subject_token: Token) -> Token:
 
 
 def find_subject_token(verb_token: Token | None) -> Token | None:
-    """
-    Find the subject of a verb in a spaCy `Doc`, handling both
+    """Find the subject of a verb in a spaCy `Doc`, handling both
     standard order (subject to the left: `I don't`) and inverted order
     (subject to the right: `Don't I`).
 
-    This function attempts to use the dependency parser first. If the
-    parser fails (common in questions or fragments), it falls back to
-    positional heuristics.
-
     Args:
-        verb_token | None: The token for the verb that predicates the subject;
-            otherwise `None`.
+        verb_token | None: The token for the verb that predicates the
+            subject, otherwise `None`.
 
     Returns:
         Token | None: The subject token, otherwise `None`.
@@ -140,9 +133,8 @@ def find_subject_token(verb_token: Token | None) -> Token | None:
 
 
 def get_negative_contraction_base_verb(contraction: str) -> str | None:
-    """
-    Determine the base verb from a standard negative contraction (e.g.,
-    `won't` -> `will`).
+    """Determine the base verb from a standard negative contraction
+    (e.g., `won't` -> `will`).
 
     Args:
         contraction: The contraction to analyze.
@@ -180,8 +172,8 @@ def get_next_lexical_token(
         {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
     )
 ) -> Token | None:
-    """
-    Find the next lexical token, skipping selected parts of speech.
+    """Find the next lexical token, skipping selected parts of
+    speech.
     """
     for i in range(start_idx, len(doc)):
         token = doc[i]
@@ -198,8 +190,8 @@ def get_prev_lexical_token(
         {UniversalPOSTag.PUNCT, UniversalPOSTag.SPACE}
     )
 ) -> Token | None:
-    """
-    Find the previous lexical token, skipping selected parts of speech.
+    """Find the previous lexical token, skipping selected parts of
+    speech.
     """
     for i in range(start_idx - 1, -1, -1):
         token = doc[i]

@@ -55,8 +55,7 @@ __all__ = [
 
 
 def validate_case_name(case_name: str) -> None:
-    """
-    Validate a case name string.
+    """Validate a case name input.
 
     This function checks whether the string is a valid case name (i.e.,
     camel case, dot case, lowercase, kebab case, Pascal case, snake case
@@ -80,8 +79,7 @@ def validate_case_name(case_name: str) -> None:
 
 
 def validate_clipboard(clipboard: str) -> None:
-    """
-    Validate the clipboard input.
+    """Validate clipboard input.
 
     This function checks if the clipboard content is an empty string or
     contains only whitespace.
@@ -106,8 +104,7 @@ def validate_command_combinations(
     parser: argparse.ArgumentParser,
     input_files: list[str] | None = None
 ) -> None:
-    """
-    Validate that combined CLI arguments do not conflict.
+    """Validate combined CLI arguments.
 
     Args:
         active_cmds: The ordered list of active commands.
@@ -205,8 +202,7 @@ def validate_positional_args(
     positional_files: list[str],
     parser: argparse.ArgumentParser
 ) -> None:
-    """
-    Validate positional command and file arguments for typos or
+    """Validate positional command and file arguments for typos and
     misordered tokens.
 
     Args:
@@ -247,8 +243,7 @@ def validate_positional_args(
 
 
 def validate_regex(regex: str) -> None:
-    """
-    Validate a regular expression string.
+    """Validate a regular expression input.
 
     This function checks whether the string is a valid regular
     expression.
@@ -271,8 +266,7 @@ def validate_regex(regex: str) -> None:
 
 
 def validate_text(text: str) -> None:
-    """
-    Validate a text string, excluding empty text.
+    """Validate a text input, excluding empty text.
 
     Args:
         text: A string of text.

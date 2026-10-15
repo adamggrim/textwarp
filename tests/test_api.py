@@ -160,8 +160,7 @@ def _assert_api_result(result, expected):
     ]
 )
 def test_single_arg_functions(func_name, text, expected):
-    """
-    Verify that single-argument API functions correctly lazy load,
+    """Verify that single-argument API functions correctly lazy load,
     route to their underlying implementations, and execute.
     """
     func = getattr(textwarp, func_name)
@@ -194,9 +193,8 @@ def test_single_arg_functions(func_name, text, expected):
     ]
 )
 def test_two_arg_functions(func_name, text, param, expected):
-    """
-    Verify that two-argument API functions correctly lazy load,
-    route to their underlying implementations, and execute.
+    """Verify that two-argument API functions correctly lazy load, route
+    to their underlying implementations, and execute.
     """
     func = getattr(textwarp, func_name)
     _assert_api_result(func(text, param), expected)

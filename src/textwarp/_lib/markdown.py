@@ -45,8 +45,7 @@ _pool = _ThreadLocalMarkdownPool()
 def _checkout_parser(
     transform_func: Callable[[str], str]
 ) -> Generator[marko.Markdown, None, None]:
-    """
-    Provide a thread-local `marko.Markdown` instance, or a temporary
+    """Provide a thread-local `marko.Markdown` instance, or a temporary
     instance if the thread's parser is already active in a nested call.
     """
     token = _active_transform.set(transform_func)
@@ -69,9 +68,9 @@ def _checkout_parser(
 
 
 def process_markdown(text: str, transform_func: Callable[[str], str]) -> str:
-    """
-    Parse a Markdown string into an Abstract Syntax Tree (AST), apply a
-    transformation function and translate the string back into Markdown.
+    """Parse a Markdown string into an Abstract Syntax Tree (AST), apply
+    a transformation function and translate the string back into
+    Markdown.
     """
     with _checkout_parser(transform_func) as parser:
         return parser.convert(text)

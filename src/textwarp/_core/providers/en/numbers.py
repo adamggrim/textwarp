@@ -29,9 +29,8 @@ def _get_ordinal_suffix(number: int) -> str:
 
 
 def _is_part_of_mixed_fraction(text: str, start_idx: int) -> bool:
-    """
-    Look ahead in the text to determine if the current number precedes a
-    fraction.
+    """Look ahead in the text to determine if the current number
+    precedes a fraction.
     """
     lookahead_idx = start_idx
 

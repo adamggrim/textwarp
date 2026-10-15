@@ -15,8 +15,7 @@ from textwarp._core.context import ctx
 
 
 def main() -> None:
-    """
-    Run the main loop for text transformation or analysis.
+    """Run the main loop for text transformation or analysis.
 
     Raises:
         SystemExit: If there is an error with the input file, output

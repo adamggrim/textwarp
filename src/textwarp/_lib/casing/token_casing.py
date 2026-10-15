@@ -13,8 +13,7 @@ __all__ = ['should_capitalize_pos_or_length']
 
 
 def should_capitalize_pos_or_length(token: Token) -> bool:
-    """
-    Determine whether to capitalize a spaCy `Token` for title case based
-    on its part of speech or length.
+    """Determine whether to capitalize a spaCy `Token` for title case
+    based on its part of speech or length.
     """
     return ctx.provider.should_capitalize_in_title(token)

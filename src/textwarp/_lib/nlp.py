@@ -38,8 +38,7 @@ def _load_spacy_model(model_name: str) -> Language:
 def get_nlp(
     model_priority: ModelPriority = ModelPriority.SPEED
 ) -> Language:
-    """
-    Returns the best available spaCy model instance based on speed or
+    """Returns the best available spaCy model instance based on speed or
     accuracy for the active language locale.
 
     Args:
@@ -93,8 +92,7 @@ def process_as_doc(
     model_priority: ModelPriority = ModelPriority.SPEED,
     disable: list[str] | None = None
 ) -> Doc:
-    """
-    Process the input as a spaCy `Doc`.
+    """Process the input as a spaCy `Doc`.
 
     Args:
         content: The string or `Doc` to process.

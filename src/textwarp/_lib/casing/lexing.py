@@ -16,8 +16,7 @@ _SEPARATOR_CHARS: Final[frozenset[str]] = frozenset(
 
 
 def _chunk_by_alnum(text: str) -> list[str]:
-    """
-    Split text into alternating alphanumeric and non-alphanumeric
+    """Split text into alternating alphanumeric and non-alphanumeric
     chunks.
 
     Args:
@@ -26,7 +25,7 @@ def _chunk_by_alnum(text: str) -> list[str]:
     Returns:
         list[str]: The split chunks, where the first chunk is
             alphanumeric if the string starts with an alphanumeric
-            character; otherwise non-alphanumeric.
+            character, otherwise non-alphanumeric.
     """
     if not text:
         return []
@@ -58,8 +57,8 @@ def _process_non_alnum_chunk(
     prev_chunk: str | None,
     next_chunk: str | None
 ) -> Generator[tuple[TokenType, str], None, None]:
-    """
-    Process a non-alphanumeric chunk into separator or symbol tokens.
+    """Process a non-alphanumeric chunk into separator or symbol
+    tokens.
     """
     is_between_alnum = (
         prev_chunk is not None and prev_chunk[0].isalnum()
@@ -124,8 +123,7 @@ def _split_camel_pascal(text: str) -> list[str]:
 def get_normalized_tokens(
     text: str
 ) -> Generator[tuple[TokenType, str], None, None]:
-    """
-    Tokenize a string into words, symbols and separators.
+    """Tokenize a string into words, symbols and separators.
 
     Args:
         text: The string to tokenize.

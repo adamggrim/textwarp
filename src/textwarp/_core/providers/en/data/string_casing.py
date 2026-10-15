@@ -37,9 +37,7 @@ def get_lookup_map() -> Mapping[str, str]:
 
 @cache
 def get_lowercase_abbreviations() -> frozenset[str]:
-    """
-    Get a cached `frozenset` of lowercase abbreviations.
-    """
+    """Get a cached `frozenset` of lowercase abbreviations."""
     return frozenset(
         load_json_data(DIR / 'lowercase_abbreviations.json', locale='en')
     )

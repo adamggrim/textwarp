@@ -74,8 +74,7 @@ def unzalgo(text: str) -> str:
 
 
 def widen(text: str) -> str:
-    """
-    Widen a string by adding a space after each character except the
+    """Widen a string by adding a space after each character except the
     last one.
     """
     return ' '.join(text)
@@ -98,8 +97,7 @@ def random_case(text: str) -> str:
 
 
 def redact(text: str) -> str:
-    """
-    Redact a string by replacing each word character with a black
+    """Redact a string by replacing each word character with a black
     square.
     """
     return patterns.warping.get_word_char().sub('█', text)

@@ -22,8 +22,7 @@ def _capitalize_from_map(
     lower_word: str,
     capitalization_map: Mapping[str, str]
 ) -> str | None:
-    """
-    Handle word capitalization through dictionary lookup, lowercasing
+    """Handle word capitalization through dictionary lookup, lowercasing
     any suffix.
 
     Args:
@@ -57,8 +56,7 @@ def _capitalize_from_map(
 
 
 def _handle_lookup(_word: str, lower_word: str) -> str | None:
-    """
-    Handle capitalization through a combined lookup of absolute
+    """Handle capitalization through a combined lookup of absolute
     casings and mapped prefixed surnames.
 
     Args:
@@ -76,8 +74,7 @@ def _handle_lookup(_word: str, lower_word: str) -> str | None:
 
 
 def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
-    """
-    Handle the capitalization of the "I" pronoun.
+    """Handle the capitalization of the "I" pronoun.
 
     Args:
         _word: The word to capitalize (unused).
@@ -93,8 +90,7 @@ def _handle_i_pronoun(_word: str, lower_word: str) -> str | None:
 
 
 def _handle_lowercase_abbreviation(_word: str, lower_word: str) -> str | None:
-    """
-    Preserve the capitalization of a lowercase abbreviation.
+    """Preserve the capitalization of a lowercase abbreviation.
 
     Args:
         _word: The word to capitalize (unused).
@@ -119,8 +115,7 @@ def _handle_period_separated_initialism(
     _word: str,
     lower_word: str
 ) -> str | None:
-    """
-    Handle the capitalization of a period-separated initialism.
+    """Handle the capitalization of a period-separated initialism.
 
     Args:
         _word: The word to capitalize (unused).
@@ -145,8 +140,7 @@ def _handle_period_separated_initialism(
 
 
 def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
-    """
-    Handle the capitalization of a prefixed surname.
+    """Handle the capitalization of a prefixed surname.
 
     Args:
         _word: The name to capitalize (unused).
@@ -154,7 +148,8 @@ def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
 
     Returns:
         str | None: The capitalized name, or `None` if the
-            string starts with a name prefix exception.
+            string starts with a name prefix exception or has fewer
+            than two characters following the prefix.
     """
     surname_prefix_pattern = en.patterns.get_surname_prefix_pattern()
     name_prefix_exception_pattern = (
@@ -165,14 +160,15 @@ def _handle_prefixed_surname(_word: str, lower_word: str) -> str | None:
         return None
     elif (match := surname_prefix_pattern.match(lower_word)):
         prefix_len = len(match.group(0))
+        if len(lower_word) - prefix_len < 2:
+            return None
         return (lower_word[:prefix_len].capitalize()
                 + lower_word[prefix_len:].capitalize())
     return None
 
 
 def _preserve_mixed_case(word: str, _lower_word: str) -> str | None:
-    """
-    Preserve the capitalization of a word that is already mixed-case.
+    """Preserve the capitalization of a word that is already mixed-case.
 
     Args:
         word: The word to check.
@@ -192,9 +188,7 @@ def case_from_string(
     lowercase_by_default: bool = False,
     preserve_mixed_case: bool = True
 ) -> str:
-    """
-    Capitalize a word, handling special name prefixes and preserving
-    other mid-word capitalizations.
+    """Capitalize a word according to English-specific rules.
 
     Args:
         word: The word to capitalize.
@@ -231,9 +225,8 @@ def case_from_string(
 
 
 def is_lowercase_particle_or_affix(text: str) -> bool:
-    """
-    Determine if a specific token string is a lowercase particle (e.g.,
-    "von") or contraction suffix (e.g., "n't").
+    """Determine if a specific token string is a lowercase particle
+    (e.g., "von") or contraction suffix (e.g., "n't").
     """
     return (
         text.lower() in en.data.token_casing.get_lowercase_particles()
@@ -245,8 +238,7 @@ def is_lowercase_particle_or_affix(text: str) -> bool:
 
 
 def should_capitalize_in_title(token: Token) -> bool:
-    """
-    Determine whether to capitalize a spaCy `Token` for title case
+    """Determine whether to capitalize a spaCy `Token` for title case
     based on part of speech or length.
     """
     if is_lowercase_particle_or_affix(token.text):

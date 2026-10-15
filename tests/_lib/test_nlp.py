@@ -35,8 +35,7 @@ def test_process_as_doc_from_string():
 
 
 def test_get_nlp_priority_branching():
-    """
-    Test that `_get_nlp` respects the `ModelPriority` enum and
+    """Test that `_get_nlp` respects the `ModelPriority` enum and
     successfully returns a `Language` object for both branches.
     """
     nlp_speed = get_nlp(model_priority=ModelPriority.SPEED)
@@ -47,8 +46,7 @@ def test_get_nlp_priority_branching():
 
 
 def test_nlp_fallback_logic(monkeypatch):
-    """
-    Mock `spacy.util.is_package` to simulate a missing `sm` model
+    """Mock `spacy.util.is_package` to simulate a missing `sm` model
     and verify it tries the next in ranking.
     """
     fallback_model = 'en_core_web_md'

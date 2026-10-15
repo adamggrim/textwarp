@@ -11,9 +11,7 @@ __all__ = [
 
 
 class _HTMLStripper(HTMLParser):
-    """
-    A subclass of HTMLParser used to strip HTML tags.
-    """
+    """A subclass of HTMLParser used to strip HTML tags."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -37,8 +35,7 @@ def strip_html(text: str) -> str:
 
 
 def to_single_spaces(text: str) -> str:
-    """
-    Convert consecutive spaces to a single space.
+    """Convert consecutive spaces to a single space.
 
     This function preserves leading spaces and tabs.
     """

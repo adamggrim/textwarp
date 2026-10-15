@@ -69,8 +69,7 @@ def _get_provider_instance(requested_locale: str) -> 'LanguageProvider':
 
 
 class TextwarpContext:
-    """
-    Manage the active language locale and its corresponding provider
+    """Manage the active language locale and its corresponding provider
     safely across threads.
     """
     @property
@@ -96,9 +95,8 @@ class TextwarpContext:
 
     @property
     def provider(self) -> 'LanguageProvider':
-        """
-        Lazy-load the language provider for the active locale to prevent
-        circular imports.
+        """Lazy-load the language provider for the active locale to
+        prevent circular imports.
         """
         if self._provider is None:
             self.set_locale(self.locale)
@@ -106,8 +104,7 @@ class TextwarpContext:
         return self._provider
 
     def set_locale(self, locale: str) -> None:
-        """
-        Set the active language locale and initialize its provider.
+        """Set the active language locale and initialize its provider.
 
         Args:
             locale: The language locale to set.
@@ -141,8 +138,7 @@ def _(message: str) -> str:
 
 
 def ngettext(singular: str, plural: str, n: int) -> str:
-    """
-    Translate a pluralizable string using the active context locale.
+    """Translate a pluralizable string using the active context locale.
     """
     return _get_translations(ctx.locale).ngettext(singular, plural, n)
 

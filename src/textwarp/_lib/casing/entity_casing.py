@@ -20,8 +20,7 @@ def _case_contextual_entity(
     span: Span,
     key: str
 ) -> str | None:
-    """
-    Determine the casing for a contextual entity based on parts-of-
+    """Determine the casing for a contextual entity based on parts-of-
     speech sequences and ngrams.
     """
     contextual_entities_map = ctx.provider.contextual_casings_map
@@ -54,8 +53,7 @@ def _check_for_ngrams(
     ngrams: list[str],
     context_window: int
 ) -> bool:
-    """
-    Check if any of a given list of ngrams are present around a
+    """Check if any of a given list of ngrams are present around a
     specific index in the Doc.
     """
     doc = span.doc
@@ -86,8 +84,8 @@ def _check_for_ngrams(
 
 @cache
 def _get_custom_entities_pattern(locale: str) -> re.Pattern[str]:
-    """
-    Build and cache the regular expression for finding custom entities.
+    """Build and cache the regular expression for finding custom
+    entities.
     """
     provider = ctx.provider
     absolute_entities_map = provider.absolute_casings_map
@@ -108,8 +106,7 @@ def _get_custom_entities_pattern(locale: str) -> re.Pattern[str]:
 
 
 def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
-    """
-    Map entities in a spaCy `Doc` to their correct contextual casing.
+    """Map entities in a spaCy `Doc` to their correct contextual casing.
 
     Args:
         doc: The spaCy `Doc` to convert.
@@ -151,8 +148,7 @@ def _map_custom_entities(doc: Doc) -> dict[int, tuple[Span, int, str]]:
 
 
 def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
-    """
-    Map model entities in a spaCy `Doc`. These entities are detected
+    """Map model entities in a spaCy `Doc`. These entities are detected
     by the underlying spaCy NLP model.
 
     Args:
@@ -175,8 +171,7 @@ def _map_model_entities(doc: Doc) -> dict[int, tuple[Span, int, None]]:
 def map_all_entities(
     doc: Doc
 ) -> dict[int, tuple[Span, int, str | None]]:
-    """
-    Create a prioritized map of all entities (absolute > contextual
+    """Create a prioritized map of all entities (absolute > contextual
     > model).
 
     Args:
@@ -188,7 +183,7 @@ def map_all_entities(
             tuple containing:
                 1. The entity's spaCy `Span` object.
                 2. The entity's end token index.
-                3. The cased entity; otherwise `None`.
+                3. The cased entity, otherwise `None`.
     """
     custom_map = _map_custom_entities(doc)
 

@@ -16,8 +16,7 @@ def replace_case(
     search_pattern: re.Pattern[str],
     conversion_func: Callable[[str], str]
 ) -> str:
-    """
-    Replace a case within the text using the provided pattern and
+    """Replace a case within the text using the provided pattern and
     conversion function, returning the transformed text.
 
     Args:
@@ -39,8 +38,7 @@ def replace_regex(
     regex_pattern: str | re.Pattern[str],
     replacement_text: str
 ) -> str:
-    """
-    Find a regular expression within the text and replace it with the
+    """Find a regular expression within the text and replace it with the
     target string, returning the transformed text.
 
     Args:
@@ -61,8 +59,7 @@ def replace_text(
     text_to_replace: str,
     replacement_text: str
 ) -> str:
-    """
-    Find a string to replace within the text and replace it with the
+    """Find a string to replace within the text and replace it with the
     target string, returning the transformed text.
 
     Args:

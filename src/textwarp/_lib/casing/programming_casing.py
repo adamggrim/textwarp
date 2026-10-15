@@ -19,10 +19,9 @@ __all__ = [
 
 
 def _format_camel_first_word(word: str) -> str:
-    """
-    Format the first word of a camel case string.
+    """Format the first word of a camel case string.
 
-    Lowercases the entire word if it is an acronym, otherwise lowercases
+    Lowercases the entire word if an acronym, otherwise lowercases
     only the first letter.
     """
     cased_word = case_from_string(word)

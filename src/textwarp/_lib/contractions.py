@@ -19,8 +19,7 @@ def apply_expansion_casing(
     expanded_text: str,
     span_context: Span | None = None
 ) -> str:
-    """
-    Apply the original text casing to the expanded text.
+    """Apply the original text casing to the expanded text.
 
     Args:
         original_text: The original text.
@@ -66,9 +65,8 @@ def apply_expansion_casing(
 
 
 def expand_contractions(content: str | Doc) -> str:
-    """
-    Expand all contractions in a string or spaCy `Doc` using the active
-    language provider.
+    """Expand all contractions in a string or spaCy `Doc` using the
+    active language provider.
 
     Args:
         content: A string or spaCy `Doc`.

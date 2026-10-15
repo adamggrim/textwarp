@@ -88,8 +88,7 @@ def apply_pipeline(
     text: str | Doc,
     pipeline: Pipeline
 ) -> str | None:
-    """
-    Apply a sequence of pre-bound pipeline functions to a string.
+    """Apply a sequence of pre-bound pipeline functions to a string.
 
     Args:
         text: The string or spaCy `Doc` to transform.
@@ -112,9 +111,7 @@ def bind_pipeline(
     args: ParsedArgs,
     interactive: bool = False
 ) -> ParsedArgs:
-    """
-    Parse command parameters from CLI flags or interactive prompts and
-    bind them to the pipeline's command functions.
+    """Parse command parameters and bind them to command functions.
 
     Args:
         args: The parsed CLI arguments.
@@ -180,8 +177,7 @@ def bind_pipeline(
 def build_pipeline(
     active_cmds: list[str], parser: argparse.ArgumentParser
 ) -> Pipeline:
-    """
-    Construct the execution pipeline from CLI arguments.
+    """Construct the execution pipeline from CLI arguments.
 
     Args:
         active_cmds: The ordered list of valid commands.
@@ -211,9 +207,8 @@ def atomic_write(
     file_path: str,
     mode: str = 'w'
 ) -> Generator[IO[Any], None, None]:
-    """
-    Safely write to a file by staging writes to a temporary file
-    and atomically swapping it upon completion.
+    """Safely write to a file, staging writes to a temporary file and
+    atomically swapping it upon completion.
     """
     dir_name = os.path.dirname(file_path) or '.'
     is_binary = 'b' in mode
@@ -269,8 +264,7 @@ def handle_output(
     output_file: str | None,
     default_action: Callable[[str], None]
 ) -> None:
-    """
-    Route the transformed text to a file.
+    """Route the transformed text to a file.
 
     Args:
         result: The transformed text to output, or `None` if the
@@ -306,8 +300,7 @@ def route_output(
     output_file: str | None,
     copy_to_clipboard: bool,
 ) -> None:
-    """
-    Route the transformed text to a file, the clipboard or the terminal.
+    """Route the transformed text to a file, the clipboard or the terminal.
 
     Args:
         result: The transformed text to output.
@@ -335,8 +328,7 @@ def route_text(
     pipeline: Pipeline,
     parse_markdown: bool
 ) -> str | None:
-    """
-    Determine whether to process text as Markdown or a plain string.
+    """Determine whether to process text as Markdown or a plain string.
 
     Args:
         text: The input text to process.
@@ -362,9 +354,8 @@ def route_text(
         return apply_pipeline(stripped_markdown, pipeline)
     else:
         def transform_chunk(chunk: str) -> str:
-            """
-            Transform a chunk of text from the Markdown Abstract Syntax
-            Tree (AST).
+            """Transform a chunk of text from the Markdown Abstract
+            Syntax Tree (AST).
             """
             res = apply_pipeline(chunk, pipeline)
             return res if res is not None else chunk
@@ -378,9 +369,8 @@ def validate_piped_commands(
     replacement_arg: str | None,
     **kwargs: Any
 ) -> None:
-    """
-    Ensure that commands requiring intermediate input are not used in
-    pipeline/file mode without the necessary arguments.
+    """Ensure that commands requiring intermediate input in pipeline or
+    file mode have the necessary arguments.
 
     Args:
         pipeline: A list of `CLICommand` objects.

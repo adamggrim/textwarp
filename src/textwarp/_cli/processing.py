@@ -51,8 +51,8 @@ def _open_output_stream(
     output_file: str | None,
     mode: str = 'w'
 ) -> Generator[IO[Any], None, None]:
-    """
-    Open an output stream, yielding either a file handle or stdout.
+    """Open an output stream, yielding either a file handle or
+    stdout.
     """
     if output_file:
         with atomic_write(output_file, mode) as f:
@@ -70,8 +70,7 @@ def _file_open(
     file_path: str,
     mode: str = 'r'
 ) -> Generator[IO[Any], None, None]:
-    """
-    Open a file, wrapping standard exceptions in `TextwarpError`.
+    """Open a file, wrapping standard exceptions in `TextwarpError`.
 
     Args:
         file_path: The path to the file.
@@ -114,8 +113,7 @@ def _strip_line_ending(text: str) -> str:
 
 
 def _read_and_strip_file(file_path: str) -> tuple[str, str]:
-    """
-    Read a text file and separate its trailing newline.
+    """Read a text file and separate its trailing newline.
 
     Args:
         file_path: The path to the input file.
@@ -136,8 +134,7 @@ def _flush_mmap_buffer(
     pattern: re.Pattern[str],
     replacement: str
 ) -> tuple[str, str]:
-    """
-    Apply regex replacements to a buffer, holding back a tail window
+    """Apply regex replacements to a buffer, holding back a tail window
     for multi-line matches.
 
     Args:
@@ -190,9 +187,8 @@ def _iter_mmap_replacements(
     pattern: re.Pattern[str],
     replacement: str
 ) -> Iterator[bytes]:
-    """
-    Yield UTF-8 chunks of a memory-mapped file with regex replacements
-    applied across chunks.
+    """Yield UTF-8 chunks of a memory-mapped file and apply regular
+    expression replacements across chunks.
 
     Args:
         mm: A memory-mapped file.
@@ -228,9 +224,8 @@ def _write_mmap_regex_to_stream(
     args: ParsedArgs,
     output_stream: IO[bytes]
 ) -> None:
-    """
-    Write memory-mapped regex replacements for a single file to a
-    stream.
+    """Write memory-mapped regular expression replacements for a single
+    file to a stream.
 
     Args:
         file_path: The path to the input file.
@@ -271,9 +266,8 @@ def _process_mmap_regex(
     args: ParsedArgs,
     output_stream: IO[bytes] | None = None
 ) -> None:
-    """
-    Perform a regex replacement on an oversized file using memory
-    mapping.
+    """Perform a regular expression replacement on an oversized file
+    using memory mapping.
 
     Preserves the entire context for multi-line regular expressions.
 
@@ -295,8 +289,7 @@ def _process_mmap_regex(
 
 
 def _process_file_stream(args: ParsedArgs) -> None:
-    """
-    Process files line-by-line to avoid loading oversized files into
+    """Process files line-by-line to avoid loading oversized files into
     memory.
 
     Args:
@@ -340,8 +333,8 @@ def _process_mixed_mmap_files(
     args: ParsedArgs,
     max_memory_bytes: int
 ) -> None:
-    """
-    Process regex replacements across oversized and standard files.
+    """Process regular expression replacements across oversized and
+    standard files.
     """
     if args.in_place:
         for file_path in args.input_files:
@@ -432,8 +425,7 @@ def _process_in_memory_files(
 
 
 def process_file_mode(args: ParsedArgs) -> None:
-    """
-    Handle file input and output mode.
+    """Handle file input and output mode.
 
     Args:
         args: The parsed CLI arguments.
@@ -481,9 +473,8 @@ def process_file_mode(args: ParsedArgs) -> None:
 
 
 def _interactive_pipeline_runner(text: str, args: ParsedArgs) -> str | None:
-    """
-    Route between the interactive clipboard loop and the core pipeline
-    engine.
+    """Route between the interactive clipboard loop and the core
+    pipeline engine.
 
     Args:
         text: The text to process.
@@ -506,8 +497,7 @@ def _unified_action_handler(
     is_analysis: bool,
     not_found_msg: str | None = None
 ) -> None:
-    """
-    Route the output from interactive mode to the destination.
+    """Route the output from interactive mode to the destination.
 
     Args:
         func: The pipeline runner function to execute.
@@ -545,10 +535,11 @@ def _unified_action_handler(
 
 
 def process_interactive_mode(args: ParsedArgs) -> None:
-    """
-    Handle the interactive CLI for user input without files or piping.
+    """Handle the interactive CLI for user input without files or
+    piping.
 
-    This mode acts as a wrapper around the package's core pipeline engine.
+    This mode acts as a wrapper around the package's core pipeline 
+    engine.
 
     Args:
         args: The parsed CLI arguments.
@@ -578,8 +569,7 @@ def process_interactive_mode(args: ParsedArgs) -> None:
 
 
 def process_piped_mode(args: ParsedArgs) -> None:
-    """
-    Handle input when data is piped into the script.
+    """Handle input when data is piped into the script.
 
     Args:
         args: The parsed CLI arguments.

@@ -15,10 +15,7 @@ def get_exit_inputs() -> frozenset[str]:
 
 
 def get_no_inputs() -> frozenset[str]:
-    """
-    Get a `frozenset` of inputs for indicating a negative
-    response.
-    """
+    """Get a `frozenset` of inputs indicating a negative response."""
     return frozenset({
         _('no'),
         _('n')
@@ -26,8 +23,7 @@ def get_no_inputs() -> frozenset[str]:
 
 
 def get_yes_inputs() -> frozenset[str]:
-    """
-    Get a `frozenset` of inputs for indicating an affirmative
+    """Get a `frozenset` of inputs indicating an affirmative
     response.
     """
     return frozenset({

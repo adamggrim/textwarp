@@ -12,16 +12,14 @@ __all__ = ['POSCounts', 'WordCount']
 @final
 @dataclass(frozen=True, slots=True)
 class POSCounts:
-    """
-    A class representing the counts and percentages for each part of
+    """A class representing the counts and percentages for each part of
     speech.
     """
     word_count: int = 0
     tag_counts: dict[MainPOSTag, int] = field(default_factory=dict)
 
     def get_pos_counts(self, tag: MainPOSTag) -> int:
-        """
-        Get the count for a given part-of-speech tag.
+        """Get the count for a given part-of-speech tag.
 
         Args:
             tag: The part-of-speech tag from the `MainPOSTag` enum.
@@ -33,9 +31,8 @@ class POSCounts:
         return self.tag_counts.get(tag, 0)
 
     def get_percentage(self, tag: MainPOSTag) -> float:
-        """
-        Get the percentage of a given part of speech in the total word
-        count.
+        """Get the percentage of a given part of speech in the total
+        word count.
 
         Args:
             tag: The part-of-speech tag from the `MainPOSTag` enum.
@@ -48,8 +45,7 @@ class POSCounts:
         return (count / self.word_count * 100) if self.word_count else 0.0
 
     def get_pos_data(self) -> list[tuple[str, int, float]]:
-        """
-        Get all parts-of-speech data (count and percentage) as an
+        """Get all parts-of-speech data (count and percentage) as an
         iterable list of tuples.
 
         Returns:
@@ -65,8 +61,7 @@ class POSCounts:
 @final
 @dataclass(frozen=True, slots=True)
 class WordCount:
-    """
-    A class representing the count and percentage for a word in a
+    """A class representing the count and percentage for a word in a
     string.
     """
     word: str

@@ -63,21 +63,18 @@ class TextwarpArgumentParser(argparse.ArgumentParser):
 
 
 def parse_args() -> ParsedArgs:
-    """
-    Parse CLI arguments for a text warping or analysis
-    function name and the language locale.
+    """Parse CLI arguments for text warping or analysis.
 
     Returns:
         ParsedArgs: A frozen dataclass containing the parsed arguments.
 
     Raises:
-        SystemExit: If arguments are invalid or help or version flags
-        are present.
+        SystemExit: If arguments are invalid or there are help or
+            version flags.
     """
     def formatter(prog: str) -> argparse.HelpFormatter:
-        """
-        A custom help formatter to align help messages neatly based on
-        the maximum argument width.
+        """A custom help formatter to align help messages neatly based 
+        on maximum argument width.
         """
         # Use `RawDescriptionHelpFormatter` to preserve command
         # formatting.

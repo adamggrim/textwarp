@@ -66,9 +66,8 @@ class CountLabels(str, Enum):
 
 @unique
 class ModelPriority(str, Enum):
-    """
-    Specify whether to prioritize accuracy or speed for spaCy model
-    selection.
+    """Specification for whether to prioritize accuracy or speed for
+    spaCy model selection.
     """
     ACCURACY = 'accuracy'
     SPEED = 'speed'
@@ -76,7 +75,9 @@ class ModelPriority(str, Enum):
 
 @unique
 class MainPOSTag(str, Enum):
-    """Main grammatical categories for presentation and general output."""
+    """Main grammatical categories for presentation and general
+    output.
+    """
     ADJ = 'ADJ'
     ADP = 'ADP'
     ADV = 'ADV'
@@ -113,8 +114,7 @@ class UniversalPOSTag(str, Enum):
 
 @unique
 class RegexBoundary(Enum):
-    """
-    Specify the boundary-matching strategy for a regular expression.
+    """Specify the boundary-matching strategy for a regular expression.
 
     Attributes:
         WORD_BOUNDARY: Matches the pattern only when it appears as a
@@ -131,8 +131,7 @@ class RegexBoundary(Enum):
 
 @unique
 class TokenType(Enum):
-    """
-    Specify the type of token extracted during programming case
+    """Specify the type of token extracted during programming case
     chunking.
 
     Attributes:

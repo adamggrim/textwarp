@@ -10,8 +10,7 @@ def case_from_string(
     lowercase_by_default: bool = False,
     preserve_mixed_case: bool = True
 ) -> str:
-    """
-    Capitalize a word according to the active language provider's
+    """Capitalize a word according to the active language provider's
     specific rules.
 
     Args:

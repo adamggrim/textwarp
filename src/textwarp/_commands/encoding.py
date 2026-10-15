@@ -10,8 +10,7 @@ __all__ = [
 
 
 def from_binary(binary_text: str) -> str:
-    """
-    Convert a string from binary, returning the original string if
+    """Convert a string from binary, returning the original string if
     decoding fails.
     """
     try:
@@ -21,9 +20,8 @@ def from_binary(binary_text: str) -> str:
 
 
 def from_hexadecimal(text: str) -> str:
-    """
-    Convert a string from hexadecimal, returning the original string if
-    decoding fails.
+    """Convert a string from hexadecimal, returning the original string
+    if decoding fails.
     """
     try:
         return lib_encoding.from_hexadecimal(text)
@@ -32,9 +30,8 @@ def from_hexadecimal(text: str) -> str:
 
 
 def from_morse(text: str) -> str:
-    """
-    Convert a string from Morse code, returning the original string if
-    decoding fails.
+    """Convert a string from Morse code, returning the original string
+    if decoding fails.
     """
     try:
         return lib_encoding.from_morse(text)

@@ -30,8 +30,7 @@ _ESCAPE_MAP = {
 
 
 def parse_cli_escapes(text: str) -> str:
-    """
-    Convert command-line escape strings into their corresponding
+    """Convert command-line escape strings into their corresponding
     whitespace characters.
     """
     def _replace_escape(match: re.Match[str]) -> str:
@@ -46,14 +45,15 @@ def _prepare_regex_replacement(
     arg_to_replace: str,
     replacement_arg: str
 ) -> tuple[re.Pattern[str], str]:
-    """Validate, compile and cache the regex pattern and escape sequences."""
+    """Validate, compile and cache the regular expression pattern and
+    escape sequences.
+    """
     validate_regex(arg_to_replace)
     return re.compile(arg_to_replace), parse_cli_escapes(replacement_arg)
 
 
 def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
-    """
-    Extract arguments for a case to replace and a replacement case,
+    """Extract arguments for a case to replace and a replacement case,
     and return the transformed text.
 
     Args:
@@ -77,8 +77,7 @@ def replace_case(text: str, arg_to_replace: str, replacement_arg: str) -> str:
 
 
 def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
-    """
-    Extract arguments for a target regular expression and a string to
+    """Extract arguments for a target regular expression and a string to
     replace it, and return the transformed text.
 
     Args:
@@ -99,8 +98,7 @@ def replace_regex(text: str, arg_to_replace: str, replacement_arg: str) -> str:
 
 
 def replace_text(text: str, arg_to_replace: str, replacement_arg: str) -> str:
-    """
-    Extract arguments for a target string and a string to replace it,
+    """Extract arguments for a target string and a string to replace it,
     and return the transformed text.
 
     Args:

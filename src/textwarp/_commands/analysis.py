@@ -35,8 +35,7 @@ __all__ = [
 
 
 def calculate_time_to_read(content: str | Doc, wpm: int) -> str:
-    """
-    Analyze and format time-to-read output.
+    """Analyze and format time-to-read output.
 
     Args:
         content: The string or spaCy `Doc` to process.
@@ -52,8 +51,7 @@ def calculate_time_to_read(content: str | Doc, wpm: int) -> str:
 
 
 def calculate_ttr(text: str) -> str:
-    """
-    Analyze and format type-token ratio output.
+    """Analyze and format type-token ratio output.
 
     Args:
         text: The string to process.
@@ -66,8 +64,7 @@ def calculate_ttr(text: str) -> str:
 
 
 def count_chars(text: str) -> str:
-    """
-    Analyze and format character count output.
+    """Analyze and format character count output.
 
     Args:
         text: The string to process.
@@ -80,8 +77,7 @@ def count_chars(text: str) -> str:
 
 
 def count_entities(content: str | Doc, number: int) -> str:
-    """
-    Analyze and format most frequent entities output.
+    """Analyze and format entity counts output.
 
     Args:
         content: The string or spaCy `Doc` to process.
@@ -99,8 +95,7 @@ def count_entities(content: str | Doc, number: int) -> str:
 
 
 def count_lines(text: str) -> str:
-    """
-    Analyze and format line count output.
+    """Analyze and format line count output.
 
     Args:
         text: The string to process.
@@ -113,8 +108,7 @@ def count_lines(text: str) -> str:
 
 
 def count_mfws(content: str | Doc, number: int) -> str:
-    """
-    Analyze and format most frequent words output.
+    """Analyze and format most frequent words output.
 
     Args:
         content: The string or spaCy `Doc` to process.
@@ -129,8 +123,7 @@ def count_mfws(content: str | Doc, number: int) -> str:
 
 
 def count_pos(content: str | Doc) -> str:
-    """
-    Analyze and format parts-of-speech count output.
+    """Analyze and format parts-of-speech count output.
 
     Args:
         content: The string or spaCy `Doc` to process.
@@ -143,8 +136,7 @@ def count_pos(content: str | Doc) -> str:
 
 
 def count_sentences(content: str | Doc) -> str:
-    """
-    Analyze and format sentence count output.
+    """Analyze and format sentence count output.
 
     Args:
         content: The string or spaCy `Doc` to process.
@@ -157,8 +149,7 @@ def count_sentences(content: str | Doc) -> str:
 
 
 def count_words(text: str) -> str:
-    """
-    Analyze and format word count output.
+    """Analyze and format word count output.
 
     Args:
         text: The string to process.

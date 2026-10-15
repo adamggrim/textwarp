@@ -112,9 +112,8 @@ if TYPE_CHECKING:
 
 
 def __getattr__(name: str) -> Any:
-    """
-    Lazily load functions from submodules when accessed as attributes of
-    the package.
+    """Lazily load functions from submodules when accessed as package
+    attributes.
 
     Args:
         name: The name of the accessed attribute.

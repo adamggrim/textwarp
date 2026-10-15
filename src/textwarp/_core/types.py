@@ -9,8 +9,7 @@ __all__ = ['EntityCasingContext', 'JSONType', 'Pipeline', 'PipelineItem']
 
 
 class EntityCasingContext(TypedDict, total=False):
-    """
-    The casing context for a custom entity.
+    """The casing context for a custom entity.
 
     Attributes:
         casing: The casing to apply.
