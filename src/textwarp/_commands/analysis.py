@@ -22,6 +22,8 @@ from textwarp._core.models import POSCounts, WordCount
 from textwarp._lib import analysis as lib_analysis
 
 __all__ = [
+    'calculate_time_to_read',
+    'calculate_ttr',
     'count_chars',
     'count_entities',
     'count_lines',
