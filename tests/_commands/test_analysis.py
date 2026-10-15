@@ -73,8 +73,8 @@ def test_count_pos():
         assert any(char.isdigit() for char in line)
 
 
-def test_count_sentences():
-    result = analysis.count_sentences(
+def test_count_sents():
+    result = analysis.count_sents(
         'The best lack all conviction, while the worst\n'
         'Are full of passionate intensity.\n'
         'Surely some revelation is at hand;\n'

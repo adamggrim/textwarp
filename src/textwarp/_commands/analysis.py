@@ -27,10 +27,8 @@ __all__ = [
     'count_lines',
     'count_mfws',
     'count_pos',
-    'count_sentences',
-    'count_words',
-    'time_to_read',
-    'ttr'
+    'count_sents',
+    'count_words'
 ]
 
 
@@ -114,7 +112,7 @@ def count_pos(content: str | Doc) -> str:
     return format_pos_counts(counts)
 
 
-def count_sentences(content: str | Doc) -> str:
+def count_sents(content: str | Doc) -> str:
     """Analyze and format sentence count output."""
     count: int = lib_analysis.count_sents(content)
     return format_count(CountLabels.SENTENCE.value, count)

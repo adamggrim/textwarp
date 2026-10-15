@@ -125,9 +125,9 @@ ARGS_MAP: Final[dict[str, CLICommand]] = {
         command_type=CommandType.ANALYSIS,
         requires_spacy=True
     ),
-    'count-sentences': CLICommand(
-        name='count-sentences',
-        func=lazy_load('.._commands.analysis', 'count_sentences'),
+    'count-sents': CLICommand(
+        name='count-sents',
+        func=lazy_load('.._commands.analysis', 'count_sents'),
         help_text=N_('count sentences'),
         command_type=CommandType.ANALYSIS,
         requires_spacy=True
