@@ -168,6 +168,42 @@ def test_validate_piped_commands_rejects_replacement():
         pipeline.validate_piped_commands(test_pipeline, None, None)
 
 
+def test_route_text_markdown_hoists_single_spinner(monkeypatch):
+    mock_spinner_cls = MagicMock()
+    mock_process_doc = MagicMock(side_effect=lambda text: text)
+
+    monkeypatch.setattr('textwarp._cli.pipeline.Spinner', mock_spinner_cls)
+    monkeypatch.setattr(
+        'textwarp._cli.pipeline.process_as_doc',
+        mock_process_doc
+    )
+
+    test_pipeline = [
+        CLICommand(
+            'title-case',
+            str.title,
+            '',
+            CommandType.WARPING,
+            requires_spacy=True
+        )
+    ]
+
+    markdown_input = '# **The One** remains, *the many* change and pass'
+    result = pipeline.route_text(
+        markdown_input,
+        test_pipeline,
+        parse_markdown=True
+    )
+
+    assert result.strip() == (
+        '# **The One** Remains, *The Many* Change And Pass'
+    )
+    mock_spinner_cls.assert_called_once()
+    mock_spinner_cls.return_value.__enter__.assert_called_once()
+    mock_spinner_cls.return_value.__exit__.assert_called_once()
+    assert mock_process_doc.call_count == 4
+
+
 def test_missing_marko_dependency(monkeypatch):
     monkeypatch.setitem(sys.modules, 'textwarp._lib.markdown', None)
 

@@ -357,9 +357,12 @@ def route_text(
             """Transform a chunk of text from the Markdown Abstract
             Syntax Tree (AST).
             """
-            res = apply_pipeline(chunk, pipeline)
+            res = _run_pipeline_segment(chunk, pipeline)
             return res if res is not None else chunk
 
+        if any(cmd.requires_spacy for cmd in pipeline):
+            with Spinner():
+                return process_markdown(text, transform_chunk)
         return process_markdown(text, transform_chunk)
 
 
