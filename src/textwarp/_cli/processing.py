@@ -544,7 +544,10 @@ def process_interactive_mode(args: ParsedArgs) -> None:
     Args:
         args: The parsed CLI arguments.
     """
-    args = bind_pipeline(args, interactive=True)
+    args = bind_pipeline(
+        args,
+        interactive=not args.once or sys.stdin.isatty()
+    )
 
     replacement_cmd = next(
         (
@@ -564,7 +567,8 @@ def process_interactive_mode(args: ParsedArgs) -> None:
         lambda text: _interactive_pipeline_runner(text, args),
         action_handler=lambda func, text: _unified_action_handler(
             func, text, args, is_analysis, not_found_msg
-        )
+        ),
+        once=args.once
     )
 
 

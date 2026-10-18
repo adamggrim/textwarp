@@ -18,6 +18,7 @@ from textwarp._cli.constants.messages import (
     IN_PLACE_NO_FILES_ERROR_MSG,
     INVALID_CASE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
+    ONCE_FILES_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
     UNRECOGNIZED_CMD_ERROR_MSG,
@@ -204,6 +205,32 @@ def test_validate_command_combinations_in_place_errors(
 
     captured = capsys.readouterr()
     assert f'Error: {expected_msg}' in captured.err
+    assert 'usage:' not in captured.err
+
+
+def test_validate_command_combinations_once_with_files_error(
+    capsys,
+    cli_parser
+):
+    args = argparse.Namespace(
+        find=None,
+        replace=None,
+        in_place=False,
+        once=True,
+        output_file=None,
+        copy_to_clipboard=False
+    )
+
+    with pytest.raises(SystemExit):
+        validate_command_combinations(
+            ['uppercase'],
+            args,
+            cli_parser,
+            input_files=['πάντα_ῥεῖ.txt']
+        )
+
+    captured = capsys.readouterr()
+    assert f'Error: {ONCE_FILES_ERROR_MSG}' in captured.err
     assert 'usage:' not in captured.err
 
 

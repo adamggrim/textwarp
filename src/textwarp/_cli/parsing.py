@@ -50,6 +50,7 @@ class ParsedArgs:
     debug: bool
     max_file_mb: int
     in_place: bool = False
+    once: bool = False
     number: int | None = None
     wpm: int | None = None
 
@@ -73,7 +74,7 @@ def parse_args() -> ParsedArgs:
             version flags.
     """
     def formatter(prog: str) -> argparse.HelpFormatter:
-        """A custom help formatter to align help messages neatly based 
+        """A custom help formatter to align help messages neatly based
         on maximum argument width.
         """
         # Use `RawDescriptionHelpFormatter` to preserve command
@@ -152,6 +153,13 @@ def parse_args() -> ParsedArgs:
         dest='in_place',
         action='store_true',
         help=_('modify input files in-place')
+    )
+
+    parser.add_argument(
+        '-1', '--once',
+        dest='once',
+        action='store_true',
+        help=_('process the clipboard once and exit')
     )
 
     parser.add_argument(
@@ -256,6 +264,7 @@ def parse_args() -> ParsedArgs:
         debug=args.debug,
         max_file_mb=args.max_file_mb,
         in_place=args.in_place,
+        once=args.once,
         number=args.number,
         wpm=args.wpm
     )

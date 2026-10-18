@@ -105,20 +105,23 @@ def replace_and_copy(
 
 def run_command_loop(
     command_func: Callable[[str], str | None],
-    action_handler: _ActionHandler | None = None
+    action_handler: _ActionHandler | None = None,
+    once: bool = False
 ) -> None:
     """Run a module command to transform or analyze clipboard text.
 
     Args:
         command_func: The command function.
-        action_handler | None: A function defining what to do with the
-            command and clipboard text.
+        action_handler: A function defining what to do with the
+            command and clipboard text, or `None` to run the command
+            alone.
+        once: If `True`, processes the clipboard once and exits.
     """
     while True:
         clipboard = _paste_and_validate()
 
         if clipboard is None:
-            if not get_input():
+            if once or not get_input():
                 break
             continue
 
@@ -127,7 +130,7 @@ def run_command_loop(
         else:
             command_func(clipboard)
 
-        if not get_input():
+        if once or not get_input():
             break
 
 

@@ -33,6 +33,8 @@ def main() -> None:
 
         if parsed_args.input_files:
             process_file_mode(parsed_args)
+        elif parsed_args.once:
+            process_interactive_mode(parsed_args)
         elif not sys.stdin.isatty():
             process_piped_mode(parsed_args)
         else:

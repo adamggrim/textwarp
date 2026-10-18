@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Logarithmically accelerating spinner for spaCy commands.
 * New `--debug` argument.
 * New `-i` (`--in-place`) argument for modifying input files in-place.
+* New `-1` (`--once`) argument for processing the clipboard once and exiting.
 * New `strip-html` command.
 * Support for newlines and carriage returns in CLI replacement text.
 * Pre-commit hooks support.

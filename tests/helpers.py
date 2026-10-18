@@ -20,6 +20,7 @@ def make_parsed_args(**overrides: Any) -> ParsedArgs:
         'debug': False,
         'max_file_mb': DEFAULT_MAX_FILE_MB,
         'in_place': False,
+        'once': False,
     }
     defaults.update(overrides)
     return ParsedArgs(**defaults)

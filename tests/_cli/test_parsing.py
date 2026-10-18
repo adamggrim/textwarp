@@ -60,6 +60,21 @@ def test_parse_args_lang_default(monkeypatch):
     assert parsed_args.lang == 'en'
 
 
+def test_parse_args_once_flag_default_false(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['textwarp', 'uppercase'])
+    parsed_args = parse_args()
+
+    assert parsed_args.once is False
+
+
+@pytest.mark.parametrize('flag', ['--once', '-1'])
+def test_parse_args_once_flag(monkeypatch, flag):
+    monkeypatch.setattr(sys, 'argv', ['textwarp', flag, 'uppercase'])
+    parsed_args = parse_args()
+
+    assert parsed_args.once is True
+
+
 def test_parse_args_no_args_prints_help(monkeypatch, capsys):
     monkeypatch.setattr(sys, 'argv', ['textwarp'])
     monkeypatch.setattr(sys.stdin, 'isatty', MagicMock(return_value=True))

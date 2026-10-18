@@ -24,6 +24,7 @@ from textwarp._cli.constants.messages import (
     MULTIPLE_MUTUALLY_EXCLUSIVE_ERROR_MSG,
     MULTIPLE_REPLACEMENT_ERROR_MSG,
     NUMBER_ARG_ERROR_MSG,
+    ONCE_FILES_ERROR_MSG,
     POSITIVE_INT_ARG_ERROR_MSG,
     REGEX_EMPTY_ERROR_MSG,
     TEXT_EMPTY_ERROR_MSG,
@@ -195,6 +196,9 @@ def validate_command_combinations(
             parser.error(_(IN_PLACE_CONFLICT_ERROR_MSG))
         if first_analysis_cmd_seen:
             parser.error(_(IN_PLACE_ANALYSIS_ERROR_MSG))
+
+    if getattr(args, 'once', False) and input_files:
+        parser.error(_(ONCE_FILES_ERROR_MSG))
 
 
 def validate_positional_args(

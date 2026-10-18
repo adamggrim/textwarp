@@ -49,6 +49,7 @@ __all__ = [
     'MULTIPLE_REPLACEMENT_ERROR_MSG',
     'NO_ENTITIES_FOUND_MSG',
     'NUMBER_ARG_ERROR_MSG',
+    'ONCE_FILES_ERROR_MSG',
     'PIPED_INPUT_ERROR_MSG',
     'POSITIVE_INT_ARG_ERROR_MSG',
     'REGEX_EMPTY_ERROR_MSG',
@@ -156,6 +157,9 @@ NO_ENTITIES_FOUND_MSG: Final = N_('No entities found.')
 NUMBER_ARG_ERROR_MSG: Final = N_(
     "The --number (-n) argument can only be used with 'count-entities' or "
     "'count-mfws'."
+)
+ONCE_FILES_ERROR_MSG: Final = N_(
+    'The --once (-1) flag cannot be used with input files.'
 )
 PIPED_INPUT_ERROR_MSG: Final = N_('Error processing input: {error}')
 POSITIVE_INT_ARG_ERROR_MSG: Final = N_(

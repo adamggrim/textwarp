@@ -111,3 +111,18 @@ def test_run_command_loop(monkeypatch, mock_clipboard):
     run_command_loop(mock_command)
 
     mock_command.assert_called_once_with(quote)
+
+
+def test_run_command_loop_once(monkeypatch, mock_clipboard):
+    quote = 'The valiant never taste of death but once.'
+    mock_clipboard.copy(quote)
+
+    mock_get_input = MagicMock()
+    monkeypatch.setattr('textwarp._cli.runners.get_input', mock_get_input)
+
+    mock_command = MagicMock()
+
+    run_command_loop(mock_command, once=True)
+
+    mock_command.assert_called_once_with(quote)
+    mock_get_input.assert_not_called()

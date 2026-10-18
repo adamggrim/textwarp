@@ -151,6 +151,7 @@ options:
   -m, --markdown           parse text as Markdown and preserve formatting
   -o FILE, --output FILE   optional path for writing the output file
   -i, --in-place           modify input files in-place
+  -1, --once               process the clipboard once and exit
   -c, --copy               copy the output to the clipboard
   --debug                  enable debug mode to show full error tracebacks
   -f FIND, --find FIND     text, case or regular expression to find

@@ -72,6 +72,37 @@ def test_main_sets_locale(monkeypatch):
     mock_process_piped.assert_not_called()
 
 
+def test_main_once_flag_overrides_non_tty_stdin(monkeypatch):
+    mock_args = ParsedArgs(
+        pipeline=[ARGS_MAP['uppercase']],
+        lang='en',
+        input_files=[],
+        output_file=None,
+        markdown=False,
+        find=None,
+        replace=None,
+        copy_to_clipboard=False,
+        debug=False,
+        max_file_mb=DEFAULT_MAX_FILE_MB,
+        once=True
+    )
+
+    monkeypatch.setattr(cli, 'parse_args', MagicMock(return_value=mock_args))
+    mock_process_piped = MagicMock()
+    mock_process_interactive = MagicMock()
+
+    monkeypatch.setattr(cli, 'process_piped_mode', mock_process_piped)
+    monkeypatch.setattr(
+        cli, 'process_interactive_mode', mock_process_interactive
+    )
+    monkeypatch.setattr(sys.stdin, 'isatty', MagicMock(return_value=False))
+
+    cli.main()
+
+    mock_process_interactive.assert_called_once_with(mock_args)
+    mock_process_piped.assert_not_called()
+
+
 def test_main_global_exception_handler(monkeypatch, capsys):
     error_msg = '’Tis all in pieces, all coherence gone'
     mock_parse_args = MagicMock(side_effect=ValueError(error_msg))
